@@ -1,0 +1,239 @@
+{
+  "schema_version": 1,
+  "observed_at_utc": "2026-10-21T16:02:17.652399+08:00",
+  "scope": "阶段 0 免费体验 API 配置及验证；未发送 AICS 或其他真实来源内容",
+  "provider": "moark",
+  "model_requested": "Qwen3-Embedding-8B",
+  "endpoint": "https://api.moark.com/v1/embeddings",
+  "authentication": "Bearer，来自 .env.local；明文不进入本报告",
+  "dimensions_requested": 4096,
+  "encoding_format_requested": "float",
+  "failover_enabled": false,
+  "automatic_retries": 0,
+  "paid_calls_authorized": false,
+  "request_budget": 5,
+  "sources": [
+    "https://moark.com/serverless-api?model=Qwen3-Embedding-8B",
+    "https://moark.com/docs/openapi/v1#tag/%E7%89%B9%E5%BE%81%E6%8A%BD%E5%8F%96/post/embeddings",
+    "https://moark.com/docs/FAQ"
+  ],
+  "cases": [
+    {
+      "id": "P0-API-01",
+      "name": "合成中文文本",
+      "request": {
+        "model": "Qwen3-Embedding-8B",
+        "input": "知识库保存中文笔记，并检索项目代码。",
+        "dimensions": 4096,
+        "encoding_format": "float"
+      },
+      "expectation": "success",
+      "http_status": 200,
+      "model_returned": "Qwen3-Embedding-8B",
+      "returned_count": 1,
+      "vectors": [
+        {
+          "index": 0,
+          "dimensions": 4096,
+          "all_finite": true,
+          "l2_norm": 0.99999995
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 11,
+        "total_tokens": 11
+      },
+      "status": "passed",
+      "elapsed_seconds": 0.916
+    },
+    {
+      "id": "P0-API-02",
+      "name": "合成 TypeScript 代码",
+      "request": {
+        "model": "Qwen3-Embedding-8B",
+        "input": "export function clampPageSize(size: number): number { return Math.min(100, Math.max(10, size)); }",
+        "dimensions": 4096,
+        "encoding_format": "float"
+      },
+      "expectation": "success",
+      "http_status": 200,
+      "model_returned": "Qwen3-Embedding-8B",
+      "returned_count": 1,
+      "vectors": [
+        {
+          "index": 0,
+          "dimensions": 4096,
+          "all_finite": true,
+          "l2_norm": 0.99999998
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 28,
+        "total_tokens": 28
+      },
+      "status": "passed",
+      "elapsed_seconds": 2.436
+    },
+    {
+      "id": "P0-API-03",
+      "name": "合成代码查询及 instruction 参数",
+      "request": {
+        "model": "Qwen3-Embedding-8B",
+        "input": "怎样限制表格每页的行数？",
+        "dimensions": 4096,
+        "encoding_format": "float",
+        "instruction": "Given a code search query, retrieve relevant code snippets that implement the requested behavior."
+      },
+      "expectation": "success",
+      "http_status": 200,
+      "model_returned": "Qwen3-Embedding-8B",
+      "returned_count": 1,
+      "vectors": [
+        {
+          "index": 0,
+          "dimensions": 4096,
+          "all_finite": true,
+          "l2_norm": 1.00000008
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 10,
+        "total_tokens": 10
+      },
+      "status": "passed",
+      "elapsed_seconds": 1.162
+    },
+    {
+      "id": "P0-API-04",
+      "name": "两条合成文本批量请求",
+      "request": {
+        "model": "Qwen3-Embedding-8B",
+        "input": [
+          "中文笔记支持标签检索。",
+          "function add(a, b) { return a + b; }"
+        ],
+        "dimensions": 4096,
+        "encoding_format": "float"
+      },
+      "expectation": "success",
+      "http_status": 200,
+      "model_returned": "Qwen3-Embedding-8B",
+      "returned_count": 2,
+      "vectors": [
+        {
+          "index": 0,
+          "dimensions": 4096,
+          "all_finite": true,
+          "l2_norm": 0.99999998
+        },
+        {
+          "index": 1,
+          "dimensions": 4096,
+          "all_finite": true,
+          "l2_norm": 0.99999998
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 21,
+        "total_tokens": 21
+      },
+      "status": "passed",
+      "elapsed_seconds": 1.029
+    },
+    {
+      "id": "P0-API-05",
+      "name": "空字符串错误语义",
+      "request": {
+        "model": "Qwen3-Embedding-8B",
+        "input": "",
+        "dimensions": 4096,
+        "encoding_format": "float"
+      },
+      "expectation": "observe_validation",
+      "http_status": 200,
+      "model_returned": "Qwen3-Embedding-8B",
+      "returned_count": 1,
+      "vectors": [
+        {
+          "index": 0,
+          "dimensions": 4096,
+          "all_finite": true,
+          "l2_norm": 1.00000005
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 1,
+        "total_tokens": 1
+      },
+      "status": "observed_empty_input_accepted",
+      "elapsed_seconds": 0.469
+    }
+  ],
+  "unverified": [
+    "超长输入的 token 上限、截断行为与分批策略",
+    "免费小批量与收费大批量接口的精确计费分界",
+    "instruction 参数是否在服务端按原始 Qwen 规则执行，仅检查请求接受情况",
+    "4096 维以外的维度、模型权重版本与跨服务商向量一致性",
+    "并发吞吐、限流、超时重试与长期稳定性",
+    "真实 AICS 检索质量、Qdrant/CocoIndex 联合接入"
+  ],
+  "success_cases_passed": 4,
+  "requests_attempted": 5,
+  "local_security": {
+    "env_local_ignored": true,
+    "env_example_not_ignored": true,
+    "ignore_probe": "独立临时 Git 仓库；未初始化知识库项目",
+    "acl_inheritance_disabled": true,
+    "allowed_identities": [
+      "NT AUTHORITY\\SYSTEM",
+      "HZPCC1360433\\Administrator"
+    ],
+    "project_git_initialized": false,
+    "temporary_probe_retained": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\kb-ignore-probe-76e7e19f5afd4014be188f4ae81f176c",
+    "cleanup_status": "自动审批拒绝含临时目录清理的命令，原因仅为 blocked by policy；未重试删除，保留无密钥目录",
+    "key_present": true,
+    "nonsecret_files_contain_key": false,
+    "template_matches_nonsecret_configuration": true,
+    "next_public_secret_variables": false
+  },
+  "trial_quota_observed": {
+    "before": 99,
+    "after": 94,
+    "request_count": 5,
+    "verified_by": "重新加载模型体验页面",
+    "screenshot": "C:/Users/Administrator/.codex/visualizations/2026/10/20/01a158c6-4366-7792-8768-4aed0b80a6a4/moark-stage0-trial-quota-94.png"
+  },
+  "summary": {
+    "returned_vectors": 6,
+    "reported_total_tokens": 71,
+    "stage0_complete": false,
+    "business_code_written": false,
+    "user_acceptance": "approved"
+  },
+  "acceptance": {
+    "version": "v0.7",
+    "outcome": "Approved",
+    "decided_by": "用户（本知识库所有者）",
+    "decision_date": "2026-10-21",
+    "timezone": "Asia/Shanghai",
+    "recorded_at": "2026-10-21T16:10:07+08:00",
+    "timestamp_note": "记录时间来自本轮时钟；用户回复未提供精确发送时间，不将记录时间冒充决定时间。",
+    "response": "验收通过",
+    "source": "当前对话 request_user_input_async 回复；questionItemId=[\"request_user_input_async\",\"call_5a27f13899694ed39e2fb3ab6b114d1e\",0]",
+    "presented": "本轮 v0.7 已完成：Key 与接入配置落盘、密钥隔离检查、5 次免费 API 验证及报告；其余阶段 0 工作按你的要求保留待确认。是否验收通过？依据 [run-governed-product-workflow 的 SKILL.md](C:/Users/Administrator/.codex/skills/run-governed-product-workflow/SKILL.md) 要求“实现和工程验证完成后，必须向人交付可核对的结果并主动发起一次真实 Acceptance 确认”，此确认只针对本轮交付。",
+    "scope": "仅本轮免费体验 API 配置落盘、密钥隔离、合成样本基础接入验证及记录；不包括其他阶段 0 事项或业务实现。",
+    "accepted_artifact_hashes_before_acceptance_record": {
+      ".env.example": "82F97E4EE7644F9EC27935C1ACF4D2138C2ADEAA5AE0F225BE768C28D0491AFE",
+      ".gitignore": "425D65F74495B6CB8103879FD1880400BD25CF484BC3882F9C4A84ED97CFC3F0",
+      "阶段0-API接入验证.json": "4E82367C02E144FE88674B792F5F415C3438EB4D85A1CCD0DCBA4902463DBF08",
+      "本地第二大脑知识库技术方案.md": "837336E3778AF4FCA37C99B3FBB8396A9CE3B0C26BF7061C04399039F87D01B6"
+    },
+    "credential_file": "沿用已验证的 .env.local；本轮未读取或改写凭据。",
+    "remaining_scope": [
+      "运行环境选择待确认",
+      "AICS 快照与首批来源范围待确认",
+      "P0-02 未验契约保持未验",
+      "阶段 0 整体未完成"
+    ]
+  }
+}
