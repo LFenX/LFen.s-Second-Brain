@@ -70,7 +70,7 @@ func TestKnowledgeHandlerRejectsAmbiguousBodies(t *testing.T) {
 	cases := []struct {
 		body   string
 		status int
-	}{{valid, 200}, {"null", 400}, {"[]", 400}, {valid + "{}", 400}, {strings.Replace(valid, `"start_byte":0,`, "", 1), 400}, {strings.Replace(valid, `"end_byte":1`, `"end_byte":null`, 1), 400}, {strings.Replace(valid, `"end_byte":1`, `"end_byte":1,"external_models":true`, 1), 400}, {`{"name":"` + strings.Repeat("x", 17000) + `"}`, 413}}
+	}{{valid, 200}, {"null", 400}, {"[]", 400}, {valid + "{}", 400}, {strings.Replace(valid, `"start_byte":0,`, "", 1), 400}, {strings.Replace(valid, `"end_byte":1`, `"end_byte":null`, 1), 400}, {strings.Replace(valid, `"end_byte":1`, `"end_byte":1,"external_models":true`, 1), 400}, {strings.Replace(valid, `"end_byte":1`, `"end_byte":1,"END_BYTE":2`, 1), 400}, {strings.Replace(valid, `"end_byte":1`, `"end_byte":1,"end_byte":2`, 1), 400}, {`{"name":"` + strings.Repeat("x", 17000) + `"}`, 413}}
 	r := knowledgeHandlerTestRouter(true)
 	for i, tc := range cases {
 		w := httptest.NewRecorder()

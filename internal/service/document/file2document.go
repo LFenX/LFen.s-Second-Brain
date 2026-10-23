@@ -160,6 +160,12 @@ func (s *File2DocumentService) LinkToDatasets(ctx context.Context, userID string
 			return permissionErr
 		}
 	}
+	if err := permission.CheckKnowledgeIngestion(ctx, dao.DB, req.KbIDs); err != nil {
+		return err
+	}
+	if err := permission.CheckKnowledgeFileTransfer(ctx, dao.DB, allFileIDs); err != nil {
+		return err
+	}
 
 	// ── 6. Run conversion in background (fire-and-forget) ────────────────────
 	kbIDs := req.KbIDs
@@ -179,6 +185,12 @@ func (s *File2DocumentService) LinkToDatasets(ctx context.Context, userID string
 // convertFiles mirrors Python _convert_files: keep existing links, remove links
 // outside the requested KBs in replace mode, then add any missing links.
 func (s *File2DocumentService) convertFiles(ctx context.Context, fileIDs, kbIDs []string, userID, mode string) error {
+	if err := permission.CheckKnowledgeIngestion(ctx, dao.DB, kbIDs); err != nil {
+		return err
+	}
+	if err := permission.CheckKnowledgeFileTransfer(ctx, dao.DB, fileIDs); err != nil {
+		return err
+	}
 	replaceExisting := mode != "add"
 	kbIDs = dedupeStrings(kbIDs)
 	requestedKBIDs := make(map[string]struct{}, len(kbIDs))

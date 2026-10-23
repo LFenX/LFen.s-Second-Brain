@@ -224,6 +224,9 @@ func (a *NLPRetrievalAdapter) Search(ctx context.Context, db *gorm.DB, req Retri
 			return nil, permissionErr
 		}
 	}
+	if err := permission.CheckDatasetModelUse(ctx, db, datasets.kbIDs, "generation"); err != nil {
+		return nil, err
+	}
 	if err := validateEmbeddingModels(ctx, db, datasets.kbs); err != nil {
 		return nil, err
 	}

@@ -31,7 +31,7 @@ func knowledgeRoot(source *entity.KnowledgeSourceRevision) entity.KnowledgeNode 
 }
 
 func knowledgeRelativePath(value string) bool {
-	if !validKnowledgeText(value, 512) || strings.HasPrefix(value, "/") || strings.ContainsAny(value, "\\:") || path.Clean(value) != value || value == "." {
+	if !validKnowledgeText(value, 512) || utf8.RuneCountInString(path.Base(value)) > 256 || strings.HasPrefix(value, "/") || strings.ContainsAny(value, "\\:") || path.Clean(value) != value || value == "." {
 		return false
 	}
 	for _, part := range strings.Split(value, "/") {
@@ -49,6 +49,9 @@ func (d *DatasetService) SnapshotKnowledgeSource(ctx context.Context, userID, do
 	if err != nil {
 		return nil, err
 	}
+	if !isKnowledgeID(req.DocumentID, 32) || (req.ExpectedRevisionID != "" && !isKnowledgeID(req.ExpectedRevisionID, 32)) || (req.GroupID != nil && !isKnowledgeID(*req.GroupID, 32)) {
+		return nil, knowledgeInvalid("Source IDs must be 32 lowercase hexadecimal characters")
+	}
 	var document entity.Document
 	if err := dao.DB.WithContext(ctx).Where("id = ? AND kb_id = ? AND status = ?", req.DocumentID, kb.ID, string(entity.StatusValid)).Take(&document).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -63,7 +66,7 @@ func (d *DatasetService) SnapshotKnowledgeSource(ctx context.Context, userID, do
 		req.RelativePath = *document.Name
 	}
 	if !knowledgeRelativePath(req.RelativePath) {
-		return nil, knowledgeInvalid("relative_path must be a normalized relative POSIX path")
+		return nil, knowledgeInvalid("relative_path must be a normalized relative POSIX path with a basename of at most 256 characters")
 	}
 	if req.ComponentSide == "" {
 		req.ComponentSide = "non_code"
@@ -266,6 +269,9 @@ func (d *DatasetService) CreateKnowledgeNode(ctx context.Context, userID, domain
 	kb, err := d.knowledgeBase(ctx, userID, domainID, true)
 	if err != nil {
 		return nil, false, err
+	}
+	if !isKnowledgeID(req.SourceRevisionID, 32) || !isKnowledgeID(req.ParentID, 64) {
+		return nil, false, knowledgeInvalid("Node references must use lowercase hexadecimal source and parent IDs")
 	}
 	parent, source, err := d.knowledgeNode(ctx, kb.ID, req.ParentID)
 	if err != nil {

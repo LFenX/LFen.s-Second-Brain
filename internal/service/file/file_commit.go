@@ -32,7 +32,6 @@ import (
 	"strings"
 	"sync"
 	"sync/atomic"
-	"time"
 
 	"go.uber.org/zap"
 	"gorm.io/gorm"
@@ -58,21 +57,10 @@ func NewFileCommitService() *FileCommitService {
 
 // CreateCommit creates a new commit for a workspace folder
 func (s *FileCommitService) CreateCommit(ctx context.Context, folderID, authorID, message string, changes []entity.FileChange) (*entity.FileCommit, error) {
-	// 1. Get the latest commit for this folder
-	latestCommit, _ := s.commitDAO.GetLatestByFolderID(ctx, dao.DB, folderID)
-
-	// 2. Build tree state from latest commit
 	treeState := make(map[string]interface{})
-	if latestCommit != nil && latestCommit.TreeState != nil {
-		if err := json.Unmarshal([]byte(*latestCommit.TreeState), &treeState); err != nil {
-			common.Warn("failed to unmarshal previous tree state", zap.Error(err))
-			treeState = make(map[string]interface{})
-		}
-	}
 
 	// 3. Create commit record
 	commitID := common.GenerateUUID()
-	nowMs := time.Now().UnixMilli()
 
 	commit := &entity.FileCommit{
 		ID:        commitID,
@@ -82,14 +70,19 @@ func (s *FileCommitService) CreateCommit(ctx context.Context, folderID, authorID
 		FileCount: len(changes),
 	}
 
-	if latestCommit != nil {
-		parentID := latestCommit.ID
-		commit.ParentID = &parentID
-	}
-
 	// All DB operations run inside a single transaction.
 	var treeStr string
 	if err := dao.DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		latestCommit, err := s.lockFolderCommit(ctx, tx, folderID)
+		if err != nil {
+			return fmt.Errorf("lock native version folder: %w", err)
+		}
+		if latestCommit != nil && latestCommit.TreeState != nil {
+			if err := json.Unmarshal([]byte(*latestCommit.TreeState), &treeState); err != nil {
+				return fmt.Errorf("invalid native version tree: %w", err)
+			}
+		}
+		setCommitPredecessor(commit, latestCommit)
 		// Save commit
 		if err := tx.Create(commit).Error; err != nil {
 			return fmt.Errorf("failed to create commit: %w", err)
@@ -234,7 +227,6 @@ func (s *FileCommitService) CreateCommit(ctx context.Context, folderID, authorID
 	}
 
 	commit.TreeState = &treeStr
-	commit.CreateTime = &nowMs
 
 	return commit, nil
 }

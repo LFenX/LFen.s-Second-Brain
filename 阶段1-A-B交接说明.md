@@ -1,6 +1,6 @@
 # 阶段1 A → B 接续说明
 
-版本：v0.19；契约：C1／C3 `1.0.0`；日期：2026-10-24（Asia/Shanghai）。
+版本：v0.20；契约：C1／C3 `1.0.0`；日期：2026-10-24（Asia/Shanghai）。本轮审查修复及复验见[审查报告](阶段1-A对抗性审查报告.json)，原v0.19验证报告保留其固定源码与运行证据。
 
 用户已批准阶段0，并授权本机A实施阶段1、验证后推送。本文交接A的领域底座；**B的页面接入和双方纵向验收仍待完成**。工程结果以 [阶段1-A底座验证报告](阶段1-A底座验证报告.json) 为准。开发继续在 `LFenX/LFen.s-Second-Brain`，不建立另一套后端或节点库。
 
@@ -78,9 +78,9 @@
 ### 响应与范围
 
 - 新接口成功为真实HTTP 200／201，`code: 0`；错误为对应HTTP状态及字符串code，含`contract_version`、`request_id`。404同时隐藏“不存在”和“无权”；500不暴露SQL／存储细节。原生认证中间件、上传、检索等仍保留其原生响应，**HTTP 200不等于code成功**。
-- JSON请求体≤16KiB，拒绝未知字段、缺失必填字段、不支持的null、多个JSON值；查询拒绝未知或重复参数。
+- JSON请求体≤16KiB，字段名严格区分大小写且不可重复，拒绝未知字段、缺失必填字段、不支持的null、多个JSON值；查询拒绝未知或重复参数。关联ID按契约使用32／64位小写十六进制，不接受大小写宽松匹配后写入。
 - 分页默认50、最大200；使用next_cursor续页。游标绑定用户／域／父项／来源修订，每页重新授权；游标不是授权令牌，列表不提供事务级快照。
-- 来源≤2MiB，UTF-8且无NUL；扩展名完整列表见OpenAPI的source_import。PDF／PPT／二进制／OCR在v1未支持；旧POC文档不因此变更。
+- 来源≤2MiB，UTF-8且无NUL；相对路径≤512字符，末级文件名≤256字符；扩展名完整列表见OpenAPI的source_import。PDF／PPT／二进制／OCR在v1未支持；旧POC文档不因此变更。
 - `start_byte`／`end_byte`为原始UTF-8字节的左闭右开范围，偏移相对来源全文；请求必须落在节点范围，边界不可切断UTF-8字符；每次≤65,536字节。CRLF保留。JS字符串索引不是UTF-8字节偏移，B不得直接混用。
 - 行号从1开始，end_line为实际覆盖的最后一行；末尾换行不额外增加覆盖行。空文件根范围[0,0)，行号为1。
 - UI按纯文本／代码组件展示text并保留空白；不要把原文作为可信HTML执行。阅读样式由B实现，不改写原始字节或源定位。
@@ -97,11 +97,13 @@
 
 无权资源、跨域父项／节点／修订均不能通过新接口取得。Native File／Document身份、游标和SHA都不是凭据；MCP工具、导航、缓存或未来关系扩展也不能扩大访问范围。更细模块Grant、临时密钥哈希、到期／撤销／配额在阶段5实现，不能提前使用所有者API Key充当共享Key。
 
+原生Files跨库关联不得用于注册域：目标是注册域、文件当前关联注册域或已进入来源修订时均拒绝，避免同一文件借团队库扩大权限／模型用途。首期只支持上述Dataset multipart导入。原生租户文件浏览、关键词子树搜索、路径与大小／计数汇总必须先裁去无权注册域；不能把有租户成员身份当成有域权限。Agent检索适配器在构造模型及翻译／元数据增强前执行禁模型检查。
+
 ## 6. 发布、并发与生命周期边界
 
 来源快照相同输入重复提交返回同一修订；字节、路径、分组或分类发生变化时，必须用expected_revision_id做比较交换。更换当前修订与其根节点映射在同一DB事务内发布；旧修订仍可读取。节点追加只允许当前来源修订，同身份改名称／父级／范围返回409。
 
-同域目录写入的关键发布操作锁数据集行。原生内容对象写入先于DB提交；DB回滚不发布目录／版本记录，但会留下未引用的不可变对象，**不声称对象存储和MySQL具有跨系统原子事务**。清理与保留策略在来源生命周期阶段补齐。
+同域目录写入的关键发布操作锁数据集行；源快照和原生文件版本追加共用Folder行锁，并以锁定读取得最新提交，防止MySQL旧读视图与并发树分叉。提交时间保持递增，避免毫秒时间相同导致选错提交头。原生内容对象写入先于DB提交；DB回滚不发布目录／版本记录，但会留下未引用的不可变对象，**不声称对象存储和MySQL具有跨系统原子事务**。清理与保留策略在来源生命周期阶段补齐。
 
 本轮快照观察Document已存原文；不自动同步外部文件、Git变更或原生File编辑器的新内容。删除／失效原生Document或Dataset后，新接口隐藏其快照／节点；本轮没有实现全历史物理清除、导出恢复或附件权限治理。B不要提供这些未实现按钮。
 
@@ -126,7 +128,7 @@ Go／原生库版本、二进制SHA、源码清单摘要和实测结果见验证
 ```bash
 uv run tools/scripts/download_dev_deps.py
 bash build.sh --cpp
-bash build.sh --test -run TestKnowledge ./internal/entity ./internal/permission/... ./internal/dao ./internal/utility ./internal/service/dataset ./internal/service/document ./internal/service/nlp ./internal/service ./internal/handler ./internal/router
+bash build.sh --test -run TestKnowledge ./internal/entity ./internal/permission/... ./internal/dao ./internal/utility ./internal/service/dataset ./internal/service/document ./internal/service/file ./internal/service/nlp ./internal/service ./internal/handler ./internal/router ./internal/agent/tool
 bash build.sh --go
 ```
 

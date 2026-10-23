@@ -2,11 +2,13 @@ package document
 
 import (
 	"bytes"
+	"errors"
 	"mime/multipart"
 	"testing"
 
 	"ragflow/internal/dao"
 	"ragflow/internal/entity"
+	"ragflow/internal/permission"
 	"ragflow/internal/storage"
 )
 
@@ -44,5 +46,46 @@ func TestKnowledgeUploadKeepsCodeNameAndBytesWithoutParsing(t *testing.T) {
 	got, errs = testDocumentService(t).UploadLocalDocuments(t.Context(), kb, "owner", []*multipart.FileHeader{makeTestFileHeader(t, "file", "native-reject.tsx", body)}, "", nil)
 	if len(got) != 0 || len(errs) != 1 {
 		t.Fatal("unregistered native upload behavior changed")
+	}
+}
+
+func TestKnowledgeNativeFileTransferCannotRepublishProtectedSources(t *testing.T) {
+	db := setupServiceTestDB(t)
+	pushServiceDB(t, db)
+	if err := db.AutoMigrate(&entity.KnowledgeSourceRevision{}); err != nil {
+		t.Fatal(err)
+	}
+	if err := db.Create(&entity.Knowledgebase{ID: "private", TenantID: "owner", CreatedBy: "owner", KnowledgeEnabled: true}).Error; err != nil {
+		t.Fatal(err)
+	}
+	doc := entity.Document{ID: "protected-doc", KbID: "private", ParserConfig: entity.JSONMap{}}
+	if err := db.Create(&doc).Error; err != nil {
+		t.Fatal(err)
+	}
+	fileID := "protected-file"
+	if err := db.Create(&entity.File2Document{ID: "synthetic-link", FileID: &fileID, DocumentID: &doc.ID}).Error; err != nil {
+		t.Fatal(err)
+	}
+	// No dependencies are configured: both the queued conversion and the direct
+	// target-domain path must stop before changing any document or mapping.
+	svc := &File2DocumentService{}
+	if err := svc.convertFiles(t.Context(), []string{fileID}, []string{"unregistered"}, "owner", "add"); !errors.Is(err, permission.ErrKnowledgeIngestionDenied) {
+		t.Fatalf("protected source transfer=%v", err)
+	}
+	if err := svc.convertFiles(t.Context(), []string{"ordinary"}, []string{"private"}, "owner", "add"); !errors.Is(err, permission.ErrKnowledgeIngestionDenied) {
+		t.Fatalf("unsupported protected target import=%v", err)
+	}
+	var mappings int64
+	if err := db.Model(&entity.File2Document{}).Count(&mappings).Error; err != nil || mappings != 1 {
+		t.Fatalf("denied transfer mutated mappings: %d err=%v", mappings, err)
+	}
+	if err := db.Create(&entity.KnowledgeSourceRevision{ID: "historical", DomainID: "private", DocumentID: "old", FileID: "historical-file", InputHash: "hash"}).Error; err != nil {
+		t.Fatal(err)
+	}
+	if err := permission.CheckKnowledgeFileTransfer(t.Context(), db, []string{"historical-file"}); !errors.Is(err, permission.ErrKnowledgeIngestionDenied) {
+		t.Fatalf("historical source transfer=%v", err)
+	}
+	if err := permission.CheckKnowledgeFileTransfer(t.Context(), db, []string{"ordinary"}); err != nil {
+		t.Fatalf("unregistered file transfer changed: %v", err)
 	}
 }

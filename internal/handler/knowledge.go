@@ -6,7 +6,9 @@ import (
 	"errors"
 	"io"
 	"net/http"
+	"reflect"
 	"strconv"
+	"strings"
 
 	"ragflow/internal/common"
 	"ragflow/internal/entity"
@@ -68,7 +70,7 @@ func knowledgeDecode[T any](c *gin.Context, required ...string) (*T, bool) {
 	}
 	if err == nil {
 		var fields map[string]json.RawMessage
-		if err = json.Unmarshal(raw, &fields); err == nil {
+		if fields, err = knowledgeObjectFields[T](raw); err == nil {
 			for field, value := range fields {
 				if field != "parent_id" && field != "group_id" && bytes.Equal(bytes.TrimSpace(value), []byte("null")) {
 					err = errors.New("field is not nullable")
@@ -100,6 +102,43 @@ func knowledgeDecode[T any](c *gin.Context, required ...string) (*T, bool) {
 		return nil, false
 	}
 	return &input, true
+}
+
+// Go's JSON decoder accepts case-insensitive aliases and repeated keys. The
+// shared contract accepts exact field names once, so validate the wire object.
+func knowledgeObjectFields[T any](raw []byte) (map[string]json.RawMessage, error) {
+	allowed := make(map[string]bool)
+	typ := reflect.TypeFor[T]()
+	for i := 0; i < typ.NumField(); i++ {
+		name := strings.Split(typ.Field(i).Tag.Get("json"), ",")[0]
+		if name != "" && name != "-" {
+			allowed[name] = true
+		}
+	}
+	decoder := json.NewDecoder(bytes.NewReader(raw))
+	if token, err := decoder.Token(); err != nil || token != json.Delim('{') {
+		return nil, errors.New("JSON object is required")
+	}
+	fields := make(map[string]json.RawMessage)
+	for decoder.More() {
+		token, err := decoder.Token()
+		if err != nil {
+			return nil, err
+		}
+		key, ok := token.(string)
+		if _, duplicate := fields[key]; !ok || !allowed[key] || duplicate {
+			return nil, errors.New("unsupported or repeated JSON field")
+		}
+		var value json.RawMessage
+		if err := decoder.Decode(&value); err != nil {
+			return nil, err
+		}
+		fields[key] = value
+	}
+	if _, err := decoder.Token(); err != nil {
+		return nil, err
+	}
+	return fields, nil
 }
 
 func knowledgeQuery(c *gin.Context, allowed ...string) bool {

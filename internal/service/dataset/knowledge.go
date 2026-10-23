@@ -209,6 +209,18 @@ func validKnowledgeText(s string, max int) bool {
 	return s != "" && utf8.ValidString(s) && utf8.RuneCountInString(s) <= max && !strings.ContainsRune(s, 0)
 }
 
+func isKnowledgeID(value string, size int) bool {
+	if len(value) != size {
+		return false
+	}
+	for _, c := range value {
+		if !((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f')) {
+			return false
+		}
+	}
+	return true
+}
+
 func validKnowledgeSide(side string) bool {
 	switch side {
 	case "frontend", "backend", "shared", "cli", "non_code":
@@ -249,6 +261,9 @@ func (d *DatasetService) CreateKnowledgeGroup(ctx context.Context, userID, domai
 		return nil, knowledgeInvalid("Unsupported component_side")
 	}
 	if req.ParentID != nil {
+		if !isKnowledgeID(*req.ParentID, 32) {
+			return nil, knowledgeInvalid("parent_id must be 32 lowercase hexadecimal characters")
+		}
 		parentID := *req.ParentID
 		depth := 1
 		for parentID != "" {
@@ -264,9 +279,6 @@ func (d *DatasetService) CreateKnowledgeGroup(ctx context.Context, userID, domai
 			if parent.ParentID != nil {
 				parentID = *parent.ParentID
 			}
-		}
-		if *req.ParentID == "" {
-			return nil, knowledgeInvalid("Use null for a root parent_id")
 		}
 	}
 	group := &entity.KnowledgeGroup{ID: common.GenerateUUID(), DomainID: kb.ID, ParentID: req.ParentID, Kind: req.Kind, Name: name, ComponentSide: req.ComponentSide}

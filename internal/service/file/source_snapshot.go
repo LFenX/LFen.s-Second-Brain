@@ -7,13 +7,40 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"time"
 
 	"ragflow/internal/common"
 	"ragflow/internal/entity"
 	"ragflow/internal/storage"
 
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
+
+// All native folder writers lock the same persisted folder before reading its
+// head. The locking head read also avoids an older MySQL transaction snapshot.
+func (s *FileCommitService) lockFolderCommit(ctx context.Context, tx *gorm.DB, folderID string) (*entity.FileCommit, error) {
+	var folder entity.File
+	if err := tx.WithContext(ctx).Clauses(clause.Locking{Strength: "UPDATE"}).Where("id = ? AND type = ?", folderID, "folder").Take(&folder).Error; err != nil {
+		return nil, err
+	}
+	previous, err := s.commitDAO.GetLatestByFolderID(ctx, tx.Clauses(clause.Locking{Strength: "UPDATE"}), folderID)
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, nil
+	}
+	return previous, err
+}
+
+func setCommitPredecessor(commit, previous *entity.FileCommit) {
+	timestamp := time.Now().UnixMilli()
+	if previous != nil {
+		commit.ParentID = &previous.ID
+		if previous.CreateTime != nil && *previous.CreateTime >= timestamp {
+			timestamp = *previous.CreateTime + 1
+		}
+	}
+	commit.CreateTime = &timestamp
+}
 
 // RecordSourceSnapshot writes native version records in the caller's catalogue
 // transaction. It archives observed bytes without editing the current File row.
@@ -30,8 +57,8 @@ func (s *FileCommitService) RecordSourceSnapshot(ctx context.Context, tx *gorm.D
 		return nil, nil, err
 	}
 	tree := map[string]interface{}{}
-	previous, err := s.commitDAO.GetLatestByFolderID(ctx, tx, source.ParentID)
-	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+	previous, err := s.lockFolderCommit(ctx, tx, source.ParentID)
+	if err != nil {
 		return nil, nil, err
 	}
 	if previous != nil && previous.TreeState != nil && *previous.TreeState != "" {
@@ -52,9 +79,7 @@ func (s *FileCommitService) RecordSourceSnapshot(ctx context.Context, tx *gorm.D
 	treeJSON := string(encoded)
 	commit := &entity.FileCommit{ID: common.GenerateUUID(), FolderID: source.ParentID, AuthorID: authorID,
 		Message: "Knowledge source snapshot", FileCount: 1, TreeState: &treeJSON}
-	if previous != nil {
-		commit.ParentID = &previous.ID
-	}
+	setCommitPredecessor(commit, previous)
 	if err := s.commitDAO.Create(ctx, tx, commit); err != nil {
 		return nil, nil, err
 	}

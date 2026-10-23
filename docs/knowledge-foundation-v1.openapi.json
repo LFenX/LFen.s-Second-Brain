@@ -3,7 +3,7 @@
   "info": {
     "title": "LFen's Second Brain — C1/C3 foundation",
     "version": "1.0.0",
-    "description": "Stage 1 A contract. Native authentication and dataset/document/file identities are reused. All registered domains are owner-only and catalogue-only. Keys, temporary sharing, semantic retrieval, parsing, graph edges and memory/persona are not implemented here. JSON bodies max 16 KiB; unknown fields, repeated/unknown queries and extra JSON values are rejected. Root group parent_id is null; list root children by omitting parent_id. Cursors are scope-bound pagination state, not credentials. Every page is reauthorized. Native middleware errors may keep native envelopes."
+    "description": "Stage 1 A contract. Native authentication and dataset/document/file identities are reused. All registered domains are owner-only and catalogue-only. Keys, temporary sharing, semantic retrieval, parsing, graph edges and memory/persona are not implemented here. JSON bodies max 16 KiB; case-sensitive unknown or repeated JSON fields, repeated/unknown queries and extra JSON values are rejected. Root group parent_id is null; list root children by omitting parent_id. Cursors are scope-bound pagination state, not credentials. Every page is reauthorized. Native middleware errors may keep native envelopes."
   },
   "servers": [
     {
@@ -3105,7 +3105,8 @@
           },
           "relative_path": {
             "type": "string",
-            "maxLength": 512
+            "maxLength": 512,
+            "description": "Normalized relative POSIX path, at most 512 characters in total and 256 characters in its basename."
           },
           "component_side": {
             "type": "string",
@@ -3419,7 +3420,7 @@
       ],
       "opaque_to_clients": true
     },
-    "consistency": "Writes within a domain serialize on its DB row; native object write precedes catalogue DB commit and can leave an unreferenced immutable blob after rollback. Lists are weakly consistent; exact revision content is immutable and hash-verified.",
+    "consistency": "Critical catalogue writes serialize on the domain row. Native folder commits and source snapshots share a folder row lock, read the latest head with a locking read, and assign increasing commit timestamps. Native object writes precede DB publication and can leave an unreferenced immutable blob after rollback. Lists are weakly consistent; exact revision content is immutable and hash-verified.",
     "source_import": {
       "native_upload": "POST /datasets/{dataset_id}/documents (multipart file)",
       "sequence": "Create empty native dataset without embedding_model, register domain, then upload synthetic UTF-8 file and snapshot explicitly.",
@@ -3454,6 +3455,7 @@
       "revision_scope": "Snapshots observe the native Document payload plus classification. File editor changes and external file changes are not automatically synchronized. A future incremental producer must reuse Document.ID for the same logical source."
     },
     "domain_registration": "Requires an empty private dataset without Connector links or ingestion history. Existing registered domains replay idempotently for the same category.",
-    "native_model_settings": "Registered domains reject embd_id/embedding_model updates before native availability probes; native creation before registration must omit embedding_model."
+    "native_model_settings": "Registered domains reject embd_id/embedding_model updates before native availability probes; native creation before registration must omit embedding_model.",
+    "native_file_links": "Native File links involving registered-domain targets, files currently linked to registered domains, or versioned knowledge sources are denied. Tenant metadata browsing excludes unauthorized domain folders/files before pagination, recursive search, ancestor reads and aggregates. This contract supports Dataset multipart upload only."
   }
 }

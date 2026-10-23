@@ -52,3 +52,39 @@ func CheckKnowledgeIngestion(ctx context.Context, db *gorm.DB, datasetIDs []stri
 	}
 	return err
 }
+
+// CheckKnowledgeFileTransfer prevents native file links from republishing a
+// protected source into another dataset and bypassing its fixed v1 policy.
+func CheckKnowledgeFileTransfer(ctx context.Context, db *gorm.DB, fileIDs []string) error {
+	if len(fileIDs) == 0 {
+		return nil
+	}
+	if db == nil {
+		return errors.New("knowledge policy database unavailable")
+	}
+	var enabled int64
+	if err := db.WithContext(ctx).Model(&entity.Knowledgebase{}).Where("knowledge_enabled = ?", true).Count(&enabled).Error; err != nil {
+		return err
+	}
+	if enabled == 0 {
+		return nil
+	}
+	var count int64
+	if err := db.WithContext(ctx).Table("file2document AS mapping").
+		Joins("JOIN document ON document.id = mapping.document_id").
+		Joins("JOIN knowledgebase ON knowledgebase.id = document.kb_id").
+		Where("mapping.file_id IN ? AND knowledgebase.knowledge_enabled = ?", fileIDs, true).Count(&count).Error; err != nil {
+		return err
+	}
+	if count > 0 {
+		return ErrKnowledgeIngestionDenied
+	}
+	if err := db.WithContext(ctx).Model(&entity.KnowledgeSourceRevision{}).
+		Where("file_id IN ?", fileIDs).Count(&count).Error; err != nil {
+		return err
+	}
+	if count > 0 {
+		return ErrKnowledgeIngestionDenied
+	}
+	return nil
+}

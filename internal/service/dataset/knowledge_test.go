@@ -305,7 +305,7 @@ func TestKnowledgeSourceLimitsAndPathValidation(t *testing.T) {
 	if err != nil || len(part.Text) != 65536 {
 		t.Fatalf("range length err=%v", err)
 	}
-	for _, p := range []string{"../secret.txt", "/tmp/a.txt", "C:\\a.txt", "a//b.txt", "a/./b.txt"} {
+	for _, p := range []string{"../secret.txt", "/tmp/a.txt", "C:\\a.txt", "a//b.txt", "a/./b.txt", strings.Repeat("x", 257) + ".txt"} {
 		req.RelativePath = p
 		_, err = s.SnapshotKnowledgeSource(ctx, knowledgeTestOwner, knowledgeTestDomain, req)
 		assertKnowledgeStatus(t, err, 400)
@@ -345,4 +345,25 @@ func TestKnowledgeSnapshotRollbackDoesNotPublishCatalogue(t *testing.T) {
 			t.Fatalf("rollback model=%T count=%d err=%v", model, count, err)
 		}
 	}
+}
+
+func TestKnowledgeReferencesRejectNoncanonicalIDs(t *testing.T) {
+	s, store := setupKnowledgeTest(t)
+	ctx := t.Context()
+	registerKnowledgeTest(t, s, knowledgeTestDomain)
+	parent, err := s.CreateKnowledgeGroup(ctx, knowledgeTestOwner, knowledgeTestDomain, entity.CreateKnowledgeGroupRequest{Kind: "project", Name: "Synthetic"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	upper := strings.ToUpper(parent.ID)
+	_, err = s.CreateKnowledgeGroup(ctx, knowledgeTestOwner, knowledgeTestDomain, entity.CreateKnowledgeGroupRequest{ParentID: &upper, Kind: "module", Name: "Bad reference"})
+	assertKnowledgeStatus(t, err, 400)
+	docID := "abcdefabcdefabcdefabcdefabcdefab"
+	uploadKnowledgeTest(t, store, docID, "test.txt", []byte("synthetic"))
+	_, err = s.SnapshotKnowledgeSource(ctx, knowledgeTestOwner, knowledgeTestDomain, entity.SnapshotKnowledgeSourceRequest{DocumentID: strings.ToUpper(docID)})
+	assertKnowledgeStatus(t, err, 400)
+	_, err = s.SnapshotKnowledgeSource(ctx, knowledgeTestOwner, knowledgeTestDomain, entity.SnapshotKnowledgeSourceRequest{DocumentID: docID, GroupID: &upper})
+	assertKnowledgeStatus(t, err, 400)
+	_, _, err = s.CreateKnowledgeNode(ctx, knowledgeTestOwner, knowledgeTestDomain, entity.CreateKnowledgeNodeRequest{SourceRevisionID: "UPPER", ParentID: "UPPER"})
+	assertKnowledgeStatus(t, err, 400)
 }

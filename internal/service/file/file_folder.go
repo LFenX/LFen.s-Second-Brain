@@ -58,6 +58,10 @@ func (s *FileService) listFiles(ctx context.Context, userID, tenantID, pfID stri
 	if tenantID == "" {
 		return nil, permission.ErrInvalidSubject
 	}
+	viewDB, err := knowledgeBrowseDB(ctx, userID, tenantID)
+	if err != nil {
+		return nil, err
+	}
 	// If pfID is empty, get root folder and initialize dataset docs
 	if pfID == "" {
 		rootFolder, err := s.fileDAO.GetRootFolder(ctx, dao.DB, tenantID)
@@ -87,7 +91,7 @@ func (s *FileService) listFiles(ctx context.Context, userID, tenantID, pfID stri
 	}
 
 	// Check if parent folder exists
-	folder, err := s.fileDAO.GetByID(ctx, dao.DB, pfID)
+	folder, err := s.fileDAO.GetByID(ctx, viewDB, pfID)
 	if err != nil {
 		return nil, lookupError(err, "folder not found")
 	}
@@ -105,13 +109,13 @@ func (s *FileService) listFiles(ctx context.Context, userID, tenantID, pfID stri
 
 	// Get files by parent folder ID
 	excludeSkills := folder.ID == folder.ParentID
-	files, total, err := s.fileDAO.GetByPfID(ctx, dao.DB, tenantID, pfID, page, pageSize, terms, keywords, excludeSkills)
+	files, total, err := s.fileDAO.GetByPfID(ctx, viewDB, tenantID, pfID, page, pageSize, terms, keywords, excludeSkills)
 	if err != nil {
 		return nil, err
 	}
 
 	// Get parent folder
-	parentFolder, err := s.fileDAO.GetParentFolder(ctx, dao.DB, pfID)
+	parentFolder, err := s.fileDAO.GetParentFolder(ctx, viewDB, pfID)
 	if err != nil {
 		return nil, fmt.Errorf("folder not found")
 	}
@@ -132,11 +136,11 @@ func (s *FileService) listFiles(ctx context.Context, userID, tenantID, pfID stri
 
 		// If folder, calculate size and check for child folders
 		if file.Type == FileTypeFolder {
-			folderSize, err := s.fileDAO.GetFolderSize(ctx, dao.DB, file.ID)
+			folderSize, err := s.fileDAO.GetFolderSize(ctx, viewDB, file.ID)
 			if err == nil {
 				fileInfo.Size = folderSize
 			}
-			hasChild, err := s.fileDAO.HasChildFolder(ctx, dao.DB, file.ID)
+			hasChild, err := s.fileDAO.HasChildFolder(ctx, viewDB, file.ID)
 			if err == nil {
 				fileInfo.HasChildFolder = hasChild
 			}
@@ -314,8 +318,19 @@ func (s *FileService) GetAllParentFoldersForTenant(ctx context.Context, userID, 
 }
 
 func (s *FileService) getAllParentFolders(ctx context.Context, userID, tenantID, fileID string, checkFilePermissions bool) ([]map[string]interface{}, error) {
+	if tenantID == "" {
+		var file entity.File
+		if err := dao.DB.WithContext(ctx).Where("id = ?", fileID).Take(&file).Error; err != nil {
+			return nil, lookupError(err, "file or folder not found")
+		}
+		tenantID = file.TenantID
+	}
+	viewDB, err := knowledgeBrowseDB(ctx, userID, tenantID)
+	if err != nil {
+		return nil, err
+	}
 	// Get file
-	file, err := s.fileDAO.GetByID(ctx, dao.DB, fileID)
+	file, err := s.fileDAO.GetByID(ctx, viewDB, fileID)
 	if err != nil {
 		return nil, lookupError(err, "file or folder not found")
 	}
@@ -331,7 +346,7 @@ func (s *FileService) getAllParentFolders(ctx context.Context, userID, tenantID,
 	}
 
 	// Get all parent folders
-	parentFolders, err := s.fileDAO.GetAllParentFolders(ctx, dao.DB, fileID)
+	parentFolders, err := s.fileDAO.GetAllParentFolders(ctx, viewDB, fileID)
 	if err != nil {
 		return nil, err
 	}
