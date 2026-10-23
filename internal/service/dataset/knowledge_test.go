@@ -54,16 +54,16 @@ func uploadKnowledgeTest(t *testing.T, store storage.Storage, docID, name string
 	t.Helper()
 	valid := string(entity.StatusValid)
 	location := "synthetic/" + docID
-	folderID := "44444444444444444444444444444444"
-	fileID := "f" + docID[1:]
-	folder := entity.File{ID: folderID, ParentID: knowledgeTestOwner, TenantID: knowledgeTestOwner, CreatedBy: knowledgeTestOwner, Name: "synthetic", Type: "folder"}
-	if err := dao.DB.Where("id = ?", folderID).FirstOrCreate(&folder).Error; err != nil {
-		t.Fatal(err)
+	var kb entity.Knowledgebase
+	if err := dao.DB.Where("id = ?", knowledgeTestDomain).Take(&kb).Error; err != nil || kb.KnowledgeFolderID == nil {
+		t.Fatalf("missing registered folder: %+v err=%v", kb, err)
 	}
+	folderID := *kb.KnowledgeFolderID
+	fileID := "f" + docID[1:]
 	if err := dao.DB.Create(&entity.Document{ID: docID, KbID: knowledgeTestDomain, CreatedBy: knowledgeTestOwner, Name: &name, Location: &location, Size: int64(len(content)), Status: &valid, ParserConfig: entity.JSONMap{}}).Error; err != nil {
 		t.Fatal(err)
 	}
-	if err := dao.DB.Create(&entity.File{ID: fileID, ParentID: folderID, TenantID: knowledgeTestOwner, CreatedBy: knowledgeTestOwner, Name: name, Location: &location, Type: "txt", Size: int64(len(content))}).Error; err != nil {
+	if err := dao.DB.Create(&entity.File{ID: fileID, ParentID: folderID, TenantID: knowledgeTestOwner, CreatedBy: knowledgeTestOwner, Name: name, Location: &location, Type: "txt", SourceType: "knowledgebase", Size: int64(len(content))}).Error; err != nil {
 		t.Fatal(err)
 	}
 	if err := dao.DB.Create(&entity.File2Document{ID: common.GenerateUUID(), FileID: &fileID, DocumentID: &docID}).Error; err != nil {
@@ -366,4 +366,63 @@ func TestKnowledgeReferencesRejectNoncanonicalIDs(t *testing.T) {
 	assertKnowledgeStatus(t, err, 400)
 	_, _, err = s.CreateKnowledgeNode(ctx, knowledgeTestOwner, knowledgeTestDomain, entity.CreateKnowledgeNodeRequest{SourceRevisionID: "UPPER", ParentID: "UPPER"})
 	assertKnowledgeStatus(t, err, 400)
+}
+
+func TestKnowledgeNativeUpdateHidesPolicyFromOtherUsers(t *testing.T) {
+	s, _ := setupKnowledgeTest(t)
+	registerKnowledgeTest(t, s, knowledgeTestDomain)
+	team, model := "team", "synthetic-model"
+	for _, req := range []service.UpdateDatasetRequest{{Permission: &team}, {EmbeddingModel: &model}} {
+		_, missingCode, missingErr := s.UpdateDataset(t.Context(), "33333333333333333333333333333333", "intruder", req)
+		_, privateCode, privateErr := s.UpdateDataset(t.Context(), knowledgeTestDomain, "intruder", req)
+		if privateCode != missingCode || privateErr == nil || missingErr == nil || privateErr.Error() != missingErr.Error() {
+			t.Fatalf("private=%d/%v missing=%d/%v", privateCode, privateErr, missingCode, missingErr)
+		}
+	}
+}
+
+func TestKnowledgeNativeFolderIdentitySurvivesRename(t *testing.T) {
+	s, _ := setupKnowledgeTest(t)
+	registerKnowledgeTest(t, s, knowledgeTestDomain)
+	var before entity.Knowledgebase
+	if err := dao.DB.Where("id = ?", knowledgeTestDomain).Take(&before).Error; err != nil || before.KnowledgeFolderID == nil {
+		t.Fatalf("missing native binding: %+v err=%v", before, err)
+	}
+	name := "Renamed synthetic domain"
+	if _, _, err := s.UpdateDataset(t.Context(), knowledgeTestDomain, knowledgeTestOwner, service.UpdateDatasetRequest{Name: &name}); err != nil {
+		t.Fatal(err)
+	}
+	folder, err := dao.NewFileDAO().EnsureKnowledgeFolder(t.Context(), dao.DB, knowledgeTestDomain)
+	if err != nil || folder.ID != *before.KnowledgeFolderID || folder.Name != name {
+		t.Fatalf("folder=%+v err=%v", folder, err)
+	}
+	if _, _, err := s.DeleteDatasets(t.Context(), []string{knowledgeTestDomain}, false, permission.Subject{UserID: knowledgeTestOwner}); err != nil {
+		t.Fatal(err)
+	}
+	var remaining int64
+	if err := dao.DB.Model(&entity.File{}).Where("id = ?", folder.ID).Count(&remaining).Error; err != nil || remaining != 0 {
+		t.Fatalf("renamed domain left its folder: %d err=%v", remaining, err)
+	}
+}
+
+func TestKnowledgeUnregisteredDeletionCannotDeleteBoundFolderByName(t *testing.T) {
+	s, _ := setupKnowledgeTest(t)
+	registerKnowledgeTest(t, s, knowledgeTestDomain)
+	folder, err := dao.NewFileDAO().EnsureKnowledgeFolder(t.Context(), dao.DB, knowledgeTestDomain)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := dao.DB.Model(folder).Update("name", "Collision").Error; err != nil {
+		t.Fatal(err)
+	}
+	if err := dao.DB.Model(&entity.Knowledgebase{}).Where("id = ?", knowledgeTestOther).Update("name", "Collision").Error; err != nil {
+		t.Fatal(err)
+	}
+	if _, _, err := s.DeleteDatasets(t.Context(), []string{knowledgeTestOther}, false, permission.Subject{UserID: knowledgeTestOwner}); err != nil {
+		t.Fatal(err)
+	}
+	current, err := dao.NewFileDAO().EnsureKnowledgeFolder(t.Context(), dao.DB, knowledgeTestDomain)
+	if err != nil || current.ID != folder.ID {
+		t.Fatalf("bound identity lost: %+v err=%v", current, err)
+	}
 }

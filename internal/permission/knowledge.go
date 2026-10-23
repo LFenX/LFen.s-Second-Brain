@@ -62,13 +62,6 @@ func CheckKnowledgeFileTransfer(ctx context.Context, db *gorm.DB, fileIDs []stri
 	if db == nil {
 		return errors.New("knowledge policy database unavailable")
 	}
-	var enabled int64
-	if err := db.WithContext(ctx).Model(&entity.Knowledgebase{}).Where("knowledge_enabled = ?", true).Count(&enabled).Error; err != nil {
-		return err
-	}
-	if enabled == 0 {
-		return nil
-	}
 	var count int64
 	if err := db.WithContext(ctx).Table("file2document AS mapping").
 		Joins("JOIN document ON document.id = mapping.document_id").

@@ -35,7 +35,7 @@ func setupFileTestDB(t *testing.T) *gorm.DB {
 		t.Fatalf("failed to open sqlite: %v", err)
 	}
 
-	if err := db.AutoMigrate(&entity.File{}); err != nil {
+	if err := db.AutoMigrate(&entity.File{}, &entity.Knowledgebase{}, &entity.KnowledgeSourceRevision{}, &entity.Document{}, &entity.File2Document{}); err != nil {
 		t.Fatalf("failed to migrate: %v", err)
 	}
 

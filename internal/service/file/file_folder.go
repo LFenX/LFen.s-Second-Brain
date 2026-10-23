@@ -481,6 +481,11 @@ func (s *FileService) MoveFiles(ctx context.Context, userID string, srcFileIDs [
 		if err := s.checkFileTreeAccess(ctx, userID, file, permission.OperationUpdate); err != nil {
 			return err
 		}
+		if destFileID != "" {
+			if err := s.checkKnowledgeTreeMutation(ctx, file); err != nil {
+				return err
+			}
+		}
 	}
 
 	if ok, msg := s.checkSourcesDisjoint(ctx, files); !ok {

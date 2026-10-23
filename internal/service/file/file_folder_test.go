@@ -185,6 +185,7 @@ func setupFolderTestDB(t *testing.T) *gorm.DB {
 		&entity.File2Document{},
 		&entity.Document{},
 		&entity.Knowledgebase{},
+		&entity.KnowledgeSourceRevision{},
 		&entity.UserTenant{},
 	); err != nil {
 		t.Fatalf("failed to migrate: %v", err)

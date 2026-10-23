@@ -471,10 +471,13 @@ func (d *DatasetService) deleteDataset(ctx context.Context, kb *entity.Knowledge
 		}
 
 		// Delete the KB folder file record.
-		if err := tx.Unscoped().
-			Where("source_type = ? AND type = ? AND name = ? AND tenant_id = ?",
-				string(entity.FileSourceKnowledgebase), "folder", kb.Name, kb.TenantID).
-			Delete(&entity.File{}).Error; err != nil {
+		folderQuery := tx.Unscoped().Where("source_type = ? AND type = ? AND tenant_id = ?", string(entity.FileSourceKnowledgebase), "folder", kb.TenantID)
+		if kb.KnowledgeEnabled && kb.KnowledgeFolderID != nil {
+			folderQuery = folderQuery.Where("id = ?", *kb.KnowledgeFolderID)
+		} else {
+			folderQuery = folderQuery.Where("name = ? AND id NOT IN (?)", kb.Name, dao.KnowledgeFolderIDs(ctx, tx))
+		}
+		if err := folderQuery.Delete(&entity.File{}).Error; err != nil {
 			return fmt.Errorf("delete dataset error for %s", kb.ID)
 		}
 

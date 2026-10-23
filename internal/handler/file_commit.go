@@ -123,7 +123,14 @@ func (h *FileCommitHandler) resolveDatasetFolderID(ctx context.Context, datasetI
 	if err != nil {
 		return "", err
 	}
-	files, err := h.fileDAO.Query(ctx, dao.DB, kb.Name, "", kb.TenantID)
+	if kb.KnowledgeEnabled {
+		folder, err := h.fileDAO.EnsureKnowledgeFolder(ctx, dao.DB, kb.ID)
+		if err != nil {
+			return "", err
+		}
+		return folder.ID, nil
+	}
+	files, err := h.fileDAO.Query(ctx, dao.DB.Where("id NOT IN (?)", dao.KnowledgeFolderIDs(ctx, dao.DB)), kb.Name, "", kb.TenantID)
 	if err != nil {
 		return "", err
 	}

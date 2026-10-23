@@ -52,3 +52,53 @@ func TestKnowledgeMigrationIsAdditiveAndRepeatable(t *testing.T) {
 		}
 	}
 }
+
+func TestKnowledgeMigrationKeepsMultipleHistoricalFolderIdentities(t *testing.T) {
+	db := setupFileTestDB(t)
+	ctx := t.Context()
+	if err := db.Create(&entity.Knowledgebase{ID: "domain", Name: "Current", TenantID: "owner", CreatedBy: "owner", KnowledgeEnabled: true}).Error; err != nil {
+		t.Fatal(err)
+	}
+	for _, entry := range []struct{ id, name string }{{"a-old", "Former"}, {"b-current", "Current"}} {
+		if err := db.Create(&entity.File{ID: entry.id, ParentID: "parent", TenantID: "owner", Name: entry.name, Type: "folder", SourceType: "knowledgebase"}).Error; err != nil {
+			t.Fatal(err)
+		}
+		if err := db.Create(&entity.KnowledgeSourceRevision{ID: entry.id, DomainID: "domain", DocumentID: entry.id, InputHash: entry.id, FolderID: entry.id}).Error; err != nil {
+			t.Fatal(err)
+		}
+	}
+	for i := 0; i < 2; i++ {
+		if err := migrateKnowledgeFoundation(ctx, db); err != nil {
+			t.Fatal(err)
+		}
+		folder, err := NewFileDAO().EnsureKnowledgeFolder(ctx, db, "domain")
+		if err != nil || folder.ID != "b-current" {
+			t.Fatalf("primary=%+v err=%v", folder, err)
+		}
+	}
+	var folders []string
+	if err := db.Model(&entity.KnowledgeSourceRevision{}).Order("folder_id").Pluck("folder_id", &folders).Error; err != nil || len(folders) != 2 || folders[0] != "a-old" || folders[1] != "b-current" {
+		t.Fatalf("historical identities changed: %v err=%v", folders, err)
+	}
+}
+
+func TestKnowledgeNativeNameDeduplicationExcludesManagedFolders(t *testing.T) {
+	db := setupFileTestDB(t)
+	id := "managed"
+	if err := db.Create(&entity.Knowledgebase{ID: "domain", TenantID: "owner", KnowledgeEnabled: true, KnowledgeFolderID: &id}).Error; err != nil {
+		t.Fatal(err)
+	}
+	for _, id := range []string{"managed", "ordinary"} {
+		if err := db.Create(&entity.File{ID: id, ParentID: "parent", TenantID: "owner", Name: "Collision", Type: "folder", SourceType: "knowledgebase"}).Error; err != nil {
+			t.Fatal(err)
+		}
+	}
+	folder, err := NewFileDAO().newAFileFromDataset(t.Context(), db, "owner", "Collision", "parent")
+	if err != nil || folder.ID != "ordinary" {
+		t.Fatalf("native adopted managed folder: %+v err=%v", folder, err)
+	}
+	var count int64
+	if err := db.Model(&entity.File{}).Where("id = ?", "managed").Count(&count).Error; err != nil || count != 1 {
+		t.Fatalf("managed folder removed: %d err=%v", count, err)
+	}
+}

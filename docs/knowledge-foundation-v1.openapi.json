@@ -3,7 +3,7 @@
   "info": {
     "title": "LFen's Second Brain — C1/C3 foundation",
     "version": "1.0.0",
-    "description": "Stage 1 A contract. Native authentication and dataset/document/file identities are reused. All registered domains are owner-only and catalogue-only. Keys, temporary sharing, semantic retrieval, parsing, graph edges and memory/persona are not implemented here. JSON bodies max 16 KiB; case-sensitive unknown or repeated JSON fields, repeated/unknown queries and extra JSON values are rejected. Root group parent_id is null; list root children by omitting parent_id. Cursors are scope-bound pagination state, not credentials. Every page is reauthorized. Native middleware errors may keep native envelopes."
+    "description": "Stage 1 A contract. Native authentication and dataset/document/file identities are reused. All registered domains are owner-only and catalogue-only. Keys, temporary sharing, semantic retrieval, parsing, graph edges and memory/persona are not implemented here. JSON bodies max 16 KiB; case-sensitive unknown or repeated JSON fields, repeated/unknown queries and extra JSON values are rejected. Malformed query encoding and explicit empty numeric query values are rejected. Root group parent_id is null; list root children by omitting parent_id. Cursors are scope-bound pagination state, not credentials. Every page is reauthorized. Native middleware errors may keep native envelopes."
   },
   "servers": [
     {
@@ -3402,8 +3402,8 @@
     ],
     "not_implemented": [
       "C2 ingestion events",
-      "C4 retrieval",
-      "C5 evidence and reuse packages",
+      "C4 retrieval, evidence and reuse packages",
+      "C5 MCP authorized tools",
       "C6 persona and memory",
       "temporary sharing",
       "relation edges"
@@ -3456,6 +3456,7 @@
     },
     "domain_registration": "Requires an empty private dataset without Connector links or ingestion history. Existing registered domains replay idempotently for the same category.",
     "native_model_settings": "Registered domains reject embd_id/embedding_model updates before native availability probes; native creation before registration must omit embedding_model.",
-    "native_file_links": "Native File links involving registered-domain targets, files currently linked to registered domains, or versioned knowledge sources are denied. Tenant metadata browsing excludes unauthorized domain folders/files before pagination, recursive search, ancestor reads and aggregates. This contract supports Dataset multipart upload only."
+    "native_file_links": "Native File links involving registered-domain targets, files currently linked to registered domains, or versioned knowledge sources are denied. Tenant metadata browsing excludes unauthorized domain folders/files before pagination, recursive search, ancestor reads and aggregates. This contract supports Dataset multipart upload only.",
+    "native_folder_binding": "Registered domains persist a unique native upload Folder ID in the registration transaction. Renames preserve the binding; native moves/deletes of managed sources or ancestor trees are rejected before mutation. Native name-based upload, initialization, version resolution, deduplication and deletion exclude managed folder IDs. Older multiple source folders retain their original revision addresses; new uploads choose the current-name candidate, otherwise the smallest ID. Unclaimed native source folders are visible only to their creator; their original domain is not inferred from names. Legacy unregistered datasets remain unbound."
   }
 }

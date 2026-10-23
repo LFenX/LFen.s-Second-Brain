@@ -104,6 +104,7 @@ type Knowledgebase struct {
 	KnowledgeEnabled       bool       `gorm:"column:knowledge_enabled;not null;default:false" json:"knowledge_enabled"`
 	KnowledgeCategory      string     `gorm:"column:knowledge_category;size:32;not null;default:''" json:"knowledge_category"`
 	KnowledgePolicyVersion int64      `gorm:"column:knowledge_policy_version;not null;default:0" json:"knowledge_policy_version"`
+	KnowledgeFolderID      *string    `gorm:"column:knowledge_folder_id;size:32;uniqueIndex:idx_knowledge_domain_folder" json:"-"`
 	Avatar                 *string    `gorm:"column:avatar;type:longtext" json:"avatar,omitempty"`
 	TenantID               string     `gorm:"column:tenant_id;size:32;not null;index" json:"tenant_id"`
 	Name                   string     `gorm:"column:name;size:128;not null;index" json:"name"`

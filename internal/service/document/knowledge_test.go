@@ -12,9 +12,28 @@ import (
 	"ragflow/internal/storage"
 )
 
+func TestKnowledgeOrdinaryUploadDoesNotAdoptManagedName(t *testing.T) {
+	db := setupServiceTestDB(t)
+	pushServiceDB(t, db)
+	id := "managed"
+	if err := db.Create(&entity.Knowledgebase{ID: "domain", TenantID: "owner", KnowledgeEnabled: true, KnowledgeFolderID: &id}).Error; err != nil {
+		t.Fatal(err)
+	}
+	if err := db.Create(&entity.File{ID: id, ParentID: "parent", TenantID: "owner", CreatedBy: "owner", Name: "Collision", Type: "folder", SourceType: "knowledgebase"}).Error; err != nil {
+		t.Fatal(err)
+	}
+	folder, err := testDocumentService(t).newAFileFromKB(t.Context(), "owner", "Collision", "parent")
+	if err != nil || folder.ID == id {
+		t.Fatalf("ordinary folder adopted private binding: %+v err=%v", folder, err)
+	}
+}
+
 func TestKnowledgeUploadKeepsCodeNameAndBytesWithoutParsing(t *testing.T) {
 	db := setupServiceTestDB(t)
 	pushServiceDB(t, db)
+	if err := db.AutoMigrate(&entity.KnowledgeSourceRevision{}); err != nil {
+		t.Fatal(err)
+	}
 	store := newFakeUploadStorage()
 	factory := storage.GetStorageFactory()
 	old := factory.GetStorage()
@@ -87,5 +106,11 @@ func TestKnowledgeNativeFileTransferCannotRepublishProtectedSources(t *testing.T
 	}
 	if err := permission.CheckKnowledgeFileTransfer(t.Context(), db, []string{"ordinary"}); err != nil {
 		t.Fatalf("unregistered file transfer changed: %v", err)
+	}
+	if err := db.Where("id = ?", "private").Delete(&entity.Knowledgebase{}).Error; err != nil {
+		t.Fatal(err)
+	}
+	if err := permission.CheckKnowledgeFileTransfer(t.Context(), db, []string{"historical-file"}); !errors.Is(err, permission.ErrKnowledgeIngestionDenied) {
+		t.Fatalf("deleting the last domain removed historical protection: %v", err)
 	}
 }

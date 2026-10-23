@@ -502,7 +502,7 @@ func (dao *FileDAO) InitDatasetDocs(ctx context.Context, db *gorm.DB, rootID, te
 	}
 
 	var datasets []entity.Knowledgebase
-	err = db.WithContext(ctx).Select("id", "name").
+	err = db.WithContext(ctx).Select("id", "name", "knowledge_enabled", "knowledge_folder_id").
 		Where("tenant_id = ?", tenantID).
 		Find(&datasets).Error
 	if err != nil {
@@ -511,7 +511,11 @@ func (dao *FileDAO) InitDatasetDocs(ctx context.Context, db *gorm.DB, rootID, te
 
 	for _, ds := range datasets {
 		var datasetFolderForDataset *entity.File
-		datasetFolderForDataset, err = dao.newAFileFromDataset(ctx, db, tenantID, ds.Name, datasetFolder.ID)
+		if ds.KnowledgeEnabled {
+			datasetFolderForDataset, err = dao.EnsureKnowledgeFolder(ctx, db, ds.ID)
+		} else {
+			datasetFolderForDataset, err = dao.newAFileFromDataset(ctx, db, tenantID, ds.Name, datasetFolder.ID)
+		}
 		if err != nil {
 			continue
 		}
@@ -536,7 +540,8 @@ func (dao *FileDAO) InitDatasetDocs(ctx context.Context, db *gorm.DB, rootID, te
 // Deduplicates duplicate entries that may have been created by race conditions.
 func (dao *FileDAO) newAFileFromDataset(ctx context.Context, db *gorm.DB, tenantID, name, parentID string) (*entity.File, error) {
 	var existingFiles []*entity.File
-	err := db.WithContext(ctx).Where("tenant_id = ? AND parent_id = ? AND name = ?", tenantID, parentID, name).Order("create_time ASC").Find(&existingFiles).Error
+	err := db.WithContext(ctx).Where("tenant_id = ? AND parent_id = ? AND name = ?", tenantID, parentID, name).
+		Where("id NOT IN (?)", KnowledgeFolderIDs(ctx, db)).Order("create_time ASC").Find(&existingFiles).Error
 	if err != nil {
 		return nil, err
 	}

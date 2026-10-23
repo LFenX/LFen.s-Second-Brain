@@ -6,6 +6,7 @@ import (
 	"errors"
 	"io"
 	"net/http"
+	"net/url"
 	"reflect"
 	"strconv"
 	"strings"
@@ -142,7 +143,12 @@ func knowledgeObjectFields[T any](raw []byte) (map[string]json.RawMessage, error
 }
 
 func knowledgeQuery(c *gin.Context, allowed ...string) bool {
-	for key, values := range c.Request.URL.Query() {
+	query, err := url.ParseQuery(c.Request.URL.RawQuery)
+	if err != nil {
+		knowledgeResponse(c, 400, nil, "knowledge_invalid_request", "Invalid query encoding")
+		return false
+	}
+	for key, values := range query {
 		found := false
 		for _, candidate := range allowed {
 			if key == candidate {
@@ -160,7 +166,8 @@ func knowledgeQuery(c *gin.Context, allowed ...string) bool {
 
 func knowledgeLimit(c *gin.Context) (int, bool) {
 	limit := 50
-	if raw := c.Query("limit"); raw != "" {
+	if values, exists := c.Request.URL.Query()["limit"]; exists {
+		raw := values[0]
 		value, err := strconv.Atoi(raw)
 		if err != nil || value < 1 || value > 200 {
 			knowledgeResponse(c, 400, nil, "knowledge_invalid_request", "limit must be between 1 and 200")
@@ -418,7 +425,8 @@ func (h *DatasetsHandler) ReadKnowledgeNode(c *gin.Context) {
 		name  string
 		value **int64
 	}{{"start_byte", &start}, {"end_byte", &end}} {
-		if raw, exists := c.GetQuery(parameter.name); exists {
+		if values, exists := c.Request.URL.Query()[parameter.name]; exists {
+			raw := values[0]
 			value, err := strconv.ParseInt(raw, 10, 64)
 			if err != nil || value < 0 {
 				knowledgeResponse(c, 400, nil, "knowledge_invalid_request", "Invalid byte range")

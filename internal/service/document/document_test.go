@@ -526,6 +526,7 @@ func setupServiceTestDBWithDSN(t *testing.T, dsn string) *gorm.DB {
 	if err = db.AutoMigrate(
 		&entity.Document{},
 		&entity.Knowledgebase{},
+		&entity.KnowledgeSourceRevision{},
 		&entity.PipelineOperationLog{},
 		&entity.Task{},
 		&entity.IngestionTask{},

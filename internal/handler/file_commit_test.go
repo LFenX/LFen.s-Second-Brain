@@ -160,7 +160,7 @@ func setupFileCommitTestWithHandler(userID string) (*gin.Engine, *mockFileCommit
 	if err != nil {
 		panic(err)
 	}
-	if err := db.AutoMigrate(&entity.File{}, &entity.File2Document{}, &entity.Document{}, &entity.UserTenant{}); err != nil {
+	if err := db.AutoMigrate(&entity.File{}, &entity.File2Document{}, &entity.Document{}, &entity.UserTenant{}, &entity.Knowledgebase{}, &entity.KnowledgeSourceRevision{}); err != nil {
 		panic(err)
 	}
 	dao.DB = db
@@ -218,6 +218,25 @@ func setupFileCommitTestNoAuth() *gin.Engine {
 	r := gin.New()
 	r.POST("/api/v1/folders/:folder_id/commits", h.CreateCommit)
 	return r
+}
+
+func TestKnowledgeOrdinaryVersionLookupDoesNotResolveManagedName(t *testing.T) {
+	_, _, h := setupFileCommitTestWithHandler("owner")
+	id := "folder-1"
+	for _, kb := range []entity.Knowledgebase{
+		{ID: "protected-domain", TenantID: "owner", Name: "Original", KnowledgeEnabled: true, KnowledgeFolderID: &id},
+		{ID: "ordinary-domain", TenantID: "owner", Name: "workspace"},
+	} {
+		if err := dao.DB.Create(&kb).Error; err != nil {
+			t.Fatal(err)
+		}
+	}
+	if err := dao.DB.Model(&entity.File{}).Where("id = ?", id).Update("source_type", "knowledgebase").Error; err != nil {
+		t.Fatal(err)
+	}
+	if folder, err := h.resolveDatasetFolderID(t.Context(), "ordinary-domain"); err == nil || folder != "" {
+		t.Fatalf("ordinary version resolved private folder: %s err=%v", folder, err)
+	}
 }
 
 // ── Tests ────────────────────────────────────────────────────────────────

@@ -41,6 +41,10 @@ func (d *DatasetService) UpdateDataset(ctx context.Context, datasetID, userID st
 		}
 		return nil, common.CodeServerError, errors.New("database operation failed")
 	}
+	if err := d.CheckAccess(ctx, permission.Subject{UserID: userID}, datasetID, permission.OperationUpdate); err != nil {
+		code, permissionErr := permissionresponse.NormalizeHidden(err)
+		return nil, code, permissionErr
+	}
 	if kb.KnowledgeEnabled && ((req.Permission != nil && *req.Permission != string(entity.TenantPermissionMe)) || req.Connectors != nil) {
 		return nil, common.CodeDataError, errors.New("knowledge foundation requires private access and manual source registration")
 	}
@@ -379,6 +383,11 @@ func (d *DatasetService) UpdateDataset(ctx context.Context, datasetID, userID st
 		}
 
 		if len(updates) > 0 {
+			if name, changed := updates["name"].(string); changed && lockedKB.KnowledgeEnabled && lockedKB.KnowledgeFolderID != nil {
+				if err := tx.Model(&entity.File{}).Where("id = ? AND tenant_id = ? AND type = ?", *lockedKB.KnowledgeFolderID, lockedKB.TenantID, "folder").Update("name", name).Error; err != nil {
+					return err
+				}
+			}
 			if err = tx.Model(&entity.Knowledgebase{}).Where("id = ?", lockedKB.ID).Updates(updates).Error; err != nil {
 				if dao.IsDuplicateKeyErr(err) {
 					if nameValue, ok := updates["name"].(string); ok {

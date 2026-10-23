@@ -100,7 +100,8 @@ func (d *DatasetService) RegisterKnowledgeDomain(ctx context.Context, userID, do
 			if kb.KnowledgeCategory != category {
 				return knowledgeConflict("Domain category is already frozen")
 			}
-			return nil
+			_, err := dao.NewFileDAO().EnsureKnowledgeFolder(ctx, tx, kb.ID)
+			return err
 		}
 		if kb.Permission != string(entity.TenantPermissionMe) {
 			return knowledgeConflict("Only a private dataset can become a domain")
@@ -123,6 +124,9 @@ func (d *DatasetService) RegisterKnowledgeDomain(ctx context.Context, userID, do
 		}
 		if count != 0 {
 			return knowledgeConflict("Register a fresh dataset without ingestion history")
+		}
+		if _, err := dao.NewFileDAO().EnsureKnowledgeFolder(ctx, tx, kb.ID); err != nil {
+			return err
 		}
 		if err := tx.Model(&entity.Knowledgebase{}).Where("id = ?", kb.ID).Updates(map[string]interface{}{
 			"knowledge_enabled": true, "knowledge_category": category, "knowledge_policy_version": int64(1),

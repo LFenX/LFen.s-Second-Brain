@@ -20,6 +20,15 @@ func knowledgeHandlerTestRouter(user bool) *gin.Engine {
 	}
 	h := &DatasetsHandler{}
 	r.GET("/contract", h.KnowledgeContract)
+	r.GET("/content", h.ReadKnowledgeNode)
+	r.GET("/limit", func(c *gin.Context) {
+		if _, ok := knowledgeUser(c); !ok || !knowledgeQuery(c, "limit") {
+			return
+		}
+		if limit, ok := knowledgeLimit(c); ok {
+			knowledgeResponse(c, 200, limit, "", "success")
+		}
+	})
 	r.POST("/body", func(c *gin.Context) {
 		if _, ok := knowledgeUser(c); !ok {
 			return
@@ -29,6 +38,19 @@ func knowledgeHandlerTestRouter(user bool) *gin.Engine {
 		}
 	})
 	return r
+}
+
+func TestKnowledgeHandlerRejectsMalformedAndEmptyQueries(t *testing.T) {
+	r := knowledgeHandlerTestRouter(true)
+	for _, target := range []string{"/contract?path=%ZZ", "/contract?bad%ZZ=value", "/contract?hidden=1;other=2", "/limit?limit=", "/content?start_byte=", "/content?end_byte="} {
+		t.Run(target, func(t *testing.T) {
+			w := httptest.NewRecorder()
+			r.ServeHTTP(w, httptest.NewRequest(http.MethodGet, target, nil))
+			if w.Code != 400 {
+				t.Fatalf("status=%d body=%s", w.Code, w.Body)
+			}
+		})
+	}
 }
 
 func TestKnowledgeHandlerContractAndErrors(t *testing.T) {

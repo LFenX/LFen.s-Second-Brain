@@ -94,6 +94,17 @@ func (d *DatasetService) SnapshotKnowledgeSource(ctx context.Context, userID, do
 	if err := dao.DB.WithContext(ctx).Where("id = ? AND tenant_id = ? AND type = ?", nativeFile.ParentID, kb.TenantID, "folder").Take(&folder).Error; err != nil {
 		return nil, knowledgeDBError(err, "source folder lookup")
 	}
+	if kb.KnowledgeFolderID == nil || folder.SourceType != string(entity.FileSourceKnowledgebase) {
+		return nil, knowledgeConflict("Source file is outside the registered native folder")
+	}
+	var otherDomain int64
+	if err := dao.DB.WithContext(ctx).Model(&entity.Knowledgebase{}).
+		Where("id <> ? AND knowledge_folder_id = ?", kb.ID, folder.ID).Count(&otherDomain).Error; err != nil {
+		return nil, knowledgeDBError(err, "source folder ownership lookup")
+	}
+	if otherDomain > 0 {
+		return nil, knowledgeConflict("Source file belongs to another native domain folder")
+	}
 	store := storage.GetStorageFactory().GetStorage()
 	if store == nil {
 		return nil, knowledgeError(503, "knowledge_storage_unavailable", "Source storage unavailable")

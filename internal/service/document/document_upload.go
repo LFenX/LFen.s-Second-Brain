@@ -157,6 +157,9 @@ func (s *DocumentService) UploadEmptyDocument(ctx context.Context, kb *entity.Kn
 // folder: root -> .knowledgebase -> <dataset name>. Mirrors Python
 // get_root_folder + get_kb_folder + new_a_file_from_kb.
 func (s *DocumentService) ensureKBFolder(ctx context.Context, kb *entity.Knowledgebase, tenantID string) (*entity.File, error) {
+	if kb.KnowledgeEnabled {
+		return s.fileDAO.EnsureKnowledgeFolder(ctx, dao.DB, kb.ID)
+	}
 	root, err := s.fileDAO.GetRootFolder(ctx, dao.DB, tenantID)
 	if err != nil {
 		return nil, err
@@ -171,7 +174,7 @@ func (s *DocumentService) ensureKBFolder(ctx context.Context, kb *entity.Knowled
 // newAFileFromKB returns the existing folder named name under parentID, or
 // creates it. Mirrors Python FileService.new_a_file_from_kb.
 func (s *DocumentService) newAFileFromKB(ctx context.Context, tenantID, name, parentID string) (*entity.File, error) {
-	existingFolders, err := s.fileDAO.Query(ctx, dao.DB, name, parentID, tenantID)
+	existingFolders, err := s.fileDAO.Query(ctx, dao.DB.Where("id NOT IN (?)", dao.KnowledgeFolderIDs(ctx, dao.DB)), name, parentID, tenantID)
 	if err != nil {
 		return nil, err
 	}
