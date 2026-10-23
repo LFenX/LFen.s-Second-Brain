@@ -99,10 +99,18 @@ func TestKnowledgeUnclaimedRenamedFolderRemainsPrivate(t *testing.T) {
 			t.Fatalf("user=%s orphan count=%d err=%v", user, count, err)
 		}
 	}
-	if err := db.Create(&entity.KnowledgeSourceRevision{ID: "archived", DomainID: "deleted-domain", FolderID: "old-empty-folder", DocumentID: "former-doc", InputHash: "synthetic"}).Error; err != nil {
+	if err := db.Create(&entity.Knowledgebase{ID: "ordinary-domain", TenantID: "owner", Name: "Former private name"}).Error; err != nil {
 		t.Fatal(err)
 	}
-	if err := db.Create(&entity.Knowledgebase{ID: "ordinary-domain", TenantID: "owner", Name: "Former private name"}).Error; err != nil {
+	unclaimedView, err := knowledgeBrowseDB(t.Context(), "reader", "owner")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var unclaimedCount int64
+	if err := unclaimedView.Model(&entity.File{}).Where("id = ?", "old-empty-folder").Count(&unclaimedCount).Error; err != nil || unclaimedCount != 0 {
+		t.Fatalf("never-snapshotted folder leaked through ordinary name: count=%d err=%v", unclaimedCount, err)
+	}
+	if err := db.Create(&entity.KnowledgeSourceRevision{ID: "archived", DomainID: "deleted-domain", FolderID: "old-empty-folder", DocumentID: "former-doc", InputHash: "synthetic"}).Error; err != nil {
 		t.Fatal(err)
 	}
 	view, err := knowledgeBrowseDB(t.Context(), "reader", "owner")
@@ -210,5 +218,83 @@ func TestKnowledgeAndNativeCommitsShareFolderHead(t *testing.T) {
 	var tree map[string]any
 	if err := json.Unmarshal([]byte(*third.TreeState), &tree); err != nil || len(tree) != 2 {
 		t.Fatalf("lost previous tree entry: %v err=%v", tree, err)
+	}
+}
+
+func TestKnowledgeCommitRejectsForeignIDsBeforeBatchWrites(t *testing.T) {
+	db := setupFolderTestDB(t)
+	if err := db.AutoMigrate(&entity.FileCommit{}, &entity.FileCommitItem{}); err != nil {
+		t.Fatal(err)
+	}
+	for _, f := range []entity.File{
+		{ID: "own", ParentID: "own", TenantID: "attacker", CreatedBy: "attacker", Name: "Own", Type: "folder"},
+		{ID: "nested", ParentID: "own", TenantID: "attacker", CreatedBy: "attacker", Name: "Nested", Type: "folder"},
+		{ID: "valid", ParentID: "nested", TenantID: "attacker", CreatedBy: "attacker", Name: "own.txt", Type: "txt"},
+		{ID: "sibling", ParentID: "sibling", TenantID: "attacker", CreatedBy: "attacker", Name: "Sibling", Type: "folder"},
+		{ID: "outside", ParentID: "sibling", TenantID: "attacker", CreatedBy: "attacker", Name: "outside.txt", Type: "txt"},
+		{ID: "foreign", ParentID: "foreign", TenantID: "owner", CreatedBy: "owner", Name: "Private", Type: "folder"},
+		{ID: "source", ParentID: "foreign", TenantID: "owner", CreatedBy: "owner", Name: "private.txt", Type: "txt"},
+	} {
+		if err := db.Create(&f).Error; err != nil {
+			t.Fatal(err)
+		}
+	}
+	store := storage.NewMemoryStorage()
+	factory := storage.GetStorageFactory()
+	old := factory.GetStorage()
+	factory.SetStorage(store)
+	t.Cleanup(func() { factory.SetStorage(old) })
+	svc := NewFileCommitService()
+	for _, id := range []string{"source", "foreign", "outside"} {
+		for _, operation := range []string{"add", "modify", "delete", "rename"} {
+			changes := []entity.FileChange{{FileID: "valid", FileName: "own.txt", Operation: "modify", Content: "first must not write"},
+				{FileID: id, FileName: "private.txt", Operation: operation, Content: "forged foreign data", NewName: "forged.txt"}}
+			if _, err := svc.CreateCommit(t.Context(), "own", "attacker", "Synthetic denied batch", changes); !errors.Is(err, permission.ErrResourceNotFound) {
+				t.Fatalf("id=%s op=%s err=%v", id, operation, err)
+			}
+		}
+	}
+	var count int64
+	if err := db.Model(&entity.FileCommit{}).Count(&count).Error; err != nil || count != 0 {
+		t.Fatalf("published rejected batch: %d err=%v", count, err)
+	}
+	var before entity.File
+	if err := db.Where("id = ?", "valid").Take(&before).Error; err != nil || before.Size != 0 || before.Location != nil {
+		t.Fatalf("earlier valid change leaked: %+v err=%v", before, err)
+	}
+	if exists, err := store.BucketExistsWithError(t.Context(), "own"); err != nil || exists {
+		t.Fatalf("object written before complete authorization: exists=%v err=%v", exists, err)
+	}
+	if _, err := svc.CreateCommit(t.Context(), "own", "attacker", "Synthetic valid nested", []entity.FileChange{{FileID: "valid", FileName: "own.txt", Operation: "add", Content: "valid"}}); err != nil {
+		t.Fatalf("valid nested file rejected: %v", err)
+	}
+}
+
+func TestKnowledgeCommitCannotDeleteManagedSourceOrAncestor(t *testing.T) {
+	db := setupFolderTestDB(t)
+	if err := db.AutoMigrate(&entity.FileCommit{}, &entity.FileCommitItem{}); err != nil {
+		t.Fatal(err)
+	}
+	fid := "domain-folder"
+	if err := db.Create(&entity.Knowledgebase{ID: "domain", TenantID: "owner", CreatedBy: "owner", KnowledgeEnabled: true, KnowledgeFolderID: &fid}).Error; err != nil {
+		t.Fatal(err)
+	}
+	for _, f := range []entity.File{
+		{ID: "root", ParentID: "root", TenantID: "owner", CreatedBy: "owner", Name: "/", Type: "folder"},
+		{ID: "ancestor", ParentID: "root", TenantID: "owner", CreatedBy: "owner", Name: "Sources", Type: "folder"},
+		{ID: fid, ParentID: "ancestor", TenantID: "owner", CreatedBy: "owner", Name: "Private", Type: "folder", SourceType: "knowledgebase"},
+		{ID: "source", ParentID: fid, TenantID: "owner", CreatedBy: "owner", Name: "private.txt", Type: "txt"},
+	} {
+		if err := db.Create(&f).Error; err != nil {
+			t.Fatal(err)
+		}
+	}
+	if err := db.Create(&entity.KnowledgeSourceRevision{ID: "snapshot", DomainID: "domain", DocumentID: "doc", FileID: "source", FolderID: fid, InputHash: "synthetic"}).Error; err != nil {
+		t.Fatal(err)
+	}
+	for _, id := range []string{"ancestor", fid, "source"} {
+		if _, err := NewFileCommitService().CreateCommit(t.Context(), "root", "owner", "Synthetic delete", []entity.FileChange{{FileID: id, Operation: "delete"}}); !errors.Is(err, permission.ErrKnowledgeIngestionDenied) {
+			t.Fatalf("id=%s err=%v", id, err)
+		}
 	}
 }

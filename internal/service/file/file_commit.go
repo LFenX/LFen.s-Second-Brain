@@ -21,12 +21,14 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"ragflow/internal/common"
 	"ragflow/internal/dao"
 	"ragflow/internal/engine"
 	enginetypes "ragflow/internal/engine/types"
 	"ragflow/internal/entity"
+	"ragflow/internal/permission"
 	"ragflow/internal/storage"
 	"sort"
 	"strings"
@@ -35,6 +37,7 @@ import (
 
 	"go.uber.org/zap"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 // FileCommitService file commit service
@@ -76,6 +79,9 @@ func (s *FileCommitService) CreateCommit(ctx context.Context, folderID, authorID
 		latestCommit, err := s.lockFolderCommit(ctx, tx, folderID)
 		if err != nil {
 			return fmt.Errorf("lock native version folder: %w", err)
+		}
+		if err := s.checkCommitChanges(ctx, tx, folderID, authorID, changes); err != nil {
+			return err
 		}
 		if latestCommit != nil && latestCommit.TreeState != nil {
 			if err := json.Unmarshal([]byte(*latestCommit.TreeState), &treeState); err != nil {
@@ -229,6 +235,64 @@ func (s *FileCommitService) CreateCommit(ctx context.Context, folderID, authorID
 	commit.TreeState = &treeStr
 
 	return commit, nil
+}
+
+// Validate the whole batch before writing objects or version records. A folder
+// grant does not authorize caller-supplied IDs outside its persisted subtree.
+func (s *FileCommitService) checkCommitChanges(ctx context.Context, tx *gorm.DB, folderID, authorID string, changes []entity.FileChange) error {
+	var folder entity.File
+	if err := tx.Where("id = ? AND type = ?", folderID, "folder").Take(&folder).Error; err != nil {
+		return err
+	}
+	checker := permission.NewDatabaseChecker(tx)
+	subject := permission.Subject{UserID: authorID}
+	if err := checker.CheckResource(ctx, subject, permission.ResourceRef{Kind: permission.ResourceKindFolder, ID: folderID}, permission.OperationUpdate); err != nil {
+		return err
+	}
+	for _, change := range changes {
+		var source entity.File
+		err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).
+			Where("id = ? AND tenant_id = ? AND id <> ?", change.FileID, folder.TenantID, folderID).Take(&source).Error
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return permission.ErrResourceNotFound
+		}
+		if err != nil {
+			return err
+		}
+		visited := map[string]bool{source.ID: true}
+		for parentID := source.ParentID; parentID != folderID; {
+			if parentID == "" || visited[parentID] {
+				return permission.ErrResourceNotFound
+			}
+			visited[parentID] = true
+			var parent entity.File
+			err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).Where("id = ? AND tenant_id = ? AND type = ?", parentID, folder.TenantID, "folder").Take(&parent).Error
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				return permission.ErrResourceNotFound
+			}
+			if err != nil {
+				return err
+			}
+			parentID = parent.ParentID
+		}
+		kind := permission.ResourceKindFile
+		operation := permission.OperationUpdate
+		if source.Type == FileTypeFolder {
+			kind = permission.ResourceKindFolder
+		}
+		if change.Operation == "delete" {
+			operation = permission.OperationDelete
+		}
+		if err := checker.CheckResource(ctx, subject, permission.ResourceRef{Kind: kind, ID: source.ID}, operation); err != nil {
+			return err
+		}
+		if source.Type == FileTypeFolder || change.Operation == "delete" {
+			if err := checkKnowledgeTreeMutation(ctx, tx, &source); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
 }
 
 // PageEditCommitInput carries the data needed to record a single wiki/skill

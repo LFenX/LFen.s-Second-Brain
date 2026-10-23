@@ -461,7 +461,8 @@ func (d *DatasetService) deleteDataset(ctx context.Context, kb *entity.Knowledge
 				return fmt.Errorf("delete dataset error for %s", kb.ID)
 			}
 			if len(fileIDs) > 0 {
-				if err := tx.Unscoped().Where("id IN ? AND source_type = ?", fileIDs, string(entity.FileSourceKnowledgebase)).Delete(&entity.File{}).Error; err != nil {
+				remainingReferences := tx.Model(&entity.File2Document{}).Select("file_id").Where("file_id IS NOT NULL")
+				if err := tx.Unscoped().Where("id IN ? AND source_type = ? AND id NOT IN (?)", fileIDs, string(entity.FileSourceKnowledgebase), remainingReferences).Delete(&entity.File{}).Error; err != nil {
 					return fmt.Errorf("delete dataset error for %s", kb.ID)
 				}
 			}

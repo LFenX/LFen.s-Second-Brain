@@ -383,10 +383,8 @@ func setupDocumentPermissionDB(t *testing.T, accessible bool) {
 	if err != nil {
 		t.Fatalf("failed to open sqlite: %v", err)
 	}
-	if err := db.AutoMigrate(
-		&entity.Knowledgebase{},
-		&entity.UserTenant{},
-	); err != nil {
+	if err := db.AutoMigrate(&entity.Knowledgebase{},
+		&entity.UserTenant{}, &entity.File{}, &entity.File2Document{}, &entity.Document{}, &entity.KnowledgeSourceRevision{}); err != nil {
 		t.Fatalf("failed to migrate permission tables: %v", err)
 	}
 	if err := db.Create(&entity.Knowledgebase{
@@ -678,12 +676,10 @@ func setupUploadHandlerDB(t *testing.T, role string) *gorm.DB {
 	if err != nil {
 		t.Fatalf("failed to open sqlite: %v", err)
 	}
-	if err = db.AutoMigrate(
-		&entity.User{},
+	if err = db.AutoMigrate(&entity.User{},
 		&entity.Tenant{},
 		&entity.UserTenant{},
-		&entity.Knowledgebase{},
-	); err != nil {
+		&entity.Knowledgebase{}, &entity.File{}, &entity.File2Document{}, &entity.Document{}, &entity.KnowledgeSourceRevision{}); err != nil {
 		t.Fatalf("failed to migrate: %v", err)
 	}
 	if err := db.Create(&entity.User{ID: "user-1", Nickname: "test", Email: "test@test.com", Password: sptr("x")}).Error; err != nil {
@@ -1223,12 +1219,10 @@ func setupHandlerAccessDB(t *testing.T) *gorm.DB {
 		t.Fatalf("failed to open sqlite: %v", err)
 	}
 
-	if err = db.AutoMigrate(
-		&entity.User{},
+	if err = db.AutoMigrate(&entity.User{},
 		&entity.Tenant{},
 		&entity.UserTenant{},
-		&entity.Knowledgebase{},
-	); err != nil {
+		&entity.Knowledgebase{}, &entity.File{}, &entity.File2Document{}, &entity.Document{}, &entity.KnowledgeSourceRevision{}); err != nil {
 		t.Fatalf("failed to migrate: %v", err)
 	}
 

@@ -482,7 +482,7 @@ func (s *FileService) MoveFiles(ctx context.Context, userID string, srcFileIDs [
 			return err
 		}
 		if destFileID != "" {
-			if err := s.checkKnowledgeTreeMutation(ctx, file); err != nil {
+			if err := checkKnowledgeTreeMutation(ctx, dao.DB, file); err != nil {
 				return err
 			}
 		}

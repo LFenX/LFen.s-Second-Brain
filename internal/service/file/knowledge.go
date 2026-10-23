@@ -34,7 +34,7 @@ func knowledgeBrowseDB(ctx context.Context, userID, tenantID string) (*gorm.DB, 
 		AND NOT EXISTS (SELECT 1 FROM knowledgebase kb WHERE kb.id = s.domain_id))
 		UNION SELECT file.id FROM file WHERE file.type = 'folder' AND file.source_type = 'knowledgebase' AND file.name <> '.knowledgebase'
 		AND file.tenant_id = ? AND file.created_by <> ?
-		AND NOT EXISTS (SELECT 1 FROM knowledgebase kb WHERE kb.tenant_id = file.tenant_id AND (kb.knowledge_folder_id = file.id OR kb.name = file.name))
+		AND NOT EXISTS (SELECT 1 FROM knowledgebase kb WHERE kb.tenant_id = file.tenant_id AND kb.knowledge_folder_id = file.id)
 		AND NOT EXISTS (SELECT 1 FROM knowledge_source_revision s WHERE s.folder_id = file.id)
 		AND NOT EXISTS (SELECT 1 FROM file source JOIN file2document m ON m.file_id = source.id JOIN document d ON d.id = m.document_id WHERE source.parent_id = file.id)
 		UNION SELECT file.id FROM file JOIN hidden ON file.parent_id = hidden.id
@@ -45,22 +45,22 @@ func knowledgeBrowseDB(ctx context.Context, userID, tenantID string) (*gorm.DB, 
 
 // Native moves recreate folder IDs and relocate source objects. Until a domain
 // migration exists, reject moves/deletes of managed trees before any mutation.
-func (s *FileService) checkKnowledgeTreeMutation(ctx context.Context, file *entity.File) error {
+func checkKnowledgeTreeMutation(ctx context.Context, db *gorm.DB, file *entity.File) error {
 	ids := []string{file.ID}
 	if file.Type == FileTypeFolder {
 		var err error
-		ids, err = s.fileDAO.GetSubtreeIDs(ctx, dao.DB, file.TenantID, file.ID)
+		ids, err = dao.NewFileDAO().GetSubtreeIDs(ctx, db, file.TenantID, file.ID)
 		if err != nil {
 			return err
 		}
 	}
 	var count int64
-	if err := dao.DB.WithContext(ctx).Model(&entity.File{}).
-		Where("id IN ? AND id IN (?)", ids, dao.KnowledgeFolderIDs(ctx, dao.DB)).Count(&count).Error; err != nil {
+	if err := db.WithContext(ctx).Model(&entity.File{}).
+		Where("id IN ? AND id IN (?)", ids, dao.KnowledgeFolderIDs(ctx, db)).Count(&count).Error; err != nil {
 		return err
 	}
 	if count > 0 {
 		return permission.ErrKnowledgeIngestionDenied
 	}
-	return permission.CheckKnowledgeFileTransfer(ctx, dao.DB, ids)
+	return permission.CheckKnowledgeFileTransfer(ctx, db, ids)
 }

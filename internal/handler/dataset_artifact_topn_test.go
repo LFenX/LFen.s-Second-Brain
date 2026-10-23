@@ -44,7 +44,7 @@ func setupArtifactGraphDB(t *testing.T) *gorm.DB {
 	if err != nil {
 		t.Fatalf("failed to open sqlite: %v", err)
 	}
-	if err := db.AutoMigrate(&entity.Knowledgebase{}, &entity.UserTenant{}); err != nil {
+	if err := db.AutoMigrate(&entity.Knowledgebase{}, &entity.UserTenant{}, &entity.File{}, &entity.File2Document{}, &entity.Document{}, &entity.KnowledgeSourceRevision{}); err != nil {
 		t.Fatalf("failed to migrate test schema: %v", err)
 	}
 	// The DSN is a shared named in-memory database keyed on the test name, so the

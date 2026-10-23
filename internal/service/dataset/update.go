@@ -48,8 +48,10 @@ func (d *DatasetService) UpdateDataset(ctx context.Context, datasetID, userID st
 	if kb.KnowledgeEnabled && ((req.Permission != nil && *req.Permission != string(entity.TenantPermissionMe)) || req.Connectors != nil) {
 		return nil, common.CodeDataError, errors.New("knowledge foundation requires private access and manual source registration")
 	}
-	if kb.KnowledgeEnabled && (req.EmbdID != nil || req.EmbeddingModel != nil) {
-		return nil, common.CodeForbidden, permission.ErrKnowledgeModelUseDenied
+	if req.EmbdID != nil || req.EmbeddingModel != nil {
+		if err := permission.CheckDatasetModelUse(ctx, dao.DB, []string{datasetID}, "embedding"); err != nil {
+			return nil, common.CodeForbidden, err
+		}
 	}
 
 	connectorsProvided := req.Connectors != nil
@@ -200,9 +202,11 @@ func (d *DatasetService) UpdateDataset(ctx context.Context, datasetID, userID st
 			txCode = common.CodeDataError
 			return errors.New("knowledge foundation requires private access and manual source registration")
 		}
-		if lockedKB.KnowledgeEnabled && embdIDProvided {
-			txCode = common.CodeForbidden
-			return permission.ErrKnowledgeModelUseDenied
+		if embdIDProvided {
+			if err := permission.CheckDatasetModelUse(ctx, tx, []string{datasetID}, "embedding"); err != nil {
+				txCode = common.CodeForbidden
+				return err
+			}
 		}
 		if sel != nil || pipelineID != nil || req.ParserConfig != nil || req.ParserConfigProvided {
 			current := service.CurrentSelection(lockedKB.ParserID, lockedKB.PipelineID)

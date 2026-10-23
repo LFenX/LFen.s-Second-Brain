@@ -42,11 +42,9 @@ func setupCompilationStatusHandlerDB(t *testing.T) *gorm.DB {
 	if err != nil {
 		t.Fatalf("failed to open sqlite: %v", err)
 	}
-	if err := db.AutoMigrate(
-		&entity.Knowledgebase{},
+	if err := db.AutoMigrate(&entity.Knowledgebase{},
 		&entity.KnowledgeCompileDataset{},
-		&entity.UserTenant{},
-	); err != nil {
+		&entity.UserTenant{}, &entity.File{}, &entity.File2Document{}, &entity.Document{}, &entity.KnowledgeSourceRevision{}); err != nil {
 		t.Fatalf("failed to migrate test schema: %v", err)
 	}
 	origDB := dao.DB

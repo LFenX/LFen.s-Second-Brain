@@ -227,7 +227,7 @@ func TestRetrieval_LegacyQueryStringNormalized(t *testing.T) {
 		t.Fatalf("failed to unwrap sql db: %v", err)
 	}
 	sqlDB.SetMaxOpenConns(1)
-	if err = db.AutoMigrate(&entity.Knowledgebase{}); err != nil {
+	if err = db.AutoMigrate(&entity.Knowledgebase{}, &entity.File{}, &entity.File2Document{}, &entity.Document{}, &entity.KnowledgeSourceRevision{}); err != nil {
 		t.Fatalf("failed to migrate knowledgebase: %v", err)
 	}
 	if err = db.AutoMigrate(&entity.UserTenant{}); err != nil {
@@ -291,7 +291,7 @@ func TestRetrieval_StructuredUserFillInputNormalized(t *testing.T) {
 		t.Fatalf("failed to unwrap sql db: %v", err)
 	}
 	sqlDB.SetMaxOpenConns(1)
-	if err = db.AutoMigrate(&entity.Knowledgebase{}, &entity.UserTenant{}); err != nil {
+	if err = db.AutoMigrate(&entity.Knowledgebase{}, &entity.UserTenant{}, &entity.File{}, &entity.File2Document{}, &entity.Document{}, &entity.KnowledgeSourceRevision{}); err != nil {
 		t.Fatalf("failed to migrate tables: %v", err)
 	}
 	origDB := dao.DB
@@ -357,7 +357,7 @@ func TestRetrieval_ResolveDatasetIDByTenantName(t *testing.T) {
 		t.Fatalf("failed to unwrap sql db: %v", err)
 	}
 	sqlDB.SetMaxOpenConns(1)
-	if err := db.AutoMigrate(&entity.Knowledgebase{}); err != nil {
+	if err := db.AutoMigrate(&entity.Knowledgebase{}, &entity.File{}, &entity.File2Document{}, &entity.Document{}, &entity.KnowledgeSourceRevision{}); err != nil {
 		t.Fatalf("failed to migrate knowledgebase: %v", err)
 	}
 	origDB := dao.DB
@@ -399,7 +399,7 @@ func TestRetrieval_ResolveDatasetIDByUserPermission(t *testing.T) {
 			if err != nil {
 				t.Fatalf("failed to open sqlite: %v", err)
 			}
-			if err := db.AutoMigrate(&entity.Knowledgebase{}, &entity.UserTenant{}); err != nil {
+			if err := db.AutoMigrate(&entity.Knowledgebase{}, &entity.UserTenant{}, &entity.File{}, &entity.File2Document{}, &entity.Document{}, &entity.KnowledgeSourceRevision{}); err != nil {
 				t.Fatalf("failed to migrate permission tables: %v", err)
 			}
 			origDB := dao.DB

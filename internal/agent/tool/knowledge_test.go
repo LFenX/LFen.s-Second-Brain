@@ -35,7 +35,7 @@ func TestKnowledgeAgentRetrievalStopsBeforeModelEnhancement(t *testing.T) {
 		t.Fatal(err)
 	}
 	t.Cleanup(func() { sqlDB.Close() })
-	if err := db.AutoMigrate(&entity.Knowledgebase{}, &entity.UserTenant{}); err != nil {
+	if err := db.AutoMigrate(&entity.Knowledgebase{}, &entity.UserTenant{}, &entity.File{}, &entity.File2Document{}, &entity.Document{}, &entity.KnowledgeSourceRevision{}); err != nil {
 		t.Fatal(err)
 	}
 	valid := string(entity.StatusValid)

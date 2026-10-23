@@ -201,7 +201,9 @@ func (p *communityPolicy) QueryScope(ctx context.Context, subject Subject, query
 			Where("knowledgebase.status = ?", string(entity.StatusValid)).
 			Where("EXISTS (?)", activeOwner).
 			Where("((knowledgebase.knowledge_enabled = ? AND knowledgebase.created_by = ?) OR (knowledgebase.knowledge_enabled = ? AND (EXISTS (?) OR (knowledgebase.permission = ? AND EXISTS (?)))))", true, subject.UserID, false, callerIsOwner, string(entity.TenantPermissionTeam), callerIsMember)
-		return query.Where("knowledgebase.id IN (?)", accessibleDatasets)
+		blockedOrigins := db.Table("(?) AS origin", knowledgeDatasetOrigins(ctx, db)).Select("resource_id").
+			Where("owner_id <> ? OR owner_id IS NULL", subject.UserID)
+		return query.Where("knowledgebase.id IN (?) AND knowledgebase.id NOT IN (?)", accessibleDatasets, blockedOrigins)
 	}}, true, nil
 }
 
@@ -352,6 +354,11 @@ func (e *evaluation) resolveResource(ctx context.Context, subject Subject, resou
 	}
 	if !resource.Active {
 		return Access{}, ErrResourceNotFound
+	}
+	for _, ownerID := range resource.KnowledgeOwnerIDs {
+		if ownerID != subject.UserID {
+			return Access{}, ErrPermissionDenied
+		}
 	}
 	if !validOperations(resource.OwnerOperations) {
 		return Access{}, fmt.Errorf("%w: invalid owner operations", ErrInvalidPermission)

@@ -40,7 +40,7 @@ func (s *FileService) DeleteFiles(ctx context.Context, userID string, fileIDs []
 		if err := s.checkFileTreeAccess(ctx, userID, file, permission.OperationDelete); err != nil {
 			return err
 		}
-		if err := s.checkKnowledgeTreeMutation(ctx, file); err != nil {
+		if err := checkKnowledgeTreeMutation(ctx, dao.DB, file); err != nil {
 			return err
 		}
 	}

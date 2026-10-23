@@ -207,6 +207,9 @@ func (h *FileCommitHandler) CreateCommit(c *gin.Context) {
 	ctx := c.Request.Context()
 	commit, err := h.commitService.CreateCommit(ctx, folderID, user.ID, req.Message, req.Files)
 	if err != nil {
+		if respondPermissionErrorIf(c, err, true) {
+			return
+		}
 		jsonInternalError(c, err)
 		return
 	}

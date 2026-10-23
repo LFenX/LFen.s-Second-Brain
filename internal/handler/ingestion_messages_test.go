@@ -172,7 +172,7 @@ func setupIngestionMessagesHandlerDB(t *testing.T) *gorm.DB {
 	if err != nil {
 		t.Fatalf("open sqlite: %v", err)
 	}
-	if err := db.AutoMigrate(&entity.Knowledgebase{}, &entity.PipelineOperationLog{}, &entity.IngestionTaskLog{}, &entity.User{}, &entity.UserTenant{}, &entity.Connector{}, &entity.Connector2Kb{}, &entity.SyncLogs{}); err != nil {
+	if err := db.AutoMigrate(&entity.Knowledgebase{}, &entity.PipelineOperationLog{}, &entity.IngestionTaskLog{}, &entity.User{}, &entity.UserTenant{}, &entity.Connector{}, &entity.Connector2Kb{}, &entity.SyncLogs{}, &entity.File{}, &entity.File2Document{}, &entity.Document{}, &entity.KnowledgeSourceRevision{}); err != nil {
 		t.Fatalf("migrate test schema: %v", err)
 	}
 	original := dao.DB

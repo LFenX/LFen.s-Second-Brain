@@ -161,6 +161,14 @@ func (s *databaseSource) GetResources(ctx context.Context, refs []ResourceRef) (
 	if err != nil {
 		return nil, err
 	}
+	datasetOriginOwners, err := loadKnowledgeOwners(ctx, s.db, knowledgeDatasetOrigins(ctx, s.db), datasetIDs)
+	if err != nil {
+		return nil, err
+	}
+	fileOriginOwners, err := loadKnowledgeOwners(ctx, s.db, knowledgeFileOrigins(ctx, s.db), fileIDs)
+	if err != nil {
+		return nil, err
+	}
 	fileDatasetIDs, err := s.loadFileDatasetIDs(ctx, fileIDs)
 	if err != nil {
 		return nil, err
@@ -261,7 +269,9 @@ func (s *databaseSource) GetResources(ctx context.Context, refs []ResourceRef) (
 		switch ref.Kind {
 		case ResourceKindDataset:
 			if dataset, ok := datasetsByID[ref.ID]; ok {
-				resources = append(resources, datasetResource(dataset, ownerIDsByTenant))
+				resource := datasetResource(dataset, ownerIDsByTenant)
+				resource.KnowledgeOwnerIDs = datasetOriginOwners[ref.ID]
+				resources = append(resources, resource)
 			}
 		case ResourceKindCanvas:
 			if canvas, ok := canvasesByID[ref.ID]; ok {
@@ -286,7 +296,9 @@ func (s *databaseSource) GetResources(ctx context.Context, refs []ResourceRef) (
 			if !ok || (ref.Kind == ResourceKindFolder) != (file.Type == "folder") {
 				continue
 			}
-			resources = append(resources, fileResource(ref.Kind, file, fileDatasetIDs[ref.ID], linkedDatasetsByID, linkedOwnerIDsByTenant))
+			resource := fileResource(ref.Kind, file, fileDatasetIDs[ref.ID], linkedDatasetsByID, linkedOwnerIDsByTenant)
+			resource.KnowledgeOwnerIDs = fileOriginOwners[ref.ID]
+			resources = append(resources, resource)
 		case ResourceKindSearchApp:
 			if searchApp, ok := searchAppsByID[ref.ID]; ok {
 				resources = append(resources, searchAppResource(searchApp))

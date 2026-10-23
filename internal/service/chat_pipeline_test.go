@@ -1683,7 +1683,7 @@ func collectSink(got *[]string, thinks *[]bool) func(string, bool) {
 func TestAsyncChatEmptyResponseQuoteDisabled(t *testing.T) {
 	db := setupChatPipelineVisionTestDB(t)
 	seedChatPipelineVisionTenant(t, db, "glm-4-flash@ZHIPU-AI")
-	if err := db.AutoMigrate(&entity.Knowledgebase{}); err != nil {
+	if err := db.AutoMigrate(&entity.Knowledgebase{}, &entity.File{}, &entity.File2Document{}, &entity.Document{}, &entity.KnowledgeSourceRevision{}); err != nil {
 		t.Fatal(err)
 	}
 	if err := db.Create(&entity.Knowledgebase{ID: "kb-1", TenantID: "tenant-1", Name: "Knowledge"}).Error; err != nil {

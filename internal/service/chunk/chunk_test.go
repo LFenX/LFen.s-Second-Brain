@@ -1970,13 +1970,11 @@ func setupChunkTestDB(t *testing.T) *gorm.DB {
 	if err != nil {
 		t.Fatalf("failed to open sqlite: %v", err)
 	}
-	if err := db.AutoMigrate(
-		&entity.UserTenant{},
+	if err := db.AutoMigrate(&entity.UserTenant{},
 		&entity.Knowledgebase{},
 		&entity.Document{},
 		&entity.Task{},
-		&entity.IngestionTask{},
-	); err != nil {
+		&entity.IngestionTask{}, &entity.File{}, &entity.File2Document{}, &entity.KnowledgeSourceRevision{}); err != nil {
 		t.Fatalf("failed to migrate: %v", err)
 	}
 	return db
@@ -2474,7 +2472,7 @@ func TestSwitchChunksUpdatesDocEngineWithAvailableInt(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to open sqlite: %v", err)
 	}
-	if err := db.AutoMigrate(&entity.UserTenant{}, &entity.Knowledgebase{}, &entity.Document{}); err != nil {
+	if err := db.AutoMigrate(&entity.UserTenant{}, &entity.Knowledgebase{}, &entity.Document{}, &entity.File{}, &entity.File2Document{}, &entity.KnowledgeSourceRevision{}); err != nil {
 		t.Fatalf("failed to migrate sqlite: %v", err)
 	}
 	previousDB := dao.DB

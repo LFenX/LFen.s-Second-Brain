@@ -151,7 +151,10 @@ type Resource struct {
 	CreatorOperations   []Operation
 	SharedWithUserIDs   []string
 	SharedWithTenantIDs []string
-	Active              bool
+	// KnowledgeOwnerIDs restricts explicit source copies to every origin owner,
+	// in addition to the native resource permission. It never grants access.
+	KnowledgeOwnerIDs []string
+	Active            bool
 }
 
 // AccessSource identifies the rule that granted access.

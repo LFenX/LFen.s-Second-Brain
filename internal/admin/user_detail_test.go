@@ -41,6 +41,10 @@ func setupAdminUserDetailTest(t *testing.T) *Handler {
 		&entity.User{},
 		&entity.UserTenant{},
 		&entity.Knowledgebase{},
+		&entity.File{},
+		&entity.File2Document{},
+		&entity.Document{},
+		&entity.KnowledgeSourceRevision{},
 		&entity.UserCanvas{},
 	)
 	t.Cleanup(testutil.ReplaceDBForTest(t, db))

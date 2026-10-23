@@ -35,8 +35,8 @@ func CheckDatasetModelUse(ctx context.Context, db *gorm.DB, datasetIDs []string,
 		return errors.New("knowledge policy database unavailable")
 	}
 	var count int64
-	if err := db.WithContext(ctx).Model(&entity.Knowledgebase{}).
-		Where("id IN ? AND knowledge_enabled = ?", datasetIDs, true).Count(&count).Error; err != nil {
+	if err := db.WithContext(ctx).Table("(?) AS origin", knowledgeDatasetOrigins(ctx, db)).
+		Where("resource_id IN ?", datasetIDs).Count(&count).Error; err != nil {
 		return fmt.Errorf("knowledge model policy unavailable: %w", err)
 	}
 	if count != 0 {

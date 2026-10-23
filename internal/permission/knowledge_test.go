@@ -25,10 +25,102 @@ func knowledgePolicyTestDB(t *testing.T) *gorm.DB {
 		t.Fatal(err)
 	}
 	t.Cleanup(func() { sqlDB.Close() })
-	if err := db.AutoMigrate(&entity.Knowledgebase{}, &entity.UserTenant{}); err != nil {
+	if err := db.AutoMigrate(&entity.Knowledgebase{}, &entity.UserTenant{}, &entity.File{}, &entity.File2Document{}, &entity.Document{}, &entity.KnowledgeSourceRevision{}); err != nil {
 		t.Fatal(err)
 	}
 	return db
+}
+
+func TestKnowledgeExistingCopiesKeepSourceRestrictions(t *testing.T) {
+	db := knowledgePolicyTestDB(t)
+	valid := "1"
+	for _, kb := range []entity.Knowledgebase{
+		{ID: "source-domain", TenantID: "owner", CreatedBy: "owner", Permission: "me", Status: &valid, KnowledgeEnabled: true},
+		{ID: "target", TenantID: "team", CreatedBy: "team-owner", Permission: "team", Status: &valid},
+		{ID: "ordinary", TenantID: "team", CreatedBy: "team-owner", Permission: "team", Status: &valid},
+	} {
+		if err := db.Create(&kb).Error; err != nil {
+			t.Fatal(err)
+		}
+	}
+	for _, m := range []entity.UserTenant{
+		{ID: "source-owner", TenantID: "owner", UserID: "owner", Role: "owner", Status: &valid},
+		{ID: "team-owner", TenantID: "team", UserID: "team-owner", Role: "owner", Status: &valid},
+		{ID: "source-in-team", TenantID: "team", UserID: "owner", Role: "normal", Status: &valid},
+		{ID: "reader", TenantID: "team", UserID: "reader", Role: "normal", Status: &valid},
+	} {
+		if err := db.Create(&m).Error; err != nil {
+			t.Fatal(err)
+		}
+	}
+	fid := "protected-file"
+	if err := db.Create(&entity.File{ID: fid, TenantID: "owner", CreatedBy: "owner", Name: "private.txt", Type: "txt"}).Error; err != nil {
+		t.Fatal(err)
+	}
+	for _, id := range []string{"source-domain", "target"} {
+		doc := entity.Document{ID: id, KbID: id, Status: &valid, ParserConfig: entity.JSONMap{}}
+		if err := db.Create(&doc).Error; err != nil {
+			t.Fatal(err)
+		}
+		if err := db.Create(&entity.File2Document{ID: id, FileID: &fid, DocumentID: &doc.ID}).Error; err != nil {
+			t.Fatal(err)
+		}
+	}
+	if err := db.Create(&entity.KnowledgeSourceRevision{ID: "snapshot", DomainID: "source-domain", DocumentID: "source-domain", FileID: fid, FolderID: "former-folder", InputHash: "synthetic"}).Error; err != nil {
+		t.Fatal(err)
+	}
+	for phase := 0; phase < 3; phase++ {
+		if phase == 1 {
+			if err := db.Where("id = ?", "source-domain").Delete(&entity.File2Document{}).Error; err != nil {
+				t.Fatal(err)
+			}
+			if err := db.Where("id = ?", "source-domain").Delete(&entity.Document{}).Error; err != nil {
+				t.Fatal(err)
+			}
+		}
+		if phase == 2 {
+			if err := db.Where("id = ?", "source-domain").Delete(&entity.Knowledgebase{}).Error; err != nil {
+				t.Fatal(err)
+			}
+		}
+		checker := NewDatabaseChecker(db)
+		for _, user := range []string{"owner", "reader", "team-owner"} {
+			for _, ref := range []ResourceRef{{Kind: ResourceKindFile, ID: fid}, {Kind: ResourceKindDataset, ID: "target"}} {
+				err := checker.CheckResource(t.Context(), Subject{UserID: user}, ref, OperationRead)
+				if (user == "owner") != (err == nil) {
+					t.Fatalf("phase=%d user=%s ref=%+v err=%v", phase, user, ref, err)
+				}
+			}
+			scope, err := checker.QueryScope(t.Context(), Subject{UserID: user}, ScopeQuery{Kind: ResourceKindDataset, Operation: OperationRead})
+			if err != nil {
+				t.Fatal(err)
+			}
+			var ids []string
+			if err := scope.Apply(db.Model(&entity.Knowledgebase{})).Pluck("id", &ids).Error; err != nil {
+				t.Fatal(err)
+			}
+			found := false
+			for _, id := range ids {
+				if id == "target" {
+					found = true
+				}
+			}
+			if found != (user == "owner") {
+				t.Fatalf("phase=%d user=%s list=%v", phase, user, ids)
+			}
+		}
+		for _, purpose := range []string{"embedding", "rerank", "generation", "remote_parse", "wiki", "memory"} {
+			if err := CheckDatasetModelUse(t.Context(), db, []string{"target"}, purpose); !errors.Is(err, ErrKnowledgeModelUseDenied) {
+				t.Fatalf("phase=%d purpose=%s err=%v", phase, purpose, err)
+			}
+		}
+		if err := CheckDatasetModelUse(t.Context(), db, []string{"ordinary"}, "embedding"); err != nil {
+			t.Fatalf("ordinary source changed: %v", err)
+		}
+		if err := checker.CheckResource(t.Context(), Subject{UserID: "reader"}, ResourceRef{Kind: ResourceKindDataset, ID: "ordinary"}, OperationRead); err != nil {
+			t.Fatalf("ordinary team read changed: %v", err)
+		}
+	}
 }
 
 func TestKnowledgePolicyDeniesBeforeModelUseAndFailsClosed(t *testing.T) {

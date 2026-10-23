@@ -420,7 +420,7 @@ func TestNLPRetrievalAdapter_SearchRequiresDatasetUsePermission(t *testing.T) {
 	if err != nil {
 		t.Fatalf("open sqlite: %v", err)
 	}
-	if err := db.AutoMigrate(&entity.Knowledgebase{}, &entity.UserTenant{}); err != nil {
+	if err := db.AutoMigrate(&entity.Knowledgebase{}, &entity.UserTenant{}, &entity.File{}, &entity.File2Document{}, &entity.Document{}, &entity.KnowledgeSourceRevision{}); err != nil {
 		t.Fatalf("migrate permission tables: %v", err)
 	}
 	status := string(entity.StatusValid)

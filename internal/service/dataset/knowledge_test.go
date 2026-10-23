@@ -426,3 +426,37 @@ func TestKnowledgeUnregisteredDeletionCannotDeleteBoundFolderByName(t *testing.T
 		t.Fatalf("bound identity lost: %+v err=%v", current, err)
 	}
 }
+
+func TestKnowledgeExistingCopyRejectsNativeModelProbe(t *testing.T) {
+	s, store := setupKnowledgeTest(t)
+	registerKnowledgeTest(t, s, knowledgeTestDomain)
+	docID := "22222222222222222222222222222222"
+	uploadKnowledgeTest(t, store, docID, "private.txt", []byte("synthetic private"))
+	var mapping entity.File2Document
+	if err := dao.DB.Where("document_id = ?", docID).Take(&mapping).Error; err != nil {
+		t.Fatal(err)
+	}
+	valid := "1"
+	copyID := "33333333333333333333333333333333"
+	if err := dao.DB.Create(&entity.Document{ID: copyID, KbID: knowledgeTestOther, Status: &valid, ParserConfig: entity.JSONMap{}}).Error; err != nil {
+		t.Fatal(err)
+	}
+	if err := dao.DB.Create(&entity.File2Document{ID: "44444444444444444444444444444444", FileID: mapping.FileID, DocumentID: &copyID}).Error; err != nil {
+		t.Fatal(err)
+	}
+	model := "must-not-probe-provider"
+	_, code, err := s.UpdateDataset(t.Context(), knowledgeTestOther, knowledgeTestOwner, service.UpdateDatasetRequest{EmbeddingModel: &model})
+	if code != common.CodeForbidden || !errors.Is(err, permission.ErrKnowledgeModelUseDenied) {
+		t.Fatalf("native model probe reached: code=%d err=%v", code, err)
+	}
+	if _, _, err := s.DeleteDatasets(t.Context(), []string{knowledgeTestOther}, false, permission.Subject{UserID: knowledgeTestOwner}); err != nil {
+		t.Fatal(err)
+	}
+	var original entity.File
+	if err := dao.DB.Where("id = ?", *mapping.FileID).Take(&original).Error; err != nil {
+		t.Fatalf("deleting old copy removed original source identity: %v", err)
+	}
+	if _, err := s.SnapshotKnowledgeSource(t.Context(), knowledgeTestOwner, knowledgeTestDomain, entity.SnapshotKnowledgeSourceRequest{DocumentID: docID}); err != nil {
+		t.Fatalf("original source cannot snapshot after copy removal: %v", err)
+	}
+}

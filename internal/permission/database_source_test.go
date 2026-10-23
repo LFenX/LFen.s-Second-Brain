@@ -20,7 +20,7 @@ func TestDatabaseCheckerAuthorizesDatasetFromPersistedRows(t *testing.T) {
 	if err != nil {
 		t.Fatalf("open sqlite: %v", err)
 	}
-	if err := db.AutoMigrate(&entity.Knowledgebase{}, &entity.UserTenant{}); err != nil {
+	if err := db.AutoMigrate(&entity.Knowledgebase{}, &entity.UserTenant{}, &entity.File{}, &entity.File2Document{}, &entity.Document{}, &entity.KnowledgeSourceRevision{}); err != nil {
 		t.Fatalf("migrate permission tables: %v", err)
 	}
 
@@ -102,7 +102,7 @@ func TestDatabaseCheckerRejectsPrivateDatasetForOtherTenantMember(t *testing.T) 
 	if err != nil {
 		t.Fatalf("open sqlite: %v", err)
 	}
-	if err := db.AutoMigrate(&entity.Knowledgebase{}, &entity.UserTenant{}); err != nil {
+	if err := db.AutoMigrate(&entity.Knowledgebase{}, &entity.UserTenant{}, &entity.File{}, &entity.File2Document{}, &entity.Document{}, &entity.KnowledgeSourceRevision{}); err != nil {
 		t.Fatalf("migrate permission tables: %v", err)
 	}
 
@@ -143,7 +143,7 @@ func TestDatabaseCheckerScopesDatasetsToMembershipAndVisibility(t *testing.T) {
 	if err != nil {
 		t.Fatalf("open sqlite: %v", err)
 	}
-	if err := db.AutoMigrate(&entity.Knowledgebase{}, &entity.UserTenant{}); err != nil {
+	if err := db.AutoMigrate(&entity.Knowledgebase{}, &entity.UserTenant{}, &entity.File{}, &entity.File2Document{}, &entity.Document{}, &entity.KnowledgeSourceRevision{}); err != nil {
 		t.Fatalf("migrate permission tables: %v", err)
 	}
 
@@ -497,7 +497,7 @@ func TestDatabaseCheckerAuthorizesFilesThroughLinkedDatasetAccess(t *testing.T) 
 	if err != nil {
 		t.Fatalf("open sqlite: %v", err)
 	}
-	if err := db.AutoMigrate(&entity.File{}, &entity.File2Document{}, &entity.Document{}, &entity.Knowledgebase{}, &entity.UserTenant{}); err != nil {
+	if err := db.AutoMigrate(&entity.File{}, &entity.File2Document{}, &entity.Document{}, &entity.Knowledgebase{}, &entity.UserTenant{}, &entity.KnowledgeSourceRevision{}); err != nil {
 		t.Fatalf("migrate permission tables: %v", err)
 	}
 
@@ -587,7 +587,7 @@ func TestDatabaseCheckerScopesFilesAndFoldersToOwnedFolder(t *testing.T) {
 	if err != nil {
 		t.Fatalf("open sqlite: %v", err)
 	}
-	if err := db.AutoMigrate(&entity.File{}, &entity.File2Document{}, &entity.Document{}, &entity.Knowledgebase{}, &entity.UserTenant{}); err != nil {
+	if err := db.AutoMigrate(&entity.File{}, &entity.File2Document{}, &entity.Document{}, &entity.Knowledgebase{}, &entity.UserTenant{}, &entity.KnowledgeSourceRevision{}); err != nil {
 		t.Fatalf("migrate permission tables: %v", err)
 	}
 	files := []entity.File{
@@ -868,7 +868,7 @@ func TestDatabaseCheckerAuthorizesConnectorsAndSyncTasks(t *testing.T) {
 	if err != nil {
 		t.Fatalf("open sqlite: %v", err)
 	}
-	if err := db.AutoMigrate(&entity.Connector{}, &entity.Connector2Kb{}, &entity.SyncLogs{}, &entity.Knowledgebase{}, &entity.UserTenant{}); err != nil {
+	if err := db.AutoMigrate(&entity.Connector{}, &entity.Connector2Kb{}, &entity.SyncLogs{}, &entity.Knowledgebase{}, &entity.UserTenant{}, &entity.File{}, &entity.File2Document{}, &entity.Document{}, &entity.KnowledgeSourceRevision{}); err != nil {
 		t.Fatalf("migrate permission tables: %v", err)
 	}
 

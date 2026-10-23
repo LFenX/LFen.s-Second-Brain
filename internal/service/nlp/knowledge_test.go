@@ -26,7 +26,7 @@ func setupRetrievalKnowledgePolicy(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := db.AutoMigrate(&entity.Knowledgebase{}); err != nil {
+	if err := db.AutoMigrate(&entity.Knowledgebase{}, &entity.File{}, &entity.File2Document{}, &entity.Document{}, &entity.KnowledgeSourceRevision{}); err != nil {
 		t.Fatal(err)
 	}
 	if err := db.Create(&entity.Knowledgebase{ID: "kb-1", TenantID: "tenant-1", CreatedBy: "owner"}).Error; err != nil {
@@ -44,7 +44,7 @@ func TestKnowledgeRetrievalStopsBeforeEmbeddingAndRerank(t *testing.T) {
 	}
 	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
-	if err := db.AutoMigrate(&entity.Knowledgebase{}); err != nil {
+	if err := db.AutoMigrate(&entity.Knowledgebase{}, &entity.File{}, &entity.File2Document{}, &entity.Document{}, &entity.KnowledgeSourceRevision{}); err != nil {
 		t.Fatal(err)
 	}
 	if err := db.Create(&entity.Knowledgebase{ID: "private", TenantID: "owner", CreatedBy: "owner", KnowledgeEnabled: true}).Error; err != nil {
