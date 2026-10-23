@@ -68,6 +68,7 @@ func TestDiffWikiDocumentContributionTreatsDisabledDocumentAsRetraction(t *testi
 }
 
 func TestProcessBatchRetractionWithoutWikiContributionSkipsMerge(t *testing.T) {
+	setupKnowledgeCompilePolicyDB(t)
 	store := &memoryWikiContributionStore{items: map[string]wikiDocumentContribution{}}
 	previousNav := nav.GetNavService()
 	nav.SetNavService(&recordingNavService{})
@@ -100,6 +101,7 @@ func TestProcessBatchRetractionWithoutWikiContributionSkipsMerge(t *testing.T) {
 }
 
 func TestProcessBatchSkipsUnchangedWikiOnlyEvent(t *testing.T) {
+	setupKnowledgeCompilePolicyDB(t)
 	product := wikiContributionTestProduct("cao-cao", "same content", "chunk-1")
 	store := &memoryWikiContributionStore{items: map[string]wikiDocumentContribution{}}
 	if err := store.Put(t.Context(), "tenant-1", "kb-1", buildWikiDocumentContribution("doc-1", []kccommon.Product{product})); err != nil {

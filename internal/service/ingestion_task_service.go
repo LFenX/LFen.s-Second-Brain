@@ -699,6 +699,10 @@ func (s *IngestionTaskService) ScheduleCreatedTasks(ctx context.Context) error {
 	}
 	var recoveryErr error
 	for _, task := range tasks {
+		if err := permission.CheckKnowledgeIngestion(ctx, dao.DB, []string{task.DatasetID}); err != nil {
+			recoveryErr = errors.Join(recoveryErr, fmt.Errorf("recover task %s policy: %w", task.ID, err))
+			continue
+		}
 		if err := s.ensureRunIdentity(ctx, task, nil); err != nil {
 			recoveryErr = errors.Join(recoveryErr, fmt.Errorf("ensure run identity for created task %s: %w", task.ID, err))
 			continue

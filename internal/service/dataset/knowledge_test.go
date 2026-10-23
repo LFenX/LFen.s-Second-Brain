@@ -460,3 +460,26 @@ func TestKnowledgeExistingCopyRejectsNativeModelProbe(t *testing.T) {
 		t.Fatalf("original source cannot snapshot after copy removal: %v", err)
 	}
 }
+
+func TestKnowledgeOrdinaryDeletionStillRemovesItsOwnMappedFolder(t *testing.T) {
+	s, _ := setupKnowledgeTest(t)
+	var kb entity.Knowledgebase
+	if err := dao.DB.Where("id = ?", knowledgeTestOther).Take(&kb).Error; err != nil {
+		t.Fatal(err)
+	}
+	folder := entity.File{ID: "ordinary-folder", ParentID: "parent", TenantID: kb.TenantID, CreatedBy: kb.CreatedBy, Name: kb.Name, Type: "folder", SourceType: "knowledgebase"}
+	file := entity.File{ID: "ordinary-file", ParentID: folder.ID, TenantID: kb.TenantID, CreatedBy: kb.CreatedBy, Name: "ordinary.txt", Type: "txt", SourceType: "knowledgebase"}
+	doc := entity.Document{ID: "ordinary-doc", KbID: kb.ID, ParserConfig: entity.JSONMap{}}
+	for _, row := range []any{&folder, &file, &doc, &entity.File2Document{ID: "ordinary-link", FileID: &file.ID, DocumentID: &doc.ID}} {
+		if err := dao.DB.Create(row).Error; err != nil {
+			t.Fatal(err)
+		}
+	}
+	if _, _, err := s.DeleteDatasets(t.Context(), []string{kb.ID}, false, permission.Subject{UserID: knowledgeTestOwner}); err != nil {
+		t.Fatal(err)
+	}
+	var count int64
+	if err := dao.DB.Model(&entity.File{}).Where("id IN ?", []string{folder.ID, file.ID}).Count(&count).Error; err != nil || count != 0 {
+		t.Fatalf("ordinary cleanup changed: count=%d err=%v", count, err)
+	}
+}

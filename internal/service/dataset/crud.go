@@ -440,6 +440,19 @@ func (d *DatasetService) deleteDataset(ctx context.Context, kb *entity.Knowledge
 	}
 
 	if err := dao.DB.Transaction(func(tx *gorm.DB) error {
+		// Resolve ordinary folders while their document mappings still exist.
+		// Removing those mappings first would make the dataset's own empty
+		// folders look like unclaimed legacy folders and prevent native cleanup.
+		folderQuery := tx.Model(&entity.File{}).Where("source_type = ? AND type = ? AND tenant_id = ?", string(entity.FileSourceKnowledgebase), "folder", kb.TenantID)
+		if kb.KnowledgeEnabled && kb.KnowledgeFolderID != nil {
+			folderQuery = folderQuery.Where("id = ?", *kb.KnowledgeFolderID)
+		} else {
+			folderQuery = folderQuery.Where("name = ? AND id NOT IN (?)", kb.Name, dao.KnowledgeFolderIDs(ctx, tx))
+		}
+		var ownedFolderIDs []string
+		if err := folderQuery.Pluck("id", &ownedFolderIDs).Error; err != nil {
+			return fmt.Errorf("resolve dataset folders: %w", err)
+		}
 		// Delete index tasks referencing this KB.
 		if taskIDs := datasetIndexTaskIDs(kb); len(taskIDs) > 0 {
 			if err := tx.Where("id IN ?", taskIDs).Delete(&entity.Task{}).Error; err != nil {
@@ -472,14 +485,10 @@ func (d *DatasetService) deleteDataset(ctx context.Context, kb *entity.Knowledge
 		}
 
 		// Delete the KB folder file record.
-		folderQuery := tx.Unscoped().Where("source_type = ? AND type = ? AND tenant_id = ?", string(entity.FileSourceKnowledgebase), "folder", kb.TenantID)
-		if kb.KnowledgeEnabled && kb.KnowledgeFolderID != nil {
-			folderQuery = folderQuery.Where("id = ?", *kb.KnowledgeFolderID)
-		} else {
-			folderQuery = folderQuery.Where("name = ? AND id NOT IN (?)", kb.Name, dao.KnowledgeFolderIDs(ctx, tx))
-		}
-		if err := folderQuery.Delete(&entity.File{}).Error; err != nil {
-			return fmt.Errorf("delete dataset error for %s", kb.ID)
+		if len(ownedFolderIDs) > 0 {
+			if err := tx.Unscoped().Where("id IN ?", ownedFolderIDs).Delete(&entity.File{}).Error; err != nil {
+				return fmt.Errorf("delete dataset error for %s", kb.ID)
+			}
 		}
 
 		if err := tx.Where("id = ?", kb.ID).Delete(&entity.Knowledgebase{}).Error; err != nil {

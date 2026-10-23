@@ -476,6 +476,7 @@ const SkillsFolderName = "skills"
 func (dao *FileDAO) InitDatasetDocs(ctx context.Context, db *gorm.DB, rootID, tenantID string, file2DocumentDAO *File2DocumentDAO) error {
 	var existing []*entity.File
 	err := db.WithContext(ctx).Where("name = ? AND parent_id = ? AND tenant_id = ?", DatasetFolderName, rootID, tenantID).
+		Where("id NOT IN (?)", KnowledgeFolderIDs(ctx, db)).
 		Order("create_time ASC").
 		Find(&existing).Error
 	if err != nil {

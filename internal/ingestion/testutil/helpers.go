@@ -68,6 +68,7 @@ func SetupTestDB(t *testing.T, tables ...any) *gorm.DB {
 			&entity.Task{},
 			&entity.Document{},
 			&entity.Knowledgebase{},
+			&entity.KnowledgeSourceRevision{},
 			&entity.Tenant{},
 			&entity.File{},
 			&entity.File2Document{},

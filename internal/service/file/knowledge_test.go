@@ -123,6 +123,40 @@ func TestKnowledgeUnclaimedRenamedFolderRemainsPrivate(t *testing.T) {
 	}
 }
 
+func TestKnowledgeReservedNameDoesNotUnhideUnclaimedNestedFolder(t *testing.T) {
+	db := setupFolderTestDB(t)
+	for _, file := range []entity.File{
+		{ID: "root", ParentID: "root", TenantID: "owner", CreatedBy: "owner", Name: "/", Type: "folder"},
+		{ID: "common", ParentID: "root", TenantID: "owner", CreatedBy: "owner", Name: ".knowledgebase", Type: "folder", SourceType: "knowledgebase"},
+		{ID: "orphan", ParentID: "common", TenantID: "owner", CreatedBy: "owner", Name: "Former", Type: "folder", SourceType: "knowledgebase"},
+		{ID: "raw", ParentID: "orphan", TenantID: "owner", CreatedBy: "owner", Name: "private.txt", Type: "txt"},
+	} {
+		if err := db.Create(&file).Error; err != nil {
+			t.Fatal(err)
+		}
+	}
+	for _, name := range []string{"Former", ".knowledgebase"} {
+		if err := db.Model(&entity.File{}).Where("id = ?", "orphan").Update("name", name).Error; err != nil {
+			t.Fatal(err)
+		}
+		view, err := knowledgeBrowseDB(t.Context(), "reader", "owner")
+		if err != nil {
+			t.Fatal(err)
+		}
+		var hidden, common int64
+		if err := view.Model(&entity.File{}).Where("id IN ?", []string{"orphan", "raw"}).Count(&hidden).Error; err != nil || hidden != 0 {
+			t.Fatalf("name=%s visible=%d err=%v", name, hidden, err)
+		}
+		view, err = knowledgeBrowseDB(t.Context(), "reader", "owner")
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := view.Model(&entity.File{}).Where("id = ?", "common").Count(&common).Error; err != nil || common != 1 {
+			t.Fatalf("common root hidden=%d err=%v", common, err)
+		}
+	}
+}
+
 func TestKnowledgeNativeMoveAndDeletePreserveManagedTree(t *testing.T) {
 	db := setupFolderTestDB(t)
 	folderID := "managed"

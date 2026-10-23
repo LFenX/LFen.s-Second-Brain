@@ -25,6 +25,11 @@ func migrateKnowledgeFoundation(ctx context.Context, db *gorm.DB) error {
 			return fmt.Errorf("migrate knowledge foundation: %w", err)
 		}
 	}
+	if !m.HasColumn(&entity.File{}, "KnowledgePrivateOwnerID") {
+		if err := m.AddColumn(&entity.File{}, "KnowledgePrivateOwnerID"); err != nil {
+			return fmt.Errorf("add private folder ownership: %w", err)
+		}
+	}
 	if !m.HasIndex(&entity.Knowledgebase{}, "idx_knowledge_domain_folder") {
 		if err := m.CreateIndex(&entity.Knowledgebase{}, "idx_knowledge_domain_folder"); err != nil {
 			return err
@@ -39,5 +44,5 @@ func migrateKnowledgeFoundation(ctx context.Context, db *gorm.DB) error {
 			return fmt.Errorf("bind knowledge folder: %w", err)
 		}
 	}
-	return nil
+	return ProtectUnclaimedKnowledgeFolders(ctx, db)
 }

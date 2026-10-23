@@ -24,6 +24,7 @@ import (
 	"ragflow/internal/common"
 	"ragflow/internal/dao"
 	"ragflow/internal/entity"
+	"ragflow/internal/permission"
 )
 
 // TaskKind discriminates which execution path a queued TaskContext takes.
@@ -112,12 +113,21 @@ func (c *TaskContext) ID() string {
 // LoadFromIngestionTask loads the full task context from an IngestionTask.
 // It follows the FK chain: ingestion task -> document -> knowledgebase -> tenant.
 func LoadFromIngestionTask(ctx context.Context, ingestionTask *entity.IngestionTask) (*TaskContext, error) {
+	if ingestionTask == nil {
+		return nil, fmt.Errorf("load task context: nil ingestion task")
+	}
 	doc, err := dao.NewDocumentDAO().GetByID(ctx, dao.DB, ingestionTask.DocumentID)
 	if err != nil {
 		return nil, fmt.Errorf("load document %s: %w", ingestionTask.DocumentID, err)
 	}
 	if doc == nil {
 		return nil, fmt.Errorf("document %s not found", ingestionTask.DocumentID)
+	}
+	if ingestionTask.DatasetID != doc.KbID {
+		return nil, fmt.Errorf("ingestion task dataset does not match document")
+	}
+	if err := permission.CheckKnowledgeIngestion(ctx, dao.DB, []string{doc.KbID}); err != nil {
+		return nil, err
 	}
 
 	kb, err := dao.NewKnowledgebaseDAO().GetByID(ctx, dao.DB, doc.KbID)

@@ -5,8 +5,6 @@ import (
 	"errors"
 	"fmt"
 
-	"ragflow/internal/entity"
-
 	"gorm.io/gorm"
 )
 
@@ -63,17 +61,8 @@ func CheckKnowledgeFileTransfer(ctx context.Context, db *gorm.DB, fileIDs []stri
 		return errors.New("knowledge policy database unavailable")
 	}
 	var count int64
-	if err := db.WithContext(ctx).Table("file2document AS mapping").
-		Joins("JOIN document ON document.id = mapping.document_id").
-		Joins("JOIN knowledgebase ON knowledgebase.id = document.kb_id").
-		Where("mapping.file_id IN ? AND knowledgebase.knowledge_enabled = ?", fileIDs, true).Count(&count).Error; err != nil {
-		return err
-	}
-	if count > 0 {
-		return ErrKnowledgeIngestionDenied
-	}
-	if err := db.WithContext(ctx).Model(&entity.KnowledgeSourceRevision{}).
-		Where("file_id IN ?", fileIDs).Count(&count).Error; err != nil {
+	if err := db.WithContext(ctx).Table("(?) AS origin", knowledgeFileOrigins(ctx, db)).
+		Where("resource_id IN ?", fileIDs).Count(&count).Error; err != nil {
 		return err
 	}
 	if count > 0 {

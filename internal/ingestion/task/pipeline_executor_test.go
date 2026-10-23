@@ -147,7 +147,7 @@ func setupPipelineExecutorTestDB(t *testing.T) func() {
 	if err != nil {
 		t.Fatalf("open sqlite: %v", err)
 	}
-	if err := db.AutoMigrate(&entity.UserCanvas{}, &entity.PipelineOperationLog{}, &entity.Document{}, &entity.IngestionTask{}); err != nil {
+	if err := db.AutoMigrate(&entity.UserCanvas{}, &entity.PipelineOperationLog{}, &entity.Document{}, &entity.IngestionTask{}, &entity.Knowledgebase{}, &entity.KnowledgeSourceRevision{}, &entity.File{}, &entity.File2Document{}); err != nil {
 		t.Fatalf("auto-migrate sqlite: %v", err)
 	}
 	origDB := dao.DB
@@ -929,6 +929,7 @@ func TestRunPipeline_ContextCanceled(t *testing.T) {
 }
 
 func TestPipelineExecutor_Run_MainFlowWithStubs(t *testing.T) {
+	t.Cleanup(setupPipelineExecutorTestDB(t))
 	inserted := false
 
 	taskCtx := makeTaskCtx()
@@ -960,6 +961,7 @@ func TestPipelineExecutor_Run_MainFlowWithStubs(t *testing.T) {
 }
 
 func TestPipelineExecutor_Execute_DoesNotLogFailedRun(t *testing.T) {
+	t.Cleanup(setupPipelineExecutorTestDB(t))
 	svc := mustNewPipelineExecutor(t, makeTaskCtx(), "flow-1", 0).
 		WithLoadDSLFunc(func(ctx context.Context, canvasID string) (string, string, error) {
 			return `{"nodes":[{"id":"n1"}],"edges":[]}`, canvasID, nil
@@ -974,6 +976,7 @@ func TestPipelineExecutor_Execute_DoesNotLogFailedRun(t *testing.T) {
 }
 
 func TestPipelineExecutor_Execute_DoesNotLogCanceledRun(t *testing.T) {
+	t.Cleanup(setupPipelineExecutorTestDB(t))
 	svc := mustNewPipelineExecutor(t, makeTaskCtx(), "flow-1", 0).
 		WithLoadDSLFunc(func(ctx context.Context, canvasID string) (string, string, error) {
 			return `{"nodes":[{"id":"n1"}],"edges":[]}`, canvasID, nil
@@ -991,6 +994,7 @@ func TestPipelineExecutor_Execute_DoesNotLogCanceledRun(t *testing.T) {
 // Execute is the ctx received by runPipelineFunc - the task context must flow
 // through to the pipeline run.
 func TestPipelineExecutor_Execute_PropagatesContext(t *testing.T) {
+	t.Cleanup(setupPipelineExecutorTestDB(t))
 	const key string = "trace"
 	taskCtx := makeTaskCtx()
 	ctx := t.Context()
@@ -1016,6 +1020,7 @@ func TestPipelineExecutor_Execute_PropagatesContext(t *testing.T) {
 }
 
 func TestPipelineExecutor_Execute_RecordsDoneOperationStatus(t *testing.T) {
+	t.Cleanup(setupPipelineExecutorTestDB(t))
 	taskCtx := makeTaskCtx()
 	taskCtx.Ctx = t.Context()
 

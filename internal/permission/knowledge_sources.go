@@ -2,6 +2,7 @@ package permission
 
 import (
 	"context"
+	"ragflow/internal/dao"
 
 	"gorm.io/gorm"
 )
@@ -9,7 +10,8 @@ import (
 // knowledgeFileOrigins carries explicit current and historical source ownership.
 // It is an intersection constraint, never an additional grant from a team copy.
 func knowledgeFileOrigins(ctx context.Context, db *gorm.DB) *gorm.DB {
-	return db.WithContext(ctx).Raw(`
+	return db.WithContext(ctx).Raw(`WITH RECURSIVE origins(resource_id, owner_id) AS (
+		SELECT resource_id, owner_id FROM (
 		SELECT m.file_id AS resource_id, kb.created_by AS owner_id
 		FROM file2document m JOIN document d ON d.id = m.document_id JOIN knowledgebase kb ON kb.id = d.kb_id
 		WHERE kb.knowledge_enabled = ? AND m.file_id IS NOT NULL
@@ -21,7 +23,21 @@ func knowledgeFileOrigins(ctx context.Context, db *gorm.DB) *gorm.DB {
 		UNION SELECT s.file_id AS resource_id, COALESCE(NULLIF(kb.created_by, ''), NULLIF(f.created_by, ''), f.tenant_id) AS owner_id
 		FROM knowledge_source_revision s LEFT JOIN knowledgebase kb ON kb.id = s.domain_id LEFT JOIN file f ON f.id = s.file_id
 		UNION SELECT s.folder_id AS resource_id, COALESCE(NULLIF(kb.created_by, ''), NULLIF(f.created_by, ''), f.tenant_id) AS owner_id
-		FROM knowledge_source_revision s LEFT JOIN knowledgebase kb ON kb.id = s.domain_id LEFT JOIN file f ON f.id = s.folder_id`, true, true, true)
+		FROM knowledge_source_revision s LEFT JOIN knowledgebase kb ON kb.id = s.domain_id LEFT JOIN file f ON f.id = s.folder_id
+		UNION SELECT id AS resource_id, knowledge_private_owner_id AS owner_id FROM file WHERE knowledge_private_owner_id IS NOT NULL
+		UNION SELECT f.id AS resource_id, COALESCE(NULLIF(f.created_by, ''), f.tenant_id) AS owner_id
+		FROM file f WHERE f.id IN (?)
+		) AS seeds
+		UNION SELECT f.id, origin.owner_id FROM file f JOIN origins origin ON f.parent_id = origin.resource_id
+		WHERE f.id <> f.parent_id
+	) SELECT resource_id, owner_id FROM origins`, true, true, true, dao.UnclaimedKnowledgeFolderIDs(ctx, db))
+}
+
+// KnowledgeHiddenFileIDs is the same ownership intersection used for exact
+// resource reads, applied before native browse pagination and aggregates.
+func KnowledgeHiddenFileIDs(ctx context.Context, db *gorm.DB, userID string) *gorm.DB {
+	return db.WithContext(ctx).Table("(?) AS origin", knowledgeFileOrigins(ctx, db)).
+		Distinct("resource_id").Where("owner_id <> ? OR owner_id IS NULL", userID)
 }
 
 func knowledgeDatasetOrigins(ctx context.Context, db *gorm.DB) *gorm.DB {

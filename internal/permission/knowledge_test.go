@@ -5,9 +5,11 @@ package permission
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/url"
 	"testing"
 
+	"ragflow/internal/dao"
 	"ragflow/internal/entity"
 
 	"github.com/glebarez/sqlite"
@@ -29,6 +31,92 @@ func knowledgePolicyTestDB(t *testing.T) *gorm.DB {
 		t.Fatal(err)
 	}
 	return db
+}
+
+func TestKnowledgeFolderRestrictionsFollowRawDescendants(t *testing.T) {
+	for _, legacy := range []bool{false, true} {
+		t.Run(fmt.Sprintf("legacy_%t", legacy), func(t *testing.T) {
+			db := knowledgePolicyTestDB(t)
+			valid := "1"
+			folderID := "private-folder"
+			for _, kb := range []entity.Knowledgebase{
+				{ID: "private", TenantID: "owner", CreatedBy: "owner", Permission: "me", Status: &valid, KnowledgeEnabled: !legacy},
+				{ID: "target", TenantID: "owner", CreatedBy: "owner", Permission: "team", Status: &valid},
+				{ID: "ordinary", TenantID: "owner", CreatedBy: "owner", Permission: "team", Status: &valid},
+			} {
+				if kb.ID == "private" && !legacy {
+					kb.KnowledgeFolderID = &folderID
+				}
+				if err := db.Create(&kb).Error; err != nil {
+					t.Fatal(err)
+				}
+			}
+			for _, membership := range []entity.UserTenant{{ID: "owner", TenantID: "owner", UserID: "owner", Role: "owner", Status: &valid}, {ID: "reader", TenantID: "owner", UserID: "reader", Role: "normal", Status: &valid}} {
+				if err := db.Create(&membership).Error; err != nil {
+					t.Fatal(err)
+				}
+			}
+			for _, f := range []entity.File{
+				{ID: "root", ParentID: "root", TenantID: "owner", CreatedBy: "owner", Type: "folder", Name: "/"},
+				{ID: "common", ParentID: "root", TenantID: "owner", CreatedBy: "owner", Type: "folder", Name: ".knowledgebase", SourceType: "knowledgebase"},
+				{ID: folderID, ParentID: "common", TenantID: "owner", CreatedBy: "owner", Type: "folder", Name: "Private", SourceType: "knowledgebase"},
+				{ID: "nested", ParentID: folderID, TenantID: "owner", CreatedBy: "owner", Type: "folder", Name: "nested"},
+				{ID: "raw", ParentID: "nested", TenantID: "owner", CreatedBy: "owner", Type: "txt", Name: "private.txt"},
+				{ID: "outside", ParentID: "root", TenantID: "owner", CreatedBy: "owner", Type: "txt", Name: "ordinary.txt"},
+			} {
+				if err := db.Create(&f).Error; err != nil {
+					t.Fatal(err)
+				}
+			}
+			if legacy {
+				if err := dao.ProtectUnclaimedKnowledgeFolders(t.Context(), db); err != nil {
+					t.Fatal(err)
+				}
+			}
+			if err := CheckKnowledgeFileTransfer(t.Context(), db, []string{"raw"}); !errors.Is(err, ErrKnowledgeIngestionDenied) {
+				t.Fatalf("private descendant transfer: %v", err)
+			}
+			if err := CheckKnowledgeFileTransfer(t.Context(), db, []string{"outside"}); err != nil {
+				t.Fatalf("ordinary transfer changed: %v", err)
+			}
+			for _, entry := range []struct{ doc, kb, file string }{{"copy", "target", "raw"}, {"plain", "ordinary", "outside"}} {
+				doc := entity.Document{ID: entry.doc, KbID: entry.kb, ParserConfig: entity.JSONMap{}, Status: &valid}
+				if err := db.Create(&doc).Error; err != nil {
+					t.Fatal(err)
+				}
+				if err := db.Create(&entity.File2Document{ID: entry.doc, FileID: &entry.file, DocumentID: &doc.ID}).Error; err != nil {
+					t.Fatal(err)
+				}
+			}
+			if err := db.Model(&entity.File{}).Where("id = ?", folderID).Update("name", ".knowledgebase").Error; err != nil {
+				t.Fatal(err)
+			}
+			checker := NewDatabaseChecker(db)
+			for _, user := range []string{"owner", "reader"} {
+				for _, ref := range []ResourceRef{{Kind: ResourceKindFile, ID: "raw"}, {Kind: ResourceKindFolder, ID: "nested"}, {Kind: ResourceKindDataset, ID: "target"}} {
+					err := checker.CheckResource(t.Context(), Subject{UserID: user}, ref, OperationRead)
+					if (err == nil) != (user == "owner") {
+						t.Fatalf("user=%s ref=%+v err=%v", user, ref, err)
+					}
+				}
+				var count int64
+				if err := db.Model(&entity.File{}).Where("id = ? AND id IN (?)", "raw", KnowledgeHiddenFileIDs(t.Context(), db, user)).Count(&count).Error; err != nil || (count == 0) != (user == "owner") {
+					t.Fatalf("browse user=%s count=%d err=%v", user, count, err)
+				}
+			}
+			for _, purpose := range []string{"embedding", "rerank", "generation", "remote_parse", "wiki", "memory"} {
+				if err := CheckDatasetModelUse(t.Context(), db, []string{"target"}, purpose); !errors.Is(err, ErrKnowledgeModelUseDenied) {
+					t.Fatalf("purpose=%s err=%v", purpose, err)
+				}
+			}
+			if err := CheckDatasetModelUse(t.Context(), db, []string{"ordinary"}, "embedding"); err != nil {
+				t.Fatal(err)
+			}
+			if err := checker.CheckResource(t.Context(), Subject{UserID: "reader"}, ResourceRef{Kind: ResourceKindFile, ID: "outside"}, OperationRead); err != nil {
+				t.Fatalf("ordinary team link changed: %v", err)
+			}
+		})
+	}
 }
 
 func TestKnowledgeExistingCopiesKeepSourceRestrictions(t *testing.T) {

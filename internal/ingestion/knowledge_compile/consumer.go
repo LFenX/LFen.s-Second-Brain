@@ -30,6 +30,7 @@ import (
 	"ragflow/internal/engine"
 	enginetypes "ragflow/internal/engine/types"
 	kccommon "ragflow/internal/ingestion/component/knowledge_compiler/common"
+	"ragflow/internal/permission"
 	"ragflow/internal/service/file"
 	"ragflow/internal/service/nav"
 
@@ -513,6 +514,11 @@ func filterWikiPageCandidates(candidates []kccommon.Product) []kccommon.Product 
 // returns an error if any reader/dedup/writer step fails so the caller can
 // leave the batch for reclamation instead of acking dropped work.
 func (c *Consumer) processBatch(ctx context.Context, tenant, kb, token string, entries []BacklogEntry, taskTypes []string) error {
+	// Claims, including reclaimed completion events, are not model-use grants.
+	// This check precedes the reader, deduper, compiler dependencies and writes.
+	if err := permission.CheckDatasetModelUse(ctx, dao.DB, []string{kb}, "wiki"); err != nil {
+		return err
+	}
 	if len(taskTypes) == 0 {
 		taskTypes = taskTypesForEntries(entries)
 	}

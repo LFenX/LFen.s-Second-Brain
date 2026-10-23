@@ -32,6 +32,7 @@ import (
 	knowledgecompiler "ragflow/internal/ingestion/component/knowledge_compiler"
 	kc "ragflow/internal/ingestion/component/knowledge_compiler/common"
 	"ragflow/internal/ingestion/knowledge_compile"
+	"ragflow/internal/permission"
 	"ragflow/internal/service"
 
 	appcommon "ragflow/internal/common"
@@ -65,6 +66,9 @@ func compileDirtyWikiDocument(ctx context.Context, request knowledge_compile.Wik
 			return nil
 		}
 		return fmt.Errorf("Wiki dirty compile: load document: %w", err)
+	}
+	if err := permission.CheckDatasetModelUse(ctx, dao.DB, []string{request.DatasetID, doc.KbID}, "wiki"); err != nil {
+		return err
 	}
 	if doc.KbID != request.DatasetID || (doc.Status != nil && *doc.Status == "0") {
 		return replaceDirtyWikiProducts(ctx, request, nil, nil, nil, nil, true)

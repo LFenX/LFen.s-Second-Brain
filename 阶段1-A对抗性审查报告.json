@@ -1,6 +1,6 @@
 {
-  "version": "v0.20",
-  "recorded_at": "2026-10-23T21:07:48.117Z",
+  "version": "v0.21",
+  "recorded_at": "2026-10-23T21:34:29.741Z",
   "request_snapshot": "阶段0方案通过。开始推进本机A的阶段1，先冻结双方共享的领域模型、节点身份、权限与外发规则及接口契约，再完成最小底座适配，给B整理可直接接续的交接说明。暂不调用模型，完成验证后推送远端。",
   "consent": {
     "response": "启动审查",
@@ -153,36 +153,69 @@
       "fix": "整批文件租户、持久子树及操作权限在对象／版本写入前验证，受管树删除同一门禁",
       "engineering_status": "Fixed",
       "evidence": "跨租户／同租户异子树／嵌套正例／整批0对象与0版本回归；真实跨目录提交404且File与提交数不变"
+    },
+    {
+      "id": "AR-19",
+      "severity": "P1",
+      "problem": "旧任务恢复、持久消费及Wiki后台未复核C3",
+      "fix": "恢复、Load与Execute、生产Embedding、WikiDirty和dataset消费在解析或模型依赖前统一检查",
+      "engineering_status": "Fixed",
+      "evidence": "本地记录发布器0次受限发布、普通任务继续；旧副本生产Embedding与Wiki、陈旧上下文和consumer回归，不调用真实模型"
+    },
+    {
+      "id": "AR-20",
+      "severity": "P2",
+      "problem": "普通上传按名称采用孤立私有目录",
+      "fix": "排除未认领目录并在迁移持久保存内部所有者；普通删除提前解析自身目录",
+      "engineering_status": "Fixed",
+      "evidence": "原反例返回其他Folder；实际MySQL回填及同名普通上传、普通目录清理验证"
+    },
+    {
+      "id": "AR-21",
+      "severity": "P2",
+      "problem": "孤立目录使用保留名称即可解除隐藏",
+      "fix": "公共容器例外同时核对真实租户根父级，旧标记保持",
+      "engineering_status": "Fixed",
+      "evidence": "SQLite和真实HTTP改名后成员仍不可见，正常公共根可见"
+    },
+    {
+      "id": "AR-22",
+      "severity": "P1",
+      "problem": "显式私有目录raw子文件关联扩大权限和模型用途",
+      "fix": "来源所有者递归传播持久File子孙，所有读取、浏览、transfer与目标库模型共用",
+      "engineering_status": "Fixed",
+      "evidence": "绑定／孤立、嵌套、旧映射、所有者／成员及普通正例回归；真实原生关联拒绝且映射0、成员下载／目标及模型探测拒绝"
     }
   ],
   "engineering_verification": {
     "status": "Implemented",
-    "verified_at": "2026-10-23T21:07:48.117Z",
+    "verified_at": "2026-10-23T21:34:29.742Z",
     "go": {
-      "command": "bash build.sh --test -json（原14包＋agent/tool、component、retrievalbridge和admin）",
+      "command": "bash build.sh --test -json（原14包＋agent/tool、component、retrievalbridge、admin和ingestion/knowledge_compile）",
       "packages": [
         "ragflow/internal/entity",
         "ragflow/internal/permission/response",
         "ragflow/internal/permission",
-        "ragflow/internal/utility",
-        "ragflow/internal/service/file",
-        "ragflow/internal/service/chunk",
-        "ragflow/internal/dao",
-        "ragflow/internal/service/nlp",
         "ragflow/internal/agent/retrievalbridge",
         "ragflow/internal/admin",
-        "ragflow/internal/service/document",
-        "ragflow/internal/service/dataset",
         "ragflow/internal/router",
-        "ragflow/internal/handler",
-        "ragflow/internal/agent/component",
-        "ragflow/internal/agent/tool",
+        "ragflow/internal/ingestion/knowledge_compile",
+        "ragflow/internal/service/file",
+        "ragflow/internal/service/chunk",
+        "ragflow/internal/utility",
+        "ragflow/internal/service/nlp",
+        "ragflow/internal/service/dataset",
+        "ragflow/internal/service/document",
+        "ragflow/internal/dao",
         "ragflow/internal/ingestion/task",
+        "ragflow/internal/agent/component",
+        "ragflow/internal/handler",
+        "ragflow/internal/agent/tool",
         "ragflow/internal/service"
       ],
-      "packages_passed": 18,
-      "top_level_tests_passed": 3380,
-      "tests_and_subtests_passed": 5557,
+      "packages_passed": 19,
+      "top_level_tests_passed": 3475,
+      "tests_and_subtests_passed": 5654,
       "skipped_existing_optional_or_unsupported_tests": 10,
       "failed": 0,
       "native_unit_packages": [
@@ -191,7 +224,33 @@
       ]
     },
     "live_http_original_assertion_groups": 28,
-    "additional_live_probe_groups": 24,
+    "additional_live_probe_groups": 30,
+    "additional_live_probe_breakdown": {
+      "strict_contract_and_identity_and_transfer": 6,
+      "query_protocol": 3,
+      "empty_folder_rename": 1,
+      "native_folder_boundaries": 6,
+      "explicit_provenance": 8,
+      "directory_origin_and_migration": 6
+    },
+    "loaded_server_modes": [
+      {
+        "mode": "api",
+        "processes": 1
+      },
+      {
+        "mode": "admin",
+        "processes": 1
+      },
+      {
+        "mode": "ingestor",
+        "processes": 1
+      },
+      {
+        "mode": "syncer",
+        "processes": 1
+      }
+    ],
     "native_and_snapshot_commit_race": true,
     "registered_domains_without_folder_binding": 0,
     "empty_private_folder_visible_after_rename": 0,
@@ -203,7 +262,7 @@
     "manifest": [
       {
         "file": "README.md",
-        "sha256": "e0b650fbcf40d4da4f0aff1aabe6f75cb7b4feea0eb9405e18090b54432f61a5"
+        "sha256": "ccc8d5e3b9ad9aa49f18ff956a274ee12df581a8904547e9c8029f5ea1345f05"
       },
       {
         "file": "docs/knowledge-foundation-v1.example.json",
@@ -211,7 +270,7 @@
       },
       {
         "file": "docs/knowledge-foundation-v1.openapi.json",
-        "sha256": "2417ca5de65897ad068978401b79cf2e2f962ed7431fed0809438cdf65a5131e"
+        "sha256": "406b5deaea87c983032d45b2950e1361768dca8bf689ec47e6b1e83cd0ed2220"
       },
       {
         "file": "internal/admin/user_detail_test.go",
@@ -243,7 +302,7 @@
       },
       {
         "file": "internal/dao/file.go",
-        "sha256": "b18361e8a27820f311ecffcd6591d77cd7c2cb04decf6cbc5523e847ef7ad9fa"
+        "sha256": "6a2c93b8d5fc1c0e3b2d2223c716f1e2df64f95a0793a92f5b9e89f4fb54e103"
       },
       {
         "file": "internal/dao/file_test.go",
@@ -251,19 +310,23 @@
       },
       {
         "file": "internal/dao/knowledge_folder.go",
-        "sha256": "ddfa0fe3416c386a8189aeca02f8ec362766cce464c73636b0207c912cb2549f"
+        "sha256": "a9a5bc86cc38017a6008858bbe391ae1b375d83e6942e24a9fc159b65db76cba"
       },
       {
         "file": "internal/dao/knowledge_migration.go",
-        "sha256": "6725ff7334ff3a018dccbf3b2d07c2e5440dcb31cdc56630f3cc2562a1700241"
+        "sha256": "8a2f258b3e417b7cbe8476a9d976ac86278e0e931ea8280001fbc67c31f9a0e0"
       },
       {
         "file": "internal/dao/knowledge_migration_test.go",
-        "sha256": "684c645b3e5e83bc67e07921bd93427673fe1c8e165c3db862745f01068b37b4"
+        "sha256": "0ca3aeb0f16aa1861f6bd7af3d017645fdb19c29715e6506e4679cfed8d9d1c1"
       },
       {
         "file": "internal/entity/dataset.go",
         "sha256": "94dd8a497aa0aab2df4c9b6e8d2b694aba6dfaac968d2dbcb05616921c8847b1"
+      },
+      {
+        "file": "internal/entity/file.go",
+        "sha256": "8cfa3febb2df3f9d26f1835ca76a796e87472b719a10f8b8ca4c0a2eba06cbd6"
       },
       {
         "file": "internal/entity/knowledge.go",
@@ -310,8 +373,52 @@
         "sha256": "94f72870af2414923b9b1a4a8b34b4e821475d55213c1f280d842e997964e96c"
       },
       {
+        "file": "internal/ingestion/knowledge_compile/consumer.go",
+        "sha256": "b99543e5121a32c3e38962359603fd7d23d49ac8a81c48dd465d0be31a69e4cd"
+      },
+      {
+        "file": "internal/ingestion/knowledge_compile/knowledge_policy_test.go",
+        "sha256": "7b997fd4260e4ffed8dc179042098f97ffc704303aa0e0040e0f1a88bed82e1d"
+      },
+      {
+        "file": "internal/ingestion/knowledge_compile/nav_lifecycle_test.go",
+        "sha256": "ac64ccfe1fa7f8b3265bf1af55ca6a7209833db35281b1b5bd44a019d92716d9"
+      },
+      {
+        "file": "internal/ingestion/knowledge_compile/wiki_contribution_test.go",
+        "sha256": "72907f3e7aa2ba63878e03ab5ae312b5393d84a1a2ec64a30e6e6243ec543434"
+      },
+      {
         "file": "internal/ingestion/task/embedder.go",
-        "sha256": "1f6a0ad5f813d030cd324b2289e8b76f962fd2c2e67daba403a369ddcaa13ff0"
+        "sha256": "0618fc226723932453804ca1c483ce14eb92f7a09659672c73da9776b21f197e"
+      },
+      {
+        "file": "internal/ingestion/task/knowledge_compiler_wiring.go",
+        "sha256": "84f695eb8dd8227810ae51d773a906dfa274991dd55dccf877e9019355dee79c"
+      },
+      {
+        "file": "internal/ingestion/task/knowledge_policy_test.go",
+        "sha256": "0ffccf2ea7f76c9499cefc824cf8df645c37a75119c94fa500e6bddca5a647f1"
+      },
+      {
+        "file": "internal/ingestion/task/pipeline_executor.go",
+        "sha256": "4bd9cd26fff45915225e977d14901496f5e4b31481f89c8594f15ebc316af6b5"
+      },
+      {
+        "file": "internal/ingestion/task/pipeline_executor_test.go",
+        "sha256": "6a58c46b14a411fb8627eae97fcbe72d3fe2edeaab6c38d5b89392d7838481df"
+      },
+      {
+        "file": "internal/ingestion/task/pipeline_real_integration_test.go",
+        "sha256": "6e1bb4dafdfab71b5d24daa87a5cb81b6249ddbcdd4553bbc7084d9998460cc0"
+      },
+      {
+        "file": "internal/ingestion/task/task_context.go",
+        "sha256": "3c6c5f105abfb1cdf67d85ae4989ebcbb1ed77b2229148dd523e914b816a81dc"
+      },
+      {
+        "file": "internal/ingestion/testutil/helpers.go",
+        "sha256": "542bdafa0a859c2478e1f1e01a184b58723f3c6a541e8aace13c0b1afbea6653"
       },
       {
         "file": "internal/permission/database_source.go",
@@ -323,15 +430,15 @@
       },
       {
         "file": "internal/permission/knowledge.go",
-        "sha256": "d4d751f9f3c2e8598a4150c73765025fcad4f71a3b3c7df18f6cbf69e8dcb117"
+        "sha256": "c8c3b89e346045f9f72562e7f52d7611bafc2347e45a79f8773f548cf5cde44b"
       },
       {
         "file": "internal/permission/knowledge_sources.go",
-        "sha256": "c8e23d0a8e215370574d6446d09f47f741ec6fcb16e8032cff925d904ebfeb9d"
+        "sha256": "f469dd46d88900275baced11df719d47369b8c316eff122d899657b7443e1110"
       },
       {
         "file": "internal/permission/knowledge_test.go",
-        "sha256": "d128e6a5163b28196e2360fa678aa9bc90f47336555df702066c236293a08e86"
+        "sha256": "aadcfa06d18a9bd26082604f88e20ab8745b17db486039c69a8c357b8038127d"
       },
       {
         "file": "internal/permission/policy_ce.go",
@@ -371,7 +478,7 @@
       },
       {
         "file": "internal/service/dataset/crud.go",
-        "sha256": "e5d3a96858534902f72c77223e1ef0a632301f2bfd19567e994a4bb079dc07c8"
+        "sha256": "91a0a8756987cdf1f39b71824155d299ad9613652861cb2204365d4fbbb6ed6b"
       },
       {
         "file": "internal/service/dataset/embedding.go",
@@ -387,7 +494,7 @@
       },
       {
         "file": "internal/service/dataset/knowledge_test.go",
-        "sha256": "4e4ccd5bfd67c437220d3b5bad39093002512e00fd644e5cd40a00bb109885d4"
+        "sha256": "8730a1746b504d7b7ad4947e70833bc51ad3676cbb0faf2624bb0642b7da77cf"
       },
       {
         "file": "internal/service/dataset/setup_test.go",
@@ -415,7 +522,7 @@
       },
       {
         "file": "internal/service/document/knowledge_test.go",
-        "sha256": "7a45c08262518142564420eced11df4e936d24b36127242a14b61318f6321665"
+        "sha256": "5c3f88c1ce01b3eb2c5b4d1f5259595b370e6dce390600fadfaa5030df17f30f"
       },
       {
         "file": "internal/service/file/file_commit.go",
@@ -435,11 +542,11 @@
       },
       {
         "file": "internal/service/file/knowledge.go",
-        "sha256": "5dae1b6e5fc80bbea9dd0ee3200eb345c8a3b8f987f2e79907eb3b1037e059c1"
+        "sha256": "00a5e138e1566b37835069724c9694d29551a28ac0ab31975277e1888e395999"
       },
       {
         "file": "internal/service/file/knowledge_test.go",
-        "sha256": "2c4a0e93ead08e46bc7ddaa3d51f5670962e0eca15cd09cc3da403b70bffb9ff"
+        "sha256": "fe17bb1624e4b2598db3f508871c89adabd0fd36235a6c13f8e94ddb3e69eb55"
       },
       {
         "file": "internal/service/file/source_snapshot.go",
@@ -447,11 +554,11 @@
       },
       {
         "file": "internal/service/ingestion_task_service.go",
-        "sha256": "0e99f3dc96a347082b173be79575d93e01dcc79d9b04eba971b54c154ceff9af"
+        "sha256": "ef1fa324b1134384e8cdebd3b2490082fa0c4b0ef347c273a84fc6038e717ec0"
       },
       {
         "file": "internal/service/knowledge_test.go",
-        "sha256": "831ee4f2cb50a96866821b9bf80246e65beb1ecec28b25ece1f2c0951bf0c73a"
+        "sha256": "8c377acff57bd138ff87f09f92cfea7e51d65ffe5798380d7a90d129e090dbe4"
       },
       {
         "file": "internal/service/nlp/knowledge_test.go",
@@ -479,27 +586,27 @@
       },
       {
         "file": "会话接续说明.md",
-        "sha256": "17764734355a3b13abef2768cc103bc9f39da6a7040317f5bf37157ce5680987"
+        "sha256": "d0e71dc9297af08f5617ca8b97be6e5079c033282cbd39b02e5357693177c101"
       },
       {
         "file": "本地第二大脑知识库技术方案.md",
-        "sha256": "2199541ac6d0160671e057aac7580471cf6272a3b0b7b16bc2d96757b4f8bbcc"
+        "sha256": "8497798ca0bb7db5f1180eff8f05afae53e5eaf537dda91def1a9b79e524136b"
       },
       {
         "file": "阶段1-A-B交接说明.md",
-        "sha256": "198d057127852a3563d370cf529399dac0e633d558a5d59b962bbb7857d57d07"
+        "sha256": "651f9eb0619e963679049c178f2fd7baea7d998e965c0ec673f090218af6f645"
       },
       {
         "file": "阶段1-A底座验证报告.json",
         "sha256": "53279a86ca9236b2baaa563711e9a8cfaeaf279bdd929a34859a88d6c415b383"
       }
     ],
-    "subject_sha256": "2352ec7f2cfacaea9539b37d8a1424d488fd7ae2e2ad533ac0a590194e0e05cc",
+    "subject_sha256": "ada25b2bd7955dd2dcf47fbcff46a6833be31cfdeb2bc8c333425771748922ac",
     "subject_definition": "领域代码、原契约／fixture、原验证报告及当前入口／交接文档；追加式审查结果和轮次证据不改变被审查的产品交付",
     "requirements_sha256": "a62c5bf2cb663eec13451eff141c3bf3fef57230e5eb380bdcc5a542c29db403"
   },
   "runtime": {
-    "binary_sha256": "0dfefabbe11a1d0ca8521daa4d1bf2e741245284d1033fbb56fdba4305d17c0f",
+    "binary_sha256": "605926c1175371a8b6d507e536e0757234ec84ee8ab8d6b1fa87b089a72a5a06",
     "source_and_loaded_binary_match": true,
     "health": "healthy",
     "changed_service": "ragflow-cpu",
@@ -534,6 +641,13 @@
         "coverage": "Complete",
         "findings": 3,
         "result": "FindingsRequireRepair"
+      },
+      {
+        "round": 4,
+        "delivery": "631953d686d47adbcee251d77b5b45b51fa28f8a",
+        "coverage": "Complete",
+        "findings": 4,
+        "result": "FindingsRequireRepair"
       }
     ],
     "required_same_delivery_complete_clean_rounds": 2,
@@ -559,6 +673,8 @@
     "本轮审查缺陷与原七项产品问题不同，不宣称原引用／解析／检索／人格问题已解决。",
     "仅合成资料、UTF8文本代码目录／原文；没有模型调用、真实资料扩围或规模／检索性能验收。",
     "对象先于DB写入及历史物理保留边界不变；未演练破坏性恢复。",
+    "原生普通版本delete写不存在的File.status列是基线已有缺陷，本轮未修；完整删除／保留归阶段2。",
+    "无注册／历史／标记且已有关联普通文档的目录不能据名称追溯旧归属；不检测任意复制粘贴。",
     "控制注册域的受控入口；不声称全应用网络沙箱或已实现阶段5模块Grant／临时密钥。"
   ],
   "handoff": "阶段1-A-B交接说明.md",

@@ -434,6 +434,7 @@ func mustOpenTaskTestDB(t *testing.T) *gorm.DB {
 	if err = db.AutoMigrate(
 		&entity.Tenant{},
 		&entity.Knowledgebase{},
+		&entity.KnowledgeSourceRevision{},
 		&entity.Document{},
 		&entity.File{},
 		&entity.File2Document{},

@@ -59,6 +59,7 @@ func (f *recordingNavService) SummariesByDocIDs(context.Context, string, string,
 }
 
 func TestProcessBatchRemovesRetractedDocumentsFromNavigation(t *testing.T) {
+	setupKnowledgeCompilePolicyDB(t)
 	previous := nav.GetNavService()
 	recorder := &recordingNavService{}
 	nav.SetNavService(recorder)
@@ -87,6 +88,7 @@ func TestProcessBatchRemovesRetractedDocumentsFromNavigation(t *testing.T) {
 }
 
 func TestProcessBatchRetriesWhenNavigationRemovalFails(t *testing.T) {
+	setupKnowledgeCompilePolicyDB(t)
 	previous := nav.GetNavService()
 	recorder := &recordingNavService{removeErr: context.Canceled}
 	nav.SetNavService(recorder)
@@ -108,6 +110,7 @@ func TestProcessBatchRetriesWhenNavigationRemovalFails(t *testing.T) {
 }
 
 func TestProcessBatchReaddsEnabledDocumentToNavigation(t *testing.T) {
+	setupKnowledgeCompilePolicyDB(t)
 	previous := nav.GetNavService()
 	recorder := &recordingNavService{}
 	nav.SetNavService(recorder)
@@ -142,6 +145,7 @@ func TestProcessBatchReaddsEnabledDocumentToNavigation(t *testing.T) {
 }
 
 func TestProcessBatchRemovesNavigationForGraphOnlyDocument(t *testing.T) {
+	setupKnowledgeCompilePolicyDB(t)
 	previous := nav.GetNavService()
 	recorder := &recordingNavService{}
 	nav.SetNavService(recorder)

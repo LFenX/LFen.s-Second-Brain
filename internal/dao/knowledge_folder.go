@@ -71,12 +71,38 @@ func (d *FileDAO) EnsureKnowledgeFolder(ctx context.Context, db *gorm.DB, domain
 }
 
 // KnowledgeFolderIDs includes the upload binding and actual current/historical
-// source folders. Native name lookups must not adopt or delete these identities.
+// source folders and unclaimed legacy folders. Native name lookups must not
+// adopt or delete these identities.
 func KnowledgeFolderIDs(ctx context.Context, db *gorm.DB) *gorm.DB {
 	return db.WithContext(ctx).Raw(`SELECT id FROM (
 		SELECT knowledge_folder_id AS id FROM knowledgebase WHERE knowledge_enabled = ? AND knowledge_folder_id IS NOT NULL
 		UNION SELECT folder_id AS id FROM knowledge_source_revision
 		UNION SELECT f.parent_id AS id FROM file f JOIN file2document m ON m.file_id = f.id
 		JOIN document d ON d.id = m.document_id JOIN knowledgebase kb ON kb.id = d.kb_id WHERE kb.knowledge_enabled = ?
-	) knowledge_folders`, true, true)
+		UNION SELECT id FROM file WHERE knowledge_private_owner_id IS NOT NULL
+		UNION SELECT id FROM (?) AS unclaimed
+	) knowledge_folders`, true, true, UnclaimedKnowledgeFolderIDs(ctx, db))
+}
+
+// UnclaimedKnowledgeFolderIDs never infers ownership from a dataset name.
+// Only the reserved container directly below the real tenant root is exempt.
+// DISTINCT also materializes this subquery for MySQL updates of the file table.
+func UnclaimedKnowledgeFolderIDs(ctx context.Context, db *gorm.DB) *gorm.DB {
+	return db.WithContext(ctx).Raw(`SELECT DISTINCT f.id FROM file f
+		WHERE f.type = 'folder' AND f.source_type = 'knowledgebase'
+		AND NOT (f.name = '.knowledgebase' AND EXISTS (
+			SELECT 1 FROM file root WHERE root.id = f.parent_id AND root.parent_id = root.id
+			AND root.tenant_id = f.tenant_id AND root.id <> f.id))
+		AND NOT EXISTS (SELECT 1 FROM knowledgebase kb WHERE kb.knowledge_folder_id = f.id)
+		AND NOT EXISTS (SELECT 1 FROM knowledge_source_revision s WHERE s.folder_id = f.id)
+		AND NOT EXISTS (SELECT 1 FROM file source JOIN file2document m ON m.file_id = source.id
+			JOIN document d ON d.id = m.document_id WHERE source.parent_id = f.id)`)
+}
+
+// ProtectUnclaimedKnowledgeFolders freezes the classification before workers
+// start. A later ordinary mapping must not silently reclassify a private tree.
+func ProtectUnclaimedKnowledgeFolders(ctx context.Context, db *gorm.DB) error {
+	return db.WithContext(ctx).Model(&entity.File{}).
+		Where("knowledge_private_owner_id IS NULL AND id IN (SELECT id FROM (?) AS legacy_private_folders)", UnclaimedKnowledgeFolderIDs(ctx, db)).
+		Update("knowledge_private_owner_id", gorm.Expr("COALESCE(NULLIF(created_by, ''), tenant_id)")).Error
 }

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"testing"
 
+	"ragflow/internal/common"
 	"ragflow/internal/entity"
 	"ragflow/internal/permission"
 )
@@ -63,5 +64,46 @@ func TestKnowledgeNativeChatAndIngestionStopBeforeProviderOrQueue(t *testing.T) 
 	}
 	if err := db.Model(&entity.IngestionTask{}).Count(&count).Error; err != nil || count != 0 {
 		t.Fatalf("old copy created task count=%d err=%v", count, err)
+	}
+}
+
+func TestKnowledgeCreatedTaskRecoveryRechecksPolicyAndContinuesOrdinaryTasks(t *testing.T) {
+	db := setupServiceTestDB(t)
+	pushServiceDB(t, db)
+	for _, id := range []string{"private", "copy", "ordinary"} {
+		insertTestKB(t, id, "owner", 1, 0, 0)
+		insertTestDoc(t, "doc-"+id, id, 0, 0)
+		insertTestIngestionTaskWithStatus(t, "task-"+id, "owner", "doc-"+id, id, common.CREATED)
+	}
+	if err := db.Model(&entity.Knowledgebase{}).Where("id = ?", "private").Update("knowledge_enabled", true).Error; err != nil {
+		t.Fatal(err)
+	}
+	fid := "source"
+	if err := db.Create(&entity.File{ID: fid, TenantID: "owner", CreatedBy: "owner", Type: "txt", Name: "synthetic.txt"}).Error; err != nil {
+		t.Fatal(err)
+	}
+	for _, id := range []string{"private", "copy"} {
+		docID := "doc-" + id
+		if err := db.Create(&entity.File2Document{ID: id, FileID: &fid, DocumentID: &docID}).Error; err != nil {
+			t.Fatal(err)
+		}
+	}
+	publisher := &recordingTaskPublisher{}
+	svc := NewIngestionTaskService()
+	svc.taskPublisher = publisher
+	if err := svc.ScheduleCreatedTasks(t.Context()); !errors.Is(err, permission.ErrKnowledgeIngestionDenied) {
+		t.Fatalf("recovery policy: %v", err)
+	}
+	if len(publisher.messages) != 1 || publisher.messages[0].TaskID != "task-ordinary" {
+		t.Fatalf("published protected task: %+v", publisher.messages)
+	}
+	for _, id := range []string{"private", "copy"} {
+		var task entity.IngestionTask
+		if err := db.Where("id = ?", "task-"+id).Take(&task).Error; err != nil {
+			t.Fatal(err)
+		}
+		if task.Status != common.CREATED || task.PipelineLogID != nil {
+			t.Fatalf("denied task mutated: %+v", task)
+		}
 	}
 }

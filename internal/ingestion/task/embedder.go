@@ -690,15 +690,15 @@ func init() {
 	modelFactory := service.NewModelFactory()
 	componentpkg.DefaultEmbedderResolver = newEmbedderResolver(
 		func(ctx context.Context, kbID string) (string, error) {
+			if err := permission.CheckDatasetModelUse(ctx, dao.DB, []string{kbID}, "embedding"); err != nil {
+				return "", err
+			}
 			kb, err := dao.NewKnowledgebaseDAO().GetByID(ctx, dao.DB, kbID)
 			if err != nil {
 				return "", err
 			}
 			if kb == nil {
 				return "", nil
-			}
-			if kb.KnowledgeEnabled {
-				return "", permission.ErrKnowledgeModelUseDenied
 			}
 			return kb.EmbdID, nil
 		},

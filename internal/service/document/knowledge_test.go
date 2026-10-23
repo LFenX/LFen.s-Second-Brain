@@ -28,6 +28,18 @@ func TestKnowledgeOrdinaryUploadDoesNotAdoptManagedName(t *testing.T) {
 	}
 }
 
+func TestKnowledgeOrdinaryUploadDoesNotAdoptUnclaimedFolder(t *testing.T) {
+	db := setupServiceTestDB(t)
+	pushServiceDB(t, db)
+	if err := db.Create(&entity.File{ID: "orphan", ParentID: "parent", TenantID: "owner", CreatedBy: "owner", Name: "Former", Type: "folder", SourceType: "knowledgebase"}).Error; err != nil {
+		t.Fatal(err)
+	}
+	folder, err := testDocumentService(t).newAFileFromKB(t.Context(), "owner", "Former", "parent")
+	if err != nil || folder.ID == "orphan" {
+		t.Fatalf("ordinary upload adopted unclaimed private folder: %+v err=%v", folder, err)
+	}
+}
+
 func TestKnowledgeUploadKeepsCodeNameAndBytesWithoutParsing(t *testing.T) {
 	db := setupServiceTestDB(t)
 	pushServiceDB(t, db)

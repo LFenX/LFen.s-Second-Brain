@@ -37,6 +37,7 @@ import (
 	"ragflow/internal/ingestion/knowledge_compile"
 	pipelinepkg "ragflow/internal/ingestion/pipeline"
 	indexdoc "ragflow/internal/ingestion/task/indexdoc"
+	"ragflow/internal/permission"
 
 	"gorm.io/gorm"
 )
@@ -208,6 +209,16 @@ func (s *PipelineExecutor) Execute(ctx context.Context) (*PipelineResult, error)
 	start := time.Now()
 	if err := ctx.Err(); err != nil {
 		return nil, err
+	}
+	// A persisted task or a reused context can predate domain registration.
+	// Re-evaluate policy before any parser, compiler, model, or index work.
+	if !s.taskCtx.IsDebug() {
+		if s.taskCtx.KB.ID != s.taskCtx.Doc.KbID {
+			return nil, fmt.Errorf("pipeline knowledgebase does not match document")
+		}
+		if err := permission.CheckKnowledgeIngestion(ctx, dao.DB, []string{s.taskCtx.Doc.KbID}); err != nil {
+			return nil, err
+		}
 	}
 
 	dsl, correctedID, err := s.loadDSLFunc(ctx, s.canvasID)
