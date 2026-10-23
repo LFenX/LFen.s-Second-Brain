@@ -319,6 +319,17 @@ func (s *SkillSearchService) Search(ctx context.Context, userID string, req *Sea
 		common.Error("Skill search failed", err)
 		return nil, common.CodeOperatingError, fmt.Errorf("search failed: %w", err)
 	}
+	visible := make([]entity.SkillSearchResult, 0, len(results))
+	for _, result := range results {
+		if err := checkSkillSourceFolders(ctx, []string{result.FolderID}); err != nil {
+			if errors.Is(err, permission.ErrKnowledgeIngestionDenied) {
+				continue
+			}
+			return nil, common.CodeOperatingError, err
+		}
+		visible = append(visible, result)
+	}
+	results = visible
 
 	// Apply pagination
 	total := int64(len(results))

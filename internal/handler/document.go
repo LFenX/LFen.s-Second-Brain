@@ -437,6 +437,9 @@ func (h *DocumentHandler) DeleteDocument(c *gin.Context) {
 	}
 
 	if err = h.documentService.DeleteDocument(ctx, id); err != nil {
+		if respondPermissionErrorIf(c, err, false) {
+			return
+		}
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})

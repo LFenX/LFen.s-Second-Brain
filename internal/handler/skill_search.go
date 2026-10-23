@@ -182,23 +182,6 @@ func (h *SkillSearchHandler) IndexSkills(c *gin.Context) {
 		embdID = val
 	}
 
-	// Ensure index exists before indexing (for both ES and Infinity)
-	common.Info("Ensuring skill index exists before indexing",
-		zap.String("tenantID", user.ID),
-		zap.String("spaceID", req.SpaceID),
-		zap.String("engineType", h.docEngine.GetType()),
-		zap.Int("skillCount", len(req.Skills)))
-
-	if h.docEngine.GetType() == "elasticsearch" {
-		if err := h.indexerService.EnsureIndex(c.Request.Context(), user.ID, req.SpaceID, h.docEngine, embdID); err != nil {
-			if respondPermissionErrorIf(c, err, true) {
-				return
-			}
-			common.ResponseWithCodeData(c, common.CodeOperatingError, nil, err.Error())
-			return
-		}
-	}
-
 	if err := h.indexerService.BatchIndexSkills(c.Request.Context(), user.ID, req.SpaceID, req.Skills, h.docEngine, embdID); err != nil {
 		if respondPermissionErrorIf(c, err, true) {
 			return

@@ -174,24 +174,10 @@ func (s *FileService) initDatasetDocs(ctx context.Context, rootID, tenantID stri
 // Deduplicates duplicate entries that may have been created by
 // concurrent race conditions (TOCTOU).
 func (s *FileService) initSkillsFolder(ctx context.Context, rootID, tenantID string) error {
-	ordinary := dao.DB.WithContext(ctx).Where("type = ? AND id <> ? AND id NOT IN (?)", FileTypeFolder, rootID, dao.KnowledgeFolderIDs(ctx, dao.DB))
-	existing, err := s.fileDAO.Query(ctx, ordinary, SkillsFolderName, rootID, tenantID)
+	existing, err := s.ordinarySkillsFolders(ctx, rootID, tenantID)
 	if err != nil {
 		return err
 	}
-	// A system folder name never authorizes adopting or merging a knowledge
-	// source, including an otherwise ordinary ancestor of a protected subtree.
-	eligible := make([]*entity.File, 0, len(existing))
-	for _, candidate := range existing {
-		if err := checkKnowledgeTreeMutation(ctx, dao.DB, candidate); err != nil {
-			if errors.Is(err, permission.ErrKnowledgeIngestionDenied) {
-				continue
-			}
-			return err
-		}
-		eligible = append(eligible, candidate)
-	}
-	existing = eligible
 	if len(existing) > 0 {
 		if len(existing) > 1 {
 			common.Logger.Warn(fmt.Sprintf(
@@ -225,6 +211,45 @@ func (s *FileService) initSkillsFolder(ctx context.Context, rootID, tenantID str
 		SourceType: "",
 	}
 	return s.fileDAO.Insert(ctx, dao.DB, folder)
+}
+
+// GetSkillsFolderID selects the ordinary system folder using the same rules as
+// native file initialization. Its caller must authorize the tenant operation.
+func (s *FileService) GetSkillsFolderID(ctx context.Context, tenantID string) (string, error) {
+	root, err := s.fileDAO.GetRootFolder(ctx, dao.DB, tenantID)
+	if err != nil {
+		return "", err
+	}
+	if err := s.initSkillsFolder(ctx, root.ID, tenantID); err != nil {
+		return "", err
+	}
+	folders, err := s.ordinarySkillsFolders(ctx, root.ID, tenantID)
+	if err != nil {
+		return "", err
+	}
+	if len(folders) == 0 {
+		return "", permission.ErrKnowledgeIngestionDenied
+	}
+	return folders[0].ID, nil
+}
+
+func (s *FileService) ordinarySkillsFolders(ctx context.Context, rootID, tenantID string) ([]*entity.File, error) {
+	ordinary := dao.DB.WithContext(ctx).Where("type = ? AND id <> ? AND id NOT IN (?)", FileTypeFolder, rootID, dao.KnowledgeFolderIDs(ctx, dao.DB))
+	candidates, err := s.fileDAO.Query(ctx, ordinary, SkillsFolderName, rootID, tenantID)
+	if err != nil {
+		return nil, err
+	}
+	eligible := make([]*entity.File, 0, len(candidates))
+	for _, candidate := range candidates {
+		if err := permission.CheckKnowledgeFileTreeMutation(ctx, dao.DB, candidate); err != nil {
+			if errors.Is(err, permission.ErrKnowledgeIngestionDenied) {
+				continue
+			}
+			return nil, err
+		}
+		eligible = append(eligible, candidate)
+	}
+	return eligible, nil
 }
 
 // toFileResponse converts file model to response format
@@ -496,7 +521,7 @@ func (s *FileService) MoveFiles(ctx context.Context, userID string, srcFileIDs [
 			return err
 		}
 		if destFileID != "" {
-			if err := checkKnowledgeTreeMutation(ctx, dao.DB, file); err != nil {
+			if err := permission.CheckKnowledgeFileTreeMutation(ctx, dao.DB, file); err != nil {
 				return err
 			}
 		}

@@ -290,7 +290,7 @@ func (s *FileCommitService) checkCommitChanges(ctx context.Context, tx *gorm.DB,
 			return err
 		}
 		if source.Type == FileTypeFolder || change.Operation == "delete" {
-			if err := checkKnowledgeTreeMutation(ctx, tx, &source); err != nil {
+			if err := permission.CheckKnowledgeFileTreeMutation(ctx, tx, &source); err != nil {
 				return err
 			}
 		}

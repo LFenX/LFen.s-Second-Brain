@@ -1,6 +1,6 @@
 {
-  "version": "v0.23",
-  "recorded_at": "2026-10-23T22:44:14.829Z",
+  "version": "v0.24",
+  "recorded_at": "2026-10-23T23:12:51.528Z",
   "request_snapshot": "阶段0方案通过。开始推进本机A的阶段1，先冻结双方共享的领域模型、节点身份、权限与外发规则及接口契约，再完成最小底座适配，给B整理可直接接续的交接说明。暂不调用模型，完成验证后推送远端。",
   "consent": {
     "response": "启动审查",
@@ -242,11 +242,69 @@
       "engineering_status": "Fixed",
       "fix": "skills候选排除受管／孤立目录及root／非Folder，并在采用／去重前检查整棵子树；不合并受管祖先，普通目录去重保持",
       "evidence": "普通／受管先后次序、仅受管、孤立及受管祖先5分支重复初始化后ID／父子／来源保护保持；普通去重正例；真实MySQL合成租户两次root初始化保留绑定、raw父级和transfer拒绝"
+    },
+    {
+      "id": "AR-28",
+      "severity": "P1",
+      "summary": "原生源Document硬删除移除最后的私有来源事实，旧team副本重新可读且六类模型用途放行。",
+      "locations": [
+        "internal/service/document/document_crud.go:221",
+        "internal/service/document/document_crud.go:266",
+        "internal/service/document/document_crud.go:307",
+        "internal/permission/knowledge_sources.go:12"
+      ],
+      "evidence_refs": [
+        ".local-data/stage1a-20261024/review-20261024/round-9-document-deletion.log",
+        ".local-data/stage1a-20261024/review-20261024/round9-document-counterexamples.reference.txt"
+      ],
+      "engineering_status": "Fixed",
+      "fix": "注册域的单个、批量、全部及保留File清理在任务／索引／来源／映射／计数变化前拒绝；普通库与普通副本删除保持",
+      "evidence": "真实DocumentService＋SQLite覆盖local／knowledgebase外部旧File、primary及history、四个清理入口与普通副本正例；实际MySQL／HTTP两SourceType的拒绝后事实／权限／计数保持及普通副本删除10组通过"
+    },
+    {
+      "id": "AR-29",
+      "severity": "P1",
+      "summary": "SkillSpace独立skills名称/缓存与同名递归清理绕过受管树保护，删除来源Folder/raw并解除旧副本限制。",
+      "locations": [
+        "internal/service/skill_space.go:79",
+        "internal/service/skill_space.go:210",
+        "internal/service/skill_space.go:532"
+      ],
+      "evidence_refs": [
+        ".local-data/stage1a-20261024/review-20261024/round-9-skillspace.log",
+        ".local-data/stage1a-20261024/review-20261024/round-9-skillspace-paths.log",
+        ".local-data/stage1a-20261024/review-20261024/round9-skillspace-counterexamples.reference.txt"
+      ],
+      "engineering_status": "Fixed",
+      "fix": "SkillSpace根目录选择复用FileService并每次复核；移除独立身份缓存与递归清理，同名清理由原生整树授权处理",
+      "evidence": "受管子目录／受管root别名／缓存变更及普通清理正例通过；真实FileService两次root初始化保持受管目录和raw关系；SkillSpace创建使用本地SQLite验证"
+    },
+    {
+      "id": "AR-30",
+      "severity": "P1",
+      "summary": "SkillSpace授权不与已知来源所有者/C3取交集，无权主体仍可改名并经真实重索引将受限原文送入假Embedding和假索引。",
+      "locations": [
+        "internal/service/skill_space_permission.go:27",
+        "internal/permission/database_source.go:389",
+        "internal/service/skill_space.go:379",
+        "internal/service/skill_indexer.go:435",
+        "internal/service/skill_indexer.go:700",
+        "internal/service/skill_indexer.go:796"
+      ],
+      "evidence_refs": [
+        ".local-data/stage1a-20261024/review-20261024/round-9-skillspace-paths.log",
+        ".local-data/stage1a-20261024/review-20261024/round-9-skill-reindex-frontmatter.log",
+        ".local-data/stage1a-20261024/review-20261024/round-9-background-confirmed.log",
+        ".local-data/stage1a-20261024/review-20261024/round9-skillspace-counterexamples-final.reference.txt"
+      ],
+      "engineering_status": "Fixed",
+      "fix": "原生SkillSpace资源／Scope隐藏受管树；重索引按持久FolderID，显式来源在模型／配置／存储与后台清理前复核；旧索引结果先过滤后统计；HTTP提前EnsureIndex并入已有受保护批量流程",
+      "evidence": "真service／handler、MemoryStorage、进程内假Embedding与假DocEngine：私有路径零模型依赖、零索引写入，普通重索引正常；默认空间显式来源及root真实HTTP2组通过；历史索引过滤、后台清理和命名空间操作由SQLite／MemoryStorage／假模型覆盖，未声称命名空间真实HTTP通过"
     }
   ],
   "engineering_verification": {
     "status": "Implemented",
-    "verified_at": "2026-10-23T22:44:14.829Z",
+    "verified_at": "2026-10-23T23:12:51.528Z",
     "go_execution_results_reused": false,
     "go": {
       "command": "bash build.sh --test -json（19相关包）及bash build.sh --go",
@@ -254,26 +312,26 @@
         "ragflow/internal/entity",
         "ragflow/internal/permission/response",
         "ragflow/internal/permission",
-        "ragflow/internal/agent/retrievalbridge",
-        "ragflow/internal/admin",
-        "ragflow/internal/router",
-        "ragflow/internal/ingestion/knowledge_compile",
+        "ragflow/internal/utility",
         "ragflow/internal/service/file",
         "ragflow/internal/service/chunk",
-        "ragflow/internal/utility",
-        "ragflow/internal/service/nlp",
-        "ragflow/internal/service/dataset",
-        "ragflow/internal/service/document",
         "ragflow/internal/dao",
-        "ragflow/internal/ingestion/task",
+        "ragflow/internal/service/nlp",
+        "ragflow/internal/agent/retrievalbridge",
+        "ragflow/internal/admin",
+        "ragflow/internal/service/document",
+        "ragflow/internal/router",
+        "ragflow/internal/service/dataset",
+        "ragflow/internal/ingestion/knowledge_compile",
         "ragflow/internal/agent/component",
         "ragflow/internal/handler",
         "ragflow/internal/agent/tool",
+        "ragflow/internal/ingestion/task",
         "ragflow/internal/service"
       ],
       "packages_passed": 19,
-      "top_level_tests_passed": 3481,
-      "tests_and_subtests_passed": 5668,
+      "top_level_tests_passed": 3491,
+      "tests_and_subtests_passed": 5685,
       "skipped_existing_optional_or_unsupported_tests": 10,
       "failed": 0,
       "native_unit_packages": [
@@ -282,7 +340,7 @@
       ]
     },
     "live_http_original_assertion_groups": 28,
-    "additional_live_probe_groups": 45,
+    "additional_live_probe_groups": 57,
     "additional_live_probe_breakdown": {
       "strict_contract_and_identity_and_transfer": 6,
       "query_protocol": 3,
@@ -292,7 +350,10 @@
       "directory_origin_and_migration": 6,
       "domain_archive_three_modes": 3,
       "history_and_no_history_and_ordinary_deleted_file": 11,
-      "skills_initializer": 1
+      "skills_initializer": 1,
+      "registered_document_cleanup_and_copy": 10,
+      "default_skill_index_guard": 1,
+      "system_root_preserves_known_source": 1
     },
     "loaded_server_modes": [
       {
@@ -323,7 +384,7 @@
     "manifest": [
       {
         "file": "README.md",
-        "sha256": "8056c92477c41632a25f3f635b2901a41c4ccc9fd7f49f4e102152eb3c331ece"
+        "sha256": "3288cf30201ae15cc5532c5360f1f14418c629a774c50fbe4b84a042e5b52fdc"
       },
       {
         "file": "docs/knowledge-foundation-v1.example.json",
@@ -331,7 +392,7 @@
       },
       {
         "file": "docs/knowledge-foundation-v1.openapi.json",
-        "sha256": "d90cf748aaa408d2f69a5c4f60fdab13b960b906d852a77032aeb917ff52af75"
+        "sha256": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4"
       },
       {
         "file": "internal/admin/user_detail_test.go",
@@ -410,6 +471,10 @@
         "sha256": "cc2f220d925ca13df4735ade4032149a1574297dfc31fe2567d9d062154f338e"
       },
       {
+        "file": "internal/handler/document.go",
+        "sha256": "d610d37873701bc5aa087d928ff9b26c27a78965ccc23c6b15d599a0b94b8366"
+      },
+      {
         "file": "internal/handler/document_test.go",
         "sha256": "55789e0ca20ec3fc42c8fd6e1a817737a69ed54da0a4675c2f4571a53bdec4fc"
       },
@@ -434,8 +499,16 @@
         "sha256": "9cc1aae1429688e94cca6d43387bec9c1c8d18c2780d21b176d09835b9f01392"
       },
       {
+        "file": "internal/handler/knowledge_skills_test.go",
+        "sha256": "983aea56edecb6d2516d210aef5cedd3306b829f5c5afaf029dd67b126e64380"
+      },
+      {
         "file": "internal/handler/knowledge_test.go",
         "sha256": "94f72870af2414923b9b1a4a8b34b4e821475d55213c1f280d842e997964e96c"
+      },
+      {
+        "file": "internal/handler/skill_search.go",
+        "sha256": "e37524060d96ae4498e6e3d34c36b54e5ca6cda0e2624f8f6a5b361a4c5b0c6a"
       },
       {
         "file": "internal/ingestion/knowledge_compile/consumer.go",
@@ -487,15 +560,15 @@
       },
       {
         "file": "internal/permission/database_source.go",
-        "sha256": "9230590515d0b20d8ead4a4de2fc3dd4c129a0a2c95185eb0351a9f53c34a76d"
+        "sha256": "0535cfe2611a7770c37a621dc60510f7e5f7deee0ab7c62c6d44e843ce5d1eae"
       },
       {
         "file": "internal/permission/database_source_test.go",
-        "sha256": "264c6575a82bf04ba73c615bd1333ff035f060ed9c8c9723412445e615da6bcf"
+        "sha256": "756cef746afc17d9c3d4aeb26c3272e2433ed694d91fb0338ae039312a7e8bfc"
       },
       {
         "file": "internal/permission/knowledge.go",
-        "sha256": "c8c3b89e346045f9f72562e7f52d7611bafc2347e45a79f8773f548cf5cde44b"
+        "sha256": "1443c50212bdbd7b1a4496e9b95f8e031b53c30c71704bfead239e67c1945adc"
       },
       {
         "file": "internal/permission/knowledge_history.go",
@@ -582,6 +655,10 @@
         "sha256": "b968bcb6c5cd359c09f224744d7b71efd48841fbfb9ca7e39e3016250c95880d"
       },
       {
+        "file": "internal/service/document/document_crud.go",
+        "sha256": "dad1dfe7a0b1b788099c02b492bd98cbca4855073cc0b325426bdbe439cd27dc"
+      },
+      {
         "file": "internal/service/document/document_test.go",
         "sha256": "e0b14be1159e8d1fdef1868bb112fbe35b227bdbe5387239c87aaadc4db73c3f"
       },
@@ -594,20 +671,24 @@
         "sha256": "a16d2e4e8aa40d382b660449fde57a6814856bd96ba727a35f6839d7db1ecd5e"
       },
       {
+        "file": "internal/service/document/knowledge_cleanup_test.go",
+        "sha256": "ce71366d6fbac25df453af21d7779cbe6c200505964fe3c55e0ec41237a410d8"
+      },
+      {
         "file": "internal/service/document/knowledge_test.go",
         "sha256": "5c3f88c1ce01b3eb2c5b4d1f5259595b370e6dce390600fadfaa5030df17f30f"
       },
       {
         "file": "internal/service/file/file_commit.go",
-        "sha256": "245d351d5321b3f3a67f239b1a37703cf64041e7b16022955fbea84263f5dc94"
+        "sha256": "f280249845221083dcea605a70117ec6af20d18976a732a36f5094d9238c149f"
       },
       {
         "file": "internal/service/file/file_delete.go",
-        "sha256": "98d92b82d366d39810a0b8143a6c0ab0d36b6a644307a8d2c46a54831b859a6d"
+        "sha256": "f4c62bf7197e99e72b63d9ec2ed7879a71fbc34365ef71e29d5f7df5fd7420e9"
       },
       {
         "file": "internal/service/file/file_folder.go",
-        "sha256": "70dacd2063f4b64b15ad6d6953a6cd4fd6101fc4f820d015eb90b5884593e3d9"
+        "sha256": "bce59880c04d1319c083e75d3d6ad6070262c70ee910050a27975dc8ab84a851"
       },
       {
         "file": "internal/service/file/file_folder_test.go",
@@ -615,7 +696,7 @@
       },
       {
         "file": "internal/service/file/knowledge.go",
-        "sha256": "00a5e138e1566b37835069724c9694d29551a28ac0ab31975277e1888e395999"
+        "sha256": "0fde410f102895c99468345febd4e5b79a3a51a83296ea10ce0f963c9011549e"
       },
       {
         "file": "internal/service/file/knowledge_skills_test.go",
@@ -634,6 +715,10 @@
         "sha256": "ef1fa324b1134384e8cdebd3b2490082fa0c4b0ef347c273a84fc6038e717ec0"
       },
       {
+        "file": "internal/service/knowledge_skills_test.go",
+        "sha256": "53db0fe4a4298309ed627be67a2300430aabb9d991cb7be641921e5cb205728b"
+      },
+      {
         "file": "internal/service/knowledge_test.go",
         "sha256": "8c377acff57bd138ff87f09f92cfea7e51d65ffe5798380d7a90d129e090dbe4"
       },
@@ -650,6 +735,22 @@
         "sha256": "c66c5e9bc8c4e6e00d02f813e127621fb7b5d8aded7843dd49803c2699762a3e"
       },
       {
+        "file": "internal/service/skill_indexer.go",
+        "sha256": "64589188c796fe83234c10304a144c3f64493e816ac425962022ead2aec3bce6"
+      },
+      {
+        "file": "internal/service/skill_search.go",
+        "sha256": "4884c55f1d4a552dbbce88722200163e415052f92270020344d79dacc9be6380"
+      },
+      {
+        "file": "internal/service/skill_space.go",
+        "sha256": "8992e880e5dc790d721f4c2eb5fbb2db83ce80f8face71fa49ceed056210f33f"
+      },
+      {
+        "file": "internal/service/skill_space_permission.go",
+        "sha256": "1987b0408f75327f2bea684c5a1d6116c3ef5e23be5f9ad0924253facdebb955"
+      },
+      {
         "file": "internal/service/test_helpers_test.go",
         "sha256": "4d08b360e6ee9aa169ce3a789970570039f8f25fcc35e91fe08707d9c6b46a2e"
       },
@@ -663,30 +764,30 @@
       },
       {
         "file": "会话接续说明.md",
-        "sha256": "0fd5a1a9fa197ddb7842eec6ca7aadcd8ea43cef67a170cbbcde7f6f343e960f"
+        "sha256": "ac69d4afc37b74652c4c3c57684e293d32bbcb51d470dea26777b5be0de1850a"
       },
       {
         "file": "本地第二大脑知识库技术方案.md",
-        "sha256": "54d41bcbd1b524e36418702021440fa15994e5c50db390c18e9a1456be5437f2"
+        "sha256": "5ed18f8c09e8b63bae0d6a0fddf8f0df17e320e5fdd276ae11e92ccc7cbd3e0b"
       },
       {
         "file": "阶段1-A-B交接说明.md",
-        "sha256": "ac7bab9d47be895b1bcc581b6daf9245ed9ab6b13a97c5569b8d8d41a041df9f"
+        "sha256": "05eac9802de1e6642ed5428e59ae385c74005242c90f48c48683b7950863feaa"
       },
       {
         "file": "阶段1-A底座验证报告.json",
         "sha256": "53279a86ca9236b2baaa563711e9a8cfaeaf279bdd929a34859a88d6c415b383"
       }
     ],
-    "subject_sha256": "80cd9f874cda025bdc276b52a14732eb22ab1529045f91c54ecc94f5e0d0391d",
+    "subject_sha256": "ea97b6d7213410efd84fa67032d54e39514a74490304629c88aeee7bcaa94094",
     "subject_definition": "领域代码、原契约／fixture、原验证报告及当前入口／交接文档；追加式审查结果和轮次证据不改变被审查的产品交付",
     "requirements_sha256": "a62c5bf2cb663eec13451eff141c3bf3fef57230e5eb380bdcc5a542c29db403"
   },
   "runtime": {
-    "binary_sha256": "7c241a535264887fc9507e7a700fe9070d8eb7663de5b2020f9a23d98d0531d7",
+    "binary_sha256": "22513d33b5eb33f80d32d5ea363478d8253d59efebaf62a58a25287a3d7efef4",
     "source_and_loaded_binary_match": true,
     "health": "healthy",
-    "verification_at": "2026-10-23T22:44:14.831Z",
+    "verification_at": "2026-10-23T23:12:51.530Z",
     "changed_service": "ragflow-cpu",
     "original_volumes_preserved": true,
     "ragflow_dependencies_identity_image_and_mounts_unchanged": 5,
@@ -788,6 +889,21 @@
         "result": "FindingsRequireRepair",
         "report": "docs/stage1a-review-round-8.md",
         "report_sha256": "f22982afdda19b8aa5ea9d0b2f139301ad7a2f25d93710a68b72706efd0d69b9"
+      },
+      {
+        "round": 9,
+        "delivery": "dce3efa27416969178180eec7cd891a893c18f20",
+        "subject_sha256": "80cd9f874cda025bdc276b52a14732eb22ab1529045f91c54ecc94f5e0d0391d",
+        "requirements_sha256": "a62c5bf2cb663eec13451eff141c3bf3fef57230e5eb380bdcc5a542c29db403",
+        "reviewer": "/root/review_round9",
+        "started_at": "2026-10-23T22:44:40.516Z",
+        "completed_at": "2026-10-23T22:58:35.470Z",
+        "coverage": "Complete",
+        "unreviewed_items": [],
+        "findings": 3,
+        "result": "FindingsRequireRepair",
+        "report": "docs/stage1a-review-round-9.md",
+        "report_sha256": "efe1b1272e6c203b810016c0633aa90359790b00af9148e504a67f7401da4c4c"
       }
     ],
     "required_same_delivery_complete_clean_rounds": 2,
@@ -810,8 +926,9 @@
     ],
     "formal_governance_gate_claimed": false,
     "restarted_after_findings": [
-      "AR-26",
-      "AR-27"
+      "AR-28",
+      "AR-29",
+      "AR-30"
     ]
   },
   "limitations": [
@@ -825,7 +942,9 @@
     "无注册／历史／标记且已有关联普通文档的目录不能据名称追溯旧归属；不检测任意复制粘贴。",
     "控制注册域的受控入口；不声称全应用网络沙箱或已实现阶段5模块Grant／临时密钥。",
     "审查期间两个外部AICS容器被替换或改名；原7项不变结论绑定原核验时点，当前5个RAGFlow依赖身份／镜像／挂载不变。未归因变更主体，也未回退或修改AICS。",
-    "原生混合受限祖先版本采取整体隐藏，不提供部分版本可见；历史按批检查，尚无百万级历史树性能验收。"
+    "原生混合受限祖先版本采取整体隐藏，不提供部分版本可见；历史按批检查，尚无百万级历史树性能验收。",
+    "原最小运行库缺少上游skill_spaces表，命名SkillSpace的真实HTTP路径未验；本轮不新增该业务表，代码边界由隔离SQLite及假模型验证。",
+    "阶段1明确拒绝注册域的原生Document破坏性清理；源删除／撤销／物理保留协议归阶段2。原生SkillSpace含已知受管子树时整体隐藏，普通skills保持；显式历史索引Folder来源受同一约束，不识别任意粘贴。"
   ],
   "handoff": "阶段1-A-B交接说明.md",
   "private_evidence_location": ".local-data/stage1a-20261024/review-20261024（被Git忽略且权限受限；含备份，不上传）",

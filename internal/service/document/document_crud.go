@@ -224,6 +224,13 @@ func (s *DocumentService) DeleteDocuments(ctx context.Context, ids []string, del
 		_, permissionErr := permissionresponse.Normalize(err)
 		return 0, permissionErr
 	}
+	kb, err := s.kbDAO.GetByID(ctx, dao.DB, datasetID)
+	if err != nil {
+		return 0, err
+	}
+	if kb.KnowledgeEnabled {
+		return 0, permission.ErrKnowledgeIngestionDenied
+	}
 
 	// 2. Resolve document IDs
 	if deleteAll {
@@ -268,6 +275,9 @@ func (s *DocumentService) deleteDocumentFull(ctx context.Context, docID string) 
 	if err != nil {
 		return err
 	}
+	if kb.KnowledgeEnabled {
+		return permission.ErrKnowledgeIngestionDenied
+	}
 
 	// Delete tasks from DB
 	ingestionTask, err := s.ingestionTaskDAO.GetByDocumentID(ctx, dao.DB, docID)
@@ -308,6 +318,9 @@ func (s *DocumentService) RemoveDocumentKeepFile(ctx context.Context, docID stri
 	doc, kb, err := s.resolveDocAndKB(ctx, docID)
 	if err != nil {
 		return err
+	}
+	if kb.KnowledgeEnabled {
+		return permission.ErrKnowledgeIngestionDenied
 	}
 	variants, taskTypes, typeErr := s.documentKnowledgeCompileTypes(ctx, kb.TenantID, kb.ID, docID)
 	if typeErr != nil {

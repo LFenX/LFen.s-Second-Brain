@@ -87,6 +87,9 @@ func (s *SkillIndexerService) IndexSkill(ctx context.Context, userID, spaceID st
 }
 
 func (s *SkillIndexerService) indexSkill(ctx context.Context, tenantID, spaceID string, skill SkillInfo, docEngine engine.DocEngine, embdID string) error {
+	if err := checkSkillSourceFolders(ctx, []string{skill.FolderID}); err != nil {
+		return err
+	}
 	spaceID = normalizeSpaceID(spaceID)
 
 	config, err := s.configDAO.GetOrCreate(ctx, dao.DB, tenantID, spaceID, embdID)
@@ -221,6 +224,15 @@ func (s *SkillIndexerService) batchIndexSkills(ctx context.Context, tenantID, sp
 	spaceID = normalizeSpaceID(spaceID)
 	if len(skills) == 0 {
 		return nil
+	}
+	folderIDs := make([]string, 0, len(skills))
+	for _, skill := range skills {
+		if skill.FolderID != "" {
+			folderIDs = append(folderIDs, skill.FolderID)
+		}
+	}
+	if err := checkSkillSourceFolders(ctx, folderIDs); err != nil {
+		return err
 	}
 
 	config, err := s.configDAO.GetOrCreate(ctx, dao.DB, tenantID, spaceID, embdID)
@@ -414,6 +426,9 @@ func (s *SkillIndexerService) UpdateSkillVersion(ctx context.Context, userID, sp
 	if err != nil {
 		return err
 	}
+	if err := checkSkillSourceFolders(ctx, []string{skill.FolderID}); err != nil {
+		return err
+	}
 	// Delete old version first (upsert behavior)
 	if err := s.deleteSkillByName(ctx, tenantID, spaceID, skill.Name, docEngine); err != nil {
 		// Log but don't fail - the document might not exist
@@ -438,6 +453,17 @@ func (s *SkillIndexerService) ReindexAll(ctx context.Context, userID, spaceID st
 		return nil, err
 	}
 	spaceID = normalizeSpaceID(spaceID)
+	space, err := s.spaceDAO.GetByID(ctx, dao.DB, spaceID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get space: %w", err)
+	}
+	if space.TenantID != tenantID {
+		return nil, permission.ErrResourceNotFound
+	}
+	spaceFolderID := space.FolderID
+	if err := checkSkillSourceFolders(ctx, []string{spaceFolderID}); err != nil {
+		return nil, err
+	}
 	// Get current config and increment semantic version
 	config, err := s.configDAO.GetOrCreate(ctx, dao.DB, tenantID, spaceID, embdID)
 	if err != nil {
@@ -475,23 +501,6 @@ func (s *SkillIndexerService) ReindexAll(ctx context.Context, userID, spaceID st
 		return nil, fmt.Errorf("failed to create index with dimension %d: %w", newDimension, err)
 	}
 
-	// Get space info to find folder ID
-	space, err := s.spaceDAO.GetByID(ctx, dao.DB, spaceID)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get space: %w", err)
-	}
-	if space.TenantID != tenantID {
-		return nil, fmt.Errorf("space not found")
-	}
-
-	// Find the actual space folder ID by space name (consistent with frontend behavior)
-	// Frontend uses space name to find folder, not space.FolderID which may be outdated
-	spaceFolderID, err := s.getSpaceFolderIDByName(ctx, tenantID, space.Name)
-	if err != nil {
-		return nil, fmt.Errorf("failed to find space folder: %w", err)
-	}
-	common.Info(fmt.Sprintf("ReindexAll: found space folder ID %s for space %s (stored FolderID was %s)", spaceFolderID, space.Name, space.FolderID))
-
 	// Traverse all skill folders under the space
 	skills, err := s.getSkillsFromFileSystem(ctx, tenantID, spaceFolderID, spaceID)
 	if err != nil {
@@ -526,6 +535,9 @@ func (s *SkillIndexerService) ReindexAll(ctx context.Context, userID, spaceID st
 
 // getSkillsFromFileSystem traverses the space folder and gets all skills with their latest version
 func (s *SkillIndexerService) getSkillsFromFileSystem(ctx context.Context, tenantID, spaceFolderID, spaceID string) ([]SkillInfo, error) {
+	if err := checkSkillSourceFolders(ctx, []string{spaceFolderID}); err != nil {
+		return nil, err
+	}
 	var skills []SkillInfo
 
 	// Get all skill folders under the space
@@ -695,48 +707,6 @@ func isTextFileForSkill(fileName string) bool {
 	return textFileExtensions[ext]
 }
 
-// getSpaceFolderIDByName finds the space folder ID by space name (consistent with frontend behavior)
-// Frontend finds space folder by listing folders under skills folder and matching by name
-func (s *SkillIndexerService) getSpaceFolderIDByName(ctx context.Context, tenantID, spaceName string) (string, error) {
-	// Get root folder
-	rootFolder, err := s.fileDAO.GetRootFolder(ctx, dao.DB, tenantID)
-	if err != nil {
-		return "", fmt.Errorf("failed to get root folder: %w", err)
-	}
-
-	// Find skills folder under root
-	files, _, err := s.fileDAO.GetByPfID(ctx, dao.DB, tenantID, rootFolder.ID, 0, 0, []dao.OrderTerm{{Column: "name"}}, "", false)
-	if err != nil {
-		return "", fmt.Errorf("failed to list root folder contents: %w", err)
-	}
-
-	var skillsFolderID string
-	for _, file := range files {
-		if file.Type == "folder" && file.Name == "skills" {
-			skillsFolderID = file.ID
-			break
-		}
-	}
-
-	if skillsFolderID == "" {
-		return "", fmt.Errorf("skills folder not found for tenant %s", tenantID)
-	}
-
-	// Find space folder by name under skills folder
-	spaceFolders, _, err := s.fileDAO.GetByPfID(ctx, dao.DB, tenantID, skillsFolderID, 0, 0, []dao.OrderTerm{{Column: "name"}}, "", false)
-	if err != nil {
-		return "", fmt.Errorf("failed to list skills folder contents: %w", err)
-	}
-
-	for _, folder := range spaceFolders {
-		if folder.Type == "folder" && folder.Name == spaceName {
-			return folder.ID, nil
-		}
-	}
-
-	return "", fmt.Errorf("space folder '%s' not found under skills folder", spaceName)
-}
-
 // parseSkillMetadata parses SKILL.md content to extract metadata
 func (s *SkillIndexerService) parseSkillMetadata(content, defaultName string) (name, description string, tags []string) {
 	name = defaultName
@@ -794,6 +764,9 @@ func (s *SkillIndexerService) parseSkillMetadata(content, defaultName string) (n
 
 // getFileContent retrieves the content of a file from storage
 func (s *SkillIndexerService) getFileContent(ctx context.Context, tenantID string, file *entity.File) ([]byte, error) {
+	if err := checkSkillSourceFolders(ctx, []string{file.ID}); err != nil {
+		return nil, err
+	}
 	if file.Location == nil || *file.Location == "" {
 		return nil, fmt.Errorf("file location is empty")
 	}
@@ -864,7 +837,7 @@ func (s *SkillIndexerService) cleanupOldVersions(ctx context.Context, tenantID, 
 	return nil
 }
 
-// InitializeIndex initializes the skill search index for a tenant
+// InitializeIndex authorizes a native skill space before preparing its index.
 func (s *SkillIndexerService) InitializeIndex(ctx context.Context, userID, spaceID string, docEngine engine.DocEngine, embdID string) error {
 	tenantID, err := resolveSkillSpaceTenantID(ctx, userID, spaceID, permission.OperationUpdate)
 	if err != nil {
@@ -873,6 +846,7 @@ func (s *SkillIndexerService) InitializeIndex(ctx context.Context, userID, space
 	return s.initializeIndex(ctx, tenantID, spaceID, docEngine, embdID)
 }
 
+// initializeIndex creates the native skill index when absent.
 func (s *SkillIndexerService) initializeIndex(ctx context.Context, tenantID, spaceID string, docEngine engine.DocEngine, embdID string) error {
 	// Check if index exists
 	indexName := SkillIndexName(tenantID, spaceID)
@@ -938,11 +912,6 @@ func (s *SkillIndexerService) createIndexWithDimension(ctx context.Context, tena
 	}
 	common.Info("Successfully created skill index", zap.String("indexName", indexName))
 	return nil
-}
-
-// EnsureIndex ensures the skill index exists for a tenant
-func (s *SkillIndexerService) EnsureIndex(ctx context.Context, userID, spaceID string, docEngine engine.DocEngine, embdID string) error {
-	return s.InitializeIndex(ctx, userID, spaceID, docEngine, embdID)
 }
 
 // generateEmbedding generates embedding for text using the specified model

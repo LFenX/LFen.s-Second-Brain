@@ -395,6 +395,12 @@ func (s *databaseSource) GetResources(ctx context.Context, refs []ResourceRef) (
 			if !ok || folder.TenantID != space.TenantID || folder.Type != "folder" {
 				continue
 			}
+			if err := CheckKnowledgeFileTreeMutation(ctx, s.db, &entity.File{ID: space.FolderID, TenantID: folder.TenantID, Type: folder.Type}); err != nil {
+				if errors.Is(err, ErrKnowledgeIngestionDenied) {
+					continue
+				}
+				return nil, err
+			}
 			ownerUserID := integrationOwnerIDsByTenant[space.TenantID]
 			if ownerUserID == "" {
 				return nil, fmt.Errorf("%w: tenant %q has no active owner", ErrInvalidPermission, space.TenantID)

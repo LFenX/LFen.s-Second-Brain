@@ -38,22 +38,19 @@ type SkillSpaceService struct {
 	fileService          *file.FileService
 	configDAO            *dao.SkillSearchConfigDAO
 	tenantDAO            *dao.TenantDAO
-	skillsFolderCache    map[string]string // tenant-keyed cache for skills folder ID
-	skillsFolderMu       sync.RWMutex      // protects skillsFolderCache
-	skillsFolderCreateMu sync.Map          // tenant-scoped locks for folder creation
-	spaceCreateMu        sync.Map          // tenant-scoped locks for space creation (prevents TOCTOU races)
+	skillsFolderCreateMu sync.Map // tenant-scoped locks for folder creation
+	spaceCreateMu        sync.Map // tenant-scoped locks for space creation (prevents TOCTOU races)
 }
 
 // NewSkillSpaceService creates a new SkillSpaceService instance.
 // dr is the document remover used when deleting files; it must be non-nil.
 func NewSkillSpaceService(dr file.DocRemover) *SkillSpaceService {
 	return &SkillSpaceService{
-		spaceDAO:          dao.NewSkillSpaceDAO(),
-		fileDAO:           dao.NewFileDAO(),
-		fileService:       file.NewFileService(dr),
-		configDAO:         dao.NewSkillSearchConfigDAO(),
-		tenantDAO:         dao.NewTenantDAO(),
-		skillsFolderCache: make(map[string]string),
+		spaceDAO:    dao.NewSkillSpaceDAO(),
+		fileDAO:     dao.NewFileDAO(),
+		fileService: file.NewFileService(dr),
+		configDAO:   dao.NewSkillSearchConfigDAO(),
+		tenantDAO:   dao.NewTenantDAO(),
 	}
 }
 
@@ -74,76 +71,12 @@ type UpdateSpaceRequest struct {
 	TopK        int    `json:"top_k"`
 }
 
-// getSkillsFolderID gets or creates the skills folder for a tenant
-// Uses tenant-scoped locking to prevent duplicate folder creation
+// getSkillsFolderID serializes selection through the native file service.
 func (s *SkillSpaceService) getSkillsFolderID(ctx context.Context, tenantID string) (string, error) {
-	// Return cached value if available (read lock)
-	s.skillsFolderMu.RLock()
-	if cachedID, ok := s.skillsFolderCache[tenantID]; ok && cachedID != "" {
-		s.skillsFolderMu.RUnlock()
-		return cachedID, nil
-	}
-	s.skillsFolderMu.RUnlock()
-
-	// Acquire tenant-scoped creation lock
 	lock, _ := s.skillsFolderCreateMu.LoadOrStore(tenantID, &sync.Mutex{})
 	lock.(*sync.Mutex).Lock()
 	defer lock.(*sync.Mutex).Unlock()
-
-	// Double-check cache after acquiring lock
-	s.skillsFolderMu.RLock()
-	if cachedID, ok := s.skillsFolderCache[tenantID]; ok && cachedID != "" {
-		s.skillsFolderMu.RUnlock()
-		return cachedID, nil
-	}
-	s.skillsFolderMu.RUnlock()
-
-	// Get root folder
-	rootFolder, err := s.fileDAO.GetRootFolder(ctx, dao.DB, tenantID)
-	if err != nil {
-		return "", fmt.Errorf("failed to get root folder: %w", err)
-	}
-
-	// Look for skills folder under root
-	files, _, err := s.fileDAO.GetByPfID(ctx, dao.DB, tenantID, rootFolder.ID, 0, 0, []dao.OrderTerm{{Column: "name"}}, "", false)
-	if err != nil {
-		return "", fmt.Errorf("failed to list root folder contents: %w", err)
-	}
-
-	for _, file := range files {
-		if file.Type == "folder" && file.Name == "skills" {
-			// Cache the result (write lock)
-			s.skillsFolderMu.Lock()
-			s.skillsFolderCache[tenantID] = file.ID
-			s.skillsFolderMu.Unlock()
-			return file.ID, nil
-		}
-	}
-
-	// Skills folder not found, create it
-	common.Info("Creating skills folder", zap.String("tenant_id", tenantID))
-	folderID := common.GenerateUUID()
-	folder := &entity.File{
-		ID:         folderID,
-		ParentID:   rootFolder.ID,
-		TenantID:   tenantID,
-		CreatedBy:  tenantID,
-		Name:       "skills",
-		Type:       "folder",
-		Size:       0,
-		SourceType: "system",
-	}
-
-	if err = s.fileDAO.Create(ctx, dao.DB, folder); err != nil {
-		return "", fmt.Errorf("failed to create skills folder: %w", err)
-	}
-
-	// Cache the result (write lock)
-	s.skillsFolderMu.Lock()
-	s.skillsFolderCache[tenantID] = folderID
-	s.skillsFolderMu.Unlock()
-
-	return folderID, nil
+	return s.fileService.GetSkillsFolderID(ctx, tenantID)
 }
 
 // CreateSpace creates a new skills space with associated folder
@@ -214,8 +147,9 @@ func (s *SkillSpaceService) CreateSpace(ctx context.Context, userID string, req 
 	for _, f := range existingFolders {
 		if f.Type == "folder" && f.Name == spaceName {
 			common.Info("Deleting existing space folder with same name", zap.String("folderID", f.ID), zap.String("name", spaceName))
-			if err = s.deleteFolderRecursive(ctx, f.ID); err != nil {
-				common.Warn("Failed to delete existing folder", zap.String("folderID", f.ID), zap.Error(err))
+			if err = s.fileService.DeleteFiles(ctx, userID, []string{f.ID}); err != nil {
+				code, normalized := normalizeSkillSpacePermissionError(err)
+				return nil, code, normalized
 			}
 			break
 		}
@@ -461,6 +395,10 @@ func (s *SkillSpaceService) DeleteSpace(ctx context.Context, userID, spaceID str
 // asyncDeleteSpace performs the actual deletion work in the background.
 // It deletes the search index, removes files via Go FileService, and soft-deletes the space record.
 func (s *SkillSpaceService) asyncDeleteSpace(ctx context.Context, spaceID, folderID, tenantID string, docEngine engine.DocEngine) {
+	if err := checkSkillSourceFolders(ctx, []string{folderID}); err != nil {
+		common.Warn("Skill source cleanup denied", zap.String("spaceID", spaceID), zap.Error(err))
+		return
+	}
 	bgCtx, bgCancel := context.WithTimeout(ctx, 120*time.Second)
 	defer bgCancel()
 
@@ -526,50 +464,6 @@ func (s *SkillSpaceService) asyncDeleteSpace(ctx context.Context, spaceID, folde
 	}
 
 	common.Info("Successfully completed async space deletion", zap.String("spaceID", spaceID))
-}
-
-// deleteFolderRecursive recursively deletes a folder and all its contents
-func (s *SkillSpaceService) deleteFolderRecursive(ctx context.Context, folderID string) error {
-	// Get all children
-	children, err := s.fileDAO.ListByParentID(ctx, dao.DB, folderID)
-	if err != nil {
-		common.Error(fmt.Sprintf("Failed to list children for folder %s", folderID), err)
-		return err
-	}
-
-	common.Info("Deleting folder contents", zap.String("folder_id", folderID), zap.Int("child_count", len(children)))
-
-	// Collect file IDs (non-folder) and recurse into subfolders
-	var fileIDs []string
-	for _, child := range children {
-		if child.Type == "folder" {
-			common.Debug("Recursively deleting child folder", zap.String("folder_id", child.ID), zap.String("folder_name", child.Name))
-			if err = s.deleteFolderRecursive(ctx, child.ID); err != nil {
-				common.Warn("Failed to delete child folder", zap.String("folder_id", child.ID), zap.Error(err))
-			}
-		} else {
-			// Collect non-folder files for batch deletion
-			common.Debug("Collecting file for deletion", zap.String("file_id", child.ID), zap.String("file_name", child.Name))
-			fileIDs = append(fileIDs, child.ID)
-		}
-	}
-
-	// Delete all non-folder files in batch
-	if len(fileIDs) > 0 {
-		common.Info("Deleting files in folder", zap.String("folder_id", folderID), zap.Int("file_count", len(fileIDs)))
-		if _, err = s.fileDAO.DeleteByIDs(ctx, dao.DB, fileIDs); err != nil {
-			common.Warn("Failed to delete files in folder", zap.String("folder_id", folderID), zap.Strings("file_ids", fileIDs), zap.Error(err))
-			// Continue to delete folder even if file deletion fails
-		}
-	}
-
-	// Delete the folder itself
-	common.Info("Deleting folder", zap.String("folder_id", folderID))
-	_, err = s.fileDAO.DeleteByIDs(ctx, dao.DB, []string{folderID})
-	if err != nil {
-		common.Error(fmt.Sprintf("Failed to delete folder %s", folderID), err)
-	}
-	return err
 }
 
 // GetSpaceByFolderID retrieves a skills space by its folder ID

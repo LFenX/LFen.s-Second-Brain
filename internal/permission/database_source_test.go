@@ -1124,6 +1124,10 @@ func TestDatabaseCheckerAuthorizesMCPServersAndSkillSpaces(t *testing.T) {
 		&entity.MCPServer{},
 		&entity.SkillSpace{},
 		&entity.File{},
+		&entity.Knowledgebase{},
+		&entity.Document{},
+		&entity.File2Document{},
+		&entity.KnowledgeSourceRevision{},
 		&entity.UserTenant{},
 	); err != nil {
 		t.Fatalf("migrate permission tables: %v", err)
