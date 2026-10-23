@@ -1,0 +1,370 @@
+{
+  "schema_version": "1.0",
+  "delivery_version": "v0.11",
+  "status": "Implemented",
+  "recorded_at": "2026-10-23T19:09:57+08:00",
+  "timezone": "Asia/Shanghai",
+  "request_snapshot": "那就先推进前4步，帮我 Fork RAGFlow、克隆到同级目录、固定版本和分支，并启动最小运行环境。DeepSeek Key 和文档样本我随后准备，先不外发真实 AICS 内容，Key 不进仓库。",
+  "authorization_source": "当前会话用户明确指令，承接上轮已列出的前四步",
+  "scope": [
+    "GitHub Fork",
+    "同级目录 Clone",
+    "固定版本和分支",
+    "本机最小运行环境"
+  ],
+  "out_of_scope": [
+    "模型配置或调用",
+    "真实 AICS 或文档导入",
+    "RSS 采集",
+    "业务代码",
+    "生产部署"
+  ],
+  "git": {
+    "fork_url": "https://github.com/LFenX/ragflow",
+    "is_fork": true,
+    "parent": "infiniflow/ragflow",
+    "workspace": "D:/LFEN_project/dev_project/ragflow",
+    "origin": "https://github.com/LFenX/ragflow.git",
+    "upstream": "https://github.com/infiniflow/ragflow.git",
+    "tag": "v1.0.0-rc2",
+    "tag_is_release_candidate": true,
+    "commit": "ac29b4b29928ca65d3efca19b6cfae3f86069b81",
+    "branch": "codex/poc-ragflow",
+    "branch_pushed": true,
+    "tracked_source_modified": false
+  },
+  "runtime": {
+    "compose_project": "lfen-ragflow-poc",
+    "configuration_file": "D:/LFEN_project/dev_project/ragflow/docker/docker-compose.poc.local.json",
+    "private_env_file": "D:/LFEN_project/dev_project/ragflow/docker/.env.poc.local",
+    "candidate_services": [
+      "es01",
+      "kvrocks",
+      "minio",
+      "mysql",
+      "nats",
+      "ragflow-cpu"
+    ],
+    "host_ports": {
+      "web": "127.0.0.1:18080",
+      "api": "127.0.0.1:19380",
+      "admin": "127.0.0.1:19381"
+    },
+    "dependency_host_ports": 0,
+    "docker_server": "29.7.2",
+    "os_type": "linux",
+    "docker_cpu_count": 24,
+    "docker_memory_bytes": 33372991488,
+    "vm_max_map_count": 262144,
+    "vm_parameter_changed": false,
+    "image_download": "All six images pulled successfully",
+    "services_started": true,
+    "images": [
+      {
+        "service": "es01",
+        "original_image": "elasticsearch:8.11.3",
+        "image_digest": "elasticsearch@sha256:58a3a280935d830215802322e9a0373faaacdfd646477aa7e718939c2f29292a",
+        "image_id": "sha256:58a3a280935d830215802322e9a0373faaacdfd646477aa7e718939c2f29292a",
+        "size_bytes": 673297231
+      },
+      {
+        "service": "kvrocks",
+        "original_image": "apache/kvrocks:2.16.0",
+        "image_digest": "apache/kvrocks@sha256:9e632c317c83c80d92f1c9d22ac6aa9f64d149e1f04ff2af5f15a5768a01c4b7",
+        "image_id": "sha256:9e632c317c83c80d92f1c9d22ac6aa9f64d149e1f04ff2af5f15a5768a01c4b7",
+        "size_bytes": 64888874
+      },
+      {
+        "service": "minio",
+        "original_image": "pgsty/silo:RELEASE.2026-08-06T00-00-00Z",
+        "image_digest": "pgsty/silo@sha256:29a498b24669cae1fed11c1a2fb2b3d73c68829a0a9c0b14e71b386671d38fac",
+        "image_id": "sha256:29a498b24669cae1fed11c1a2fb2b3d73c68829a0a9c0b14e71b386671d38fac",
+        "size_bytes": 54546911
+      },
+      {
+        "service": "mysql",
+        "original_image": "mysql:8.0.40",
+        "image_digest": "mysql@sha256:d58ac93387f644e4e040c636b8f50494e78e5afc27ca0a87348b2f577da2b7ff",
+        "image_id": "sha256:d58ac93387f644e4e040c636b8f50494e78e5afc27ca0a87348b2f577da2b7ff",
+        "size_bytes": 170979582
+      },
+      {
+        "service": "nats",
+        "original_image": "nats:2.14.2",
+        "image_digest": "nats@sha256:bbfbb6c4cdaeb8a2e3ca57d3de30463a66a6c5181f324f3b680bcf858833d377",
+        "image_id": "sha256:bbfbb6c4cdaeb8a2e3ca57d3de30463a66a6c5181f324f3b680bcf858833d377",
+        "size_bytes": 6848183
+      },
+      {
+        "service": "ragflow-cpu",
+        "original_image": "infiniflow/ragflow:v1.0.0-rc2",
+        "image_digest": "infiniflow/ragflow@sha256:2fc19b4c8bbb589e6ea2debd641e1e83a92ad5f9b398c121d46c9f56f296ba6e",
+        "image_id": "sha256:2fc19b4c8bbb589e6ea2debd641e1e83a92ad5f9b398c121d46c9f56f296ba6e",
+        "size_bytes": 363907280
+      }
+    ],
+    "containers": [
+      {
+        "service": "ragflow-cpu",
+        "container": "lfen-ragflow-poc-ragflow-cpu-1",
+        "state": "running",
+        "health": "healthy",
+        "restart_count": 0,
+        "image_id": "sha256:2fc19b4c8bbb589e6ea2debd641e1e83a92ad5f9b398c121d46c9f56f296ba6e"
+      },
+      {
+        "service": "es01",
+        "container": "lfen-ragflow-poc-es01-1",
+        "state": "running",
+        "health": "healthy",
+        "restart_count": 0,
+        "image_id": "sha256:58a3a280935d830215802322e9a0373faaacdfd646477aa7e718939c2f29292a"
+      },
+      {
+        "service": "minio",
+        "container": "lfen-ragflow-poc-minio-1",
+        "state": "running",
+        "health": "healthy",
+        "restart_count": 0,
+        "image_id": "sha256:29a498b24669cae1fed11c1a2fb2b3d73c68829a0a9c0b14e71b386671d38fac"
+      },
+      {
+        "service": "mysql",
+        "container": "lfen-ragflow-poc-mysql-1",
+        "state": "running",
+        "health": "healthy",
+        "restart_count": 0,
+        "image_id": "sha256:d58ac93387f644e4e040c636b8f50494e78e5afc27ca0a87348b2f577da2b7ff"
+      },
+      {
+        "service": "nats",
+        "container": "lfen-ragflow-poc-nats-1",
+        "state": "running",
+        "health": "healthy",
+        "restart_count": 0,
+        "image_id": "sha256:bbfbb6c4cdaeb8a2e3ca57d3de30463a66a6c5181f324f3b680bcf858833d377"
+      },
+      {
+        "service": "kvrocks",
+        "container": "lfen-ragflow-poc-kvrocks-1",
+        "state": "running",
+        "health": "healthy",
+        "restart_count": 0,
+        "image_id": "sha256:9e632c317c83c80d92f1c9d22ac6aa9f64d149e1f04ff2af5f15a5768a01c4b7"
+      }
+    ],
+    "host_bindings": [
+      {
+        "service": "ragflow-cpu",
+        "target": "80/tcp",
+        "host_ip": "127.0.0.1",
+        "host_port": "18080"
+      },
+      {
+        "service": "ragflow-cpu",
+        "target": "9380/tcp",
+        "host_ip": "127.0.0.1",
+        "host_port": "19380"
+      },
+      {
+        "service": "ragflow-cpu",
+        "target": "9381/tcp",
+        "host_ip": "127.0.0.1",
+        "host_port": "19381"
+      }
+    ],
+    "bind_mounts": [
+      {
+        "service": "ragflow-cpu",
+        "source": "D:\\LFEN_project\\dev_project\\ragflow\\docker\\ragflow-logs",
+        "destination": "/ragflow/logs"
+      },
+      {
+        "service": "ragflow-cpu",
+        "source": "D:\\LFEN_project\\dev_project\\ragflow\\docker\\service_conf.yaml.template",
+        "destination": "/ragflow/conf/service_conf.yaml.template"
+      },
+      {
+        "service": "ragflow-cpu",
+        "source": "D:\\LFEN_project\\dev_project\\ragflow\\docker\\entrypoint.sh",
+        "destination": "/ragflow/entrypoint.sh"
+      },
+      {
+        "service": "mysql",
+        "source": "/run/desktop/mnt/host/d/LFEN_project/dev_project/ragflow/docker/init.sql",
+        "destination": "/data/application/init.sql"
+      },
+      {
+        "service": "kvrocks",
+        "source": "D:\\LFEN_project\\dev_project\\ragflow\\docker\\kvrocks-entrypoint.sh",
+        "destination": "/etc/kvrocks/entrypoint.sh"
+      }
+    ],
+    "http_checks": [
+      {
+        "endpoint": "web",
+        "url": "http://127.0.0.1:18080/",
+        "status": 200,
+        "elapsed_ms": 19.2,
+        "bytes": 3529,
+        "api_source": null,
+        "title": "RAGFlow",
+        "assets": [
+          {
+            "path": "/iconfont.js",
+            "status": 200,
+            "content_type": "application/javascript"
+          },
+          {
+            "path": "/entry/js/index-CUhJktTz.js",
+            "status": 200,
+            "content_type": "application/javascript"
+          },
+          {
+            "path": "/chunk/js/@braintree-BIsM2jWg.js",
+            "status": 200,
+            "content_type": "application/javascript"
+          },
+          {
+            "path": "/chunk/js/react-BAcIE6Gm.js",
+            "status": 200,
+            "content_type": "application/javascript"
+          },
+          {
+            "path": "/chunk/js/scheduler-BquVG5GV.js",
+            "status": 200,
+            "content_type": "application/javascript"
+          },
+          {
+            "path": "/chunk/js/react-dom-DDWMBg3O.js",
+            "status": 200,
+            "content_type": "application/javascript"
+          },
+          {
+            "path": "/chunk/js/next-themes-CBgZzlUA.js",
+            "status": 200,
+            "content_type": "application/javascript"
+          },
+          {
+            "path": "/chunk/js/sonner-9iVAXYQq.js",
+            "status": 200,
+            "content_type": "application/javascript"
+          }
+        ]
+      },
+      {
+        "endpoint": "proxy_health",
+        "url": "http://127.0.0.1:18080/api/v1/system/healthz",
+        "status": 200,
+        "elapsed_ms": 23.1,
+        "bytes": 92,
+        "api_source": "go",
+        "body": {
+          "db": "ok",
+          "redis": "ok",
+          "doc_engine": "ok",
+          "storage": "ok",
+          "message_queue": "ok",
+          "status": "ok"
+        }
+      },
+      {
+        "endpoint": "api_health",
+        "url": "http://127.0.0.1:19380/api/v1/system/healthz",
+        "status": 200,
+        "elapsed_ms": 6.7,
+        "bytes": 92,
+        "api_source": "go",
+        "body": {
+          "db": "ok",
+          "redis": "ok",
+          "doc_engine": "ok",
+          "storage": "ok",
+          "message_queue": "ok",
+          "status": "ok"
+        }
+      }
+    ],
+    "data_row_counts": {
+      "document": 0,
+      "file": 0,
+      "knowledgebase": 0
+    },
+    "startup_alerts": [],
+    "all_services_healthy": true,
+    "core_health_passed": true
+  },
+  "security": {
+    "existing_model_credentials_copied": false,
+    "model_calls_performed": 0,
+    "real_aics_sent": false,
+    "aics_mounted": false,
+    "private_configuration_git_ignored": true,
+    "private_configuration_acl_restricted": true,
+    "secrets_in_report": false,
+    "all_host_bindings_loopback": true,
+    "all_bind_mounts_within_fork_docker": true,
+    "model_credentials_detected_in_containers": []
+  },
+  "steps": [
+    {
+      "id": "S1",
+      "status": "Passed",
+      "evidence": "GitHub POST returned 202; subsequent GET confirmed LFenX/ragflow with parent infiniflow/ragflow"
+    },
+    {
+      "id": "S2",
+      "status": "Passed",
+      "evidence": "Separate checkout created at the authorized sibling path; remotes verified"
+    },
+    {
+      "id": "S3",
+      "status": "Passed",
+      "evidence": "HEAD matches official tag commit; branch pushed to own Fork; tracked source clean"
+    },
+    {
+      "id": "S4",
+      "status": "Passed",
+      "evidence": "Six services and native/proxy health, Web assets, port/mount isolation, empty knowledge data and startup logs checked"
+    }
+  ],
+  "failures_and_retries": [
+    {
+      "type": "document_edit_context",
+      "effect": "No write occurred",
+      "resolution": "Corrected full-line context and saved the authorized task record"
+    },
+    {
+      "type": "readonly_relative_path",
+      "effect": "No service or source mutation",
+      "resolution": "Retried reads from repository root; inspected the actual owner paths"
+    },
+    {
+      "type": "PowerShell_validation_pipeline_syntax",
+      "effect": "Parser rejected command before execution; running services unchanged",
+      "resolution": "Moved foreach output into an array before piping and reran the checks"
+    }
+  ],
+  "user_decision": {
+    "outcome": "Pending"
+  },
+  "adversarial_review": [],
+  "verified_at": "2026-10-23T19:13:05+08:00",
+  "verification_security": {
+    "tracked_fork_files_scanned": 5239,
+    "public_knowledge_texts_scanned": 9,
+    "unique_secret_values_scanned": 9,
+    "leak_count": 0,
+    "leak_paths": [],
+    "fork_worktree_clean": true,
+    "local_head": "ac29b4b29928ca65d3efca19b6cfae3f86069b81",
+    "remote_branch_head": "ac29b4b29928ca65d3efca19b6cfae3f86069b81",
+    "local_remote_tag_equal": true,
+    "ignored_private_paths": [
+      "docker/.env.poc.local",
+      "docker/docker-compose.poc.local.json",
+      "docker/ragflow-logs/"
+    ]
+  },
+  "snapshot_note": "本报告固定记录品牌改造前的前四步环境结果；后续品牌改造由技术方案第29章单独追踪，不将后续源码变化改写为此前快照事实。"
+}

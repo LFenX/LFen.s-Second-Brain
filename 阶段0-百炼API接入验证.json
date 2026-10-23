@@ -1,0 +1,582 @@
+{
+  "schema_version": 1,
+  "version": "v0.8",
+  "recorded_at": "2026-10-23T16:18:15.624664+08:00",
+  "request_snapshot": "那就用这套，帮我打开阿里云百炼，指导我开通服务、准备 API Key 和业务空间信息，然后把配置保存到本地并验证两个模型，Key 不进仓库，先不写业务代码。",
+  "selection_response": {
+    "question": "是否接受按官方服务型号选型，不限定指定的开源8B权重？",
+    "answer": "都用性能最好的就行了",
+    "source": "当前会话 request_user_input_async 回复；call_663b772719744ddc92512b1b52d8fd35"
+  },
+  "clarification": {
+    "notice": "本轮范围已明确，无需重复确认选型。",
+    "basis": "用户已选择两项迁移至百炼并要求本地保存、合成样本验证、Key不进仓库且不写业务代码；地域沿用已展示的北京推荐。"
+  },
+  "scope": "阿里云百炼开通指导、凭据与业务空间准备、配置保存及两个模型基础接入验证；仅合成样本",
+  "provider": "aliyun_bailian",
+  "region_recommended": "cn-beijing",
+  "embedding": {
+    "model": "qwen3.7-text-embedding",
+    "dimensions": 2560,
+    "output_type": "dense",
+    "status": "passed"
+  },
+  "rerank": {
+    "model": "qwen3.7-text-rerank",
+    "status": "passed"
+  },
+  "progress": {
+    "console_opened": true,
+    "login_page_visible": true,
+    "user_login_confirmed": true,
+    "service_activation_confirmed": true,
+    "workspace_confirmed": true,
+    "credential_saved": true,
+    "active_local_configuration_migrated": true,
+    "existing_key_management_accessible": true,
+    "new_key_form_prepared": true,
+    "credential_created_by_user": true,
+    "credential_scope_verified_after_creation": true,
+    "both_model_calls_verified": true
+  },
+  "validation_plan": [
+    {
+      "id": "P0-ALI-01",
+      "purpose": "合成中文文档向量，检查2560维、数值有限及非零",
+      "status": "passed"
+    },
+    {
+      "id": "P0-ALI-02",
+      "purpose": "两条合成代码批量向量，检查数量、维度与输入对应",
+      "status": "passed"
+    },
+    {
+      "id": "P0-ALI-03",
+      "purpose": "合成中文代码查询，使用query类型与代码检索指令，检查接口接受与向量结构",
+      "status": "passed"
+    },
+    {
+      "id": "P0-ALI-04",
+      "purpose": "合成中文问题及三个候选重排，检查索引、分数与预期首位",
+      "status": "passed"
+    },
+    {
+      "id": "P0-ALI-05",
+      "purpose": "合成代码问题及三个候选重排，检查接口接受、分数与预期首位",
+      "status": "passed"
+    }
+  ],
+  "request_policy": {
+    "maximum_initial_requests": 5,
+    "automatic_retries": 0,
+    "concurrency": 1,
+    "timeout_seconds": 60,
+    "real_source_content_allowed": false,
+    "automatic_paid_failover_allowed": false,
+    "purchase_or_subscription_authorized": false,
+    "note": "本轮验证调用已获用户请求授权；服务开通条款及新凭据签发由用户本人操作。优先使用账户免费额度，不擅自充值或购买套餐。",
+    "one_off_synthetic_validation_authorized": true,
+    "recurring_paid_operation_authorized": false,
+    "inference_billing_note": "用户明确要求验证所选百炼模型，已执行5次短合成请求；是否抵扣免费额度未核实，未充值或购买套餐。持续付费运行仍未启用。"
+  },
+  "sources": [
+    "https://bailian.console.aliyun.com/",
+    "https://help.aliyun.com/zh/model-studio/get-api-key",
+    "https://help.aliyun.com/zh/model-studio/base-url",
+    "https://help.aliyun.com/zh/model-studio/text-embedding-synchronous-api",
+    "https://help.aliyun.com/zh/model-studio/text-rerank-api",
+    "https://help.aliyun.com/zh/model-studio/model-pricing",
+    "https://help.aliyun.com/zh/model-studio/newly-released-models"
+  ],
+  "acceptance": {
+    "status": "approved",
+    "scope": "仅v0.8百炼开通指导、专用Key及业务空间准备、本地配置、5次合成样本验证和密钥隔离；阶段0其他工作及业务实现不在本次验收范围。",
+    "subject_sha256": "c7cd95ec942fa0c16e289f482b2c62547877e8b7013c1a1c2343e33093d6c641",
+    "artifact_sha256": {
+      ".env.example": "f4e8df8541425d1307a13a16233b9c1827df057a55221f26309c9590b14b7d89",
+      "README.md": "60b1e0544ccef7300977cf84ec259f03f1cc07021faadccd740db25b7941be7f",
+      "本地第二大脑知识库技术方案.md": "dd0f0da92972316e5b34cec16ca675bd2cfa79bc21f7684629c6994075c64107",
+      "会话接续说明.md": "250c66625a46bd1065375af1880c2496344c59160324dff14f9ac03b9cfc3ba2",
+      "bailian-key-model-scope-verified.png": "8e78adb7f8d965f0304d497b61ae6925e5c1f746bf4f54918675e65628aa5817"
+    },
+    "subject_definition": "对artifact_sha256及移除acceptance字段后的验证报告组成的JSON，以sort_keys=True、UTF-8、ensure_ascii=False、紧凑分隔符规范化后计算SHA-256；不包含真实凭据。此绑定不是正式治理Gate通过证明。",
+    "outcome": "Approved",
+    "response": "验收通过",
+    "presented": "v0.8 已完成百炼北京业务空间与专用 Key 准备、配置本地保存和两模型验证：qwen3.7-text-embedding 返回 4 个 2,560 维有效向量，qwen3.7-text-rerank 的中文与代码排序均符合预期；共 5 次请求全部通过、报告 438 Token。Key 仅授权两模型，凭据及备份受限并被 Git 忽略，密钥扫描通过；未写业务代码、未发送真实 AICS 内容。本轮是否验收通过？报告见阶段0-百炼API接入验证.json，交付摘要 c7cd95ec942f。依据 [run-governed-product-workflow 的 SKILL.md](C:/Users/Administrator/.codex/skills/run-governed-product-workflow/SKILL.md) 要求“实现和工程验证完成后，必须向人交付可核对的结果并主动发起一次真实 Acceptance 确认”；仅确认本轮交付，阶段 0 其余事项继续待确认。",
+    "decided_by": "用户（本知识库所有者）",
+    "decision_date": "2026-10-23",
+    "timezone": "Asia/Shanghai",
+    "recorded_at": "2026-10-23T16:37:20.865316+08:00",
+    "timestamp_note": "记录时间来自本轮时钟，用户回复未提供精确发送时间，不将记录时间冒充决定时间。",
+    "source": "当前会话request_user_input_async明确回复；questionItemId=[\"request_user_input_async\",\"call_4fcb362270c34a7bb3e459e06e70216e\",0]",
+    "accepted_report_sha256_before_decision_record": "688f55861b5a8c71cdc6c9314dbff7459daf433fba1a32f24419dedbe4f09e38",
+    "accepted_subject_sha256": "c7cd95ec942fa0c16e289f482b2c62547877e8b7013c1a1c2343e33093d6c641",
+    "record_note": "验收绑定的是展示前已验证交付；随后只追加人的决定和文档状态，不重新推定模型验证或扩大授权。"
+  },
+  "limitations": [
+    "仅合成样本证明基础接口、向量结构、query/instruct参数受理与预期候选排序；不证明真实AICS检索质量或服务端指令处理细节。",
+    "向量接口响应未声明具体权重revision，不据此认定服务端等同开源8B模型。",
+    "实际账单与免费额度抵扣、长输入及超限、并发限流恢复、长期稳定性、异步Batch和Qdrant/CocoIndex联合契约未验证。",
+    "尚无业务配置加载器或配额执行器；.env中的策略变量不是已实现的收费拦截机制。",
+    "阶段0整体未完成，运行环境、AICS快照、首批来源及真实源码外发范围仍待确认。",
+    "沿用现有文件布局，未新建治理目录、未运行正式治理Gate；本记录不是机器Gate通过证明。"
+  ],
+  "workspace": {
+    "id": "llm-itr5hu8h2p2953w2",
+    "name": "默认业务空间",
+    "region": "cn-beijing",
+    "source": "登录后的百炼API Key管理页及创建表单"
+  },
+  "observed_base_url": "https://llm-itr5hu8h2p2953w2.cn-beijing.maas.aliyuncs.com/compatible-mode/v1",
+  "credential_policy": {
+    "description": "LFen Second Brain - Embedding & Rerank",
+    "reuse_or_reset_existing_keys": false,
+    "user_submits_creation": true,
+    "storage": ".env.local（Git忽略，明文不输出）",
+    "model_scope": "待完成目标两模型的自定义授权选择"
+  },
+  "credential_record": {
+    "id": "8058086",
+    "description": "LFen Second Brain - Embedding & Rerank",
+    "key_value_recorded": false,
+    "one_key_for_both_models": true,
+    "scope": "两个目标模型",
+    "creation_source": "用户明确回复已创建；控制台存在对应描述的记录",
+    "model_scope_verified": [
+      "qwen3.7-text-embedding",
+      "qwen3.7-text-rerank"
+    ],
+    "scope_evidence": "bailian-key-model-scope-verified.png；新Key编辑页只读检查，已选2/30，未提交修改"
+  },
+  "configuration": {
+    "KB_MODEL_REGION": "cn-beijing",
+    "KB_MODEL_WORKSPACE_ID": "llm-itr5hu8h2p2953w2",
+    "KB_EMBEDDING_PROVIDER": "aliyun_bailian",
+    "KB_EMBEDDING_API_FORMAT": "dashscope",
+    "KB_EMBEDDING_BASE_URL": "https://llm-itr5hu8h2p2953w2.cn-beijing.maas.aliyuncs.com/api/v1",
+    "KB_EMBEDDING_ENDPOINT": "/services/embeddings/text-embedding/text-embedding",
+    "KB_EMBEDDING_MODEL": "qwen3.7-text-embedding",
+    "KB_EMBEDDING_DIMENSIONS": "2560",
+    "KB_EMBEDDING_OUTPUT_TYPE": "dense",
+    "KB_EMBEDDING_ENCODING_FORMAT": "float",
+    "KB_EMBEDDING_DOCUMENT_TEXT_TYPE": "document",
+    "KB_EMBEDDING_QUERY_TEXT_TYPE": "query",
+    "KB_EMBEDDING_QUERY_INSTRUCT": "Given a code search query, retrieve relevant code snippets that implement the requested behavior.",
+    "KB_EMBEDDING_FAILOVER_ENABLED": "false",
+    "KB_EMBEDDING_TIMEOUT_SECONDS": "60",
+    "KB_EMBEDDING_MAX_RETRIES": "0",
+    "KB_EMBEDDING_MAX_CONCURRENCY": "1",
+    "KB_EMBEDDING_BATCH_SIZE": "1",
+    "KB_EMBEDDING_ACCESS_MODE": "stage0_validation",
+    "KB_EMBEDDING_ASYNC_BATCH_ENABLED": "false",
+    "KB_EMBEDDING_PAID_CALLS_ALLOWED": "false",
+    "KB_RERANK_PROVIDER": "aliyun_bailian",
+    "KB_RERANK_API_FORMAT": "dashscope",
+    "KB_RERANK_BASE_URL": "https://llm-itr5hu8h2p2953w2.cn-beijing.maas.aliyuncs.com/api/v1",
+    "KB_RERANK_ENDPOINT": "/services/rerank/text-rerank/text-rerank",
+    "KB_RERANK_MODEL": "qwen3.7-text-rerank",
+    "KB_RERANK_INSTRUCT": "Given a code search query, rank candidate documents by how directly they implement the requested behavior.",
+    "KB_RERANK_TIMEOUT_SECONDS": "60",
+    "KB_RERANK_MAX_RETRIES": "0",
+    "KB_RERANK_MAX_CONCURRENCY": "1",
+    "KB_RERANK_FAILOVER_ENABLED": "false",
+    "KB_RERANK_PAID_CALLS_ALLOWED": "false",
+    "KB_STAGE0_MAX_INITIAL_REQUESTS": "5",
+    "KB_REAL_SOURCE_EXTERNAL_CALLS_ALLOWED": "false"
+  },
+  "cases": [
+    {
+      "id": "P0-ALI-01",
+      "name": "合成中文文档向量",
+      "request": {
+        "model": "qwen3.7-text-embedding",
+        "input": {
+          "texts": [
+            "知识库保存中文笔记和项目代码，并按模块授权访问。"
+          ]
+        },
+        "parameters": {
+          "dimension": 2560,
+          "output_type": "dense",
+          "text_type": "document"
+        }
+      },
+      "expectation": "对应输入数量的2560维有限非零向量",
+      "endpoint": "https://llm-itr5hu8h2p2953w2.cn-beijing.maas.aliyuncs.com/api/v1/services/embeddings/text-embedding/text-embedding",
+      "http_status": 200,
+      "elapsed_seconds": 0.388,
+      "request_id": "2fd86293-adf0-923f-9f1d-4a3b6c36accf",
+      "usage": {
+        "total_tokens": 28
+      },
+      "response_fields": [
+        "output",
+        "usage",
+        "request_id"
+      ],
+      "vectors": [
+        {
+          "index": 0,
+          "dimensions": 2560,
+          "all_finite": true,
+          "l2_norm": 0.99990562
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "id": "P0-ALI-02",
+      "name": "两条合成TypeScript代码向量",
+      "request": {
+        "model": "qwen3.7-text-embedding",
+        "input": {
+          "texts": [
+            "export function clampPageSize(size: number): number { return Math.min(100, Math.max(10, size)); }",
+            "export function sortNames(names: string[]): string[] { return [...names].sort(); }"
+          ]
+        },
+        "parameters": {
+          "dimension": 2560,
+          "output_type": "dense",
+          "text_type": "document"
+        }
+      },
+      "expectation": "对应输入数量的2560维有限非零向量",
+      "endpoint": "https://llm-itr5hu8h2p2953w2.cn-beijing.maas.aliyuncs.com/api/v1/services/embeddings/text-embedding/text-embedding",
+      "http_status": 200,
+      "elapsed_seconds": 0.333,
+      "request_id": "0fde5666-ced5-997c-89f4-93598640acb2",
+      "usage": {
+        "total_tokens": 77
+      },
+      "response_fields": [
+        "output",
+        "usage",
+        "request_id"
+      ],
+      "vectors": [
+        {
+          "index": 0,
+          "dimensions": 2560,
+          "all_finite": true,
+          "l2_norm": 0.99975938
+        },
+        {
+          "index": 1,
+          "dimensions": 2560,
+          "all_finite": true,
+          "l2_norm": 1.0000605
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "id": "P0-ALI-03",
+      "name": "合成中文代码查询及query指令",
+      "request": {
+        "model": "qwen3.7-text-embedding",
+        "input": {
+          "texts": [
+            "如何把表格每页记录数限制在10到100之间？"
+          ]
+        },
+        "parameters": {
+          "dimension": 2560,
+          "output_type": "dense",
+          "text_type": "query",
+          "instruct": "Given a code search query, retrieve relevant code snippets that implement the requested behavior."
+        }
+      },
+      "expectation": "对应输入数量的2560维有限非零向量",
+      "endpoint": "https://llm-itr5hu8h2p2953w2.cn-beijing.maas.aliyuncs.com/api/v1/services/embeddings/text-embedding/text-embedding",
+      "http_status": 200,
+      "elapsed_seconds": 0.503,
+      "request_id": "c1afe3c9-00f6-9792-9e04-007316b76b74",
+      "usage": {
+        "total_tokens": 65
+      },
+      "response_fields": [
+        "output",
+        "usage",
+        "request_id"
+      ],
+      "vectors": [
+        {
+          "index": 0,
+          "dimensions": 2560,
+          "all_finite": true,
+          "l2_norm": 0.99985654
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "id": "P0-ALI-04",
+      "name": "合成中文知识重排",
+      "request": {
+        "model": "qwen3.7-text-rerank",
+        "input": {
+          "query": "怎样只给同事临时访问某一块知识库？",
+          "documents": [
+            "按模块签发有期限、可撤销的访问密钥，并在每次请求时检查授权。",
+            "使用向量数据库保存文本向量。",
+            "今天午后天气晴朗，适合散步。"
+          ]
+        },
+        "parameters": {
+          "top_n": 3,
+          "instruct": "Given a question, rank documents by how directly they answer the question."
+        }
+      },
+      "expectation": "返回3个有效索引及有限相关性分数；预期首位为索引0",
+      "endpoint": "https://llm-itr5hu8h2p2953w2.cn-beijing.maas.aliyuncs.com/api/v1/services/rerank/text-rerank/text-rerank",
+      "http_status": 200,
+      "elapsed_seconds": 0.367,
+      "request_id": "84835c8f-3d08-9e3f-a0c2-17c86f55d807",
+      "usage": {
+        "prompt_tokens": 109,
+        "total_tokens": 109
+      },
+      "response_fields": [
+        "output",
+        "usage",
+        "request_id"
+      ],
+      "results": [
+        {
+          "index": 0,
+          "relevance_score": 0.7401416444512416
+        },
+        {
+          "index": 1,
+          "relevance_score": 0.11751945777018652
+        },
+        {
+          "index": 2,
+          "relevance_score": 0.0018799747624387297
+        }
+      ],
+      "expected_top_index": 0,
+      "actual_top_index": 0,
+      "status": "passed"
+    },
+    {
+      "id": "P0-ALI-05",
+      "name": "合成中文代码需求重排",
+      "request": {
+        "model": "qwen3.7-text-rerank",
+        "input": {
+          "query": "如何把表格每页记录数限制在10到100之间？",
+          "documents": [
+            "export function clampPageSize(size: number): number { return Math.min(100, Math.max(10, size)); }",
+            "export function sortNames(names: string[]): string[] { return [...names].sort(); }",
+            ".table { border-collapse: collapse; }"
+          ]
+        },
+        "parameters": {
+          "top_n": 3,
+          "instruct": "Given a code search query, rank candidate documents by how directly they implement the requested behavior."
+        }
+      },
+      "expectation": "返回3个有效索引及有限相关性分数；预期首位为索引0",
+      "endpoint": "https://llm-itr5hu8h2p2953w2.cn-beijing.maas.aliyuncs.com/api/v1/services/rerank/text-rerank/text-rerank",
+      "http_status": 200,
+      "elapsed_seconds": 0.296,
+      "request_id": "67fa0dae-6bf4-9029-913b-e82c97ea1503",
+      "usage": {
+        "prompt_tokens": 159,
+        "total_tokens": 159
+      },
+      "response_fields": [
+        "output",
+        "usage",
+        "request_id"
+      ],
+      "results": [
+        {
+          "index": 0,
+          "relevance_score": 0.945536051015796
+        },
+        {
+          "index": 2,
+          "relevance_score": 0.23309643711879624
+        },
+        {
+          "index": 1,
+          "relevance_score": 0.0017877653603078358
+        }
+      ],
+      "expected_top_index": 0,
+      "actual_top_index": 0,
+      "status": "passed"
+    }
+  ],
+  "requests_attempted": 5,
+  "observed_at": "2026-10-23T16:30:16.651522+08:00",
+  "synthetic_vector_retrieval": {
+    "document_indices": [
+      0,
+      1
+    ],
+    "cosine_similarities": [
+      0.6837333782687063,
+      0.30281877076486424
+    ],
+    "expected_top_index": 0,
+    "actual_top_index": 0,
+    "note": "仅合成样本观察，不代表真实AICS效果或证明服务端指令处理细节。"
+  },
+  "summary": {
+    "passed_cases": 5,
+    "requests_attempted": 5,
+    "returned_vectors": 4,
+    "reported_total_tokens": 438,
+    "stage0_complete": false,
+    "business_code_written": false,
+    "user_acceptance": "approved",
+    "billing_verified": false,
+    "estimated_list_price_cny": 0.000219,
+    "list_price_note": "依据官方北京实时输入0.50元/百万Token计算；不是实际扣费金额。"
+  },
+  "human_steps": [
+    {
+      "question_source": "当前会话request_user_input_async；call_31dc3c3d327b439a861ec55b268fb803",
+      "response": "已登录",
+      "action": "用户自行完成阿里云登录"
+    },
+    {
+      "question_source": "当前会话request_user_input_async；call_4f0a2ac7ae3a4ce4b8ddd932c09e13d8",
+      "response": "已创建，Key 弹窗已保留",
+      "action": "用户在已准备的两模型授权表单中签发新Key"
+    }
+  ],
+  "first_principles_analysis": {
+    "result": "用户能在本机以百炼官方两模型配置运行可核对的合成验证，凭据不进入可提交资料。",
+    "facts": [
+      "用户选择两项均迁移百炼并以性能优先；原话见request_snapshot与selection_response。",
+      "本轮5个真实请求通过；证据见cases。"
+    ],
+    "constraints": [
+      "不写业务代码、不改变既有目录、不发送真实来源、不重置现有其他用途Key、不擅自购买订阅。"
+    ],
+    "assumptions": [
+      "官方模型相对评测适用于本项目的程度尚未证明；后续以经授权的真实样本评测。"
+    ],
+    "unknowns": [
+      "实际账单、长期稳定性及真实检索效果为未验项，不阻断本次基础接入交付。"
+    ],
+    "elements": [
+      "服务地域与业务空间",
+      "限定模型的凭据",
+      "明确输入与返回契约",
+      "Git及文件访问隔离",
+      "真实结果与未验项"
+    ],
+    "causal_chain": [
+      "固定空间地址和模型避免跨地域或模型误用；只读核对授权并以实际请求确认可用；秘密单独存储避免进入Git。"
+    ],
+    "alternatives": [
+      "继续Moark：已有基础验证，但不满足用户最新官方服务选择。",
+      "百炼旧text-embedding-v4与qwen3-rerank：公开接口可用，但本轮按用户性能要求选3.7系列。",
+      "当前选择：百炼两款3.7模型，以合成样本验证接入；真实质量另验。"
+    ],
+    "criteria": [
+      "符合用户指定官方服务与性能优先",
+      "两类接口实际返回有效结果",
+      "凭据不进入仓库",
+      "范围限于阶段0配置验证"
+    ],
+    "derived_plan": [
+      "根据空间和权限准备Key；保存受限本地配置；验证向量和重排；逐项检查原话要求及密钥隔离。"
+    ],
+    "verification": "以cases、security和requirements_coverage的实际结果核对原始请求，不以计划执行次数代替效果。"
+  },
+  "requirements_coverage": [
+    {
+      "requirement": "那就用这套",
+      "status": "passed",
+      "evidence": [
+        "configuration.KB_EMBEDDING_MODEL",
+        "configuration.KB_RERANK_MODEL",
+        "cases"
+      ]
+    },
+    {
+      "requirement": "帮我打开阿里云百炼",
+      "status": "passed",
+      "evidence": [
+        "progress.console_opened",
+        "sources[0]"
+      ]
+    },
+    {
+      "requirement": "指导我开通服务",
+      "status": "passed",
+      "evidence": [
+        "human_steps",
+        "progress.service_activation_confirmed"
+      ],
+      "note": "账号已有服务及Key管理入口；无需新增开通条款，实际调用确认两模型可用。"
+    },
+    {
+      "requirement": "准备 API Key 和业务空间信息",
+      "status": "passed",
+      "evidence": [
+        "credential_record",
+        "workspace",
+        "configuration"
+      ]
+    },
+    {
+      "requirement": "把配置保存到本地",
+      "status": "passed",
+      "evidence": [
+        ".env.local（忽略且受限）",
+        ".env.example"
+      ]
+    },
+    {
+      "requirement": "验证两个模型",
+      "status": "passed",
+      "evidence": [
+        "cases.P0-ALI-01至05"
+      ]
+    },
+    {
+      "requirement": "Key 不进仓库",
+      "status": "passed",
+      "evidence": [
+        "security（下方实际扫描）"
+      ]
+    },
+    {
+      "requirement": "先不写业务代码",
+      "status": "passed",
+      "evidence": [
+        "git diff与未跟踪文件清单仅包含配置、文档、验证JSON和截图"
+      ]
+    }
+  ],
+  "security": {
+    "credential_file_ignored": true,
+    "credential_backup_ignored": true,
+    "template_keys_blank": true,
+    "template_account_fields_blank": true,
+    "tracked_credential_files": false,
+    "credential_file_paths_in_history": false,
+    "template_matches_active_nonsecret_policy": true,
+    "one_key_used_for_both_models": true,
+    "exact_secret_scan": "passed",
+    "publishable_files_scanned": 10,
+    "existing_commits_scanned": 2,
+    "existing_history_secret_scan": "passed",
+    "acl_inheritance_disabled": true,
+    "backup_acl_matches_active_file": true,
+    "acl_allowed_identities": [
+      "NT AUTHORITY\\SYSTEM",
+      "HZPCC1360433\\Administrator"
+    ],
+    "credential_values_in_tool_output": false
+  },
+  "verified_at": "2026-10-23T16:35:08.896455+08:00"
+}
