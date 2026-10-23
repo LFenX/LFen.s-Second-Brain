@@ -1,0 +1,48 @@
+{
+  "synthetic": true,
+  "contract_version": "1.0.0",
+  "identity_inputs": {
+    "domain_id": "11111111111111111111111111111111",
+    "source_id": "22222222222222222222222222222222",
+    "source_revision_id": "33333333333333333333333333333333",
+    "kind": "file",
+    "logical_key": ".",
+    "structure_version": "source-v1"
+  },
+  "expected": {
+    "logical_node_id": "349b490930f67d901d9a685c2c8808a05e33f5f3814b4d308119891f37a4b29b",
+    "node_id": "9b143764774a16738069c56bd0a7eb26e3d196935ac0a6713ceb3a10e8659fae",
+    "source_sha256": "6921c9ca26208b7e4662f895fd77ffe4fb6e887357b1dcb45e3a323318d73079",
+    "byte_length": 25,
+    "line_count": 2
+  },
+  "source_text": "标题\r\nconst value = 1;\n",
+  "classification_examples": [
+    {
+      "relative_path": "web/components/demo.tsx",
+      "component_side": "frontend",
+      "language": "tsx"
+    },
+    {
+      "relative_path": "internal/service/demo.go",
+      "component_side": "backend",
+      "language": "go"
+    }
+  ],
+  "steps": [
+    "Create an empty private native dataset using existing native authentication.",
+    "PUT domain before uploading documents.",
+    "POST group, upload synthetic UTF-8 text with the native upload endpoint without parse.",
+    "POST sources then use returned source_revision_id and root.node_id, never compute IDs in the UI.",
+    "POST manual child node; list children; GET content; POST policy/check must return allowed=false."
+  ],
+  "expected_denials": [
+    "another user or another domain returns hidden404",
+    "cross-domain parent/source returns hidden404",
+    "stale expected_revision_id or changed immutable node returns409",
+    "UTF-8 split or range outside parent returns400",
+    ">64KiB source read returns413",
+    "PDF/PPT source snapshot returns415",
+    "native model or ingestion execution for registered domain is blocked before outbound request"
+  ]
+}

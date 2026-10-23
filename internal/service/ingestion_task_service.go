@@ -11,6 +11,7 @@ import (
 	"ragflow/internal/dao"
 	"ragflow/internal/engine/kvrocks"
 	"ragflow/internal/entity"
+	"ragflow/internal/permission"
 
 	"go.uber.org/zap"
 	"gorm.io/gorm"
@@ -103,6 +104,9 @@ func (s *IngestionTaskService) ListByUser(ctx context.Context, userID string, da
 }
 
 func (s *IngestionTaskService) CreateForDocuments(ctx context.Context, datasetID, userID string, docIDs []string) ([]*ParseDocumentResponse, error) {
+	if err := permission.CheckKnowledgeIngestion(ctx, dao.DB, []string{datasetID}); err != nil {
+		return nil, err
+	}
 	uniqueDocIDs := common.Deduplicate(docIDs)
 	if len(uniqueDocIDs) == 0 {
 		return nil, fmt.Errorf("no documents to parse")
@@ -564,6 +568,9 @@ func (s *IngestionTaskService) CreateAndEnqueue(ctx context.Context, task *entit
 // knowledge-base cache for batch callers (CreateForDocuments resolves one kb
 // for the whole batch). A nil cache behaves exactly like CreateAndEnqueue.
 func (s *IngestionTaskService) createAndEnqueueWithKBCache(ctx context.Context, task *entity.IngestionTask, kbCache map[string]*entity.Knowledgebase) (*entity.IngestionTask, error) {
+	if err := permission.CheckKnowledgeIngestion(ctx, dao.DB, []string{task.DatasetID}); err != nil {
+		return nil, err
+	}
 	existing, err := s.ingestionTaskDAO.GetByDocumentID(ctx, dao.DB, task.DocumentID)
 	if err != nil {
 		return nil, err

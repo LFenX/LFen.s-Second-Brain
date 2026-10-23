@@ -37,6 +37,7 @@ import (
 	"ragflow/internal/dao"
 	"ragflow/internal/entity/models"
 	componentpkg "ragflow/internal/ingestion/component"
+	"ragflow/internal/permission"
 	"ragflow/internal/service"
 	"ragflow/internal/tokenizer"
 )
@@ -695,6 +696,9 @@ func init() {
 			}
 			if kb == nil {
 				return "", nil
+			}
+			if kb.KnowledgeEnabled {
+				return "", permission.ErrKnowledgeModelUseDenied
 			}
 			return kb.EmbdID, nil
 		},

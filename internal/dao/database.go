@@ -206,6 +206,9 @@ func InitDB(ctx context.Context, migrateDB bool) error {
 		&entity.FileCommit{},
 		&entity.FileCommitItem{},
 		&entity.KnowledgeCompileDataset{},
+		&entity.KnowledgeGroup{},
+		&entity.KnowledgeSourceRevision{},
+		&entity.KnowledgeNode{},
 		&entity.WikiDocumentDirty{},
 		// Knowledge-compile compilation templates and their groups. The Go
 		// KnowledgeCompilerComponent resolves a compilation_template (or group)
@@ -260,6 +263,9 @@ func InitDB(ctx context.Context, migrateDB bool) error {
 		if err = autoMigrateRuntimeModels(ctx, DB); err != nil {
 			return fmt.Errorf("failed to auto-migrate runtime models: %w", err)
 		}
+	}
+	if err = migrateKnowledgeFoundation(ctx, DB); err != nil {
+		return err
 	}
 	// Conversation lists filter by dialog and usually order by update time.
 	for _, table := range []string{"conversation", "api_4_conversation"} {

@@ -1,0 +1,3459 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "LFen's Second Brain — C1/C3 foundation",
+    "version": "1.0.0",
+    "description": "Stage 1 A contract. Native authentication and dataset/document/file identities are reused. All registered domains are owner-only and catalogue-only. Keys, temporary sharing, semantic retrieval, parsing, graph edges and memory/persona are not implemented here. JSON bodies max 16 KiB; unknown fields, repeated/unknown queries and extra JSON values are rejected. Root group parent_id is null; list root children by omitting parent_id. Cursors are scope-bound pagination state, not credentials. Every page is reauthorized. Native middleware errors may keep native envelopes."
+  },
+  "servers": [
+    {
+      "url": "/api/v1"
+    }
+  ],
+  "security": [
+    {
+      "NativeSession": []
+    }
+  ],
+  "paths": {
+    "/knowledge/contract": {
+      "get": {
+        "operationId": "getKnowledgeContract",
+        "tags": [
+          "knowledge-foundation"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "const": "1.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{32}$"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "const": 0
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Capabilities"
+                    },
+                    "contract_version": {
+                      "const": "1.0.0"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{32}$"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "contract_version",
+                    "request_id"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Native authentication middleware can reject before this handler with the legacy envelope. Check HTTP status and code; never treat an HTTP 200 with nonzero code as success."
+          },
+          "404": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/knowledge/domains": {
+      "get": {
+        "operationId": "listKnowledgeDomains",
+        "tags": [
+          "knowledge-foundation"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 50
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            }
+          },
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "const": "1.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{32}$"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "const": 0
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/DomainPage"
+                    },
+                    "contract_version": {
+                      "const": "1.0.0"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{32}$"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "contract_version",
+                    "request_id"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Native authentication middleware can reject before this handler with the legacy envelope. Check HTTP status and code; never treat an HTTP 200 with nonzero code as success."
+          },
+          "404": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{dataset_id}/knowledge/domain": {
+      "put": {
+        "operationId": "registerKnowledgeDomain",
+        "tags": [
+          "knowledge-foundation"
+        ],
+        "description": "Idempotently register an empty private native dataset. Category is frozen. No provider/model is contacted.",
+        "parameters": [
+          {
+            "name": "dataset_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "const": "1.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{32}$"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "const": 0
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Domain"
+                    },
+                    "contract_version": {
+                      "const": "1.0.0"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{32}$"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "contract_version",
+                    "request_id"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Native authentication middleware can reject before this handler with the legacy envelope. Check HTTP status and code; never treat an HTTP 200 with nonzero code as success."
+          },
+          "404": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDomain"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getKnowledgeDomain",
+        "tags": [
+          "knowledge-foundation"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "dataset_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "const": "1.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{32}$"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "const": 0
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Domain"
+                    },
+                    "contract_version": {
+                      "const": "1.0.0"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{32}$"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "contract_version",
+                    "request_id"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Native authentication middleware can reject before this handler with the legacy envelope. Check HTTP status and code; never treat an HTTP 200 with nonzero code as success."
+          },
+          "404": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{dataset_id}/knowledge/groups": {
+      "post": {
+        "operationId": "createKnowledgeGroup",
+        "tags": [
+          "knowledge-foundation"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "dataset_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "const": "1.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{32}$"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "const": 0
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Group"
+                    },
+                    "contract_version": {
+                      "const": "1.0.0"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{32}$"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "contract_version",
+                    "request_id"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Native authentication middleware can reject before this handler with the legacy envelope. Check HTTP status and code; never treat an HTTP 200 with nonzero code as success."
+          },
+          "404": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGroup"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "listKnowledgeGroups",
+        "tags": [
+          "knowledge-foundation"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "dataset_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "parent_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 50
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            }
+          },
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "const": "1.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{32}$"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "const": 0
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/GroupPage"
+                    },
+                    "contract_version": {
+                      "const": "1.0.0"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{32}$"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "contract_version",
+                    "request_id"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Native authentication middleware can reject before this handler with the legacy envelope. Check HTTP status and code; never treat an HTTP 200 with nonzero code as success."
+          },
+          "404": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{dataset_id}/knowledge/sources": {
+      "post": {
+        "operationId": "snapshotKnowledgeSource",
+        "tags": [
+          "knowledge-foundation"
+        ],
+        "description": "Attach an already-uploaded native UTF-8 text/code document (max 2 MiB). Compare-and-swap expected_revision_id for content/classification changes; same current input is idempotent and returns 200. No automatic parsing or embedding.",
+        "parameters": [
+          {
+            "name": "dataset_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "const": "1.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{32}$"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "const": 0
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Snapshot"
+                    },
+                    "contract_version": {
+                      "const": "1.0.0"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{32}$"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "contract_version",
+                    "request_id"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Success",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{32}$"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "const": 0
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Snapshot"
+                    },
+                    "contract_version": {
+                      "const": "1.0.0"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{32}$"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "contract_version",
+                    "request_id"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Native authentication middleware can reject before this handler with the legacy envelope. Check HTTP status and code; never treat an HTTP 200 with nonzero code as success."
+          },
+          "404": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SnapshotSource"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "listKnowledgeSources",
+        "tags": [
+          "knowledge-foundation"
+        ],
+        "description": "Lists current source revisions; omitted group_id lists all current sources, not just ungrouped.",
+        "parameters": [
+          {
+            "name": "dataset_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "group_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 50
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            }
+          },
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "const": "1.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{32}$"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "const": 0
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/SourcePage"
+                    },
+                    "contract_version": {
+                      "const": "1.0.0"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{32}$"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "contract_version",
+                    "request_id"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Native authentication middleware can reject before this handler with the legacy envelope. Check HTTP status and code; never treat an HTTP 200 with nonzero code as success."
+          },
+          "404": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{dataset_id}/knowledge/sources/{revision_id}": {
+      "get": {
+        "operationId": "getKnowledgeSource",
+        "tags": [
+          "knowledge-foundation"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "dataset_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "revision_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "const": "1.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{32}$"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "const": 0
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Source"
+                    },
+                    "contract_version": {
+                      "const": "1.0.0"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{32}$"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "contract_version",
+                    "request_id"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Native authentication middleware can reject before this handler with the legacy envelope. Check HTTP status and code; never treat an HTTP 200 with nonzero code as success."
+          },
+          "404": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{dataset_id}/knowledge/nodes": {
+      "post": {
+        "operationId": "createKnowledgeNode",
+        "tags": [
+          "knowledge-foundation"
+        ],
+        "description": "Append a manual node under a parent in the same domain/revision. Only current revisions are writable. Immutable identity conflicts return 409, identical replay 200. This is not AST parsing.",
+        "parameters": [
+          {
+            "name": "dataset_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "const": "1.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{32}$"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "const": 0
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Node"
+                    },
+                    "contract_version": {
+                      "const": "1.0.0"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{32}$"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "contract_version",
+                    "request_id"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Success",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{32}$"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "const": 0
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Node"
+                    },
+                    "contract_version": {
+                      "const": "1.0.0"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{32}$"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "contract_version",
+                    "request_id"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Native authentication middleware can reject before this handler with the legacy envelope. Check HTTP status and code; never treat an HTTP 200 with nonzero code as success."
+          },
+          "404": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNode"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "listKnowledgeNodes",
+        "tags": [
+          "knowledge-foundation"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "dataset_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "source_revision_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "parent_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 50
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            }
+          },
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "const": "1.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{32}$"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "const": 0
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/NodePage"
+                    },
+                    "contract_version": {
+                      "const": "1.0.0"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{32}$"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "contract_version",
+                    "request_id"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Native authentication middleware can reject before this handler with the legacy envelope. Check HTTP status and code; never treat an HTTP 200 with nonzero code as success."
+          },
+          "404": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{dataset_id}/knowledge/nodes/{node_id}": {
+      "get": {
+        "operationId": "getKnowledgeNode",
+        "tags": [
+          "knowledge-foundation"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "dataset_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "node_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "const": "1.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{32}$"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "const": 0
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Node"
+                    },
+                    "contract_version": {
+                      "const": "1.0.0"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{32}$"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "contract_version",
+                    "request_id"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Native authentication middleware can reject before this handler with the legacy envelope. Check HTTP status and code; never treat an HTTP 200 with nonzero code as success."
+          },
+          "404": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{dataset_id}/knowledge/nodes/{node_id}/content": {
+      "get": {
+        "operationId": "readKnowledgeNode",
+        "tags": [
+          "knowledge-foundation"
+        ],
+        "description": "Exact UTF-8 source bytes in a half-open range [start,end). Absolute offsets within source, constrained to node, <=65536 bytes, aligned to UTF-8 boundaries. CRLF is preserved. Historical source revisions remain readable until the native document is deleted.",
+        "parameters": [
+          {
+            "name": "dataset_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "node_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          {
+            "name": "start_byte",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "end_byte",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "const": "1.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{32}$"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "const": 0
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Content"
+                    },
+                    "contract_version": {
+                      "const": "1.0.0"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{32}$"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "contract_version",
+                    "request_id"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Native authentication middleware can reject before this handler with the legacy envelope. Check HTTP status and code; never treat an HTTP 200 with nonzero code as success."
+          },
+          "404": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{dataset_id}/knowledge/policy/check": {
+      "post": {
+        "operationId": "checkKnowledgePolicy",
+        "tags": [
+          "knowledge-foundation"
+        ],
+        "description": "Dry-run only, always allowed=false in v1. Execution guards are also enforced on native ingestion, retrieval and chat paths.",
+        "parameters": [
+          {
+            "name": "dataset_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "const": "1.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{32}$"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "const": 0
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Decision"
+                    },
+                    "contract_version": {
+                      "const": "1.0.0"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{32}$"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "contract_version",
+                    "request_id"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Native authentication middleware can reject before this handler with the legacy envelope. Check HTTP status and code; never treat an HTTP 200 with nonzero code as success."
+          },
+          "404": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Knowledge error; absent and unauthorized resources are both hidden as 404.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CheckPolicy"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "NativeSession": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Use the existing RAGFlow authenticated user session header verbatim; do not prepend Bearer unless required by your native deployment. This is not a temporary domain grant. Never distribute owner/provider keys."
+      }
+    },
+    "schemas": {
+      "Policy": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "const": 1
+          },
+          "access": {
+            "const": "owner_only"
+          },
+          "index_modes": {
+            "type": "array",
+            "items": {
+              "const": "catalogue"
+            },
+            "minItems": 1,
+            "maxItems": 1
+          },
+          "allowed_model_uses": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "embedding",
+                "rerank",
+                "generation",
+                "remote_parse",
+                "wiki",
+                "memory"
+              ]
+            },
+            "maxItems": 0
+          },
+          "external_models": {
+            "const": false
+          },
+          "automatic_ingestion": {
+            "const": false
+          }
+        },
+        "required": [
+          "version",
+          "access",
+          "index_modes",
+          "allowed_model_uses",
+          "external_models",
+          "automatic_ingestion"
+        ],
+        "additionalProperties": false
+      },
+      "Domain": {
+        "type": "object",
+        "properties": {
+          "domain_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "family",
+              "personal",
+              "project",
+              "experience",
+              "resource",
+              "custom"
+            ]
+          },
+          "owner_id": {
+            "type": "string"
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "policy": {
+            "$ref": "#/components/schemas/Policy"
+          }
+        },
+        "required": [
+          "domain_id",
+          "name",
+          "category",
+          "owner_id",
+          "contract_version",
+          "policy"
+        ],
+        "additionalProperties": false
+      },
+      "Group": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "domain_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "parent_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{32}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "project",
+              "topic",
+              "module"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "component_side": {
+            "type": "string",
+            "enum": [
+              "frontend",
+              "backend",
+              "shared",
+              "cli",
+              "non_code"
+            ]
+          },
+          "create_time": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "update_time": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "create_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "update_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "domain_id",
+          "parent_id",
+          "kind",
+          "name",
+          "component_side"
+        ],
+        "additionalProperties": false
+      },
+      "Source": {
+        "type": "object",
+        "properties": {
+          "source_revision_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "domain_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "source_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "native_file_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "native_commit_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "group_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{32}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "relative_path": {
+            "type": "string",
+            "maxLength": 512
+          },
+          "component_side": {
+            "type": "string",
+            "enum": [
+              "frontend",
+              "backend",
+              "shared",
+              "cli",
+              "non_code"
+            ]
+          },
+          "language": {
+            "type": "string",
+            "maxLength": 32
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "byte_length": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 2097152
+          },
+          "line_count": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "is_current": {
+            "type": "boolean"
+          },
+          "root_node_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "create_time": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "update_time": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "create_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "update_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "source_revision_id",
+          "domain_id",
+          "source_id",
+          "native_file_id",
+          "native_commit_id",
+          "group_id",
+          "relative_path",
+          "component_side",
+          "language",
+          "sha256",
+          "byte_length",
+          "line_count",
+          "is_current",
+          "root_node_id"
+        ],
+        "additionalProperties": false
+      },
+      "Node": {
+        "type": "object",
+        "properties": {
+          "node_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "logical_node_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "domain_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "source_revision_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "parent_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "file",
+              "section",
+              "symbol",
+              "passage"
+            ]
+          },
+          "logical_key": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "structure_version": {
+            "type": "string",
+            "enum": [
+              "source-v1",
+              "manual-v1"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "start_byte": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "end_byte": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "start_line": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "end_line": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "create_time": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "update_time": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "create_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "update_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "node_id",
+          "logical_node_id",
+          "domain_id",
+          "source_revision_id",
+          "parent_id",
+          "kind",
+          "logical_key",
+          "structure_version",
+          "name",
+          "start_byte",
+          "end_byte",
+          "start_line",
+          "end_line"
+        ],
+        "additionalProperties": false
+      },
+      "Content": {
+        "type": "object",
+        "properties": {
+          "node_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "source_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "source_revision_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "source_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "start_byte": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "end_byte": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "text": {
+            "type": "string"
+          },
+          "encoding": {
+            "const": "utf-8"
+          }
+        },
+        "required": [
+          "node_id",
+          "source_id",
+          "source_revision_id",
+          "source_sha256",
+          "start_byte",
+          "end_byte",
+          "text",
+          "encoding"
+        ],
+        "additionalProperties": false
+      },
+      "Decision": {
+        "type": "object",
+        "properties": {
+          "purpose": {
+            "type": "string",
+            "enum": [
+              "embedding",
+              "rerank",
+              "generation",
+              "remote_parse",
+              "wiki",
+              "memory"
+            ]
+          },
+          "allowed": {
+            "const": false
+          },
+          "reason": {
+            "const": "domain_model_calls_disabled"
+          },
+          "policy_version": {
+            "const": 1
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          }
+        },
+        "required": [
+          "purpose",
+          "allowed",
+          "reason",
+          "policy_version",
+          "contract_version"
+        ],
+        "additionalProperties": false
+      },
+      "Snapshot": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "$ref": "#/components/schemas/Source"
+          },
+          "root": {
+            "$ref": "#/components/schemas/Node"
+          },
+          "created": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "source",
+          "root",
+          "created"
+        ],
+        "additionalProperties": false
+      },
+      "RegisterDomain": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "enum": [
+              "family",
+              "personal",
+              "project",
+              "experience",
+              "resource",
+              "custom"
+            ],
+            "default": "custom"
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "CreateGroup": {
+        "type": "object",
+        "properties": {
+          "parent_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{32}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "project",
+              "topic",
+              "module"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 256,
+            "minLength": 1
+          },
+          "component_side": {
+            "type": "string",
+            "enum": [
+              "frontend",
+              "backend",
+              "shared",
+              "cli",
+              "non_code"
+            ],
+            "default": "non_code"
+          }
+        },
+        "required": [
+          "kind",
+          "name"
+        ],
+        "additionalProperties": false
+      },
+      "SnapshotSource": {
+        "type": "object",
+        "properties": {
+          "document_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "expected_revision_id": {
+            "oneOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{32}$"
+              },
+              {
+                "const": ""
+              }
+            ],
+            "default": ""
+          },
+          "group_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{32}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "relative_path": {
+            "type": "string",
+            "maxLength": 512
+          },
+          "component_side": {
+            "type": "string",
+            "enum": [
+              "frontend",
+              "backend",
+              "shared",
+              "cli",
+              "non_code"
+            ],
+            "default": "non_code"
+          },
+          "language": {
+            "type": "string",
+            "maxLength": 32
+          }
+        },
+        "required": [
+          "document_id"
+        ],
+        "additionalProperties": false
+      },
+      "CreateNode": {
+        "type": "object",
+        "properties": {
+          "source_revision_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "parent_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "section",
+              "symbol",
+              "passage"
+            ]
+          },
+          "logical_key": {
+            "type": "string",
+            "maxLength": 256,
+            "minLength": 1
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 256,
+            "minLength": 1
+          },
+          "start_byte": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "end_byte": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "source_revision_id",
+          "parent_id",
+          "kind",
+          "logical_key",
+          "name",
+          "start_byte",
+          "end_byte"
+        ],
+        "additionalProperties": false
+      },
+      "CheckPolicy": {
+        "type": "object",
+        "properties": {
+          "purpose": {
+            "type": "string",
+            "enum": [
+              "embedding",
+              "rerank",
+              "generation",
+              "remote_parse",
+              "wiki",
+              "memory"
+            ]
+          }
+        },
+        "required": [
+          "purpose"
+        ],
+        "additionalProperties": false
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "knowledge_not_found",
+              "knowledge_invalid_request",
+              "knowledge_conflict",
+              "knowledge_source_unsupported",
+              "knowledge_range_too_large",
+              "knowledge_body_too_large",
+              "knowledge_storage_unavailable",
+              "knowledge_source_integrity",
+              "knowledge_unauthorized",
+              "knowledge_contract_version",
+              "knowledge_internal"
+            ]
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "null"
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "request_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data",
+          "contract_version",
+          "request_id"
+        ],
+        "additionalProperties": false
+      },
+      "Capabilities": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "const": "1.0.0"
+          },
+          "contracts": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "C1",
+                "C3"
+              ]
+            }
+          },
+          "schema": {
+            "type": "string"
+          },
+          "identity": {
+            "const": "opaque-source-and-structure-versioned"
+          },
+          "capabilities": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "limits": {
+            "type": "object",
+            "properties": {
+              "source_bytes": {
+                "const": 2097152
+              },
+              "content_bytes": {
+                "const": 65536
+              },
+              "page_size": {
+                "const": 200
+              },
+              "depth": {
+                "const": 16
+              }
+            },
+            "required": [
+              "source_bytes",
+              "content_bytes",
+              "page_size",
+              "depth"
+            ],
+            "additionalProperties": false
+          },
+          "model_calls": {
+            "const": false
+          },
+          "ingestion": {
+            "const": false
+          }
+        },
+        "required": [
+          "version",
+          "contracts",
+          "schema",
+          "identity",
+          "capabilities",
+          "limits",
+          "model_calls",
+          "ingestion"
+        ],
+        "additionalProperties": false
+      },
+      "DomainPage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Domain"
+            }
+          },
+          "next_cursor": {
+            "type": "string",
+            "maxLength": 2048
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "additionalProperties": false
+      },
+      "GroupPage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Group"
+            }
+          },
+          "next_cursor": {
+            "type": "string",
+            "maxLength": 2048
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "additionalProperties": false
+      },
+      "SourcePage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Source"
+            }
+          },
+          "next_cursor": {
+            "type": "string",
+            "maxLength": 2048
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "additionalProperties": false
+      },
+      "NodePage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Node"
+            }
+          },
+          "next_cursor": {
+            "type": "string",
+            "maxLength": 2048
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "x-knowledge-frozen": {
+    "contracts": [
+      "C1",
+      "C3"
+    ],
+    "not_implemented": [
+      "C2 ingestion events",
+      "C4 retrieval",
+      "C5 evidence and reuse packages",
+      "C6 persona and memory",
+      "temporary sharing",
+      "relation edges"
+    ],
+    "identity": {
+      "domain_id": "native Knowledgebase.ID (32 hex)",
+      "source_id": "native Document.ID (32 hex)",
+      "source_revision_id": "native FileCommitItem.ID (32 hex)",
+      "logical_node_id": "SHA256(JSON string array [knowledge-logical/1,domain_id,source_id,kind,logical_key])",
+      "node_id": "SHA256(JSON string array [knowledge-node/1,logical_node_id,source_revision_id,structure_version])",
+      "structure_version": [
+        "source-v1",
+        "manual-v1"
+      ],
+      "opaque_to_clients": true
+    },
+    "consistency": "Writes within a domain serialize on its DB row; native object write precedes catalogue DB commit and can leave an unreferenced immutable blob after rollback. Lists are weakly consistent; exact revision content is immutable and hash-verified.",
+    "source_import": {
+      "native_upload": "POST /datasets/{dataset_id}/documents (multipart file)",
+      "sequence": "Create empty native dataset without embedding_model, register domain, then upload synthetic UTF-8 file and snapshot explicitly.",
+      "native_create_caution": "Providing embedding_model to the native create endpoint can trigger its availability probe; omit that field for model-free foundation setup.",
+      "extensions": [
+        "txt",
+        "md",
+        "markdown",
+        "ts",
+        "tsx",
+        "js",
+        "jsx",
+        "go",
+        "css",
+        "scss",
+        "json",
+        "yaml",
+        "yml",
+        "html",
+        "htm",
+        "sql",
+        "sh",
+        "c",
+        "cpp",
+        "h",
+        "hpp",
+        "java",
+        "rs",
+        "py"
+      ],
+      "constraints": "The registered-domain upload adapter preserves original filename/bytes, requires valid UTF-8 without NUL, and caps files at 2 MiB. No PDF/PPT/OCR, Git watching or automatic indexing in this contract.",
+      "revision_scope": "Snapshots observe the native Document payload plus classification. File editor changes and external file changes are not automatically synchronized. A future incremental producer must reuse Document.ID for the same logical source."
+    },
+    "domain_registration": "Requires an empty private dataset without Connector links or ingestion history. Existing registered domains replay idempotently for the same category.",
+    "native_model_settings": "Registered domains reject embd_id/embedding_model updates before native availability probes; native creation before registration must omit embedding_model."
+  }
+}

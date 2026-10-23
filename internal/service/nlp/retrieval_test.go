@@ -535,6 +535,7 @@ func (e *retryCaptureEngine) GetHighlight([]map[string]interface{}, []string, st
 }
 
 func TestSearchDenseFallbackContract(t *testing.T) {
+	setupRetrievalKnowledgePolicy(t)
 	if GetQueryBuilder() == nil {
 		globalQueryBuilder = NewQueryBuilder()
 	}
@@ -587,6 +588,7 @@ func TestSearchDenseFallbackContract(t *testing.T) {
 }
 
 func TestSearchWithoutLexicalExpressionRetries(t *testing.T) {
+	setupRetrievalKnowledgePolicy(t)
 	if GetQueryBuilder() == nil {
 		globalQueryBuilder = NewQueryBuilder()
 	}
@@ -610,6 +612,7 @@ func TestSearchWithoutLexicalExpressionRetries(t *testing.T) {
 }
 
 func TestRetrievalDisablesDenseFallback(t *testing.T) {
+	setupRetrievalKnowledgePolicy(t)
 	if GetQueryBuilder() == nil {
 		globalQueryBuilder = NewQueryBuilder()
 	}
@@ -636,6 +639,7 @@ func TestRetrievalDisablesDenseFallback(t *testing.T) {
 }
 
 func TestSearchPassesVectorSimilarityWeightToFusionExpr(t *testing.T) {
+	setupRetrievalKnowledgePolicy(t)
 	if GetQueryBuilder() == nil {
 		globalQueryBuilder = NewQueryBuilder()
 	}
@@ -653,6 +657,7 @@ func TestSearchPassesVectorSimilarityWeightToFusionExpr(t *testing.T) {
 }
 
 func TestRetrievalPassesVectorSimilarityWeightToSearch(t *testing.T) {
+	setupRetrievalKnowledgePolicy(t)
 	if GetQueryBuilder() == nil {
 		globalQueryBuilder = NewQueryBuilder()
 	}
@@ -706,6 +711,7 @@ func TestBuildRetrievalFusionExprMatchesPythonEngineWeights(t *testing.T) {
 }
 
 func TestSearchKeepsPythonFusionWeightForElasticsearch(t *testing.T) {
+	setupRetrievalKnowledgePolicy(t)
 	if GetQueryBuilder() == nil {
 		globalQueryBuilder = NewQueryBuilder()
 	}

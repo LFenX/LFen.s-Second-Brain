@@ -1,0 +1,376 @@
+{
+  "version": "v0.19",
+  "contract_version": "1.0.0",
+  "checked_at": "2026-10-23T19:43:31.707Z",
+  "request_snapshot": "阶段0方案通过。开始推进本机A的阶段1，先冻结双方共享的领域模型、节点身份、权限与外发规则及接口契约，再完成最小底座适配，给B整理可直接接续的交接说明。暂不调用模型，完成验证后推送远端。",
+  "objective": "冻结A/B共享C1与C3领域契约，完成本机A阶段1最小结构及原文底座，提供B可直接接续的说明；不调用模型。",
+  "source": {
+    "base_commit": "bd42c40574f3e00c0452943fdbd597aea45b096a",
+    "implementation_branch": "codex/stage1a-foundation",
+    "changed_go_files": [
+      {
+        "path": "internal/dao/database.go",
+        "sha256": "ff25864e29f279c0532f9715805fefccdb7a4450642f2a90831979b5f4b2bb4d"
+      },
+      {
+        "path": "internal/dao/knowledge_migration.go",
+        "sha256": "d3661d0e1c8634b9259476279a3c130d511de53c0fb9296ade1a5b5bf843710f"
+      },
+      {
+        "path": "internal/dao/knowledge_migration_test.go",
+        "sha256": "dd2042594a0e2bb8a7b7cf00c31f00daeaea374e5b95f84e0acd516780d1476d"
+      },
+      {
+        "path": "internal/entity/dataset.go",
+        "sha256": "fb322465433a58db54c37ee38b5a74264f781dc76f329462716865c6685b5fa9"
+      },
+      {
+        "path": "internal/entity/knowledge.go",
+        "sha256": "859704dff09620f2e5510aae74df0cc2c73a9b556aad17de54f2289dde17fb90"
+      },
+      {
+        "path": "internal/entity/knowledge_test.go",
+        "sha256": "efe7ce25e6f485bb7f9fbcab1ee9ae9e1d267ef158c62b17468177dbac4117bd"
+      },
+      {
+        "path": "internal/handler/knowledge.go",
+        "sha256": "9ec0c09a5882bab980f4934e375587090ebfbd4e9de1bd26f7025af6a6691e9a"
+      },
+      {
+        "path": "internal/handler/knowledge_test.go",
+        "sha256": "c4ec73fe2b7abca43af8fbeae0172da7714bd10cd2801533f468fb92e1e17e4b"
+      },
+      {
+        "path": "internal/ingestion/task/embedder.go",
+        "sha256": "1f6a0ad5f813d030cd324b2289e8b76f962fd2c2e67daba403a369ddcaa13ff0"
+      },
+      {
+        "path": "internal/permission/database_source.go",
+        "sha256": "cd2bec2f57fc397da82be6017dbb8f683939ce5144bd4fa54b5684b2e9e13f0a"
+      },
+      {
+        "path": "internal/permission/knowledge.go",
+        "sha256": "bd0051212dd283766dea100b35be0cdce2a8e8d1aa8bf6893362c070a7a42000"
+      },
+      {
+        "path": "internal/permission/knowledge_test.go",
+        "sha256": "ff071516d93174c01e066f46a68bf6bc0047426962a2cbe3d2844f318cf2446c"
+      },
+      {
+        "path": "internal/permission/policy_ce.go",
+        "sha256": "3b077868219ce6432d31a1d2f2b15a438786105f5f01b4d33e6a8a1fd8f18cfc"
+      },
+      {
+        "path": "internal/router/knowledge_test.go",
+        "sha256": "857da1f2b6effb71dfe8867cd5a7226b7436f44c8a2aeb7d4c14708bc6fd161d"
+      },
+      {
+        "path": "internal/router/router.go",
+        "sha256": "de215e98843efac39a1915727ba8368cf27edd465811188ea77485520437abe7"
+      },
+      {
+        "path": "internal/service/chat_pipeline.go",
+        "sha256": "6500c94218b4779ae74fd11a4df74fa6eca3b77d38e28b250382f96fb873d974"
+      },
+      {
+        "path": "internal/service/chunk/chunk.go",
+        "sha256": "35b0e9d4638c57901006b4975df5405579d30a229e55098fec693c3331c3fe63"
+      },
+      {
+        "path": "internal/service/dataset/embedding.go",
+        "sha256": "9e466942775fbcb6ac79e65df87824e06d877d23afb78a2ee9ba148d17c13933"
+      },
+      {
+        "path": "internal/service/dataset/knowledge.go",
+        "sha256": "4a019eb5f399562eaadeee14895a639cff60ea936ada83f9888c6f869930896e"
+      },
+      {
+        "path": "internal/service/dataset/knowledge_source.go",
+        "sha256": "e82aac7abfcd406f6430bd06046cc9840d0e6d0979781622d392b340a9d80c8e"
+      },
+      {
+        "path": "internal/service/dataset/knowledge_test.go",
+        "sha256": "5d2a0086376db4dee0bc1d0c72c70218c51e8ad6e9fa281899b18a8e48a6adce"
+      },
+      {
+        "path": "internal/service/dataset/update.go",
+        "sha256": "ba6ae79af3153da9454875283b085f92272be5a751c4c5889c517d00577b268c"
+      },
+      {
+        "path": "internal/service/dataset_permission.go",
+        "sha256": "b968bcb6c5cd359c09f224744d7b71efd48841fbfb9ca7e39e3016250c95880d"
+      },
+      {
+        "path": "internal/service/document/document_upload.go",
+        "sha256": "1ba2fccc8f4bf8157db337a01f14ac64e8f6a461e38c4bdfd6fa8243d3339f48"
+      },
+      {
+        "path": "internal/service/document/knowledge_test.go",
+        "sha256": "4e33e0dbeb5352e30782eea17386b088cac6804098734ab4b649f76aedaf0a56"
+      },
+      {
+        "path": "internal/service/file/source_snapshot.go",
+        "sha256": "8da92eb91c1d5c6c611bb9c75a79d928796f5c23d4e08b935376e33a738dae74"
+      },
+      {
+        "path": "internal/service/ingestion_task_service.go",
+        "sha256": "0e99f3dc96a347082b173be79575d93e01dcc79d9b04eba971b54c154ceff9af"
+      },
+      {
+        "path": "internal/service/knowledge_test.go",
+        "sha256": "e5bb40cd3a1f301b8963d0e89477a4bda37f8382e14d2e8b5a3eb9f93e3ed8af"
+      },
+      {
+        "path": "internal/service/nlp/knowledge_test.go",
+        "sha256": "5de11083a1e57d12b2ca2c05ed1ab1049d5f33469edd22d467dedcc65e5c2559"
+      },
+      {
+        "path": "internal/service/nlp/retrieval.go",
+        "sha256": "913cfe163a61cf605bd83889c041c351256fe4a7deac7b3f2c055e884b69c3bd"
+      },
+      {
+        "path": "internal/service/nlp/retrieval_test.go",
+        "sha256": "c66c5e9bc8c4e6e00d02f813e127621fb7b5d8aded7843dd49803c2699762a3e"
+      },
+      {
+        "path": "internal/utility/knowledge.go",
+        "sha256": "98c9104dc8d3229f11530640bc3b07418495c48a96de050365f4dd81224bf3fa"
+      },
+      {
+        "path": "internal/utility/knowledge_test.go",
+        "sha256": "da1b388252950fae2eedc4ad18a6b3bd901e69192d0d6191f72ef41f4e5fabb8"
+      }
+    ],
+    "changed_go_manifest_sha256": "db01b8af3c93f59558a4711f68350ce6531808aedcaf441ad7d861dc5d51fad2",
+    "openapi_sha256": "ef01786bb7539470ef27663faf126fe52bb895bd142e1c311ab434b2a56de81b",
+    "fixture_sha256": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343",
+    "go_mod_sha256": "be436e9f362848b611c4df0ff8866191bad27993d60f9011d6fce70df49629a5",
+    "go_sum_sha256": "daeb317bfcfba03000d416253f685db1716b4155776bc49e0d8a08b412fb982f"
+  },
+  "scope": {
+    "implemented": [
+      "1A.1 原生域身份映射、组织分组、来源修订、确定性节点及C1/C3接口",
+      "1A.2 原生版本存储回读、私有及禁模型入口、构建加载和回退准备",
+      "B的OpenAPI、合成示例、消费顺序、权限／修订边界和接续说明"
+    ],
+    "excluded": [
+      "B的页面与MCP实现、B契约确认及双方纵向验收",
+      "真实家庭／个人／AICS／AOCI资料导入",
+      "PDF/PPT/OCR解析、AST与代码关系边、Wiki生产",
+      "词法／结构／向量检索与引用优化、完整60题评测",
+      "临时共享授权、人格与长短期记忆"
+    ]
+  },
+  "engineering_status": {
+    "A_1A_1": "Implemented",
+    "A_1A_2": "Implemented",
+    "B_1B_1": "Pending",
+    "B_1B_2": "Pending",
+    "whole_stage1": "Pending_A_B_vertical_integration",
+    "prior_stage0_user_decision": {
+      "outcome": "Approved",
+      "subject": "bd42c40574f3e00c0452943fdbd597aea45b096a",
+      "quote": "阶段0方案通过。"
+    },
+    "user_decision": {
+      "outcome": "Pending"
+    }
+  },
+  "contract": {
+    "operations": 14,
+    "contracts": [
+      "C1",
+      "C3"
+    ],
+    "domain_identity": "原生Knowledgebase.ID",
+    "source_identity": "原生Document.ID",
+    "source_revision_identity": "原生FileCommitItem.ID",
+    "nodes": "逻辑身份与来源修订／结构版本实例分开；客户端不重算ID",
+    "component_labels": [
+      "frontend",
+      "backend",
+      "shared",
+      "cli",
+      "non_code"
+    ],
+    "policy": {
+      "access": "owner_only",
+      "index_modes": [
+        "catalogue"
+      ],
+      "allowed_model_uses": [],
+      "external_models": false,
+      "automatic_ingestion": false
+    },
+    "limits": {
+      "source_bytes": 2097152,
+      "content_bytes": 65536,
+      "page_default": 50,
+      "page_max": 200,
+      "tree_depth_including_root": 16
+    }
+  },
+  "verification": {
+    "related_go_packages": {
+      "command": "bash build.sh --test -json ./internal/entity ./internal/permission/... ./internal/dao ./internal/utility ./internal/service/dataset ./internal/service/document ./internal/service/nlp ./internal/service/file ./internal/service/chunk ./internal/service ./internal/handler ./internal/router ./internal/ingestion/task",
+      "packages": [
+        "ragflow/internal/entity",
+        "ragflow/internal/permission/response",
+        "ragflow/internal/permission",
+        "ragflow/internal/utility",
+        "ragflow/internal/service/nlp",
+        "ragflow/internal/dao",
+        "ragflow/internal/service/file",
+        "ragflow/internal/service/chunk",
+        "ragflow/internal/router",
+        "ragflow/internal/service/document",
+        "ragflow/internal/service/dataset",
+        "ragflow/internal/handler",
+        "ragflow/internal/service",
+        "ragflow/internal/ingestion/task"
+      ],
+      "packages_passed": 14,
+      "top_level_tests_passed": 2435,
+      "tests_and_subtests_passed": 4144,
+      "failed": 0,
+      "native_unit_packages_passed": [
+        "ragflow/internal/deepdoc/native",
+        "ragflow/internal/deepdoc/native/croptest"
+      ]
+    },
+    "live_http": {
+      "checks_passed": 28,
+      "checks": [
+        "register_empty_private_domain_without_provider_call",
+        "idempotent_domain_registration",
+        "frozen_domain_category",
+        "native_authentication_required",
+        "contract_version_mismatch",
+        "separate_frontend_backend_labels",
+        "scope_bound_cursor_pagination",
+        "cursor_cannot_change_scope",
+        "native_upload_to_versioned_source",
+        "idempotent_source_snapshot",
+        "manual_parent_child_node",
+        "idempotent_immutable_node",
+        "immutable_node_conflict",
+        "exact_source_bytes_and_hash",
+        "browse_source_and_node_tree",
+        "bounded_utf8_source_reads",
+        "cross_domain_references_hidden",
+        "authenticated_domain_and_source_listing",
+        "classification_revision_and_historical_read",
+        "stale_revision_and_historical_writes_rejected",
+        "all_six_model_purposes_denied",
+        "native_parse_execution_denied",
+        "native_retrieval_denied_before_model_helpers",
+        "arbitrary_path_not_accepted",
+        "legacy_poc_provider_configuration_and_usage_unchanged",
+        "catalogue_writes_create_no_ingestion_or_chunks",
+        "concurrent_mysql_cas_allows_one_writer_and_rejects_stale_writer",
+        "native_model_settings_denied_before_availability_probe"
+      ],
+      "concurrent_mysql_cas": {
+        "successful": 1,
+        "conflicts": 1,
+        "current_revisions": 1
+      },
+      "revision_scope": "HTTP验证分类／路径修订；真实字节变化、旧版内容和回滚另有单元测试",
+      "cross_owner_scope": "不同用户的私有隔离及列表一致性由持久化权限／服务测试验证；HTTP验证认证与跨域引用拒绝"
+    },
+    "model_calls": {
+      "external_provider_requests": 0,
+      "ingestion_workflows_started": 0,
+      "evidence": "构建容器未挂入Key；合成测试及原生禁用入口有执行拒绝；本轮未发起解析／Embedding／重排／生成请求，原生用量和服务商配置摘要不变。",
+      "independent_network_packet_capture": false
+    }
+  },
+  "build": {
+    "environment": "隔离Ubuntu24.04.4容器，与运行镜像基础相同；宿主Windows项目结构不变",
+    "tools": {
+      "go": "1.27.3",
+      "clang_lld": "22.1.8",
+      "cmake": "4.4.4"
+    },
+    "native_libraries": {
+      "office_oxide": "0.1.12",
+      "pdfium": "7809",
+      "pdf_oxide": "0.3.73",
+      "onnxruntime_static": "1.29.0"
+    },
+    "commands": [
+      "bash build.sh --cpp",
+      "bash build.sh --test (相关包与原生单元测试)",
+      "bash build.sh --go"
+    ],
+    "binary_bytes": 322955416,
+    "binary_sha256": "98f9916b3b520b7bf411a9a5da1b8bdbe159ec84194c3341bb16ae4a4c9f6ff4",
+    "mode_help": "api/admin/ingestor/syncer可执行并输出原生usage；项目help约定退出码为1，不把它伪报为0"
+  },
+  "runtime": {
+    "api_base": "http://127.0.0.1:18080/api/v1",
+    "health": "healthy",
+    "loaded_modes": [
+      "api",
+      "admin",
+      "ingestor",
+      "syncer"
+    ],
+    "base_image": "sha256:2fc19b4c8bbb589e6ea2debd641e1e83a92ad5f9b398c121d46c9f56f296ba6e",
+    "binary_sha256": "98f9916b3b520b7bf411a9a5da1b8bdbe159ec84194c3341bb16ae4a4c9f6ff4",
+    "binary_matches_build": true,
+    "read_only_binary_mount": true,
+    "compose_project": "lfen-ragflow-poc",
+    "reused_original_service_volumes": true,
+    "other_existing_containers_unchanged": 7,
+    "legacy_poc": {
+      "documents": 6,
+      "chunks": 42,
+      "domain_enabled": false,
+      "kb_unchanged": true,
+      "documents_unchanged": true,
+      "provider_configuration_unchanged": true,
+      "native_usage_unchanged": true
+    },
+    "rollback": "原始本地Compose及元数据库备份仅在受限私有执行目录；移除自编译二进制挂载可回固定原镜像，加法列／表可保留。未执行破坏性恢复。"
+  },
+  "findings_closed": [
+    {
+      "finding": "原生上传拒绝.tsx",
+      "fix": "仅注册知识域适配UTF-8文本代码上传，保留文件名／字节；原生未注册数据集不变",
+      "evidence": "文档上传单元测试及真实.tsx快照／原文闭环通过"
+    },
+    {
+      "finding": "原生File.type保存doc/txt等格式，不是统一file",
+      "fix": "来源映射按Document链接和租户匹配，排除folder/virtual；测试使用真实txt类型",
+      "evidence": "实际MySQL+MinIO上传／快照／回读通过"
+    },
+    {
+      "finding": "新策略检查要求旧检索单元测试具备持久化策略事实",
+      "fix": "补本地SQLite未注册数据集fixture；不放松生产拒绝",
+      "evidence": "既有全文／混合检索回归通过"
+    },
+    {
+      "finding": "运行表迁移helper不应耦合原生Knowledgebase表",
+      "fix": "领域加法迁移在数据库初始化入口执行",
+      "evidence": "新加法迁移及原迁移测试通过"
+    },
+    {
+      "finding": "原生数据集修改模型字段会触发可用性探测，已有自动来源／任务历史也不应被默认为新目录域",
+      "fix": "注册前拒绝Connector关联和解析任务历史；模型字段修改在读取状态及事务锁定状态双重拒绝",
+      "evidence": "领域服务回归与真实原生模型字段修改拒绝通过；用量／服务商配置摘要不变"
+    }
+  ],
+  "limitations": [
+    "本轮是A侧交付，B未确认契约或实现页面，完整阶段1未退出。",
+    "目录仅UTF-8文本／代码，2MiB来源、64KiB范围读取；未执行百万级负载或检索质量／延迟验收。",
+    "快照观察Document内容，未实现文件编辑／Git／目录自动同步；增量生产者必须保持稳定source_id。",
+    "对象写入先于DB提交；回滚可留下未引用对象，物理清理／删除保留策略待后续实现。",
+    "注册领域按所有者整体隔离；更细模块Grant、临时共享与缓存治理未实现。",
+    "模型限制作用于已注册领域的受控原生工作流；不声称全应用网络沙箱。"
+  ],
+  "handoff": "阶段1-A-B交接说明.md",
+  "user_decision": {
+    "outcome": "Pending"
+  }
+}

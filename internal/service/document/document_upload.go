@@ -72,6 +72,15 @@ func (s *DocumentService) UploadLocalDocuments(ctx context.Context, kb *entity.K
 		}
 
 		filetype := utility.FilenameType(filename)
+		if kb.KnowledgeEnabled {
+			if int64(len(blob)) > entity.KnowledgeMaxSourceBytes || !utility.IsKnowledgeTextSource(filename, blob) {
+				errMsgs = append(errMsgs, fh.Filename+": Knowledge foundation supports UTF-8 text/code up to 2 MiB only")
+				continue
+			}
+			if filetype == utility.FileTypeOTHER {
+				filetype = utility.FileTypeTXT
+			}
+		}
 		if filetype == utility.FileTypeOTHER {
 			errMsgs = append(errMsgs, fh.Filename+": This type of file has not been supported yet!")
 			continue

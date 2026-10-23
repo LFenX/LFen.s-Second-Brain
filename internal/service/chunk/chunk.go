@@ -712,7 +712,13 @@ func (s *ChunkService) checkDatasetAccess(ctx context.Context, datasetID, userID
 	if s.checkDatasetAccessFunc != nil {
 		return s.checkDatasetAccessFunc(datasetID, userID)
 	}
-	return service.CheckDatasetAccess(ctx, permission.Subject{UserID: userID}, datasetID, operation)
+	if err := service.CheckDatasetAccess(ctx, permission.Subject{UserID: userID}, datasetID, operation); err != nil {
+		return err
+	}
+	if operation == permission.OperationUpdate {
+		return permission.CheckKnowledgeIngestion(ctx, dao.DB, []string{datasetID})
+	}
+	return nil
 }
 
 func (s *ChunkService) getKnowledgebaseByID(ctx context.Context, datasetID string) (*entity.Knowledgebase, error) {

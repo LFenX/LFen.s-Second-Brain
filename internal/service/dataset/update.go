@@ -33,12 +33,19 @@ type datasetPagerankUpdate struct {
 func (d *DatasetService) UpdateDataset(ctx context.Context, datasetID, userID string, req service.UpdateDatasetRequest) (map[string]interface{}, common.ErrorCode, error) {
 	datasetID = strings.TrimSpace(datasetID)
 	userID = strings.TrimSpace(userID)
-	if _, err := d.kbDAO.GetByID(ctx, dao.DB, datasetID); err != nil {
+	kb, err := d.kbDAO.GetByID(ctx, dao.DB, datasetID)
+	if err != nil {
 		if dao.IsNotFoundErr(err) {
 			code, permissionErr := permissionresponse.NormalizeHidden(permission.ErrResourceNotFound)
 			return nil, code, permissionErr
 		}
 		return nil, common.CodeServerError, errors.New("database operation failed")
+	}
+	if kb.KnowledgeEnabled && ((req.Permission != nil && *req.Permission != string(entity.TenantPermissionMe)) || req.Connectors != nil) {
+		return nil, common.CodeDataError, errors.New("knowledge foundation requires private access and manual source registration")
+	}
+	if kb.KnowledgeEnabled && (req.EmbdID != nil || req.EmbeddingModel != nil) {
+		return nil, common.CodeForbidden, permission.ErrKnowledgeModelUseDenied
 	}
 
 	connectorsProvided := req.Connectors != nil
@@ -184,6 +191,14 @@ func (d *DatasetService) UpdateDataset(ctx context.Context, datasetID, userID st
 		if authErr != nil {
 			txCode = code
 			return authErr
+		}
+		if lockedKB.KnowledgeEnabled && ((req.Permission != nil && *req.Permission != string(entity.TenantPermissionMe)) || connectorsProvided) {
+			txCode = common.CodeDataError
+			return errors.New("knowledge foundation requires private access and manual source registration")
+		}
+		if lockedKB.KnowledgeEnabled && embdIDProvided {
+			txCode = common.CodeForbidden
+			return permission.ErrKnowledgeModelUseDenied
 		}
 		if sel != nil || pipelineID != nil || req.ParserConfig != nil || req.ParserConfigProvided {
 			current := service.CurrentSelection(lockedKB.ParserID, lockedKB.PipelineID)

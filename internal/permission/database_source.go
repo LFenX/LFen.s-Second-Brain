@@ -952,6 +952,10 @@ func datasetResource(dataset *entity.Knowledgebase, ownerIDsByTenant map[string]
 	case string(entity.TenantPermissionTeam):
 		visibility = VisibilityTenant
 	}
+	if dataset.KnowledgeEnabled {
+		ownerUserID = dataset.CreatedBy
+		visibility = VisibilityPrivate
+	}
 	return Resource{
 		Ref:               ResourceRef{Kind: ResourceKindDataset, ID: dataset.ID},
 		TenantID:          dataset.TenantID,

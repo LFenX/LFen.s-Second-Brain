@@ -38,6 +38,7 @@ import (
 	"unicode/utf8"
 
 	"ragflow/internal/dao"
+	"ragflow/internal/permission"
 
 	"go.uber.org/zap"
 )
@@ -229,11 +230,15 @@ func (s *ChatPipelineService) AsyncChat(
 	// Resolve what this conversation can reach BEFORE dispatching: whether it
 	// has knowledge bases, and whether web search is enabled.
 	hasKBs := false
+	knowledgeDatasetIDs := make([]string, 0, len(chat.KBIDs))
 	for _, raw := range chat.KBIDs {
 		if id, ok := raw.(string); ok && id != "" {
 			hasKBs = true
-			break
+			knowledgeDatasetIDs = append(knowledgeDatasetIDs, id)
 		}
+	}
+	if err := permission.CheckDatasetModelUse(ctx, dao.DB, knowledgeDatasetIDs, "generation"); err != nil {
+		return nil, err
 	}
 	useWebSearch := s.shouldUseWebSearch(chat, kwargs["internet"])
 	if useWebSearch {

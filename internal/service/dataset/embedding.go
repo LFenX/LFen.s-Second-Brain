@@ -45,6 +45,9 @@ func (d *DatasetService) CheckEmbedding(ctx context.Context, userID, datasetID s
 		code, permissionErr := permissionresponse.Normalize(err)
 		return nil, code, permissionErr
 	}
+	if err := permission.CheckDatasetModelUse(ctx, dao.DB, []string{datasetID}, "embedding"); err != nil {
+		return nil, common.CodeDataError, err
+	}
 
 	kb, err := d.kbDAO.GetByID(ctx, dao.DB, datasetID)
 	if err != nil {

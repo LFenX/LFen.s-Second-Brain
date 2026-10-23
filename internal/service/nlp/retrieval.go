@@ -31,6 +31,7 @@ import (
 	"ragflow/internal/engine"
 	"ragflow/internal/engine/types"
 	"ragflow/internal/entity/models"
+	"ragflow/internal/permission"
 	"ragflow/internal/tokenizer"
 
 	"go.uber.org/zap"
@@ -95,6 +96,11 @@ type RetrievalResult struct {
 // - Build chunks
 // - Build document aggregation if specified
 func (s *RetrievalService) Retrieval(ctx context.Context, req *RetrievalRequest) (*RetrievalResult, error) {
+	if req.RerankModel != nil {
+		if err := permission.CheckDatasetModelUse(ctx, dao.DB, req.KbIDs, "rerank"); err != nil {
+			return nil, err
+		}
+	}
 	common.InfoCtx(ctx, "Retrieval START", zap.String("question", req.Question), zap.Int("page", req.Page), zap.Int("pageSize", req.PageSize))
 	if req.Question == "" {
 		return &RetrievalResult{Chunks: []map[string]interface{}{}, DocAggs: []map[string]interface{}{}, Total: 0}, nil
@@ -688,6 +694,11 @@ type RetrievalSearchResult struct {
 //
 // Hybrid search path retries with lower thresholds if no results found.
 func (s *RetrievalService) Search(ctx context.Context, req *RetrievalSearchRequest) (*RetrievalSearchResult, error) {
+	if req.EmbeddingModel != nil {
+		if err := permission.CheckDatasetModelUse(ctx, dao.DB, req.KbIDs, "embedding"); err != nil {
+			return nil, err
+		}
+	}
 	if req.Highlight == nil {
 		req.Highlight = func() *bool { v := false; return &v }()
 	}

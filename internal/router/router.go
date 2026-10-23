@@ -328,11 +328,25 @@ func (r *Router) Setup(engine *gin.Engine) {
 			}
 			v1.POST("/openai/:chat_id/chat/completions", r.openaiChatHandler.OpenAIChatCompletions)
 			v1.POST("/retrieval", r.datasetsHandler.SearchDatasets)
+			v1.GET("/knowledge/contract", r.datasetsHandler.KnowledgeContract)
+			v1.GET("/knowledge/domains", r.datasetsHandler.ListKnowledgeDomains)
 
 			// Dataset routes
 			datasets := v1.Group("/datasets")
 			{
 				datasets.GET("", r.datasetsHandler.ListDatasets)
+				datasets.PUT("/:dataset_id/knowledge/domain", r.datasetsHandler.RegisterKnowledgeDomain)
+				datasets.GET("/:dataset_id/knowledge/domain", r.datasetsHandler.GetKnowledgeDomain)
+				datasets.POST("/:dataset_id/knowledge/groups", r.datasetsHandler.CreateKnowledgeGroup)
+				datasets.GET("/:dataset_id/knowledge/groups", r.datasetsHandler.ListKnowledgeGroups)
+				datasets.POST("/:dataset_id/knowledge/sources", r.datasetsHandler.SnapshotKnowledgeSource)
+				datasets.GET("/:dataset_id/knowledge/sources", r.datasetsHandler.ListKnowledgeSources)
+				datasets.GET("/:dataset_id/knowledge/sources/:revision_id", r.datasetsHandler.GetKnowledgeSource)
+				datasets.POST("/:dataset_id/knowledge/nodes", r.datasetsHandler.CreateKnowledgeNode)
+				datasets.GET("/:dataset_id/knowledge/nodes", r.datasetsHandler.ListKnowledgeNodes)
+				datasets.GET("/:dataset_id/knowledge/nodes/:node_id", r.datasetsHandler.GetKnowledgeNode)
+				datasets.GET("/:dataset_id/knowledge/nodes/:node_id/content", r.datasetsHandler.ReadKnowledgeNode)
+				datasets.POST("/:dataset_id/knowledge/policy/check", r.datasetsHandler.CheckKnowledgePolicy)
 				datasets.GET("/tags/aggregation", r.datasetsHandler.AggregateTags)
 				datasets.GET("/:dataset_id", r.datasetsHandler.GetDataset)
 				datasets.PUT("/:dataset_id", r.datasetsHandler.UpdateDataset)

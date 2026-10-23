@@ -200,7 +200,7 @@ func (p *communityPolicy) QueryScope(ctx context.Context, subject Subject, query
 			Select("knowledgebase.id").
 			Where("knowledgebase.status = ?", string(entity.StatusValid)).
 			Where("EXISTS (?)", activeOwner).
-			Where("(EXISTS (?) OR (knowledgebase.permission = ? AND EXISTS (?)))", callerIsOwner, string(entity.TenantPermissionTeam), callerIsMember)
+			Where("((knowledgebase.knowledge_enabled = ? AND knowledgebase.created_by = ?) OR (knowledgebase.knowledge_enabled = ? AND (EXISTS (?) OR (knowledgebase.permission = ? AND EXISTS (?)))))", true, subject.UserID, false, callerIsOwner, string(entity.TenantPermissionTeam), callerIsMember)
 		return query.Where("knowledgebase.id IN (?)", accessibleDatasets)
 	}}, true, nil
 }
