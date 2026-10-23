@@ -1,0 +1,487 @@
+{
+  "schema_version": "1.0",
+  "delivery_version": "v0.14",
+  "status": "ImplementedWithGaps",
+  "request_snapshot": "我已经配置好了所有模型，现在我们开始后续流程吧，跑通POC",
+  "request_updates": [
+    {
+      "text": "网站结构化解析是否用了 **RSSHub**  项目？",
+      "answer": "未使用；本轮为单条AIHOT网页综述的快照与Markdown格式适配，不包含RSSHub路由、Feed或增量同步。"
+    }
+  ],
+  "recorded_at": "2026-10-23T21:13:04.363805+08:00",
+  "source_commit": "fe7ffcd0dfe6bc7f8f8043a7321c51250dc95117",
+  "upstream_version": "v1.0.0-rc2",
+  "dataset_id": "7ccd03c417c14a75af2400084b3e2e77",
+  "dataset_name": "POC-20261023-R0",
+  "chat_id": "cd2a5057db584cd99763b627f2c94159",
+  "scope": "原生最小功能闭环及小样本观测；不是完整60题POC验收。",
+  "user_decision": {
+    "outcome": "Pending"
+  },
+  "clarification": {
+    "mode": "Asked",
+    "state": "Settled",
+    "notice": "旧方案仍保留“不外发真实 AICS”的限制，文档样本也尚未确认。下面集中确认这两个边界和首轮调用上限；同时我继续准备本地检查和合成样本。",
+    "exchanges": [
+      {
+        "question": "首轮真实资料外发范围",
+        "response": "允许上述选定代码和文档发送给百炼与 DeepSeek",
+        "evidence_ref": "request_user_input_async call_7125609aaad54eb0b0b1425fccc88025 item 0"
+      },
+      {
+        "question": "首轮小规模调用上限",
+        "response": "采用上述小规模上限",
+        "limits": {
+          "bailian_cny": 1,
+          "deepseek_usd": 0.5,
+          "embedding_http": 30,
+          "rerank_http": 20,
+          "generation_http": 10
+        },
+        "evidence_ref": "request_user_input_async call_7125609aaad54eb0b0b1425fccc88025 item 1"
+      },
+      {
+        "question": "文档路径与范围",
+        "response": "网站用这个[https://aihot.news/](https://aihot.news/)，PDF还有其他文件用D:\\LFEN_project\\SencodBrainTESTdocs里面的，还有就是我的项目AOCI吧",
+        "evidence_ref": "request_user_input_async call_7125609aaad54eb0b0b1425fccc88025 item 2"
+      }
+    ]
+  },
+  "first_principles_analysis": {
+    "outcome": "先证明已配置三模型与原生解析、索引、检索、重排、引用生成可共同工作，再优化质量和基础设施。",
+    "facts": [
+      "六服务健康、三核心默认模型及官方API地址已核对。",
+      "真实来源与调用范围已明确授权。"
+    ],
+    "constraints": [
+      "不重构源码、不建设正式设施、不启用多模态模型、不向Git发布真实语料、向量、凭据或个人问答。",
+      "单并发按小规模闭环执行；不将估算计数冒充供应商账单或精确HTTP抓包。"
+    ],
+    "alternatives": [
+      "保持仅配置模型：不能证明端到端可用。",
+      "原生最小闭环：当前选择；最快发现兼容与可观测性差异。",
+      "直接建设AST、图和完整基础设施：增加变量，不用于本轮。"
+    ],
+    "decisions": [
+      "先合成后真实样本；数据集隔离；保存原文快照与私有结果。",
+      "TSX仅增加无损Markdown信封，不更改源码或冒称已实现AST。",
+      "记录原生1024维偏差，不冒称已达到2560维原验收目标。"
+    ]
+  },
+  "models": {
+    "embedding": "qwen3.7-text-embedding@models@Tongyi-Qianwen",
+    "rerank": "qwen3.7-text-rerank@models@Tongyi-Qianwen",
+    "generation": "deepseek-flash@SecondBrain@DeepSeek",
+    "native_vector_dimension": 1024,
+    "planned_vector_dimension": 2560,
+    "generation_settings": {
+      "thinking": false,
+      "max_tokens": 2048,
+      "temperature": 0.1
+    }
+  },
+  "samples": [
+    {
+      "name": "AICS-data-table.tsx.md",
+      "chunk_count": 17,
+      "ingestion_status": "COMPLETED",
+      "native_token_count_not_billing_usage": 7818,
+      "ingestion_seconds": 3.996989422,
+      "metadata": {
+        "component_side": "frontend",
+        "runtime": "react",
+        "source_kind": "project_code",
+        "source_path": "components/business/data-table.tsx",
+        "source_project": "AICS"
+      }
+    },
+    {
+      "name": "aihot-story-summary.md",
+      "chunk_count": 2,
+      "ingestion_status": "COMPLETED",
+      "native_token_count_not_billing_usage": 795,
+      "ingestion_seconds": 0.945450393,
+      "metadata": {
+        "component_side": "non_code",
+        "content_scope": "AI overview, not the complete article or a feed sync",
+        "snapshot_date": "2026-10-23",
+        "source_kind": "web_article_summary",
+        "source_url": "https://aihot.news/story/17f9865a-cef7-4d98-9742-0796331c81ea"
+      }
+    },
+    {
+      "name": "sample-presentation.pptx",
+      "chunk_count": 10,
+      "ingestion_status": "COMPLETED",
+      "native_token_count_not_billing_usage": 4739,
+      "ingestion_seconds": 1.966002901,
+      "metadata": {
+        "component_side": "non_code",
+        "document_format": "pptx",
+        "source_kind": "presentation"
+      }
+    },
+    {
+      "name": "sample-personal.pdf",
+      "chunk_count": 5,
+      "ingestion_status": "COMPLETED",
+      "native_token_count_not_billing_usage": 2339,
+      "ingestion_seconds": 5.002456616,
+      "metadata": {
+        "component_side": "non_code",
+        "document_format": "pdf",
+        "source_kind": "personal_document"
+      }
+    },
+    {
+      "name": "aoci-git-ignore.go",
+      "chunk_count": 2,
+      "ingestion_status": "COMPLETED",
+      "native_token_count_not_billing_usage": 824,
+      "ingestion_seconds": 0.94263193,
+      "metadata": {
+        "component_side": "cli",
+        "runtime": "go",
+        "source_kind": "project_code",
+        "source_path": "internal/fs/git_ignore.go",
+        "source_project": "AOCI"
+      }
+    },
+    {
+      "name": "poc-synthetic-notes.md",
+      "chunk_count": 6,
+      "ingestion_status": "COMPLETED",
+      "native_token_count_not_billing_usage": 392,
+      "ingestion_seconds": 2.193411398,
+      "metadata": {
+        "component_side": "frontend",
+        "fixture_id": "POC-SYN-20261023",
+        "source_kind": "synthetic_document"
+      }
+    }
+  ],
+  "index_validation": {
+    "documents": 6,
+    "chunks": 42,
+    "all_ingestions_completed": true,
+    "vector_dimension": 1024,
+    "vectors_finite_nonzero": 42,
+    "native_general_chunk_target_tokens": 512,
+    "overlap_percent": 0,
+    "parent_child_enabled": false,
+    "code_exact_lf_substring_matches": {
+      "AICS": 17,
+      "AOCI": 2
+    },
+    "code_uncovered_nonwhitespace_characters": 0,
+    "pdf_pages": 1,
+    "pdf_chunks_have_page_and_bbox": true,
+    "pptx_slides": 10,
+    "pptx_chunks": 10,
+    "pptx_native_slide_positions": false
+  },
+  "retrieval_validation": {
+    "queries": 5,
+    "target_source_hit_at_10": 5,
+    "target_source_top1": 4,
+    "mrr_at_10": 0.9,
+    "literal_evidence_checks": 13,
+    "literal_evidence_checks_passed": 13,
+    "p50_ms": 443.07520000000113,
+    "maximum_ms": 712.4759999999997,
+    "timing_scope": "原生HTTP检索总耗时，包含query Embedding与远程重排；不是纯内部引擎耗时。",
+    "small_sample": true,
+    "held_out": false,
+    "candidate_top_k": 40,
+    "rerank_candidates_count": 20,
+    "page_size": 20,
+    "lexical_weight": 0.3,
+    "vector_or_rerank_weight": 0.7
+  },
+  "generation_validation": [
+    {
+      "label": "synthetic",
+      "first_event_ms": 1343.7474000000002,
+      "first_final_answer_ms": 1343.7474000000002,
+      "total_ms": 1454.9936000000002,
+      "final_event": true,
+      "citation_count": 3,
+      "citation_indices_valid": true,
+      "usage_returned": false,
+      "finish_reason_returned": false,
+      "native_retrieval_ms": 492.6,
+      "session_id": "345b1e91752443b797f7c61eff75a5bb"
+    },
+    {
+      "label": "real-code",
+      "first_event_ms": 1078.053,
+      "first_final_answer_ms": 1078.053,
+      "total_ms": 4358.719,
+      "final_event": true,
+      "citation_count": 18,
+      "citation_indices_valid": true,
+      "usage_returned": false,
+      "finish_reason_returned": false,
+      "native_retrieval_ms": 435.7,
+      "session_id": "5ddff84792ff4ed899c2204acf26ec1e"
+    },
+    {
+      "label": "no-evidence",
+      "first_event_ms": 1591.3240999999998,
+      "first_final_answer_ms": 1591.3240999999998,
+      "total_ms": 2693.9903,
+      "final_event": true,
+      "citation_count": 0,
+      "citation_indices_valid": true,
+      "usage_returned": false,
+      "finish_reason_returned": false,
+      "native_retrieval_ms": 615.6,
+      "session_id": "c4f5941d2fcb44e7a2e5eedf9b89e4a5"
+    }
+  ],
+  "website": {
+    "source_url": "https://aihot.news/story/17f9865a-cef7-4d98-9742-0796331c81ea",
+    "source_kind": "web_article_summary",
+    "content_scope": "页面AI综述，不是完整原始报道",
+    "raw_snapshot_saved_locally": true,
+    "rsshub_used": false,
+    "feed_or_incremental_sync_verified": false
+  },
+  "request_accounting": {
+    "scripted_native_retrieval_operations": 9,
+    "scripted_generation_operations": 3,
+    "source_derived_index_embedding_http_estimate": 20,
+    "source_derived_total_embedding_http_estimate": 29,
+    "source_derived_rerank_http_estimate": 9,
+    "source_derived_generation_http_estimate": 3,
+    "basis": "6次标题Embedding + 按原生Aliyun每批4条计算内容Embedding共14次 + 9次query；三次原生生成。成功任务未观测到重试；这是源码与操作推导，不是传输层精确计数。",
+    "precise_provider_http_count_verified": false,
+    "actual_billing_verified": false,
+    "automatic_model_calls_stopped": true,
+    "concurrent_user_activity": "在原生POC-synthetic会话观察到用户新增手工问答；不混入脚本计时和质量统计，全实例用量未独立核账。"
+  },
+  "gaps": [
+    {
+      "id": "G1",
+      "summary": "原生入库为1024维，未满足原方案2560维目标。Aliyun Embed只传text_type，未透传维度参数。",
+      "evidence": "internal/entity/models/aliyun.go: embedNative; private ES snapshot q_1024_vec."
+    },
+    {
+      "id": "G2",
+      "summary": "原生上传不支持tsx；本轮完整源码无损包装为Markdown。AST语义分块、父子节点与关系补全未实现。",
+      "evidence": "05-upload-real-samples; format-adaptation; chunk-source-map."
+    },
+    {
+      "id": "G3",
+      "summary": "PPTX原生输出未提供幻灯片页码字段；代码行号映射目前仅保存在本地sidecar。",
+      "evidence": "Private ES snapshot; chunk-source-map."
+    },
+    {
+      "id": "G4",
+      "summary": "原生SSE没有返回供应商usage和finish_reason；final=true只证明原生事件正常结束。精确请求计数和费用待补观测。",
+      "evidence": "Three saved native streams. Native debug Generate answer=0ms is not used as actual generation time."
+    },
+    {
+      "id": "G5",
+      "summary": "网站未接入RSSHub，未测试RSS/Atom、去重和增量。",
+      "evidence": "website-manifest; standard Markdown sample."
+    },
+    {
+      "id": "G6",
+      "summary": "未执行完整60题、R0/A/B/C对照、纯内部检索计时、扫描PDF OCR验收、复用包或MCP权限测试。",
+      "evidence": "本轮范围与实际脚本；不作为正式性能SLA或知识库全量验收。"
+    }
+  ],
+  "private_evidence_root": ".local-data/poc-20261023/",
+  "public_evidence_policy": "仅发布脱敏汇总和纯合成问答截图；原始文件、文本、向量、用户个人问答与秘密留本机。",
+  "adversarial_review": [
+    {
+      "event": "Offer",
+      "prompt": "首轮最小闭环及 v0.14 报告已保存：6份样本、42块、5题Hit@10为5/5，六项缺口明确保留。是否对本轮实验与报告启动多轮对抗性审查？完整60题、2560维修复及RSSHub接入不属于已完成声明。\n\n此询问来自 [run-governed-product-workflow 的 SKILL.md](C:/Users/Administrator/.codex/skills/run-governed-product-workflow/SKILL.md)：“工程完成并保存结果后，必须主动询问用户是否启动对抗性审查”。明确同意前不开展，不影响本轮交付。",
+      "recorded_at": "2026-10-23T21:21:10.043199+08:00",
+      "evidence_ref": "request_user_input_async call_d92db077bb674a7bb518158dcf363c3a item 0, actual user reply in this conversation"
+    },
+    {
+      "event": "Decision",
+      "outcome": "Declined",
+      "response": "不需要",
+      "decided_by": "user",
+      "recorded_at": "2026-10-23T21:21:10.043199+08:00",
+      "time_note": "Actual user click time was not supplied; this is archive time only.",
+      "evidence_ref": "request_user_input_async call_d92db077bb674a7bb518158dcf363c3a item 0, actual user reply in this conversation"
+    }
+  ],
+  "ui_verification": {
+    "native_chat_url": "http://127.0.0.1:18080/chat/cd2a5057db584cd99763b627f2c94159",
+    "synthetic_session_id": "345b1e91752443b797f7c61eff75a5bb",
+    "numbered_citations_rendered": true,
+    "citation_hover_card_opened": true,
+    "hover_card_contains_correct_table": true,
+    "public_screenshot": "POC-首轮原生问答验证.png",
+    "screenshot_sha256": "8386ce268ddd818b3818b9f6ed6fd8a5231cca8df3e62309598e89b8b9b45166"
+  },
+  "resource_observation": {
+    "method": "docker stats --no-stream after indexing; single observation, not peak",
+    "container_memory_approximately_gib": 6.2,
+    "application_memory_mib": 986.4,
+    "elasticsearch_memory_gib": 4.615,
+    "cpu": "Intel Core Ultra 7 270K Plus",
+    "physical_cores": 24,
+    "logical_processors": 24
+  },
+  "failures_and_retries": [
+    {
+      "operation": "Batch upload",
+      "actual": "HTTP200业务code500：tsx不受支持，其余4个文件已成功。",
+      "correction": "复用4个已成功ID；tsx完整源码加Markdown信封，避免重复上传或改写原文件。"
+    },
+    {
+      "operation": "Initial vector expectation",
+      "actual": "按2560维字段检查失败，实际42个向量字段为q_1024_vec。",
+      "correction": "按实际1024维逐一验证有限且非零；保留2560维未达标状态，不重命名字段或伪造维度。"
+    },
+    {
+      "operation": "Browser verification",
+      "actual": "用户切换原标签页使旧元素失效；引用编号为HoverCard。",
+      "correction": "独立后台标签验证；实际展开正确来源卡片，未修改或删除用户会话。"
+    }
+  ],
+  "requirements_coverage": [
+    {
+      "source": "request_snapshot",
+      "quote": "我已经配置好了所有模型，现在我们开始后续流程吧，跑通POC",
+      "reading": "核对并使用已经配置的核心模型",
+      "status": "Implemented",
+      "evidence": [
+        "models",
+        "合成原生索引、检索、重排、生成均成功"
+      ]
+    },
+    {
+      "source": "request_snapshot",
+      "quote": "我已经配置好了所有模型，现在我们开始后续流程吧，跑通POC",
+      "reading": "跑通首轮最简POC",
+      "status": "ImplementedWithGaps",
+      "evidence": [
+        "index_validation",
+        "retrieval_validation",
+        "generation_validation",
+        "ui_verification"
+      ],
+      "remaining": "六项gaps逐项保留，未宣称完整POC验收。"
+    },
+    {
+      "source": "clarification.exchanges[2]",
+      "quote": "网站用这个[https://aihot.news/](https://aihot.news/)，PDF还有其他文件用D:\\LFEN_project\\SencodBrainTESTdocs里面的，还有就是我的项目AOCI吧",
+      "reading": "使用指定网站、PDF、其他文档和AOCI",
+      "status": "ImplementedForSelectedSamples",
+      "evidence": [
+        "samples",
+        "website",
+        "private_evidence_root"
+      ],
+      "remaining": "网站仅AI综述快照，未使用RSSHub；不是全站或全仓导入。"
+    },
+    {
+      "source": "request_updates[0]",
+      "quote": "网站结构化解析是否用了 **RSSHub**  项目？",
+      "reading": "说明网站是否使用RSSHub",
+      "status": "AnsweredNo",
+      "evidence": [
+        "website.rsshub_used",
+        "request_updates[0].answer"
+      ]
+    }
+  ],
+  "next_steps": [
+    "补齐维度参数透传、原生usage/finish_reason及真实HTTP计数观测后，才扩展批量评测。",
+    "对TSX／Go按符号、父子与同版源码位置做单变量对照；补PPTX页码定位。",
+    "网站单列RSSHub／RSS／Atom与增量验证，不把当前AI综述抓取当RSSHub成功。",
+    "按第26章冻结完整样本和开发／保留集，执行R0/A/B/C与正式性能验证。"
+  ],
+  "source_versions": {
+    "AICS": {
+      "head": "ea9856f6b7484bd52208ff35ce320326da64bfd1",
+      "path": "components/business/data-table.tsx",
+      "working_file_sha256": "3afa13d31e35d5dddb4def9cd9f523ce79928ef83cd56ebc88bb4659dfdbf6dd"
+    },
+    "AOCI": {
+      "head": "ffbdafac512d339aa87342d5b9d1a4f27a299aaf",
+      "path": "internal/fs/git_ignore.go",
+      "sha256": "9c8bcbdb3755d952a62fdab80b62e6f042861a23b987cec80a76a83acab14900"
+    }
+  },
+  "evidence_files": {
+    "results/01-upload-synthetic.json": "8f44a396e5dcd0866a85a1f179d71e2b1523b6f67dad6d20e77265b91513805d",
+    "results/02-start-synthetic.json": "9700dad3c878edabf05c296b5f5e40827cb543edde954f17d04069e27f59e2ed",
+    "results/03-synthetic-status.json": "09fd6b394d7352bd95f30ddfca87bd2a7506c236276bd5ca70d37f281e53fd92",
+    "results/04-synthetic-retrieval.json": "5515dbfd0e65caf74a951e5f52d611d0a43af862d60d83c3a84c63ff8b03c77c",
+    "results/05-upload-real-samples.json": "a87cb660db42da8225b557d605ff7edfac8fc1e42ce9092c79ed04110676d707",
+    "results/07-upload-tsx-envelope.json": "76a36c19c3a3596ebaabf62e690233b52c9b217b014807d0c148589f9ab9ad64",
+    "results/08-pre-ingest-state.json": "ff618e25d903ea0a7dd7bef0eb9ba97c07db7a3b9f68169c53e3ab6adce36194",
+    "results/09-start-real-ingestion.json": "99714ef35467b5afb6760399ce6f38b129f58c90ea8a4e32b66d55ed2df33634",
+    "results/10-ingestion-progress.json": "cc0387372210ed15cb8aeafae6cb5430ccc1e3e2bb755ac07d06f3280c036e73",
+    "results/11-ingestion-runs.json": "a214d1a02732aa282519280c9eaa662ba29f9de567664bb1540bfe01e15dd5d7",
+    "results/12-final-document-state.json": "8be15509901ee6d45a9cf6f07c29320dd6d958b3fdb6327382fc011da9017a33",
+    "results/aihot-ground-truth.txt": "75384ff12cb0a36e64568d047f1e7a5263a09d1b923282a336e5b09eed0f3f20",
+    "results/chat-created.json": "a024e05afabbf7255b2ba84fc6fb4035a4c2e03edd10fac927d0be4f13f417e8",
+    "results/chunk-source-map.json": "9a9649117a34bfd906ea28c676f88f2affbe77b006dd1faa59edb7bbbddcb897",
+    "results/dataset-before.json": "bbd1c6319912bad0a2b86831884fc32f5083004232737a44cdf67fef73a86f3f",
+    "results/es-index-snapshot.json": "766a96c42d01363f4aedb23118ec8314f9f5dacb6e12692a49512d03bdf34515",
+    "results/format-adaptation.json": "1e7f5965ed12a4eec5d8f8175f41863e1e32965ef90e00fa7385c01d74002f8a",
+    "results/meta-5b5726a169944e4c833fdde4de8bf3f7.json": "fd342cdd7bc486d9ff161d2c88cb435964f7643a8d0293ef9be2be71138d8b14",
+    "results/meta-a628a69f9c4d4a499a45bc28d2ffc34f.json": "1b4744e21ebfc031f1031b2773a4e9f8f642080f4c49aea7ac1e23a62baa0d6b",
+    "results/meta-a68a595694b8463eb1d514cec4f2c6fe.json": "d3c36c99873f2565816bd54141f36e240f71f291142d6806cb5fa33f756925ea",
+    "results/meta-ae6c5401112a416fb517a8f7102373b6.json": "6241e0eda34f3c9382226237da026b0ecf9fd01513ae20abc8ee3bec453a7e8a",
+    "results/meta-d9ac5ee47da54528806ae03bc0fb6bc1.json": "313ec270b62870dfc077e610ab8b0f5ff74fb4241ef90269600693ed70548aec",
+    "results/meta-e8b532541fc648d3bdf3221e7e4a47f6.json": "c5ff98332b5acd62b11788c97e958f9990a05c989d31e207d576d71073dc5744",
+    "results/models-before.json": "fa008b1f42f370d8703a94b5c0aa05a911fe7764f81d2ece1e68548a2b84f1ef",
+    "results/native-chat-ui-top.png": "8e7d9174ea9676241571d13d62a16009d6f408faa017dc867b7476391c3397b1",
+    "results/native-chat-ui.png": "0752d3484fb6ea235e29d6c8d85169202f525b99f4321476d4cdc3eccb31a12a",
+    "results/no-evidence-chat-stream.json": "f5c4e6ffd93a5abe09d9145fc428229047fd3b18caf9e54e465f45fe11493396",
+    "results/no-evidence-session-created.json": "836777ce9ee548197be6d3230810df7b5e9a2a4adc799528b503e0e98b1cb514",
+    "results/no-evidence-stream.txt": "5f6bc31712505f242da87c66f441944bacde7647e57c0cc84fefa43e1d8f1f33",
+    "results/pdf-ground-truth.txt": "591fe492b85cf4f3832c4a4a945f70340014dc90029de4796b518c1209c0a6cf",
+    "results/pdf-page1.png": "7987752854d6c70072f1b17855a133d45428a857c2a42a02cf006b3ddeaec4be",
+    "results/presentation-ground-truth.txt": "59038704fd789e264d5b74eb0c5680db1fa48078d1efe6c902f646190e3af17b",
+    "results/Q01-code.json": "b24d3e491467d9096e2092b1850ffd4e6d5594b80401861aca63c21d2b831956",
+    "results/Q02-aoci.json": "816a0a247bf225ece5e4bb6cbf883879062d2000c82c527eaa46fe088e82807f",
+    "results/Q03-pdf.json": "0fb1127982d0c0ab71eccddde96c21be7aa91c730927c1d1750620ec1a360a17",
+    "results/Q04-pptx.json": "dca574b75deed4871525ec37c391edb16f00b2963d96e120a462c1d4ba57332a",
+    "results/Q05-web.json": "4c7b622a4c8ec14efbcc2c09b0014d744ed5ddfdd2d66aae3e7530ffa4dfd19c",
+    "results/real-code-chat-stream.json": "5d2cb5f5d885ebbf9373f4ff28d1f4569167ca616a54fd6ad02bbb6bcc5910fd",
+    "results/real-code-session-created.json": "45cbebc40132380e8cdfc54c5558659449175832cc305c042cd2e0dda957f202",
+    "results/real-code-stream.txt": "5ccca22873d9d8c3c132f9ddf228eb2da52849a81a33d86a7b1b252aa2f10b32",
+    "results/retrieval-cases.json": "2dee1b94b7dad575590c2a5083d640d45bb3c1d46a5676baf483f7026770c544",
+    "results/retrieval-summary.json": "1d93b5829bee5fb91c0689c92d08eb4ca554a632673947a8949c7dedd391204d",
+    "results/synthetic-chat-stream.json": "19062ff724cebda027b7438c98ea4bbf9455412aada153e4ac88b9555a4bf626",
+    "results/synthetic-session-created.json": "f189dbddf5720cdc2636374bc33ed30bfa55dcdee8c3c7d7e8346a19875f7d54",
+    "results/synthetic-stream.txt": "c25941c9a4e977702a3961b6f37b4b655416c844f14e084abdce6d5bf368496e"
+  },
+  "scope_verification": {
+    "application_business_code_changed": false,
+    "new_infrastructure_created": false,
+    "root_model_env_changed": false,
+    "original_sources_modified": false,
+    "raw_documents_vectors_or_personal_chats_to_git": false,
+    "new_persistent_credentials_created": false
+  },
+  "verified_at": "2026-10-23T21:18:57.644028+08:00",
+  "publication_verification": {
+    "staged_public_files": [
+      "README.md",
+      "会话接续说明.md",
+      "本地第二大脑知识库技术方案.md",
+      "POC-首轮原生闭环验证.json",
+      "POC-首轮原生问答验证.png"
+    ],
+    "secret_values_checked": 10,
+    "staged_and_existing_history_blobs_checked": 5248,
+    "secret_matches": 0,
+    "protected_root_files_unchanged": 10,
+    "private_experiment_directory_ignored": true,
+    "raw_material_or_vectors_staged": false,
+    "checked_at": "2026-10-23T13:21:12.529Z"
+  }
+}
