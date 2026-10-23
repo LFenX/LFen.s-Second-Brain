@@ -174,10 +174,24 @@ func (s *FileService) initDatasetDocs(ctx context.Context, rootID, tenantID stri
 // Deduplicates duplicate entries that may have been created by
 // concurrent race conditions (TOCTOU).
 func (s *FileService) initSkillsFolder(ctx context.Context, rootID, tenantID string) error {
-	existing, err := s.fileDAO.Query(ctx, dao.DB, SkillsFolderName, rootID, tenantID)
+	ordinary := dao.DB.WithContext(ctx).Where("type = ? AND id <> ? AND id NOT IN (?)", FileTypeFolder, rootID, dao.KnowledgeFolderIDs(ctx, dao.DB))
+	existing, err := s.fileDAO.Query(ctx, ordinary, SkillsFolderName, rootID, tenantID)
 	if err != nil {
 		return err
 	}
+	// A system folder name never authorizes adopting or merging a knowledge
+	// source, including an otherwise ordinary ancestor of a protected subtree.
+	eligible := make([]*entity.File, 0, len(existing))
+	for _, candidate := range existing {
+		if err := checkKnowledgeTreeMutation(ctx, dao.DB, candidate); err != nil {
+			if errors.Is(err, permission.ErrKnowledgeIngestionDenied) {
+				continue
+			}
+			return err
+		}
+		eligible = append(eligible, candidate)
+	}
+	existing = eligible
 	if len(existing) > 0 {
 		if len(existing) > 1 {
 			common.Logger.Warn(fmt.Sprintf(

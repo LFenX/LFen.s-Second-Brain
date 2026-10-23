@@ -249,6 +249,9 @@ func (s *FileCommitService) checkCommitChanges(ctx context.Context, tx *gorm.DB,
 	if err := checker.CheckResource(ctx, subject, permission.ResourceRef{Kind: permission.ResourceKindFolder, ID: folderID}, permission.OperationUpdate); err != nil {
 		return err
 	}
+	if err := permission.CheckKnowledgeVersionAccess(ctx, tx, authorID, folderID); err != nil {
+		return err
+	}
 	for _, change := range changes {
 		var source entity.File
 		err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).

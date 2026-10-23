@@ -153,10 +153,13 @@ func (h *FileCommitHandler) folderAccessible(c *gin.Context, userID, folderID st
 	if err != nil || folder == nil || folder.Type != "folder" {
 		return false
 	}
-	return permission.NewDatabaseChecker(dao.DB).CheckResource(ctx, permission.Subject{UserID: userID}, permission.ResourceRef{
+	if err := permission.NewDatabaseChecker(dao.DB).CheckResource(ctx, permission.Subject{UserID: userID}, permission.ResourceRef{
 		Kind: permission.ResourceKindFolder,
 		ID:   folder.ID,
-	}, permission.OperationRead) == nil
+	}, permission.OperationRead); err != nil {
+		return false
+	}
+	return permission.CheckKnowledgeVersionAccess(ctx, dao.DB, userID, folder.ID) == nil
 }
 
 func commitFolderID(c *gin.Context) string {
@@ -701,6 +704,23 @@ func (h *FileCommitHandler) GetFileVersionHistory(c *gin.Context) {
 	if err != nil {
 		jsonInternalError(c, err)
 		return
+	}
+	// A readable ordinary file can share an old ancestor commit with a private
+	// source. Its commit message is still version metadata, not a new grant.
+	checkedFolders := make(map[string]struct{})
+	for _, version := range versions {
+		commit, err := h.commitService.GetCommit(ctx, version.CommitID)
+		if err != nil || commit == nil {
+			common.ResponseWithCodeData(c, common.CodeNotFound, nil, "File not found")
+			return
+		}
+		if _, checked := checkedFolders[commit.FolderID]; !checked {
+			if !h.folderAccessible(c, user.ID, commit.FolderID) {
+				common.ResponseWithCodeData(c, common.CodeNotFound, nil, "File not found")
+				return
+			}
+			checkedFolders[commit.FolderID] = struct{}{}
+		}
 	}
 
 	common.SuccessWithData(c, versions, common.CodeSuccess.Message())
