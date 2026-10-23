@@ -1,6 +1,6 @@
 {
-  "version": "v0.21",
-  "recorded_at": "2026-10-23T21:34:29.741Z",
+  "version": "v0.22",
+  "recorded_at": "2026-10-23T21:57:04.250Z",
   "request_snapshot": "阶段0方案通过。开始推进本机A的阶段1，先冻结双方共享的领域模型、节点身份、权限与外发规则及接口契约，再完成最小底座适配，给B整理可直接接续的交接说明。暂不调用模型，完成验证后推送远端。",
   "consent": {
     "response": "启动审查",
@@ -185,37 +185,53 @@
       "fix": "来源所有者递归传播持久File子孙，所有读取、浏览、transfer与目标库模型共用",
       "engineering_status": "Fixed",
       "evidence": "绑定／孤立、嵌套、旧映射、所有者／成员及普通正例回归；真实原生关联拒绝且映射0、成员下载／目标及模型探测拒绝"
+    },
+    {
+      "id": "AR-23",
+      "severity": "P1",
+      "problem": "域删除遗忘raw／未快照旧副本来源约束",
+      "fix": "注册域按原生status逻辑归档，KB行锁内重读和复核权限；保留全部来源事实与对象，旧副本和旧队列继续受限",
+      "engineering_status": "Fixed",
+      "evidence": "隔离raw／uploaded／snapshotted回归；真实MySQL三模式归档前后成员读取／目标及模型字段拒绝、所有者目标可读、raw字节不变；普通目标删除保留原语义"
+    },
+    {
+      "id": "AR-24",
+      "severity": "P3",
+      "problem": "把本地模型配置可用性检查误述为远程推理",
+      "fix": "纠正B交接与OpenAPI说明；原a1报告字节不改，当前报告澄清",
+      "engineering_status": "Fixed",
+      "evidence": "独立核对CreateDataset→verifyEmbeddingAvailability→ModelFactory.ResolveInfo及驱动解析，无Encode／Chat／Rerank；最小创建仍省略模型选择，固定策略仍拒绝注册域模型更新"
     }
   ],
   "engineering_verification": {
     "status": "Implemented",
-    "verified_at": "2026-10-23T21:34:29.742Z",
+    "verified_at": "2026-10-23T21:57:04.251Z",
     "go": {
       "command": "bash build.sh --test -json（原14包＋agent/tool、component、retrievalbridge、admin和ingestion/knowledge_compile）",
       "packages": [
         "ragflow/internal/entity",
         "ragflow/internal/permission/response",
         "ragflow/internal/permission",
+        "ragflow/internal/service/file",
+        "ragflow/internal/utility",
+        "ragflow/internal/service/chunk",
+        "ragflow/internal/service/nlp",
+        "ragflow/internal/dao",
+        "ragflow/internal/service/document",
+        "ragflow/internal/service/dataset",
         "ragflow/internal/agent/retrievalbridge",
         "ragflow/internal/admin",
         "ragflow/internal/router",
         "ragflow/internal/ingestion/knowledge_compile",
-        "ragflow/internal/service/file",
-        "ragflow/internal/service/chunk",
-        "ragflow/internal/utility",
-        "ragflow/internal/service/nlp",
-        "ragflow/internal/service/dataset",
-        "ragflow/internal/service/document",
-        "ragflow/internal/dao",
-        "ragflow/internal/ingestion/task",
         "ragflow/internal/agent/component",
         "ragflow/internal/handler",
-        "ragflow/internal/agent/tool",
-        "ragflow/internal/service"
+        "ragflow/internal/service",
+        "ragflow/internal/ingestion/task",
+        "ragflow/internal/agent/tool"
       ],
       "packages_passed": 19,
-      "top_level_tests_passed": 3475,
-      "tests_and_subtests_passed": 5654,
+      "top_level_tests_passed": 3478,
+      "tests_and_subtests_passed": 5660,
       "skipped_existing_optional_or_unsupported_tests": 10,
       "failed": 0,
       "native_unit_packages": [
@@ -224,14 +240,15 @@
       ]
     },
     "live_http_original_assertion_groups": 28,
-    "additional_live_probe_groups": 30,
+    "additional_live_probe_groups": 33,
     "additional_live_probe_breakdown": {
       "strict_contract_and_identity_and_transfer": 6,
       "query_protocol": 3,
       "empty_folder_rename": 1,
       "native_folder_boundaries": 6,
       "explicit_provenance": 8,
-      "directory_origin_and_migration": 6
+      "directory_origin_and_migration": 6,
+      "domain_archive_three_modes": 3
     },
     "loaded_server_modes": [
       {
@@ -262,7 +279,7 @@
     "manifest": [
       {
         "file": "README.md",
-        "sha256": "ccc8d5e3b9ad9aa49f18ff956a274ee12df581a8904547e9c8029f5ea1345f05"
+        "sha256": "57170d12472e35c7fe2f52bcfd55a2df15ea875685555a2df1bd65eb300d85bc"
       },
       {
         "file": "docs/knowledge-foundation-v1.example.json",
@@ -270,7 +287,7 @@
       },
       {
         "file": "docs/knowledge-foundation-v1.openapi.json",
-        "sha256": "406b5deaea87c983032d45b2950e1361768dca8bf689ec47e6b1e83cd0ed2220"
+        "sha256": "f50a3376bc11db89fca85d630e820dbe621e1eea7bfa0739fe7750d300628a8f"
       },
       {
         "file": "internal/admin/user_detail_test.go",
@@ -478,7 +495,7 @@
       },
       {
         "file": "internal/service/dataset/crud.go",
-        "sha256": "91a0a8756987cdf1f39b71824155d299ad9613652861cb2204365d4fbbb6ed6b"
+        "sha256": "439e6c93ad2bc044685f4e58feeb8f42dc4139e64a9a74d24589cd4ea6b55958"
       },
       {
         "file": "internal/service/dataset/embedding.go",
@@ -489,12 +506,16 @@
         "sha256": "31221fc867af7939ffb97da82c491e7027c213c4d7f77a2e0bff1dc6c28b92ee"
       },
       {
+        "file": "internal/service/dataset/knowledge_archive_test.go",
+        "sha256": "ddbe92e8a7bdd306b94c9d65a4f53ff51415ca19a589b72295eadbf68a7c99ce"
+      },
+      {
         "file": "internal/service/dataset/knowledge_source.go",
         "sha256": "f14f3e2bd6547594fe484b8ec069cad7f54dc1ae2bba7c156b211c8d6485e070"
       },
       {
         "file": "internal/service/dataset/knowledge_test.go",
-        "sha256": "8730a1746b504d7b7ad4947e70833bc51ad3676cbb0faf2624bb0642b7da77cf"
+        "sha256": "a8a4a20c916dce0b81da133275e0fb2b7a985fe05f795b97584c85fa8693d18b"
       },
       {
         "file": "internal/service/dataset/setup_test.go",
@@ -586,27 +607,27 @@
       },
       {
         "file": "会话接续说明.md",
-        "sha256": "d0e71dc9297af08f5617ca8b97be6e5079c033282cbd39b02e5357693177c101"
+        "sha256": "ec5bf225cff2bb852c345bfc3c30a36a712167dc2c42e7920aecb75e10ea81bd"
       },
       {
         "file": "本地第二大脑知识库技术方案.md",
-        "sha256": "8497798ca0bb7db5f1180eff8f05afae53e5eaf537dda91def1a9b79e524136b"
+        "sha256": "52683d58c237bbd6c7f20866b9370da9ee013501c5a24fbf2bf5b192f15ea39b"
       },
       {
         "file": "阶段1-A-B交接说明.md",
-        "sha256": "651f9eb0619e963679049c178f2fd7baea7d998e965c0ec673f090218af6f645"
+        "sha256": "3ba508b2992c99219fc4e84becf3ca0f7e31677dd9e3c46f2c9fe5649f00b913"
       },
       {
         "file": "阶段1-A底座验证报告.json",
         "sha256": "53279a86ca9236b2baaa563711e9a8cfaeaf279bdd929a34859a88d6c415b383"
       }
     ],
-    "subject_sha256": "ada25b2bd7955dd2dcf47fbcff46a6833be31cfdeb2bc8c333425771748922ac",
+    "subject_sha256": "2cc97fbf02e26cc2ebb0d30f3b223574086bd5b63966dccbc92e825204f7d7a4",
     "subject_definition": "领域代码、原契约／fixture、原验证报告及当前入口／交接文档；追加式审查结果和轮次证据不改变被审查的产品交付",
     "requirements_sha256": "a62c5bf2cb663eec13451eff141c3bf3fef57230e5eb380bdcc5a542c29db403"
   },
   "runtime": {
-    "binary_sha256": "605926c1175371a8b6d507e536e0757234ec84ee8ab8d6b1fa87b089a72a5a06",
+    "binary_sha256": "234dc7959f050cbcd733239bc26ab47a41d320cd50494f8159a32d4948e213d1",
     "source_and_loaded_binary_match": true,
     "health": "healthy",
     "changed_service": "ragflow-cpu",
@@ -648,6 +669,13 @@
         "coverage": "Complete",
         "findings": 4,
         "result": "FindingsRequireRepair"
+      },
+      {
+        "round": 5,
+        "delivery": "246b8e6bbaedc0e42394505a3c98e11e94b0cfac",
+        "coverage": "Complete",
+        "findings": 2,
+        "result": "FindingsRequireRepair"
       }
     ],
     "required_same_delivery_complete_clean_rounds": 2,
@@ -672,7 +700,9 @@
     "A的用户验收仍Pending；B尚未核对／接页面，整体阶段1未退出。",
     "本轮审查缺陷与原七项产品问题不同，不宣称原引用／解析／检索／人格问题已解决。",
     "仅合成资料、UTF8文本代码目录／原文；没有模型调用、真实资料扩围或规模／检索性能验收。",
-    "对象先于DB写入及历史物理保留边界不变；未演练破坏性恢复。",
+    "注册域删除是逻辑归档，保留全部来源事实与对象，不提供恢复或物理清除；普通库仍沿用原生物理删除。对象先于DB写入，未演练破坏性恢复。",
+    "本地模型配置可用性检查不执行远程推理；原v0.19报告相关旧因果表述由当前B交接和OpenAPI纠正，历史报告原字节保留。",
+    "合成测试账号已删除，失败及临时域从有效目录退休；逻辑归档保留合成来源事实与对象，不声称已物理清空测试数据。",
     "原生普通版本delete写不存在的File.status列是基线已有缺陷，本轮未修；完整删除／保留归阶段2。",
     "无注册／历史／标记且已有关联普通文档的目录不能据名称追溯旧归属；不检测任意复制粘贴。",
     "控制注册域的受控入口；不声称全应用网络沙箱或已实现阶段5模块Grant／临时密钥。"

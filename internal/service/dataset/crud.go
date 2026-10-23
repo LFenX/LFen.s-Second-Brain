@@ -18,6 +18,7 @@ import (
 
 	"go.uber.org/zap"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 func (d *DatasetService) CreateDataset(ctx context.Context, req *service.CreateDatasetRequest, subject permission.Subject) (map[string]interface{}, common.ErrorCode, error) {
@@ -376,7 +377,11 @@ func (d *DatasetService) DeleteDatasets(ctx context.Context, ids []string, delet
 
 	successCount := 0
 	for _, kb := range kbs {
-		if err := d.deleteDataset(ctx, kb); err != nil {
+		if err := d.deleteDatasetAuthorized(ctx, kb, &subject); err != nil {
+			if permissionresponse.IsPermissionError(err) {
+				code, permissionErr := permissionresponse.Normalize(err)
+				return nil, code, permissionErr
+			}
 			common.Warn("deleteDataset failed", zap.String("dataset", datasetNameAndID(kb)), zap.String("kb_id", kb.ID), zap.Error(err))
 			return nil, common.CodeServerError, err
 		}
@@ -390,16 +395,48 @@ func (d *DatasetService) DeleteDatasets(ctx context.Context, ids []string, delet
 }
 
 func (d *DatasetService) deleteDataset(ctx context.Context, kb *entity.Knowledgebase) error {
+	return d.deleteDatasetAuthorized(ctx, kb, nil)
+}
+
+// deleteDatasetAuthorized serializes retirement with domain registration and
+// catalogue publication. Re-read and authorize under the same lock: a native
+// dataset can become a private knowledge domain after the caller's first read.
+func (d *DatasetService) deleteDatasetAuthorized(ctx context.Context, kb *entity.Knowledgebase, subject *permission.Subject) error {
+	return dao.DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		var current entity.Knowledgebase
+		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).Where("id = ?", kb.ID).Take(&current).Error; err != nil {
+			return err
+		}
+		if subject != nil {
+			if err := permission.NewLockingDatabaseChecker(tx).CheckResource(ctx, *subject, permission.ResourceRef{Kind: permission.ResourceKindDataset, ID: current.ID}, permission.OperationDelete); err != nil {
+				return err
+			}
+		}
+		if current.KnowledgeEnabled {
+			// Stage 1 has no physical-retention protocol. Archive the native KB
+			// while preserving every provenance fact and blob. Inactive domains
+			// are hidden, but their old copies and queued work remain restricted.
+			if err := tx.Model(&entity.Knowledgebase{}).Where("id = ?", current.ID).Update("status", "0").Error; err != nil {
+				return err
+			}
+			common.Info("Archived private knowledge dataset", zap.String("kb_id", current.ID))
+			return nil
+		}
+		return d.deleteNativeDataset(ctx, tx, &current)
+	})
+}
+
+func (d *DatasetService) deleteNativeDataset(ctx context.Context, db *gorm.DB, kb *entity.Knowledgebase) error {
 	storageImpl := storage.GetStorageFactory().GetStorage()
 	if storageImpl == nil {
 		return fmt.Errorf("storage not initialized")
 	}
 	datasetNameID := datasetNameAndID(kb)
 
-	// Collect document IDs first so engine cleanup can run before the
-	// transaction (engine ops are not transactional).
+	// Engine/object operations are not transactional. The caller holds the
+	// native KB row lock so registration cannot race physical native cleanup.
 	var documents []entity.Document
-	if err := dao.DB.Where("kb_id = ?", kb.ID).Find(&documents).Error; err != nil {
+	if err := db.Where("kb_id = ?", kb.ID).Find(&documents).Error; err != nil {
 		return fmt.Errorf("delete dataset error for %s", kb.ID)
 	}
 	cleanupCtx, cancel := context.WithTimeout(ctx, 5*time.Minute)
@@ -439,7 +476,7 @@ func (d *DatasetService) deleteDataset(ctx context.Context, kb *entity.Knowledge
 		d.deleteDatasetEngineData(ctx, kb, docIDs)
 	}
 
-	if err := dao.DB.Transaction(func(tx *gorm.DB) error {
+	if err := db.Transaction(func(tx *gorm.DB) error {
 		// Resolve ordinary folders while their document mappings still exist.
 		// Removing those mappings first would make the dataset's own empty
 		// folders look like unclaimed legacy folders and prevent native cleanup.

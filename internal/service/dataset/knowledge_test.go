@@ -400,9 +400,15 @@ func TestKnowledgeNativeFolderIdentitySurvivesRename(t *testing.T) {
 		t.Fatal(err)
 	}
 	var remaining int64
-	if err := dao.DB.Model(&entity.File{}).Where("id = ?", folder.ID).Count(&remaining).Error; err != nil || remaining != 0 {
-		t.Fatalf("renamed domain left its folder: %d err=%v", remaining, err)
+	if err := dao.DB.Model(&entity.File{}).Where("id = ?", folder.ID).Count(&remaining).Error; err != nil || remaining != 1 {
+		t.Fatalf("archived domain lost its provenance folder: %d err=%v", remaining, err)
 	}
+	var archived entity.Knowledgebase
+	if err := dao.DB.Where("id = ?", knowledgeTestDomain).Take(&archived).Error; err != nil || archived.Status == nil || *archived.Status != "0" || !archived.KnowledgeEnabled {
+		t.Fatalf("archive=%+v err=%v", archived, err)
+	}
+	_, err = s.GetKnowledgeDomain(t.Context(), knowledgeTestOwner, knowledgeTestDomain)
+	assertKnowledgeStatus(t, err, 404)
 }
 
 func TestKnowledgeUnregisteredDeletionCannotDeleteBoundFolderByName(t *testing.T) {

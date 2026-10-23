@@ -1,6 +1,6 @@
 # 阶段1 A → B 接续说明
 
-版本：v0.21；契约：C1／C3 `1.0.0`；日期：2026-10-24（Asia/Shanghai）。本轮审查修复及复验见[审查报告](阶段1-A对抗性审查报告.json)，原v0.19验证报告保留其固定源码与运行证据。
+版本：v0.22；契约：C1／C3 `1.0.0`；日期：2026-10-24（Asia/Shanghai）。本轮审查修复及复验见[审查报告](阶段1-A对抗性审查报告.json)，原v0.19验证报告保留其固定源码与运行证据。
 
 用户已批准阶段0，并授权本机A实施阶段1、验证后推送。本文交接A的领域底座；**B的页面接入和双方纵向验收仍待完成**。原v0.19工程结果见 [底座验证报告](阶段1-A底座验证报告.json)，当前返修结果见 [审查报告](阶段1-A对抗性审查报告.json)。开发继续在 `LFenX/LFen.s-Second-Brain`，不建立另一套后端或节点库。
 
@@ -68,7 +68,7 @@
 
 ### 最小创建与读取顺序
 
-1. 原生 `POST /datasets` 建空私有数据集。请求只用 `name`、`permission: me`、`parse_type: 1`、`parser_id: general`。**不要传embedding_model**：原生创建接口传该字段会运行可用性探测，违反本轮零模型调用要求。沿用租户模型配置只涉及本地元数据解析，不调用模型。注册拒绝已有Connector关联或解析任务历史的数据集，不接管正在自动处理的旧库。
+1. 原生 `POST /datasets` 建空私有数据集。最小请求只用 `name`、`permission: me`、`parse_type: 1`、`parser_id: general`，省略`embedding_model`。原生创建中的模型可用性检查只解析本地配置、权限、目录与驱动，不执行Embedding或远程推理；省略该字段是缩小底座配置范围，不是因为它必然调用模型。注册拒绝已有Connector关联或解析任务历史的数据集，不接管正在自动处理的旧库。
 2. 对返回ID执行PUT领域注册，再创建project／module分组。
 3. 原生 `POST /datasets/{id}/documents` 用multipart字段`file`上传合成UTF-8文件，**不要启动parse**。注册域的上传适配支持.tsx／.jsx等代码，保留原文件名与字节；部分扩展名在原生Document中归为txt，知识分类使用Source的language和component_side。
 4. POST来源快照，传document_id、group_id、relative_path、component_side、language。首次expected_revision_id省略或空串。
@@ -119,7 +119,9 @@
 
 保留一个上游已知限制：普通原生版本`delete`仍引用File表不存在的status列；本轮未修复该生命周期功能。阶段1只承诺来源快照add／modify／读取及受管树删除拒绝；完整删除、保留和清理归阶段2，B本轮不把普通版本删除接成已验功能。
 
-本轮快照观察Document已存原文；不自动同步外部文件、Git变更或原生File编辑器的新内容。删除／失效原生Document或Dataset后，新接口隐藏其快照／节点；本轮没有实现全历史物理清除、导出恢复或附件权限治理。B不要提供这些未实现按钮。
+注册域经原生`DELETE /datasets`执行逻辑归档：事务内锁定并重读当前Knowledgebase、复核调用者权限，再把原生status置为`0`。保留Knowledgebase、Folder、Document、File关联、来源修订、原文对象和固定禁模型策略；当前目录接口隐藏该域，已有跨库副本与旧队列继续受来源约束。普通未注册库仍走原生物理删除。此行为不提供恢复、彻底清除或释放存储；B将注册域操作标为“归档”，不能标为“永久删除”。物理保留与清理协议归阶段2。
+
+本轮快照观察Document已存原文；不自动同步外部文件、Git变更或原生File编辑器的新内容。删除／失效原生Document或归档Dataset后，新接口隐藏其快照／节点；本轮没有实现全历史物理清除、导出恢复或附件权限治理。B不要提供这些未实现按钮。
 
 ## 7. 文件归属与防分叉
 
