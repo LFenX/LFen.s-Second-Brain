@@ -1,6 +1,6 @@
 {
   "version": "v0.22",
-  "recorded_at": "2026-10-23T21:57:04.250Z",
+  "recorded_at": "2026-10-23T22:07:59.917Z",
   "request_snapshot": "阶段0方案通过。开始推进本机A的阶段1，先冻结双方共享的领域模型、节点身份、权限与外发规则及接口契约，再完成最小底座适配，给B整理可直接接续的交接说明。暂不调用模型，完成验证后推送远端。",
   "consent": {
     "response": "启动审查",
@@ -201,11 +201,22 @@
       "fix": "纠正B交接与OpenAPI说明；原a1报告字节不改，当前报告澄清",
       "engineering_status": "Fixed",
       "evidence": "独立核对CreateDataset→verifyEmbeddingAvailability→ModelFactory.ResolveInfo及驱动解析，无Encode／Chat／Rerank；最小创建仍省略模型选择，固定策略仍拒绝注册域模型更新"
+    },
+    {
+      "id": "AR-25",
+      "severity": "P3",
+      "problem": "README当前交付范围指旧S0并称仅方案",
+      "fix": "改为第35章阶段0—6、A已实现与B共享核对／页面真实闭环；历史章节及原报告保留",
+      "engineering_status": "Fixed",
+      "evidence": "完整独立AR-6核对README页首／尾部、第35章及B交接；文档更正后逐项核对，源码／已测构建输入／运行二进制不变"
     }
   ],
   "engineering_verification": {
     "status": "Implemented",
-    "verified_at": "2026-10-23T21:57:04.251Z",
+    "verified_at": "2026-10-23T22:07:59.917Z",
+    "go_execution_results_reused": true,
+    "go_results_previously_verified_at": "2026-10-23T21:57:04.251Z",
+    "reuse_basis": "AR-25只更正当前文档；79个Go输入、完整测试日志、构建与实际运行二进制逐项摘要相同，没有声称重新执行相同测试。",
     "go": {
       "command": "bash build.sh --test -json（原14包＋agent/tool、component、retrievalbridge、admin和ingestion/knowledge_compile）",
       "packages": [
@@ -279,7 +290,7 @@
     "manifest": [
       {
         "file": "README.md",
-        "sha256": "57170d12472e35c7fe2f52bcfd55a2df15ea875685555a2df1bd65eb300d85bc"
+        "sha256": "bc0a9632942ebfcedf70d360a69701e7d6aaab56c7a6fefc3594e95c66092a52"
       },
       {
         "file": "docs/knowledge-foundation-v1.example.json",
@@ -611,7 +622,7 @@
       },
       {
         "file": "本地第二大脑知识库技术方案.md",
-        "sha256": "52683d58c237bbd6c7f20866b9370da9ee013501c5a24fbf2bf5b192f15ea39b"
+        "sha256": "f8dc9d48947879162ba03b89d6c3f2e4348a5dd299bcb5aaafc3886a3ca640a3"
       },
       {
         "file": "阶段1-A-B交接说明.md",
@@ -622,7 +633,7 @@
         "sha256": "53279a86ca9236b2baaa563711e9a8cfaeaf279bdd929a34859a88d6c415b383"
       }
     ],
-    "subject_sha256": "2cc97fbf02e26cc2ebb0d30f3b223574086bd5b63966dccbc92e825204f7d7a4",
+    "subject_sha256": "8415e6faa2f995a74bf16b264c98598999246c14e549b395e13ad337914bb809",
     "subject_definition": "领域代码、原契约／fixture、原验证报告及当前入口／交接文档；追加式审查结果和轮次证据不改变被审查的产品交付",
     "requirements_sha256": "a62c5bf2cb663eec13451eff141c3bf3fef57230e5eb380bdcc5a542c29db403"
   },
@@ -676,6 +687,14 @@
         "coverage": "Complete",
         "findings": 2,
         "result": "FindingsRequireRepair"
+      },
+      {
+        "round": 6,
+        "delivery": "4d63a7c6a010a822ffcb1642f0efc1c04ab46153",
+        "coverage": "Complete",
+        "findings": 1,
+        "result": "FindingsRequireRepair",
+        "report": "docs/stage1a-review-round-6.md"
       }
     ],
     "required_same_delivery_complete_clean_rounds": 2,
@@ -691,6 +710,8 @@
       "counted_as_clean_round": false
     },
     "not_an_issue": [
+      "NA6-01：DAO.Query已筛status=1，delete_all不会被归档域阻塞；隔离两分支通过。",
+      "NA6-02：幂等登记与归档重叠可线性化，没有重新激活／来源或模型限制丢失；后续独立请求404。",
       "普通成员先注册其他租户所有者的私有域的反例不可达；注册前原生Read／Update已拒绝。",
       "Files本地上传再链接来源未承诺于v1 Dataset multipart导入范围，留到阶段2。"
     ],
