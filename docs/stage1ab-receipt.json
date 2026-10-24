@@ -1,0 +1,78 @@
+{
+  "recorded_at": "2026-10-24T16:56:14.144Z",
+  "request_snapshot": "B已经完成了第一阶段了，你先拉拉数据然后看怎么跟他交接吧。",
+  "receiving_branch": "codex/stage1ab-handoff",
+  "b_branch": "codex/stage1b-catalogue",
+  "b_delivery_commit": "e5db8d44a36ae6e4daee3c8dfd78327182c2d4a5",
+  "b_code_commit": "ee0b22efbd8695540fce37e93ed56999d3e9fde1",
+  "main_baseline": "9bd92bab7be3664506abef83fbcae2846036bcac",
+  "status": "ReceivedForRealIntegration",
+  "shared_contract_version": "1.0.0",
+  "c2_status": "DraftNotImplemented",
+  "b_frontend_files_received": 15,
+  "b_changed_files": 20,
+  "validation": {
+    "source_hashes_match": true,
+    "worktree_source_bytes_match": true,
+    "protected_contracts_and_reports_unchanged": 8,
+    "jest": {
+      "suites": 2,
+      "passed": 29,
+      "transport": "Mock"
+    },
+    "format": {
+      "files": 15,
+      "status": "Passed"
+    },
+    "lint": {
+      "files": 15,
+      "status": "Passed"
+    },
+    "build": {
+      "status": "Passed",
+      "seconds": 44.04,
+      "isolated": true,
+      "deployed": false,
+      "artifact_files": 1055,
+      "artifact_manifest_sha256": "95137aa7c052d8ff1673940af700767bc21fd25bd9e376aaf6f487efa5f940a4"
+    },
+    "type_check": {
+      "rerun": false,
+      "b_report_existing_errors": 207,
+      "attribution": "B原交付报告；不作为A本次复验结论"
+    },
+    "runtime": {
+      "observed_healthy": true,
+      "go_binary_sha256": "ce4d038cd36f179234976b7ae3eeb3b908e22c7c641765e5e593c1c432b9ea3e",
+      "replaced": false
+    },
+    "model_inference_calls": 0,
+    "real_business_api_calls": 0,
+    "raw_log_sha256": {
+      "jest": "5896e8c043ccb254d8e23d73c7378c2bad235dad52c0609b33ef22cf753d020a",
+      "build": "f0b1ad7573cc5127381524e3736d56ed34ddff4a6bbd2a005afbbf6e9e9867a7",
+      "format": "46cee79f7358693d681f037d9f63802dfd9445cda5208d35d587f977d94a7f5f",
+      "lint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "handoff": {
+    "a": "既有环境Web加载、合成资料、真实API/登录/原文联调、后端/契约返修",
+    "b": "页面消费及布局返修、之后提供C2消费反馈",
+    "exchange": "同一GitHub仓库的独立接收分支与docs/stage1ab-handoff.md；未发送其他消息或凭据"
+  },
+  "remaining": [
+    "真实登录和完整Dataset外壳下的域→来源→节点→原文→页面闭环",
+    "真实页面的无权/错误/冲突/缓存与64KiB等边界",
+    "B交付合入远端main、阶段1退出与人的验收",
+    "C2双方核对、完整请求OpenAPI及阶段2真实范围"
+  ],
+  "publication": {
+    "target_branch": "codex/stage1ab-handoff",
+    "main_merged": false,
+    "remote_pointer_verified_separately": true
+  },
+  "user_decision": {
+    "outcome": "Pending"
+  },
+  "review_resumed": false
+}
