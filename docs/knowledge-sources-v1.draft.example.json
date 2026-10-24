@@ -1,0 +1,157 @@
+{
+  "contract_status": "DraftNotImplemented",
+  "contract_version": "0.1.0-draft",
+  "samples_are_synthetic": true,
+  "records": [
+    {
+      "contract_version": "0.1.0-draft",
+      "foundation_contract_version": "1.0.0",
+      "record_type": "source_registration",
+      "registration_id": "11111111111111111111111111111111",
+      "domain_id": "22222222222222222222222222222222",
+      "group_id": null,
+      "source_kind": "code_directory",
+      "locator_handle": "synthetic_root",
+      "include_paths": [
+        "web/components/synthetic-table.tsx",
+        "server/synthetic.go",
+        ".env"
+      ],
+      "component_side": "frontend",
+      "language": "tsx",
+      "processing": {
+        "mode": "catalogue_only",
+        "embedding": "disabled",
+        "full_text": "disabled",
+        "structure": "deferred",
+        "external_models": false,
+        "automatic_ingestion": false,
+        "allowed_model_uses": []
+      }
+    },
+    {
+      "contract_version": "0.1.0-draft",
+      "foundation_contract_version": "1.0.0",
+      "record_type": "import_preview",
+      "preview_id": "55555555555555555555555555555555",
+      "registration_id": "11111111111111111111111111111111",
+      "domain_id": "22222222222222222222222222222222",
+      "policy_version": 1,
+      "manifest_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "expires_at": "2030-01-01T00:00:00Z",
+      "items": [
+        {
+          "item_key": "item_new",
+          "relative_path": "web/components/synthetic-table.tsx",
+          "source_id": null,
+          "action": "add",
+          "decision": "accepted",
+          "reason_codes": [],
+          "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "byte_length": 120,
+          "processing_mode": "catalogue_only",
+          "source_key": "code/synthetic-table",
+          "group_id": null,
+          "component_side": "frontend",
+          "language": "tsx"
+        },
+        {
+          "item_key": "item_excluded",
+          "relative_path": ".env",
+          "source_id": null,
+          "action": "none",
+          "decision": "excluded",
+          "reason_codes": [
+            "credential_path"
+          ],
+          "sha256": null,
+          "byte_length": 0,
+          "processing_mode": "reference_only",
+          "source_key": "excluded/env",
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        {
+          "item_key": "item_backend",
+          "relative_path": "server/synthetic.go",
+          "source_id": null,
+          "action": "add",
+          "decision": "accepted",
+          "reason_codes": [],
+          "sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "byte_length": 80,
+          "processing_mode": "catalogue_only",
+          "source_key": "code/synthetic-handler",
+          "group_id": null,
+          "component_side": "backend",
+          "language": "go"
+        }
+      ],
+      "next_cursor": ""
+    },
+    {
+      "contract_version": "0.1.0-draft",
+      "foundation_contract_version": "1.0.0",
+      "record_type": "import_receipt",
+      "import_task_id": "66666666666666666666666666666666",
+      "registration_id": "11111111111111111111111111111111",
+      "domain_id": "22222222222222222222222222222222",
+      "status": "succeeded",
+      "project_snapshot_id": null,
+      "manifest_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "model_calls": 0,
+      "items": [
+        {
+          "item_key": "item_new",
+          "source_id": "33333333333333333333333333333333",
+          "source_revision_id": "44444444444444444444444444444444",
+          "action": "add",
+          "save_state": "saved",
+          "catalogue_state": "ready",
+          "structure_state": "deferred",
+          "full_text_state": "disabled",
+          "vector_state": "disabled",
+          "error_code": "",
+          "source_key": "code/synthetic-table",
+          "group_id": null,
+          "component_side": "frontend",
+          "language": "tsx"
+        },
+        {
+          "item_key": "item_excluded",
+          "source_id": null,
+          "source_revision_id": null,
+          "action": "none",
+          "save_state": "excluded",
+          "catalogue_state": "not_applicable",
+          "structure_state": "deferred",
+          "full_text_state": "disabled",
+          "vector_state": "disabled",
+          "error_code": "",
+          "source_key": "excluded/env",
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        {
+          "item_key": "item_backend",
+          "source_id": "77777777777777777777777777777777",
+          "source_revision_id": "88888888888888888888888888888888",
+          "action": "add",
+          "save_state": "saved",
+          "catalogue_state": "ready",
+          "structure_state": "deferred",
+          "full_text_state": "disabled",
+          "vector_state": "disabled",
+          "error_code": "",
+          "source_key": "code/synthetic-handler",
+          "group_id": null,
+          "component_side": "backend",
+          "language": "go"
+        }
+      ],
+      "next_cursor": ""
+    }
+  ]
+}

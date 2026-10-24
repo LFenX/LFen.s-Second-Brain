@@ -1,6 +1,6 @@
 # 阶段1 A → B 接续说明
 
-版本：v0.25；契约：C1／C3 `1.0.0`；日期：2026-10-24（Asia/Shanghai）。剩余AR-31／AR-32已修复并定向验证，见[两项修复结果](docs/stage1a-two-fixes-verification.md)及[结构化报告](阶段1-A对抗性审查报告.json)的scoped_followup。用户要求停止多轮审查，历史第10轮Incomplete／审查Suspended保留；原v0.19报告字节不改。
+版本：v0.26；运行契约仍为C1／C3 `1.0.0`；日期：2026-10-24（Asia/Shanghai）。v0.25剩余AR-31／AR-32修复见[两项修复结果](docs/stage1a-two-fixes-verification.md)及[结构化报告](阶段1-A对抗性审查报告.json)。本轮仅增加第10节的C2启动准备，未改后端或Web。历史第10轮Incomplete／审查Suspended保留；原v0.19报告字节不改。
 
 用户已批准阶段0，并授权本机A实施阶段1、验证后推送。本文交接A的领域底座；**B的页面接入和双方纵向验收仍待完成**。原v0.19工程结果见 [底座验证报告](阶段1-A底座验证报告.json)，当前返修结果见 [审查报告](阶段1-A对抗性审查报告.json)。开发继续在 `LFenX/LFen.s-Second-Brain`，不建立另一套后端或节点库。
 
@@ -184,3 +184,13 @@ bash build.sh --go
 | 整体阶段1退出 | A与B共同完成“一域→一来源→一节点→原文→页面”；随后由用户验收。A单侧完成不提前标整阶段通过。 |
 
 阶段2开始前再确认实际知识域名称／归属、首批来源及受控目录；目前只保留合成验证数据，未导入家庭隐私、真实AICS／AOCI内容，也未重跑旧POC问答或60题实验。
+
+## 10. 阶段2准备与当前分工（v0.26）
+
+用户已明确“B 尚未完成，继续由 B 负责”。B当前仍做1B.1／1B.2及阶段1纵向闭环；A不接手Web、不改C1／C3，也不把阶段1标成已退出。A已先完成C2来源／任务的设计准备，详见[技术方案第38章](本地第二大脑知识库技术方案.md#38-v026-本机a阶段2启动准备c2来源任务草案)。
+
+新增[草案Schema](docs/knowledge-sources-v1.draft.schema.json)和[合成示例](docs/knowledge-sources-v1.draft.example.json)标记为0.1.0-draft／DraftNotImplemented，只描述来源登记、预检及任务回执；不是现有HTTP接口，不可直接生成生产客户端。运行中的/knowledge/contract及OpenAPI仍只声明C1／C3 1.0.0。
+
+B完成当前页面后，核对C2的稳定source_key→Document身份、预检与幂等、逐项失败、保存／目录／结构／全文／向量独立状态、分页和错误需求。A再在唯一共享实体／服务上落定完整接口；B不自建导入后端、任务表或来源ID规则。文档原件容量、生命周期和完整请求OpenAPI尚未冻结。
+
+阶段2实际导入先做获选文本／代码的无模型闭环，再做增量和新增类型。reference_only只表示受控引用；saved不代表可检索；structure deferred、full_text／vector disabled均须真实展示。阶段1与C2核对完成前，B仍只消费当前稳定C1／C3。

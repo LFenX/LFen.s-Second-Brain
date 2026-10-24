@@ -1,0 +1,776 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:lfen:knowledge-sources:c2:draft:0.1.0",
+  "title": "C2 来源与任务草案 0.1.0-draft",
+  "description": "仅设计与合成校验；不是运行时API，未冻结。C1/C3 1.0.0不变；身份/路径/作用域/摘要/CAS/授权/状态聚合仍须服务端验证。",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/registration"
+    },
+    {
+      "$ref": "#/$defs/preview"
+    },
+    {
+      "$ref": "#/$defs/receipt"
+    }
+  ],
+  "$defs": {
+    "registration": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": "0.1.0-draft"
+        },
+        "foundation_contract_version": {
+          "const": "1.0.0"
+        },
+        "record_type": {
+          "const": "source_registration"
+        },
+        "registration_id": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{32}$"
+        },
+        "domain_id": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{32}$"
+        },
+        "group_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_kind": {
+          "enum": [
+            "code_directory",
+            "text_file",
+            "document_file",
+            "web_snapshot",
+            "rss_feed"
+          ]
+        },
+        "locator_handle": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9_-]+$"
+        },
+        "include_paths": {
+          "type": "array",
+          "maxItems": 200,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "pattern": "^(?!/)(?!.*//)(?!.*(?:^|/)\\.\\.?(?:/|$))(?!.*[\\\\:\\u0000-\\u001f])(?!.*\\/$).+$"
+          }
+        },
+        "component_side": {
+          "enum": [
+            "frontend",
+            "backend",
+            "shared",
+            "cli",
+            "non_code"
+          ]
+        },
+        "language": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "processing": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "mode": {
+              "enum": [
+                "catalogue_only",
+                "reference_only"
+              ]
+            },
+            "embedding": {
+              "const": "disabled"
+            },
+            "full_text": {
+              "const": "disabled"
+            },
+            "structure": {
+              "const": "deferred"
+            },
+            "external_models": {
+              "const": false
+            },
+            "automatic_ingestion": {
+              "const": false
+            },
+            "allowed_model_uses": {
+              "type": "array",
+              "maxItems": 0,
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "mode",
+            "embedding",
+            "full_text",
+            "structure",
+            "external_models",
+            "automatic_ingestion",
+            "allowed_model_uses"
+          ]
+        }
+      },
+      "required": [
+        "contract_version",
+        "foundation_contract_version",
+        "record_type",
+        "registration_id",
+        "domain_id",
+        "group_id",
+        "source_kind",
+        "locator_handle",
+        "include_paths",
+        "component_side",
+        "language",
+        "processing"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "source_kind": {
+                "enum": [
+                  "code_directory",
+                  "text_file",
+                  "document_file"
+                ]
+              }
+            },
+            "required": [
+              "source_kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "include_paths": {
+                "minItems": 1,
+                "type": "array"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "preview": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": "0.1.0-draft"
+        },
+        "foundation_contract_version": {
+          "const": "1.0.0"
+        },
+        "record_type": {
+          "const": "import_preview"
+        },
+        "preview_id": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{32}$"
+        },
+        "registration_id": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{32}$"
+        },
+        "domain_id": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{32}$"
+        },
+        "policy_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "manifest_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "item_key": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "source_key": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "relative_path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512,
+                "pattern": "^(?!/)(?!.*//)(?!.*(?:^|/)\\.\\.?(?:/|$))(?!.*[\\\\:\\u0000-\\u001f])(?!.*\\/$).+$"
+              },
+              "source_id": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{32}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "group_id": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{32}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "component_side": {
+                "enum": [
+                  "frontend",
+                  "backend",
+                  "shared",
+                  "cli",
+                  "non_code"
+                ]
+              },
+              "language": {
+                "type": "string",
+                "maxLength": 32
+              },
+              "action": {
+                "enum": [
+                  "add",
+                  "update",
+                  "move",
+                  "tombstone",
+                  "unchanged",
+                  "none"
+                ]
+              },
+              "decision": {
+                "enum": [
+                  "accepted",
+                  "excluded",
+                  "rejected",
+                  "unsupported"
+                ]
+              },
+              "reason_codes": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "enum": [
+                    "out_of_scope",
+                    "credential_path",
+                    "symlink_outside_root",
+                    "unsupported_format",
+                    "too_large",
+                    "not_utf8",
+                    "nul_byte",
+                    "policy_denied",
+                    "revision_conflict",
+                    "identity_ambiguous",
+                    "source_unavailable"
+                  ]
+                }
+              },
+              "sha256": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "byte_length": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "processing_mode": {
+                "enum": [
+                  "catalogue_only",
+                  "reference_only"
+                ]
+              }
+            },
+            "required": [
+              "item_key",
+              "source_key",
+              "relative_path",
+              "source_id",
+              "group_id",
+              "component_side",
+              "language",
+              "action",
+              "decision",
+              "reason_codes",
+              "sha256",
+              "byte_length",
+              "processing_mode"
+            ],
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "decision": {
+                      "const": "accepted"
+                    }
+                  },
+                  "required": [
+                    "decision"
+                  ]
+                },
+                "then": {
+                  "properties": {
+                    "action": {
+                      "enum": [
+                        "add",
+                        "update",
+                        "move",
+                        "tombstone",
+                        "unchanged"
+                      ]
+                    },
+                    "reason_codes": {
+                      "maxItems": 0,
+                      "type": "array"
+                    }
+                  }
+                },
+                "else": {
+                  "properties": {
+                    "action": {
+                      "const": "none"
+                    },
+                    "reason_codes": {
+                      "minItems": 1,
+                      "type": "array"
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "action": {
+                      "enum": [
+                        "update",
+                        "move",
+                        "tombstone",
+                        "unchanged"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "action"
+                  ]
+                },
+                "then": {
+                  "properties": {
+                    "source_id": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{32}$"
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "action": {
+                      "const": "add"
+                    }
+                  },
+                  "required": [
+                    "action"
+                  ]
+                },
+                "then": {
+                  "properties": {
+                    "source_id": {
+                      "type": "null"
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "decision": {
+                      "const": "accepted"
+                    },
+                    "processing_mode": {
+                      "const": "catalogue_only"
+                    },
+                    "action": {
+                      "enum": [
+                        "add",
+                        "update",
+                        "move",
+                        "unchanged"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "decision",
+                    "processing_mode",
+                    "action"
+                  ]
+                },
+                "then": {
+                  "properties": {
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    },
+                    "byte_length": {
+                      "maximum": 2097152,
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "next_cursor": {
+          "type": "string",
+          "maxLength": 2048
+        }
+      },
+      "required": [
+        "contract_version",
+        "foundation_contract_version",
+        "record_type",
+        "preview_id",
+        "registration_id",
+        "domain_id",
+        "policy_version",
+        "manifest_sha256",
+        "expires_at",
+        "items",
+        "next_cursor"
+      ]
+    },
+    "receipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": "0.1.0-draft"
+        },
+        "foundation_contract_version": {
+          "const": "1.0.0"
+        },
+        "record_type": {
+          "const": "import_receipt"
+        },
+        "import_task_id": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{32}$"
+        },
+        "registration_id": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{32}$"
+        },
+        "domain_id": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{32}$"
+        },
+        "status": {
+          "enum": [
+            "queued",
+            "running",
+            "succeeded",
+            "partial_failed",
+            "failed",
+            "cancelled"
+          ]
+        },
+        "project_snapshot_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "manifest_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "model_calls": {
+          "const": 0
+        },
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "item_key": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "source_key": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "source_id": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{32}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "source_revision_id": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{32}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "group_id": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{32}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "component_side": {
+                "enum": [
+                  "frontend",
+                  "backend",
+                  "shared",
+                  "cli",
+                  "non_code"
+                ]
+              },
+              "language": {
+                "type": "string",
+                "maxLength": 32
+              },
+              "action": {
+                "enum": [
+                  "add",
+                  "update",
+                  "move",
+                  "tombstone",
+                  "unchanged",
+                  "none"
+                ]
+              },
+              "save_state": {
+                "enum": [
+                  "not_started",
+                  "staged",
+                  "saved",
+                  "unchanged",
+                  "reference_only",
+                  "tombstoned",
+                  "excluded",
+                  "rejected",
+                  "unsupported",
+                  "failed"
+                ]
+              },
+              "catalogue_state": {
+                "enum": [
+                  "not_started",
+                  "ready",
+                  "stale",
+                  "not_applicable",
+                  "failed"
+                ]
+              },
+              "structure_state": {
+                "const": "deferred"
+              },
+              "full_text_state": {
+                "const": "disabled"
+              },
+              "vector_state": {
+                "const": "disabled"
+              },
+              "error_code": {
+                "type": "string",
+                "maxLength": 64
+              }
+            },
+            "required": [
+              "item_key",
+              "source_key",
+              "source_id",
+              "source_revision_id",
+              "group_id",
+              "component_side",
+              "language",
+              "action",
+              "save_state",
+              "catalogue_state",
+              "structure_state",
+              "full_text_state",
+              "vector_state",
+              "error_code"
+            ],
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "catalogue_state": {
+                      "const": "ready"
+                    }
+                  },
+                  "required": [
+                    "catalogue_state"
+                  ]
+                },
+                "then": {
+                  "properties": {
+                    "source_id": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{32}$"
+                    },
+                    "source_revision_id": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{32}$"
+                    },
+                    "save_state": {
+                      "enum": [
+                        "saved",
+                        "unchanged"
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "save_state": {
+                      "const": "failed"
+                    }
+                  },
+                  "required": [
+                    "save_state"
+                  ]
+                },
+                "then": {
+                  "properties": {
+                    "error_code": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "catalogue_state": {
+                      "enum": [
+                        "not_started",
+                        "stale",
+                        "failed"
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "save_state": {
+                      "enum": [
+                        "excluded",
+                        "rejected",
+                        "unsupported",
+                        "reference_only",
+                        "tombstoned"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "save_state"
+                  ]
+                },
+                "then": {
+                  "properties": {
+                    "catalogue_state": {
+                      "enum": [
+                        "not_applicable",
+                        "stale"
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "next_cursor": {
+          "type": "string",
+          "maxLength": 2048
+        }
+      },
+      "required": [
+        "contract_version",
+        "foundation_contract_version",
+        "record_type",
+        "import_task_id",
+        "registration_id",
+        "domain_id",
+        "status",
+        "project_snapshot_id",
+        "manifest_sha256",
+        "model_calls",
+        "items",
+        "next_cursor"
+      ]
+    }
+  }
+}
