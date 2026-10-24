@@ -1,0 +1,151 @@
+{
+  "version": "stage2b-c2-consumer-review-1",
+  "recorded_at": "2026-10-24T21:24:06Z",
+  "review_date_local": "2026-10-25",
+  "status": "BReviewComplete_NoConsumerFreezeBlockers_AwaitingJointFreeze",
+  "user_decision": "Pending",
+  "reviewed": {
+    "repository": "https://github.com/LFenX/LFen.s-Second-Brain",
+    "branch": "codex/stage2a-import",
+    "commit": "657ebd77d23a7716f8f76b8f54822f8baed821e7",
+    "requested_commit_is_ancestor": true,
+    "c2_version": "0.2.0",
+    "c2_status": "ReviewCandidate",
+    "c1_c3_version": "1.0.0",
+    "historical_draft_used_for_client": false,
+    "read_in_full": [
+      "docs/stage2a-c2-handoff.md",
+      "docs/knowledge-sources-v1.openapi.json",
+      "docs/knowledge-sources-v1.example.json",
+      "docs/stage2a-c2-verification.json"
+    ],
+    "additional_evidence": [
+      "README.md",
+      "会话接续说明.md",
+      "本地第二大脑知识库技术方案.md#40",
+      "docs/stage2a-c2-http.json",
+      "internal/entity/knowledge_import.go",
+      "internal/handler/knowledge_import.go",
+      "internal/handler/knowledge.go",
+      "internal/service/dataset/knowledge_import.go",
+      "internal/service/dataset/knowledge_import_test.go",
+      "internal/service/dataset/knowledge_source.go",
+      "internal/utility/knowledge.go",
+      "web/src/services/knowledge-foundation-service.ts",
+      "web/src/pages/dataset/knowledge-catalogue/index.tsx"
+    ]
+  },
+  "task_profile": {
+    "command": "verify",
+    "carrier": "existing docs directory; B review plus evidence and consumer test",
+    "clarification": "Settled; explicit scope and baseline, no additional question needed",
+    "scope": "One consumer contract review, synthetic tests and field/state mapping",
+    "acceptance": "All requested feedback dimensions carry locations, scenarios, expected behavior and freeze impact",
+    "joint_freeze": "Pending; B supports the current subset with documented conservative 409 handling",
+    "excluded": "No formal C2 client, Hooks, page wiring, backend change, main merge, real data, model calls or multi-round review"
+  },
+  "first_principles_analysis": {
+    "outcome": "A can decide whether the current single-file candidate is sufficient for B and arrange joint freeze before real page wiring",
+    "facts": [
+      "657ebd7 is the checked-out A baseline; seven C2 operations and thirteen schemas are present",
+      "Receipt provides source, fixed revision and root node IDs compatible with C1",
+      "A handoff documents generic conflicts, 201 failed receipts and durable idempotent replay"
+    ],
+    "evidence_refs": ["reviewed", "validation", "docs/stage2b-c2-review.md"],
+    "constraints": ["User scope: synthetic only, no models, no merge main", "A owns shared semantics and backend; B owns consumers"],
+    "assumptions": ["The first page may use a generic safe conflict prompt instead of distinguishing all 409 causes; explicitly stated as B's proposal"],
+    "unknowns": ["Joint freeze is owned by A and B and remains pending", "B page runtime integration is outside this review and remains unverified"],
+    "elements": ["registration scope", "immutable preview", "explicit confirmation", "persistent receipt", "native identity", "fixed-revision C1 read"],
+    "causal_chain": "Map each requested interaction to the existing contract and owning code, then test synthetic schema consumption and existing C1 calls without adding another API",
+    "alternatives": [
+      "Selected: B feedback and synthetic consumer checks on an independent branch",
+      "Keep existing A evidence alone: does not establish B consumer agreement",
+      "Wire a Mock page now: permitted but adds no necessary evidence for the current contract decision"
+    ],
+    "decision_criteria": ["Complete feedback coverage", "No alternate identity or shared semantics", "Reproducible consumer checks", "No claim of real integration"],
+    "derived_plan": [
+      "Verify branch and commit before attributing conclusions",
+      "Map the six requested feedback dimensions plus scope to the contract and owning paths",
+      "Validate synthetic requests, receipts and C1 ID usage",
+      "Publish B-owned feedback with freeze impact and remaining implementation work"
+    ],
+    "verification": "Requirement coverage and validation below; the joint freeze and future page acceptance remain pending"
+  },
+  "requirement_coverage": [
+    { "id": "B-C2-0", "quote": "先拉取并切到 codex/stage2a-import，核对包含提交657ebd7", "status": "Confirmed", "evidence": "reviewed; fetched and switched before creating B feedback branch" },
+    { "id": "B-C2-1", "quote": "登记、预览、确认、回执页面所需字段是否齐全", "status": "Confirmed_NoBlocker", "evidence": "review.md sections 1-2; 3 request examples and classification schemas" },
+    { "id": "B-C2-2", "quote": "是否能区分来源登记ID、相对路径、稳定的原生Document/source ID、固定修订ID和节点ID", "status": "Confirmed_NoBlocker", "evidence": "review.md identity table; existing C1 service consumer test" },
+    { "id": "B-C2-3", "quote": "预览过期、修订冲突、权限失败及大小／格式错误是否有明确的页面处理方式", "status": "Confirmed_WithNonblockingNotes", "evidence": "review.md sections 3-4; generic conflict handling, NB-01 to NB-03" },
+    { "id": "B-C2-4", "quote": "201只表示回执创建成功，回执仍可表示导入失败", "status": "Confirmed_NoBlocker", "evidence": "ReceiptResponse positive failure fixture and negative publication/index fixtures; review.md sections 1-3" },
+    { "id": "B-C2-5", "quote": "超时后使用同一幂等键确认结果、失败后重新预览再显式重试", "status": "Confirmed_NoBlocker_ImplementationNotClaimed", "evidence": "review.md section 3; static transaction/replay path inspection; A runtime evidence remains attributed to A" },
+    { "id": "B-C2-6", "quote": "返回的来源／修订／根节点ID能否直接接入现有C1原文阅读器", "status": "Confirmed_MockedTransportOnly", "evidence": "Receipt IDs passed to existing C1 source/node/content methods; page entry remains B's post-freeze work" },
+    { "id": "B-C2-7", "quote": "本轮先核对契约，暂不合并main", "status": "Observed", "evidence": "Only B feedback, machine evidence and a consumer test added; A contract/backend/production frontend unchanged" }
+  ],
+  "findings": {
+    "freeze_blockers": [],
+    "nonblocking_notes": [
+      { "id": "NB-01", "location": "Error.code; knowledge_import.go:282,293,317", "scenario": "Different conflict causes share knowledge_conflict", "expected": "Publish error/recovery descriptions if useful; first page uses generic safe handling and does not parse message", "blocks_freeze": false },
+      { "id": "NB-02", "location": "Capabilities.request_bytes; handler/knowledge.go:60", "scenario": "16MiB capability is the preview JSON limit, while registration/commit JSON is limited to16KiB", "expected": "Clarify per-endpoint scope in machine descriptions; B follows existing handoff limits", "blocks_freeze": false },
+      { "id": "NB-03", "location": "PreviewRequest; utility/knowledge.go:12", "scenario": "UTF-8 alone does not satisfy the extension allowlist and path exclusions", "expected": "Publish format/path guidance; server400/413/415 stays authoritative and B does not duplicate the whitelist", "blocks_freeze": false }
+    ]
+  },
+  "validation": {
+    "jest": {
+      "status": "Passed",
+      "command": "node node_modules/jest/bin/jest.js --config jest.config.ts --runInBand --no-coverage --runTestsByPath src/services/knowledge-sources-candidate.test.ts src/services/knowledge-foundation-service.test.ts src/pages/dataset/knowledge-catalogue/__tests__/catalogue.test.tsx --json --outputFile=<ignored-local-log>",
+      "execution": "Public tracked-source mirror at C:/Users/LFen/AppData/Local/Temp/lfens-stage2b-review-20261025, using existing exact-lock dependency cache because the D: dependency tree has prior install locks",
+      "candidate_test_source_identical_to_workspace": true,
+      "suites_passed": 3,
+      "tests_passed": 43,
+      "candidate_tests": 14,
+      "existing_c1_tests": 29,
+      "failed": 0,
+      "schemas_compiled": 13,
+      "a_request_examples": 3,
+      "component_labels": 5,
+      "transport": "jest.mock next-request; no network",
+      "local_log": ".local-data/stage2b-c2-jest.json"
+    },
+    "trace_check": { "a_record_count": 76, "c2_records_checked": 49, "checked": "method/path/status are present in OpenAPI", "response_bodies_replayed": 0, "b_live_requests": 0 },
+    "format": { "status": "Passed", "command": "oxfmt --check web/src/services/knowledge-sources-candidate.test.ts", "files": 1 },
+    "lint": { "status": "Passed", "command": "oxlint --config web/.oxlintrc.json --format json web/src/services/knowledge-sources-candidate.test.ts", "files": 1, "rules": 91, "diagnostics": 0 },
+    "tool_versions_match_lock": { "ajv": "8.17.1", "jest": "29.7.0", "oxfmt": "0.72.0", "oxlint": "1.75.0" },
+    "pre_commit": "Normal mandatory lefthook on git commit; no bypass; result reported with publication",
+    "not_run": ["Full Web type-check or build", "New import-page browser flow", "Live C2 backend integration on B", "Real network interruption or concurrency pressure", "A backend service suite rerun on B"]
+  },
+  "evidence": {
+    "hash_basis": "SHA256 of LF Git object bytes at657ebd7, matching A report; test hash is current LF source",
+    "c2_openapi_sha256": "648454d04e1769adc9bfa9245efc439696a7dd21b65cf3cf243e28450166e1c1",
+    "c2_examples_sha256": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a",
+    "a_http_trace_sha256": "b8e5f4a5053bd3bb679b999ded7b8563cd89069d3521c5b7fcbd26f85bf987e5",
+    "c1_openapi_sha256": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4",
+    "candidate_test_sha256": "6b8d7c40cdfcb7edde68e50d34d8178175a41c0115ee6e8fa6ef5c2857357666"
+  },
+  "safety_and_ownership": {
+    "data": "Synthetic fixtures only",
+    "model_calls": 0,
+    "credentials_read_or_shared": false,
+    "runtime_or_volumes_changed": false,
+    "a_contract_and_backend_changed": false,
+    "production_frontend_changed": false,
+    "formal_c2_client_created": false,
+    "parallel_source_identity_created": false,
+    "multi_round_review_started": false
+  },
+  "publication": {
+    "remote": "https://github.com/LFenX/LFen.s-Second-Brain.git",
+    "b_feedback_branch": "codex/stage2b-c2-review",
+    "base_commit": "657ebd77d23a7716f8f76b8f54822f8baed821e7",
+    "remote_a_branch_checked_before_publish": "657ebd77d23a7716f8f76b8f54822f8baed821e7",
+    "remote_main_checked_before_publish": "8aa324e06decc063c141ee3b53614a6d39f15fb5",
+    "merge_main": false,
+    "freeze_shared_contract": false,
+    "commit_identity": "Resolve the B branch head from Git; no self-referential commit hash in this report"
+  },
+  "remaining": [
+    "A receives B feedback and both record the same frozen contract/version/commit",
+    "B implements formal service/Hooks and registration/preview/confirm/receipt pages after freeze",
+    "B adds receipt-to-fixed-revision C1 page entry and request recovery state",
+    "Synthetic live integration and acceptance before planning main merge"
+  ]
+}
