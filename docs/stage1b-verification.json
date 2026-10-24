@@ -19,9 +19,13 @@
     "stage2_implementation": "NotStarted"
   },
   "publication": {
-    "status": "PreparedForPush",
-    "source_commit": null,
-    "remote_branch_verified": false
+    "status": "Pushed",
+    "source_commit": "ee0b22efbd8695540fce37e93ed56999d3e9fde1",
+    "verified_remote_source_commit": "ee0b22efbd8695540fce37e93ed56999d3e9fde1",
+    "remote_ref": "refs/heads/codex/stage1b-catalogue",
+    "source_push_verified": true,
+    "verified_at": "2026-10-24T16:33:32.809Z",
+    "note": "Verified code push; subsequent delivery-record commits do not change Web source"
   },
   "scope": {
     "backend_changes": false,
@@ -94,6 +98,22 @@
       "first_mounted_disk_api_help": "Timeout(20s)",
       "all_mode_startup": "Passed on WSL ext4 copy: api/admin/ingestor/syncer --help, expected exit 1 and help output",
       "deployed": false
+    },
+    "pre_commit": {
+      "result": "Passed",
+      "runner": "lefthook 2.2.2",
+      "checks": [
+        "check-json",
+        "check-yaml",
+        "mixed-line-ending",
+        "check-merge-conflict",
+        "check-symlinks",
+        "trailing-whitespace",
+        "end-of-file-fixer",
+        "check-case-conflict"
+      ],
+      "scope_skips": "ruff/ruff-format/gofmt: no Python or Go changes",
+      "interpreter": "Existing Python 3.13.1 via task-local PATH, replacing Windows Store python3 alias; no checks bypassed"
     }
   },
   "evidence": {
