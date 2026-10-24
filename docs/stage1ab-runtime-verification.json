@@ -1,0 +1,547 @@
+{
+  "recorded_at": "2026-10-24T19:22:17.891Z",
+  "version": "v0.28",
+  "request_snapshot": "那就开始真实联调，把 B 的前端接到本机现有后端，跑通登录、知识目录、父子节点和固定修订原文读取。只用合成资料，不调用模型，不再启动多轮审查；发现问题做针对性修复和验证，通过后合并 main、推送远端并更新给 B 的交接说明。",
+  "objective": "让B目录／原文页面接本机真实后端，完成阶段1限定的纵向工程闭环。",
+  "status": "Stage1VerticalIntegrationEngineeringVerified",
+  "user_decision": {
+    "outcome": "Pending"
+  },
+  "clarification": {
+    "state": "Settled",
+    "notice": "本次范围和授权明确，跳过补充提问。"
+  },
+  "authorization": {
+    "source": "本轮用户原话",
+    "scope": "真实联调、合成夹具、针对性修复与验证、通过后合并main并推送、B交接更新；禁止模型与多轮审查。"
+  },
+  "plan": [
+    "核对版本与回退，加载既有B构建",
+    "真实登录和合成域→模块→来源→父子节点→原文",
+    "检查修订、范围、权限与禁模型并保存证据",
+    "更新交接，保持原历史报告不变，合入main及远端核对"
+  ],
+  "baseline": {
+    "source_commit": "34fc8cb4abcfafd96e555be430554cc404535490",
+    "b_code_commit": "ee0b22efbd8695540fce37e93ed56999d3e9fde1",
+    "b_delivery_commit": "e5db8d44a36ae6e4daee3c8dfd78327182c2d4a5",
+    "shared_contract": "C1/C3 1.0.0",
+    "c2": "0.1.0-draft / DraftNotImplemented"
+  },
+  "requirement_coverage": [
+    {
+      "id": "RT-1",
+      "source": "request_snapshot",
+      "quote": "那就开始真实联调，把 B 的前端接到本机现有后端，跑通登录、知识目录、父子节点和固定修订原文读取。只用合成资料，不调用模型，不再启动多轮审查；发现问题做针对性修复和验证，通过后合并 main、推送远端并更新给 B 的交接说明。",
+      "reading": "真实联调与前端接现有后端",
+      "status": "已验证",
+      "actual": "B的1055文件构建在既有挂载加载；真实Go/MySQL/MinIO，浏览器未Mock，Nginx记录真实请求。"
+    },
+    {
+      "id": "RT-2",
+      "source": "request_snapshot",
+      "quote": "那就开始真实联调，把 B 的前端接到本机现有后端，跑通登录、知识目录、父子节点和固定修订原文读取。只用合成资料，不调用模型，不再启动多轮审查；发现问题做针对性修复和验证，通过后合并 main、推送远端并更新给 B 的交接说明。",
+      "reading": "登录",
+      "status": "已验证",
+      "actual": "两个合成主体完成真实登录；匿名访问回登录；所有者重新登录恢复读取。"
+    },
+    {
+      "id": "RT-3",
+      "source": "request_snapshot",
+      "quote": "那就开始真实联调，把 B 的前端接到本机现有后端，跑通登录、知识目录、父子节点和固定修订原文读取。只用合成资料，不调用模型，不再启动多轮审查；发现问题做针对性修复和验证，通过后合并 main、推送远端并更新给 B 的交接说明。",
+      "reading": "知识目录",
+      "status": "已验证",
+      "actual": "现有Dataset侧栏进入项目／前端／后端／文档模块，按组筛来源。"
+    },
+    {
+      "id": "RT-4",
+      "source": "request_snapshot",
+      "quote": "那就开始真实联调，把 B 的前端接到本机现有后端，跑通登录、知识目录、父子节点和固定修订原文读取。只用合成资料，不调用模型，不再启动多轮审查；发现问题做针对性修复和验证，通过后合并 main、推送远端并更新给 B 的交接说明。",
+      "reading": "父子节点",
+      "status": "已验证",
+      "actual": "手工符号节点SyntheticCard，[41,117)，可进入及返回父文件；自动AST不在本阶段。"
+    },
+    {
+      "id": "RT-5",
+      "source": "request_snapshot",
+      "quote": "那就开始真实联调，把 B 的前端接到本机现有后端，跑通登录、知识目录、父子节点和固定修订原文读取。只用合成资料，不调用模型，不再启动多轮审查；发现问题做针对性修复和验证，通过后合并 main、推送远端并更新给 B 的交接说明。",
+      "reading": "固定修订原文读取",
+      "status": "已验证",
+      "actual": "新旧合成字节发布不同修订／SHA，旧节点仍精确读旧字节，刷新后读取新修订。"
+    },
+    {
+      "id": "RT-6",
+      "source": "request_snapshot",
+      "quote": "那就开始真实联调，把 B 的前端接到本机现有后端，跑通登录、知识目录、父子节点和固定修订原文读取。只用合成资料，不调用模型，不再启动多轮审查；发现问题做针对性修复和验证，通过后合并 main、推送远端并更新给 B 的交接说明。",
+      "reading": "只用合成资料",
+      "status": "已验证",
+      "actual": "新建2合成测试账号、1域、4组、4来源；没有导入或抓取真实代码、文档或网站。"
+    },
+    {
+      "id": "RT-7",
+      "source": "request_snapshot",
+      "quote": "那就开始真实联调，把 B 的前端接到本机现有后端，跑通登录、知识目录、父子节点和固定修订原文读取。只用合成资料，不调用模型，不再启动多轮审查；发现问题做针对性修复和验证，通过后合并 main、推送远端并更新给 B 的交接说明。",
+      "reading": "不调用模型",
+      "status": "已验证",
+      "actual": "六类策略拒绝；原生parse入口拒绝；新账号模型凭据0、任务0，旧用量／配置指纹一致；无独立出口抓包。"
+    },
+    {
+      "id": "RT-8",
+      "source": "request_snapshot",
+      "quote": "那就开始真实联调，把 B 的前端接到本机现有后端，跑通登录、知识目录、父子节点和固定修订原文读取。只用合成资料，不调用模型，不再启动多轮审查；发现问题做针对性修复和验证，通过后合并 main、推送远端并更新给 B 的交接说明。",
+      "reading": "不再启动多轮审查；发现问题做针对性修复和验证",
+      "status": "已遵守",
+      "actual": "17项真实页面、11组真实API、29项定向消费者测试。没有发现需修改的应用代码；仅修正本地夹具／验证脚本，不开展多轮审查。"
+    },
+    {
+      "id": "RT-9",
+      "source": "request_snapshot",
+      "quote": "那就开始真实联调，把 B 的前端接到本机现有后端，跑通登录、知识目录、父子节点和固定修订原文读取。只用合成资料，不调用模型，不再启动多轮审查；发现问题做针对性修复和验证，通过后合并 main、推送远端并更新给 B 的交接说明。",
+      "reading": "通过后合并main、推送远端",
+      "status": "验证前置已满足，随后执行",
+      "actual": "用户已授权发布；以远端main包含本记录的提交、最终本地与origin/main一致检查为证据，不把工程测试写成人工验收。"
+    },
+    {
+      "id": "RT-10",
+      "source": "request_snapshot",
+      "quote": "那就开始真实联调，把 B 的前端接到本机现有后端，跑通登录、知识目录、父子节点和固定修订原文读取。只用合成资料，不调用模型，不再启动多轮审查；发现问题做针对性修复和验证，通过后合并 main、推送远端并更新给 B 的交接说明。",
+      "reading": "更新给B的交接说明",
+      "status": "已记录",
+      "actual": "docs/stage1ab-handoff.md第6节与阶段1-A-B交接说明.md第12节，含固定契约、构建加载、合成样本和下一依赖。"
+    }
+  ],
+  "runtime": {
+    "base_url": "http://127.0.0.1:18080",
+    "page": "http://127.0.0.1:18080/dataset/knowledge-catalogue/70dbb047c8b4436e8d44c2ad858cf661",
+    "account": "合成所有者；不在仓库提供登录信息",
+    "backend_binary_sha256": "ce4d038cd36f179234976b7ae3eeb3b908e22c7c641765e5e593c1c432b9ea3e",
+    "backend_rebuilt": false,
+    "frontend_built_files": 1055,
+    "served_index_sha256": "8052e2e9b210f115ed9d99a8b0be94bf00302dd92ef01c7c511e58ada0d3702f",
+    "frontend_manifest_sha256": "f00fe60214f6179e1ab73e7306292e58e694c18537c0cc2a61c0eb1b1d94933b",
+    "frontend_source_matches_b_files": 15,
+    "compose_recreated": false,
+    "unchanged_containers": 6,
+    "containers_healthy": true,
+    "original_credentials_and_volumes_preserved": true,
+    "backup": "本机被忽略且受限的runtime/web-dist-backup；既有挂载目录原位复制，可原位还原。"
+  },
+  "fixture": {
+    "small_original": "// 合成资料，仅用于本地联调\r\nexport function SyntheticCard() {\r\n  return \"你好，第二大脑 🧠\";\r\n}\r\n// <script>alert(\"inert\")</script>\r\n",
+    "small_updated": "// 合成资料，仅用于本地联调\r\nexport function SyntheticCard() {\r\n  return \"你好，修订二号 🧠\";\r\n}\r\n// <script>alert(\"inert\")</script>\r\n",
+    "backend_original": "package synthetic\n\n// 合成后端示例\nfunc SyntheticAnswer() string { return \"本地\" }\n",
+    "empty_original": "",
+    "large_generator": {
+      "prefix": "a",
+      "prefix_count": 65535,
+      "marker": "中",
+      "separator": "\r\n",
+      "suffix": "b",
+      "suffix_count": 4462,
+      "tail": "\r\n// 大文件结尾 END-OF-SYNTHETIC\r\n"
+    },
+    "type": "synthetic-only",
+    "native_accounts": 2,
+    "domain_id": "70dbb047c8b4436e8d44c2ad858cf661",
+    "groups": {
+      "project": {
+        "id": "db1df4ecd5994fa1815e8b1982a7a1f0",
+        "parent_id": null,
+        "component_side": "shared"
+      },
+      "frontend": {
+        "id": "b1c39f8de02441629608f1c126877707",
+        "parent_id": "db1df4ecd5994fa1815e8b1982a7a1f0",
+        "component_side": "frontend"
+      },
+      "backend": {
+        "id": "f0cadc91f4ca42dc8618106e71bfe946",
+        "parent_id": "db1df4ecd5994fa1815e8b1982a7a1f0",
+        "component_side": "backend"
+      },
+      "docs": {
+        "id": "2626b9970a0e4a599be51cc832e2865f",
+        "parent_id": "db1df4ecd5994fa1815e8b1982a7a1f0",
+        "component_side": "non_code"
+      }
+    },
+    "sources": [
+      {
+        "kind": "frontend",
+        "source_id": "541007a717cb436abb801f5f28275008",
+        "path": "web/synthetic-card.tsx",
+        "side": "frontend",
+        "bytes": 155,
+        "initial_revision": "dd6973fe4f904ab395b5ec4c56c8ba6e",
+        "initial_sha256": "a0da6a7b9e341774855852d997c4fef04cd718652f640bad2c6418584b3125d8"
+      },
+      {
+        "kind": "large",
+        "source_id": "7555de07b802474e9be829d5074022be",
+        "path": "web/synthetic-large.ts",
+        "side": "frontend",
+        "bytes": 70041,
+        "initial_revision": "e3e8832373bd4aa19ead7e3139d8881b",
+        "initial_sha256": "66a0068133686ea9ea8a8dc931ee3bdfa5fce092d547312fa97ad7e16a6a2fcb"
+      },
+      {
+        "kind": "backend",
+        "source_id": "3d263ef697b64e88b70bb84c5432b5f7",
+        "path": "internal/synthetic-handler.go",
+        "side": "backend",
+        "bytes": 91,
+        "initial_revision": "cf31cc91d1714bb99997b60fc527baaf",
+        "initial_sha256": "f42cc4cfbcf28f58651368ee4ef0fbcc372a5c0d52b445f4aed8ffa506fe83e9"
+      },
+      {
+        "kind": "empty",
+        "source_id": "3c26cf8bb86147628d32c4f50c23516d",
+        "path": "docs/empty.md",
+        "side": "non_code",
+        "bytes": 0,
+        "initial_revision": "c9135f73419c41b7b98f80bd4d926717",
+        "initial_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "old_frontend_revision": "dd6973fe4f904ab395b5ec4c56c8ba6e",
+    "new_frontend_revision": "1979117d2d7f418d9696d428d093b874",
+    "new_frontend_sha256": "c6485eeeca75d4637fccef87a9dbd229e25dc29f0c03c74f2dc7f3192215e483",
+    "symbol": {
+      "name": "SyntheticCard",
+      "start_byte": 41,
+      "end_byte": 117,
+      "old_node_id": "7590402e71fdfa40895ca5662ee3a07c82b7560cffcace2ca43e195014d018e7",
+      "new_node_id": "0d35fa8bbaa3e54e78225a0d86880748c0569399bcb12736bace20969ec65f52"
+    },
+    "retention": "合成域与两测试账号保留在本机，便于复核；凭据受限并忽略，不向B传递。",
+    "revision_test_method": "Only this synthetic mutable object replaced via local MinIO mc; both revisions published/read via real C1. Not a stage2 import/update API test."
+  },
+  "validation": {
+    "log_hashes": {
+      "jest.log": "22e61082c5070477e5b684e869b4d111a41671dab2e30757da36e4d7161d1828",
+      "format.log": "4eee387e683480136cbc858d8167a394ef9e48788d2731f378fc032704f6a9fa",
+      "lint.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "ui": {
+      "passed": 17,
+      "transport": "真实CUA浏览器→同源Nginx→现有Go/MySQL/MinIO；无Mock／HTTP拦截",
+      "cases": [
+        {
+          "name": "登录",
+          "result": "Passed",
+          "method": "CUA真实浏览器；未Mock或拦截HTTP",
+          "actual": "原生注册的合成所有者账号通过真实登录进入首页",
+          "evidence": "login-success.txt"
+        },
+        {
+          "name": "现有外壳与入口",
+          "result": "Passed",
+          "method": "CUA真实浏览器；未Mock或拦截HTTP",
+          "actual": "现有Dataset侧栏进入知识目录，域ID一致",
+          "evidence": "source-root.txt"
+        },
+        {
+          "name": "组织层级与标签",
+          "result": "Passed",
+          "method": "CUA真实浏览器；未Mock或拦截HTTP",
+          "actual": "项目下前端、后端、非代码模块分列",
+          "evidence": "project-modules.txt"
+        },
+        {
+          "name": "分组过滤",
+          "result": "Passed",
+          "method": "CUA真实浏览器；未Mock或拦截HTTP",
+          "actual": "进入前端模块仅列出两份前端来源",
+          "evidence": "source-root.txt"
+        },
+        {
+          "name": "原文保真",
+          "result": "Passed",
+          "method": "CUA真实浏览器；未Mock或拦截HTTP",
+          "actual": "155字节中文、CRLF和emoji与合成输入完全一致",
+          "evidence": "source-root.txt"
+        },
+        {
+          "name": "子节点",
+          "result": "Passed",
+          "method": "CUA真实浏览器；未Mock或拦截HTTP",
+          "actual": "[41,117)逐字节读取，与父文件对应范围一致",
+          "evidence": "child-node.txt"
+        },
+        {
+          "name": "返回父节点",
+          "result": "Passed",
+          "method": "CUA真实浏览器；未Mock或拦截HTTP",
+          "actual": "返回后恢复父文件全文及子节点入口",
+          "evidence": "source-root.txt"
+        },
+        {
+          "name": "UTF-8窗口",
+          "result": "Passed",
+          "method": "CUA真实浏览器；未Mock或拦截HTTP",
+          "actual": "65536字节处位于中文内部，真实400后缩为65535字节成功",
+          "evidence": "large-first.txt"
+        },
+        {
+          "name": "续读与返回",
+          "result": "Passed",
+          "method": "CUA真实浏览器；未Mock或拦截HTTP",
+          "actual": "两段拼回70041字节原文，末段禁下一段，返回第一段一致",
+          "evidence": "large-second.txt"
+        },
+        {
+          "name": "修订固定",
+          "result": "Passed",
+          "method": "CUA真实浏览器；未Mock或拦截HTTP",
+          "actual": "合成可变对象及新快照已改变，旧选择重新挂载仍读旧字节",
+          "evidence": "old-revision-after-update.txt"
+        },
+        {
+          "name": "目录刷新",
+          "result": "Passed",
+          "method": "CUA真实浏览器；未Mock或拦截HTTP",
+          "actual": "刷新清空选择，重新选择后使用新修订、新SHA和新原文",
+          "evidence": "new-revision-after-refresh.txt"
+        },
+        {
+          "name": "空文件",
+          "result": "Passed",
+          "method": "CUA真实浏览器；未Mock或拦截HTTP",
+          "actual": "0字节原文为空，SHA为空内容摘要，前后翻段均禁用",
+          "evidence": "empty-file.txt"
+        },
+        {
+          "name": "后端标签及内容",
+          "result": "Passed",
+          "method": "CUA真实浏览器；未Mock或拦截HTTP",
+          "actual": "后端Go来源与前端分列，91字节精确回读",
+          "evidence": "backend-source.txt"
+        },
+        {
+          "name": "第二账号及重试",
+          "result": "Passed",
+          "method": "CUA真实浏览器；未Mock或拦截HTTP",
+          "actual": "访客实际登录后无名称、路径、节点或正文，重试仍拒绝",
+          "evidence": "visitor-denied.txt"
+        },
+        {
+          "name": "未登录",
+          "result": "Passed",
+          "method": "CUA真实浏览器；未Mock或拦截HTTP",
+          "actual": "退出后访问私有目录回到登录页",
+          "evidence": "anonymous-redirect.txt"
+        },
+        {
+          "name": "重新登录与整页刷新",
+          "result": "Passed",
+          "method": "CUA真实浏览器；未Mock或拦截HTTP",
+          "actual": "所有者重新登录后正常；整页刷新不残留旧选择，重选读当前修订",
+          "evidence": "final-catalogue.txt"
+        },
+        {
+          "name": "惰性文本呈现",
+          "result": "Passed",
+          "method": "CUA真实浏览器；未Mock或拦截HTTP",
+          "actual": "script字样保持原文，pre内无script元素",
+          "evidence": "final-catalogue.txt"
+        }
+      ]
+    },
+    "api": {
+      "passed_groups": 11,
+      "cases": [
+        {
+          "label": "C1/C3契约",
+          "result": "Passed",
+          "details": "真实服务返回1.0.0"
+        },
+        {
+          "label": "私有目录策略",
+          "result": "Passed",
+          "details": "owner_only，禁止模型及自动解析"
+        },
+        {
+          "label": "独立模块标签",
+          "result": "Passed",
+          "details": "后端、前端、非代码分开保存；项目为shared"
+        },
+        {
+          "label": "来源分页",
+          "result": "Passed",
+          "details": "两页共4来源，无重无漏"
+        },
+        {
+          "label": "旧修订子节点",
+          "result": "Passed",
+          "details": "新修订发布后旧父子坐标与原文仍一致"
+        },
+        {
+          "label": "六类模型外发门禁",
+          "result": "Passed",
+          "details": "仅检查策略，未调用模型"
+        },
+        {
+          "label": "原生解析入口阻止",
+          "result": "Passed",
+          "details": "受管域拒绝Run，未入队"
+        },
+        {
+          "label": "跨主体隔离",
+          "result": "Passed",
+          "details": "目录、来源、节点、正文均真实HTTP404且无私密内容"
+        },
+        {
+          "label": "契约冲突",
+          "result": "Passed",
+          "details": "不支持的契约版本返回真实HTTP409"
+        },
+        {
+          "label": "未索引未解析",
+          "result": "Passed",
+          "details": "4个Document的chunk_num/token_num/progress为0"
+        },
+        {
+          "label": "旧POC与模型配置保持",
+          "result": "Passed",
+          "details": "旧6份/42块、配置、用量、活动任务指纹前后一致"
+        }
+      ],
+      "http_harness_requests": 39
+    },
+    "consumer_tests": {
+      "suites": 2,
+      "passed": 29,
+      "rerun": true,
+      "transport": "Jest传输Mock，独立于真实页面证据"
+    },
+    "format": {
+      "files": 15,
+      "passed": true
+    },
+    "lint": {
+      "files": 15,
+      "passed": true
+    },
+    "production_build": {
+      "rebuilt_this_runtime_run": false,
+      "reused_verified_receipt_build": true,
+      "receipt": "docs/stage1ab-receipt.json",
+      "seconds": 44.04,
+      "all_deployed_hashes_matched": true
+    },
+    "nginx": {
+      "scoped_requests": 119,
+      "browser_requests": 79,
+      "browser_content_requests": 14,
+      "browser_statuses": {
+        "200": 72,
+        "400": 2,
+        "401": 2,
+        "404": 2,
+        "499": 1
+      },
+      "scope": "只统计本轮时间内所选域路由、knowledge和auth路径，非全部站点请求数；499为导航取消，400为UTF-8边界重试，401/404为拒绝验证。",
+      "trace": "docs/stage1ab-runtime-http.json"
+    },
+    "no_model": {
+      "calls": 0,
+      "synthetic_provider_credentials": 0,
+      "synthetic_ingestion_tasks": 0,
+      "policy_purposes": [
+        "embedding",
+        "rerank",
+        "generation",
+        "remote_parse",
+        "wiki",
+        "memory"
+      ],
+      "provider_and_usage_fingerprints_unchanged": true,
+      "evidence_boundary": "应用请求和数据库状态证据；没有独立出口抓包。"
+    },
+    "legacy_poc": {
+      "documents": 6,
+      "chunks": 42,
+      "fingerprints_unchanged": true
+    },
+    "protected_artifacts": [
+      {
+        "file": "docs/knowledge-foundation-v1.openapi.json",
+        "sha256": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4"
+      },
+      {
+        "file": "docs/knowledge-foundation-v1.example.json",
+        "sha256": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343"
+      },
+      {
+        "file": "docs/knowledge-sources-v1.draft.schema.json",
+        "sha256": "b32442acfdb58cd2b9d4588e9334d8e2a39388fe47d3863e6d2815cd1afe1634"
+      },
+      {
+        "file": "docs/knowledge-sources-v1.draft.example.json",
+        "sha256": "6a552b079a27cce7c91a45fbd9f9e6d7bff2407c4ca4460e04e0f7013d7078ad"
+      },
+      {
+        "file": "阶段1-A底座验证报告.json",
+        "sha256": "53279a86ca9236b2baaa563711e9a8cfaeaf279bdd929a34859a88d6c415b383"
+      },
+      {
+        "file": "阶段1-A对抗性审查报告.json",
+        "sha256": "4f874ecdad3a33b3d509e4f4ed7f79f5b02b5b932afdbe697936100dc76ce097"
+      },
+      {
+        "file": "docs/stage1b-verification.json",
+        "sha256": "c347f9f49ad98e1e04f91c326b2b2f00202194d2202db3c57ddb1ca689aae719"
+      },
+      {
+        "file": "docs/stage1b-delivery.md",
+        "sha256": "b2d6ad95199e21690f3d673260a6079608a4f42ffa562a2469352f900fed2d22"
+      },
+      {
+        "file": "docs/stage1ab-receipt.json",
+        "sha256": "546969f3af18c820006bb4de87aa0ffc38ec04d4ae97e159ac5483bd44ed6ab1"
+      }
+    ]
+  },
+  "changes": {
+    "application_code_fixes": [],
+    "business_code_changes": 0,
+    "explanation": "真实联调未发现应用缺陷；保持B代码与A后端／共享契约，不为联调增加临时接口。",
+    "runtime": "现有web/dist加载B构建；新增本机合成夹具；既有服务未重启。",
+    "test_harness_corrections": [
+      "准备脚本数组解析与账号选择修正；Node复制退出后改用PowerShell并校验全部文件。",
+      "夹具校验改用现有Document字段；接口/字段/模型目的按真实契约校正；挂载对比按目标路径排序。",
+      "登录自动化等待实际跳转完成再导航，避免测试工具中断尚未结束的登录。"
+    ]
+  },
+  "evidence": [
+    {
+      "file": "docs/stage1ab-runtime-catalogue.png",
+      "sha256": "c17396546477f2019567fbc9712001f51d5c194526ca1f2fbcbe27dfd03ab144"
+    },
+    {
+      "file": "docs/stage1ab-runtime-access-denied.png",
+      "sha256": "9f122e0f5dcb65404410da9a62eb8a1b02867e2ff5c50795279c520e92a243ee"
+    },
+    {
+      "file": "docs/stage1ab-runtime-http.json",
+      "sha256": "2e5586baac64378c626633cddf34495cdffa423718e0596da2d35191bba0faac"
+    }
+  ],
+  "incomplete_items": [
+    "用户对本轮工程交付的验收决定尚未取得。",
+    "409页面提示仅有B消费者测试，本轮真实409在后端验证；断网、503、并发压力和全量类型检查未在本轮重跑。",
+    "阶段2 C2仍未冻结／实现，真实来源导入范围待明确；阶段3—6未实施。",
+    "百万代码规模、AST／依赖图、文档解析／检索质量、MCP与人格记忆不在本轮验收范围。"
+  ],
+  "adversarial_review": {
+    "status": "NotStarted",
+    "source": "本轮用户明确“不再启动多轮审查”",
+    "previous_stage1_review": "Suspended / round10 Incomplete，保持历史结论。"
+  },
+  "publication": {
+    "target_remote": "https://github.com/LFenX/LFen.s-Second-Brain.git",
+    "target_branch": "main",
+    "method": "fast-forward；保留B原提交及作者",
+    "verification": "推送后核对HEAD=main=origin/main=远端refs/heads/main，结果在本机publication.after.json与最终答复；不在本记录内伪造自身提交SHA。"
+  }
+}
