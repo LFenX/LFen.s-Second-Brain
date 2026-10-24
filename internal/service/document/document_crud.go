@@ -366,7 +366,28 @@ func (s *DocumentService) RemoveDocumentKeepFile(ctx context.Context, docID stri
 // updates dataset/document counters on insert. The document's ID and timestamps
 // are populated by the caller / model hooks before insertion.
 func (s *DocumentService) InsertDocument(doc *entity.Document) error {
-	return dao.DB.Transaction(func(tx *gorm.DB) error {
+	return s.insertDocument(context.Background(), doc, nil)
+}
+
+// insertDocument serializes publication with domain registration. Only the
+// multipart path supplies a validator for the actual supported source bytes.
+func (s *DocumentService) insertDocument(ctx context.Context, doc *entity.Document, validate func(*entity.Knowledgebase) error) error {
+	return dao.DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		var current entity.Knowledgebase
+		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).Where("id = ?", doc.KbID).Take(&current).Error; err != nil {
+			return fmt.Errorf("knowledgebase %s not found: %w", doc.KbID, err)
+		}
+		if current.Status != nil && *current.Status != string(entity.StatusValid) {
+			return permission.ErrKnowledgeIngestionDenied
+		}
+		if current.KnowledgeEnabled && validate == nil {
+			return permission.ErrKnowledgeIngestionDenied
+		}
+		if validate != nil {
+			if err := validate(&current); err != nil {
+				return err
+			}
+		}
 		if err := tx.Create(doc).Error; err != nil {
 			return fmt.Errorf("failed to create document: %w", err)
 		}

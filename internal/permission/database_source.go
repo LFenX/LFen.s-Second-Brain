@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"strings"
 
+	"ragflow/internal/dao"
 	"ragflow/internal/entity"
 
 	"gorm.io/gorm"
@@ -165,7 +166,7 @@ func (s *databaseSource) GetResources(ctx context.Context, refs []ResourceRef) (
 	if err != nil {
 		return nil, err
 	}
-	fileOriginOwners, err := loadKnowledgeOwners(ctx, s.db, knowledgeFileOrigins(ctx, s.db), fileIDs)
+	fileOriginOwners, err := loadKnowledgeOwners(ctx, s.db, dao.KnowledgeFileOrigins(ctx, s.db), fileIDs)
 	if err != nil {
 		return nil, err
 	}

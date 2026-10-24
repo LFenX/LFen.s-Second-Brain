@@ -23,7 +23,6 @@ import (
 	"ragflow/internal/entity"
 	"strings"
 
-	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
 
@@ -463,6 +462,31 @@ func reparentAndDeleteFolder(ctx context.Context, db *gorm.DB, dupID, keepID str
 	return nil
 }
 
+// deduplicateDatasetFolders leaves the complete candidate set untouched when
+// any tree carries managed sources. Names cannot authorize moving their roots.
+func deduplicateDatasetFolders(ctx context.Context, db *gorm.DB, folders []*entity.File) error {
+	if len(folders) < 2 {
+		return nil
+	}
+	return db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		for _, folder := range folders {
+			protected, err := HasKnowledgeFileTree(ctx, tx, folder)
+			if err != nil {
+				return err
+			}
+			if protected {
+				return nil
+			}
+		}
+		for _, folder := range folders[1:] {
+			if err := reparentAndDeleteFolder(ctx, tx, folder.ID, folders[0].ID); err != nil {
+				return err
+			}
+		}
+		return nil
+	})
+}
+
 // DatasetFolderName is the folder name for dataset
 const DatasetFolderName = ".knowledgebase"
 
@@ -484,17 +508,7 @@ func (dao *FileDAO) InitDatasetDocs(ctx context.Context, db *gorm.DB, rootID, te
 	}
 
 	if len(existing) > 0 {
-		if len(existing) > 1 {
-			common.Warn("Found duplicate folders under root, keeping only the first",
-				zap.Int("duplicates", len(existing)), zap.String("name", DatasetFolderName), zap.String("root_id", rootID))
-			keepID := existing[0].ID
-			for _, dup := range existing[1:] {
-				if err := reparentAndDeleteFolder(ctx, db, dup.ID, keepID); err != nil {
-					common.Error("Failed to deduplicate folder", err, zap.String("folder_id", dup.ID))
-				}
-			}
-		}
-		return nil
+		return deduplicateDatasetFolders(ctx, db, existing)
 	}
 
 	datasetFolder, err := dao.newAFileFromDataset(ctx, db, tenantID, DatasetFolderName, rootID)
@@ -548,15 +562,8 @@ func (dao *FileDAO) newAFileFromDataset(ctx context.Context, db *gorm.DB, tenant
 	}
 
 	if len(existingFiles) > 0 {
-		if len(existingFiles) > 1 {
-			common.Warn("Found duplicate entries under parent, keeping only the first",
-				zap.Int("duplicates", len(existingFiles)), zap.String("name", name), zap.String("parent_id", parentID))
-			keepID := existingFiles[0].ID
-			for _, dup := range existingFiles[1:] {
-				if err = reparentAndDeleteFolder(ctx, db, dup.ID, keepID); err != nil {
-					common.Error("Failed to deduplicate file entry", err, zap.String("entry_id", dup.ID))
-				}
-			}
+		if err := deduplicateDatasetFolders(ctx, db, existingFiles); err != nil {
+			return nil, err
 		}
 		return existingFiles[0], nil
 	}

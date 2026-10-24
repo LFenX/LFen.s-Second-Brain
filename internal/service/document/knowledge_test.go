@@ -73,7 +73,12 @@ func TestKnowledgeUploadKeepsCodeNameAndBytesWithoutParsing(t *testing.T) {
 	if err := dao.DB.Model(&entity.IngestionTask{}).Count(&tasks).Error; err != nil || tasks != 0 {
 		t.Fatalf("upload scheduled ingestion count=%d err=%v", tasks, err)
 	}
+	kb.ID = "ordinary"
 	kb.KnowledgeEnabled = false
+	kb.KnowledgeFolderID = nil
+	if err := db.Create(kb).Error; err != nil {
+		t.Fatal(err)
+	}
 	got, errs = testDocumentService(t).UploadLocalDocuments(t.Context(), kb, "owner", []*multipart.FileHeader{makeTestFileHeader(t, "file", "native-reject.tsx", body)}, "", nil)
 	if len(got) != 0 || len(errs) != 1 {
 		t.Fatal("unregistered native upload behavior changed")

@@ -64,7 +64,7 @@ func CheckKnowledgeFileTransfer(ctx context.Context, db *gorm.DB, fileIDs []stri
 		return errors.New("knowledge policy database unavailable")
 	}
 	var count int64
-	if err := db.WithContext(ctx).Table("(?) AS origin", knowledgeFileOrigins(ctx, db)).
+	if err := db.WithContext(ctx).Table("(?) AS origin", dao.KnowledgeFileOrigins(ctx, db)).
 		Where("resource_id IN ?", fileIDs).Count(&count).Error; err != nil {
 		return err
 	}
@@ -77,24 +77,12 @@ func CheckKnowledgeFileTransfer(ctx context.Context, db *gorm.DB, fileIDs []stri
 // CheckKnowledgeFileTreeMutation prevents native directory consumers from
 // adopting, moving or deleting managed sources and their ordinary ancestors.
 func CheckKnowledgeFileTreeMutation(ctx context.Context, db *gorm.DB, file *entity.File) error {
-	if db == nil || file == nil {
-		return errors.New("knowledge policy source unavailable")
-	}
-	ids := []string{file.ID}
-	if file.Type == "folder" {
-		var err error
-		ids, err = dao.NewFileDAO().GetSubtreeIDs(ctx, db, file.TenantID, file.ID)
-		if err != nil {
-			return err
-		}
-	}
-	var count int64
-	if err := db.WithContext(ctx).Model(&entity.File{}).
-		Where("id IN ? AND id IN (?)", ids, dao.KnowledgeFolderIDs(ctx, db)).Count(&count).Error; err != nil {
+	protected, err := dao.HasKnowledgeFileTree(ctx, db, file)
+	if err != nil {
 		return err
 	}
-	if count > 0 {
+	if protected {
 		return ErrKnowledgeIngestionDenied
 	}
-	return CheckKnowledgeFileTransfer(ctx, db, ids)
+	return nil
 }

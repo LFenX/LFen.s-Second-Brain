@@ -1,6 +1,6 @@
 {
-  "version": "v0.24",
-  "recorded_at": "2026-10-23T23:23:28.010Z",
+  "version": "v0.25",
+  "recorded_at": "2026-10-24T09:08:50.128Z",
   "request_snapshot": "阶段0方案通过。开始推进本机A的阶段1，先冻结双方共享的领域模型、节点身份、权限与外发规则及接口契约，再完成最小底座适配，给B整理可直接接续的交接说明。暂不调用模型，完成验证后推送远端。",
   "consent": {
     "response": "启动审查",
@@ -314,7 +314,19 @@
         ".local-data/stage1a-20261024/build-src/review-round10-probes.log",
         ".local-data/stage1a-20261024/build-src/review-round10-reserved-and-upload.log"
       ],
-      "engineering_status": "PendingRepair"
+      "engineering_status": "Fixed",
+      "fix": "删除前解析并检查整树，拒绝受管祖先与真实公共容器；DAO去重先检查全体候选，遇受管树整体保留，普通去重不变。来源查询下移DAO由权限和维护共用。",
+      "followup_evidence": {
+        "report": "docs/stage1a-two-fixes-verification.md",
+        "source_change_subject_sha256": "96c25af9800f6425605e48b8113fdb22519b0b40fb2afceae4cc514cdd8e3295",
+        "tests": [
+          "TestKnowledgeNativeDatasetCleanupAncestor",
+          "TestKnowledgeRegistrationCommonContainerDedup",
+          "TestKnowledgeOrdinaryDatasetReservedNameDeletesCommonAncestor",
+          "TestKnowledgeDatasetContainerDedupAncestor"
+        ],
+        "private_evidence_root": ".local-data/stage1a-20261024/final-two-fixes"
+      }
     },
     {
       "id": "AR-32",
@@ -327,7 +339,17 @@
       "evidence_refs": [
         ".local-data/stage1a-20261024/build-src/review-round10-upload-confirmed.log"
       ],
-      "engineering_status": "PendingRepair"
+      "engineering_status": "Fixed",
+      "fix": "multipart入口重新读取当前KB；Document登记事务锁定同一KB行，按当前注册状态和实际filename/blob复检；拒绝时回滚临时对象，成功后采用当前绑定目录；其他未提供字节校验的原生登记入口不接受注册域。",
+      "followup_evidence": {
+        "report": "docs/stage1a-two-fixes-verification.md",
+        "source_change_subject_sha256": "96c25af9800f6425605e48b8113fdb22519b0b40fb2afceae4cc514cdd8e3295",
+        "tests": [
+          "TestKnowledgeUploadRechecksConcurrentRegistration",
+          "TestKnowledgeUploadRegistrationDuringStorage"
+        ],
+        "private_evidence_root": ".local-data/stage1a-20261024/final-two-fixes"
+      }
     }
   ],
   "engineering_verification": {
@@ -997,17 +1019,142 @@
     "原生混合受限祖先版本采取整体隐藏，不提供部分版本可见；历史按批检查，尚无百万级历史树性能验收。",
     "原最小运行库缺少上游skill_spaces表，命名SkillSpace的真实HTTP路径未验；本轮不新增该业务表，代码边界由隔离SQLite及假模型验证。",
     "阶段1明确拒绝注册域的原生Document破坏性清理；源删除／撤销／物理保留协议归阶段2。原生SkillSpace含已知受管子树时整体隐藏，普通skills保持；显式历史索引Folder来源受同一约束，不识别任意粘贴。",
-    "审查已暂停：第10轮不完整，AR-31／AR-32尚未修复；不得将此前工程测试通过解释为完整审查通过。"
+    "审查仍暂停：第10轮不完整；AR-31／AR-32已按人限定范围修复并针对性验证，不恢复多轮审查，不将工程测试解释为审查通过。"
   ],
   "handoff": "阶段1-A-B交接说明.md",
   "private_evidence_location": ".local-data/stage1a-20261024/review-20261024（被Git忽略且权限受限；含备份，不上传）",
   "publication": {
-    "status": "ReviewBranchArchivePendingMainIntegration",
-    "branch": "codex/stage1a-review",
-    "main_not_merged": true,
-    "remote_pointer_is_verified_separately": true
+    "status": "AuthorizedMainDelivery",
+    "branch": "main",
+    "source_branch": "codex/stage1a-review",
+    "remote_pointer_is_verified_separately": true,
+    "authorization": "那就只修复剩下的两个问题，做针对性验证，不再扩大范围，也不再启动多轮审查。完成后合并到 main 并推送远端，更新给 B 的交接说明。"
   },
   "user_decision": {
     "outcome": "Pending"
+  },
+  "scoped_followup": {
+    "recorded_at": "2026-10-24T09:08:50.128Z",
+    "request_snapshot": "那就只修复剩下的两个问题，做针对性验证，不再扩大范围，也不再启动多轮审查。完成后合并到 main 并推送远端，更新给 B 的交接说明。",
+    "base_commit": "d213841700768322e269990e82ededbfaa4ef3e5",
+    "scope": [
+      "AR-31",
+      "AR-32"
+    ],
+    "status": "Implemented",
+    "review_resumed": false,
+    "review_decision": {
+      "outcome": "Declined",
+      "source": "本轮用户明确要求不再启动多轮审查"
+    },
+    "contract_version": "1.0.0",
+    "go": {
+      "packages": [
+        "ragflow/internal/dao",
+        "ragflow/internal/permission",
+        "ragflow/internal/service/dataset",
+        "ragflow/internal/service/document",
+        "ragflow/internal/service/file"
+      ],
+      "top_level_passed": 58,
+      "including_subtests_passed": 106,
+      "failures_in_final_results": 0,
+      "native_unit_packages_passed": 2,
+      "commands": [
+        "bash build.sh --test -json -run \"TestKnowledge|TestUploadLocalDocuments|TestUploadEmptyDocument|Test.*InsertDocument|Test.*[Dd]edup|Test.*InitDataset\" ./internal/dao ./internal/permission ./internal/service/dataset ./internal/service/file ./internal/service/document",
+        "file包仅因新测试有unused import编译失败，修正后单独运行相同定向用例；其余4包结果保留",
+        "bash build.sh --go；api/admin/ingestor/syncer --help均启动并显示Usage，原生help退出码1"
+      ],
+      "evidence_logs": [
+        "final-two-fixes-test-first.log",
+        "final-two-fixes-test-retry.log",
+        "final-two-fixes-file-test.log",
+        "final-two-fixes-build.log"
+      ],
+      "failed_attempts_retained": "初次编译有清理后未移除的import及移动查询缺失import；第二次仅file新测试残留unused import。均已修正，失败日志保留，不伪造首轮全通过。"
+    },
+    "runtime": {
+      "http_requests": 16,
+      "assertion_groups": 8,
+      "binary_sha256": "ce4d038cd36f179234976b7ae3eeb3b908e22c7c641765e5e593c1c432b9ea3e",
+      "healthy": true,
+      "changed_service": "ragflow-cpu",
+      "unchanged_non_app_containers": 7,
+      "legacy_documents": 6,
+      "legacy_chunks": 42,
+      "model_calls": 0,
+      "model_call_evidence": "No parse/model requests; synthetic catalogue paths only; native usage and provider fingerprints unchanged. No independent network capture.",
+      "synthetic_cleanup": "普通对照物理删除；合成注册域归档并保留来源事实和对象。",
+      "verification_retry": {
+        "reason": "原容器挂载数组顺序变化导致比较失败；改为按挂载目标排序比较。",
+        "http_writes_repeated": false,
+        "evidence": "http-smoke.private.jsonl保留完整原运行；本次仅重验响应证据、状态指纹和容器身份。"
+      }
+    },
+    "source_change_manifest": [
+      {
+        "file": "internal/dao/file.go",
+        "sha256": "cd81af86c3258cfa8b99080e0318cfbdb9023661d09af4b8254b3199df045cf7"
+      },
+      {
+        "file": "internal/dao/knowledge_folder.go",
+        "sha256": "553508e25e9725fc3bd6d619ecaeaf7af9df6ad3f2cf6692dbadb62b7b77ec66"
+      },
+      {
+        "file": "internal/permission/database_source.go",
+        "sha256": "187ee47529e4654e0165ea5ddb4ebccc124084d6b22e4089d50afc42f9b8a77d"
+      },
+      {
+        "file": "internal/permission/knowledge.go",
+        "sha256": "d20c054714b9252d81561e86311b99011aadfbc2a53de248335d4825cab78aa1"
+      },
+      {
+        "file": "internal/permission/knowledge_sources.go",
+        "sha256": "b6b0c039bb1f7eb233d2a7a9deb8d1471bb09dec27cf39a46fdf7423a1491f20"
+      },
+      {
+        "file": "internal/service/dataset/crud.go",
+        "sha256": "ce2fda3dedfd8d3785e7e0e3f4c630e4170f70223f4e4b3ed53dadf41af03c09"
+      },
+      {
+        "file": "internal/service/dataset/knowledge_folder_cleanup_test.go",
+        "sha256": "dd60cadf6662f226ba7aad81a3d527dbc658191b9798734eaec7372ad1cb6ded"
+      },
+      {
+        "file": "internal/service/document/document_crud.go",
+        "sha256": "dc7e2bbaca4a8741a7074af1dc4682c8fe78840868bf7921f42e77b63f900725"
+      },
+      {
+        "file": "internal/service/document/document_upload.go",
+        "sha256": "09e8a6bd432294cccdca5bd840f1c0fba1f1eed332e3d9a93ac66d74092d15ba"
+      },
+      {
+        "file": "internal/service/document/knowledge_test.go",
+        "sha256": "b726d42aff81816b2de3f0941f3fd356f1648e1fccdf3edea37af71e7cf50146"
+      },
+      {
+        "file": "internal/service/document/knowledge_upload_policy_test.go",
+        "sha256": "a314c7b20048a854877990546afb14ea1e8e8488f044ae10c218ea6244b87631"
+      },
+      {
+        "file": "internal/service/document/knowledge_upload_registration_test.go",
+        "sha256": "5e7b2db5ec8e7223f4994e24992e5365075a911b104b0bef310730dc4c274987"
+      },
+      {
+        "file": "internal/service/file/knowledge_dataset_dedup_test.go",
+        "sha256": "5c6cf58e729151c96d4922a0745f5894d194f6d683a37147036e92a135530e2f"
+      }
+    ],
+    "source_change_subject_sha256": "96c25af9800f6425605e48b8113fdb22519b0b40fb2afceae4cc514cdd8e3295",
+    "original_report_sha256": "53279a86ca9236b2baaa563711e9a8cfaeaf279bdd929a34859a88d6c415b383",
+    "evidence_root": ".local-data/stage1a-20261024/final-two-fixes",
+    "limits": [
+      "仅针对两项已知问题验证；历史多轮审查仍Suspended，第10轮Incomplete，不新增审查通过结论。",
+      "注册交错由SQLite/MemoryStorage确定性用例覆盖；真实HTTP使用现有MySQL/MinIO，未执行并发压力或百万级性能验证。",
+      "A用户验收、B页面与整体阶段1纵向验收均Pending。"
+    ],
+    "user_decision": {
+      "outcome": "Pending"
+    }
   }
 }

@@ -427,6 +427,30 @@ func (d *DatasetService) deleteDatasetAuthorized(ctx context.Context, kb *entity
 }
 
 func (d *DatasetService) deleteNativeDataset(ctx context.Context, db *gorm.DB, kb *entity.Knowledgebase) error {
+	// Resolve and protect the exact cleanup set before any non-transactional
+	// object or index deletion. A name match may be another domain's ancestor.
+	var folders []entity.File
+	if err := db.WithContext(ctx).Where("source_type = ? AND type = ? AND tenant_id = ? AND name = ?", string(entity.FileSourceKnowledgebase), "folder", kb.TenantID, kb.Name).
+		Where("id NOT IN (?)", dao.KnowledgeFolderIDs(ctx, db)).Find(&folders).Error; err != nil {
+		return fmt.Errorf("resolve dataset folders: %w", err)
+	}
+	ownedFolderIDs := make([]string, 0, len(folders))
+	for _, folder := range folders {
+		if err := permission.CheckKnowledgeFileTreeMutation(ctx, db, &folder); err != nil {
+			return err
+		}
+		if folder.Name == dao.DatasetFolderName {
+			var roots int64
+			if err := db.WithContext(ctx).Model(&entity.File{}).
+				Where("id = ? AND parent_id = id AND tenant_id = ? AND id <> ?", folder.ParentID, folder.TenantID, folder.ID).Count(&roots).Error; err != nil {
+				return err
+			}
+			if roots > 0 {
+				return permission.ErrKnowledgeIngestionDenied
+			}
+		}
+		ownedFolderIDs = append(ownedFolderIDs, folder.ID)
+	}
 	storageImpl := storage.GetStorageFactory().GetStorage()
 	if storageImpl == nil {
 		return fmt.Errorf("storage not initialized")
@@ -477,19 +501,6 @@ func (d *DatasetService) deleteNativeDataset(ctx context.Context, db *gorm.DB, k
 	}
 
 	if err := db.Transaction(func(tx *gorm.DB) error {
-		// Resolve ordinary folders while their document mappings still exist.
-		// Removing those mappings first would make the dataset's own empty
-		// folders look like unclaimed legacy folders and prevent native cleanup.
-		folderQuery := tx.Model(&entity.File{}).Where("source_type = ? AND type = ? AND tenant_id = ?", string(entity.FileSourceKnowledgebase), "folder", kb.TenantID)
-		if kb.KnowledgeEnabled && kb.KnowledgeFolderID != nil {
-			folderQuery = folderQuery.Where("id = ?", *kb.KnowledgeFolderID)
-		} else {
-			folderQuery = folderQuery.Where("name = ? AND id NOT IN (?)", kb.Name, dao.KnowledgeFolderIDs(ctx, tx))
-		}
-		var ownedFolderIDs []string
-		if err := folderQuery.Pluck("id", &ownedFolderIDs).Error; err != nil {
-			return fmt.Errorf("resolve dataset folders: %w", err)
-		}
 		// Delete index tasks referencing this KB.
 		if taskIDs := datasetIndexTaskIDs(kb); len(taskIDs) > 0 {
 			if err := tx.Where("id IN ?", taskIDs).Delete(&entity.Task{}).Error; err != nil {

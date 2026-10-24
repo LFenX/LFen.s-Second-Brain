@@ -10,6 +10,7 @@ import (
 	"ragflow/internal/common"
 	"ragflow/internal/dao"
 	"ragflow/internal/entity"
+	"ragflow/internal/permission"
 	"ragflow/internal/service"
 	"ragflow/internal/storage"
 	"ragflow/internal/utility"
@@ -32,6 +33,12 @@ func (s *DocumentService) UploadLocalDocuments(ctx context.Context, kb *entity.K
 	if storageImpl == nil {
 		return nil, []string{"storage not initialized"}
 	}
+	// A handler may have read this dataset before it became a private domain.
+	current, err := s.kbDAO.GetByID(ctx, dao.DB, kb.ID)
+	if err != nil {
+		return nil, []string{err.Error()}
+	}
+	kb = current
 
 	// Resolve (and create if needed) the dataset's file-manager folder up front.
 	// Without the File / file2document linkage the document list (which inner-joins
@@ -100,7 +107,18 @@ func (s *DocumentService) UploadLocalDocuments(ctx context.Context, kb *entity.K
 
 		selection, parserConfig := resolveDocumentParser(ctx, kb, filename, filetype, merged)
 		doc := s.newDatasetDocument(kb, tenantID, filename, location, string(filetype), selection, parserConfig, "local", int64(len(blob)), blob)
-		if err = s.InsertDocument(doc); err != nil {
+		if err = s.insertDocument(ctx, doc, func(current *entity.Knowledgebase) error {
+			if current.KnowledgeEnabled {
+				if current.CreatedBy != tenantID {
+					return permission.ErrKnowledgeIngestionDenied
+				}
+				if int64(len(blob)) > entity.KnowledgeMaxSourceBytes || !utility.IsKnowledgeTextSource(filename, blob) {
+					return fmt.Errorf("Knowledge foundation supports UTF-8 text/code up to 2 MiB only")
+				}
+			}
+			kb = current
+			return nil
+		}); err != nil {
 			// Roll back the orphaned blob so a failed insert doesn't leak storage.
 			rmErr := removeObjectBestEffort(ctx, storageImpl, kb.ID, location)
 			if rmErr != nil {
@@ -108,6 +126,17 @@ func (s *DocumentService) UploadLocalDocuments(ctx context.Context, kb *entity.K
 			}
 			errMsgs = append(errMsgs, fh.Filename+": "+err.Error())
 			continue
+		}
+		// Registration may have won after the first folder lookup. The inserted
+		// document now prevents another registration; use its current binding.
+		if kb.KnowledgeEnabled {
+			kbFolder, err = s.ensureKBFolder(ctx, kb, tenantID)
+			if err != nil {
+				err = s.rollbackAddFileFromKBError(ctx, doc, kb.ID, err)
+				_ = removeObjectBestEffort(ctx, storageImpl, kb.ID, location)
+				errMsgs = append(errMsgs, fh.Filename+": "+err.Error())
+				continue
+			}
 		}
 		if err = s.addFileFromKB(ctx, doc, kbFolder.ID, kb.TenantID); err != nil {
 			// Linkage failed: roll back the document row and blob so the partial
