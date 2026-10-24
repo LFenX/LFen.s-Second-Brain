@@ -1,0 +1,685 @@
+[
+  {
+    "at": "2026-10-24T20:04:22.542Z",
+    "label": "capabilities",
+    "method": "GET",
+    "path": "/knowledge/import-contract",
+    "status": 200,
+    "duration_ms": 25.95,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:22.550Z",
+    "label": "missing-C2-version",
+    "method": "GET",
+    "path": "/knowledge/import-contract",
+    "status": 409,
+    "duration_ms": 6.34,
+    "code": "knowledge_source_contract_version"
+  },
+  {
+    "at": "2026-10-24T20:04:22.554Z",
+    "label": "wrong-C2-version",
+    "method": "GET",
+    "path": "/knowledge/import-contract",
+    "status": 409,
+    "duration_ms": 3.32,
+    "code": "knowledge_source_contract_version"
+  },
+  {
+    "at": "2026-10-24T20:04:22.557Z",
+    "label": "anonymous",
+    "method": "GET",
+    "path": "/knowledge/import-contract",
+    "status": 401,
+    "duration_ms": 3.04,
+    "code": 401
+  },
+  {
+    "at": "2026-10-24T20:04:22.561Z",
+    "label": "C1-still-separate",
+    "method": "GET",
+    "path": "/knowledge/contract",
+    "status": 200,
+    "duration_ms": 3.09,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:22.581Z",
+    "label": "create-synthetic-dataset",
+    "method": "POST",
+    "path": "/datasets",
+    "status": 200,
+    "duration_ms": 20.04,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:22.607Z",
+    "label": "register-domain",
+    "method": "PUT",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/domain",
+    "status": 200,
+    "duration_ms": 25.18,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:22.619Z",
+    "label": "project",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/groups",
+    "status": 201,
+    "duration_ms": 11.13,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:22.631Z",
+    "label": "frontend",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/groups",
+    "status": 201,
+    "duration_ms": 11.44,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:22.641Z",
+    "label": "backend",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/groups",
+    "status": 201,
+    "duration_ms": 9.72,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:22.652Z",
+    "label": "docs",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/groups",
+    "status": 201,
+    "duration_ms": 10.86,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:22.675Z",
+    "label": "create-registration",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations",
+    "status": 201,
+    "duration_ms": 22.26,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:22.684Z",
+    "label": "replay-registration",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations",
+    "status": 200,
+    "duration_ms": 7.85,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:22.693Z",
+    "label": "registration-conflict",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations",
+    "status": 409,
+    "duration_ms": 8.17,
+    "code": "knowledge_conflict"
+  },
+  {
+    "at": "2026-10-24T20:04:22.699Z",
+    "label": "credential-path-rejected",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations",
+    "status": 400,
+    "duration_ms": 6.04,
+    "code": "knowledge_invalid_request"
+  },
+  {
+    "at": "2026-10-24T20:04:22.705Z",
+    "label": "read-registration",
+    "method": "GET",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95",
+    "status": 200,
+    "duration_ms": 5.59,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:22.722Z",
+    "label": "preview-front",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/previews",
+    "status": 201,
+    "duration_ms": 16.76,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:22.730Z",
+    "label": "read-preview",
+    "method": "GET",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/previews/3121ce35b4734ec6909fa08ab2f3875d",
+    "status": 200,
+    "duration_ms": 6.54,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:22.989Z",
+    "label": "import-front",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/imports",
+    "status": 201,
+    "duration_ms": 52.86,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:23.003Z",
+    "label": "C1-first-source",
+    "method": "GET",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/nodes/ace955ca9f3dfc11239d16249d567011be9893f4bc965bcf90a8ea033cf984f4/content",
+    "status": 200,
+    "duration_ms": 12.32,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:23.012Z",
+    "label": "read-receipt",
+    "method": "GET",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/imports/6c9a96e6e5f14e1a8be75390f6a6372a",
+    "status": 200,
+    "duration_ms": 8.89,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:23.027Z",
+    "label": "replay-import",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/imports",
+    "status": 200,
+    "duration_ms": 13.71,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:23.039Z",
+    "label": "consumed-preview-conflict",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/imports",
+    "status": 409,
+    "duration_ms": 12.25,
+    "code": "knowledge_conflict"
+  },
+  {
+    "at": "2026-10-24T20:04:23.050Z",
+    "label": "idempotency-payload-conflict",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/imports",
+    "status": 409,
+    "duration_ms": 10.07,
+    "code": "knowledge_conflict"
+  },
+  {
+    "at": "2026-10-24T20:04:23.066Z",
+    "label": "preview-unchanged",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/previews",
+    "status": 201,
+    "duration_ms": 15.9,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:23.085Z",
+    "label": "import-unchanged",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/imports",
+    "status": 201,
+    "duration_ms": 18.93,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:23.102Z",
+    "label": "preview-update",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/previews",
+    "status": 201,
+    "duration_ms": 15.23,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:23.117Z",
+    "label": "preview-stale",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/previews",
+    "status": 201,
+    "duration_ms": 15.05,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:23.151Z",
+    "label": "import-update",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/imports",
+    "status": 201,
+    "duration_ms": 33.72,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:23.161Z",
+    "label": "C1-updated-source",
+    "method": "GET",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/nodes/2bce5e4073537ee23ed169f07c1c7c326746347ad54aa6fed5f5ab10d199b4ad/content",
+    "status": 200,
+    "duration_ms": 9.69,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:23.170Z",
+    "label": "C1-old-source-preserved",
+    "method": "GET",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/nodes/ace955ca9f3dfc11239d16249d567011be9893f4bc965bcf90a8ea033cf984f4/content",
+    "status": 200,
+    "duration_ms": 8.54,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:23.181Z",
+    "label": "stale-revision-denied",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/imports",
+    "status": 409,
+    "duration_ms": 10.29,
+    "code": "knowledge_conflict"
+  },
+  {
+    "at": "2026-10-24T20:04:23.189Z",
+    "label": "read-C1-source",
+    "method": "GET",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/sources/5c44dbc896794cce8c5c5a8dca9450c8",
+    "status": 200,
+    "duration_ms": 7.55,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:25.217Z",
+    "label": "native-file-download",
+    "method": "GET",
+    "path": "/files/39e98aca0e4a48a4a0e100af774e3e65",
+    "status": 200,
+    "duration_ms": 2027.69
+  },
+  {
+    "at": "2026-10-24T20:04:25.240Z",
+    "label": "preview-go",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/previews",
+    "status": 201,
+    "duration_ms": 22.44,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:25.280Z",
+    "label": "import-go",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/imports",
+    "status": 201,
+    "duration_ms": 38.75,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:25.291Z",
+    "label": "C1-read-go",
+    "method": "GET",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/nodes/11b5d696b3b20a24fcca7ff5a1002ec61800c98604402d7e0e15791f62db2f71/content",
+    "status": 200,
+    "duration_ms": 11.17,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:25.308Z",
+    "label": "preview-markdown",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/previews",
+    "status": 201,
+    "duration_ms": 16.57,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:25.343Z",
+    "label": "import-markdown",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/imports",
+    "status": 201,
+    "duration_ms": 34.86,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:25.352Z",
+    "label": "C1-read-markdown",
+    "method": "GET",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/nodes/2604145b0ffba6283c34afa169b9285efcc1086932a03827645cf555fec9e84c/content",
+    "status": 200,
+    "duration_ms": 8.17,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:25.392Z",
+    "label": "preview-text",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/previews",
+    "status": 201,
+    "duration_ms": 39.31,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:25.426Z",
+    "label": "import-text",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/imports",
+    "status": 201,
+    "duration_ms": 33.05,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:25.435Z",
+    "label": "UTF8-cut-rejected",
+    "method": "GET",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/nodes/88d6da7f194d6a31090f674309927057ef34d5ccc201c0c77afbc71f3893d717/content?start_byte=0&end_byte=65536",
+    "status": 400,
+    "duration_ms": 9.1,
+    "code": "knowledge_invalid_request"
+  },
+  {
+    "at": "2026-10-24T20:04:25.444Z",
+    "label": "UTF8-first-window",
+    "method": "GET",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/nodes/88d6da7f194d6a31090f674309927057ef34d5ccc201c0c77afbc71f3893d717/content?start_byte=0&end_byte=65535",
+    "status": 200,
+    "duration_ms": 8.74,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:25.452Z",
+    "label": "UTF8-second-window",
+    "method": "GET",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/nodes/88d6da7f194d6a31090f674309927057ef34d5ccc201c0c77afbc71f3893d717/content?start_byte=65535&end_byte=70041",
+    "status": 200,
+    "duration_ms": 6.96,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:25.468Z",
+    "label": "preview-failure-injection",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/previews",
+    "status": 201,
+    "duration_ms": 15.31,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:25.661Z",
+    "label": "import-corrupt-stage",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/imports",
+    "status": 201,
+    "duration_ms": 24.42,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:25.670Z",
+    "label": "read-failed-receipt",
+    "method": "GET",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/imports/03b7aaa9512545c487475afa1c44bcff",
+    "status": 200,
+    "duration_ms": 8.59,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:25.681Z",
+    "label": "published-source-after-failure",
+    "method": "GET",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/nodes/2bce5e4073537ee23ed169f07c1c7c326746347ad54aa6fed5f5ab10d199b4ad/content",
+    "status": 200,
+    "duration_ms": 10.47,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:25.692Z",
+    "label": "replay-failed-receipt",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/imports",
+    "status": 200,
+    "duration_ms": 10.02,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:25.712Z",
+    "label": "preview-retry",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/previews",
+    "status": 201,
+    "duration_ms": 20.26,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:25.734Z",
+    "label": "retry-with-new-preview",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/imports",
+    "status": 201,
+    "duration_ms": 21.38,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:25.751Z",
+    "label": "preview-expiry",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/previews",
+    "status": 201,
+    "duration_ms": 16.08,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:25.924Z",
+    "label": "expired-preview-denied",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/imports",
+    "status": 409,
+    "duration_ms": 9.38,
+    "code": "knowledge_conflict"
+  },
+  {
+    "at": "2026-10-24T20:04:25.933Z",
+    "label": "expired-original-still-replays",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/imports",
+    "status": 200,
+    "duration_ms": 8.47,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:25.941Z",
+    "label": "deny-out-of-scope",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/previews",
+    "status": 400,
+    "duration_ms": 7.85,
+    "code": "knowledge_invalid_request"
+  },
+  {
+    "at": "2026-10-24T20:04:25.950Z",
+    "label": "deny-traversal",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/previews",
+    "status": 400,
+    "duration_ms": 7.98,
+    "code": "knowledge_invalid_request"
+  },
+  {
+    "at": "2026-10-24T20:04:25.959Z",
+    "label": "deny-unsupported",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/previews",
+    "status": 415,
+    "duration_ms": 8.11,
+    "code": "knowledge_source_unsupported"
+  },
+  {
+    "at": "2026-10-24T20:04:25.966Z",
+    "label": "deny-nul",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/previews",
+    "status": 415,
+    "duration_ms": 7.17,
+    "code": "knowledge_source_unsupported"
+  },
+  {
+    "at": "2026-10-24T20:04:25.969Z",
+    "label": "deny-model-opt-in",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/previews",
+    "status": 400,
+    "duration_ms": 2.38,
+    "code": "knowledge_invalid_request"
+  },
+  {
+    "at": "2026-10-24T20:04:26.165Z",
+    "label": "visitor-denied",
+    "method": "GET",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95",
+    "status": 404,
+    "duration_ms": 4.02,
+    "code": "knowledge_not_found"
+  },
+  {
+    "at": "2026-10-24T20:04:26.168Z",
+    "label": "visitor-denied",
+    "method": "GET",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/previews/3121ce35b4734ec6909fa08ab2f3875d",
+    "status": 404,
+    "duration_ms": 2.62,
+    "code": "knowledge_not_found"
+  },
+  {
+    "at": "2026-10-24T20:04:26.170Z",
+    "label": "visitor-denied",
+    "method": "GET",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/imports/6c9a96e6e5f14e1a8be75390f6a6372a",
+    "status": 404,
+    "duration_ms": 2.41,
+    "code": "knowledge_not_found"
+  },
+  {
+    "at": "2026-10-24T20:04:26.173Z",
+    "label": "visitor-cannot-commit",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/imports",
+    "status": 404,
+    "duration_ms": 2.61,
+    "code": "knowledge_not_found"
+  },
+  {
+    "at": "2026-10-24T20:04:26.179Z",
+    "label": "deny-model-embedding",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/policy/check",
+    "status": 200,
+    "duration_ms": 5.78,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:26.185Z",
+    "label": "deny-model-rerank",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/policy/check",
+    "status": 200,
+    "duration_ms": 5.51,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:26.191Z",
+    "label": "deny-model-generation",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/policy/check",
+    "status": 200,
+    "duration_ms": 5.53,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:26.197Z",
+    "label": "deny-model-remote_parse",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/policy/check",
+    "status": 200,
+    "duration_ms": 5.78,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:26.202Z",
+    "label": "deny-model-wiki",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/policy/check",
+    "status": 200,
+    "duration_ms": 4.96,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:26.208Z",
+    "label": "deny-model-memory",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/policy/check",
+    "status": 200,
+    "duration_ms": 5.67,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:04:26.217Z",
+    "label": "native-parse-denied",
+    "method": "POST",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/documents/parse",
+    "status": 200,
+    "duration_ms": 8.68,
+    "code": 403
+  },
+  {
+    "at": "2026-10-24T20:16:38.808Z",
+    "label": "final-loaded-C2-contract",
+    "method": "GET",
+    "path": "/knowledge/import-contract",
+    "status": 200,
+    "duration_ms": 34.21,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:16:38.852Z",
+    "label": "final-persisted-receipt",
+    "method": "GET",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/imports/6c9a96e6e5f14e1a8be75390f6a6372a",
+    "status": 200,
+    "duration_ms": 43.43,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:16:38.861Z",
+    "label": "final-failed-receipt",
+    "method": "GET",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/registrations/90213c63683843cd978e600842b3ad95/imports/03b7aaa9512545c487475afa1c44bcff",
+    "status": 200,
+    "duration_ms": 8.09,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:16:38.873Z",
+    "label": "final-C1-original",
+    "method": "GET",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/nodes/ace955ca9f3dfc11239d16249d567011be9893f4bc965bcf90a8ea033cf984f4/content",
+    "status": 200,
+    "duration_ms": 11.4,
+    "code": 0
+  },
+  {
+    "at": "2026-10-24T20:16:38.881Z",
+    "label": "final-C1-updated",
+    "method": "GET",
+    "path": "/datasets/705f37ba90c64d7fb223885baf9376cb/knowledge/nodes/2bce5e4073537ee23ed169f07c1c7c326746347ad54aa6fed5f5ab10d199b4ad/content",
+    "status": 200,
+    "duration_ms": 8.2,
+    "code": 0
+  }
+]

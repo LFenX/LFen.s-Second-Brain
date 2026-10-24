@@ -51,7 +51,7 @@ func TestKnowledgeMigrationIsAdditiveAndRepeatable(t *testing.T) {
 	if old.Name != "Baseline" || old.Permission != "team" || old.EmbdID != "existing-model" || old.KnowledgeEnabled || old.KnowledgePolicyVersion != 0 || old.KnowledgeCategory != "" {
 		t.Fatalf("migration changed old row: %+v", old)
 	}
-	for _, model := range []interface{}{&entity.KnowledgeGroup{}, &entity.KnowledgeSourceRevision{}, &entity.KnowledgeNode{}} {
+	for _, model := range []interface{}{&entity.KnowledgeGroup{}, &entity.KnowledgeSourceRevision{}, &entity.KnowledgeNode{}, &entity.KnowledgeSourceRegistration{}, &entity.KnowledgeSourceBinding{}, &entity.KnowledgeImportPreview{}, &entity.KnowledgeImport{}} {
 		if !db.Migrator().HasTable(model) {
 			t.Fatalf("missing %T", model)
 		}

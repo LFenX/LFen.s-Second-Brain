@@ -5,7 +5,14 @@
   "objective": "让B目录／原文页面接本机真实后端，完成阶段1限定的纵向工程闭环。",
   "status": "Stage1VerticalIntegrationEngineeringVerified",
   "user_decision": {
-    "outcome": "Pending"
+    "outcome": "Approved",
+    "presented": "8aa324e阶段1真实联调：17项页面、11组API、29项测试及主分支交付",
+    "response": "阶段1联调验收通过。",
+    "decided_by": "用户",
+    "recorded_at": "2026-10-24T19:56:10.065Z",
+    "evidence_ref": "本会话当前用户消息第一句",
+    "subject_commit": "8aa324e06decc063c141ee3b53614a6d39f15fb5",
+    "subject_sha256": "63b27763f37f228fe4ee7e44d1ff8170a8add2bbe328e669ba8a36abc7449a1b"
   },
   "clarification": {
     "state": "Settled",
@@ -543,5 +550,10 @@
     "target_branch": "main",
     "method": "fast-forward；保留B原提交及作者",
     "verification": "推送后核对HEAD=main=origin/main=远端refs/heads/main，结果在本机publication.after.json与最终答复；不在本记录内伪造自身提交SHA。"
-  }
+  },
+  "decision_history": [
+    {
+      "outcome": "Pending"
+    }
+  ]
 }

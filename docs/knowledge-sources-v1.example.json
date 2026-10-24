@@ -1,0 +1,29 @@
+{
+  "contract_version": "0.2.0",
+  "registration_request": {
+    "registration_key": "synthetic-dev",
+    "name": "合成手动来源",
+    "source_kind": "text_file",
+    "input_mode": "inline_text",
+    "include_paths": [
+      "web/card.tsx",
+      "backend/answer.go",
+      "docs/empty.md"
+    ],
+    "group_id": null,
+    "component_side": "shared",
+    "language": ""
+  },
+  "preview_request": {
+    "relative_path": "web/card.tsx",
+    "text": "// 合成\r\nexport const value = \"你好\";\r\n",
+    "group_id": null,
+    "component_side": "frontend",
+    "language": "tsx"
+  },
+  "commit_request": {
+    "preview_id": "22222222222222222222222222222222",
+    "manifest_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "idempotency_key": "synthetic-first"
+  }
+}

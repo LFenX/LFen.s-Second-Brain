@@ -329,6 +329,7 @@ func (r *Router) Setup(engine *gin.Engine) {
 			v1.POST("/openai/:chat_id/chat/completions", r.openaiChatHandler.OpenAIChatCompletions)
 			v1.POST("/retrieval", r.datasetsHandler.SearchDatasets)
 			v1.GET("/knowledge/contract", r.datasetsHandler.KnowledgeContract)
+			v1.GET("/knowledge/import-contract", r.datasetsHandler.KnowledgeImportContract)
 			v1.GET("/knowledge/domains", r.datasetsHandler.ListKnowledgeDomains)
 
 			// Dataset routes
@@ -347,6 +348,12 @@ func (r *Router) Setup(engine *gin.Engine) {
 				datasets.GET("/:dataset_id/knowledge/nodes/:node_id", r.datasetsHandler.GetKnowledgeNode)
 				datasets.GET("/:dataset_id/knowledge/nodes/:node_id/content", r.datasetsHandler.ReadKnowledgeNode)
 				datasets.POST("/:dataset_id/knowledge/policy/check", r.datasetsHandler.CheckKnowledgePolicy)
+				datasets.POST("/:dataset_id/knowledge/registrations", r.datasetsHandler.CreateKnowledgeRegistration)
+				datasets.GET("/:dataset_id/knowledge/registrations/:registration_id", r.datasetsHandler.GetKnowledgeRegistration)
+				datasets.POST("/:dataset_id/knowledge/registrations/:registration_id/previews", r.datasetsHandler.PreviewKnowledgeImport)
+				datasets.GET("/:dataset_id/knowledge/registrations/:registration_id/previews/:preview_id", r.datasetsHandler.GetKnowledgeImportPreview)
+				datasets.POST("/:dataset_id/knowledge/registrations/:registration_id/imports", r.datasetsHandler.CommitKnowledgeImport)
+				datasets.GET("/:dataset_id/knowledge/registrations/:registration_id/imports/:import_task_id", r.datasetsHandler.GetKnowledgeImport)
 				datasets.GET("/tags/aggregation", r.datasetsHandler.AggregateTags)
 				datasets.GET("/:dataset_id", r.datasetsHandler.GetDataset)
 				datasets.PUT("/:dataset_id", r.datasetsHandler.UpdateDataset)

@@ -1,0 +1,401 @@
+{
+  "version": "v0.29",
+  "recorded_at": "2026-10-24T20:19:03.249Z",
+  "request_snapshot": "阶段1联调验收通过。开始推进本机A的阶段2，先完善C2来源导入契约，整理给B的核对清单和双方开发边界，再推进最小导入闭环。继续只用合成资料、不调用模型、不启动多轮审查，验证后推送远端。",
+  "objective": "完成C2候选契约和A/B交接，跑通单文件合成文本/代码的受控预检、导入、稳定身份更新与C1回读。",
+  "status": "A_MinimalImportEngineeringVerified_C2AwaitingBReview",
+  "phase1_user_decision": {
+    "outcome": "Approved",
+    "presented": "8aa324e阶段1真实联调：17项页面、11组API、29项测试及主分支交付",
+    "response": "阶段1联调验收通过。",
+    "decided_by": "用户",
+    "recorded_at": "2026-10-24T19:56:10.065Z",
+    "evidence_ref": "本会话当前用户消息第一句",
+    "subject_commit": "8aa324e06decc063c141ee3b53614a6d39f15fb5",
+    "subject_sha256": "63b27763f37f228fe4ee7e44d1ff8170a8add2bbe328e669ba8a36abc7449a1b"
+  },
+  "user_decision": {
+    "outcome": "Pending"
+  },
+  "clarification": {
+    "state": "Settled",
+    "notice": "需求和现有底座一致，本次跳过补充提问。",
+    "basis": "用户已限定A工作包及合成禁模型范围；38章允许先做文本/代码无模型小闭环，上传句柄可作为来源定位，不必引入目录扫描。"
+  },
+  "plan": [
+    "先确定C2候选请求/响应/错误/边界并保存B清单",
+    "实现最小单文件同步导入，事务内复核域/权限/修订/预检；每源固定Document",
+    "定向验证新增/回放/未变/更新/旧版/拒绝/失败回执及C1回归",
+    "从实际源码构建并加载Go，以真实MySQL/MinIO跑合成闭环",
+    "更新文档和工程证据，扫描凭据后推送"
+  ],
+  "requirement_coverage": [
+    {
+      "id": "C2-1",
+      "source": "request_snapshot",
+      "quote": "阶段1联调验收通过。开始推进本机A的阶段2，先完善C2来源导入契约，整理给B的核对清单和双方开发边界，再推进最小导入闭环。继续只用合成资料、不调用模型、不启动多轮审查，验证后推送远端。",
+      "reading": "阶段1联调验收通过",
+      "status": "已记录",
+      "actual": "8aa324e阶段1报告user_decision=Approved，原话及原交付摘要绑定，不扩大历史验收。"
+    },
+    {
+      "id": "C2-2",
+      "source": "request_snapshot",
+      "quote": "阶段1联调验收通过。开始推进本机A的阶段2，先完善C2来源导入契约，整理给B的核对清单和双方开发边界，再推进最小导入闭环。继续只用合成资料、不调用模型、不启动多轮审查，验证后推送远端。",
+      "reading": "开始推进本机A的阶段2，先完善C2来源导入契约",
+      "status": "已完成首个候选子集",
+      "actual": "0.2.0 ReviewCandidate，7路径，完整请求/响应/错误/幂等/期限/状态；13 schemas严格编译，3正例10反例；未冒充B确认或Frozen。"
+    },
+    {
+      "id": "C2-3",
+      "source": "request_snapshot",
+      "quote": "阶段1联调验收通过。开始推进本机A的阶段2，先完善C2来源导入契约，整理给B的核对清单和双方开发边界，再推进最小导入闭环。继续只用合成资料、不调用模型、不启动多轮审查，验证后推送远端。",
+      "reading": "整理给B的核对清单和双方开发边界",
+      "status": "已保存",
+      "actual": "stage2a-c2-handoff.md含7项未勾选核对和A/B/双方责任；只A维护共享内核，B页面不修改。"
+    },
+    {
+      "id": "C2-4",
+      "source": "request_snapshot",
+      "quote": "阶段1联调验收通过。开始推进本机A的阶段2，先完善C2来源导入契约，整理给B的核对清单和双方开发边界，再推进最小导入闭环。继续只用合成资料、不调用模型、不启动多轮审查，验证后推送远端。",
+      "reading": "再推进最小导入闭环",
+      "status": "已验证",
+      "actual": "单文件登记/预检/确认/回执/C1读取，4原生来源、5修订；稳定ID、未变、CAS、回放、失败和重启持久性通过；不代表阶段2整体完成。"
+    },
+    {
+      "id": "C2-5",
+      "source": "request_snapshot",
+      "quote": "阶段1联调验收通过。开始推进本机A的阶段2，先完善C2来源导入契约，整理给B的核对清单和双方开发边界，再推进最小导入闭环。继续只用合成资料、不调用模型、不启动多轮审查，验证后推送远端。",
+      "reading": "继续只用合成资料",
+      "status": "已遵守",
+      "actual": "本轮只生成中文TSX、Go、空Markdown和70041字节文本；故障只作用于本轮合成预检行，未打开或导入真实仓库/文档/网站。"
+    },
+    {
+      "id": "C2-6",
+      "source": "request_snapshot",
+      "quote": "阶段1联调验收通过。开始推进本机A的阶段2，先完善C2来源导入契约，整理给B的核对清单和双方开发边界，再推进最小导入闭环。继续只用合成资料、不调用模型、不启动多轮审查，验证后推送远端。",
+      "reading": "不调用模型",
+      "status": "已验证",
+      "actual": "操作路径不调用模型；六类策略false，parse拒绝；解析任务0；旧配置/用量指纹一致；无独立网络出口抓包。"
+    },
+    {
+      "id": "C2-7",
+      "source": "request_snapshot",
+      "quote": "阶段1联调验收通过。开始推进本机A的阶段2，先完善C2来源导入契约，整理给B的核对清单和双方开发边界，再推进最小导入闭环。继续只用合成资料、不调用模型、不启动多轮审查，验证后推送远端。",
+      "reading": "不启动多轮审查",
+      "status": "已遵守",
+      "actual": "只做实现和定向工程验证，未启动审查或子Agent，不重复询问审查。"
+    },
+    {
+      "id": "C2-8",
+      "source": "request_snapshot",
+      "quote": "阶段1联调验收通过。开始推进本机A的阶段2，先完善C2来源导入契约，整理给B的核对清单和双方开发边界，再推进最小导入闭环。继续只用合成资料、不调用模型、不启动多轮审查，验证后推送远端。",
+      "reading": "验证后推送远端",
+      "status": "验证前置满足，随后执行",
+      "actual": "推送codex/stage2a-import供B核对；main保持已验收阶段1，未标记已合main。最终远端提交以publication.after.json及最终答复核对。"
+    }
+  ],
+  "baseline": {
+    "commit": "8aa324e06decc063c141ee3b53614a6d39f15fb5",
+    "branch": "codex/stage2a-import",
+    "foundation_contract": "C1/C3 1.0.0",
+    "c2_contract": "0.2.0",
+    "c2_status": "ReviewCandidate",
+    "b_review": "Pending",
+    "main": "8aa324e阶段1基线；不把候选推送写成合入main。"
+  },
+  "implementation": {
+    "direct_reuse": [
+      "原生会话/Knowledgebase/Document/File/File2Document/MinIO",
+      "原生FileCommit/Item和C1原文读写、C3模型/解析门禁"
+    ],
+    "adapted": [
+      "C1提取私有publishKnowledgeSource，C1/C2共用，原C1公开schema/ID/行为保留",
+      "原生计数、内容hash和File关联同事务更新；启动仅加四张C2表"
+    ],
+    "new": [
+      "来源登记与稳定Document绑定",
+      "私有预检/清单/到期/策略/CAS校验",
+      "单文件同步事务/保存点/幂等回执/失败回放"
+    ],
+    "migration": {
+      "tables": [
+        "knowledge_source_registration",
+        "knowledge_source_binding",
+        "knowledge_import_preview",
+        "knowledge_import"
+      ],
+      "destructive": false,
+      "repeatable": true
+    },
+    "frontend_changes": 0,
+    "background_ingestion": false,
+    "preview_storage": "私有本地数据库暂存UTF-8文字，确认前无Document/来源修订/索引发布",
+    "publication": "原生对象存储+原生Document/File+同一个C1修订发布器",
+    "transaction_limit": "数据库保存点保证发布行回滚；存储不是分布式原子事务，不自动删除未引用内容对象。"
+  },
+  "validation": {
+    "go": {
+      "packages": [
+        "ragflow/internal/service/dataset",
+        "ragflow/internal/handler",
+        "ragflow/internal/dao",
+        "ragflow/internal/service/file",
+        "ragflow/internal/service/document",
+        "ragflow/internal/permission"
+      ],
+      "package_count": 6,
+      "top_level_passed": 64,
+      "including_subtests_passed": 133,
+      "final_failures": 0,
+      "native_unit_packages": 2,
+      "commands": [
+        "bash build.sh --test -json -run TestKnowledge ./internal/service/dataset ./internal/handler ./internal/dao（分包复验，按最终日志取结果）",
+        "bash build.sh --test -json -run \"TestKnowledge|Test.*SourceSnapshot\" ./internal/service/file ./internal/service/document ./internal/permission",
+        "bash build.sh --go；api/admin/ingestor/syncer --help均启动，help原生退出码1被接受"
+      ],
+      "first_failure_and_retry": "测试存储桩遗漏Put的可选metadata参数导致首次dataset测试编译失败；修正接口签名后通过。保留原日志，不将首次失败写成通过。"
+    },
+    "contract": {
+      "at": "2026-10-24T20:06:49.718Z",
+      "strict_schemas": 13,
+      "positive": 3,
+      "negative": 10,
+      "route_paths": 7,
+      "status": "Passed"
+    },
+    "http": {
+      "assertion_groups": 15,
+      "requests": 76,
+      "response_schemas_validated": true,
+      "trace": "docs/stage2a-c2-http.json",
+      "checks": [
+        {
+          "name": "C2契约与原生认证",
+          "result": "Passed",
+          "actual": "候选能力、缺版本409、错版本409、未登录401，C1契约未混入C2"
+        },
+        {
+          "name": "来源登记幂等",
+          "result": "Passed",
+          "actual": "同键同配置200且ID不变，异配置409，凭据路径400"
+        },
+        {
+          "name": "预检不发布",
+          "result": "Passed",
+          "actual": "预检创建及回读无Document/目录发布，不向响应回传暂存正文"
+        },
+        {
+          "name": "首个原生导入",
+          "result": "Passed",
+          "actual": "201回执succeeded；C1按回执修订/节点读取精确中文、emoji、CRLF"
+        },
+        {
+          "name": "提交幂等及预检消费",
+          "result": "Passed",
+          "actual": "同键回放原任务，不同载荷/消费键409"
+        },
+        {
+          "name": "未变化不发布",
+          "result": "Passed",
+          "actual": "Document/来源修订ID不变，单项unchanged"
+        },
+        {
+          "name": "稳定身份更新及CAS",
+          "result": "Passed",
+          "actual": "同Document不同修订，新旧字节各自可读，旧预检冲突409"
+        },
+        {
+          "name": "原生File联通",
+          "result": "Passed",
+          "actual": "原生File下载与C1新修订内容一致"
+        },
+        {
+          "name": "类型/标签与字节边界",
+          "result": "Passed",
+          "actual": "前端/后端/非代码逐项分类；空文件及70041字节大文本精确回读，UTF-8错误边界拒绝"
+        },
+        {
+          "name": "真实失败回执及重试",
+          "result": "Passed",
+          "actual": "仅合成暂存损坏注入；失败201并可读取/回放，原发布不变，新预检重试不重复来源"
+        },
+        {
+          "name": "到期与回放",
+          "result": "Passed",
+          "actual": "未消费过期预检409；已提交的同键回放不受原预检到期影响"
+        },
+        {
+          "name": "范围/格式/外发拒绝",
+          "result": "Passed",
+          "actual": "未选路径/越界400，PDF/NUL415，客户端放行模型字段400"
+        },
+        {
+          "name": "第二主体隔离",
+          "result": "Passed",
+          "actual": "登记/预检/回执/提交（含已有幂等键）均404，不因知道ID获得访问"
+        },
+        {
+          "name": "执行禁模型",
+          "result": "Passed",
+          "actual": "六类策略false；原生parse实际拒绝，未创建解析任务"
+        },
+        {
+          "name": "计数与旧环境保持",
+          "result": "Passed",
+          "actual": "4个Document/绑定、5个修订；解析任务/块/用量0；旧POC、模型配置和用量指纹相同"
+        }
+      ],
+      "fault_injection": "Only task-owned preview.content and expiry mutated for negative fixtures; no real source/model content.",
+      "final_runtime_recheck_requests": 5
+    },
+    "runtime": {
+      "at": "2026-10-24T20:16:41.054Z",
+      "app_healthy": true,
+      "binary_sha256": "2fb6c9bae4885763fb8d766c98359ee319c76a532ffc8539d8576ed93273cf67",
+      "frontend_index_sha256": "8052e2e9b210f115ed9d99a8b0be94bf00302dd92ef01c7c511e58ada0d3702f",
+      "b_source_files_unchanged": 15,
+      "unchanged_dependency_containers": 5,
+      "app_image_and_non_binary_mounts_unchanged": true,
+      "credentials_and_volumes_reused": true,
+      "persisted_receipts_and_both_revisions_readable_after_recreate": true,
+      "legacy_fingerprints_unchanged": true,
+      "model_calls": 0,
+      "external_capture": false
+    },
+    "source_manifest": [
+      {
+        "file": "internal/entity/knowledge_import.go",
+        "sha256": "bc417a4bc99672147a93d9a511726d1a6c4f4954cfe629cc16ed8c0f416c549a"
+      },
+      {
+        "file": "internal/dao/knowledge_migration.go",
+        "sha256": "5413ece89e2ac45d744ab748456ca66d783f69721eec182d3413ec01be5a7334"
+      },
+      {
+        "file": "internal/dao/knowledge_migration_test.go",
+        "sha256": "2566860008393064db93e52002b01cd78787bc01c2e37c707e626766fd30d066"
+      },
+      {
+        "file": "internal/handler/knowledge.go",
+        "sha256": "6459176c679424d59f4b054a035526a78845c337410d419df3a449bf5c5375f5"
+      },
+      {
+        "file": "internal/handler/knowledge_import.go",
+        "sha256": "97b41dc7d482fdcb5440f536b024fc2db9820c408bdac865c00909829431dde9"
+      },
+      {
+        "file": "internal/handler/knowledge_import_test.go",
+        "sha256": "38dff29d0ac18aa40cb149bca10eae1d1da5b0e93fd0c7c6ae5103d239d07d9d"
+      },
+      {
+        "file": "internal/router/router.go",
+        "sha256": "aedc644151ee54f429f8b80cfe1da21599d9cb6830e8473c777acbe9c6d9d5cb"
+      },
+      {
+        "file": "internal/service/dataset/knowledge_source.go",
+        "sha256": "8c2006994e7745bea81a910c4139f89d5d14952a2ce77c1d8d58bd80d87d6b18"
+      },
+      {
+        "file": "internal/service/dataset/knowledge_import.go",
+        "sha256": "823da5b330e4077d4557e189319abac15b14054d0bdf526e08d07812e6e7c706"
+      },
+      {
+        "file": "internal/service/dataset/knowledge_import_test.go",
+        "sha256": "0a8f38c118f14c92f4e9d587f8b7b1cc4f108fa75f12c58c16b0164a5e019936"
+      }
+    ],
+    "evidence_log_sha256": {
+      "final-build-tests.log": "fdeaa371dd55e87ddc7fe7f3565caf7e0acbc399315d91b4f1065ad009e241d9",
+      "handler-final-build.log": "72968fd4294b4c768d1854c54bb4e76f7fa37cd6633991060d037f1a7b0b3e96",
+      "tests-retry.log": "3f4b514386bd7bcec0878c5c433bece753534266eee6e477909df3d19889a23d",
+      "native-guards.log": "464321d0124ec8ec67f99d042dc8b19bc0febd8e3a184653eb32f14fbfe3d4df",
+      "tests-first.log": "7889be54ebd7891560927220a044b8b1d349f22d0a4b860bebae5e605d523d16",
+      "import-final-tests.log": "6409d03f65cbaeefe001d4ee3e0da708c329a36de18e5d15052c1f52ccac1a5d",
+      "spec-validation.json": "bb78f3fd8480c990be144c419d14c1daa9bc1ae79e921b0d65924b46929aced1",
+      "runtime-final.json": "7c8a9d7f605bf6acfe7f6ada245961680b07cd9854bbab49856abc41c59f9e96"
+    },
+    "protected_artifacts_unchanged": [
+      "docs/knowledge-foundation-v1.openapi.json",
+      "docs/knowledge-foundation-v1.example.json",
+      "docs/knowledge-sources-v1.draft.schema.json",
+      "docs/knowledge-sources-v1.draft.example.json",
+      "阶段1-A底座验证报告.json",
+      "阶段1-A对抗性审查报告.json",
+      "docs/stage1b-delivery.md",
+      "docs/stage1b-verification.json",
+      "docs/stage1ab-receipt.json"
+    ],
+    "model_calls": 0,
+    "no_model_evidence": "仅本地合成导入/C1读取/策略拒绝；不触发解析队列；native usage/provider指纹前后一致。未做独立出口抓包。",
+    "legacy_poc": {
+      "documents": 6,
+      "chunks": 42,
+      "fingerprints_unchanged": true
+    }
+  },
+  "synthetic_fixture": {
+    "domain_id": "705f37ba90c64d7fb223885baf9376cb",
+    "registration_id": "90213c63683843cd978e600842b3ad95",
+    "document_count": 4,
+    "source_revision_count": 5,
+    "source_document_id": "ea3773ea3d924152afb39aa170f785dd",
+    "original_revision": "c51c60e9ba44480999686877b497cf2d",
+    "updated_revision": "5c44dbc896794cce8c5c5a8dca9450c8",
+    "original_root": "ace955ca9f3dfc11239d16249d567011be9893f4bc965bcf90a8ea033cf984f4",
+    "updated_root": "2bce5e4073537ee23ed169f07c1c7c326746347ad54aa6fed5f5ab10d199b4ad",
+    "samples": [
+      {
+        "path": "backend/answer.go",
+        "bytes": 66,
+        "receipt": "dbbc294cab54455db542b65020b8212d",
+        "source_id": "52405966ea1749caa5f631bcd85d046e"
+      },
+      {
+        "path": "docs/empty.md",
+        "bytes": 0,
+        "receipt": "eaa8b57928fe43a99c0d319834a3b79d",
+        "source_id": "270a118d5f3e463fb0debdedebf4ab5f"
+      },
+      {
+        "path": "docs/large.txt",
+        "bytes": 70041,
+        "receipt": "7f529127e50f40d88fb7b64d15f97956",
+        "source_id": "8224b69998e94659bced87807d7ab48a"
+      }
+    ],
+    "original_text": "// 合成来源\r\nexport function SyntheticCard() { return \"你好 🧠\"; }\r\n",
+    "updated_text": "// 合成来源\r\nexport function SyntheticCard() { return \"你好 🧠\"; }\r\n// 合成修订二号\r\n",
+    "retention": "本轮合成域/回执保留便于复核；预检过期不等于物理删除，不开启自动清理。"
+  },
+  "limits": [
+    "真实失败测试为合成暂存损坏；存储写入后的事务回滚由SQLite/MemoryStorage用例覆盖，不宣称已模拟真实MinIO断网。",
+    "仅A接口/C1消费者闭环，未实现或联调B阶段2新页面。",
+    "C2等待B核对，未冻结；未实现2B页面或完整阶段2。",
+    "只支持手动单文件UTF-8文本/代码；受控目录、文档原件/PDF/PPT、网页/RSS、批量/取消/移动/删除/保留/项目快照未实施。",
+    "同一登记相同规范路径保留Document；不承诺跨登记内容去重或自动识别移动。",
+    "无独立出口抓包、真实MinIO断网、并发压力、百万级性能或全量前端类型检查；不冒充质量/规模通过。",
+    "B阶段1源码及Web产物保持，原29项消费者测试保留其历史时点，不冒充本轮重跑。",
+    "已知凭据路径和两种私钥标记检查不等于完整秘密识别；本轮不采用真实资料。"
+  ],
+  "rollback": {
+    "private_backup": ".local-data/stage2a-20261025/runtime/compose.before.private.json",
+    "method": "恢复旧Go二进制挂载并仅重启应用；保留加法表/原件/修订，不回删卷或直接覆盖全库。",
+    "credentials": "原会话/Key/运行配置/DB备份/二进制不提交，私有目录ACL限当前用户/Administrators/SYSTEM。"
+  },
+  "adversarial_review": {
+    "status": "NotStarted",
+    "source": "本轮用户明确不启动多轮审查，未另发询问；原阶段1审查暂停结论不改。"
+  },
+  "publication": {
+    "remote": "https://github.com/LFenX/LFen.s-Second-Brain.git",
+    "branch": "codex/stage2a-import",
+    "merge_main": false,
+    "reason": "共享候选待B核对，保留已验收main；符合本轮验证后推送范围。"
+  },
+  "evidence": {
+    "http_trace_sha256": "b8e5f4a5053bd3bb679b999ded7b8563cd89069d3521c5b7fcbd26f85bf987e5",
+    "openapi_sha256": "648454d04e1769adc9bfa9245efc439696a7dd21b65cf3cf243e28450166e1c1",
+    "examples_sha256": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a"
+  }
+}

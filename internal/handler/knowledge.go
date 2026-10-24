@@ -10,6 +10,7 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
+	"unicode/utf8"
 
 	"ragflow/internal/common"
 	"ragflow/internal/entity"
@@ -23,8 +24,12 @@ func knowledgeResponse(c *gin.Context, status int, data interface{}, code, messa
 	if code != "" {
 		numericCode = code
 	}
-	c.JSON(status, gin.H{"code": numericCode, "message": message, "data": data,
-		"contract_version": entity.KnowledgeContractVersion, "request_id": c.GetString("knowledge_request_id")})
+	body := gin.H{"code": numericCode, "message": message, "data": data,
+		"contract_version": entity.KnowledgeContractVersion, "request_id": c.GetString("knowledge_request_id")}
+	if c.GetBool("knowledge_source_contract") {
+		body["source_contract_version"] = entity.KnowledgeSourceContractVersion
+	}
+	c.JSON(status, body)
 }
 
 func knowledgeFailure(c *gin.Context, err error) {
@@ -53,8 +58,16 @@ func knowledgeUser(c *gin.Context) (*entity.User, bool) {
 }
 
 func knowledgeDecode[T any](c *gin.Context, required ...string) (*T, bool) {
-	c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, 16*1024)
+	return knowledgeDecodeLimit[T](c, 16*1024, required...)
+}
+
+func knowledgeDecodeLimit[T any](c *gin.Context, limit int64, required ...string) (*T, bool) {
+	c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, limit)
 	raw, readErr := io.ReadAll(c.Request.Body)
+	if readErr == nil && c.GetBool("knowledge_source_contract") && !utf8.Valid(raw) {
+		knowledgeResponse(c, 400, nil, "knowledge_invalid_request", "UTF-8 JSON is required")
+		return nil, false
+	}
 	decoder := json.NewDecoder(bytes.NewReader(raw))
 	decoder.DisallowUnknownFields()
 	var input T
@@ -80,7 +93,7 @@ func knowledgeDecode[T any](c *gin.Context, required ...string) (*T, bool) {
 			}
 			for _, field := range required {
 				value, exists := fields[field]
-				if !exists || bytes.Equal(bytes.TrimSpace(value), []byte("null")) {
+				if !exists || ((field != "group_id" && field != "parent_id") && bytes.Equal(bytes.TrimSpace(value), []byte("null"))) {
 					err = errors.New("required field missing")
 					break
 				}

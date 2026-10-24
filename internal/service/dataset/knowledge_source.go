@@ -116,71 +116,80 @@ func (d *DatasetService) SnapshotKnowledgeSource(ctx context.Context, userID, do
 	if int64(len(content)) > knowledgeMaxSourceBytes || !utility.IsKnowledgeTextSource(req.RelativePath, content) || !utility.IsKnowledgeTextSource(*document.Name, content) {
 		return nil, knowledgeError(415, "knowledge_source_unsupported", "Foundation v1 supports UTF-8 text/code sources only")
 	}
-	digest := sha256.Sum256(content)
-	hash := hex.EncodeToString(digest[:])
-	groupID := ""
-	if req.GroupID != nil {
-		groupID = *req.GroupID
-	}
-	inputHash := entity.KnowledgeID("knowledge-source/1", hash, req.RelativePath, groupID, req.ComponentSide, req.Language)
 	var result entity.KnowledgeSnapshot
 	err = dao.DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var locked entity.Knowledgebase
 		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).Where("id = ? AND knowledge_enabled = ? AND created_by = ? AND status = ?", kb.ID, true, userID, string(entity.StatusValid)).Take(&locked).Error; err != nil {
 			return knowledgeDBError(err, "domain lock")
 		}
-		var current entity.KnowledgeSourceRevision
-		currentErr := tx.Where("domain_id = ? AND document_id = ? AND is_current = ?", kb.ID, document.ID, true).Take(&current).Error
-		if currentErr != nil && !errors.Is(currentErr, gorm.ErrRecordNotFound) {
-			return currentErr
-		}
-		if currentErr == nil && current.InputHash == inputHash {
-			current.RootNodeID = knowledgeRoot(&current).ID
-			result.Source, result.Root = current, knowledgeRoot(&current)
-			return nil
-		}
-		if current.ID != req.ExpectedRevisionID {
-			return knowledgeConflict("expected_revision_id does not match the current source revision")
-		}
-		var source entity.KnowledgeSourceRevision
-		err := tx.Where("domain_id = ? AND document_id = ? AND input_hash = ?", kb.ID, document.ID, inputHash).Take(&source).Error
-		if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-			return err
-		}
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			commit, item, err := file.NewFileCommitService().RecordSourceSnapshot(ctx, tx, &nativeFile, userID, content)
-			if err != nil {
-				return err
-			}
-			source = entity.KnowledgeSourceRevision{ID: item.ID, DomainID: kb.ID, DocumentID: document.ID, FileID: nativeFile.ID,
-				CommitID: commit.ID, FolderID: folder.ID, GroupID: req.GroupID, RelativePath: req.RelativePath, ComponentSide: req.ComponentSide,
-				Language: req.Language, SHA256: hash, InputHash: inputHash, ByteLength: int64(len(content)), LineCount: knowledgeLastLine(content), IsCurrent: true}
-			if err := tx.Create(&source).Error; err != nil {
-				return err
-			}
-			root := knowledgeRoot(&source)
-			if err := tx.Create(&root).Error; err != nil {
-				return err
-			}
-			result.Created = true
-		}
-		if err := tx.Model(&entity.KnowledgeSourceRevision{}).Where("domain_id = ? AND document_id = ? AND id <> ?", kb.ID, document.ID, source.ID).Update("is_current", false).Error; err != nil {
-			return err
-		}
-		if !source.IsCurrent {
-			if err := tx.Model(&entity.KnowledgeSourceRevision{}).Where("id = ?", source.ID).Update("is_current", true).Error; err != nil {
-				return err
-			}
-			source.IsCurrent = true
-		}
-		source.RootNodeID = knowledgeRoot(&source).ID
-		result.Source, result.Root = source, knowledgeRoot(&source)
-		return nil
+		return publishKnowledgeSource(ctx, tx, kb, &document, &nativeFile, folder.ID, userID, content, req, &result)
 	})
 	if err != nil {
 		return nil, err
 	}
 	return &result, nil
+}
+
+func knowledgeSourceInputHash(hash string, req entity.SnapshotKnowledgeSourceRequest) string {
+	groupID := ""
+	if req.GroupID != nil {
+		groupID = *req.GroupID
+	}
+	return entity.KnowledgeID("knowledge-source/1", hash, req.RelativePath, groupID, req.ComponentSide, req.Language)
+}
+
+// publishKnowledgeSource is the shared C1/C2 publication path. The caller holds the domain lock.
+func publishKnowledgeSource(ctx context.Context, tx *gorm.DB, kb *entity.Knowledgebase, document *entity.Document, nativeFile *entity.File, folderID, userID string, content []byte, req entity.SnapshotKnowledgeSourceRequest, result *entity.KnowledgeSnapshot) error {
+	digest := sha256.Sum256(content)
+	hash := hex.EncodeToString(digest[:])
+	inputHash := knowledgeSourceInputHash(hash, req)
+	var current entity.KnowledgeSourceRevision
+	currentErr := tx.Where("domain_id = ? AND document_id = ? AND is_current = ?", kb.ID, document.ID, true).Take(&current).Error
+	if currentErr != nil && !errors.Is(currentErr, gorm.ErrRecordNotFound) {
+		return currentErr
+	}
+	if currentErr == nil && current.InputHash == inputHash {
+		current.RootNodeID = knowledgeRoot(&current).ID
+		result.Source, result.Root = current, knowledgeRoot(&current)
+		return nil
+	}
+	if current.ID != req.ExpectedRevisionID {
+		return knowledgeConflict("expected_revision_id does not match the current source revision")
+	}
+	var source entity.KnowledgeSourceRevision
+	err := tx.Where("domain_id = ? AND document_id = ? AND input_hash = ?", kb.ID, document.ID, inputHash).Take(&source).Error
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		return err
+	}
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		commit, item, err := file.NewFileCommitService().RecordSourceSnapshot(ctx, tx, nativeFile, userID, content)
+		if err != nil {
+			return err
+		}
+		source = entity.KnowledgeSourceRevision{ID: item.ID, DomainID: kb.ID, DocumentID: document.ID, FileID: nativeFile.ID,
+			CommitID: commit.ID, FolderID: folderID, GroupID: req.GroupID, RelativePath: req.RelativePath, ComponentSide: req.ComponentSide,
+			Language: req.Language, SHA256: hash, InputHash: inputHash, ByteLength: int64(len(content)), LineCount: knowledgeLastLine(content), IsCurrent: true}
+		if err := tx.Create(&source).Error; err != nil {
+			return err
+		}
+		root := knowledgeRoot(&source)
+		if err := tx.Create(&root).Error; err != nil {
+			return err
+		}
+		result.Created = true
+	}
+	if err := tx.Model(&entity.KnowledgeSourceRevision{}).Where("domain_id = ? AND document_id = ? AND id <> ?", kb.ID, document.ID, source.ID).Update("is_current", false).Error; err != nil {
+		return err
+	}
+	if !source.IsCurrent {
+		if err := tx.Model(&entity.KnowledgeSourceRevision{}).Where("id = ?", source.ID).Update("is_current", true).Error; err != nil {
+			return err
+		}
+		source.IsCurrent = true
+	}
+	source.RootNodeID = knowledgeRoot(&source).ID
+	result.Source, result.Root = source, knowledgeRoot(&source)
+	return nil
 }
 
 func (d *DatasetService) knowledgeSource(ctx context.Context, domainID, revisionID string) (*entity.KnowledgeSourceRevision, error) {
