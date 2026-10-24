@@ -1,9 +1,9 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "LFen C2 来源导入候选契约",
+    "title": "LFen C2 来源导入冻结契约",
     "version": "0.2.0",
-    "description": "ReviewCandidate：A实现的同步单文件inline_text子集，待B核对，未冻结。源键是登记内规范相对路径；item_key取该路径，Document/source_id稳定。预检仅保存私有暂存正文，不发布Document或索引。提交绑定清单、策略和预期修订；预检600秒有效。幂等随回执保留；同键同预检/清单回放，异请求409。一个预检仅可消费一次。任务仅succeeded/failed，失败回执可201，重试须新预检/新键。原生模型和解析执行均禁止。无目录扫描、二进制、网页、批量、列表、取消、移动或删除接口。"
+    "description": "Frozen：C2 0.2.0同步单文件inline_text子集，B已核对、A已验证，用户于2026-10-25明确批准冻结。请求/回执/路由/身份/错误/限额保持既有规则，冻结后不得静默修改其语义。源键是登记内规范相对路径；item_key取该路径，Document/source_id稳定。预检仅保存私有暂存正文，不发布Document或索引。提交绑定清单、策略和预期修订；预检600秒有效。幂等随回执保留；同键同预检/清单回放，异请求409。一个预检仅可消费一次。任务仅succeeded/failed，失败回执可201，重试须新预检/新键。原生模型和解析执行均禁止。无目录扫描、二进制、网页、批量、列表、取消、移动或删除接口。"
   },
   "servers": [
     {
@@ -18,7 +18,7 @@
   "paths": {
     "/knowledge/import-contract": {
       "get": {
-        "summary": "读取候选能力和限制",
+        "summary": "读取冻结能力和限制",
         "parameters": [
           {
             "name": "X-Knowledge-Source-Contract-Version",
@@ -298,7 +298,8 @@
               }
             }
           }
-        }
+        },
+        "description": "登记JSON总容量≤16KiB；另受字段长度和1—16个精确相对路径限制。"
       }
     },
     "/datasets/{domain_id}/knowledge/registrations/{registration_id}": {
@@ -600,7 +601,8 @@
               }
             }
           }
-        }
+        },
+        "description": "含正文预检JSON总容量≤16MiB，原文UTF-8字节≤2MiB；只预检一项，不发布来源或索引。"
       }
     },
     "/datasets/{domain_id}/knowledge/registrations/{registration_id}/previews/{preview_id}": {
@@ -921,7 +923,8 @@
               }
             }
           }
-        }
+        },
+        "description": "确认JSON总容量≤16KiB；201仅表示回执创建，须检查业务status。超时/5xx先同键同请求确认结果，不自动换键或宣称失败。"
       }
     },
     "/datasets/{domain_id}/knowledge/registrations/{registration_id}/imports/{import_task_id}": {
@@ -1250,10 +1253,12 @@
           "relative_path": {
             "type": "string",
             "minLength": 1,
-            "maxLength": 512
+            "maxLength": 512,
+            "description": "登记范围内规范POSIX相对路径；不是服务器路径或通配符。实际扩展名白名单、排除路径及私钥标记规则见docs/stage2a-c2-handoff.md第5节；不承诺任意UTF-8格式可导入，服务端400/413/415为最终判定。"
           },
           "text": {
-            "type": "string"
+            "type": "string",
+            "description": "按原始UTF-8字节计量，≤2MiB，无NUL，允许空文本；保持BOM/CRLF/emoji，不静默转码、截断或调用模型修复。合法UTF-8仍须满足服务端扩展名和路径规则。"
           },
           "group_id": {
             "type": "string",
@@ -1787,7 +1792,7 @@
           "status": {
             "type": "string",
             "enum": [
-              "ReviewCandidate"
+              "Frozen"
             ]
           },
           "foundation_contract_version": {
@@ -1846,7 +1851,8 @@
             "type": "integer",
             "enum": [
               16777216
-            ]
+            ],
+            "description": "含正文预检JSON总容量上限16MiB；登记和确认JSON各为16KiB。原文独立上限2MiB，不以本字段作为所有端点的容量。"
           },
           "preview_ttl_seconds": {
             "type": "integer",
@@ -1947,7 +1953,8 @@
         "additionalProperties": false,
         "properties": {
           "code": {
-            "type": "string"
+            "type": "string",
+            "description": "knowledge_conflict为通用409，首版不新增细分reason/code，不匹配英文message推断原因。先核查原请求/已消费回执，再依现有规则重新预检；版本冲突码停止当前功能，不自动回退draft。"
           },
           "message": {
             "type": "string"
@@ -2180,7 +2187,7 @@
     }
   },
   "x-foundation-contract": "docs/knowledge-foundation-v1.openapi.json",
-  "x-review-status": "AwaitingBReview",
+  "x-review-status": "Frozen",
   "x-scope-limits": {
     "source_bytes": 2097152,
     "request_bytes": 16777216,
@@ -2189,5 +2196,6 @@
     "preview_ttl_seconds": 600,
     "idempotency_retention": "same as persisted receipt; no automatic cleanup",
     "manifest": "KnowledgeID over length-unambiguous JSON string array: knowledge-import-manifest/0.2.0, registration_id, relative_path, actual_byte_sha256, group_id_or_empty, component_side, language, expected_revision_id_or_empty, decimal_policy_version; client echoes server digest."
-  }
+  },
+  "x-freeze-record": "docs/knowledge-sources-v1.freeze.json"
 }

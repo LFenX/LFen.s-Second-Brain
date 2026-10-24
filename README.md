@@ -2,9 +2,9 @@
 
 本地文本、文档与项目代码知识库：结构化整理、可选词法／结构／向量检索、带来源的回答与代码复用；后续通过 Web 和 MCP 共用后端服务。当前POC仍为原生混合检索，可选策略待实施。
 
-**本仓库是后续唯一开发入口，包含当前应用源码、品牌资产、方案和验证记录。** 阶段1交付8aa324e已获用户验收。当前v0.30完成A阶段2六项验证：合成重复入口、真实MySQL并发／幂等、定向故障、权限／容量、有限性能及迁移／备份恢复；修复撤权后错误返回500的问题。见[阶段2报告的current_followup](docs/stage2a-c2-verification.json)、[性能数据](docs/stage2a-c2-performance.json)和[交接说明](docs/stage2a-c2-handoff.md)。仅合成资料、模型0、未启动多轮审查；C2 0.2.0候选原字节不变，C1／C3仍1.0.0，B前端保持。B已完成657ebd7候选核对，无阻断项、3项非阻断建议；尚未冻结或实现B阶段2页面，阶段2整体及阶段3—6未完成。
+**本仓库是后续唯一开发入口，包含当前应用源码、品牌资产、方案和验证记录。** 当前v0.31按用户指令冻结**C2 0.2.0**，依据A验证49a19e6及B核对c6321b5，见[冻结记录](docs/knowledge-sources-v1.freeze.json)、[冻结OpenAPI](docs/knowledge-sources-v1.openapi.json)、[三项结论及B任务](docs/stage2a-c2-handoff.md)。运行能力已返回Frozen，C1／C3仍1.0.0；冻结只调整生命周期与说明，请求／回执／身份／错误／限额规则保持。B可开始正式客户端／Hooks和登记、预览、确认、回执界面，阶段2页面／真实联调／整体验收仍未完成。只用合成、模型0、不启动审查。
 
-本轮只推送`codex/stage2a-import`，main保留已验收阶段1基线。B反馈位于`codex/stage2b-c2-review`的c6321b5，未合入本轮A分支；A已核对同版契约并记录建议。本轮不执行双方冻结或main合并；下一步先明确冻结记录，再由B接正式页面，随后做合成真实联调，不另建身份或后端。
+本轮只推送`codex/stage2a-import`，main保持已验收阶段1基线8aa324e；B反馈分支未合入A。B从A冻结提交建立工作分支，沿用登录／查询层和C1固定修订阅读器，不另建身份或后端。NB-01保留通用冲突码，NB-02明确分端点容量，NB-03公开既有格式／路径规则；以后协议语义变更先提新候选，不静默改0.2.0。最新证据见[阶段2报告freeze_followup](docs/stage2a-c2-verification.json)，v0.30六项及[性能数据](docs/stage2a-c2-performance.json)保留历史时点。
 
 本机承担A工作包，已交付C1／C3 `1.0.0`：私有域、项目／模块分组、原生来源修订、确定性父子节点、精确原文读取及禁模型执行检查。[B接续说明](阶段1-A-B交接说明.md)包含接口、身份／权限／外发规则、构建和接入顺序；[OpenAPI](docs/knowledge-foundation-v1.openapi.json)与[合成fixture](docs/knowledge-foundation-v1.example.json)为共享基线。B继续负责Web及后续检索／MCP／人格消费，不另建领域模型或后端。
 
@@ -17,7 +17,7 @@ v0.17的[知识域与可选Embedding决定](本地第二大脑知识库技术方
 ## 从这里接续
 
 1. 阅读 [会话接续说明](会话接续说明.md)，了解已确认决定、待确认事项和下一步边界。
-2. 阅读 [完整技术方案 v0.30](本地第二大脑知识库技术方案.md)：第40.4节是A六项验证与B反馈接收，第40章前文保留首个导入闭环，第39章是阶段1联调。[C2候选契约](docs/knowledge-sources-v1.openapi.json)和[合成请求](docs/knowledge-sources-v1.example.json)原字节保持，旧draft不作运行承诺。第35章定义阶段顺序与双人验收；原POC、七项问题、对照实验和历史验收保持原范围。
+2. 阅读 [完整技术方案 v0.31](本地第二大脑知识库技术方案.md)：第40.5节是冻结与B正式开发，第40.4节保留A六项验证，第39章是阶段1联调。[C2冻结契约](docs/knowledge-sources-v1.openapi.json)绑定[冻结记录](docs/knowledge-sources-v1.freeze.json)，请求示例原字节保持；旧draft和历史ReviewCandidate不作当前承诺。第35章的完整计划及原POC／七项问题／对照实验保持原范围。
 3. 需要讨论背景时，查阅 [会话副本](会话副本.md)。副本保存用户消息和助手回复，不含工具日志、内部推理和密钥。
 4. 当前API实测结果见 [百炼验证记录](阶段0-百炼API接入验证.json)；[Moark验证记录](阶段0-API接入验证.json) 及 [旧额度截图](moark-stage0-trial-quota-94.png) 保留历史事实。
 

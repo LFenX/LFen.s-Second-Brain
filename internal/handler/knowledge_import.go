@@ -23,7 +23,7 @@ func (h *DatasetsHandler) KnowledgeImportContract(c *gin.Context) {
 	if _, ok := knowledgeImportUser(c); !ok || !knowledgeQuery(c) {
 		return
 	}
-	knowledgeResponse(c, 200, gin.H{"version": entity.KnowledgeSourceContractVersion, "status": "ReviewCandidate", "foundation_contract_version": entity.KnowledgeContractVersion, "schema": "docs/knowledge-sources-v1.openapi.json", "source_kinds": []string{"text_file"}, "input_modes": []string{"inline_text"}, "max_preview_items": 1, "max_include_paths": 16, "source_bytes": entity.KnowledgeMaxSourceBytes, "request_bytes": entity.KnowledgeImportRequestBytes, "preview_ttl_seconds": 600, "task_execution": "synchronous_single_item", "processing": gin.H{"mode": "catalogue_only", "structure": "deferred", "full_text": "disabled", "vector": "disabled", "external_models": false, "automatic_ingestion": false, "allowed_model_uses": []string{}, "model_calls": 0}}, "", "success")
+	knowledgeResponse(c, 200, gin.H{"version": entity.KnowledgeSourceContractVersion, "status": "Frozen", "foundation_contract_version": entity.KnowledgeContractVersion, "schema": "docs/knowledge-sources-v1.openapi.json", "source_kinds": []string{"text_file"}, "input_modes": []string{"inline_text"}, "max_preview_items": 1, "max_include_paths": 16, "source_bytes": entity.KnowledgeMaxSourceBytes, "request_bytes": entity.KnowledgeImportRequestBytes, "preview_ttl_seconds": 600, "task_execution": "synchronous_single_item", "processing": gin.H{"mode": "catalogue_only", "structure": "deferred", "full_text": "disabled", "vector": "disabled", "external_models": false, "automatic_ingestion": false, "allowed_model_uses": []string{}, "model_calls": 0}}, "", "success")
 }
 
 func (h *DatasetsHandler) CreateKnowledgeRegistration(c *gin.Context) {

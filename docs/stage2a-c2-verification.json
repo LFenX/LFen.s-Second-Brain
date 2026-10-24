@@ -398,7 +398,7 @@
     "openapi_sha256": "648454d04e1769adc9bfa9245efc439696a7dd21b65cf3cf243e28450166e1c1",
     "examples_sha256": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a"
   },
-  "current_status": "SixItemsEngineeringVerified_C2Unchanged_BReviewComplete_AwaitingJointFreeze",
+  "current_status": "C2_0_2_0_Frozen_BFormalClientAndUIAuthorized",
   "current_followup": {
     "version": "v0.30",
     "recorded_at": "2026-10-24T21:36:52.711Z",
@@ -734,5 +734,232 @@
       "scan_scope": "当前待提交12个文件；不是全库秘密识别保证"
     }
   },
-  "history_note": "顶层v0.29为初始单文件闭环时点，原测试/限制/用户决定保持；最新六项验证和B反馈以current_followup v0.30为准。"
+  "history_note": "顶层v0.29和current_followup v0.30保留原时点；最新冻结决定与验证见freeze_followup v0.31。冻结批准不追溯替代旧交付或阶段2整体验收。",
+  "current_delivery_version": "v0.31",
+  "freeze_followup": {
+    "version": "v0.31",
+    "recorded_at": "2026-10-24T21:54:35.203Z",
+    "local_date": "2026-10-25",
+    "timezone": "Asia/Shanghai",
+    "request_snapshot": "那就冻结 C2 0.2.0，明确 B 三项非阻断建议的处理结论，更新交接说明并推送到 codex/stage2a-import，再给我一段可以直接发给 B 的消息，让他开始正式客户端和登记、预览、确认、回执界面开发。暂不合并 main，继续只用合成资料、不调用模型、不启动多轮审查。",
+    "objective": "冻结C2 0.2.0并同步机器契约、运行能力和交接；明确NB-01/02/03，向B交付正式Web开发入口，不合main。",
+    "status": "C2_0_2_0_Frozen_BFormalClientAndUIAuthorized",
+    "clarification": {
+      "state": "Settled",
+      "notice": "需求明确，本次跳过补充提问。",
+      "basis": "B c6321b5已确认同版子集无阻断，用户明确批准冻结；状态变更和说明边界可由现有代码确定。",
+      "survey_refs": [
+        "docs/stage2a-c2-handoff.md",
+        "docs/knowledge-sources-v1.openapi.json",
+        "internal/handler/knowledge_import.go"
+      ]
+    },
+    "freeze_decision": {
+      "decision": "Approved",
+      "decided_by": "用户",
+      "evidence_ref": "本会话2026-10-25用户明确冻结C2的消息",
+      "request_snapshot": "那就冻结 C2 0.2.0，明确 B 三项非阻断建议的处理结论，更新交接说明并推送到 codex/stage2a-import，再给我一段可以直接发给 B 的消息，让他开始正式客户端和登记、预览、确认、回执界面开发。暂不合并 main，继续只用合成资料、不调用模型、不启动多轮审查。",
+      "scope": "仅批准C2 0.2.0冻结和B正式客户端/四步页面开发；不替代A六项工程交付、B页面或阶段2整体的用户验收。"
+    },
+    "user_decision": {
+      "outcome": "Pending",
+      "scope": "本轮冻结工程交付；用户明确冻结批准已另记，不改阶段2整体或v0.29/v0.30验收。"
+    },
+    "freeze_record": "docs/knowledge-sources-v1.freeze.json",
+    "freeze_record_sha256": "114bbfa2b4dd51eafc426716032486f666ace8a1a1284f4c1f4c9baf1f1b35c6",
+    "baseline": "49a19e65a20e4e16c4c0a2622e1f98e587747542",
+    "b_review_commit": "c6321b56bb026c685e19f3c4de49a190328e9def",
+    "requirement_coverage": [
+      {
+        "quote": "冻结 C2 0.2.0",
+        "status": "已冻结并实测",
+        "evidence": "冻结记录、OpenAPI及GET能力均Frozen，版本仍0.2.0，C1/C3仍1.0.0。"
+      },
+      {
+        "quote": "明确 B 三项非阻断建议的处理结论",
+        "status": "已明确",
+        "evidence": "NB-01保持通用冲突码；NB-02分端点容量说明不改数值；NB-03公开既有格式路径规则，不新增格式或独立白名单。"
+      },
+      {
+        "quote": "更新交接说明并推送到 codex/stage2a-import",
+        "status": "交接已保存，提交后核对远端",
+        "evidence": "交接第5节结论、第9节B任务及验收；发布结果单独保存，避免自引用提交摘要。"
+      },
+      {
+        "quote": "再给我一段可以直接发给 B 的消息，让他开始正式客户端和登记、预览、确认、回执界面开发",
+        "status": "随最终答复交付",
+        "evidence": "消息绑定实际冻结提交、冻结文件、四步界面、同键恢复、C1入口及交付标准；不使用工具代发。"
+      },
+      {
+        "quote": "暂不合并 main",
+        "status": "保持",
+        "evidence": "只提交codex/stage2a-import；main仍8aa324e。"
+      },
+      {
+        "quote": "继续只用合成资料、不调用模型、不启动多轮审查",
+        "status": "已遵守",
+        "evidence": "仅五次本机GET，包含已有合成来源读取；任务和用量/原POC指纹不变；未开展审查或子Agent。"
+      }
+    ],
+    "validation": {
+      "schema": {
+        "status": "Passed",
+        "strict_schemas": 13,
+        "positive_examples": 3,
+        "negative_examples": 2,
+        "version": "0.2.0",
+        "status_enum": "Frozen"
+      },
+      "structure": {
+        "at": "2026-10-24T21:49:27.904Z",
+        "status": "Passed",
+        "changed_json_pointers": [
+          "/info/title",
+          "/info/description",
+          "/paths/~1knowledge~1import-contract/get/summary",
+          "/paths/~1datasets~1{domain_id}~1knowledge~1registrations/post/description",
+          "/paths/~1datasets~1{domain_id}~1knowledge~1registrations~1{registration_id}~1previews/post/description",
+          "/paths/~1datasets~1{domain_id}~1knowledge~1registrations~1{registration_id}~1imports/post/description",
+          "/components/schemas/PreviewRequest/properties/relative_path/description",
+          "/components/schemas/PreviewRequest/properties/text/description",
+          "/components/schemas/Capabilities/properties/status/enum/0",
+          "/components/schemas/Capabilities/properties/request_bytes/description",
+          "/components/schemas/Error/properties/code/description",
+          "/x-review-status",
+          "/x-freeze-record"
+        ],
+        "structural_semantics_unchanged_except_lifecycle": true,
+        "normalized_sha256": "a80e779449b6f9b56da614c59efa9be084903aeee47acda7ed100536addb4296",
+        "final_schema_sha256": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091"
+      },
+      "go": {
+        "command": "bash build.sh --test -json -timeout 3m -run TestKnowledgeImport ./internal/handler",
+        "package": "ragflow/internal/handler",
+        "top_level_passed": 4,
+        "including_subtests_passed": 4,
+        "native_unit_packages": 2,
+        "log_sha256": "c2db650aca513b7211709ff9b4416ae47e4efc41eea0c24226ddf990f03d247f"
+      },
+      "build": {
+        "command": "bash build.sh --go",
+        "linker": "Ubuntu LLD 22.1.8",
+        "modes_started": [
+          "api",
+          "admin",
+          "ingestor",
+          "syncer"
+        ],
+        "binary_sha256": "b8cf2492a1716bdce62ee29502c39152fa2574f7253be9e9f016239da76a9fab",
+        "source_go_files_matched": 2668
+      },
+      "runtime": {
+        "at": "2026-10-24T21:53:42.072Z",
+        "status": "Passed",
+        "actual_contract": "C2 0.2.0 Frozen",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/knowledge/import-contract",
+            "status": 200,
+            "schema": "CapabilitiesResponse"
+          },
+          {
+            "method": "GET",
+            "path": "/knowledge/import-contract",
+            "status": 409,
+            "schema": "Error"
+          },
+          {
+            "method": "GET",
+            "path": "/knowledge/import-contract",
+            "status": 401,
+            "schema": "NativeUnauthorized"
+          },
+          {
+            "method": "GET",
+            "path": "/knowledge/contract",
+            "status": 200,
+            "schema": "C1"
+          },
+          {
+            "method": "GET",
+            "path": "/datasets/b2aad21fb7d04fd3bcaa35d06188ba7f/knowledge/nodes/08d2facad0f960dcf2667acfa36af8fca0062fe7511a35bd0a645ea29f2f47cf/content",
+            "status": 200,
+            "schema": "C1"
+          }
+        ],
+        "app_healthy": true,
+        "binary_sha256": "b8cf2492a1716bdce62ee29502c39152fa2574f7253be9e9f016239da76a9fab",
+        "c1_c3_unchanged": true,
+        "synthetic_fixed_revision_readable": true,
+        "examples_unchanged": true,
+        "b_frontend_source_files_unchanged": 15,
+        "dependency_containers_unchanged": 5,
+        "only_read_only_binary_mount_changed": true,
+        "original_provider_usage_and_poc_fingerprints_unchanged": true,
+        "model_calls": 0,
+        "external_packet_capture": false
+      }
+    },
+    "source_manifest": [
+      {
+        "file": "docs/knowledge-sources-v1.openapi.json",
+        "sha256": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091"
+      },
+      {
+        "file": "docs/knowledge-sources-v1.freeze.json",
+        "sha256": "114bbfa2b4dd51eafc426716032486f666ace8a1a1284f4c1f4c9baf1f1b35c6"
+      },
+      {
+        "file": "internal/handler/knowledge_import.go",
+        "sha256": "7ba0512b7d4aefbc8a092984c592466eb512466ebe98a8534eb7b933e93523b4"
+      },
+      {
+        "file": "internal/handler/knowledge_import_test.go",
+        "sha256": "644765ba0913df200f74c9389143f85dbc87593db2d2a731e1ce79562b660e67"
+      },
+      {
+        "file": "tools/scripts/knowledge_import_poc.mjs",
+        "sha256": "4fa90dfb3bb4c869b42b73dd84283b054dafc967f4be9e96529d09c6f09e0769"
+      }
+    ],
+    "b_development": {
+      "scope": "正式C2客户端/类型/Hooks、登记/预览/确认/回执界面、同键恢复和固定修订C1阅读入口",
+      "entry": "docs/stage2a-c2-handoff.md#9-b正式开发任务与验收",
+      "owner_boundary": "B只做前端消费，不改Go/DAO/路由/身份，不增加冻结范围。",
+      "not_completed": [
+        "B正式客户端和四步界面",
+        "真实前后端联调",
+        "阶段2整体验收"
+      ]
+    },
+    "limits": [
+      "只执行生命周期/说明的定向验证，不重复六项性能/故障或B前端43项测试。",
+      "OpenAPI原字节改变是冻结标记和说明，不宣称仍与候选全文同SHA；除生命周期值外结构投影相同，请求示例保持原字节。",
+      "五次本机GET与既有合成资料，无新增导入、迁移或模型任务；无独立系统级出口抓包。",
+      "B的c6321b5保留其分支，本轮未合入B分支或main。"
+    ],
+    "adversarial_review": {
+      "status": "NotStarted",
+      "source": "用户明确不启动，不再询问。"
+    },
+    "publication": {
+      "branch": "codex/stage2a-import",
+      "merge_main": false,
+      "expected_main": "8aa324e06decc063c141ee3b53614a6d39f15fb5"
+    },
+    "governance": {
+      "carrier": "沿用现有.local-data before/run/after与docs，不迁移目录。",
+      "write_guard": "no task package supplied警告放行，不声称正式治理Gate。"
+    },
+    "security": {
+      "at": "2026-10-24T21:57:07.137Z",
+      "staged_files": 10,
+      "known_credential_values_checked": 12,
+      "matches": 0,
+      "private_files_ignored": 5,
+      "main_unchanged": true,
+      "scope": "只检查本轮待提交文件，不声称完整秘密识别"
+    }
+  }
 }

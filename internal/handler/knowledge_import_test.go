@@ -55,6 +55,12 @@ func TestKnowledgeImportHandlerVersionAndSchema(t *testing.T) {
 		if body["source_contract_version"] != entity.KnowledgeSourceContractVersion || body["contract_version"] != "1.0.0" {
 			t.Fatal("contract drift")
 		}
+		if tc.status == 200 {
+			capabilities := body["data"].(map[string]any)
+			if capabilities["status"] != "Frozen" || capabilities["version"] != "0.2.0" {
+				t.Fatal("C2 freeze state differs from the published version")
+			}
+		}
 	}
 }
 

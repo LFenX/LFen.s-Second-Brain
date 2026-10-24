@@ -132,7 +132,7 @@ async function readExact(domain, item, text) {
 
 async function smoke() {
   const cap = (await call('C2-capabilities', 'GET', '/knowledge/import-contract', undefined, 200, 'CapabilitiesResponse')).data;
-  assert.equal(cap.status, 'ReviewCandidate');
+  assert.equal(cap.status, 'Frozen');
   assert.equal(cap.processing.external_models, false);
   await call('missing-version', 'GET', '/knowledge/import-contract', undefined, 409, 'Error', { sourceVersion: null });
   await call('anonymous', 'GET', '/knowledge/import-contract', undefined, 401, 'NativeUnauthorized', { anonymous: true });

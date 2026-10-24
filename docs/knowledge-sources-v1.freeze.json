@@ -1,0 +1,118 @@
+{
+  "contract": "C2",
+  "version": "0.2.0",
+  "status": "Frozen",
+  "frozen_at": "2026-10-24T21:49:27.901Z",
+  "local_date": "2026-10-25",
+  "timezone": "Asia/Shanghai",
+  "authority": {
+    "decision": "Approved",
+    "decided_by": "用户",
+    "evidence_ref": "本会话2026-10-25用户明确冻结C2的消息",
+    "request_snapshot": "那就冻结 C2 0.2.0，明确 B 三项非阻断建议的处理结论，更新交接说明并推送到 codex/stage2a-import，再给我一段可以直接发给 B 的消息，让他开始正式客户端和登记、预览、确认、回执界面开发。暂不合并 main，继续只用合成资料、不调用模型、不启动多轮审查。",
+    "scope": "仅批准C2 0.2.0冻结和B正式客户端/四步页面开发；不替代A六项工程交付、B页面或阶段2整体的用户验收。"
+  },
+  "parties": {
+    "a": {
+      "baseline_commit": "49a19e65a20e4e16c4c0a2622e1f98e587747542",
+      "outcome": "A已验证并接受本版三项处理结论"
+    },
+    "b": {
+      "review_commit": "c6321b56bb026c685e19f3c4de49a190328e9def",
+      "reviewed_candidate_commit": "657ebd77d23a7716f8f76b8f54822f8baed821e7",
+      "outcome": "B核对无消费者冻结阻断，原报告明确可进入双方冻结确认",
+      "source": "https://github.com/LFenX/LFen.s-Second-Brain/blob/c6321b56bb026c685e19f3c4de49a190328e9def/docs/stage2b-c2-review.md"
+    }
+  },
+  "artifacts": {
+    "openapi": "docs/knowledge-sources-v1.openapi.json",
+    "frozen_openapi_sha256": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091",
+    "pre_freeze_openapi_sha256": "648454d04e1769adc9bfa9245efc439696a7dd21b65cf3cf243e28450166e1c1",
+    "examples": "docs/knowledge-sources-v1.example.json",
+    "examples_sha256": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a",
+    "foundation_contract_version": "1.0.0",
+    "foundation_sha256": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4"
+  },
+  "change_boundary": {
+    "only_response_value_change": "Capabilities.status: ReviewCandidate -> Frozen",
+    "annotations_only": "其余改动限标题/说明、x-review-status/x-freeze-record；逐JSON指针核对，不改结构、请求/回执/错误/身份/限额。",
+    "changed_json_pointers": [
+      "/info/title",
+      "/info/description",
+      "/paths/~1knowledge~1import-contract/get/summary",
+      "/paths/~1datasets~1{domain_id}~1knowledge~1registrations/post/description",
+      "/paths/~1datasets~1{domain_id}~1knowledge~1registrations~1{registration_id}~1previews/post/description",
+      "/paths/~1datasets~1{domain_id}~1knowledge~1registrations~1{registration_id}~1imports/post/description",
+      "/components/schemas/PreviewRequest/properties/relative_path/description",
+      "/components/schemas/PreviewRequest/properties/text/description",
+      "/components/schemas/Capabilities/properties/status/enum/0",
+      "/components/schemas/Capabilities/properties/request_bytes/description",
+      "/components/schemas/Error/properties/code/description",
+      "/x-review-status",
+      "/x-freeze-record"
+    ],
+    "unchanged_projection_sha256": "a80e779449b6f9b56da614c59efa9be084903aeee47acda7ed100536addb4296",
+    "projection_rule": "移除description/summary、info.title和冻结元数据；将能力status枚举归一为<lifecycle>，与冻结前逐结构相等。"
+  },
+  "decisions": [
+    {
+      "id": "NB-01",
+      "outcome": "本版维持通用knowledge_conflict，不新增细分reason/code。",
+      "consumer_rule": "不依赖message猜原因；按原幂等请求/已消费任务核查，必要时重新预检并再次确认；版本冲突停止功能。",
+      "future": "细分错误语义另起新候选，双方确认后实施；不阻断0.2.0。"
+    },
+    {
+      "id": "NB-02",
+      "outcome": "确认既有限额并补端点/字段说明，不改变数值。",
+      "limits_bytes": {
+        "registration_json": 16384,
+        "commit_json": 16384,
+        "preview_json": 16777216,
+        "source_utf8": 2097152,
+        "c1_content_window": 65536
+      },
+      "consumer_rule": "按UTF-8字节和端点分别校验；能力request_bytes只代表预检JSON。"
+    },
+    {
+      "id": "NB-03",
+      "outcome": "公开现有格式/路径规则，服务端为唯一最终判定，不新增格式。",
+      "rules_source": [
+        "internal/utility/knowledge.go",
+        "internal/service/dataset/knowledge_import.go"
+      ],
+      "consumer_rule": "沿用交接第5节提示；不宣称任意UTF-8可导入，不另建后端白名单或自动转码替代。"
+    }
+  ],
+  "frozen_scope": {
+    "source_kind": "text_file",
+    "input_mode": "inline_text",
+    "task_execution": "synchronous_single_item",
+    "mode": "catalogue_only",
+    "max_registration_paths": 16,
+    "max_preview_items": 1,
+    "preview_ttl_seconds": 600,
+    "structure": "deferred",
+    "full_text": "disabled",
+    "vector": "disabled",
+    "external_models": false,
+    "automatic_ingestion": false,
+    "ownership": "原生私有域所有者，每次操作重新授权；标签不授权"
+  },
+  "version_discipline": "冻结后的请求/响应、路由、身份算法、状态/错误或限额语义变更必须提出新候选版本并共同确认，不能静默覆盖0.2.0；无语义变化的文档更正须保留修订依据。",
+  "b_authorized_work": [
+    "从A冻结提交建立B工作分支，沿用原登录/查询层",
+    "正式C2客户端/类型/Hooks和登记/预览/确认/回执界面",
+    "同键结果确认、失败重新预检、固定修订C1入口、合成消费者验证及联调准备"
+  ],
+  "excluded": [
+    "main合并",
+    "A本轮代做B前端",
+    "真实资料或模型调用",
+    "目录扫描/二进制文档/网页RSS/批量异步/移动删除/解析索引/MCP/人格记忆",
+    "多轮审查"
+  ],
+  "delivery_acceptance": {
+    "outcome": "Pending",
+    "note": "冻结批准已明确记录，工程交付验收和阶段2整体状态分别留存，不混用。"
+  }
+}
