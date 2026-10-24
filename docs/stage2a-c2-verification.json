@@ -961,5 +961,535 @@
       "main_unchanged": true,
       "scope": "只检查本轮待提交文件，不声称完整秘密识别"
     }
+  },
+  "source_preparation_followup": {
+    "version": "v0.32",
+    "recorded_at": "2026-10-24T23:47:51.172Z",
+    "local_date": "2026-10-25",
+    "timezone": "Asia/Shanghai",
+    "request_snapshot": "那就按这个顺序推进这6项，先完成内部组件和验证，涉及新接口或共享模型的只整理候选方案，等双方确认后再接入。保持C2 0.2.0冻结契约不变，只用合成资料、不调用模型、不启动多轮审查；完成后更新验证报告和交接说明，推送到codex/stage2a-import，暂不合并main。",
+    "objective": "按六项顺序交付来源采集、增量比较、原件保存和网页/订阅标准化的内部能力与合成验证；协议扩展仅候选，不装配运行入口。",
+    "status": "InternalSourcePreparationEngineeringVerified_NotWired_ContractsUnchanged",
+    "user_decision": {
+      "outcome": "Pending"
+    },
+    "clarification": {
+      "state": "Settled",
+      "mode": "Skipped",
+      "notice": "你的需求与当前边界一致，本次跳过提问；新增组件先独立验证，不接入运行服务，也不改 B 正在使用的接口。",
+      "survey_refs": [
+        "docs/knowledge-sources-v1.freeze.json",
+        "docs/stage2a-c2-handoff.md",
+        "internal/service/dataset/knowledge_import.go",
+        "internal/service/file/source_snapshot.go",
+        "internal/syncer/connector/rss.go"
+      ],
+      "basis": "用户明确批准上轮六项顺序，限定内部实现和候选接入，授权定向验证及推送。"
+    },
+    "proceed": {
+      "outcome": "Approved",
+      "response": "那就按这个顺序推进这6项，先完成内部组件和验证，涉及新接口或共享模型的只整理候选方案，等双方确认后再接入。保持C2 0.2.0冻结契约不变，只用合成资料、不调用模型、不启动多轮审查；完成后更新验证报告和交接说明，推送到codex/stage2a-import，暂不合并main。",
+      "decided_by": "用户",
+      "evidence_ref": "本会话当前用户消息",
+      "observed_at": "2026-10-24T23:25:52.786Z"
+    },
+    "carrier": "沿用项目既有docs及.local-data下before/run/after载体，不迁移文档或新增项目布局；未宣称skill自动治理Gate通过。",
+    "first_principles_analysis": {
+      "outcome": "B的0.2.0消费不受影响，同时降低下一批来源接入的实现未知。",
+      "facts": [
+        {
+          "text": "C2已冻结单文件同步文本子集",
+          "evidence_refs": [
+            "docs/knowledge-sources-v1.freeze.json"
+          ]
+        },
+        {
+          "text": "原生快照能保存字节，RSS解析和HTML转换已有实现",
+          "evidence_refs": [
+            "internal/service/file/source_snapshot.go",
+            "internal/syncer/connector/rss.go",
+            "internal/syncer/connector/html_markdown.go"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "text": "仅合成、不调用模型、不审查、不合main、不改共享契约",
+          "source_refs": [
+            "request_snapshot"
+          ]
+        }
+      ],
+      "assumptions": [
+        {
+          "text": "现有原生快照可复用于二进制文档",
+          "validation": "以合成PDF/OOXML/附件执行原生快照和历史回读、故障验证"
+        }
+      ],
+      "unknowns": [
+        {
+          "text": "目录/大文件/二进制/网页/批量接口的最终形态与容量",
+          "owner": "A与B",
+          "unblock": "后续新候选双方确认",
+          "blocking": false,
+          "scope": "仅阻断正式接入，本轮只出候选"
+        }
+      ],
+      "fundamentals": [
+        "原始字节",
+        "稳定定位",
+        "范围和权限",
+        "不可变修订",
+        "显式发布",
+        "冻结消费者"
+      ],
+      "causal_links": [
+        "接入不确定性不要求改变现有消费者，先通过私有组件验证",
+        "哈希只证明内容，不能代替来源身份",
+        "滚动订阅或选择范围的缺失不证明来源已删除"
+      ],
+      "alternatives": [
+        {
+          "name": "保持现状",
+          "result": "不能减少来源扩展未知"
+        },
+        {
+          "name": "直接扩充冻结接口",
+          "result": "违反用户约束且影响B"
+        },
+        {
+          "name": "内部组件加候选方案",
+          "selected": true,
+          "result": "在冻结边界外完成可验证准备"
+        }
+      ],
+      "decision_criteria": [
+        "冻结无漂移",
+        "复用原生路径",
+        "独立可验证",
+        "无模型和真实数据",
+        "避免提前发明共享模型"
+      ],
+      "derived_plan": "六项依次实现/验证，第6项共享语义只设计；B页面就绪后另开展冻结链路联调。"
+    },
+    "baseline": {
+      "branch": "codex/stage2a-import",
+      "commit": "123482016576fec368104e531c257b6e0e523dd5",
+      "main": "8aa324e06decc063c141ee3b53614a6d39f15fb5",
+      "c2": "0.2.0 Frozen",
+      "c1_c3": "1.0.0"
+    },
+    "six_tasks": [
+      {
+        "order": 1,
+        "name": "来源清单与合成样本",
+        "status": "Completed",
+        "actual": "私有清单和比较键；五类组件侧和语言规则；合成文本/代码/原件/网页/订阅、大小/编码/路径/变化样本。没有新共享实体。",
+        "evidence_refs": [
+          "docs/stage2a-source-preparation.md",
+          "internal/service/dataset/knowledge_source_collect_test.go"
+        ]
+      },
+      {
+        "order": 2,
+        "name": "受控目录采集",
+        "status": "ImplementedAndVerified_InternalOnly",
+        "actual": "os.Root限定实际打开；范围/排除/链接、文件身份前后核对、32KiB流式摘要与跨缓冲文本检查；容量和取消；千/万合成文件各3次。",
+        "evidence_refs": [
+          "internal/service/dataset/knowledge_source_collect.go",
+          "internal/service/dataset/knowledge_source_collect_test.go",
+          "docs/stage2a-source-preparation-performance.json"
+        ]
+      },
+      {
+        "order": 3,
+        "name": "增量与项目快照计划",
+        "status": "ImplementedAndVerified_DryRunOnly",
+        "actual": "新增/更新/未变/阻断/缺失建议/未观察；同内容不同路径独立；范围缩小不删除；清单重采集与读取期间替换拒绝；不发布项目快照。",
+        "evidence_refs": [
+          "internal/service/dataset/knowledge_source_plan.go",
+          "internal/service/dataset/knowledge_source_plan_test.go"
+        ]
+      },
+      {
+        "order": 4,
+        "name": "文档原件保存准备",
+        "status": "NativeReuseVerified_AdmissionNotImplemented",
+        "actual": "复用RecordSourceSnapshot/GetCommitFileContent，合成PDF/PPTX/DOCX/二进制各两版字节与原生前驱；PUT失败和SQL回滚不推进头，孤立对象保留。仅内存SQLite/MemoryStorage；不是C2二进制接纳或文档解析。",
+        "evidence_refs": [
+          "internal/service/file/source_snapshot.go",
+          "internal/service/file/source_snapshot_preparation_test.go"
+        ]
+      },
+      {
+        "order": 5,
+        "name": "网页/RSS标准化",
+        "status": "ImplementedAndVerified_OfflineOnly",
+        "actual": "复用原生RSS/Atom解析和HTML转换，保留原始HTML/订阅、来源/时间/完整性、代码/HTML表格和附件引用；按内部观察键比较更新，标题不作身份；不注册连接器或执行抓取/Prune。",
+        "evidence_refs": [
+          "internal/syncer/connector/knowledge_source.go",
+          "internal/syncer/connector/knowledge_source_test.go"
+        ]
+      },
+      {
+        "order": 6,
+        "name": "生命周期与下一C2候选",
+        "status": "ProposalOnly_AwaitingJointConfirmation",
+        "actual": "目录根/清单、原件句柄/容量、网页/RSSHub、批量任务/取消、项目发布、显式移动/归档/保留的决策表；无候选版本号、路由、共享类型、DDL、运行GC或新状态。",
+        "evidence_refs": [
+          "docs/stage2a-source-preparation.md",
+          "docs/stage2a-c2-handoff.md"
+        ]
+      }
+    ],
+    "requirement_coverage": [
+      {
+        "id": "SP-01",
+        "source": "request_snapshot",
+        "quote": "按这个顺序推进这6项",
+        "status": "已核对",
+        "actual": "已完成内部交付和候选设计；六项顺序见six_tasks。",
+        "evidence_refs": [
+          "six_tasks"
+        ]
+      },
+      {
+        "id": "SP-02",
+        "source": "request_snapshot",
+        "quote": "先完成内部组件和验证",
+        "status": "已核对",
+        "actual": "私有Go组件、原生原件复用验证、三个Go包12顶层/37含子用例及6次目录规模观察通过。",
+        "evidence_refs": [
+          "verification"
+        ]
+      },
+      {
+        "id": "SP-03",
+        "source": "request_snapshot",
+        "quote": "涉及新接口或共享模型的只整理候选方案，等双方确认后再接入",
+        "status": "已核对",
+        "actual": "候选仅文档；共享实体/路由/依赖/前端保持；新函数未装配运行入口。",
+        "evidence_refs": [
+          "contracts_and_scope"
+        ]
+      },
+      {
+        "id": "SP-04",
+        "source": "request_snapshot",
+        "quote": "保持C2 0.2.0冻结契约不变",
+        "status": "已核对",
+        "actual": "冻结OpenAPI、记录、示例与C1/C3原字节一致；未改接口、身份算法、状态或限额。",
+        "evidence_refs": [
+          "contracts_and_scope"
+        ]
+      },
+      {
+        "id": "SP-05",
+        "source": "request_snapshot",
+        "quote": "只用合成资料",
+        "status": "已核对",
+        "actual": "临时目录生成文本/代码/文档，网页与订阅使用合成.invalid字节；未采集真实仓库、文档或网站。",
+        "evidence_refs": [
+          "safety_scope"
+        ]
+      },
+      {
+        "id": "SP-06",
+        "source": "request_snapshot",
+        "quote": "不调用模型",
+        "status": "已核对",
+        "actual": "没有模型客户端实例化或模型端点调用；新构建未加载到现有API/ingestor/syncer。",
+        "evidence_refs": [
+          "safety_scope"
+        ]
+      },
+      {
+        "id": "SP-07",
+        "source": "request_snapshot",
+        "quote": "不启动多轮审查",
+        "status": "已核对",
+        "actual": "按本轮明确限制未启动，不再追加询问。",
+        "evidence_refs": [
+          "adversarial_review"
+        ]
+      },
+      {
+        "id": "SP-08",
+        "source": "request_snapshot",
+        "quote": "完成后更新验证报告和交接说明",
+        "status": "已核对",
+        "actual": "本报告新增当前followup，交接第10节和来源准备说明、主方案40.6、README/接续同步。",
+        "evidence_refs": [
+          "documentation"
+        ]
+      },
+      {
+        "id": "SP-09",
+        "source": "request_snapshot",
+        "quote": "推送到codex/stage2a-import",
+        "status": "已核对",
+        "actual": "交付目标锁定本分支；实际提交与远端一致性以Git和本轮最终交付核对，不在报告中自引用最终提交。",
+        "evidence_refs": [
+          "delivery"
+        ]
+      },
+      {
+        "id": "SP-10",
+        "source": "request_snapshot",
+        "quote": "暂不合并main",
+        "status": "已核对",
+        "actual": "本地/远端main均保持8aa324e；不合入B分支。",
+        "evidence_refs": [
+          "delivery"
+        ]
+      }
+    ],
+    "verification": {
+      "targeted_units": {
+        "packages": [
+          {
+            "package": "ragflow/internal/service/dataset",
+            "outcome": "pass",
+            "elapsed_seconds": 0.87
+          },
+          {
+            "package": "ragflow/internal/service/file",
+            "outcome": "pass",
+            "elapsed_seconds": 0.075
+          },
+          {
+            "package": "ragflow/internal/syncer/connector",
+            "outcome": "pass",
+            "elapsed_seconds": 0.056
+          }
+        ],
+        "top_level_tests": 12,
+        "tests_including_subtests": 37,
+        "first_time": "2026-10-24T23:37:37.550747683Z",
+        "last_time": "2026-10-24T23:37:38.564040838Z",
+        "log_sha256": "3a22d74c7eb7dfd13d828301a282c07c5e4d3627bfb0f6bef2b577b383b1f22c",
+        "command": "bash build.sh --test -json -run \"^TestKnowledgeSourcePreparation\" -bench \"^BenchmarkKnowledgeSourcePreparationCollect$\" -benchtime=1x ./internal/service/dataset ./internal/service/file ./internal/syncer/connector",
+        "native_additional_packages": [
+          "ragflow/internal/deepdoc/native",
+          "ragflow/internal/deepdoc/native/croptest"
+        ]
+      },
+      "frozen_regression": {
+        "top_level_tests": 13,
+        "tests_including_subtests": 23,
+        "packages": [
+          {
+            "package": "ragflow/internal/service/file",
+            "elapsed_seconds": 0.042
+          },
+          {
+            "package": "ragflow/internal/service/dataset",
+            "elapsed_seconds": 0.292
+          },
+          {
+            "package": "ragflow/internal/handler",
+            "elapsed_seconds": 0.049
+          }
+        ],
+        "log_sha256": "d62163217ad1ed0d3500cd7715e072721dfd1529f3158ac1e5b464507e6b6dd9",
+        "command": "bash build.sh --test -json -run \"^TestKnowledgeImport|^TestKnowledgeAndNativeCommitsShareFolderHead\" ./internal/service/dataset ./internal/service/file ./internal/handler"
+      },
+      "performance": {
+        "artifact": "docs/stage2a-source-preparation-performance.json",
+        "observations": 6,
+        "files_per_size": [
+          1000,
+          10000
+        ],
+        "file_bytes": 256,
+        "summary": [
+          {
+            "files": 1000,
+            "min_ms": 12.448,
+            "median_ms": 13.531,
+            "max_ms": 16.677
+          },
+          {
+            "files": 10000,
+            "min_ms": 132.668,
+            "median_ms": 142.608,
+            "max_ms": 143.287
+          }
+        ],
+        "limitations": "Docker Linux临时目录、文件生成不计入、进程内存含整个测试程序、HWM累计；不是冷盘、Windows、在线p95或百万级。"
+      },
+      "build": {
+        "recorded_at": "2026-10-24T23:43:33.037Z",
+        "build": "bash build.sh --go",
+        "status": "Passed",
+        "go_version": "go version go1.27.3 linux/amd64",
+        "linker": "Ubuntu LLD 22.1.8 (compatible with GNU linkers)",
+        "cpu": "model name\t: Intel(R) Core(TM) Ultra 7 270K Plus",
+        "logical_cpus": 24,
+        "binary_sha256": "496d1d70106a50fa1e27a9b2ae8529c38b57478bbfbc1cca9269ac4c88cce9a2",
+        "help": [
+          {
+            "mode": "api",
+            "exit_code": 1,
+            "status": "Passed",
+            "log_sha256": "dc93c750bde95f2e260fdc6571a38fcdd159c80f7a986d429bbe14ae581bb207"
+          },
+          {
+            "mode": "admin",
+            "exit_code": 1,
+            "status": "Passed",
+            "log_sha256": "bde32ef4d5f59c635b79273aedafd1afcaa225277fda66aea912dbb228e938d0"
+          },
+          {
+            "mode": "ingestor",
+            "exit_code": 1,
+            "status": "Passed",
+            "log_sha256": "6482c21b8a1de37c72815e7a06df92d5f5fa4a80efea3f376c27f726d6fa9958"
+          },
+          {
+            "mode": "syncer",
+            "exit_code": 1,
+            "status": "Passed",
+            "log_sha256": "ae8d9cdf362b00cb7591ad8faca2336a2cc80956e6c13130c6d5419cd65d5a8a"
+          }
+        ],
+        "runtime": {
+          "existing_container_id": "44487c333cab41c597ba00cc6ad955bf0ec72d704ae15c5ac4ba6eda646e3ded",
+          "started_at": "2026-10-24T21:53:03.459345425Z",
+          "health": "healthy",
+          "binary_sha256": "b8cf2492a1716bdce62ee29502c39152fa2574f7253be9e9f016239da76a9fab",
+          "new_binary_loaded": false,
+          "dependencies_recreated": false,
+          "model_endpoints_called": 0
+        },
+        "build_input_count": 2675,
+        "build_inputs_match_current_source": true
+      },
+      "failed_attempts": [
+        {
+          "attempt": 1,
+          "kind": "编译失败",
+          "reason": "两个合成用例的结构体字段缺少[]byte类型。",
+          "resolution": "补类型并重跑；首次file原件用例通过不计入最终三包合计。",
+          "log_sha256": "247daf490b7c2087ede5b6fef372267c790503684fd752701fd0dd72acbfef6c"
+        },
+        {
+          "attempt": 2,
+          "kind": "依赖准备失败",
+          "reason": "HTML转换器可选plugin包带入未缓存frontmatter依赖，GOPROXY=off下失败。",
+          "resolution": "不新增依赖；移除可选plugin导入，改用现有转换器局部规则保留HTML表格；最终离线构建和测试通过。",
+          "log_sha256": "41c3af9e3c2bea99fe9d1620c3a88220f928ef8f5fe4fdb6686f420e6b77f342"
+        }
+      ],
+      "source_files": [
+        {
+          "path": "internal/service/dataset/knowledge_source_collect.go",
+          "sha256": "61555bb2fc25ba9f60a5d4453599277d6551312270968717c56cabaf9714acdc"
+        },
+        {
+          "path": "internal/service/dataset/knowledge_source_collect_test.go",
+          "sha256": "18398e6ddce69500e783ceec9ed60b7368ab049c745597b3fd9414af615c3fe4"
+        },
+        {
+          "path": "internal/service/dataset/knowledge_source_plan.go",
+          "sha256": "1707e4cd6c944623e92cfd84581a3e8f5d82cc6aa47316aa8904b0973120bf23"
+        },
+        {
+          "path": "internal/service/dataset/knowledge_source_plan_test.go",
+          "sha256": "52a59868266360a8c1b351ef456c9c468bf057cda4727fa9940864ea68fe0d38"
+        },
+        {
+          "path": "internal/service/file/source_snapshot_preparation_test.go",
+          "sha256": "2245fe086226ab7325af0f91c7ce1f8ee37f10c89a5086b9810563a9e620f6f8"
+        },
+        {
+          "path": "internal/syncer/connector/knowledge_source.go",
+          "sha256": "0a0fb66da38a34ccfd027e8ed53efc6e8cd7f23ec1d9c95cc7d2d7edaacd4c37"
+        },
+        {
+          "path": "internal/syncer/connector/knowledge_source_test.go",
+          "sha256": "af35ddc7055b12d84a28999ab4971581beafb180ca0985cce4170341609b3f69"
+        }
+      ]
+    },
+    "contracts_and_scope": {
+      "frozen_files": [
+        {
+          "path": "docs/knowledge-sources-v1.openapi.json",
+          "sha256": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091",
+          "unchanged": true
+        },
+        {
+          "path": "docs/knowledge-sources-v1.freeze.json",
+          "sha256": "114bbfa2b4dd51eafc426716032486f666ace8a1a1284f4c1f4c9baf1f1b35c6",
+          "unchanged": true
+        },
+        {
+          "path": "docs/knowledge-sources-v1.example.json",
+          "sha256": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a",
+          "unchanged": true
+        },
+        {
+          "path": "docs/knowledge-foundation-v1.openapi.json",
+          "sha256": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4",
+          "unchanged": true
+        },
+        {
+          "path": "docs/knowledge-foundation-v1.example.json",
+          "sha256": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343",
+          "unchanged": true
+        }
+      ],
+      "shared_entities_changed": false,
+      "routes_changed": false,
+      "frontend_changed": false,
+      "dependencies_changed": false,
+      "new_http_endpoints": 0,
+      "new_shared_models": 0,
+      "new_schema_migrations": 0,
+      "production_wiring": false,
+      "private_preparation_types": "只在原有Go包内使用；prep标识不是正式来源/修订ID，不给B消费。"
+    },
+    "safety_scope": {
+      "synthetic_only": true,
+      "real_source_imports": 0,
+      "external_model_requests": 0,
+      "real_web_fetches": 0,
+      "rsshub_deployed": false,
+      "credentials_loaded_by_tests": false,
+      "credential_values_in_public_report": false,
+      "current_runtime_binary_unchanged": true,
+      "model_request_evidence": "新增组件的调用路径仅本地字节、文件系统、内存SQLite/MemoryStorage；测试未调用运行服务的模型/解析端点。未做独立全环境网络抓包或全局计费证明。"
+    },
+    "documentation": [
+      "docs/stage2a-source-preparation.md",
+      "docs/stage2a-source-preparation-performance.json",
+      "docs/stage2a-c2-verification.json",
+      "docs/stage2a-c2-handoff.md",
+      "README.md",
+      "会话接续说明.md",
+      "本地第二大脑知识库技术方案.md"
+    ],
+    "incomplete_items": [
+      "新目录/二进制/网页来源的正式C2接口、共享模型、原生知识域发布和Web入口，等待双方候选确认。",
+      "完整项目快照的取得/发布、批量异步任务、分页/进度/取消、显式移动/归档/保留/GC仅候选。",
+      "二进制原件未验HTTP下载授权、目标容量、Office打开/渲染或PDF/PPT解析质量；本轮未重跑真实MySQL/MinIO原件实验。",
+      "未验Windows目录联接/网络文件系统、冷盘、百万文件和真实大型代码工作负载；OS文件观察不保证原子项目快照。",
+      "RSSHub真实路由、AIHOT/真实网页抓取、访问/重定向网络授权和正文完整性判定未接入；阅读HTML仍需安全渲染。",
+      "B正式页面/真实联调本轮未核验；阶段2整体未退出，阶段3—6未实施。"
+    ],
+    "adversarial_review": {
+      "outcome": "NotStarted",
+      "user_choice": "不启动多轮审查",
+      "evidence_ref": "request_snapshot"
+    },
+    "delivery": {
+      "target_branch": "codex/stage2a-import",
+      "base_commit": "123482016576fec368104e531c257b6e0e523dd5",
+      "main_unchanged": true,
+      "main_commit": "8aa324e06decc063c141ee3b53614a6d39f15fb5",
+      "b_branch_merged": false,
+      "evidence": "最终交付提交及git远端一致性见本轮最终答复；本报告不自引用尚未创建的提交。"
+    }
   }
 }

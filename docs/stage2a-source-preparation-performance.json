@@ -1,0 +1,138 @@
+{
+  "version": "v0.32",
+  "recorded_at": "2026-10-24T23:40:57.710Z",
+  "scope": "仅合成目录只读采集；Docker Linux测试临时目录。未索引、未调用模型，不代表Windows磁盘或真实仓库性能。",
+  "source_file_hashes": {
+    "internal/service/dataset/knowledge_source_collect.go": "61555bb2fc25ba9f60a5d4453599277d6551312270968717c56cabaf9714acdc",
+    "internal/service/dataset/knowledge_source_collect_test.go": "18398e6ddce69500e783ceec9ed60b7368ab049c745597b3fd9414af615c3fe4",
+    "internal/service/dataset/knowledge_source_plan.go": "1707e4cd6c944623e92cfd84581a3e8f5d82cc6aa47316aa8904b0973120bf23",
+    "internal/service/dataset/knowledge_source_plan_test.go": "52a59868266360a8c1b351ef456c9c468bf057cda4727fa9940864ea68fe0d38",
+    "internal/service/file/source_snapshot_preparation_test.go": "2245fe086226ab7325af0f91c7ce1f8ee37f10c89a5086b9810563a9e620f6f8",
+    "internal/syncer/connector/knowledge_source.go": "0a0fb66da38a34ccfd027e8ed53efc6e8cd7f23ec1d9c95cc7d2d7edaacd4c37",
+    "internal/syncer/connector/knowledge_source_test.go": "af35ddc7055b12d84a28999ab4971581beafb180ca0985cce4170341609b3f69"
+  },
+  "observations_per_size": 3,
+  "file_size_bytes": 256,
+  "measurement": "elapsed_ms为单次完整采集（含清单摘要）的墙钟耗时；文件生成不计入。allocated_bytes为Go累计分配差值，HeapAlloc是采集前后堆，RSS/HWM为整个测试进程且HWM累计，不是组件独立峰值。",
+  "not_claimed": [
+    "在线p95",
+    "冷盘性能",
+    "百万级文件",
+    "真实大型代码文件工作负载",
+    "Windows目录联接"
+  ],
+  "results": [
+    {
+      "files": 1000,
+      "goarch": "amd64",
+      "goos": "linux",
+      "note": "Synthetic files; 3 observations per benchmark iteration; process memory includes package/test runtime, HWM is cumulative; not p95 or a million-file test.",
+      "rows": [
+        {
+          "allocated_bytes": 4320304,
+          "elapsed_ms": 13.531,
+          "files": 1000,
+          "heap_alloc_after": 14142328,
+          "heap_alloc_before": 9822024,
+          "manifest_sha256": "af9cffb6fef003be79d515bbef8cbf93d27efd31682e01679a5f79f8892bc530",
+          "process_memory": {
+            "VmHWM": "88664 kB",
+            "VmRSS": "88664 kB"
+          },
+          "round": 1,
+          "source_bytes": 256000
+        },
+        {
+          "allocated_bytes": 3115400,
+          "elapsed_ms": 16.677,
+          "files": 1000,
+          "heap_alloc_after": 17267968,
+          "heap_alloc_before": 14152568,
+          "manifest_sha256": "af9cffb6fef003be79d515bbef8cbf93d27efd31682e01679a5f79f8892bc530",
+          "process_memory": {
+            "VmHWM": "91800 kB",
+            "VmRSS": "91800 kB"
+          },
+          "round": 2,
+          "source_bytes": 256000
+        },
+        {
+          "allocated_bytes": 4316888,
+          "elapsed_ms": 12.448,
+          "files": 1000,
+          "heap_alloc_after": 13423320,
+          "heap_alloc_before": 17278216,
+          "manifest_sha256": "af9cffb6fef003be79d515bbef8cbf93d27efd31682e01679a5f79f8892bc530",
+          "process_memory": {
+            "VmHWM": "93100 kB",
+            "VmRSS": "93100 kB"
+          },
+          "round": 3,
+          "source_bytes": 256000
+        }
+      ],
+      "runtime": "go1.27.3",
+      "summary": {
+        "min_ms": 12.448,
+        "median_ms": 13.531,
+        "max_ms": 16.677
+      }
+    },
+    {
+      "files": 10000,
+      "goarch": "amd64",
+      "goos": "linux",
+      "note": "Synthetic files; 3 observations per benchmark iteration; process memory includes package/test runtime, HWM is cumulative; not p95 or a million-file test.",
+      "rows": [
+        {
+          "allocated_bytes": 46573664,
+          "elapsed_ms": 142.608,
+          "files": 10000,
+          "heap_alloc_after": 24333752,
+          "heap_alloc_before": 15943584,
+          "manifest_sha256": "dc4d7b77f4c9947686e52f36af5a5b435b68b2071f4b8514513aa117d377b13a",
+          "process_memory": {
+            "VmHWM": "110952 kB",
+            "VmRSS": "110952 kB"
+          },
+          "round": 1,
+          "source_bytes": 2560000
+        },
+        {
+          "allocated_bytes": 46563672,
+          "elapsed_ms": 132.668,
+          "files": 10000,
+          "heap_alloc_after": 20945200,
+          "heap_alloc_before": 24343992,
+          "manifest_sha256": "dc4d7b77f4c9947686e52f36af5a5b435b68b2071f4b8514513aa117d377b13a",
+          "process_memory": {
+            "VmHWM": "111148 kB",
+            "VmRSS": "111148 kB"
+          },
+          "round": 2,
+          "source_bytes": 2560000
+        },
+        {
+          "allocated_bytes": 46557712,
+          "elapsed_ms": 143.287,
+          "files": 10000,
+          "heap_alloc_after": 24336840,
+          "heap_alloc_before": 20955448,
+          "manifest_sha256": "dc4d7b77f4c9947686e52f36af5a5b435b68b2071f4b8514513aa117d377b13a",
+          "process_memory": {
+            "VmHWM": "111128 kB",
+            "VmRSS": "111128 kB"
+          },
+          "round": 3,
+          "source_bytes": 2560000
+        }
+      ],
+      "runtime": "go1.27.3",
+      "summary": {
+        "min_ms": 132.668,
+        "median_ms": 142.608,
+        "max_ms": 143.287
+      }
+    }
+  ]
+}
