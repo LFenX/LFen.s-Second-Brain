@@ -1,0 +1,180 @@
+{
+  "version": 1,
+  "verified_at": "2026-10-24T16:30:31.822Z",
+  "timezone": "Asia/Singapore",
+  "role": "B",
+  "branch": "codex/stage1b-catalogue",
+  "baseline_commit": "9bd92ba",
+  "contract_version": "1.0.0",
+  "contracts": [
+    "C1",
+    "C3"
+  ],
+  "acceptance": {
+    "frontend_implementation": "DeliveredForReview",
+    "consumer_tests": "Passed",
+    "real_backend_page_roundtrip": "Pending",
+    "full_stage1_exit": "Pending",
+    "user_acceptance": "Pending",
+    "stage2_implementation": "NotStarted"
+  },
+  "publication": {
+    "status": "PreparedForPush",
+    "source_commit": null,
+    "remote_branch_verified": false
+  },
+  "scope": {
+    "backend_changes": false,
+    "shared_contract_changes": false,
+    "migration_changes": false,
+    "new_python_application_logic": false,
+    "aics_extraction": false,
+    "model_inference_calls": 0,
+    "dataset_or_volume_reset": false,
+    "exchanged_credentials": false
+  },
+  "validation": {
+    "format": {
+      "command": "oxfmt --check <15 changed Web files>",
+      "result": "Passed",
+      "files": 15
+    },
+    "lint": {
+      "command": "oxlint <15 changed Web files>",
+      "result": "Passed",
+      "warnings": 0
+    },
+    "jest": {
+      "command": "node node_modules/jest/bin/jest.js --runInBand --no-coverage --runTestsByPath src/services/knowledge-foundation-service.test.ts src/pages/dataset/knowledge-catalogue/__tests__/catalogue.test.tsx",
+      "suites": 2,
+      "passed": 29,
+      "failed": 0,
+      "transport": "Mock",
+      "result": "Passed"
+    },
+    "types": {
+      "command": "tsc --noEmit",
+      "full_check": "Failed",
+      "baseline_errors": 207,
+      "current_errors": 207,
+      "changed_file_errors": 0,
+      "complete_diagnostics_equal_after_removing_positions": true,
+      "regression": "None"
+    },
+    "build": {
+      "command": "VITE_BUILD_SOURCEMAP=false VITE_MINIFY=esbuild NODE_OPTIONS=--max-old-space-size=8192 npm run build",
+      "result": "Passed",
+      "production_entry": "Existing web/index.html",
+      "fixture_in_product": false
+    },
+    "visual": {
+      "result": "Passed",
+      "input": "Public synthetic fixture, HTTP responses intercepted in isolated browser",
+      "view": "Knowledge catalogue component, without native Dataset wrapper/login",
+      "locale": "zh-Hans",
+      "viewports": [
+        "1440x1000",
+        "390x844"
+      ],
+      "evidence": [
+        "docs/stage1b-catalogue-desktop.png",
+        "docs/stage1b-catalogue-narrow.png"
+      ],
+      "real_backend": false
+    },
+    "native": {
+      "result": "BuildAndHelpPassed",
+      "source_baseline": "9bd92ba",
+      "go": "1.27.3",
+      "compiler_linker": "Clang/LLD 20.1.2",
+      "cmake": "4.4.4",
+      "cpp_command": "bash build.sh --cpp",
+      "go_command": "bash build.sh --go",
+      "server_sha256": "d50d289daa66ad2b105692520f5076aa17436de665c0743d806d7265713fa1e4",
+      "first_mounted_disk_api_help": "Timeout(20s)",
+      "all_mode_startup": "Passed on WSL ext4 copy: api/admin/ingestor/syncer --help, expected exit 1 and help output",
+      "deployed": false
+    }
+  },
+  "evidence": {
+    "source_snapshot": "Public source copied to isolated temporary workspace; all changed Web files SHA-256 equal",
+    "source_manifest": [
+      {
+        "file": "web/src/hooks/use-knowledge-foundation.ts",
+        "sha256": "ba49649a635962cd6be86c11585cc292a8b583e97fe5591a3c3acb907c5fc20e"
+      },
+      {
+        "file": "web/src/interfaces/database/knowledge-foundation.ts",
+        "sha256": "89e7d476225b3fdcd9248fcb65bbe768586e8f14969dc752993e82added787aa"
+      },
+      {
+        "file": "web/src/interfaces/request/knowledge-foundation.ts",
+        "sha256": "1de200d6baa66ff63fabedb871b42e20fef5879fc63c2d150f799f7a7d6499ad"
+      },
+      {
+        "file": "web/src/locales/en.ts",
+        "sha256": "f4ecad7e019679b90c4905fd112821f4b965f16b1c5ea410075d786648ce345b"
+      },
+      {
+        "file": "web/src/locales/zh.ts",
+        "sha256": "d7948a97dd3c2e025c29295448f39a8708dde114ce29faceb7c4bcef2b6ec929"
+      },
+      {
+        "file": "web/src/pages/dataset/knowledge-catalogue/__tests__/catalogue.test.tsx",
+        "sha256": "83c3817b912a19495db7fabcda89e8674f0e5c5fb798e0c25cd554c382159d49"
+      },
+      {
+        "file": "web/src/pages/dataset/knowledge-catalogue/__tests__/fixture.ts",
+        "sha256": "1eb8c5fd89c7fe0250207fe87a7bdcc391168a6b653f53098b7af5c7f1b495c2"
+      },
+      {
+        "file": "web/src/pages/dataset/knowledge-catalogue/content.tsx",
+        "sha256": "4f44bd04e57196916cd4feed5dbb1004d965767372e1f54de0c29ac59c117617"
+      },
+      {
+        "file": "web/src/pages/dataset/knowledge-catalogue/index.tsx",
+        "sha256": "3bf861bad1d5b927e3021d88aa8e163196243d4cfa0a3afad2a16dc378d1daba"
+      },
+      {
+        "file": "web/src/pages/dataset/knowledge-catalogue/state.tsx",
+        "sha256": "c3bdd055421911cc9c33f1217214e2b78501d1dd8b889f02c1b16626fec149b8"
+      },
+      {
+        "file": "web/src/pages/dataset/sidebar/index.tsx",
+        "sha256": "291a506d545bba2e07f4ff673fe8edab922909cc4441ac87fa56bf2ef739f4b4"
+      },
+      {
+        "file": "web/src/routes.tsx",
+        "sha256": "39ada5fcf2cb25eea53ff5634818819479d17974e50806410ecfdce19fd310c3"
+      },
+      {
+        "file": "web/src/services/knowledge-foundation-service.test.ts",
+        "sha256": "02309b4114ab781aa4d90e8693b2b612708e88adcf5d9b9e935f14cbb8841a33"
+      },
+      {
+        "file": "web/src/services/knowledge-foundation-service.ts",
+        "sha256": "a1c668542177803d09d594d8d38607467d42b08c48603a3eb35ed16b6417831a"
+      },
+      {
+        "file": "web/src/utils/knowledge-foundation-schema.ts",
+        "sha256": "1a68cab417a36713a602a64f65733c5f684811467757a8e0ac150b76ba58bdc4"
+      }
+    ],
+    "shared_contract_sha256": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4",
+    "fixture_sha256": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343",
+    "raw_log_sha256": {
+      "jest": "6a531140b7e1b918c8224d7141dd327c608f7c5b29506182a03524901ab6bac0",
+      "type-check": "c547e9ba6518eab2816ef104c4021a3935db242962a8d0aaf3f6f2f418d252ca",
+      "type-check-baseline": "c547e9ba6518eab2816ef104c4021a3935db242962a8d0aaf3f6f2f418d252ca",
+      "build": "93888c28e3a0b4d9385d6f8f2437c0957ebb35e26520b6874af1a5407a36822d"
+    },
+    "log_excerpt": "2 test suites passed; 29 tests passed; production build completed. Full type diagnostics match main baseline (207 existing errors).",
+    "raw_logs": "Ignored .local-data/stage1b; no private configuration or logs published"
+  },
+  "remaining": [
+    "Real Go/MySQL/MinIO/authenticated-page vertical roundtrip in A existing runtime",
+    "Full Dataset wrapper/login visual and runtime integration",
+    "Joint stage1 exit and user acceptance",
+    "207 existing main type-check errors remain outside this delivery"
+  ]
+}

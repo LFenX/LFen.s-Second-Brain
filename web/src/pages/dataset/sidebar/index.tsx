@@ -32,6 +32,11 @@ export function SideBar({ dataset: data }: PropType) {
   const items = useMemo(() => {
     const list = [
       {
+        icon: <LucideBookText className="size-[1em]" />,
+        label: t('knowledgeCatalogue.title'),
+        key: Routes.KnowledgeCatalogue,
+      },
+      {
         icon: <LucideFolderOpen className="size-[1em]" />,
         label: t(`knowledgeDetails.subbarFiles`),
         key: Routes.Files,

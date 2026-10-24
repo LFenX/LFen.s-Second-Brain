@@ -1,5 +1,60 @@
 export default {
   translation: {
+    knowledgeCatalogue: {
+      title: 'Knowledge catalogue',
+      loading: 'Loading knowledge catalogue…',
+      failed: 'Unable to load. Please retry.',
+      notVisible:
+        'This content is unavailable, is not a registered domain, or is not accessible to your account.',
+      conflict:
+        'The contract or source revision changed. Refresh the catalogue and select the source again.',
+      requestId: 'Request ID',
+      retry: 'Refresh and retry',
+      empty: 'No content',
+      emptyGroups: 'No projects, topics or modules at this level.',
+      emptySources: 'No registered sources in this scope.',
+      emptyNodes:
+        'No child nodes. Automatic syntax parsing is not available yet.',
+      more: 'Load more',
+      original: 'Original revision',
+      path: 'Source path',
+      revision: 'Source revision',
+      range: 'Byte range',
+      lines: 'Lines',
+      nodeRange: 'Full node range',
+      previous: 'Previous range',
+      next: 'Next range',
+      windowHint:
+        'Up to 64 KiB per range, using original UTF-8 bytes and preserving whitespace.',
+      project: 'Project',
+      topic: 'Topic',
+      module: 'Module',
+      frontend: 'Frontend',
+      backend: 'Backend',
+      shared: 'Shared',
+      cli: 'CLI',
+      non_code: 'Non-code',
+      unknownLanguage: 'Unspecified language',
+      children: 'Child nodes',
+      file: 'File',
+      section: 'Section',
+      symbol: 'Symbol',
+      passage: 'Passage',
+      parentNode: 'Parent node',
+      refresh: 'Refresh catalogue',
+      policy:
+        'Owner only · Catalogue / original · Models disabled · No automatic parsing',
+      policyVersion: 'Policy version',
+      structure: 'Knowledge structure',
+      allSources: 'All domain sources',
+      parentGroup: 'Parent group',
+      groups: 'Projects / topics / modules',
+      sources: 'Sources',
+      selectSource:
+        'Select a source to browse nodes and read the original revision.',
+      datasets: 'Back to datasets',
+    },
+
     common: {
       confirm: 'Confirm',
       back: 'Back',
