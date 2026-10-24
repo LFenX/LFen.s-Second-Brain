@@ -246,3 +246,38 @@ func TestKnowledgeImportRejectsExcludedAndUnauthorized(t *testing.T) {
 	_, err = s.GetKnowledgeImportPreview(t.Context(), knowledgeTestOwner, knowledgeTestOther, reg.ID, p.ID)
 	assertKnowledgeStatus(t, err, 404)
 }
+
+func TestKnowledgeImportRevokedOwnerIsHidden(t *testing.T) {
+	s, _, reg := setupKnowledgeImportTest(t)
+	first := commitKnowledgeTest(t, s, reg, previewKnowledgeTest(t, s, reg, "// synthetic original\n"), "first")
+	p := previewKnowledgeTest(t, s, reg, "// synthetic update\n")
+	if err := dao.DB.Model(&entity.UserTenant{}).Where("user_id = ? AND tenant_id = ?", knowledgeTestOwner, knowledgeTestOwner).Update("status", "0").Error; err != nil {
+		t.Fatal(err)
+	}
+	_, err := s.GetKnowledgeRegistration(t.Context(), knowledgeTestOwner, reg.DomainID, reg.ID)
+	assertKnowledgeStatus(t, err, 404)
+	_, err = s.GetKnowledgeImportPreview(t.Context(), knowledgeTestOwner, reg.DomainID, reg.ID, p.ID)
+	assertKnowledgeStatus(t, err, 404)
+	_, err = s.GetKnowledgeImport(t.Context(), knowledgeTestOwner, reg.DomainID, reg.ID, first.ID)
+	assertKnowledgeStatus(t, err, 404)
+	_, err = s.ReadKnowledgeNode(t.Context(), knowledgeTestOwner, reg.DomainID, *first.Items[0].RootNodeID, nil, nil)
+	assertKnowledgeStatus(t, err, 404)
+	_, _, err = s.CommitKnowledgeImport(t.Context(), knowledgeTestOwner, reg.DomainID, reg.ID, entity.CommitKnowledgeImportRequest{PreviewID: p.ID, ManifestSHA256: p.ManifestSHA256, IdempotencyKey: "blocked"})
+	assertKnowledgeStatus(t, err, 404)
+	var n int64
+	if err := dao.DB.Model(&entity.KnowledgeImport{}).Count(&n).Error; err != nil || n != 1 {
+		t.Fatalf("revoked commit published: receipts=%d err=%v", n, err)
+	}
+}
+
+func TestKnowledgeImportMembershipDatabaseFailureRemainsError(t *testing.T) {
+	s, _, reg := setupKnowledgeImportTest(t)
+	if err := dao.DB.Migrator().DropTable(&entity.UserTenant{}); err != nil {
+		t.Fatal(err)
+	}
+	_, err := s.GetKnowledgeRegistration(t.Context(), knowledgeTestOwner, reg.DomainID, reg.ID)
+	var public *KnowledgeError
+	if err == nil || errors.As(err, &public) {
+		t.Fatalf("database failure was hidden as an authorization response: %v", err)
+	}
+}

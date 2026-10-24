@@ -1,0 +1,519 @@
+{
+  "version": "stage2a-c2-performance-1",
+  "recorded_at": "2026-10-24T21:36:52.711Z",
+  "status": "MeasuredSmallSample_NoSLAClaim",
+  "contract_version": "0.2.0",
+  "baseline_commit": "657ebd77d23a7716f8f76b8f54822f8baed821e7",
+  "tested_binary_sha256": "759aaeacac158720ce7c0c1c9c217894367718d1bf617a43d20953d6f1c11577",
+  "source_manifest": [
+    {
+      "file": "internal/service/dataset/knowledge.go",
+      "sha256": "3cfa5439c11fdf20f71da2ae9b1dcda8ae85ab63b9cc994a32f2d94654624043"
+    },
+    {
+      "file": "internal/service/dataset/knowledge_import_test.go",
+      "sha256": "f354c463984fd0ad815e7c0308e41ecb895e75342d1487c8896895cfea19a22d"
+    },
+    {
+      "file": "internal/service/dataset/knowledge_import_integration_test.go",
+      "sha256": "04dc5f469b71a71f6853934a8340ba8b45ea0ae829983f3967a1f6e6a5a0fa7b"
+    },
+    {
+      "file": "internal/handler/knowledge_import_test.go",
+      "sha256": "b9e1bf55b77348c08854115a3028a42b8871bc3d2fd7800300b6776ff8e99b0f"
+    },
+    {
+      "file": "internal/dao/knowledge_migration_integration_test.go",
+      "sha256": "b4055fbd62377d50fed665076d19a9bdcd8beaac3ed021eb9dae843bdd41c4a7"
+    },
+    {
+      "file": "tools/scripts/knowledge_import_poc.mjs",
+      "sha256": "95d2338e9eb822ec30971e6c69c011b1c66d638b80fe777d11f443822b14f12e"
+    }
+  ],
+  "synthetic_only": true,
+  "model_calls": 0,
+  "environment": {
+    "at": "2026-10-24T21:26:34.495Z",
+    "docker": {
+      "os": "Docker Desktop (containerized)",
+      "kernel": "6.18.54.1-microsoft-standard-WSL2",
+      "architecture": "x86_64",
+      "cpus": 24,
+      "memory_total_bytes": 33372991488
+    },
+    "app_limits": {
+      "memory_bytes": 0,
+      "nano_cpus": 0,
+      "cpu_quota": 0
+    },
+    "sampling": "Go进程RSS每秒采样；Node客户端内存单独报告；同一域不同登记，包含域行锁竞争；其余现有服务保持运行"
+  },
+  "method": {
+    "source_bytes": [
+      1024,
+      65536,
+      524288,
+      2097152
+    ],
+    "concurrency": [
+      1,
+      3
+    ],
+    "scope": "同一域内不同来源登记，包含域行锁竞争；顺序按大小递增，每大小先1后3",
+    "operations": [
+      "preview",
+      "create",
+      "unchanged",
+      "read_64k_or_less"
+    ],
+    "timed_samples_per_series": 20,
+    "warmups_per_size_concurrency": 1,
+    "timing_series": 32,
+    "measured_operations": 640,
+    "total_http_requests_including_setup": 1010,
+    "elapsed_ms": 26535,
+    "registration_and_prerequisite_requests_excluded_from_latency_series": true,
+    "read_range": "每次最多65536字节，非大文件整文下载耗时",
+    "workload": "各登记新增一个独立来源，同一内容不跨登记合并；三并发不是批量导入API"
+  },
+  "results": [
+    {
+      "source_bytes": 1024,
+      "concurrency": 1,
+      "scope": "same_domain_different_registrations",
+      "operation": "preview",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 17.753550000000132,
+      "min_ms": 12.940799999999967,
+      "max_ms": 26.591600000000028,
+      "mean_ms": 17.665030000000016,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 1024,
+      "concurrency": 1,
+      "scope": "same_domain_different_registrations",
+      "operation": "create",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 39.95349999999996,
+      "min_ms": 30.882499999999936,
+      "max_ms": 63.443700000000035,
+      "mean_ms": 41.943849999999976,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 1024,
+      "concurrency": 1,
+      "scope": "same_domain_different_registrations",
+      "operation": "unchanged",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 20.71095000000014,
+      "min_ms": 16.784900000000107,
+      "max_ms": 32.573800000000006,
+      "mean_ms": 21.887810000000044,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 1024,
+      "concurrency": 1,
+      "scope": "same_domain_different_registrations",
+      "operation": "read_64k_or_less",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 10.689350000000104,
+      "min_ms": 8.58789999999999,
+      "max_ms": 14.226099999999974,
+      "mean_ms": 10.841380000000033,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 1024,
+      "concurrency": 3,
+      "scope": "same_domain_different_registrations",
+      "operation": "preview",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 19.737199999999802,
+      "min_ms": 15.176799999999275,
+      "max_ms": 24.51700000000028,
+      "mean_ms": 20.02900500000003,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 1024,
+      "concurrency": 3,
+      "scope": "same_domain_different_registrations",
+      "operation": "create",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 62.80664999999999,
+      "min_ms": 34.99300000000039,
+      "max_ms": 106.30870000000004,
+      "mean_ms": 65.26785500000005,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 1024,
+      "concurrency": 3,
+      "scope": "same_domain_different_registrations",
+      "operation": "unchanged",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 27.401999999999816,
+      "min_ms": 16.10239999999976,
+      "max_ms": 33.59010000000035,
+      "mean_ms": 26.52005000000015,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 1024,
+      "concurrency": 3,
+      "scope": "same_domain_different_registrations",
+      "operation": "read_64k_or_less",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 9.448199999999815,
+      "min_ms": 8.263300000000072,
+      "max_ms": 13.79569999999967,
+      "mean_ms": 9.787294999999972,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 65536,
+      "concurrency": 1,
+      "scope": "same_domain_different_registrations",
+      "operation": "preview",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 18.094900000000507,
+      "min_ms": 14.1829000000007,
+      "max_ms": 24.244300000000294,
+      "mean_ms": 18.997695000000068,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 65536,
+      "concurrency": 1,
+      "scope": "same_domain_different_registrations",
+      "operation": "create",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 39.38624999999956,
+      "min_ms": 32.05659999999989,
+      "max_ms": 65.65880000000016,
+      "mean_ms": 41.35618499999996,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 65536,
+      "concurrency": 1,
+      "scope": "same_domain_different_registrations",
+      "operation": "unchanged",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 20.0624499999999,
+      "min_ms": 16.003899999999703,
+      "max_ms": 26.922099999999773,
+      "mean_ms": 20.664219999999887,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 65536,
+      "concurrency": 1,
+      "scope": "same_domain_different_registrations",
+      "operation": "read_64k_or_less",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 11.548899999999776,
+      "min_ms": 9.623399999999492,
+      "max_ms": 16.79910000000018,
+      "mean_ms": 11.678829999999788,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 65536,
+      "concurrency": 3,
+      "scope": "same_domain_different_registrations",
+      "operation": "preview",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 24.236849999999322,
+      "min_ms": 17.207099999999627,
+      "max_ms": 32.91710000000057,
+      "mean_ms": 24.474604999999976,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 65536,
+      "concurrency": 3,
+      "scope": "same_domain_different_registrations",
+      "operation": "create",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 72.0943000000002,
+      "min_ms": 40.06240000000071,
+      "max_ms": 130.11430000000018,
+      "mean_ms": 80.1683899999999,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 65536,
+      "concurrency": 3,
+      "scope": "same_domain_different_registrations",
+      "operation": "unchanged",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 36.36760000000004,
+      "min_ms": 24.913300000000163,
+      "max_ms": 47.00730000000112,
+      "mean_ms": 37.91915999999992,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 65536,
+      "concurrency": 3,
+      "scope": "same_domain_different_registrations",
+      "operation": "read_64k_or_less",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 12.696399999999812,
+      "min_ms": 10.330599999999322,
+      "max_ms": 16.6903999999995,
+      "mean_ms": 12.651314999999931,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 524288,
+      "concurrency": 1,
+      "scope": "same_domain_different_registrations",
+      "operation": "preview",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 30.035750000000007,
+      "min_ms": 24.434800000000905,
+      "max_ms": 41.531300000000556,
+      "mean_ms": 30.70194500000007,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 524288,
+      "concurrency": 1,
+      "scope": "same_domain_different_registrations",
+      "operation": "create",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 57.532100000000355,
+      "min_ms": 47.796299999999974,
+      "max_ms": 84.16400000000067,
+      "mean_ms": 57.9118550000001,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 524288,
+      "concurrency": 1,
+      "scope": "same_domain_different_registrations",
+      "operation": "unchanged",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 26.225550000000112,
+      "min_ms": 19.449899999999616,
+      "max_ms": 38.139499999999316,
+      "mean_ms": 26.445704999999908,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 524288,
+      "concurrency": 1,
+      "scope": "same_domain_different_registrations",
+      "operation": "read_64k_or_less",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 13.210799999999836,
+      "min_ms": 11.275499999999738,
+      "max_ms": 17.615499999999884,
+      "mean_ms": 13.468874999999752,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 524288,
+      "concurrency": 3,
+      "scope": "same_domain_different_registrations",
+      "operation": "preview",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 38.6902999999993,
+      "min_ms": 28.667199999999866,
+      "max_ms": 57.51429999999891,
+      "mean_ms": 38.76552499999998,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 524288,
+      "concurrency": 3,
+      "scope": "same_domain_different_registrations",
+      "operation": "create",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 104.26309999999921,
+      "min_ms": 67.21689999999944,
+      "max_ms": 163.5095999999994,
+      "mean_ms": 106.25989499999996,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 524288,
+      "concurrency": 3,
+      "scope": "same_domain_different_registrations",
+      "operation": "unchanged",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 47.770400000000336,
+      "min_ms": 30.070700000000215,
+      "max_ms": 77.20050000000083,
+      "mean_ms": 46.812604999999984,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 524288,
+      "concurrency": 3,
+      "scope": "same_domain_different_registrations",
+      "operation": "read_64k_or_less",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 12.917250000000422,
+      "min_ms": 11.407200000001467,
+      "max_ms": 19.526099999999133,
+      "mean_ms": 13.362860000000092,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 2097152,
+      "concurrency": 1,
+      "scope": "same_domain_different_registrations",
+      "operation": "preview",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 61.85844999999972,
+      "min_ms": 54.1778000000013,
+      "max_ms": 75.26699999999983,
+      "mean_ms": 62.18862999999983,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 2097152,
+      "concurrency": 1,
+      "scope": "same_domain_different_registrations",
+      "operation": "create",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 91.18920000000071,
+      "min_ms": 57.929700000000594,
+      "max_ms": 122.35479999999734,
+      "mean_ms": 90.86206000000001,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 2097152,
+      "concurrency": 1,
+      "scope": "same_domain_different_registrations",
+      "operation": "unchanged",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 39.37299999999959,
+      "min_ms": 25.698700000000827,
+      "max_ms": 61.46089999999822,
+      "mean_ms": 41.44509500000022,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 2097152,
+      "concurrency": 1,
+      "scope": "same_domain_different_registrations",
+      "operation": "read_64k_or_less",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 15.524250000000393,
+      "min_ms": 13.494200000001001,
+      "max_ms": 24.03780000000188,
+      "mean_ms": 16.061485000000356,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 2097152,
+      "concurrency": 3,
+      "scope": "same_domain_different_registrations",
+      "operation": "preview",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 90.82390000000123,
+      "min_ms": 59.27649999999994,
+      "max_ms": 177.5695999999989,
+      "mean_ms": 95.41703500000058,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 2097152,
+      "concurrency": 3,
+      "scope": "same_domain_different_registrations",
+      "operation": "create",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 203.17280000000028,
+      "min_ms": 130.08499999999913,
+      "max_ms": 282.1850000000013,
+      "mean_ms": 206.9127399999996,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 2097152,
+      "concurrency": 3,
+      "scope": "same_domain_different_registrations",
+      "operation": "unchanged",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 108.75480000000061,
+      "min_ms": 52.23199999999997,
+      "max_ms": 184.12159999999858,
+      "mean_ms": 114.29892499999933,
+      "p95_sla_claim": false
+    },
+    {
+      "source_bytes": 2097152,
+      "concurrency": 3,
+      "scope": "same_domain_different_registrations",
+      "operation": "read_64k_or_less",
+      "n": 20,
+      "successes": 20,
+      "median_ms": 17.093249999999898,
+      "min_ms": 14.575700000001234,
+      "max_ms": 24.99620000000141,
+      "mean_ms": 17.859660000000076,
+      "p95_sla_claim": false
+    }
+  ],
+  "client_memory": {
+    "peak_rss_bytes": 141754368,
+    "peak_heap_used_bytes": 44006864,
+    "scope": "Node verification client, not backend"
+  },
+  "backend_memory": {
+    "scope": "Sum of RSS of all four Go modes, not unique physical memory; includes shared pages",
+    "interval_ms": 1000,
+    "samples": 28,
+    "first_rss_bytes": 874999808,
+    "final_rss_bytes": 1011339264,
+    "peak_rss_bytes": 1028890624,
+    "failed_samples": 0
+  },
+  "limitations": [
+    "每组20次，未宣称p95达标或建立SLA。",
+    "只有单文件导入/读取，不是检索或生成性能，也不是百万级验证。",
+    "原有服务保持运行，未做独立硬件负载隔离；RSS为四个Go模式之和，含共享页重复计算。",
+    "Node内存单独计量，不冒充后端内存。",
+    "测试域、来源和对象保留供复核，没有实施自动回收策略。"
+  ]
+}

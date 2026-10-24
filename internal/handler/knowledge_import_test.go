@@ -2,12 +2,31 @@ package handler
 
 import (
 	"encoding/json"
+	"errors"
 	"github.com/gin-gonic/gin"
 	"net/http/httptest"
 	"ragflow/internal/entity"
 	"strings"
 	"testing"
 )
+
+func TestKnowledgeImportInternalFailureHidesDetails(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	r := gin.New()
+	r.POST("/import", func(c *gin.Context) {
+		c.Set("knowledge_source_contract", true)
+		knowledgeFailure(c, errors.New("synthetic SQL and storage internal details"))
+	})
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, httptest.NewRequest("POST", "/import", nil))
+	if w.Code != 500 || strings.Contains(w.Body.String(), "synthetic SQL") {
+		t.Fatalf("internal failure leaked or was hidden as success: status=%d", w.Code)
+	}
+	var body map[string]any
+	if err := json.Unmarshal(w.Body.Bytes(), &body); err != nil || body["code"] != "knowledge_internal" || body["data"] != nil || body["source_contract_version"] != "0.2.0" {
+		t.Fatalf("unexpected internal failure envelope: %v", err)
+	}
+}
 
 func TestKnowledgeImportHandlerVersionAndSchema(t *testing.T) {
 	for _, tc := range []struct {

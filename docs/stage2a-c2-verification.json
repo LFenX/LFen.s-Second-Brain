@@ -397,5 +397,342 @@
     "http_trace_sha256": "b8e5f4a5053bd3bb679b999ded7b8563cd89069d3521c5b7fcbd26f85bf987e5",
     "openapi_sha256": "648454d04e1769adc9bfa9245efc439696a7dd21b65cf3cf243e28450166e1c1",
     "examples_sha256": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a"
-  }
+  },
+  "current_status": "SixItemsEngineeringVerified_C2Unchanged_BReviewComplete_AwaitingJointFreeze",
+  "current_followup": {
+    "version": "v0.30",
+    "recorded_at": "2026-10-24T21:36:52.711Z",
+    "request_snapshot": "那就按这个顺序推进这6项，保持C2候选契约不变，只补验证缺口和必要修复。涉及契约语义的问题先记录，等B反馈后统一处理。继续只用合成资料、不调用模型、不启动多轮审查；完成后更新验证报告和交接说明，推送到codex/stage2a-import，暂不合并main。",
+    "steering_messages": [
+      {
+        "quote": "B开发者已经完成你上一轮给出的任务。",
+        "action": "读取远端c6321b5反馈，仅记录并补交接说明，未冻结契约或合并B分支。"
+      }
+    ],
+    "objective": "补齐六项可靠性验证与复现，保持C2和main不变。",
+    "status": "SixItemsEngineeringVerified_C2Unchanged_BReviewComplete_AwaitingJointFreeze",
+    "baseline_commit": "657ebd77d23a7716f8f76b8f54822f8baed821e7",
+    "clarification": {
+      "state": "Settled",
+      "notice": "需求与现状一致，本次跳过补充提问。",
+      "survey_refs": [
+        "docs/stage2a-c2-handoff.md",
+        "docs/stage2a-c2-verification.json",
+        "internal/service/dataset/knowledge_import.go"
+      ],
+      "basis": "用户明确批准六项及范围。"
+    },
+    "proceed": {
+      "outcome": "Approved",
+      "source": "本轮用户消息",
+      "response": "那就按这个顺序推进这6项"
+    },
+    "user_decision": {
+      "outcome": "Pending"
+    },
+    "plan_order": [
+      "合成样本与可重复工具",
+      "真实MySQL并发幂等",
+      "存储/数据库故障与恢复",
+      "权限/输入/禁模型补测",
+      "四种大小/两档并发/每场景20次基线",
+      "构建、重复迁移、隔离恢复、交接"
+    ],
+    "requirement_coverage": [
+      {
+        "quote": "按这个顺序推进这6项",
+        "status": "已完成",
+        "evidence": "six_items，按1至6完成；第4项修复后先构建加载，再测第5项。"
+      },
+      {
+        "quote": "保持C2候选契约不变，只补验证缺口和必要修复",
+        "status": "已验证",
+        "evidence": "C2 OpenAPI/示例、C1/C3、entity和router摘要不变；仅knowledgeBase补活动成员资格检查。"
+      },
+      {
+        "quote": "涉及契约语义的问题先记录，等B反馈后统一处理",
+        "status": "已记录",
+        "evidence": "已接收B的NB-01/02/03；细分冲突码后置，容量和格式仅补说明，无schema变化。"
+      },
+      {
+        "quote": "继续只用合成资料",
+        "status": "已遵守",
+        "evidence": "脚本生成的文本/代码、隔离MySQL数据库、任务私有MinIO桶；未打开或导入真实AICS/AOCI/文档/网站。"
+      },
+      {
+        "quote": "不调用模型",
+        "status": "已验证对应路径",
+        "evidence": "HTTP入口白名单、Go测试默认HTTP出口哨兵0、解析任务0、原生模型配置/用量指纹不变；无独立系统级抓包。"
+      },
+      {
+        "quote": "不启动多轮审查",
+        "status": "已遵守",
+        "evidence": "未启动审查或子Agent；修复后的定向回归属于工程验证。"
+      },
+      {
+        "quote": "更新验证报告和交接说明",
+        "status": "已保存",
+        "evidence": "本followup、stage2a-c2-handoff.md及stage2a-c2-performance.json；旧报告顶层保留v0.29时点。"
+      },
+      {
+        "quote": "推送到codex/stage2a-import，暂不合并main",
+        "status": "待发布核对",
+        "evidence": "只提交/推送候选分支；不合并main或B交付分支。"
+      }
+    ],
+    "six_items": [
+      {
+        "id": 1,
+        "name": "合成样本与重复验证工具",
+        "status": "Passed",
+        "actual": "新增Node入口，动态创建域/登记/来源；8类合成文本/代码，UTF-8/BOM/emoji/CRLF/空文件/跨64KiB回读；37次HTTP、9组断言。"
+      },
+      {
+        "id": 2,
+        "name": "真实MySQL并发/幂等",
+        "status": "Passed",
+        "actual": "5轮、每场景8路：同键登记仅一条、同键导入一回执/发布、同预检不同键仅一次消费、不同更新同基线只有一次成功；逐项核对Document/绑定/修订/回执/计数。另有19次部署API并发请求。"
+      },
+      {
+        "id": 3,
+        "name": "故障与恢复",
+        "status": "Passed",
+        "actual": "真实MySQL/MinIO，经仅测试请求的代理分别拒绝原文/快照PUT；DB发布和回执持久化注入失败；已提交后客户端deadline超时同键取回原回执。持久失败回放、重新预检重试、旧原文/修订保持。500映射与详情隐藏由handler单元验证。"
+      },
+      {
+        "id": 4,
+        "name": "权限/输入/禁模型",
+        "status": "Passed",
+        "actual": "发现并修复停用唯一owner成员时500：知识域入口先查活动成员，按原合同返回404；DB错误不伪装成无权。52次HTTP覆盖精确2MiB/超1字节、格式/路径/私钥标记/非法UTF8/模型放行字段。"
+      },
+      {
+        "id": 5,
+        "name": "有限性能基线",
+        "status": "PassedAsMeasurement",
+        "actual": "四种字节大小×两档并发×四操作，共32组、各20次；1010次含前置请求，约27秒；完整数据见独立性能JSON，不设p95达标声明。"
+      },
+      {
+        "id": 6,
+        "name": "构建/迁移/恢复和接续",
+        "status": "Passed",
+        "actual": "build.sh构建、LLD22.1.8、api/admin/ingestor/syncer help启动；真实MySQL两次扩展迁移与唯一列组检查；任务SQL及两类原生桶备份，恢复到另一个数据库和桶，新Go测试进程读回两版原文及回执；未覆盖/删除原空间。"
+      }
+    ],
+    "necessary_fix": {
+      "file": "internal/service/dataset/knowledge.go",
+      "cause": "预检后停用唯一活动所有者，资源加载器先报tenant无active owner，原入口将此作为内部错误。",
+      "change": "在既有知识域所有者和资源授权之间，先绑定查询活动成员资格；没有成员返回原有404，查询错误仍交由500处理。",
+      "contract_semantics_changed": false,
+      "positive_and_negative_regression": "Go单元和真实MySQL撤权验证；成员表DB故障仍为内部错误；C1/C2/C3定向回归。"
+    },
+    "validation": {
+      "go_unit": {
+        "top_level_passed": 45,
+        "including_subtests_passed": 88,
+        "packages": [
+          "ragflow/internal/service/dataset",
+          "ragflow/internal/dao",
+          "ragflow/internal/handler"
+        ],
+        "log_sha256": "405371cb529108b4a2ad97e1df01ca5339eb97091c576a83e33b1f3b2e85d4eb"
+      },
+      "native_unit_packages": 2,
+      "go_mysql_reliability": {
+        "top_level_passed": 1,
+        "including_subtests_passed": 14,
+        "packages": [
+          "ragflow/internal/service/dataset"
+        ],
+        "log_sha256": "9e027bcc277f34e93d5ae44291449ccaa819b1901cf1b5924f51bdf6a311f38c"
+      },
+      "go_mysql_migration": {
+        "top_level_passed": 1,
+        "including_subtests_passed": 1,
+        "packages": [
+          "ragflow/internal/dao"
+        ],
+        "log_sha256": "22f2ceec4949ec1655a70b8d3271e9ef17bd8ccba6852fe9e80ac84cc9df1673"
+      },
+      "go_mysql_persistence": {
+        "top_level_passed": 1,
+        "including_subtests_passed": 2,
+        "packages": [
+          "ragflow/internal/service/dataset"
+        ],
+        "log_sha256": "941a9e130239bf3e8db04eb5ff62f3c1e619c32d73492a60c13813d3741282b0"
+      },
+      "go_restored_new_process": {
+        "top_level_passed": 1,
+        "including_subtests_passed": 1,
+        "packages": [
+          "ragflow/internal/service/dataset"
+        ],
+        "log_sha256": "fa209834b630178f436c50a8a05b75d88cea3ecc2f856fe67a1f6fc459021398"
+      },
+      "local_api_requests": 1122,
+      "local_api_request_scope": "只计公共Node脚本和最终4次GET；不含Go测试内部HTTP/MinIO流量，也不含历史v0.29请求。",
+      "contract_schemas": 13,
+      "performance": "docs/stage2a-c2-performance.json",
+      "recovery": {
+        "objects_restored": 4,
+        "fixed_revisions_read": 2,
+        "receipts_read": 2,
+        "separate_database_and_bucket": true,
+        "original_namespaces_untouched": true,
+        "dump_bytes": 47083,
+        "dump_sha256": "ff735540ce85b55f6e5396eefdade1f041abd8368b662882e0b7837357f00e59"
+      },
+      "runtime": {
+        "at": "2026-10-24T21:35:11.565Z",
+        "app_healthy": true,
+        "binary_sha256": "759aaeacac158720ce7c0c1c9c217894367718d1bf617a43d20953d6f1c11577",
+        "contract_hashes": {
+          "docs/knowledge-sources-v1.openapi.json": "648454d04e1769adc9bfa9245efc439696a7dd21b65cf3cf243e28450166e1c1",
+          "docs/knowledge-sources-v1.example.json": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a",
+          "docs/knowledge-foundation-v1.openapi.json": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4",
+          "docs/knowledge-foundation-v1.example.json": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343",
+          "internal/entity/knowledge_import.go": "bc417a4bc99672147a93d9a511726d1a6c4f4954cfe629cc16ed8c0f416c549a",
+          "internal/router/router.go": "aedc644151ee54f429f8b80cfe1da21599d9cb6830e8473c777acbe9c6d9d5cb"
+        },
+        "dependency_containers_unchanged": 5,
+        "model_calls": 0,
+        "external_packet_capture": false,
+        "original_poc_and_provider_fingerprints_unchanged": true,
+        "original_poc_documents": 6,
+        "original_poc_chunks": 42,
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/knowledge/import-contract",
+            "status": 200,
+            "duration_ms": 25.25139999999999
+          },
+          {
+            "method": "GET",
+            "path": "/knowledge/contract",
+            "status": 200,
+            "duration_ms": 5.106400000000008
+          },
+          {
+            "method": "GET",
+            "path": "/datasets/b2aad21fb7d04fd3bcaa35d06188ba7f/knowledge/nodes/08d2facad0f960dcf2667acfa36af8fca0062fe7511a35bd0a645ea29f2f47cf/content",
+            "status": 200,
+            "duration_ms": 17.21930000000009
+          },
+          {
+            "method": "GET",
+            "path": "/datasets/b2aad21fb7d04fd3bcaa35d06188ba7f/knowledge/nodes/8f3c4889edb4b2388910312fcdd8896c65d35451b0a0ee5daa1d5532cad94a5b/content",
+            "status": 200,
+            "duration_ms": 13.269300000000044
+          }
+        ],
+        "b_frontend_source_files_unchanged": 15,
+        "frontend_index_sha256": "8052e2e9b210f115ed9d99a8b0be94bf00302dd92ef01c7c511e58ada0d3702f",
+        "synthetic_runtime_domains": 4,
+        "synthetic_runtime_ingestion_tasks": 0,
+        "only_app_read_only_binary_mount_changed": true,
+        "b_review": {
+          "commit": "c6321b56bb026c685e19f3c4de49a190328e9def",
+          "status": "BReviewComplete_NoConsumerFreezeBlockers_AwaitingJointFreeze",
+          "candidate_kept": true,
+          "not_merged_into_A": true
+        }
+      }
+    },
+    "failures_and_corrections": [
+      "Windows基线脚本使用绝对ESM路径失败，改相对导入；未写入原始基线。",
+      "构建网络名称不同、测试有未用导入、测试库缺原生ingestion_task表；补齐夹具与环境后通过，保留失败日志。",
+      "真实撤权用例发现500而非原合同404；小范围修复并通过单元、MySQL与相关包回归。",
+      "首次恢复夹具只备份数据集原文桶，遗漏文件夹历史快照桶；补齐bucket/key/checksum后恢复验证通过。"
+    ],
+    "b_feedback": {
+      "commit": "c6321b56bb026c685e19f3c4de49a190328e9def",
+      "branch": "codex/stage2b-c2-review",
+      "reviewed_a_commit": "657ebd77d23a7716f8f76b8f54822f8baed821e7",
+      "status": "BReviewComplete_NoConsumerFreezeBlockers_AwaitingJointFreeze",
+      "source": "https://github.com/LFenX/LFen.s-Second-Brain/blob/c6321b56bb026c685e19f3c4de49a190328e9def/docs/stage2b-c2-review.md",
+      "received": true,
+      "merged_into_A": false,
+      "b_tests_reexecuted_by_A": false,
+      "decisions": [
+        {
+          "id": "NB-01",
+          "decision": "保持knowledge_conflict通用恢复；不新增reason/code，细分语义后置共同决策。",
+          "blocks_current_subset": false
+        },
+        {
+          "id": "NB-02",
+          "decision": "只补交接说明的端点容量表，机器候选原字节不变。",
+          "blocks_current_subset": false
+        },
+        {
+          "id": "NB-03",
+          "decision": "只补已有格式/路径说明并链接唯一实现，B不另建后端白名单。",
+          "blocks_current_subset": false
+        }
+      ]
+    },
+    "source_manifest": [
+      {
+        "file": "internal/service/dataset/knowledge.go",
+        "sha256": "3cfa5439c11fdf20f71da2ae9b1dcda8ae85ab63b9cc994a32f2d94654624043"
+      },
+      {
+        "file": "internal/service/dataset/knowledge_import_test.go",
+        "sha256": "f354c463984fd0ad815e7c0308e41ecb895e75342d1487c8896895cfea19a22d"
+      },
+      {
+        "file": "internal/service/dataset/knowledge_import_integration_test.go",
+        "sha256": "04dc5f469b71a71f6853934a8340ba8b45ea0ae829983f3967a1f6e6a5a0fa7b"
+      },
+      {
+        "file": "internal/handler/knowledge_import_test.go",
+        "sha256": "b9e1bf55b77348c08854115a3028a42b8871bc3d2fd7800300b6776ff8e99b0f"
+      },
+      {
+        "file": "internal/dao/knowledge_migration_integration_test.go",
+        "sha256": "b4055fbd62377d50fed665076d19a9bdcd8beaac3ed021eb9dae843bdd41c4a7"
+      },
+      {
+        "file": "tools/scripts/knowledge_import_poc.mjs",
+        "sha256": "95d2338e9eb822ec30971e6c69c011b1c66d638b80fe777d11f443822b14f12e"
+      }
+    ],
+    "limits": [
+      "C2仍ReviewCandidate，没有双方Frozen记录、B正式页面或阶段2整体验收。",
+      "B核对意见与消费者测试保留在其分支；本轮A未合并该分支，也未重跑B的43项前端测试。",
+      "模型0证据为受控代码路径、HTTP入口白名单、Go默认HTTP传输哨兵、任务/用量指纹；不是独立系统级出口抓包证明。",
+      "存储故障是测试请求级拒绝，不是MinIO整机断网；DB失败注入与真实MySQL事务组合测试，不是数据库宕机实验。",
+      "每性能组仅20次，未验收p95、检索/生成或百万级；未跑全库测试/全量Web检查。",
+      "备份恢复仅针对本轮合成库与原文/快照桶，不代表真实资料全库灾备；任务测试库/桶保留复核，没有产品自动清理。",
+      "目录/PDF/PPT/网页/RSSHub/批量/移动删除/解析索引/MCP/人格记忆均未扩展。"
+    ],
+    "adversarial_review": {
+      "status": "NotStarted",
+      "source": "用户明确禁止，不再重复询问。"
+    },
+    "publication": {
+      "branch": "codex/stage2a-import",
+      "merge_main": false,
+      "expected_main": "8aa324e06decc063c141ee3b53614a6d39f15fb5",
+      "verification": "提交/推送后另存受限publication.after.json，避免提交哈希自引用。"
+    },
+    "governance": {
+      "carrier": "沿用既有.local-data before/run/after，完整原话和六项验证逐条对照；用户决定Pending。",
+      "write_guard": "返回no task package supplied警告，不把未强制allowed_paths的放行称为正式治理Gate。"
+    },
+    "security": {
+      "at": "2026-10-24T21:41:58.853Z",
+      "staged_files": 12,
+      "staged_bytes": 741647,
+      "known_credential_values_checked": 13,
+      "credential_matches": 0,
+      "private_files_ignored": 5,
+      "shared_contracts_unchanged": true,
+      "main_unchanged": true,
+      "builder_stopped_and_network_restored": true,
+      "scan_scope": "当前待提交12个文件；不是全库秘密识别保证"
+    }
+  },
+  "history_note": "顶层v0.29为初始单文件闭环时点，原测试/限制/用户决定保持；最新六项验证和B反馈以current_followup v0.30为准。"
 }

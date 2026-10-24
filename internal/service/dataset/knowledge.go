@@ -58,6 +58,16 @@ func (d *DatasetService) knowledgeBase(ctx context.Context, userID, domainID str
 	if kb.CreatedBy != userID || (registered && !kb.KnowledgeEnabled) {
 		return nil, knowledgeNotFound()
 	}
+	// Reject revoked members before resource loading, which requires an active
+	// tenant owner and otherwise treats a disabled sole owner as invalid state.
+	var membershipCount int64
+	if err := dao.DB.WithContext(ctx).Model(&entity.UserTenant{}).
+		Where("user_id = ? AND tenant_id = ? AND status = ?", userID, kb.TenantID, string(entity.StatusValid)).Count(&membershipCount).Error; err != nil {
+		return nil, err
+	}
+	if membershipCount == 0 {
+		return nil, knowledgeNotFound()
+	}
 	if err := d.CheckAccess(ctx, permission.Subject{UserID: userID}, kb.ID, permission.OperationRead); err != nil {
 		if errors.Is(err, permission.ErrPermissionDenied) || errors.Is(err, permission.ErrResourceNotFound) || errors.Is(err, permission.ErrMembershipNotFound) {
 			return nil, knowledgeNotFound()

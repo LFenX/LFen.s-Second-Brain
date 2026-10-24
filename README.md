@@ -2,9 +2,9 @@
 
 本地文本、文档与项目代码知识库：结构化整理、可选词法／结构／向量检索、带来源的回答与代码复用；后续通过 Web 和 MCP 共用后端服务。当前POC仍为原生混合检索，可选策略待实施。
 
-**本仓库是后续唯一开发入口，包含当前应用源码、品牌资产、方案和验证记录。** 阶段1联调交付8aa324e已获用户验收，证据与原话见[阶段1报告](docs/stage1ab-runtime-verification.json)。当前v0.29进入A阶段2：提供[C2 0.2.0候选OpenAPI](docs/knowledge-sources-v1.openapi.json)、[B核对清单与边界](docs/stage2a-c2-handoff.md)，实现手动单文件文本／代码的登记、预检、幂等导入、稳定来源更新、回执及C1原文回读。工程结果见[阶段2报告](docs/stage2a-c2-verification.json)。仅合成资料，模型调用0；C2待B核对，未冻结，B阶段2页面与阶段2整体未完成，阶段3—6未启动。
+**本仓库是后续唯一开发入口，包含当前应用源码、品牌资产、方案和验证记录。** 阶段1交付8aa324e已获用户验收。当前v0.30完成A阶段2六项验证：合成重复入口、真实MySQL并发／幂等、定向故障、权限／容量、有限性能及迁移／备份恢复；修复撤权后错误返回500的问题。见[阶段2报告的current_followup](docs/stage2a-c2-verification.json)、[性能数据](docs/stage2a-c2-performance.json)和[交接说明](docs/stage2a-c2-handoff.md)。仅合成资料、模型0、未启动多轮审查；C2 0.2.0候选原字节不变，C1／C3仍1.0.0，B前端保持。B已完成657ebd7候选核对，无阻断项、3项非阻断建议；尚未冻结或实现B阶段2页面，阶段2整体及阶段3—6未完成。
 
-阶段2候选工作推送到`codex/stage2a-import`供B核对；main保留已验收的阶段1基线，不把A单侧候选冒充双方冻结。B按交接说明核对同一候选，语义收敛后由A统一合回main，不各自维护领域模型或来源后端。
+本轮只推送`codex/stage2a-import`，main保留已验收阶段1基线。B反馈位于`codex/stage2b-c2-review`的c6321b5，未合入本轮A分支；A已核对同版契约并记录建议。本轮不执行双方冻结或main合并；下一步先明确冻结记录，再由B接正式页面，随后做合成真实联调，不另建身份或后端。
 
 本机承担A工作包，已交付C1／C3 `1.0.0`：私有域、项目／模块分组、原生来源修订、确定性父子节点、精确原文读取及禁模型执行检查。[B接续说明](阶段1-A-B交接说明.md)包含接口、身份／权限／外发规则、构建和接入顺序；[OpenAPI](docs/knowledge-foundation-v1.openapi.json)与[合成fixture](docs/knowledge-foundation-v1.example.json)为共享基线。B继续负责Web及后续检索／MCP／人格消费，不另建领域模型或后端。
 
@@ -17,7 +17,7 @@ v0.17的[知识域与可选Embedding决定](本地第二大脑知识库技术方
 ## 从这里接续
 
 1. 阅读 [会话接续说明](会话接续说明.md)，了解已确认决定、待确认事项和下一步边界。
-2. 阅读 [完整技术方案 v0.29](本地第二大脑知识库技术方案.md)：第40章是A阶段2首个导入闭环，第39章是阶段1联调，第38章保留C2早期设计。[C2候选契约](docs/knowledge-sources-v1.openapi.json)与[合成请求](docs/knowledge-sources-v1.example.json)是本轮核对对象；原0.1.0-draft保持历史，不能据此调用尚未实现的能力。C1／C3仍1.0.0。第35章定义阶段顺序与双人验收；原POC、七项问题、对照实验和历史验收保持原范围。
+2. 阅读 [完整技术方案 v0.30](本地第二大脑知识库技术方案.md)：第40.4节是A六项验证与B反馈接收，第40章前文保留首个导入闭环，第39章是阶段1联调。[C2候选契约](docs/knowledge-sources-v1.openapi.json)和[合成请求](docs/knowledge-sources-v1.example.json)原字节保持，旧draft不作运行承诺。第35章定义阶段顺序与双人验收；原POC、七项问题、对照实验和历史验收保持原范围。
 3. 需要讨论背景时，查阅 [会话副本](会话副本.md)。副本保存用户消息和助手回复，不含工具日志、内部推理和密钥。
 4. 当前API实测结果见 [百炼验证记录](阶段0-百炼API接入验证.json)；[Moark验证记录](阶段0-API接入验证.json) 及 [旧额度截图](moark-stage0-trial-quota-94.png) 保留历史事实。
 
@@ -60,7 +60,7 @@ v0.17的[知识域与可选Embedding决定](本地第二大脑知识库技术方
 
 ## 换一台机器
 
-准备 Git、Node.js 22、Docker Desktop Linux Engine。原生 Go 后端暂用已固定摘要的官方同版本镜像；前端从本仓库构建。需要改 Go 后端时，按 AGENTS.md 的 build.sh／原生依赖流程构建对应二进制或镜像，当前挂载不会自动编译 Go 源码。
+准备 Git、Node.js 22、Docker Desktop Linux Engine。运行容器基于固定摘要的官方同版本镜像，本机Go为`build.sh`自建产物并只读挂载；前端从本仓库构建。换机须自行准备原生构建条件和私有运行配置，不能使用A机器的绝对挂载路径。Go变更按AGENTS.md构建、验证启动并核对实际二进制，挂载不会自动编译源码；本轮构建／回退说明见阶段2交接第8节。
 
 ```powershell
 git clone https://github.com/LFenX/LFen.s-Second-Brain.git
