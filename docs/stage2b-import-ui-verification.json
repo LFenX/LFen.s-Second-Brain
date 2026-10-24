@@ -1,0 +1,442 @@
+{
+  "version": "stage2b-import-ui-1",
+  "recorded_at": "2026-10-24T23:16:22.346Z",
+  "local_date": "2026-10-25",
+  "status": "Implemented_EngineeringAndMockVerified_LiveIntegrationPending",
+  "user_decision": "Pending",
+  "request_snapshot": "B，C2 0.2.0 已正式冻结。请拉取 `origin/codex/stage2a-import`，确认包含提交 `1234820`，从该提交建立开发分支，建议 `codex/stage2b-import-ui`。\n\n先阅读：\n\n- `docs/knowledge-sources-v1.freeze.json`：冻结决定、摘要和三项结论。\n- `docs/knowledge-sources-v1.openapi.json`：唯一接口契约。\n- `docs/stage2a-c2-handoff.md` 第5、9节：处理规则、开发任务和验收标准。\n\n三项建议已明确：\n\n1. **NB-01**：本版保留通用 `knowledge_conflict`，不新增细分 reason/code，不匹配英文 message 猜原因；先核查原请求／回执，未知结果不自动换键。\n2. **NB-02**：登记／确认 JSON≤16KiB，预览 JSON≤16MiB，原文 UTF-8 字节≤2MiB；限额不变，说明已补齐。\n3. **NB-03**：沿用现有格式、路径和排除规则，服务端最终判定；不新增格式、不自动转码或截断、不另建后端白名单。\n\n现在开始正式开发，顺序为：**C2 客户端／类型／Hooks → 登记、预览、明确确认、回执界面 → 同键结果确认与失败重试 → 固定修订 C1 阅读入口 → 合成测试和联调准备**。\n\n复用现有登录、HTTP／查询层及组件。C2 请求带基础版本1.0.0和来源版本0.2.0，能力必须返回 `Frozen`；C1 阅读继续复用原服务。B 不修改 Go、DAO、路由，不另建来源身份或任务后端。\n\n重点验收：201仍可表示业务失败；超时后保留原键核查；失败重试须重新预览并再次确认；保存与索引状态分开；五类组件标签独立；阅读固定修订，不随目录刷新切换版本。\n\nA 的回环地址仅供A本机使用，B换机需加载同版后端并准备自己的登录。继续只用合成资料、不调用模型、不启动多轮审查、不合并 main。完成后回报分支、提交、测试、页面步骤及缺口，Mock与真实联调证据分开记录。",
+  "baseline": {
+    "repository": "https://github.com/LFenX/LFen.s-Second-Brain",
+    "fetched_branch": "origin/codex/stage2a-import",
+    "requested_and_start_commit": "123482016576fec368104e531c257b6e0e523dd5",
+    "requested_commit_verified": true,
+    "work_branch": "codex/stage2b-import-ui",
+    "c2_version": "0.2.0",
+    "c2_status": "Frozen",
+    "c1_c3_version": "1.0.0",
+    "frozen_openapi_sha256": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091",
+    "foundation_openapi_sha256": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4",
+    "hash_basis": "LF Git object bytes at1234820, checked against freeze.json",
+    "contract_and_freeze_record_changed": false
+  },
+  "clarification": {
+    "state": "Settled",
+    "notice": "需求与现有实现边界一致，本次跳过补充提问。",
+    "survey_refs": [
+      "docs/knowledge-sources-v1.freeze.json",
+      "docs/knowledge-sources-v1.openapi.json",
+      "docs/stage2a-c2-handoff.md sections5/9",
+      "web/AGENTS.md",
+      "web/src/hooks/use-knowledge-foundation.ts",
+      "web/src/services/knowledge-foundation-service.ts",
+      "web/src/pages/dataset/knowledge-catalogue"
+    ],
+    "basis": "用户已经明确冻结版本、开发顺序、边界及验收；现有C1/原生HTTP层支持复用。真实联调作为待执行项独立记录。"
+  },
+  "task_profile": {
+    "objective": "在冻结C2之上交付单文件导入Web流程及固定修订阅读，提供合成证据和真实联调准备",
+    "scope": "正式前端客户端/DTO/Hooks、四步向导、原键恢复、C1入口、合成测试及交接",
+    "carrier": "沿用项目docs交付说明与验证记录，不迁移既有中文规划文档",
+    "proceed": "用户原话：现在开始正式开发",
+    "contract_freeze_authority": "docs/knowledge-sources-v1.freeze.json authority.decision=Approved",
+    "delivery_acceptance": "Pending",
+    "out_of_scope": [
+      "Go/DAO/后端路由或协议语义变化",
+      "来源身份/映射表/任务后端",
+      "真实资料、模型调用和多轮审查",
+      "main合并或生产部署",
+      "目录扫描、二进制、网页RSS、批量异步及解析索引"
+    ]
+  },
+  "first_principles_analysis": {
+    "outcome": "用户能明确确认一份合成文件，正确区分回执与导入结果，并在结果未知时安全查回原请求及固定修订",
+    "facts": [
+      {
+        "fact": "C2 0.2.0已冻结，7操作、13 schemas，固定单项同步",
+        "evidence_ref": "baseline; freeze.json; OpenAPI"
+      },
+      {
+        "fact": "原生HTTP、私有域/分组与C1固定修订服务已存在",
+        "evidence_ref": "clarification.survey_refs"
+      },
+      {
+        "fact": "B本机项目运行容器列表为空，本轮没有本机同版登录或后端联调证据",
+        "evidence_ref": "validation.live_backend"
+      }
+    ],
+    "constraints": [
+      "保持Frozen协议、身份和容量不变",
+      "先原请求/回执核查，未知结果不自动换键",
+      "合成资料和模型0",
+      "复用Web结构，不修改A后端"
+    ],
+    "source_refs": [
+      "request_snapshot",
+      "docs/stage2a-c2-handoff.md#5",
+      "docs/stage2a-c2-handoff.md#9",
+      "AGENTS.md",
+      "web/AGENTS.md"
+    ],
+    "assumptions": [
+      "原生登录提供用户ID时按用户/域恢复；只有令牌时保持该会话范围，不擅自合并账号"
+    ],
+    "unknowns": [
+      {
+        "item": "真实同源后端/登录/全应用外壳及网络故障联调",
+        "owner": "运行环境与A/B联调",
+        "blocks_web_implementation": false,
+        "blocks_live_acceptance": true,
+        "resolution": "按handoff第5节准备并单独留证"
+      }
+    ],
+    "elements": [
+      "范围登记",
+      "私有固定预览",
+      "用户明确确认",
+      "持久回执",
+      "原生来源/修订/节点ID",
+      "原请求恢复与当前授权"
+    ],
+    "causal_chain": "固定预览及请求保证确认对象明确；先保存最小恢复标识使断开与续登可查原请求；用业务回执判断结果；C1 URL固定修订防止目录刷新换版",
+    "alternatives": [
+      {
+        "option": "采用现有Web的四步向导",
+        "selected": true,
+        "basis": "符合明确确认与恢复流程，复用现有原生层"
+      },
+      {
+        "option": "继续仅交Mock骨架",
+        "selected": false,
+        "basis": "用户已经授权正式客户端和真实页面接线"
+      },
+      {
+        "option": "每步建立独立页面/工程",
+        "selected": false,
+        "basis": "增加跨页恢复和维护成本，当前单文件流程不需要新工程"
+      }
+    ],
+    "decision_criteria": [
+      "原文与身份完整性",
+      "结果未知不重复导入",
+      "权限失败不展示旧私有数据",
+      "固定契约与原生复用",
+      "证据可复现且不混同Mock/真实联调"
+    ],
+    "derived_plan": [
+      "核对冻结基线、摘要、既有分层和B2-1至B2-7",
+      "实现DTO/schema/服务/Hooks的双版本、Frozen和边界校验",
+      "实现登记/预览/明确确认/回执与输入变更失效",
+      "实现原键持久恢复、用户/域隔离与失败显式重试",
+      "接入固定C1修订、节点与字节读取",
+      "执行合成服务/工具/页面和C1回归、浏览器与构建/类型差异，整理联调准备后推B分支"
+    ],
+    "verification": "requirement_coverage和validation逐项对照原请求；用户验收与真实联调保持Pending"
+  },
+  "requirement_coverage": [
+    {
+      "id": "B2-0",
+      "quote": "确认包含提交1234820，从该提交建立开发分支",
+      "status": "Verified",
+      "evidence": "baseline; branch created directly from1234820"
+    },
+    {
+      "id": "B2-1",
+      "quote": "C2客户端／类型／Hooks",
+      "status": "Implemented_MockVerified",
+      "evidence": "services/knowledge-sources-service; interfaces/request+database; hooks/use-knowledge-sources;20服务测试"
+    },
+    {
+      "id": "B2-1-version",
+      "quote": "基础版本1.0.0和来源版本0.2.0，能力必须返回Frozen；C1阅读继续复用原服务",
+      "status": "Verified",
+      "evidence": "双头/7操作/3种非Frozen拒绝；C1原服务未改，29项回归"
+    },
+    {
+      "id": "B2-2",
+      "quote": "登记、预览、明确确认、回执界面",
+      "status": "Implemented_MockVerified",
+      "evidence": "knowledge-import/index.tsx,fields.tsx,use-import-flow.ts；13页面测试，浏览器四步"
+    },
+    {
+      "id": "NB-01",
+      "quote": "通用knowledge_conflict，不匹配英文message猜原因；先核查原请求／回执",
+      "status": "Verified",
+      "evidence": "recover()及过期/竞争更新409页面用例；错误message不用于页面分支"
+    },
+    {
+      "id": "NB-02",
+      "quote": "登记／确认JSON≤16KiB，预览JSON≤16MiB，原文UTF-8字节≤2MiB",
+      "status": "Verified",
+      "evidence": "服务预检按JSON/原文字节；工具精确2MiB和超限用例"
+    },
+    {
+      "id": "NB-03",
+      "quote": "服务端最终判定；不新增格式、不自动转码或截断、不另建后端白名单",
+      "status": "Verified",
+      "evidence": "未复制格式枚举；415由服务端返回；UTF-8 fatal decode与原字节摘要测试"
+    },
+    {
+      "id": "B2-4",
+      "quote": "超时后保留原键核查",
+      "status": "Implemented_MockVerified",
+      "evidence": "首次POST前持久原三字段；超时/重挂/同账号续登同键测试；已消费后GET回执；不自动循环"
+    },
+    {
+      "id": "B2-5",
+      "quote": "201仍可表示业务失败；失败重试须重新预览并再次确认",
+      "status": "Implemented_MockVerified",
+      "evidence": "201失败无阅读入口；新预览/新键/新确认页面和真实浏览器Mock场景"
+    },
+    {
+      "id": "B2-5-states",
+      "quote": "保存与索引状态分开；五类组件标签独立",
+      "status": "Verified",
+      "evidence": "回执独立六类状态；5类schema传递测试/页面选项；模型0、索引disabled、结构deferred"
+    },
+    {
+      "id": "B2-6",
+      "quote": "阅读固定修订，不随目录刷新切换版本",
+      "status": "Implemented_MockVerified",
+      "evidence": "knowledge-source-link与FixedRevisionBrowser；核对来源/修订/根/SHA；C1刷新测试及浏览器原文读取"
+    },
+    {
+      "id": "B2-7",
+      "quote": "合成测试和联调准备；Mock与真实联调证据分开记录",
+      "status": "Prepared_LivePending",
+      "evidence": "68项测试，浏览器Mock，handoff第5节；validation.live_backend=NotRun"
+    },
+    {
+      "id": "B2-boundary",
+      "quote": "不修改Go、DAO、路由，不另建来源身份或任务后端",
+      "status": "Observed",
+      "evidence": "仅Web路由/消费代码和B交付文档；后端路由、实体、DAO、契约与运行配置保持"
+    },
+    {
+      "id": "B2-scope",
+      "quote": "只用合成资料、不调用模型、不启动多轮审查、不合并main",
+      "status": "Observed",
+      "evidence": "safety_and_ownership; publication; only synthetic fixtures/browser sample"
+    }
+  ],
+  "validation": {
+    "execution_environment": {
+      "node": "22.22.2",
+      "dependencies": "现有web精确锁文件缓存，不新增包",
+      "source_mirror": "C:/Users/LFen/AppData/Local/Temp/lfens-stage2b-import-ui-20261025",
+      "reason": "D盘既有依赖安装锁；仅复制公开源码和所需公共文档，不复制.env.local或运行凭据",
+      "mirror_source_matches_workspace": true
+    },
+    "jest": {
+      "status": "Passed",
+      "exit_code": 0,
+      "suites": 5,
+      "passed": 68,
+      "failed": 0,
+      "new_c2": 39,
+      "existing_c1": 29,
+      "suite_counts": {
+        "c2_service": 20,
+        "utf8_identity_recovery_tools": 6,
+        "import_page": 13,
+        "c1_service": 12,
+        "c1_catalogue_reader": 17
+      },
+      "command": "npx jest --config jest.config.ts --runInBand --no-coverage --runTestsByPath src/services/knowledge-sources-service.test.ts src/utils/knowledge-import.test.ts src/pages/dataset/knowledge-import/__tests__/import.test.tsx src/services/knowledge-foundation-service.test.ts src/pages/dataset/knowledge-catalogue/__tests__/catalogue.test.tsx",
+      "transport": "jest.mock next-request; no real backend requests",
+      "local_evidence": ".local-data/stage2b-import-ui/jest.json"
+    },
+    "production_build": {
+      "status": "Passed",
+      "exit_code": 0,
+      "command": "node node_modules/vite/bin/vite.js build --mode production",
+      "final_duration": "1m59s",
+      "warnings": "Existing large chunks warning; no production deployment",
+      "initial_failure": "Public source mirror omitted docs/references/http_api_reference.md; copied that public tracked file and rebuilt successfully, no application fix for this environment issue",
+      "local_evidence": ".local-data/stage2b-import-ui/build-final.log"
+    },
+    "format_lint": {
+      "oxfmt": "Passed for20 touched source files",
+      "oxlint": "Passed with web/.oxlintrc.json,91 rules,0 diagnostics",
+      "commands": [
+        "oxfmt --check <changed-web-files>",
+        "oxlint --config web/.oxlintrc.json --format json <changed-web-files>"
+      ],
+      "pre_commit": "Normal mandatory lefthook on commit; no bypass; publication output provides final result"
+    },
+    "type_check": {
+      "status": "BaselineFail_NoNewDiagnostics",
+      "baseline_commit": "123482016576fec368104e531c257b6e0e523dd5",
+      "command": "tsc --noEmit --pretty false --incremental false",
+      "baseline_errors": 207,
+      "current_errors": 207,
+      "added_errors": 0,
+      "removed_errors": 0,
+      "full_type_check_passed": false,
+      "comparison": "Compare file/code/message after removing line/column offsets",
+      "local_evidence": ".local-data/stage2b-import-ui/typecheck-delta.json"
+    },
+    "browser_mock": {
+      "status": "PassedWithinRecordedScenarios",
+      "driver": "Playwright CLI named session lfens-stage2b-import-ui-20261025",
+      "rendering": "Actual feature components and existing UI/Tailwind; temporary mock transport, no native login/backend/app-shell proof",
+      "scenarios": [
+        "Registration to file preview to explicit confirmation to HTTP201 success",
+        "BOM/CRLF/Chinese/emoji file:51bytes, original SHA matches preview and C1 content",
+        "Receipt source/revision/root/SHA links to existing C1 reader",
+        "HTTP201 failed has no reader; new preview/new key/new consent then success",
+        "Simulated lost published response stays unknown; explicit check GETs receipt, import POST count remains1"
+      ],
+      "synthetic_bom": {
+        "bytes": 51,
+        "sha256": "cec498db42f76b9035460537194b81fa4e096f3dc7242d9d5c4aabc7f47d9b48"
+      },
+      "mobile": {
+        "viewport_width": 390,
+        "scroll_width": 390,
+        "horizontal_overflow": false
+      },
+      "correction": "HTML pattern was invalid under Chromium v flag; escaped hyphen preserving same character set, added DOM-pattern assertion, fresh browser scenario passed",
+      "temporary_console_note": "Initial temporary entry requested missing favicon; not a product asset change. No real model or backend requests.",
+      "screenshots": [
+        "docs/stage2b-import-ui-preview-mobile.png",
+        "docs/stage2b-import-ui-receipt.png",
+        "docs/stage2b-import-ui-failed.png"
+      ]
+    },
+    "live_backend": {
+      "status": "NotRun",
+      "b_live_c2_requests": 0,
+      "local_runtime_observation": "docker ps --filter label=com.docker.compose.project=lfen-ragflow-poc returned no matching running containers",
+      "reason": "本轮交付Web工程和联调准备，未加载同版本机后端或使用本机原生登录；A回环地址不当作B远端",
+      "prerequisites": "同版Frozen后端、自己的原生登录、与Web一致的同源/代理地址",
+      "preparation": "docs/stage2b-import-ui-handoff.md section5",
+      "a_runtime_evidence_relabelled_as_b": false
+    }
+  },
+  "implementation_corrections": [
+    "修正首轮4处新增TS类型错误，当前与基线207项一致",
+    "适配现有Jest转换器：避免mock文件的导入类型引用及TSX歧义泛型箭头，不修改共享测试基础设施",
+    "浏览器HTML原生pattern转义修复，冻结请求字符集不变",
+    "恢复记录优先按现有用户/域隔离，同账号续登保留原键；Auth-only会话保持自己的范围"
+  ],
+  "safety_and_ownership": {
+    "data": "Synthetic fixtures only; no AICS extraction",
+    "model_api_calls": 0,
+    "go_dao_backend_routes_changed": false,
+    "shared_contracts_changed": false,
+    "parallel_identity_mapping_or_task_backend_created": false,
+    "production_mock_switch_created": false,
+    "raw_credentials_or_original_text_in_recovery_storage": false,
+    "real_credentials_read_or_shared_by_agent": false,
+    "docker_credentials_volumes_or_runtime_changed": false,
+    "new_dependencies": false,
+    "shared_ui_brand_assets_changed": false,
+    "multi_round_review_started": false,
+    "main_merged": false,
+    "deployed": false
+  },
+  "publication": {
+    "remote": "https://github.com/LFenX/LFen.s-Second-Brain.git",
+    "branch": "codex/stage2b-import-ui",
+    "base": "123482016576fec368104e531c257b6e0e523dd5",
+    "main_merge": false,
+    "commit_reference": "Resolve B branch head from Git and final delivery message; report avoids a self-referential commit hash"
+  },
+  "remaining": [
+    "加载同版后端与本机登录，执行真实同源页面及故障/权限/旧修订联调",
+    "项目既有207项全量类型错误作为独立范围处理",
+    "用户验收与main合并另行安排；当前不标记阶段2整体退出"
+  ],
+  "source_manifest": [
+    {
+      "path": "web/src/hooks/use-knowledge-foundation.ts",
+      "sha256": "975caaa15908ab0edc4baf391ac76879914a33678b98e0cc842ab3fdcf4dfe19"
+    },
+    {
+      "path": "web/src/locales/en.ts",
+      "sha256": "90a63df446f340924228abe72db57c8a51b0ae4e827c647b3b6ee5985a75e623"
+    },
+    {
+      "path": "web/src/locales/zh.ts",
+      "sha256": "11a74c261fdcc3810bba656613525325aa0030baa44b016fc8fd898062b77d25"
+    },
+    {
+      "path": "web/src/pages/dataset/knowledge-catalogue/index.tsx",
+      "sha256": "1c4923c6f523bdbe7aef7c5826dcceed30283a8c4a31d4317bae65aac82c038f"
+    },
+    {
+      "path": "web/src/pages/dataset/knowledge-catalogue/state.tsx",
+      "sha256": "3b1c1c4df841ed84a5237885c9e4b69195dfb95698c2580b06e51101085eff8c"
+    },
+    {
+      "path": "web/src/routes.tsx",
+      "sha256": "999280c485d34b7c2de6496b3b14a27cc1e6939dc9b22747f26da9872a1b6a73"
+    },
+    {
+      "path": "web/src/hooks/use-knowledge-sources.ts",
+      "sha256": "124654772c534af1651394d32a3bf68cb32d8e25903042c86a4ea0d39f1b78b9"
+    },
+    {
+      "path": "web/src/interfaces/database/knowledge-sources.ts",
+      "sha256": "4358cf86939fc3ec7da4a36a8da14bb61bb836f57ba86a1843b22c95b4001208"
+    },
+    {
+      "path": "web/src/interfaces/request/knowledge-sources.ts",
+      "sha256": "e0a5cd92689e664845a01d46f1d718714196aef3bddc115e1d17d9283a107a37"
+    },
+    {
+      "path": "web/src/pages/dataset/knowledge-import/__tests__/fixture.ts",
+      "sha256": "07daafd31c6ddbe9b7126f8ba9c9cfbbaa1f0fcab78f9a9573471cc027412fe6"
+    },
+    {
+      "path": "web/src/pages/dataset/knowledge-import/__tests__/import.test.tsx",
+      "sha256": "c576764bd9907fd315a914025a0bcc3583de66870ebf1a64469babff57a27318"
+    },
+    {
+      "path": "web/src/pages/dataset/knowledge-import/fields.tsx",
+      "sha256": "c8ebcb8d00ca48ad602fbf7bbcf0a38dbce3d91cab704911f16041db773c7a5b"
+    },
+    {
+      "path": "web/src/pages/dataset/knowledge-import/index.tsx",
+      "sha256": "12ef8591ead4079b2015905a21677648bdd5909a98d43893e94e4190a559e8ee"
+    },
+    {
+      "path": "web/src/pages/dataset/knowledge-import/use-import-flow.ts",
+      "sha256": "ab8c41a110cc0c8797aa1463aa8a146b2f77d57d139cf4233fd89578d3e8408f"
+    },
+    {
+      "path": "web/src/services/knowledge-sources-service.test.ts",
+      "sha256": "4b80e07f9ef06412ac14948b69f9c76c4cdc037b3392ef8f692c242c02bac370"
+    },
+    {
+      "path": "web/src/services/knowledge-sources-service.ts",
+      "sha256": "5339c054487dbb0c35c58d45b5a904090c74049cad76cfc6be841b0b8f6d6fb6"
+    },
+    {
+      "path": "web/src/utils/knowledge-import.test.ts",
+      "sha256": "e643e7ac15831081cadbc77b059a4e236f996d100a32860fb477996620b113ed"
+    },
+    {
+      "path": "web/src/utils/knowledge-import.ts",
+      "sha256": "ab66e3688c3f305976959d133f422b66193e57c728df0b6cabc24be90214d2b2"
+    },
+    {
+      "path": "web/src/utils/knowledge-source-link.ts",
+      "sha256": "bf80eae19dbcad794e0dda13e1a901e36e73a5f150e48687d173a8aebfd3ff97"
+    },
+    {
+      "path": "web/src/utils/knowledge-sources-schema.ts",
+      "sha256": "c42480b0b4d0fd185db141395666c52c0df04f1172cf73fdf8390aff62bea60f"
+    }
+  ],
+  "evidence_sha256": {
+    "jest.json": "716b81d75685c1cd052c22e3401bf62e579439da832b0eb69e1885c01589617d",
+    "build-final.log": "b7db66fe6cc5b74cf96deb951adfd15904e56ac845563e1a9eee1e87bd552f2c",
+    "typecheck-delta.json": "9f596ee400eb2e32d97113b22475b7ed0cd9f44fb2ed71fc45c15891c0ecab35",
+    "lint.json": "f6e9055f84e84b498b8364779c0753ff72546a554d93db1361c04febd26ba2ed",
+    "docs/stage2b-import-ui-preview-mobile.png": "e5901460772012a4591364331871f505baad1c7617ee44680ae3aeb78103b8f4",
+    "docs/stage2b-import-ui-receipt.png": "24683295e2a09134fa19f35680e74837b58a5d6ebe252a09bd46192d72cfa612",
+    "docs/stage2b-import-ui-failed.png": "9f414bab1d7557cd3c470106b3c53f07d4dc9f355b1f4e1352ef32941c524057",
+    "built_web_index": "21281b8da667da505bd1ea18ce17d0cd22c1122a23849b12a1200a3f7d484380"
+  }
+}

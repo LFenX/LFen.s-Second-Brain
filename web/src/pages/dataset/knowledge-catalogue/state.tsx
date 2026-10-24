@@ -43,7 +43,7 @@ export function CatalogueFailure({
           {t('knowledgeCatalogue.requestId')}: {error.requestId}
         </p>
       )}
-      <Button variant="outline" onClick={onRetry}>
+      <Button type="button" variant="outline" onClick={onRetry}>
         {t('knowledgeCatalogue.retry')}
       </Button>
     </div>
@@ -80,7 +80,12 @@ export function LoadMore({
   const { t } = useTranslation();
   return (
     more && (
-      <Button variant="outline" disabled={loading} onClick={onMore}>
+      <Button
+        type="button"
+        variant="outline"
+        disabled={loading}
+        onClick={onMore}
+      >
         {t('knowledgeCatalogue.more')}
       </Button>
     )

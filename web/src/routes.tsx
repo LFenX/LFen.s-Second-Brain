@@ -72,6 +72,7 @@ export enum Routes {
   ProfileProfile = `${ProfileSetting}${Profile}`,
   DatasetTesting = '/retrieval',
   KnowledgeCatalogue = '/knowledge-catalogue',
+  KnowledgeImport = '/knowledge-import',
   Chunk = '/chunk',
   ChunkResult = `${Chunk}${Chunk}`,
   Parsed = '/parsed',
@@ -206,6 +207,10 @@ const routeConfigOptions = [
           {
             path: `${Routes.DatasetBase}${Routes.KnowledgeCatalogue}/:id`,
             Component: () => import('@/pages/dataset/knowledge-catalogue'),
+          },
+          {
+            path: `${Routes.DatasetBase}${Routes.KnowledgeImport}/:id`,
+            Component: () => import('@/pages/dataset/knowledge-import'),
           },
           {
             path: `${Routes.Dataset}/:id`,
