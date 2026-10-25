@@ -1,0 +1,41 @@
+{
+  "contract": "C2",
+  "version": "0.3.0",
+  "status": "Frozen",
+  "recorded_at": "2026-10-25T10:06:29.510Z",
+  "authority": {
+    "outcome": "Approved",
+    "decided_by": "用户",
+    "source": "本会话本轮真人消息；消费会话亦转达其真人冻结决定",
+    "response": "候选方案通过，冻结 C2 0.3.0，开始推进 S2-R2 受控目录最小导入闭环。由你和新会话按单写入规则交替完成后端、客户端和界面，跑通精确选择、观察、单文件预览确认、回执恢复及固定修订阅读。保持 C2 0.2.0 不变，只用合成资料、不调用模型、不启动多轮审查，验证后推送 main。",
+    "scope": "冻结95c22f1候选，授权R2实现/合成联调/正常推送main；不批准新交付验收或模型/真实资料"
+  },
+  "candidate_commit": "95c22f1a30779f97a8ba93b342326ead2ccbc672",
+  "candidate_hashes": {
+    "docs/knowledge-directory-import-v0.3.candidate.md": "80eb846a81b6ade430012b585739fe6405ef8a7de5855f27941fe66a31e2cbfa",
+    "docs/knowledge-directory-import-v0.3.candidate.openapi.json": "da2c320b3c3fd8f6af2b566b40507a5b09c55791236b49b224347c8b9a457f3d",
+    "docs/knowledge-directory-import-v0.3.candidate.examples.json": "2680f9786a19cc49a0330ecfcda84249ef36aac20293341a18e17cbdfd132d4e"
+  },
+  "artifacts": {
+    "openapi": "docs/knowledge-directory-import-v1.openapi.json",
+    "openapi_sha256": "6144c08d4cfe7ac98374dc51829c98290e2c88e3441dd38d250a3cd9cb4492e6",
+    "examples": "docs/knowledge-directory-import-v1.examples.json",
+    "examples_sha256": "73618dd78419bb9027520b3dd8b3ef83b1794d3ad1c4d17d904ce7637c54ea72"
+  },
+  "lifecycle_only_changes": [
+    "说明/生命周期注释",
+    "Capabilities.status ReviewCandidate→Frozen",
+    "Capabilities.implemented false→true：表示实施后API能力要求，不宣称当前实现完成"
+  ],
+  "old_contract_hashes": {
+    "docs/knowledge-sources-v1.openapi.json": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091",
+    "docs/knowledge-sources-v1.example.json": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a",
+    "docs/knowledge-sources-v1.freeze.json": "114bbfa2b4dd51eafc426716032486f666ace8a1a1284f4c1f4c9baf1f1b35c6",
+    "docs/knowledge-foundation-v1.openapi.json": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4",
+    "docs/knowledge-foundation-v1.example.json": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343"
+  },
+  "user_delivery_decision": {
+    "outcome": "Pending"
+  },
+  "implementation_status_at_freeze_record": "AuthorizedNotYetVerified"
+}
