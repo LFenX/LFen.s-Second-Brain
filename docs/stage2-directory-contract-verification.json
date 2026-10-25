@@ -1,0 +1,830 @@
+{
+  "document_version": "v0.35",
+  "recorded_at": "2026-10-25T09:51:48.705Z",
+  "request_snapshot": "那就开始整理“受控目录＋精确选择清单”的下一版契约候选，由你和新会话直接核对，明确接口、身份、权限、增量与恢复语义及验收标准。保持C2 0.2.0冻结契约不变，候选确认前不接入业务代码；继续只用合成资料、不调用模型、不启动多轮审查，完成后保存并推送远端。",
+  "objective": "整理可独立核对的受控目录及精确选择清单下一候选，与本机消费会话核对后保存并推送；不实现或冻结新协议。",
+  "engineering_status": "CandidateReadyForHumanConfirmation",
+  "contract": {
+    "name": "C2",
+    "candidate_version": "0.3.0",
+    "status": "ReviewCandidate",
+    "frozen": false,
+    "implemented": false,
+    "runtime_version": "0.2.0",
+    "foundation_contract_version": "1.0.0",
+    "baseline_commit": "c96ada8f78cbcff92fac234fcbe627d0ca1b3542",
+    "initial_candidate_commit": "dff0474070b980d53767be8382feeca70133f529",
+    "corrected_candidate_commit": "95c22f1a30779f97a8ba93b342326ead2ccbc672",
+    "artifacts": {
+      "docs/knowledge-directory-import-v0.3.candidate.md": "80eb846a81b6ade430012b585739fe6405ef8a7de5855f27941fe66a31e2cbfa",
+      "docs/knowledge-directory-import-v0.3.candidate.openapi.json": "da2c320b3c3fd8f6af2b566b40507a5b09c55791236b49b224347c8b9a457f3d",
+      "docs/knowledge-directory-import-v0.3.candidate.examples.json": "2680f9786a19cc49a0330ecfcda84249ef36aac20293341a18e17cbdfd132d4e"
+    }
+  },
+  "request_coverage": [
+    {
+      "request": "整理受控目录＋精确选择清单下一版候选",
+      "evidence": [
+        "docs/knowledge-directory-import-v0.3.candidate.md:1—6节",
+        "独立OpenAPI及合成例子，14项操作／29个schema"
+      ],
+      "result": "已覆盖"
+    },
+    {
+      "request": "由本会话与新会话直接核对",
+      "evidence": [
+        "coordination.initial_response",
+        "coordination.targeted_response"
+      ],
+      "result": "实际集中反馈已收到；定向修订结论以coordination为准"
+    },
+    {
+      "request": "明确接口",
+      "evidence": [
+        "候选第4节及OpenAPI.paths／schemas，旧路由无重叠"
+      ],
+      "result": "已覆盖"
+    },
+    {
+      "request": "明确身份",
+      "evidence": [
+        "候选第2节；原生来源／修订32位、根节点64位；登记＋精确相对路径绑定"
+      ],
+      "result": "已覆盖"
+    },
+    {
+      "request": "明确权限",
+      "evidence": [
+        "候选第3节；逐次域／租户／根授权、离线与撤销、目录根与C1权限分开"
+      ],
+      "result": "已覆盖"
+    },
+    {
+      "request": "明确增量",
+      "evidence": [
+        "候选第5节；固定选择、完整与eligible分开；缺失／未选不删、分类变化update"
+      ],
+      "result": "已覆盖"
+    },
+    {
+      "request": "明确恢复",
+      "evidence": [
+        "候选第7节；持久原键、404不可见／未知、200请求匹配、已消费原文及重试规则"
+      ],
+      "result": "已覆盖"
+    },
+    {
+      "request": "明确验收标准",
+      "evidence": [
+        "候选第9节DIR-01—14；本轮静态核对与R2实施门槛逐项分开"
+      ],
+      "result": "已覆盖"
+    },
+    {
+      "request": "保持C2 0.2.0冻结不变",
+      "evidence": [
+        "verification.frozen_hashes，五份冻结文件逐字节SHA256保持"
+      ],
+      "result": "已覆盖"
+    },
+    {
+      "request": "候选确认前不接入业务代码",
+      "evidence": [
+        "verification.business_runtime_diff=[]；未改cmd/internal/web/docker/go.mod/go.sum、路由、实体或配置"
+      ],
+      "result": "已覆盖"
+    },
+    {
+      "request": "只合成、不调用模型、不启动多轮审查",
+      "evidence": [
+        "76个结构例＋11个跨字段静态例均合成；模型／业务API调用0；只做一次集中协商及点名修订确认"
+      ],
+      "result": "已覆盖"
+    },
+    {
+      "request": "保存并推送远端",
+      "evidence": [
+        "Git候选提交及当前入口文档；publication说明"
+      ],
+      "result": "保存工程结果；最终推送对象以origin/main及本会话交付回执核对"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "DIR-C01",
+      "severity": "blocking_before_freeze",
+      "finding": "候选根节点两处模式及成功样例误用32位，与冻结C1的64位不符。",
+      "independently_verified": true,
+      "resolution": "只修候选为64位，更新嵌套正反例；保留32位root_id/source_id/source_revision_id；增加原生C1直接格式比对。",
+      "validation": [
+        "76个结构例含64位接受／32位拒绝",
+        "Result两处模式与冻结C1.Source.root_node_id相同",
+        "来源／修订格式也直接验证C1"
+      ],
+      "status": "CorrectedAndConsumerConfirmed"
+    },
+    {
+      "id": "DIR-C02",
+      "severity": "blocking_before_freeze",
+      "finding": "无权限统一404，却把by-key404无条件解释成没有已提交回执。",
+      "independently_verified": true,
+      "resolution": "公开404统一不可见／结果未确认，隐藏敏感视图、保留原请求，不证明未提交或自动换键；无记录保证只属于已授权内部序列化路径；无新增接口。",
+      "validation": [
+        "S15/S16无记录和撤权返回完全相同响应及保守消费规则",
+        "回执200须匹配登记／预览／摘要",
+        "按键查询依旧等待执行或503未知"
+      ],
+      "status": "CorrectedAndConsumerConfirmed"
+    },
+    {
+      "id": "N01",
+      "severity": "non_blocking",
+      "resolution": "补11个跨字段正反例、缺失来源指针对及code/reason条件、HTTP错误映射和公开不变量；明确schema通过不替代跨字段检查。",
+      "validation": "verification.semantic_cases",
+      "status": "DocumentedAndStaticallyChecked"
+    },
+    {
+      "id": "N02",
+      "severity": "non_blocking",
+      "resolution": "第7.1节明确后续目录schema适配器显式注册自定义路径format、UTF-8字节边界及名称原样传递；本地AJV验证显式注册，不宣称浏览器已支持。",
+      "validation": "新增超过512 UTF-8字节的结构反例拒绝；没有客户端实现",
+      "status": "DocumentedImplementationPending"
+    },
+    {
+      "id": "N03",
+      "severity": "non_blocking",
+      "resolution": "S10补新观察；消费后立即清理暂存正文，/content固定409 preview_consumed，未消费过期410；成功转C1、失败重新观察／预览／明确确认。",
+      "validation": [
+        "S10/S17",
+        "候选4/6/7节一致"
+      ],
+      "status": "DocumentedImplementationPending"
+    }
+  ],
+  "coordination": {
+    "coordinator": {
+      "thread_id": "01a158c6-4366-7792-8768-4aed0b80a6a4",
+      "role": "唯一写入方；候选、共享文档和结果"
+    },
+    "consumer": {
+      "thread_id": "01a17244-5107-7aa3-beed-2ea36062d042",
+      "title": "阶段2知识消费与前端",
+      "host_id": "local",
+      "role": "只读固定提交核对；无源码写入权"
+    },
+    "initial_response": {
+      "reviewed_commit": "dff0474070b980d53767be8382feeca70133f529",
+      "turn_id": "01a17266-cb5e-78a0-9c95-254fb12a2bad",
+      "message_id": "msg_0115505e19bd8609016addcf6400608191aded8bd55f8eb52c",
+      "completed_at_epoch": 1792921461,
+      "conclusion": "14接口29Schema覆盖主链；两项冻结前差异C01/C02，三项非阻断补强；其余消费语义可衔接。",
+      "independent_checks": "198处ref解析；逐项读69结构例／14语义场景；独立复算观察／预览／57字节BOM-CRLF-中文-emoji正文SHA；未复跑A的AJV或运行测试。"
+    },
+    "targeted_response": {
+      "status": "Confirmed",
+      "reviewed_commit": "95c22f1a30779f97a8ba93b342326ead2ccbc672",
+      "turn_id": "01a17276-0ba0-7ef1-b218-581d6719f2fe",
+      "message_id": "msg_0115505e19bd8609016addd0c921d8819198c10a889773ea2f",
+      "completed_at_epoch": 1792921804,
+      "thread_status": {
+        "type": "idle"
+      },
+      "scope": "仅DIR-C01／DIR-C02修订及直接相关例子的定向确认；没有第二次全面核对",
+      "conclusion": "两项均按推荐收敛；相关指针对、错误组合、自定义format、失败新观察和消费后原文409规则已说明；未见本次修订直接造成的未解释差异。",
+      "quote": "已完成定向确认，绑定提交 95c22f1a30779f97a8ba93b342326ead2ccbc672： DIR-C01已收敛：节点ID改为64位，相关正反例一致。 DIR-C02已收敛：404统一按不可见／结果未确认处理，保留原请求；S15/S16响应完全相同。 未发现这些修订直接造成的未解释差异，已回报协调会话。 候选仍未冻结、未实现；未做运行验证。本轮保持只读，现等待下一次交接。",
+      "limitations": [
+        "未复跑76结构／11语义完整校验",
+        "未验证运行／平台／事务／性能",
+        "未冻结、未实现；只读且不进入下一任务"
+      ]
+    },
+    "method": "一次集中消费核对＋已识别问题定向修订确认；不是对抗性审查，不以连续两轮无发现计数。",
+    "next_assignment": "本轮结束后消费会话idle；候选未冻结／未获实施指令前不写源码。"
+  },
+  "verification": {
+    "verified_at": "2026-10-25T09:47:44.041Z",
+    "scope": "仅候选文档／结构／合成静态例子；不是运行测试、模型验证或对抗性审查",
+    "candidate_hashes": {
+      "docs/knowledge-directory-import-v0.3.candidate.md": "80eb846a81b6ade430012b585739fe6405ef8a7de5855f27941fe66a31e2cbfa",
+      "docs/knowledge-directory-import-v0.3.candidate.openapi.json": "da2c320b3c3fd8f6af2b566b40507a5b09c55791236b49b224347c8b9a457f3d",
+      "docs/knowledge-directory-import-v0.3.candidate.examples.json": "2680f9786a19cc49a0330ecfcda84249ef36aac20293341a18e17cbdfd132d4e"
+    },
+    "schema_count": 29,
+    "operations": 14,
+    "local_references_resolved": 197,
+    "schema_cases": {
+      "passed": 76,
+      "positive": 38,
+      "negative": 38,
+      "results": [
+        {
+          "id": "valid-Classification",
+          "schema": "Classification",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-Root",
+          "schema": "Root",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-Roots",
+          "schema": "Roots",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-RegistrationRequest",
+          "schema": "RegistrationRequest",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-Registration",
+          "schema": "Registration",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-ListingRequest",
+          "schema": "ListingRequest",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-Entry",
+          "schema": "Entry",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-Listing",
+          "schema": "Listing",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-ObservationRequest",
+          "schema": "ObservationRequest",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-ObservationItem",
+          "schema": "ObservationItem",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-Observation",
+          "schema": "Observation",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-PreviewRequest",
+          "schema": "PreviewRequest",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-PreviewItem",
+          "schema": "PreviewItem",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-Preview",
+          "schema": "Preview",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-ContentWindow",
+          "schema": "ContentWindow",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-CommitRequest",
+          "schema": "CommitRequest",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-Result",
+          "schema": "Result",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-Receipt",
+          "schema": "Receipt",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-Capabilities",
+          "schema": "Capabilities",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-Error",
+          "schema": "Error",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-NativeUnauthorized",
+          "schema": "NativeUnauthorized",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-CapabilitiesResponse",
+          "schema": "CapabilitiesResponse",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-RootsResponse",
+          "schema": "RootsResponse",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-RegistrationResponse",
+          "schema": "RegistrationResponse",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-ListingResponse",
+          "schema": "ListingResponse",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-ObservationResponse",
+          "schema": "ObservationResponse",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-PreviewResponse",
+          "schema": "PreviewResponse",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-ContentWindowResponse",
+          "schema": "ContentWindowResponse",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-ReceiptResponse",
+          "schema": "ReceiptResponse",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-failed-receipt",
+          "schema": "Receipt",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-complete-not-all-eligible",
+          "schema": "Observation",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-ineligible-item",
+          "schema": "ObservationItem",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-oversize-ineligible",
+          "schema": "ObservationItem",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-empty-fixed-content",
+          "schema": "ContentWindow",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-classification-update",
+          "schema": "PreviewItem",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-missing-proposal",
+          "schema": "ObservationItem",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "valid-native-c1-node64",
+          "schema": "Result",
+          "expected": "accept",
+          "result": "passed"
+        },
+        {
+          "id": "reject-absolute-root-field",
+          "schema": "RegistrationRequest",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-inline-mode",
+          "schema": "RegistrationRequest",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-root-version-in-registration-identity",
+          "schema": "RegistrationRequest",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-invalid-side",
+          "schema": "Classification",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-silent-default-classification",
+          "schema": "PreviewRequest",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-path-traversal",
+          "schema": "ObservationRequest",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-path-absolute",
+          "schema": "ObservationRequest",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-path-drive",
+          "schema": "ObservationRequest",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-path-backslash",
+          "schema": "ObservationRequest",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-path-glob",
+          "schema": "ObservationRequest",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-path-excluded",
+          "schema": "ObservationRequest",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-path-alias",
+          "schema": "ObservationRequest",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-path-double",
+          "schema": "ObservationRequest",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-path-nul",
+          "schema": "ObservationRequest",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-path-device",
+          "schema": "ObservationRequest",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-path-taildot",
+          "schema": "ObservationRequest",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-empty-selection",
+          "schema": "ObservationRequest",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-duplicate-selection",
+          "schema": "ObservationRequest",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-33-files",
+          "schema": "ObservationRequest",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-binary-as-eligible",
+          "schema": "ObservationItem",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-verified-without-hash",
+          "schema": "ObservationItem",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-complete-missing",
+          "schema": "Observation",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-multi-item-preview",
+          "schema": "Preview",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-client-text-upload",
+          "schema": "PreviewRequest",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-new-path-in-commit",
+          "schema": "CommitRequest",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-65537-window",
+          "schema": "ContentWindow",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-failed-with-source-pointer",
+          "schema": "Receipt",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-success-with-failed-item",
+          "schema": "Receipt",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-model-call",
+          "schema": "Receipt",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-vector-enabled",
+          "schema": "Result",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-frozen-candidate",
+          "schema": "Capabilities",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-wrong-version-response",
+          "schema": "ReceiptResponse",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-absolute-mount-leak",
+          "schema": "Root",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-native-c1-node32",
+          "schema": "Result",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-missing-proposal-without-native-pointers",
+          "schema": "ObservationItem",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-error-code-reason-mismatch",
+          "schema": "Error",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-conflict-with-null-reason",
+          "schema": "Error",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "reject-path-over-512-utf8-bytes",
+          "schema": "ObservationRequest",
+          "expected": "reject",
+          "result": "passed"
+        },
+        {
+          "id": "valid-404-not-visible",
+          "schema": "Error",
+          "expected": "accept",
+          "result": "passed"
+        }
+      ]
+    },
+    "semantic_cases": {
+      "passed": 11,
+      "positive": 4,
+      "negative": 7,
+      "results": [
+        {
+          "id": "semantic-complete-mixed-eligibility",
+          "result": "passed",
+          "expected": "accept",
+          "reason": null
+        },
+        {
+          "id": "semantic-reject-missing-item",
+          "result": "passed",
+          "expected": "reject",
+          "reason": "selection_mismatch"
+        },
+        {
+          "id": "semantic-reject-duplicate-item",
+          "result": "passed",
+          "expected": "reject",
+          "reason": "duplicate_item"
+        },
+        {
+          "id": "semantic-reject-unsorted-selection",
+          "result": "passed",
+          "expected": "reject",
+          "reason": "selection_order"
+        },
+        {
+          "id": "semantic-exact-utf8-window",
+          "result": "passed",
+          "expected": "accept",
+          "reason": null
+        },
+        {
+          "id": "semantic-reject-byte-count-not-character-count",
+          "result": "passed",
+          "expected": "reject",
+          "reason": "byte_count_mismatch"
+        },
+        {
+          "id": "semantic-reject-window-out-of-range",
+          "result": "passed",
+          "expected": "reject",
+          "reason": "window_out_of_range"
+        },
+        {
+          "id": "semantic-match-original-receipt",
+          "result": "passed",
+          "expected": "accept",
+          "reason": null
+        },
+        {
+          "id": "semantic-reject-foreign-receipt",
+          "result": "passed",
+          "expected": "reject",
+          "reason": "receipt_request_mismatch"
+        },
+        {
+          "id": "semantic-valid-409-code-reason",
+          "result": "passed",
+          "expected": "accept",
+          "reason": null
+        },
+        {
+          "id": "semantic-reject-http-code-mismatch",
+          "result": "passed",
+          "expected": "reject",
+          "reason": "http_code_mismatch"
+        }
+      ]
+    },
+    "digest_vectors": {
+      "observation": "passed",
+      "preview": "passed",
+      "original_utf8_bom_crlf_emoji": "passed",
+      "length_prefix_ambiguity_and_mutation": "passed"
+    },
+    "native_c1_id_comparison": "source/revision为32位、root_node为64位；两处schema与原C1匹配，32位节点反例拒绝",
+    "cross_field_checks": [
+      "示例精确路径与条目一一对应且按UTF-8字节排序",
+      "完整观察含不合格条目，不等于全部eligible",
+      "所有候选路由不覆盖冻结0.2.0路由",
+      "所有操作显式C1及0.3.0请求头",
+      "同一404响应覆盖无记录和撤权两种场景，均不证明未提交",
+      "失败重试要求新观察、新预览及再次同意",
+      "14项验收ID均存在"
+    ],
+    "frozen_hashes": {
+      "docs/knowledge-sources-v1.openapi.json": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091",
+      "docs/knowledge-sources-v1.example.json": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a",
+      "docs/knowledge-sources-v1.freeze.json": "114bbfa2b4dd51eafc426716032486f666ace8a1a1284f4c1f4c9baf1f1b35c6",
+      "docs/knowledge-foundation-v1.openapi.json": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4",
+      "docs/knowledge-foundation-v1.example.json": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343"
+    },
+    "business_runtime_diff": [],
+    "model_calls": 0,
+    "real_material_read": false,
+    "multi_round_review": false,
+    "limitations": [
+      "格式检查器与schema不证明文件系统安全、授权、事务、fencing、原文读取或真实性能",
+      "没有构建／运行Go或Web；未复跑旧69项测试和全量类型检查",
+      "消费者确认及后续真人冻结单独记录"
+    ]
+  },
+  "implementation_boundary": {
+    "reuse": [
+      "原生登录／域及租户权限、分组标签",
+      "登记与登记＋路径的稳定原生绑定",
+      "原件快照、预期修订发布、固定C1阅读及单项幂等抽象"
+    ],
+    "adapt": [
+      "私有collector／plan的流式SHA、排除／变化检查和增量比较",
+      "四步交互／原键恢复及固定C1阅读经验；0.2.0客户端和DTO不直接改0.3.0"
+    ],
+    "develop_after_authorization": [
+      "可信根配置及平台适配、版本授权、固定目录列表／精确观察",
+      "单项服务端原文暂存窗口／确认重读、原键持久回查与跨进程序列化、容量／临时清理",
+      "目录正式客户端／Hooks／格式及语义校验、现有knowledge-import内选择和恢复界面"
+    ],
+    "not_started": [
+      "Go／路由／实体／迁移／运行装配",
+      "正式Web目录客户端和页面",
+      "批量任务、文档原件、网页／RSS、移动／归档",
+      "AST关系、索引模型、MCP与人格记忆"
+    ]
+  },
+  "incomplete_items": [
+    "用户对本候选交付的决定Pending；0.3.0未冻结，未获得本轮以外的实施授权",
+    "R2目标Linux只读挂载及Windows联接／硬链接／别名／替换实测",
+    "跨进程按键查询、崩溃恢复、事务／对象存储失败及原生C1实际回读",
+    "512/513项、32/33文件、2MiB、UTF-8/JSON转义边界、超时／429／清理真实性能与资源峰值",
+    "同版真实客户端HTTP联调与R2用户验收；没有复用旧应用测试冒称本轮绿色"
+  ],
+  "publication": {
+    "repository": "https://github.com/LFenX/LFen.s-Second-Brain",
+    "branch": "main",
+    "candidate_commit": "95c22f1a30779f97a8ba93b342326ead2ccbc672",
+    "rule": "普通快进推送，不force；候选文件以本报告摘要和提交固定，最后归档提交由远端main及本会话最终回执核对。报告在提交前生成，不填写尚未产生的自身提交号。"
+  },
+  "user_decision": {
+    "outcome": "Pending"
+  },
+  "freeze_decision": {
+    "outcome": "Pending"
+  },
+  "multi_round_review": {
+    "outcome": "NotStarted",
+    "basis": "用户明确不启动，未邀请或执行审查。"
+  },
+  "governance_note": "沿用docs及忽略目录中的before/run/after记录；不改项目结构，不宣称skill自动门禁、用户验收或新协议冻结。"
+}
