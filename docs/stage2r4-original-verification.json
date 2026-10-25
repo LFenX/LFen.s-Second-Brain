@@ -1,0 +1,1003 @@
+{
+  "document_version": "v0.45",
+  "recorded_at": "2026-10-25T21:23:41.980Z",
+  "task": "S2-R4 C2 0.5.0原件/大文件后端、Web和合成真实联调",
+  "status": "EngineeringVerified_AwaitingHumanAcceptance",
+  "scope_approval": {
+    "outcome": "Approved",
+    "response": "确认冻结并继续实施",
+    "source": "本会话真人异步回答",
+    "question_ref": "call_c19f9f3231b44521b499c70d16dbd010",
+    "scope": "冻结37574fb候选，单写入完成后端/客户端/合成联调，验证后推送main；仅合成、模型0、无多轮审查"
+  },
+  "acceptance": {
+    "user_decision": "Pending",
+    "stage2_overall_exit": false,
+    "whole_project_complete": false,
+    "adversarial_review": "NotRun_UserDeclined"
+  },
+  "versions": {
+    "backend": "3233e8da930641cb97eb8cce8fece4b441ef7cac",
+    "frontend": "7e70c0da432c66c4807a99c55575e2651cf02b15",
+    "timeout_fix": "251e24e297ee675170ed5a8bcc943a79192bdf75",
+    "native_identity_fix": "0936cc9bdb4c1194f0bdbaaf21433e47e479120c",
+    "integrated_application_commit": "8246c2a1cfe43b0b460402658358af074cb6fe22",
+    "binary_sha256": "d37c46f43f3271515c7fe94a958b0bef4fd00f5f63621819eec3efd8c2af3d94",
+    "frontend_index_sha256": "62434216530fa77cfc9b6cd4c1745746c46b0a9ee7e3cba4ec566d3d0850b301",
+    "source_hashes": {
+      "docker/nginx/ragflow.conf": "6495a4e2a245a6168a90952c54778bf6da92d154bb8b4778d836a12c60b12be3",
+      "internal/dao/knowledge_migration.go": "1c2fa2823340a0745dd218c2cd8d57a7f431b99b698a52c99df89739c6d19881",
+      "internal/dao/knowledge_original_integration_test.go": "f3e49537f67f7949c89c2b81f57e12079a7738c1496975bae47affa34a087913",
+      "internal/entity/knowledge.go": "e1e2552ef61ee8972e11916ed4fa1b08571a71de02ba13d8e2060d41618ff6ea",
+      "internal/entity/knowledge_original.go": "e26731f20a288b159f47562289d8ec6d568a52b65dfb3fa51bb9f2f817705b4e",
+      "internal/entity/knowledge_original_capabilities.json": "2a7f0dc0e91a51c75be0fa8f25451993a04de328fa409f0c6a6bdd433dc52de8",
+      "internal/entity/knowledge_original_store.go": "8b962e265433f5578cb6e1b090a784c0c5f113082010f50cd12d69498b4685d6",
+      "internal/handler/knowledge_original.go": "efadb96fd515fa4a9e2f250eb6de87ff0cd80df240e0c0b6e4d5aad113e6cc45",
+      "internal/handler/knowledge_original_test.go": "e26deaa4ea95f2e8d967c445f8e0d64da05ed92c3c0b13029ea668d9b35021d2",
+      "internal/router/knowledge_original.go": "489133fdfa539eb8225349195fdb2318488528a408ffa68a92278e604bd5dde2",
+      "internal/router/knowledge_original_test.go": "87c92deae835a55fe98fb5934f7e9d1f32f4c4ad749cf0f095a40cdce0633930",
+      "internal/router/router.go": "ce567ca761bd9dd3c7cce264fb9e575037d54badec1eb8b60088d867b180f3da",
+      "internal/service/dataset/knowledge_original.go": "b4f670f320134bd826fb2ecbe5aed6fa95a2b72cd8aad60fad462dafbf68dbe1",
+      "internal/service/dataset/knowledge_original_content.go": "c82eb65d2e21828a4983cea77a57b14b65bf88043422deba1f4233ec186ee5cf",
+      "internal/service/dataset/knowledge_original_flow_test.go": "0104b10a96e9cabf86d7e59fda28aff4d0865004fea7eed5aff62e734adcbc40",
+      "internal/service/dataset/knowledge_original_receive.go": "03a0d82a0695b770446ba63d2563e75865b7ab1b754ae3e815e960754c29e132",
+      "internal/service/dataset/knowledge_original_scratch.go": "88c8f77b8c2446056e613983b3b39bc8eca52b060a566fe712bb5fd29f9dd989",
+      "internal/service/dataset/knowledge_original_scratch_linux.go": "ecc2343f5fcdc07224400edba5f47227160140e1945c23253e850861645883a8",
+      "internal/service/dataset/knowledge_original_scratch_other.go": "3142db45139ba051b604a7a830bea12a8379c8f59c60d0eb2534737d92d29b51",
+      "internal/service/dataset/knowledge_original_scratch_test.go": "622c9c638ef668eb8f3acbe0b0575207998b65b33ce2ec8c5bb30ddab69bbb2e",
+      "internal/service/dataset/knowledge_original_source.go": "4a454938b5f5c5486b3545b64eaef163d567cc3ad450c6764ab3351e2cf464d4",
+      "internal/service/dataset/knowledge_original_test.go": "1f7cad848ba85ae3ad9166e2e1ebe193cef005fd0e53968f218fd52377bc14dd",
+      "internal/service/dataset/knowledge_original_vectors_test.go": "0b0219617d3e1d15b0528763967cb753fb55ab5ee3ff03729b0dc19259afa6ba",
+      "internal/service/dataset/knowledge_project_manifest.go": "3ecb35526aed33b01926823cb28f44fa70d1f119dda477657d5332996980a96e",
+      "internal/service/dataset/knowledge_source.go": "793c10d15d54dc88639e91523470c98f343c096dbf1ad2e72dfde0e897c1b460",
+      "internal/service/file/file_commit.go": "5e09499f60a5e1499597cdeedc0eb70cbb67d3e6355a88dc6b4330ac1d3e4626",
+      "internal/service/file/file_content.go": "e7e95e65f766dd51c99895dfb3d2345ee205497522ffb6d5083b46835edd9cfb",
+      "internal/service/file/source_snapshot.go": "57f5f6e7c3881b969bc2663ad6a3cfb0e5c8893b3877c7defd5222fcafadc9f9",
+      "internal/service/file/source_snapshot_metadata_test.go": "dd00795da5b7071627d6a30ab0aaedb0960704b9f4a3f65d918c923ec69526cd",
+      "internal/storage/minio_stream.go": "80e7f10ee4c7d3e2ac020887bf8efdeaab0730632ec6a2ae205da4d3ef45183f",
+      "internal/storage/minio_stream_integration_test.go": "0eaf740ded25aa4966840992aceb3a6ca49f93cc8b23f31ad75640efd9ed1373",
+      "internal/storage/minio_stream_test.go": "3eacca8e6ad418f49847de2fe04d26fe80891cd3e2c4b39c84ca464e79002f2b",
+      "internal/storage/types.go": "177403387f6806d50595de29322454b80b0d82a01be4bad106057fdccca096ae",
+      "web/src/hooks/__tests__/use-knowledge-original.test.tsx": "f43cdaec972529c56b628953457c68db761661b577fdf688f056fbbb80a1632e",
+      "web/src/hooks/use-knowledge-original.ts": "f88ca40300fc7dc244cf5887c939c95e95774185e2619647426bf97043a1c862",
+      "web/src/interfaces/database/knowledge-original.ts": "e3373b664469e14679c7fee907c638734517733c321d11dd38e21c88a56db0ec",
+      "web/src/interfaces/request/knowledge-original.ts": "466110d82766be0c1e942a43d234fbf149e86dccc4b0d6e3b9c9c64eba89f574",
+      "web/src/locales/en.ts": "68c7c04b2f5d31ff1f0e7c4d373f85284c1080ed1ca70a348dfa1a524d932a9f",
+      "web/src/locales/zh.ts": "fc24c9c8d60bfe5c6043be01d7e59d8afc2058612f5300e541a4002b6548d572",
+      "web/src/pages/dataset/knowledge-catalogue/__tests__/original.test.tsx": "7266952af9478ffb673f7dc60a2f023b6eb929016a07215cd88044efc7fa58e2",
+      "web/src/pages/dataset/knowledge-catalogue/index.tsx": "46bc723940cc47ba5efb30251bd7a9383a10954568712413175887df4828c3f4",
+      "web/src/pages/dataset/knowledge-import/__tests__/original-fixture.ts": "5fdb74c01f61b9d6bd0c415ae2e37849efe6870fcbf8dea1a8aecb4db3087364",
+      "web/src/pages/dataset/knowledge-import/__tests__/original.test.tsx": "820b6e4feadd6072dcdc91f168120fa1722bb39e0dbac0d4563f67aaca5f233a",
+      "web/src/pages/dataset/knowledge-import/index.tsx": "f7ab759f95b99dd448e1d6f82abf1bd8828b288a31f7af3d14f8ad2a3b627011",
+      "web/src/pages/dataset/knowledge-import/original-confirmation.tsx": "1631585976e50ca7435a6132ce425a5bb00f4069aee11884f4d4e6ab8cc4e14b",
+      "web/src/pages/dataset/knowledge-import/original-fields.tsx": "38bd3a4d9207a89532ac271cc8a990ec93276c9e2f551a4a92c3330b2ab157f4",
+      "web/src/pages/dataset/knowledge-import/original-revisions.tsx": "ecc34e798e9d55ba6bd0d9ba637805eac3fd5eb135b18e5ae4d0f060a2522709",
+      "web/src/pages/dataset/knowledge-import/original-upload.tsx": "32b615ee2369ad9a1ce1e9c4012f7a938e846cd15efa09022e76facef84f1083",
+      "web/src/pages/dataset/knowledge-import/original.tsx": "a0b60136f4e5db91b45edcbe3dd26bee9025d27325bef6aa3da0d17a0eeb7e93",
+      "web/src/pages/dataset/knowledge-import/use-original-flow.ts": "763793355ba6b8f23eb9cfaef26b23036fb7ebb2986fb14e99e89c0d8a76d2bd",
+      "web/src/services/knowledge-original-service.test.ts": "02eeb5f6c9ba1a2baf7b0a47fa023f963e0f24344e2aae4b7aafb524531bd9bc",
+      "web/src/services/knowledge-original-service.ts": "46372f087f2d9b2621c7a928c91369f47376e5e95528cc6126be7ff067e27fbb",
+      "web/src/services/knowledge-original-wire.test.ts": "122375f886a399b59980529515315395b1cd57f28fd0e4cbe1a704a0aff3b54b",
+      "web/src/utils/knowledge-original-schema.ts": "6fa0de10400326f5ffd47fe4f7b4890784f556eff587ea1d7f432b8f63c0fad4",
+      "web/src/utils/knowledge-original.test.ts": "f88d3c005b11c10c16fafacaba8feb4a27d1afa5f69441d42fa3c23dc4c6f023",
+      "web/src/utils/knowledge-original.ts": "2230fbdab03530ad9262486adb28fd30d9bb858e40c5cec91b1abc256193ddf2"
+    }
+  },
+  "contracts": {
+    "version": "0.5.0",
+    "protected_files": 23,
+    "all_original_bytes_unchanged": true,
+    "hashes": {
+      "docs/knowledge-sources-v1.openapi.json": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091",
+      "docs/knowledge-sources-v1.example.json": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a",
+      "docs/knowledge-sources-v1.freeze.json": "114bbfa2b4dd51eafc426716032486f666ace8a1a1284f4c1f4c9baf1f1b35c6",
+      "docs/knowledge-foundation-v1.openapi.json": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4",
+      "docs/knowledge-foundation-v1.example.json": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343",
+      "docs/knowledge-directory-import-v1.openapi.json": "6144c08d4cfe7ac98374dc51829c98290e2c88e3441dd38d250a3cd9cb4492e6",
+      "docs/knowledge-directory-import-v1.examples.json": "73618dd78419bb9027520b3dd8b3ef83b1794d3ad1c4d17d904ce7637c54ea72",
+      "docs/knowledge-directory-import-v1.freeze.json": "2af7575cfbc24510550a0b495e18aa30f94decf5f102c23d259d4f3135dbf5f1",
+      "docs/knowledge-directory-import-v0.3.candidate.md": "80eb846a81b6ade430012b585739fe6405ef8a7de5855f27941fe66a31e2cbfa",
+      "docs/knowledge-directory-import-v0.3.candidate.openapi.json": "da2c320b3c3fd8f6af2b566b40507a5b09c55791236b49b224347c8b9a457f3d",
+      "docs/knowledge-directory-import-v0.3.candidate.examples.json": "2680f9786a19cc49a0330ecfcda84249ef36aac20293341a18e17cbdfd132d4e",
+      "docs/knowledge-batch-import-v0.4.candidate.md": "3a3beec92e8bc0baae1c820a18e078717163988277aa9d304d762ff97d027b1f",
+      "docs/knowledge-batch-import-v0.4.candidate.openapi.json": "d57ca240df19a985341c25d60ce18590dacdcf221b5599b8223f558a7c379fc5",
+      "docs/knowledge-batch-import-v0.4.candidate.examples.json": "fe8bde9d99b8aaa7250a40a1adc86c6bee9ecf474cbf01af55253274f2e2e304",
+      "docs/knowledge-batch-import-v1.openapi.json": "bd13fc400fc2a84f490b92ee865db75f76d89bf79a176658312ac3bea17d0fb8",
+      "docs/knowledge-batch-import-v1.examples.json": "5249cdf57da0313346b7b30db0743079a175aaa8480604120b1bf92e4bdfdc53",
+      "docs/knowledge-batch-import-v1.freeze.json": "1d589290db4b1fe4ab4005dae0ebf1918efdeac9cd57d7c810305087c180f631",
+      "docs/knowledge-original-import-v0.5.candidate.md": "8a1079fe4745b84d178f50939ac25e1ac1fa51bc3f61ed2340ef1f6d9e1638d6",
+      "docs/knowledge-original-import-v0.5.candidate.openapi.json": "b4905ab840c64f26a25a6017dc7454393fd3b974b0e2199edffe2cc5e725a0aa",
+      "docs/knowledge-original-import-v0.5.candidate.examples.json": "16aa77d948f857f93dcc96e0c812d4bee2a8f3ad91205e54b9c0457f78ea8815",
+      "docs/knowledge-original-import-v1.openapi.json": "3c48ebe0a2bfc8b3078262ce6c1a8258b312f6111bd9ed2b07b7b4fb433a5efd",
+      "docs/knowledge-original-import-v1.examples.json": "550f7be69c506a02cc2798d2196e17ca06c73b06f08d934ea3cbf823551d5cb1",
+      "docs/knowledge-original-import-v1.freeze.json": "116ddc4161001c0fdb440b45b227952978ca3d291197d712830a92d5aaaca3b9"
+    },
+    "old_versions_preserved": [
+      "C1/C3 1.0.0",
+      "C2 0.2.0",
+      "C2 0.3.0",
+      "C2 0.4.0"
+    ]
+  },
+  "implementation": {
+    "reused": "复用原生登录、域/分类、来源身份、Document/File/FileCommitItem、统一快照元数据及现有MinIO客户端；独立0.5状态/槽/回执和流式授权下载。",
+    "limits": "single 1..64MiB; two open/128MiB per owner/domain; one receiving per owner/domain; two deployment slots; 30min TTL; 120s receive; 30s lease/10s renewal",
+    "identity": "native Document ID / FileCommitItem ID retained; content hash does not replace source identity",
+    "original_only": "No fake C1 root/line/page or 0.4 manifest entry; fixed bytes and original filename preserved",
+    "storage": "原件独立.objects/original/SHA；单PUT If-None-Match:*复用或拒绝差异，固定读If-Match；不改变旧Storage.Get/Put。",
+    "staging": "仅清理带owned marker的私有暂存根下生成transfer目录，活跃global lease保留；不清对象和历史。",
+    "exact_keys": "真实业务库先前utf8mb4_0900_ai_ci；限定四列改utf8mb4_bin，实际独立MySQL迁移两次、旧值/ID不变、大小写/NFC/NFD身份分别存储。",
+    "web_actor": "C1 owner_only domain is returned only after Go verifies kb.CreatedBy == native actor; use that authorized owner_id, not a missing local display-profile field, tenant ID or token hash",
+    "cache": "HTML entry revalidates after release; hashed static asset policy unchanged"
+  },
+  "verification": {
+    "go": {
+      "unique_top_level": 48,
+      "unique_including_subtests": 172,
+      "initial_six_package_run": {
+        "top_level": 47,
+        "including_subtests": 171,
+        "commit": "3233e8d"
+      },
+      "post_timeout_changed_packages": {
+        "top_level": 29,
+        "including_subtests": 120,
+        "commit": "251e24e",
+        "new_test": "actual observed HTTP deadline/parent cancellation ordering reaches upload_timeout and retains interrupted/no receipt"
+      },
+      "note": "Two scoped passing runs, union by package+case; not a claim of a new whole-repo test run."
+    },
+    "frontend": {
+      "full_run_at_7e70c0d": {
+        "suites": 21,
+        "passed": 506,
+        "new": 88,
+        "old": 418
+      },
+      "post_native_identity_fix": {
+        "suites": 2,
+        "passed": 9,
+        "real_login_profile_without_id": true
+      },
+      "format_lint": {
+        "passed": true,
+        "affected_files_before_handoff": 23,
+        "post_fix_files": 2,
+        "warnings": 0
+      },
+      "types": {
+        "before": 207,
+        "after": 207,
+        "new": 0,
+        "diagnostic_lines_identical": true,
+        "tsc_exit_code": 2
+      },
+      "build": {
+        "passed": true,
+        "seconds": 42.89,
+        "files": 1058,
+        "production_sources": 16,
+        "minify": false,
+        "sourcemap": false
+      },
+      "note": "Full506 precedes native identity fix; final9 target the changed import/catalogue path. Unchanged tests are not reported as rerun after that fix."
+    },
+    "real_mysql": {
+      "passed": true,
+      "top_level": 1,
+      "including_subtests": 1,
+      "cases": [
+        "TestKnowledgeOriginalExactKeysMySQL"
+      ],
+      "retained_synthetic_database": "lfen_r4_exact_3f8a96d9a67c48d2",
+      "note": "此integration先在与业务库相同的ai_ci默认值上建隔离schema再验证实际迁移；schema-only数据不当业务协议证据。",
+      "preexisting_test_identity_and_values_preserved": true
+    },
+    "real_object_service": {
+      "passed": true,
+      "top_level": 1,
+      "including_subtests": 21,
+      "cases": [
+        "TestMinioStreamIntegration/capacity/3145728/1",
+        "TestMinioStreamIntegration/capacity/3145728/2",
+        "TestMinioStreamIntegration/capacity/3145728/3",
+        "TestMinioStreamIntegration/capacity/33554432/1",
+        "TestMinioStreamIntegration/capacity/33554432/2",
+        "TestMinioStreamIntegration/capacity/33554432/3",
+        "TestMinioStreamIntegration/capacity/67108864/1",
+        "TestMinioStreamIntegration/capacity/67108864/2",
+        "TestMinioStreamIntegration/capacity/67108864/3",
+        "TestMinioStreamIntegration/capacity",
+        "TestMinioStreamIntegration/ranges/first",
+        "TestMinioStreamIntegration/ranges/across_buffer",
+        "TestMinioStreamIntegration/ranges/tail",
+        "TestMinioStreamIntegration/ranges/empty_at_end",
+        "TestMinioStreamIntegration/ranges",
+        "TestMinioStreamIntegration/empty_object",
+        "TestMinioStreamIntegration/metadata_rejection",
+        "TestMinioStreamIntegration/early_close_and_cancel",
+        "TestMinioStreamIntegration/etag_change_between_stat_and_get",
+        "TestMinioStreamIntegration/immutable_object_reuse_and_mismatch",
+        "TestMinioStreamIntegration"
+      ],
+      "retained_synthetic_bucket": "lfen-r4-stream-1b7c24154436428e8c9c1e72fabff086",
+      "temporary_builder_network_restored": true,
+      "note": "实际S3兼容pgsty/silo；对象原语容量各3次，非业务全链路峰值内存。"
+    },
+    "functional": {
+      "passed": true,
+      "cases": [
+        "pdf two versions preserve original bytes and old fixed revision",
+        "docx two versions preserve original bytes and old fixed revision",
+        "pptx two versions preserve original bytes and old fixed revision",
+        "rejected fake.pdf without source advance",
+        "rejected truncated.pdf without source advance",
+        "rejected invalid-utf8.tsx without source advance",
+        "rejected nul.tsx without source advance",
+        "rejected private-key.tsx without source advance",
+        "rejected macro.docx without source advance",
+        "rejected zip-slip.docx without source advance",
+        "rejected high-ratio.docx without source advance",
+        "two open quota; immutable ready; explicit confirm; concurrent same-key 201/200; stale-head rejected; committed cancellation retains receipt",
+        "suffix/clamped/If-Range/weak If-Range and authorized 416 variants",
+        {
+          "guard": "legacy-c1-detail",
+          "status": 415,
+          "code": "knowledge_source_unsupported"
+        },
+        {
+          "guard": "legacy-c1-recapture",
+          "status": 400,
+          "code": "knowledge_invalid_request"
+        },
+        {
+          "guard": "native-file-download",
+          "status": 200,
+          "code": 404
+        },
+        {
+          "guard": "native-folder-fixed-content",
+          "status": 200,
+          "code": 404
+        },
+        {
+          "guard": "native-dataset-fixed-content",
+          "status": 200,
+          "code": 404
+        },
+        {
+          "guard": "native-parse",
+          "status": 200,
+          "code": 403
+        },
+        {
+          "guard": "native-link",
+          "status": 200,
+          "code": 403
+        },
+        {
+          "guard": "native-move",
+          "status": 200,
+          "code": 404
+        },
+        {
+          "guard": "native-delete",
+          "status": 200,
+          "code": 404
+        },
+        {
+          "guard": "foreign-file-download",
+          "status": 200,
+          "code": 404
+        }
+      ],
+      "revisions": [
+        {
+          "domain_id": "bde5ee30d8484d7e8959a964afe8bbe5",
+          "registration_id": "a8b80bfa68644e09b0af1ca480b6060c",
+          "source_id": "db8458043b2d4bcd8c0db20569290718",
+          "source_revision_id": "389789d18c334188aeb202fe0d86d50f",
+          "original_filename": "合成原件.pdf",
+          "relative_path": "docs/sample.pdf",
+          "classification": {
+            "group_id": "285bbdd8dd414bcba23ca993e4dc5f1e",
+            "component_side": "non_code",
+            "language": ""
+          },
+          "sha256": "f8a356fe976458855dc64bf559296a759c7b0c005171adc9aeb042c36809fa91",
+          "byte_length": 592,
+          "media_type": "application/pdf",
+          "representation_kind": "original_only",
+          "root_node_id": null,
+          "text_available": false,
+          "parse_status": "not_parsed",
+          "structure_status": "not_built",
+          "full_text_status": "not_built",
+          "vector_status": "not_built",
+          "is_current": true,
+          "created_at": "2026-10-25T20:35:02Z"
+        },
+        {
+          "domain_id": "bde5ee30d8484d7e8959a964afe8bbe5",
+          "registration_id": "a8b80bfa68644e09b0af1ca480b6060c",
+          "source_id": "db8458043b2d4bcd8c0db20569290718",
+          "source_revision_id": "5cb89b76152248cfae183932669361a3",
+          "original_filename": "合成原件.pdf",
+          "relative_path": "docs/sample.pdf",
+          "classification": {
+            "group_id": "285bbdd8dd414bcba23ca993e4dc5f1e",
+            "component_side": "non_code",
+            "language": ""
+          },
+          "sha256": "a5dba76036921343ffd9628e1c9f0051e42511a0bda215e4d536a47dba41a367",
+          "byte_length": 592,
+          "media_type": "application/pdf",
+          "representation_kind": "original_only",
+          "root_node_id": null,
+          "text_available": false,
+          "parse_status": "not_parsed",
+          "structure_status": "not_built",
+          "full_text_status": "not_built",
+          "vector_status": "not_built",
+          "is_current": true,
+          "created_at": "2026-10-25T20:35:02Z"
+        },
+        {
+          "domain_id": "bde5ee30d8484d7e8959a964afe8bbe5",
+          "registration_id": "a8b80bfa68644e09b0af1ca480b6060c",
+          "source_id": "c1597edd90594ec58406d998267a799c",
+          "source_revision_id": "e4aa88a7f3e54c328cbeb24a43ab7390",
+          "original_filename": "合成原件.docx",
+          "relative_path": "docs/sample.docx",
+          "classification": {
+            "group_id": "285bbdd8dd414bcba23ca993e4dc5f1e",
+            "component_side": "non_code",
+            "language": ""
+          },
+          "sha256": "7735ff48d065e21f2d2f93a48eb772356d4df833e87021442af1c9435ff45ae4",
+          "byte_length": 1014,
+          "media_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          "representation_kind": "original_only",
+          "root_node_id": null,
+          "text_available": false,
+          "parse_status": "not_parsed",
+          "structure_status": "not_built",
+          "full_text_status": "not_built",
+          "vector_status": "not_built",
+          "is_current": true,
+          "created_at": "2026-10-25T20:35:02Z"
+        },
+        {
+          "domain_id": "bde5ee30d8484d7e8959a964afe8bbe5",
+          "registration_id": "a8b80bfa68644e09b0af1ca480b6060c",
+          "source_id": "c1597edd90594ec58406d998267a799c",
+          "source_revision_id": "30f527b92c4c44d19e242d4b7617cf3f",
+          "original_filename": "合成原件.docx",
+          "relative_path": "docs/sample.docx",
+          "classification": {
+            "group_id": "285bbdd8dd414bcba23ca993e4dc5f1e",
+            "component_side": "non_code",
+            "language": ""
+          },
+          "sha256": "c3e9a9e1ccb9bb56c7bbc599997c45adc092e3e9fcea3f5297ea2c392ac3eb31",
+          "byte_length": 1014,
+          "media_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          "representation_kind": "original_only",
+          "root_node_id": null,
+          "text_available": false,
+          "parse_status": "not_parsed",
+          "structure_status": "not_built",
+          "full_text_status": "not_built",
+          "vector_status": "not_built",
+          "is_current": true,
+          "created_at": "2026-10-25T20:35:03Z"
+        },
+        {
+          "domain_id": "bde5ee30d8484d7e8959a964afe8bbe5",
+          "registration_id": "a8b80bfa68644e09b0af1ca480b6060c",
+          "source_id": "9f9fcfd00ca9428786c9ab896cfec4b2",
+          "source_revision_id": "cc272e56b42445d086b7cc866a3fa35f",
+          "original_filename": "合成原件.pptx",
+          "relative_path": "docs/sample.pptx",
+          "classification": {
+            "group_id": "285bbdd8dd414bcba23ca993e4dc5f1e",
+            "component_side": "non_code",
+            "language": ""
+          },
+          "sha256": "35a6a1895b9598cf8ddb3b1e4bcaf4ec003e7bc858fcffea7dd222ccd3ea0f5a",
+          "byte_length": 1715,
+          "media_type": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+          "representation_kind": "original_only",
+          "root_node_id": null,
+          "text_available": false,
+          "parse_status": "not_parsed",
+          "structure_status": "not_built",
+          "full_text_status": "not_built",
+          "vector_status": "not_built",
+          "is_current": true,
+          "created_at": "2026-10-25T20:35:03Z"
+        },
+        {
+          "domain_id": "bde5ee30d8484d7e8959a964afe8bbe5",
+          "registration_id": "a8b80bfa68644e09b0af1ca480b6060c",
+          "source_id": "9f9fcfd00ca9428786c9ab896cfec4b2",
+          "source_revision_id": "cfdc059ddf8b4492820ef46dff49a216",
+          "original_filename": "合成原件.pptx",
+          "relative_path": "docs/sample.pptx",
+          "classification": {
+            "group_id": "285bbdd8dd414bcba23ca993e4dc5f1e",
+            "component_side": "non_code",
+            "language": ""
+          },
+          "sha256": "9360211192f7f1cfd36a0bc9f0672366fceacab00378f25211842a5fe04eefb2",
+          "byte_length": 1715,
+          "media_type": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+          "representation_kind": "original_only",
+          "root_node_id": null,
+          "text_available": false,
+          "parse_status": "not_parsed",
+          "structure_status": "not_built",
+          "full_text_status": "not_built",
+          "vector_status": "not_built",
+          "is_current": true,
+          "created_at": "2026-10-25T20:35:03Z"
+        }
+      ],
+      "synthetic_only": true,
+      "model_calls": 0,
+      "original_legacy_and_models_unchanged": true,
+      "protected_source_heads_after_denied_unchanged": true,
+      "native_file_id": "dbd1bd0dd037483183225133d0347264",
+      "native_commit_id": "680e1fdcc0aa4278ba75009834a82ac9",
+      "folder_id": "22c12d5f1ed0472b9fbfaceb1171c0f5"
+    },
+    "recovery": {
+      "passed": true,
+      "cases": [
+        {
+          "name": "receiving cancellation fences old epoch and retains global slot until it stops",
+          "old_http": 409
+        },
+        {
+          "name": "actual TCP client abort observed and explicit original-upload retry",
+          "state": "interrupted"
+        },
+        {
+          "name": "synthetic SQL fixture changes policy version, old upload fenced",
+          "before_version": 1,
+          "after_version": 2,
+          "status": 409,
+          "state": "rejected"
+        },
+        {
+          "name": "expiry fixture (SQL clock only) has terminal read 200/write 410 and exact creation replay",
+          "natural_30min_wait": false
+        },
+        {
+          "name": "actual domain read grant withdrawal during blocked body stops receiver at renewal",
+          "elapsed_ms": 10101,
+          "response_status": 404,
+          "state": "receiving"
+        }
+      ],
+      "synthetic_only": true,
+      "model_calls": 0,
+      "original_legacy_and_models_unchanged": true,
+      "note": "TTL and policy transitions use explicit SQL only in this synthetic domain; TCP disconnect/cancellation/revocation are actual HTTP. Natural crash lease is independently recorded in original-runtime-crash.json."
+    },
+    "real_process_crash": {
+      "passed": true,
+      "synthetic_only": true,
+      "old_api_pid": 49,
+      "new_api_pid": 1024,
+      "client_outcome": "HTTP 502",
+      "actual_staged_bytes_before_kill": true,
+      "natural_lease_observations": [
+        {
+          "elapsed_ms": 1875,
+          "state": "receiving",
+          "revision": 2
+        },
+        {
+          "elapsed_ms": 2889,
+          "state": "receiving",
+          "revision": 2
+        },
+        {
+          "elapsed_ms": 3926,
+          "state": "receiving",
+          "revision": 2
+        },
+        {
+          "elapsed_ms": 4968,
+          "state": "receiving",
+          "revision": 2
+        },
+        {
+          "elapsed_ms": 6006,
+          "state": "receiving",
+          "revision": 2
+        },
+        {
+          "elapsed_ms": 7039,
+          "state": "receiving",
+          "revision": 2
+        },
+        {
+          "elapsed_ms": 8055,
+          "state": "receiving",
+          "revision": 2
+        },
+        {
+          "elapsed_ms": 9078,
+          "state": "receiving",
+          "revision": 2
+        },
+        {
+          "elapsed_ms": 10101,
+          "state": "receiving",
+          "revision": 2
+        },
+        {
+          "elapsed_ms": 11126,
+          "state": "receiving",
+          "revision": 2
+        },
+        {
+          "elapsed_ms": 12160,
+          "state": "receiving",
+          "revision": 2
+        },
+        {
+          "elapsed_ms": 13192,
+          "state": "receiving",
+          "revision": 2
+        },
+        {
+          "elapsed_ms": 14211,
+          "state": "receiving",
+          "revision": 2
+        },
+        {
+          "elapsed_ms": 15237,
+          "state": "receiving",
+          "revision": 2
+        },
+        {
+          "elapsed_ms": 16265,
+          "state": "receiving",
+          "revision": 2
+        },
+        {
+          "elapsed_ms": 17296,
+          "state": "receiving",
+          "revision": 2
+        },
+        {
+          "elapsed_ms": 18317,
+          "state": "receiving",
+          "revision": 2
+        },
+        {
+          "elapsed_ms": 19345,
+          "state": "receiving",
+          "revision": 2
+        },
+        {
+          "elapsed_ms": 20366,
+          "state": "receiving",
+          "revision": 2
+        },
+        {
+          "elapsed_ms": 21393,
+          "state": "receiving",
+          "revision": 2
+        },
+        {
+          "elapsed_ms": 22413,
+          "state": "receiving",
+          "revision": 2
+        },
+        {
+          "elapsed_ms": 23453,
+          "state": "receiving",
+          "revision": 2
+        },
+        {
+          "elapsed_ms": 24472,
+          "state": "receiving",
+          "revision": 2
+        },
+        {
+          "elapsed_ms": 25499,
+          "state": "receiving",
+          "revision": 2
+        },
+        {
+          "elapsed_ms": 26519,
+          "state": "receiving",
+          "revision": 2
+        },
+        {
+          "elapsed_ms": 27540,
+          "state": "receiving",
+          "revision": 2
+        },
+        {
+          "elapsed_ms": 28575,
+          "state": "receiving",
+          "revision": 2
+        },
+        {
+          "elapsed_ms": 29612,
+          "state": "interrupted",
+          "revision": 3
+        }
+      ],
+      "explicit_same_upload_retry": true,
+      "source_revision_id": "4ba2d5156ebc4b949e38b3297e8e0cc8",
+      "download_sha256": "cbdf5538043392ca85004fbe198bda687e1beeba0ff53c193d7f473395a6952f",
+      "staging_body_files_after": 0,
+      "original_legacy_and_models_unchanged": true,
+      "model_calls": 0,
+      "credential_changes": 0,
+      "volume_changes": 0
+    },
+    "real_sql_rollback": {
+      "passed": true,
+      "synthetic_domain_id": "010bee6fb471458e8f9a7532f6cc78e9",
+      "actual_mysql_connection_terminated": true,
+      "victim": {
+        "connection_id": 197669,
+        "uncommitted_rows_modified": 5
+      },
+      "prior_to_kill": "confirmed InnoDB LOCK WAIT on this synthetic native folder after >=4 uncommitted row modifications",
+      "failed_http": 503,
+      "failed_code": "result_unknown",
+      "persisted_counts_unchanged": true,
+      "ready_manifest_retained": true,
+      "explicit_same_confirmation_key_retry": true,
+      "fixed_source_revision_id": "8b298c2e479748a1bdbf7eede4a903d6",
+      "model_calls": 0,
+      "legacy_and_models_unchanged": true,
+      "scope": "Only an identified blocked confirmation SQL connection in this isolated synthetic domain was terminated; no service/container restart, schema loss or physical object deletion."
+    },
+    "actual_full_120s_timeout": {
+      "passed": true,
+      "status": 409,
+      "code": "upload_timeout",
+      "elapsed_ms": 120047,
+      "state": "interrupted",
+      "same_120s_limit": true,
+      "prior_failure_kept": true
+    },
+    "old_contract_runtime": {
+      "passed": true,
+      "c2_02_manual_roundtrip": true,
+      "c1_bom_crlf_cjk_emoji_equal": true,
+      "c1_list_originals_filtered_before_pagination": true,
+      "c2_03_real_observation": true,
+      "c2_04_real_task_succeeded": true,
+      "c2_04_fixed_old_manifest_preserved": true,
+      "c1_fixed_old_manifest_bytes_sha_equal": true,
+      "old03_04_responses": 7,
+      "old02_and_original_list_responses": 6,
+      "model_calls": 0,
+      "legacy_and_models_unchanged": true
+    },
+    "capacity": {
+      "passed": true,
+      "rows": [
+        {
+          "mib": 3,
+          "iteration": 1,
+          "bytes": 3145728,
+          "upload_to_ready_ms": 91.87980000000005,
+          "confirm_http_ms": 40.779499999999985,
+          "download_and_sha_ms": 55.087299999999914,
+          "total_ms": 236.9020999999999,
+          "upload_mib_per_second": 32.651355357760885,
+          "download_mib_per_second": 54.4590132389862,
+          "source_revision_id": "f9087d054ccc404c8d50487b0b1f47e9",
+          "sha256": "cbdf5538043392ca85004fbe198bda687e1beeba0ff53c193d7f473395a6952f",
+          "metrics_after": {
+            "pid": 50,
+            "rss_kib": 327236,
+            "hwm_kib": 327236
+          }
+        },
+        {
+          "mib": 3,
+          "iteration": 2,
+          "bytes": 3145728,
+          "upload_to_ready_ms": 82.68870000000015,
+          "confirm_http_ms": 36.418499999999995,
+          "download_and_sha_ms": 56.83389999999986,
+          "total_ms": 212.60349999999994,
+          "upload_mib_per_second": 36.28065261637919,
+          "download_mib_per_second": 52.78539744765021,
+          "source_revision_id": "10eecc335f3f4ab3a0b5dcca5d64ef19",
+          "sha256": "c27bcfd10495baa675612b76e01db9caaab30b1f83bfd27bf03a4dfbc257b161",
+          "metrics_after": {
+            "pid": 50,
+            "rss_kib": 329648,
+            "hwm_kib": 329648
+          }
+        },
+        {
+          "mib": 3,
+          "iteration": 3,
+          "bytes": 3145728,
+          "upload_to_ready_ms": 79.24720000000002,
+          "confirm_http_ms": 34.504199999999855,
+          "download_and_sha_ms": 59.552200000000084,
+          "total_ms": 210.02779999999984,
+          "upload_mib_per_second": 37.8562270969826,
+          "download_mib_per_second": 50.37597267607235,
+          "source_revision_id": "f9087d054ccc404c8d50487b0b1f47e9",
+          "sha256": "cbdf5538043392ca85004fbe198bda687e1beeba0ff53c193d7f473395a6952f",
+          "metrics_after": {
+            "pid": 50,
+            "rss_kib": 333468,
+            "hwm_kib": 333468
+          }
+        },
+        {
+          "mib": 32,
+          "iteration": 1,
+          "bytes": 33554432,
+          "upload_to_ready_ms": 315.57429999999977,
+          "confirm_http_ms": 55.90700000000015,
+          "download_and_sha_ms": 218.95989999999983,
+          "total_ms": 645.3181,
+          "upload_mib_per_second": 101.40242725722604,
+          "download_mib_per_second": 146.14548143290173,
+          "source_revision_id": "5379dcb545904a0abfdc534e5aa477ef",
+          "sha256": "a28a8e599cef9048f5c2dc2c777e302d0e597dceb8e175c57a00b34017f03221",
+          "metrics_after": {
+            "pid": 50,
+            "rss_kib": 337780,
+            "hwm_kib": 337780
+          }
+        },
+        {
+          "mib": 32,
+          "iteration": 2,
+          "bytes": 33554432,
+          "upload_to_ready_ms": 319.4622999999997,
+          "confirm_http_ms": 37.48090000000002,
+          "download_and_sha_ms": 206.91359999999986,
+          "total_ms": 610.0414999999998,
+          "upload_mib_per_second": 100.16831407023624,
+          "download_mib_per_second": 154.65392318339644,
+          "source_revision_id": "c0bc8b8e06be46d69e06c1714d240b77",
+          "sha256": "561b9e77817aca21995fe88c25cfcc3e60012eb49727e9a85469013df1254955",
+          "metrics_after": {
+            "pid": 50,
+            "rss_kib": 341948,
+            "hwm_kib": 341948
+          }
+        },
+        {
+          "mib": 32,
+          "iteration": 3,
+          "bytes": 33554432,
+          "upload_to_ready_ms": 205.92029999999977,
+          "confirm_http_ms": 33.96070000000054,
+          "download_and_sha_ms": 157.83509999999933,
+          "total_ms": 446.5164999999997,
+          "upload_mib_per_second": 155.3999290016576,
+          "download_mib_per_second": 202.7432427894691,
+          "source_revision_id": "5379dcb545904a0abfdc534e5aa477ef",
+          "sha256": "a28a8e599cef9048f5c2dc2c777e302d0e597dceb8e175c57a00b34017f03221",
+          "metrics_after": {
+            "pid": 50,
+            "rss_kib": 346008,
+            "hwm_kib": 346008
+          }
+        },
+        {
+          "mib": 64,
+          "iteration": 1,
+          "bytes": 67108864,
+          "upload_to_ready_ms": 551.9063999999998,
+          "confirm_http_ms": 45.499799999999595,
+          "download_and_sha_ms": 467.72580000000016,
+          "total_ms": 1106.4673000000003,
+          "upload_mib_per_second": 115.96169205502966,
+          "download_mib_per_second": 136.83230644963348,
+          "source_revision_id": "2d2340b1114d46b4a1ae319f528996fa",
+          "sha256": "3f2b6a6078caad2d45a425561f226108e3a5764b2e506ca24dae01b3863eb666",
+          "metrics_after": {
+            "pid": 50,
+            "rss_kib": 349272,
+            "hwm_kib": 349272
+          }
+        },
+        {
+          "mib": 64,
+          "iteration": 2,
+          "bytes": 67108864,
+          "upload_to_ready_ms": 439.35000000000036,
+          "confirm_http_ms": 34.62089999999989,
+          "download_and_sha_ms": 477.71180000000004,
+          "total_ms": 991.9935000000005,
+          "upload_mib_per_second": 145.66973938773177,
+          "download_mib_per_second": 133.97198896908137,
+          "source_revision_id": "fa3535a9daf64b688f88644e362c09f7",
+          "sha256": "94ef8bb8fcb1ca59136103b73990e1e359b47a9d5f5a6e4042d5843b2b84da68",
+          "metrics_after": {
+            "pid": 50,
+            "rss_kib": 349392,
+            "hwm_kib": 349392
+          }
+        },
+        {
+          "mib": 64,
+          "iteration": 3,
+          "bytes": 67108864,
+          "upload_to_ready_ms": 496.32760000000053,
+          "confirm_http_ms": 43.36859999999979,
+          "download_and_sha_ms": 423.0748000000003,
+          "total_ms": 1002.6098000000002,
+          "upload_mib_per_second": 128.94709059097244,
+          "download_mib_per_second": 151.27348639058613,
+          "source_revision_id": "2d2340b1114d46b4a1ae319f528996fa",
+          "sha256": "3f2b6a6078caad2d45a425561f226108e3a5764b2e506ca24dae01b3863eb666",
+          "metrics_after": {
+            "pid": 50,
+            "rss_kib": 349600,
+            "hwm_kib": 349600
+          }
+        }
+      ],
+      "baseline": {
+        "pid": 50,
+        "rss_kib": 326736,
+        "hwm_kib": 326736
+      },
+      "metrics": {
+        "sample_interval_ms": 100,
+        "samples": 85,
+        "peak_rss_kib": 349600,
+        "process_hwm_kib": 349600,
+        "peak_staging_allocated_kib": 64716,
+        "sampler_stderr_nonempty": false
+      },
+      "after": {
+        "pid": 50,
+        "rss_kib": 349600,
+        "hwm_kib": 349600
+      },
+      "synthetic_only": true,
+      "model_calls": 0,
+      "original_legacy_and_models_unchanged": true,
+      "limits": {
+        "upload_min_64mib_mibps": 5,
+        "confirm_http_upper_bound_ms": 2000
+      },
+      "targets_met": true,
+      "measurement_note": "Windows Node file stream → localhost Nginx → real Go/MySQL/S3-compatible service; mixed CJK/BOM/CRLF/emoji synthetic text. Download includes streamed SHA. Sampling sees API RSS and cumulative process HWM; not independent cold-process peak or production p95. Staging du measures allocated KiB, not logical max byte. API explicit buffer 64KiB by implementation; RSS includes native runtime and DB/client allocations."
+    },
+    "browser": {
+      "passed": true,
+      "browser": "ChatGPT in-app browser",
+      "synthetic_only": true,
+      "native_login": true,
+      "domain_id": "bde5ee30d8484d7e8959a964afe8bbe5",
+      "owner_id": "34ba3ce36027457e8614074ab2bb9c63",
+      "registration_created": "46b05aacb2ad4db2849b55c92468ec85",
+      "original_filename": "v1.pdf",
+      "relative_path": "docs/browser.pdf",
+      "upload_sent_percent": 100,
+      "server_received_bytes": 592,
+      "ready_revision": 3,
+      "confirmation_initially_unchecked": true,
+      "confirm_button_initially_disabled": true,
+      "ready_refresh_required_explicit_original_key_lookup": true,
+      "receipt_id": "75919474d1b741769db36fee650b6e61",
+      "source_id": "03469512ae134dd18130e4a7485457b0",
+      "source_revision_id": "2e25a1bb4c5f4c7fa7bd37036f9d1d99",
+      "confirmed_receipt_restored_unchanged_after_refresh": true,
+      "catalogue_group_original_cards_seen": true,
+      "frontend_label_seen_for_large_code": true,
+      "small_download": {
+        "bytes": 592,
+        "sha256": "f8a356fe976458855dc64bf559296a759c7b0c005171adc9aeb042c36809fa91"
+      },
+      "large_download": {
+        "bytes": 67108864,
+        "sha256": "3f2b6a6078caad2d45a425561f226108e3a5764b2e506ca24dae01b3863eb666"
+      },
+      "browser_download_buffers_whole_blob": true,
+      "fake_c1_text_root": false,
+      "model_calls": 0,
+      "screenshots": [
+        "browser-original-ready.png",
+        "browser-original-receipt.png",
+        "browser-original-fixed.png",
+        "browser-original-catalogue.png",
+        "browser-original-large.png"
+      ]
+    },
+    "final_fingerprint": {
+      "passed": true,
+      "receipt_id": "75919474d1b741769db36fee650b6e61",
+      "sha256": "f8a356fe976458855dc64bf559296a759c7b0c005171adc9aeb042c36809fa91",
+      "native_source_identity_equal": true,
+      "model_calls": 0,
+      "fingerprint": {
+        "legacy": "fc37b28ec8b5a940e048083e375b88ec2691fc7166444461e4205a5894768809",
+        "documents": "ff308061d9eb8408e245e1ef6b870559d75009466c0f971f2caf2d0ba81e6756",
+        "provider_config": "02a17668763f9707c04bb0149892a1b2bc70b9486f4d5c96ef10f3b243220745",
+        "usage": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "legacy_documents": 6,
+        "legacy_chunks": 42,
+        "active_tasks": 0
+      },
+      "legacy_models_unchanged": true
+    },
+    "html_cache": {
+      "passed": true,
+      "status": 200,
+      "index_sha256": "62434216530fa77cfc9b6cd4c1745746c46b0a9ee7e3cba4ec566d3d0850b301",
+      "cache_control": "no-cache, must-revalidate",
+      "static_asset_cache_unchanged": true,
+      "initial_reload_old_worker_response": true,
+      "final_after_reload_settled": true
+    },
+    "build_help": {
+      "initial_four_modes_usage": true,
+      "final_api_usage": true,
+      "help_exit_code": 1,
+      "linker": "LLD22.1.8"
+    },
+    "local_http_responses_logged": 525,
+    "request_count_boundary": "Logged count includes failed harness attempts and current/past same-scope API tests; extra browser/native-denial/concurrent and older-helper requests are separately evidenced, not folded into a guessed total."
+  },
+  "necessary_fixes": [
+    {
+      "issue": "120s actual timeout reported upload_interrupted",
+      "fix": "share exact HTTP/context deadline and classify elapsed deadline after renewal stops",
+      "evidence": "actual 120047ms retest 409 upload_timeout"
+    },
+    {
+      "issue": "native login local display profile has no id; page blocked despite login",
+      "fix": "derive current private owner from C1 authenticated owner-only domain; realistic profile fixture and9target tests",
+      "evidence": "real browser new registration/upload/refresh/confirm/fixed download passed"
+    },
+    {
+      "issue": "browser old HTML entry retained stale catalogue module across local releases",
+      "fix": "revalidate /index.html only; Nginx config and served index hash verified",
+      "evidence": "actual group original cards and server cache header, static assets unchanged"
+    }
+  ],
+  "evidence_boundaries": [
+    "Only synthetic files; no real AICS/website capture, no external model call or local model inference.",
+    "Office tests prove bounded admission checks and raw-byte preservation, not renderer/schema completeness/OCR/security scan.",
+    "TTL expiration fixture changes SQL timestamp; actual120s deadline and process lease expiry use real time.",
+    "Policy fixture restored to original version1/me after checks; no shared C3 protocol mutation.",
+    "Native pure rename is existing owner behavior; actual move/link/parse/delete and raw-byte bypass are denied; initial harness assumption corrected without broadening product changes.",
+    "Capacity is nine local warm synthetic runs against actual services; not production p95/cold process peak/million-file scaling.",
+    "RSS sampling every100ms can miss short peaks; process HWM also recorded; browser intentionally buffers full<=64MiB Blob.",
+    "No physical stored-object/history GC or credential/volume recreation; isolated synthetic test DB/buckets and downloads retained.",
+    "Real ENOSPC/File.Sync faults and full service outage were not injected; bounded copy/store failure has focused unit evidence, SQL disconnect is actual."
+  ],
+  "continuation": {
+    "writer": "A primary chat",
+    "frontend_chat": {
+      "id": "01a1746b-2de2-7413-906b-d2a4544017e3",
+      "title": "R4 原件导入客户端与界面",
+      "status": "read-only; clean7e70handoff completed; R5 consumption input returned"
+    },
+    "next": "R5 public candidate then explicit freeze; R6/R7 and stages3-6 remain",
+    "r5_preparation": "18 synthetic HTML/RSS/Atom fixtures, byte/SHA readback only; no network/parser/app acceptance claim",
+    "persistent_goal": "active"
+  },
+  "publication": {
+    "local_main_merged": true,
+    "application_commit_in_versions": true,
+    "target_remote": "origin/main",
+    "push_evidence": "Remote refs/heads/main is compared with HEAD after committing this report; receipt retained in ignored main-push.json and current chat. The report does not contain its own commit hash."
+  }
+}
