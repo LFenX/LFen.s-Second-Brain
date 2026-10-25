@@ -1,42 +1,348 @@
 {
-  "document_version": "v0.38",
-  "recorded_at": "2026-10-25T15:09:22.122Z",
-  "engineering_status": "BackendImplemented_SmallRuntimeVerified_FrontendPending",
-  "frozen_contract": "docs/knowledge-batch-import-v1.freeze.json",
-  "freeze_commit": "ceca601",
-  "unit_tests": {
-    "top_level": 79,
-    "including_subtests": 175,
-    "failed": 0,
-    "scope": "5 relevant Go packages TestKnowledge and native unit tier"
+  "version": "v0.38",
+  "task": "S2-R3",
+  "recorded_at": "2026-10-25T16:25:45.795Z",
+  "objective": "冻结C2 0.4.0并完成多文件任务、取消、项目固定版本、正式客户端和合成真实联调",
+  "request_snapshot": "确认冻结并继续实施",
+  "approval_question": "R3 的 C2 0.4.0 候选已保存并推送到 codex/stage2r3-batch-candidate（81b81de），两会话集中核对的四项问题已修订，70 个结构例和 71 个语义例通过。是否确认冻结这版候选，并由两个会话继续完成后端任务、取消与项目版本、客户端界面及合成真实联调？继续保持零模型调用、不启动多轮审查。此次确认来自你此前“候选确认前不接入业务代码”的要求，只针对新增共享接口；候选见 docs/knowledge-batch-import-v0.4.candidate.md。",
+  "scope": {
+    "synthetic_only": true,
+    "model_calls": 0,
+    "adversarial_review": false,
+    "stage2_exit": false
   },
-  "build": {
-    "passed": true,
+  "status": "Implemented",
+  "application_commit": "7309dafe5d664c77debb3d3bebafc33109ad2fe4",
+  "freeze_commit": "ceca601",
+  "frozen_contracts": {
+    "source_version": "0.4.0",
+    "foundation_version": "1.0.0",
+    "old_source_versions": [
+      "0.2.0",
+      "0.3.0"
+    ],
+    "protected_files": 17,
+    "all_hashes_unchanged": true,
+    "hashes": {
+      "docs/knowledge-sources-v1.openapi.json": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091",
+      "docs/knowledge-sources-v1.example.json": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a",
+      "docs/knowledge-sources-v1.freeze.json": "114bbfa2b4dd51eafc426716032486f666ace8a1a1284f4c1f4c9baf1f1b35c6",
+      "docs/knowledge-foundation-v1.openapi.json": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4",
+      "docs/knowledge-foundation-v1.example.json": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343",
+      "docs/knowledge-directory-import-v1.openapi.json": "6144c08d4cfe7ac98374dc51829c98290e2c88e3441dd38d250a3cd9cb4492e6",
+      "docs/knowledge-directory-import-v1.examples.json": "73618dd78419bb9027520b3dd8b3ef83b1794d3ad1c4d17d904ce7637c54ea72",
+      "docs/knowledge-directory-import-v1.freeze.json": "2af7575cfbc24510550a0b495e18aa30f94decf5f102c23d259d4f3135dbf5f1",
+      "docs/knowledge-directory-import-v0.3.candidate.md": "80eb846a81b6ade430012b585739fe6405ef8a7de5855f27941fe66a31e2cbfa",
+      "docs/knowledge-directory-import-v0.3.candidate.openapi.json": "da2c320b3c3fd8f6af2b566b40507a5b09c55791236b49b224347c8b9a457f3d",
+      "docs/knowledge-directory-import-v0.3.candidate.examples.json": "2680f9786a19cc49a0330ecfcda84249ef36aac20293341a18e17cbdfd132d4e",
+      "docs/knowledge-batch-import-v0.4.candidate.md": "3a3beec92e8bc0baae1c820a18e078717163988277aa9d304d762ff97d027b1f",
+      "docs/knowledge-batch-import-v0.4.candidate.openapi.json": "d57ca240df19a985341c25d60ce18590dacdcf221b5599b8223f558a7c379fc5",
+      "docs/knowledge-batch-import-v0.4.candidate.examples.json": "fe8bde9d99b8aaa7250a40a1adc86c6bee9ecf474cbf01af55253274f2e2e304",
+      "docs/knowledge-batch-import-v1.openapi.json": "bd13fc400fc2a84f490b92ee865db75f76d89bf79a176658312ac3bea17d0fb8",
+      "docs/knowledge-batch-import-v1.examples.json": "5249cdf57da0313346b7b30db0743079a175aaa8480604120b1bf92e4bdfdc53",
+      "docs/knowledge-batch-import-v1.freeze.json": "1d589290db4b1fe4ab4005dae0ebf1918efdeac9cd57d7c810305087c180f631"
+    }
+  },
+  "reuse": "复用原生登录、域/项目分组、可信根读取、原生来源修订/对象存储及C1；自研有界SQL任务/租约/取消/分页、项目清单和独立Web客户端。",
+  "go": {
+    "top_level": 80,
+    "including_subtests": 176,
+    "failures": 0,
+    "build": "Passed",
     "linker": "LLD22.1.8",
-    "binary_sha256": "55c54e09fb7df70fedcba56929253ba23d6b52c6d27984615b7c91815f6854b7",
+    "binary_sha256": "1f7cd4a1f60c2719d6e01535e725ce1eed5e6a5167260b816c530caca64cdf02",
+    "loaded_binary_equal": true,
+    "build_source_equal": true,
     "help_modes": [
       "api",
       "admin",
       "ingestor",
       "syncer"
     ],
-    "recognized_help_exit_code": 1
+    "help_exit_code": 1,
+    "help_criterion": "四种模式实际输出Usage，退出码1是此命令行程序的help行为。"
   },
-  "runtime_smoke": {
-    "passed": true,
-    "requests": 16,
-    "accepted_queued": true,
-    "succeeded": 2,
-    "project_entries": 2,
-    "fixed_c1": true,
-    "model_calls": 0
+  "frontend": {
+    "suites": 15,
+    "passed": 418,
+    "failed": 0,
+    "new_tests": 180,
+    "old_regression_tests": 238,
+    "scope_files": 21,
+    "format": "Passed",
+    "lint": "Passed",
+    "lint_warnings": 0,
+    "typecheck": {
+      "baseline": 207,
+      "current": 207,
+      "new_diagnostics": 0,
+      "result": "全量仍有207项既有诊断，本轮新增0；不称全仓类型检查通过。"
+    },
+    "production_build": {
+      "passed": true,
+      "seconds": 40.97,
+      "minify": false,
+      "sourcemap": false,
+      "public_files": 1266,
+      "loaded_hashes_equal": true
+    },
+    "consumption": "0.3登记/观察、0.4批次/项目和C1固定原文隔离；两个持久恢复槽只保存ID/摘要/原键。"
+  },
+  "runtime": {
+    "initial_smoke_responses": 16,
+    "extended_logged_http_responses": 543,
+    "browser_requests": "通过原生浏览器执行，未另行逐请求计数",
+    "capacity": {
+      "items": 32,
+      "bytes": 67108864,
+      "observe_and_stage_ms": 1199.45,
+      "through_project_publication_ms": 6667.82,
+      "api_vm_hwm_kib": 498572,
+      "api_vm_rss_before_kib": 268052,
+      "api_vm_rss_after_kib": 374996,
+      "distinct_source_ids_for_identical_sha": 32,
+      "scope": "一次localhost/Linux合成热缓存运行；不是生产p95或百万行库验收。",
+      "temporary_body_payload_bytes": 67108864,
+      "database_disk_peak": "未独立采样磁盘或数据库总空间峰值"
+    },
+    "cancellation": {
+      "succeeded": 1,
+      "cancelled": 31,
+      "fixed_success_retained": true
+    },
+    "restart": {
+      "simultaneous_api_processes": 2,
+      "same_key_posts": 4,
+      "accepted_once": true,
+      "blocked_lookup_did_not_return_false_404": true,
+      "actual_sigkill_before_sql_commit": true,
+      "source_head_rolled_back": true,
+      "natural_lease_expiry": true,
+      "epoch_before": 1,
+      "epoch_after": 2,
+      "recovery_ms": 59792,
+      "recovered_without_new_post": true
+    },
+    "partial_failure": {
+      "succeeded": 1,
+      "failed": 1,
+      "failed_pointer_null": true,
+      "project_publish_blocked": true
+    },
+    "retry": {
+      "new_task": true,
+      "old_task_unchanged": true,
+      "successful_parent_rejected": true
+    },
+    "project_cas": {
+      "one_published": true,
+      "one_conflicted": true,
+      "no_file_reimport": true,
+      "previous_manifest_preserved": true
+    },
+    "pagination": {
+      "result_revision_conflict": true,
+      "manifest_pagination": {
+        "entries": 60,
+        "first_page": 50,
+        "last_page": 10,
+        "all_unique": true,
+        "fixed_digest": true
+      },
+      "history_pagination": {
+        "total": 24,
+        "first_page": 20,
+        "tail": 4,
+        "all_unique": true
+      },
+      "task_list_pagination": {
+        "total": 22,
+        "first_page": 20,
+        "tail": 2,
+        "fixed_id_snapshot": true
+      }
+    },
+    "boundary_checks": {
+      "model_calls": 0,
+      "active_task_quota": {
+        "two_reserved_synthetic_tasks": true,
+        "third_rejected_429": true,
+        "lease_fixture_released": true
+      },
+      "request_byte_bound": 32768,
+      "ineligible": {
+        "pdf_rejected": true,
+        "bytes_2097153_rejected": true,
+        "no_truncation": true
+      },
+      "native_head_cas": {
+        "old_0_3_roundtrip": true,
+        "new_batch_stale_head_rejected": true
+      },
+      "queued_policy_change": {
+        "failed_without_source_publish": true,
+        "policy_version_advanced_only": true,
+        "fixture_lease_used": true
+      },
+      "passed": true,
+      "requests": 71
+    },
+    "preview_replacement": {
+      "passed": true,
+      "requests": 18,
+      "failed_preparation_keeps_previous": true,
+      "successful_explicit_preparation_replaces_previous": true,
+      "old_preview_and_content_410": true,
+      "old_plaintext_and_identity_cleared": true,
+      "active_preview_maximum": 1,
+      "new_ids_and_digest": true,
+      "accepted_task_and_original_key_preserved": true,
+      "model_calls": 0
+    },
+    "root_revocation": {
+      "passed": true,
+      "requests": 6,
+      "task_and_key_404": true,
+      "published_manifest_200": true,
+      "fixed_c1_200": true,
+      "original_root_config_restored": true,
+      "original_key_recovery_get_only": true,
+      "model_calls": 0
+    },
+    "policy_test": "故障注入域的策略版本2保留且关闭知识域入口；C1冻结策略为1，真实UI使用独立合成v1域，不回退策略、不修改旧契约。",
+    "browser": {
+      "passed": true,
+      "steps": 12,
+      "counts": {
+        "tasks": 2,
+        "manifests": 2,
+        "source_revisions": 4
+      },
+      "preview_utf8_windows": [
+        65536,
+        10
+      ],
+      "total_bytes": 65546,
+      "two_manifest_versions": true,
+      "incremental_replaced": 1,
+      "incremental_carried": 2,
+      "old_revision_after_update": true,
+      "browser_result_sha256": "62c8bc1dd0789494ac72dc5a0f48b590854245042931386ff944fd4107106bc2",
+      "screenshot_sha256": "a9340a22f2cab19e63707205150af08a7a4b781ddf71d9d2842d875c1c744aa4"
+    }
+  },
+  "acceptance": [
+    {
+      "id": "BATCH-01",
+      "requirement": "版本隔离",
+      "result": "Passed",
+      "evidence": "17份冻结资源哈希；Go端点/严格解码测试；Axios实际序列化与旧238例回归。"
+    },
+    {
+      "id": "BATCH-02",
+      "requirement": "权限／根",
+      "result": "Passed",
+      "evidence": "真实匿名401、他用户/域撤权404；撤采集根后任务404但已发布清单/C1仍200，恢复原根后仅GET原键。"
+    },
+    {
+      "id": "BATCH-03",
+      "requirement": "精确集合与原字节",
+      "result": "Passed",
+      "evidence": "32/33选择、2MiB/超限/PDF拒绝、空文本/BOM/CRLF/中文emoji与65546字节真实窗口。"
+    },
+    {
+      "id": "BATCH-04",
+      "requirement": "逐项确认",
+      "result": "Passed",
+      "evidence": "真实UI逐项读取后主动认可，缺一项不可提交；重新预览清空认可；服务端完整ID集合检查。"
+    },
+    {
+      "id": "BATCH-05",
+      "requirement": "接受与同键恢复",
+      "result": "Passed",
+      "evidence": "真实双API四次同键只有一次202；前端Mock丢响应/原tuple重发；真实浏览器刷新GET恢复，未重复创建。"
+    },
+    {
+      "id": "BATCH-06",
+      "requirement": "逐项事务／fencing",
+      "result": "Passed",
+      "evidence": "真实原生document行锁等待时SIGKILL，来源头回滚；自然60秒租约epoch1→2恢复一次；迟到旧epoch由Go定向测试拒绝。"
+    },
+    {
+      "id": "BATCH-07",
+      "requirement": "取消",
+      "result": "Passed",
+      "evidence": "真实运行任务1成功/31取消；已保存C1保留，未完成项无来源指针；UI明确取消Mock。"
+    },
+    {
+      "id": "BATCH-08",
+      "requirement": "进度／分页",
+      "result": "Passed",
+      "evidence": "真实result_revision变化409；项目60项50+10、任务22项20+2、历史24版20+4；分页期间新对象不插入旧集合。"
+    },
+    {
+      "id": "BATCH-09",
+      "requirement": "重试与截止清理",
+      "result": "Passed",
+      "evidence": "失败子集生成新任务，非法父/成功子集拒绝；预览TTL故障注入后原文明文清除；执行截止Go测试。"
+    },
+    {
+      "id": "BATCH-10",
+      "requirement": "项目归属／基版合并",
+      "result": "Passed",
+      "evidence": "Go归属及引用核对；真实34/60项基版合并；浏览器第二版替换1沿用2，不重导未选文件。"
+    },
+    {
+      "id": "BATCH-11",
+      "requirement": "清单CAS／旧修订",
+      "result": "Passed",
+      "evidence": "真实同基版竞争一成功/一409；两次浏览器发布、历史清单和来源更新后的旧代码阅读。"
+    },
+    {
+      "id": "BATCH-12",
+      "requirement": "容量／零模型",
+      "result": "Passed",
+      "evidence": "64MiB单次容量、活跃任务配额/32KiB请求边界；模型配置/用量/旧POC/ingestion指纹保持。"
+    }
+  ],
+  "targeted_fixes": [
+    "成功的新显式准备事务性替换旧未消费预览并清除旧暂存，失败准备不损坏旧预览；已受理任务不受影响。",
+    "补齐未完成的逐项读取认可接线，修复新增类型诊断和五项Hook依赖警告，保持冻结接口不变。"
+  ],
+  "coordination": "A交固定7925639给消费会话；消费会话按其后来真人只读指令交回19份未提交Web现场；A接回全部写权补齐21文件、验证及提交7309daf。全程没有同时写同一检出。",
+  "retries": [
+    "配额SQL夹具最初误用UTC墙钟，修正为MySQL当前会话时钟后通过；不改业务时钟。",
+    "Windows ESM路径修正后只复验末尾指纹，没有重复已完成业务动作。",
+    "前端测试夹具与类型问题定向修复后418项复验通过；失败日志保留。",
+    "首次提交缺python3路径映射，加入原有本机shim后全部正常hooks通过；未跳过钩子。"
+  ],
+  "model_preservation": {
+    "unchanged": true,
+    "legacy_documents": 6,
+    "legacy_chunks": 42,
+    "active_ingestion_tasks": 0,
+    "external_model_calls": 0
+  },
+  "runtime_cleanup": {
+    "fixture_writer_removed": true,
+    "build_container_restored_stopped": true,
+    "secondary_api_terminated_by_restart": true,
+    "volumes_deleted": false,
+    "credentials_regenerated": false,
+    "main_app_kept_running": true
   },
   "incomplete_items": [
-    "Full concurrency/restart/cancellation/capacity/permission runtime checks pending",
-    "Formal frontend/test/build/browser checks pending",
-    "Final proof and main integration pending"
+    "未验生产p95、冷盘、数据库磁盘峰值、1024项运行压力或百万行代码库；1024是接口上限。",
+    "旧epoch同时存活后迟到提交为Go定向覆盖；真实跨进程覆盖同键竞争和崩溃后新epoch恢复。",
+    "600秒预览到期与30分钟执行截止以故障夹具/Go测试覆盖，没有等待完整墙钟；网络丢响应由Mock与真实后端持久恢复分别覆盖。",
+    "C1仍只公开固定v1策略；本轮不新增策略编辑接口。",
+    "S2-R4文档原件/大文件、R5网页/RSS、R6生命周期及R7整阶段退出尚未实施；阶段3—6继续后置。"
   ],
-  "model_calls": 0,
+  "publication": {
+    "target": "main",
+    "status": "Pending",
+    "scope": "验证后的源码、冻结资源、报告和接续文档"
+  },
   "user_decision": {
     "outcome": "Pending"
   }
