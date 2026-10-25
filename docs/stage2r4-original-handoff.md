@@ -1,6 +1,6 @@
 # S2-R4 文档原件接续
 
-日期：2026-10-26；文档v0.39。**本批为C2 0.5.0候选，不是原件功能交付**。运行环境和main仍为已发布R3的`38ce003`；候选在`codex/stage2r4-original-candidate`。
+日期：2026-10-26；文档v0.40。**C2 0.5.0仍是待确认候选，不是原件功能交付**。运行环境和main仍为已发布R3的`38ce003`；候选在`codex/stage2r4-original-candidate`，A的包私有原语准备在`codex/stage2r4-stream-preparation`，不混为业务接口已实现。
 
 执行入口：[行为定义](knowledge-original-import-v0.5.candidate.md)、[OpenAPI](knowledge-original-import-v0.5.candidate.openapi.json)、[合成向量](knowledge-original-import-v0.5.candidate.examples.json)、[统一核对记录](stage2r4-original-contract-verification.json)。旧C1/C3和C2 0.2／0.3／0.4共17项保护文件保持字节，不创建正式0.5冻结文件或加载未获批接口。
 
@@ -52,3 +52,13 @@ raw PUT仍走`registerNextServer→next-request`原认证。局部Axios transfor
 主会话已实际登记active持续目标并回传消费方，覆盖剩余工程；当前没有标为完成。另有15项合成夹具一致性检查通过：PDF头／xref／EOF，Office ZIP CRC／必要部件／XML良构，全部大文本流式严格UTF-8及跨64KiB的emoji；它们只证明输入准备，不代替应用接纳或Office渲染。
 
 [R6生命周期前置盘点](stage2r6-lifecycle-preparation.md)已回传并由A核实关键路径：现成域归档、来源级状态缺口、原生物理move与逻辑位置区别、历史revision复用和固定清单保留。只形成事实及建议，没有新接口、迁移或实际移动／删除。
+
+## 6. v0.40包私有流式存储准备
+
+A继续实现`internal/storage/minio_stream.go`及测试，沿用现有MinIO客户端与桶／前缀解析；新增put/open均包私有，私有reader只实现已有io.ReadCloser。不改Storage接口、原Put/Get、共享领域实体、数据库、路由／服务、Web或运行应用。实际代码尚无业务调用者，等待0.5确认后的正式适配，不把它说成上传闭环。
+
+`bash build.sh --test -json -run '^TestMinioStream' ./internal/storage`通过7顶层／28含子例，LLD22.1.8、实际SDK7.0.99＋纯合成Transport；无真实HTTP／MinIO／数据库或模型。0／3／64MiB各一次，64MiB最大源Read64KiB、TotalAlloc差额77,912字节（3MiB相同），测试阈值<4MiB；不是峰值RSS／端到端性能。固定元信息／ETag／字节范围、缺省桶创建、超界／短流／故障／body关闭／截断／取消有定向证据。[完整报告](stage2r4-stream-preparation-verification.json)包含版本／范围和未验项。
+
+上传原语信任调用方预先测量／计算的SHA，本身不做格式接纳／授权／发布；读取只验证元信息，部分范围不重算全件SHA。业务后续须完成真实字节验证、暂存与不可变命名、SQL／配额／租约／确认／CAS、原生旁路和Web／真实MinIO验证；旧对象不默认具有新摘要元信息。旧17资源及37574fb候选三件套不改，正式应用未加载本批代码。
+
+消费方[R7退出追踪](stage2r7-exit-readiness.md)已保存。真实AICS／文档／网页退出样本仍需另选范围；模型0下可继续内部准备和获批接口后的合成闭环，不以历史Accepted或本次unit覆盖全阶段验收。

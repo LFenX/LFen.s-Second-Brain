@@ -1,0 +1,155 @@
+{
+  "document_version": "v0.40",
+  "recorded_local_date": "2026-10-26",
+  "task": "S2-R4包私有流式存储准备",
+  "request_snapshot": "请注意后续的步骤，请你持续不断地进行下去，跟另外一个会话，甚至你可以开其他的会话去协调。但一个讯息是你必须要传达的，就是一定一定不能够停下来。一定一定就是至少说有一个会话不能停下来，要主会话不能停下来，你就是主会话，要牵动其他废话，持续不断地推进咱们这个工作，直到最后完成。",
+  "status": "InternalPreparationImplemented",
+  "feature_status": "C2 0.5.0 remains candidate; no catalogue import/upload route or client wired",
+  "branch": "codex/stage2r4-stream-preparation",
+  "baseline": "302b57f",
+  "main_runtime_baseline": "38ce0031ae31bbf980a2ed27b0eb7ecc607d5a51",
+  "authority": {
+    "basis": "真人持续推进整个项目；当前只做包私有原语和合成测试，不依赖0.5共享业务接口确认",
+    "c2_0_5_freeze": {
+      "outcome": "Pending"
+    },
+    "c2_0_5_integration": "NotAuthorizedUntilConcreteConfirmation",
+    "engineering_user_decision": {
+      "outcome": "Pending"
+    },
+    "multiple_round_review": "NotRun_UserDeclined"
+  },
+  "changes": {
+    "source_files": [
+      "internal/storage/minio_stream.go",
+      "internal/storage/minio_stream_test.go"
+    ],
+    "source_sha256": {
+      "internal/storage/minio_stream.go": "9b23a4505517b4fbba4ce4ca68504de8988e87b874f0e82f276d17c924edecf7",
+      "internal/storage/minio_stream_test.go": "64b417b145ea95c8698bed146e70106d6c40cdc16cf607e4f6e66ee1afcc5715"
+    },
+    "new_public_storage_or_service_api": 0,
+    "private_reader_implements_existing_io_read_closer": [
+      "Read",
+      "Close"
+    ],
+    "shared_storage_interface_changed": false,
+    "old_put_get_changed": false,
+    "domain_models_changed": false,
+    "routes_or_services_wired": false,
+    "new_dependencies": 0,
+    "application_deployed": false
+  },
+  "behaviors": [
+    "已测量/哈希的源以已知长度单PUT流式传输；禁用multipart和非seekable MD5整件缓冲，不重复读取正文；传输原语不验证传入SHA或授权，不代业务接纳",
+    "固定对象stat校验长度/摘要元信息/ETag，GET用If-Match及可用的VersionID钉选；开始返回前核对实际范围/长度/ETag/摘要元信息",
+    "部分UTF-8字节按二进制原样读，不裁字符边界；空内部对象/零长度读取不发GET",
+    "无效元信息/范围先拒绝；错误范围响应关闭body；截断返回UnexpectedEOF；上下文取消不继续读"
+  ],
+  "verification": {
+    "command": "docker exec -w /work lfen-secondbrain-stage1-build bash build.sh --test -json -run '^TestMinioStream' ./internal/storage",
+    "tier": "unit，无integration/e2e/manual tag；实际MinIO SDK v7.0.99＋纯合成RoundTripper，不发真实HTTP",
+    "passed": true,
+    "top_level": 7,
+    "including_subtests": 28,
+    "package_result": [
+      {
+        "package": "ragflow/internal/storage",
+        "elapsed_seconds": 0.166
+      }
+    ],
+    "measurements": [
+      {
+        "source_bytes": 0,
+        "largest_source_read": 0,
+        "allocation_bytes": 57344
+      },
+      {
+        "source_bytes": 3145728,
+        "largest_source_read": 65536,
+        "allocation_bytes": 77912
+      },
+      {
+        "source_bytes": 67108864,
+        "largest_source_read": 65536,
+        "allocation_bytes": 77912
+      }
+    ],
+    "allocation_boundary": "每个putStream+纯合成Transport的TotalAlloc差额，客户端创建和生成式输入预哈希在计量外；0/3/64MiB各一次，不是峰值RSS、真实MinIO或生产p95。测试阈值每次<4MiB，最大源Read参数<=1MiB。",
+    "cases": [
+      "TestMinioStreamPutBounded/0",
+      "TestMinioStreamPutBounded/3145728",
+      "TestMinioStreamPutBounded/67108864",
+      "TestMinioStreamPutBounded",
+      "TestMinioStreamPutCreatesBucket",
+      "TestMinioStreamPutLimitsAndFailures/extra_bytes_remain_with_caller",
+      "TestMinioStreamPutLimitsAndFailures/short_reader",
+      "TestMinioStreamPutLimitsAndFailures/transport_failure",
+      "TestMinioStreamPutLimitsAndFailures/negative_size",
+      "TestMinioStreamPutLimitsAndFailures/missing_digest",
+      "TestMinioStreamPutLimitsAndFailures/noncanonical_digest",
+      "TestMinioStreamPutLimitsAndFailures",
+      "TestMinioStreamReadExactBinaryRanges/[0_10]",
+      "TestMinioStreamReadExactBinaryRanges/[0_1]",
+      "TestMinioStreamReadExactBinaryRanges/[4_2]",
+      "TestMinioStreamReadExactBinaryRanges/[9_1]",
+      "TestMinioStreamReadExactBinaryRanges/[10_0]",
+      "TestMinioStreamReadExactBinaryRanges",
+      "TestMinioStreamReadRejectsChangedObject/wrong_size",
+      "TestMinioStreamReadRejectsChangedObject/wrong_digest",
+      "TestMinioStreamReadRejectsChangedObject/missing_etag",
+      "TestMinioStreamReadRejectsChangedObject/changed_etag",
+      "TestMinioStreamReadRejectsChangedObject/ignored_range",
+      "TestMinioStreamReadRejectsChangedObject/wrong_range",
+      "TestMinioStreamReadRejectsChangedObject/truncated_body",
+      "TestMinioStreamReadRejectsChangedObject",
+      "TestMinioStreamRejectsRangeBeforeHTTP",
+      "TestMinioStreamCancellation"
+    ],
+    "build_wrapper_native_units": "build.sh还自动运行native及croptest单元包，日志均通过；模型权重/推理测试带integration tag，未运行。",
+    "go_source_equals_built": {
+      "internal/storage/minio_stream.go": "9b23a4505517b4fbba4ce4ca68504de8988e87b874f0e82f276d17c924edecf7",
+      "internal/storage/minio_stream_test.go": "64b417b145ea95c8698bed146e70106d6c40cdc16cf607e4f6e66ee1afcc5715",
+      "internal/storage/types.go": "1d29130c54a5483978faa77ac721796fb128c21fcf1a65eb99905859d7486c05",
+      "internal/storage/minio.go": "73d3eb123ebf112823a30a607489954c5fd90a12d5000950618bb79fc1c88573",
+      "internal/storage/storage_factory.go": "7756cd409470bbe29bd34c6e45dd445149e6fff4f7288a2e998fbc162fe07b7d",
+      "go.mod": "be436e9f362848b611c4df0ff8866191bad27993d60f9011d6fce70df49629a5",
+      "go.sum": "daeb317bfcfba03000d416253f685db1716b4155776bc49e0d8a08b412fb982f"
+    },
+    "log_sha256": "0a9d3c96225008d03e74d37e224f975602efd11e60d11f5ba3b50ee09a669623",
+    "first_run_log_retained": true,
+    "source_surface_probe_correction": {
+      "initial_result": "A naive regex incorrectly classified Read/Close on an unexported reader as a new public storage API.",
+      "independent_check": "The two methods only implement standard io.ReadCloser on private minioStreamReader; putStream/openStream remain private and Storage is unchanged.",
+      "resolution": "Corrected the probe to check exported declarations and methods on exported types. No Go source or passed test changed; no unnecessary Go rerun. Failure/retry retained in the ignored run ledger."
+    },
+    "server_binary_built_or_deployed": false,
+    "server_mode_help": "NotApplicable：只编译执行包级unit，没有构建或变更server mode。"
+  },
+  "protection": {
+    "old_contract_files": 17,
+    "candidate_files": 3,
+    "all_hashes_unchanged": true,
+    "production_services_changed": false,
+    "credentials_or_volumes_recreated": false,
+    "model_calls": 0,
+    "business_api_calls": 0,
+    "real_storage_requests": 0,
+    "online_source_fetches": 0
+  },
+  "coordination": {
+    "writer": "A",
+    "consumer": "01a17244-5107-7aa3-beed-2ea36062d042",
+    "consumer_mode": "真人只读",
+    "consumer_followups": "R5/R6事实及R7退出矩阵已完成并归档；当前不追加重复审查/补测任务。",
+    "persistent_goal": "active；不是全项目完成"
+  },
+  "incomplete_items": [
+    "正式0.5候选尚未确认，包私有方法未暴露给业务服务或路由",
+    "真实MinIO/HTTP签名模式、SQL/租约/配额/确认/CAS/下载授权、原生旁路、Web/浏览器及端到端性能均待后续接入验证",
+    "当前私有流上传信任调用方预计算SHA；业务必须在ready前完成字节校验并使用私有暂存/不可变对象命名，不能据元信息等于SHA宣称实际正文已验证",
+    "旧对象未保证带sha256元信息，后续必须明确原件对象命名空间/验证和保留方式，不能把任意旧对象自动当新原件",
+    "原件格式接纳/OOXML有限校验和流式暂存准备仍可独立推进；共享DTO/业务接入继续待确认"
+  ],
+  "governance_note": "保持项目原目录，不迁移治理结构；保留前述候选和原报告的时点事实，不声称完整机器Gate通过或真人已验收。"
+}
