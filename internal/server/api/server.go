@@ -110,6 +110,7 @@ func startServer(ctx context.Context, serverName string, arguments *bootstrap.Se
 	userService := service.NewUserService()
 	documentService := document.NewDocumentService()
 	datasetsService := dataset.NewDatasetService()
+	dataset.StartKnowledgeDirectoryCleanup(ctx)
 	metadataService := service.NewMetadataService()
 	chunkService := chunk.NewChunkService()
 	tenantService := service.NewTenantService()

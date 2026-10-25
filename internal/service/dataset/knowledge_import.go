@@ -77,6 +77,9 @@ func importRegistration(tx *gorm.DB, domainID, id string) (*entity.KnowledgeSour
 	if err := tx.Where("id = ? AND domain_id = ?", id, domainID).Take(&reg).Error; err != nil {
 		return nil, knowledgeDBError(err, "source registration")
 	}
+	if reg.SourceKind != "text_file" || reg.InputMode != "inline_text" {
+		return nil, knowledgeNotFound()
+	}
 	return &reg, nil
 }
 

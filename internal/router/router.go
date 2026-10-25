@@ -235,6 +235,7 @@ func (r *Router) Setup(engine *gin.Engine) {
 	}
 
 	// Protected routes
+	r.setupKnowledgeDirectoryRoutes(engine)
 	authorized := engine.Group("")
 	authorized.Use(r.authHandler.AuthMiddleware())
 	{

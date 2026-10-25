@@ -20,7 +20,7 @@ func migrateKnowledgeFoundation(ctx context.Context, db *gorm.DB) error {
 			}
 		}
 	}
-	for _, model := range []interface{}{&entity.KnowledgeGroup{}, &entity.KnowledgeSourceRevision{}, &entity.KnowledgeNode{}, &entity.KnowledgeSourceRegistration{}, &entity.KnowledgeSourceBinding{}, &entity.KnowledgeImportPreview{}, &entity.KnowledgeImport{}} {
+	for _, model := range []interface{}{&entity.KnowledgeGroup{}, &entity.KnowledgeSourceRevision{}, &entity.KnowledgeNode{}, &entity.KnowledgeSourceRegistration{}, &entity.KnowledgeSourceBinding{}, &entity.KnowledgeImportPreview{}, &entity.KnowledgeImport{}, &entity.KnowledgeDirectoryRegistrationBinding{}, &entity.KnowledgeDirectoryRootPin{}, &entity.KnowledgeDirectoryState{}} {
 		if err := autoMigrateSafely(ctx, db, model); err != nil {
 			return fmt.Errorf("migrate knowledge foundation: %w", err)
 		}
