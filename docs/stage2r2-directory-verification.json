@@ -1,0 +1,236 @@
+{
+  "version": "v0.36",
+  "task": "S2-R2 受控目录最小导入闭环",
+  "request_snapshot": "候选方案通过，冻结 C2 0.3.0，开始推进 S2-R2 受控目录最小导入闭环。由你和新会话按单写入规则交替完成后端、客户端和界面，跑通精确选择、观察、单文件预览确认、回执恢复及固定修订阅读。保持 C2 0.2.0 不变，只用合成资料、不调用模型、不启动多轮审查，验证后推送 main。",
+  "recorded_at": "2026-10-25T12:03:38.950Z",
+  "engineering_status": "真实后端与界面初版已验证；接续修复和前端测试待完成",
+  "user_decision": {
+    "status": "Pending",
+    "scope": "本轮S2-R2工程交付；候选已获用户批准冻结，不能替代实现验收"
+  },
+  "stage2_overall": "NotExited",
+  "target": {
+    "base": "6419b0feff9261f71eba12bee24016349fa3b8b5",
+    "freeze": "0996462daee0f64eb6b3c985ff03e8d967d93d8c",
+    "backend": "e934fc237928214978d43624a5734f8cb512036e",
+    "frontend_initial": "ae17ed396c6ed6202d4ec168ab035ac5c3aeb0bc",
+    "go_binary_sha256": "a1a4a0d250a217677b8d5fadacf74acccdc670fa3b63db1cc191bf707d656413",
+    "build_input_committed_files_equal": 17
+  },
+  "frozen": {
+    "checked_at": "2026-10-25T12:02:13.536Z",
+    "schema_cases": 76,
+    "schemas": 29,
+    "lifecycle_only_projection_equal": true,
+    "old_frozen_files": 5,
+    "candidate_files_unchanged": 3,
+    "sha256": {
+      "openapi": "6144c08d4cfe7ac98374dc51829c98290e2c88e3441dd38d250a3cd9cb4492e6",
+      "examples": "73618dd78419bb9027520b3dd8b3ef83b1794d3ad1c4d17d904ce7637c54ea72"
+    }
+  },
+  "go": {
+    "command": "bash build.sh --test -json -run \"TestKnowledgeDirectory|TestKnowledgeImport|TestKnowledgeOpenAPI\" ./internal/utility ./internal/entity ./internal/service/dataset ./internal/handler ./internal/router ./internal/dao",
+    "packages_passed": 6,
+    "top_level_tests": 28,
+    "tests_including_subtests": 56,
+    "failures": 0,
+    "note": "entity/dao无匹配用例但编译通过；附带native/croptest通过。未重跑全仓Go测试。",
+    "build": "bash build.sh --go",
+    "go_version": "go1.27.3 linux/amd64",
+    "clang_lld_version": "22.1.8",
+    "help_modes_started": [
+      "api",
+      "admin",
+      "ingestor",
+      "syncer"
+    ]
+  },
+  "runtime": {
+    "smoke": {
+      "checked_at": "2026-10-25T11:00:09.605Z",
+      "passed": true,
+      "operations_exercised": 14,
+      "successful_response_schemas_validated": true,
+      "model_calls": 0,
+      "existing_poc_model_config_usage_and_tasks_unchanged": true,
+      "first_fixed_revision_byte_match": true,
+      "synthetic_only": true,
+      "harness_corrections": [
+        "version mismatch expects frozen 409",
+        "C1 original uses start_byte/end_byte, not directory content query"
+      ]
+    },
+    "behavior": {
+      "checked_at": "2026-10-25T11:35:42.913Z",
+      "passed": true,
+      "requests": 46,
+      "concurrent_identical_requests": 4,
+      "one_created_receipt": true,
+      "unchanged_revision_reused": true,
+      "classification_only_update": true,
+      "old_fixed_bytes_unchanged": true,
+      "source_head_root_conflicts_rejected": true,
+      "failed_receipt_without_publication": true,
+      "ttl_forced_only_on_synthetic_preview": true,
+      "root_offline_recovery": true,
+      "root_revocation_and_c1_scope_independent": true,
+      "harness_corrections": [
+        "old 0.2.0 errors must not be validated with 0.3.0 schema"
+      ],
+      "model_calls": 0
+    },
+    "concurrency": {
+      "checked_at": "2026-10-25T11:38:08.902Z",
+      "synthetic_only": true,
+      "model_calls": 0,
+      "cross_process_wait_ms": 484.74,
+      "cross_process_wait_result": "200 same durable receipt",
+      "bounded_lookup_wait_ms": 10210.55,
+      "crash_before_commit_head_rolled_back": true,
+      "crash_before_commit_receipt_count": 0,
+      "explicit_original_resend_published_once": true,
+      "old_receipt_survives_restart": true,
+      "passed": true,
+      "http_requests": 15
+    },
+    "capacity": {
+      "checked_at": "2026-10-25T11:42:16.724Z",
+      "passed": true,
+      "requests": 44,
+      "invalid_paths_before_read": true,
+      "symlink_hardlink_fifo_binary_invalid_utf8_nul_private_marker_rejected": true,
+      "fixed_pagination_without_new_path": true,
+      "entries_513_truncated_to_incomplete_512": true,
+      "listing_observation_preview_quota_429": true,
+      "expired_temporary_content_physically_cleared": true,
+      "exact_2mib_saved_and_fixed_read": true,
+      "over_2mib_ineligible_without_truncation": true,
+      "observation_performance": {
+        "selected_files": 32,
+        "bytes_per_file": 2097152,
+        "total_bytes": 67108864,
+        "samples": [
+          127.74,
+          97.74,
+          84.63,
+          88.66,
+          89.5
+        ],
+        "sample_count": 5,
+        "p50_ms": 89.5,
+        "sample_p95_ms": 127.74,
+        "scope": "warm localhost HTTP, Linux read-only Docker volume; preparation and SQL fixture expiry excluded; five samples are not a production p95 claim",
+        "api_memory_before": "VmHWM:\t  265696 kB\nVmRSS:\t  265488 kB",
+        "api_memory_after": "VmHWM:\t  366080 kB\nVmRSS:\t  366080 kB"
+      },
+      "model_calls": 0,
+      "harness_corrections": [
+        "memory probe used a non-NUL process selector; no application changes"
+      ]
+    },
+    "legacy_auth_deadline": {
+      "checked_at": "2026-10-25T11:58:10.180Z",
+      "passed": true,
+      "requests": 12,
+      "legacy_0_2_manual_roundtrip": true,
+      "other_user_scoped_denials": 5,
+      "anonymous_401": true,
+      "observation_request_30s_bound_ms": 30022.46,
+      "bounded_phase": "blocked domain row before observation; no file read or background work",
+      "existing_poc_model_config_usage_queue_unchanged": true,
+      "model_calls": 0
+    },
+    "platform": {
+      "checked_at": "2026-10-25T11:31:55.108Z",
+      "host": "windows/amd64",
+      "source_files_copied_verbatim": 3,
+      "adapter_tests_passed": 3,
+      "normal_junction_hardlink_roots_all_refused": true,
+      "full_windows_server_tested": false,
+      "windows_roots_supported": false
+    },
+    "read_only_mount": {
+      "runtime": "linux",
+      "ready": true,
+      "docker_mount_rw": false,
+      "existing_business_volumes_preserved": true,
+      "fixture_volume": "lfen-ragflow-poc-s2r2-fixtures",
+      "scope": "仅合成只读样本卷；原业务卷/凭据未删除或重建。旧临时根保持离线授权以验证持久恢复，未重绑其身份。"
+    },
+    "limitation": "Windows完整服务与共享盘读取未通过；未验证平台/文件系统按不就绪拒绝。Windows探针只证明适配器关闭能力，不能称Windows读取已支持。"
+  },
+  "frontend": {
+    "initial": {
+      "implementation_files": 13,
+      "format_lint": "Passed",
+      "typecheck_before": 207,
+      "typecheck_after": 207,
+      "new_diagnostics": 0,
+      "build": "Passed: 41.59s, --minify false --sourcemap false",
+      "tests": "NotRun"
+    },
+    "next_test_batch": "新4套及旧6套回归、定向修复、最终类型/格式/lint/生产构建待消费会话接续"
+  },
+  "browser": {
+    "synthetic_login": true,
+    "precise_selected_files": 2,
+    "metadata_browse_without_save": true,
+    "confirmation_posts_before_consent": 0,
+    "normal_flow_and_fixed_c1": "Passed",
+    "bom_crlf_chinese_emoji_bytes": 57,
+    "fixed_old_revision_after_new_publication": true,
+    "pagination": "50/56→56/56，已选始终1项，新增页不自动选入",
+    "complete_and_ineligible_pdf_separate": true,
+    "failed_201_without_reading_link": true,
+    "failed_new_observation_preview_consent_retry": "Passed",
+    "recovery": {
+      "checked_at": "2026-10-25T11:51:11.370Z",
+      "dropped_committed_response": true,
+      "reload_preserved_original_request": true,
+      "revocation_404_hid_content": true,
+      "restored_grant_get_200_same_receipt": true,
+      "confirmation_posts_during_recovery": 0,
+      "receipt_rows": 1,
+      "followup_issue": "Reloaded recovery -> select and observe again loses fixed registration and asks blank registration form"
+    },
+    "request_attempts": 83,
+    "model_routes_allowed": false
+  },
+  "issues": [
+    {
+      "id": "S2R2-UI-01",
+      "status": "Open",
+      "severity": "P2",
+      "observed": "已提交响应丢失→重载→根撤权404隐藏→恢复授权GET200原回执→点击重新观察，显示空白登记表，丢失固定登记上下文。",
+      "fix_scope": "只用现有GET登记恢复原上下文，再允许明确重观察；不自动POST、不清除未核实原请求。新增定向回归。"
+    },
+    {
+      "id": "S2R2-UI-02",
+      "status": "Open",
+      "severity": "P3",
+      "observed": "登记中已保存过文件，重新观察时仍显示Registered; original not imported yet，不能准确表达登记状态。",
+      "fix_scope": "仅0.3目录模式改为来源已登记/请选择观察，使用独立文案；不改旧0.2共享文案语义。"
+    }
+  ],
+  "boundaries": {
+    "synthetic_only": true,
+    "model_calls": 0,
+    "real_aics_read": false,
+    "multi_round_review": false,
+    "old_02_files_unchanged": true,
+    "new_source_components_other_than_directory_connected": false,
+    "push_main": "Pending after final validation"
+  },
+  "evidence": {
+    "private_task": ".local-data/stage2r2-20261025",
+    "screenshots": {
+      "docs/stage2r2-directory-preview.png": "b6a642c1917c0258f5c02f1b2ae001990e06c64df13c3b6bf7ac7a2766cf65a0",
+      "docs/stage2r2-directory-receipt.png": "b829c7fac69d77bc08f01d6ae898221495dd6c1a890c03966c5d6125697488b6",
+      "docs/stage2r2-directory-fixed-revision.png": "bff67443016d0c8f5d71da3317dd45af454306324a4c9c61c3b9ebda513abe16",
+      "docs/stage2r2-directory-invisible.png": "e4e12391ac708b7bb156201fca00a838095ac2560272f987a433bc4658917f26",
+      "docs/stage2r2-directory-recovered.png": "0c35aec9652927c30002171d41721a7a63a7be128c4461df9b9394577d58c1da",
+      "docs/stage2r2-directory-failed.png": "05ad17755663bd5d71c8821dff6e2fed5ffdf83bd058d85ad7496394b3298b7c"
+    }
+  }
+}
