@@ -1,0 +1,312 @@
+{
+  "document_version": "v0.46",
+  "recorded_date": "2026-10-26",
+  "request_snapshot": [
+    "进入下一步",
+    "请注意后续的步骤，请你持续不断地进行下去，跟另外一个会话，甚至你可以开其他的会话去协调。但一个讯息是你必须要传达的，就是一定一定不能够停下来。一定一定就是至少说有一个会话不能停下来，要主会话不能停下来，你就是主会话，要牵动其他废话，持续不断地推进咱们这个工作，直到最后完成。",
+    "请结合该项目将网站数据解析为标准的数据源纳入我们的知识库支持数据结构中"
+  ],
+  "objective": "在已交付R4后推进R5，形成覆盖本地网页／Feed快照和明确单次在线取得的C2 0.6具体候选，保留原文与结构、安全阅读、增量及恢复语义；批准前不接入。",
+  "engineering_status": "CandidateReadyForHumanConfirmation",
+  "candidate": {
+    "version": "0.6.0",
+    "status": "ReviewCandidate",
+    "frozen": false,
+    "implemented": false,
+    "runtime_loaded": false,
+    "baseline_main": "7c564a738597e924e411f3b191aaa02d14ae42d8",
+    "branch": "codex/stage2r5-web-feed-candidate",
+    "artifacts": {
+      "docs/knowledge-web-import-v0.6.candidate.md": "577a76624d8b43e26dde890df49140f0b5a2c458dc493dbecd7f5467e13175fb",
+      "docs/knowledge-web-import-v0.6.candidate.openapi.json": "a167a1977f1f0a313061b093d21f035631dd5fafaea95cd8545601e17af35a88",
+      "docs/knowledge-web-import-v0.6.candidate.examples.json": "81372c6270c3e2b3989b4e088bd029883326f75fe6e254d651b93f951e0b7573",
+      "tools/scripts/verify_knowledge_web_contract.cjs": "ab28b6ae6edc5f08a6ce361580ca47e954dd290ca1e488f07935c320ab8a2cc8"
+    },
+    "operation_count": 34,
+    "schema_count": 54
+  },
+  "clarification": {
+    "notice": "当前范围和现有代码已经核对。本轮先完成具体候选与合成契约验证；0.6业务接入仍待真人确认。",
+    "state": "Settled",
+    "scope": "CandidateDesignOnly",
+    "questions": [],
+    "frozen_implementation": "Pending_SpecificHumanConfirmation"
+  },
+  "authority": {
+    "design": "真人持续推进／本地多会话协作及既有R5顺序",
+    "freeze": {
+      "outcome": "Pending"
+    },
+    "implementation": {
+      "outcome": "Pending"
+    },
+    "user_decision": {
+      "outcome": "Pending"
+    },
+    "r4_acceptance": "Pending_SeparateQuestion",
+    "adversarial_review": "NotRun_UserExplicitlyProhibited",
+    "data": "仅合成资料；未取得真实知识来源、未调用外部或本地模型；只读取官方研究文档"
+  },
+  "coordination": {
+    "single_writer": true,
+    "writer_thread": "01a158c6-4366-7792-8768-4aed0b80a6a4",
+    "consumer_thread": "01a1746b-2de2-7413-906b-d2a4544017e3",
+    "consumer_mode": "ReadOnly",
+    "consumer_title": "R4 原件导入客户端与界面",
+    "method": "一次集中客户端字段核对；未启动多轮审查",
+    "consumer_findings": [
+      "观察同Capture期限，10分钟只限预览",
+      "联网创建／明确acquire分开，一次Capture一次逻辑取得",
+      "源站认证错误不能透传为本系统401/404",
+      "固定起始URL与origin范围、HTTP证据区别本地声明",
+      "三原键和按Capture发现观察，版本在创建时钉选",
+      "完整阅读表示SHA／长度／策略版本，禁止渲染半截HTML",
+      "空sandbox不依赖子页桥接，父页独立引用"
+    ],
+    "decisions": "上述七点已在候选收敛；另明确target实时头读取，不改固定观察，不为刷新头重抓。",
+    "old_consumer": "01a17244-5107-7aa3-beed-2ea36062d042继续真人只读，不改其限制"
+  },
+  "first_principles_analysis": {
+    "result": "同一域内网站与Feed内容可保真收录并按同版原文溯源，用户明确选择，缺项不删、恢复不重做网络或发布。",
+    "facts": [
+      {
+        "fact": "原生RSS解析存在，但renderText／标题fallback／prune不满足目标",
+        "evidence_refs": [
+          "internal/syncer/connector/rss.go",
+          "docs/stage2r5-web-rss-preparation.md"
+        ]
+      },
+      {
+        "fact": "R4原生快照及不可变对象已交付",
+        "evidence_refs": [
+          "docs/stage2r4-original-verification.json",
+          "internal/service/file/source_snapshot.go"
+        ]
+      },
+      {
+        "fact": "离线准备的作者／类别未入原指纹，且不是安全渲染器",
+        "evidence_refs": [
+          "internal/syncer/connector/knowledge_source.go"
+        ]
+      }
+    ],
+    "constraints": [
+      "合成资料／模型0／无多轮审查",
+      "既有23保护文件原字节",
+      "候选具体批准前不接业务",
+      "单写入及既有目录保留",
+      "不物理删除历史或对象"
+    ],
+    "assumptions": [
+      {
+        "assumption": "2MiB／1000项／32项原子批次适用于首批样本",
+        "verification": "获准后的五次同机容量记录，不从静态向量推定"
+      }
+    ],
+    "unknowns": [
+      {
+        "item": "本候选是否获真人冻结批准",
+        "owner": "用户",
+        "release": "具体版本／提交批准",
+        "blocks": "业务接入，不阻断独立合成准备"
+      },
+      {
+        "item": "真实RSSHub路由／网站／生产负载",
+        "owner": "A＋用户",
+        "release": "后续明确范围和实测",
+        "blocks": "真实来源验收"
+      }
+    ],
+    "fundamentals": [
+      "域授权",
+      "固定原字节",
+      "稳定范围内条目身份",
+      "正文／元信息／表示的版本投影",
+      "明确选择／确认",
+      "有限网络与解析预算"
+    ],
+    "causal_links": [
+      "同GUID跨Feed可重复→登记范围内身份；SHA只能识别内容",
+      "Feed是滚动窗口→缺项保留，不能接prune",
+      "不执行原HTML但需代码／合并表格→受限HTML＋禁外连sandbox",
+      "取得会变、响应会丢→先建固定身份且一次逻辑取得、GET恢复不重抓",
+      "32项不能半导入→预验证产物＋单次短SQL原子发布"
+    ],
+    "alternatives": [
+      {
+        "name": "保持原生RSS同步",
+        "decision": "拒绝",
+        "reason": "身份／格式保真／自动删除和自动解析不满足已定需求"
+      },
+      {
+        "name": "仅本地快照",
+        "decision": "不足以完成R5",
+        "reason": "缺少输入网址后明确取得的端到端能力，可保留作一种输入"
+      },
+      {
+        "name": "专用来源适配＋复用解析／对象／快照",
+        "decision": "本候选选择",
+        "reason": "保留同一领域与版本，显式网络、固定选择和安全阅读"
+      }
+    ],
+    "criteria": [
+      "原文与身份可核对",
+      "网络／解析有界",
+      "用户掌控选择和确认",
+      "丢响应不隐式重新取得／发布",
+      "旧契约及私密范围不变",
+      "无虚构运行或性能通过"
+    ],
+    "plan_trace": [
+      {
+        "step": "候选与规则向量",
+        "criteria": [
+          "原文与身份可核对",
+          "旧契约及私密范围不变"
+        ]
+      },
+      {
+        "step": "批准后统一后端路径",
+        "criteria": [
+          "网络／解析有界",
+          "丢响应不隐式重新取得／发布"
+        ]
+      },
+      {
+        "step": "单写入交Web",
+        "criteria": [
+          "用户掌控选择和确认"
+        ]
+      },
+      {
+        "step": "同版真实合成联调",
+        "criteria": [
+          "无虚构运行或性能通过"
+        ]
+      }
+    ]
+  },
+  "verification": {
+    "command": "node tools/scripts/verify_knowledge_web_contract.cjs",
+    "recorded_at": "2026-10-25T22:02:12.715Z",
+    "passed": true,
+    "counts": {
+      "schema": 54,
+      "structure": 82,
+      "semantic": 59,
+      "digests": 97,
+      "fingerprint": 10,
+      "endpoints": 38,
+      "protection": 23,
+      "scope": 3
+    },
+    "meaning": "仅文档schema、正反向量、独立typed-LP编码、参考语义、路由描述及冻结字节；不是应用执行",
+    "result_sha256": "9f825559573c23d88de5fe88b02ff43336faccdaf090d87f102d072b7fa24bff",
+    "protected_artifact_count": 23,
+    "protected_artifact_hashes": {
+      "docs/knowledge-sources-v1.openapi.json": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091",
+      "docs/knowledge-sources-v1.example.json": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a",
+      "docs/knowledge-sources-v1.freeze.json": "114bbfa2b4dd51eafc426716032486f666ace8a1a1284f4c1f4c9baf1f1b35c6",
+      "docs/knowledge-foundation-v1.openapi.json": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4",
+      "docs/knowledge-foundation-v1.example.json": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343",
+      "docs/knowledge-directory-import-v1.openapi.json": "6144c08d4cfe7ac98374dc51829c98290e2c88e3441dd38d250a3cd9cb4492e6",
+      "docs/knowledge-directory-import-v1.examples.json": "73618dd78419bb9027520b3dd8b3ef83b1794d3ad1c4d17d904ce7637c54ea72",
+      "docs/knowledge-directory-import-v1.freeze.json": "2af7575cfbc24510550a0b495e18aa30f94decf5f102c23d259d4f3135dbf5f1",
+      "docs/knowledge-directory-import-v0.3.candidate.md": "80eb846a81b6ade430012b585739fe6405ef8a7de5855f27941fe66a31e2cbfa",
+      "docs/knowledge-directory-import-v0.3.candidate.openapi.json": "da2c320b3c3fd8f6af2b566b40507a5b09c55791236b49b224347c8b9a457f3d",
+      "docs/knowledge-directory-import-v0.3.candidate.examples.json": "2680f9786a19cc49a0330ecfcda84249ef36aac20293341a18e17cbdfd132d4e",
+      "docs/knowledge-batch-import-v0.4.candidate.md": "3a3beec92e8bc0baae1c820a18e078717163988277aa9d304d762ff97d027b1f",
+      "docs/knowledge-batch-import-v0.4.candidate.openapi.json": "d57ca240df19a985341c25d60ce18590dacdcf221b5599b8223f558a7c379fc5",
+      "docs/knowledge-batch-import-v0.4.candidate.examples.json": "fe8bde9d99b8aaa7250a40a1adc86c6bee9ecf474cbf01af55253274f2e2e304",
+      "docs/knowledge-batch-import-v1.openapi.json": "bd13fc400fc2a84f490b92ee865db75f76d89bf79a176658312ac3bea17d0fb8",
+      "docs/knowledge-batch-import-v1.examples.json": "5249cdf57da0313346b7b30db0743079a175aaa8480604120b1bf92e4bdfdc53",
+      "docs/knowledge-batch-import-v1.freeze.json": "1d589290db4b1fe4ab4005dae0ebf1918efdeac9cd57d7c810305087c180f631",
+      "docs/knowledge-original-import-v0.5.candidate.md": "8a1079fe4745b84d178f50939ac25e1ac1fa51bc3f61ed2340ef1f6d9e1638d6",
+      "docs/knowledge-original-import-v0.5.candidate.openapi.json": "b4905ab840c64f26a25a6017dc7454393fd3b974b0e2199edffe2cc5e725a0aa",
+      "docs/knowledge-original-import-v0.5.candidate.examples.json": "16aa77d948f857f93dcc96e0c812d4bee2a8f3ad91205e54b9c0457f78ea8815",
+      "docs/knowledge-original-import-v1.openapi.json": "3c48ebe0a2bfc8b3078262ce6c1a8258b312f6111bd9ed2b07b7b4fb433a5efd",
+      "docs/knowledge-original-import-v1.examples.json": "550f7be69c506a02cc2798d2196e17ca06c73b06f08d934ea3cbf823551d5cb1",
+      "docs/knowledge-original-import-v1.freeze.json": "116ddc4161001c0fdb440b45b227952978ca3d291197d712830a92d5aaaca3b9"
+    }
+  },
+  "research": {
+    "network_docs_only": true,
+    "sources": [
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc4287.html",
+        "scope": "Atom ID/text/html/xhtml/content src/xml:base语义"
+      },
+      {
+        "url": "https://www.w3.org/TR/xmlbase/",
+        "scope": "base继承与相对定位"
+      },
+      {
+        "url": "https://github.com/DIYgod/RSSHub",
+        "scope": "RSSHub项目及Feed生产端定位"
+      },
+      {
+        "url": "https://docs.rsshub.app/guide/",
+        "result": "403，未推断路由可用"
+      }
+    ]
+  },
+  "execution": {
+    "business_code_changed": false,
+    "source_data_http_requests": 0,
+    "external_model_calls": 0,
+    "local_model_inference": 0,
+    "rsshub_process_started": false,
+    "compose_changed": false,
+    "volumes_recreated": false,
+    "credentials_recreated": false,
+    "physical_gc": false,
+    "git_main_modified": false
+  },
+  "acceptance": [
+    {
+      "id": "R5-C01",
+      "criterion": "具体覆盖本地与单次网络取得，不把快照缩减为整项",
+      "status": "CandidateDefined",
+      "evidence": "docs/knowledge-web-import-v0.6.candidate.md"
+    },
+    {
+      "id": "R5-C02",
+      "criterion": "身份／父域／表示／增量／完整性与附件明确",
+      "status": "CandidateDefined",
+      "evidence": "docs/knowledge-web-import-v0.6.candidate.md"
+    },
+    {
+      "id": "R5-C03",
+      "criterion": "观察／预览／确认及联网失败原键恢复可执行",
+      "status": "CandidateDefined",
+      "evidence": "docs/knowledge-web-import-v0.6.candidate.md"
+    },
+    {
+      "id": "R5-C04",
+      "criterion": "schema、合成正反例、摘要与保护检查通过",
+      "status": "Passed_ContractOnly",
+      "evidence": "verification"
+    },
+    {
+      "id": "R5-C05",
+      "criterion": "单写入集中核对，不启动多轮审查",
+      "status": "Recorded",
+      "evidence": "coordination"
+    }
+  ],
+  "incomplete_items": [
+    "0.6尚未获真人冻结／实施批准",
+    "未添加业务路由／实体／迁移／客户端／UI或部署",
+    "没有新解析器、网络SSRF／源站、安全页面或故障联调通过声明",
+    "没有容量、时延、峰值RSS实测；候选门槛待获准后执行",
+    "未运行真实RSSHub路由或抓取真实网站",
+    "R4用户验收及阶段2整体退出独立Pending",
+    "阶段3—6仍按完整链路后置"
+  ],
+  "delivery": {
+    "candidate_branch": "codex/stage2r5-web-feed-candidate",
+    "main_baseline_unchanged": "7c564a738597e924e411f3b191aaa02d14ae42d8",
+    "push_status": "以本批Git远端ref回执核对，不在自引用提交中伪造SHA"
+  },
+  "goal_status": "active"
+}
