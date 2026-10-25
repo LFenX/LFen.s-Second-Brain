@@ -340,8 +340,13 @@
   ],
   "publication": {
     "target": "main",
-    "status": "Pending",
-    "scope": "验证后的源码、冻结资源、报告和接续文档"
+    "status": "Pushed",
+    "verified_delivery_commit": "89504dceeefc385421cb92b04032b2eec4ca7c51",
+    "feature_branch": "codex/stage2r3-batch",
+    "feature_and_main_equal_at_publication": true,
+    "application_commit": "7309dafe5d664c77debb3d3bebafc33109ad2fe4",
+    "verified_at": "2026-10-25T16:31:46.376Z",
+    "note": "89504dc是已推送的源码/报告交付提交；本发布回执作为后续文档提交保存，最终HEAD在交付回复和本机after.json。"
   },
   "user_decision": {
     "outcome": "Pending"
