@@ -22,6 +22,7 @@ import {
   type KnowledgeFixedTarget,
 } from '@/utils/knowledge-source-link';
 import SourceContent from './content';
+import OriginalRevisions from '../knowledge-import/original-revisions';
 import {
   CatalogueEmpty,
   CatalogueFailure,
@@ -375,6 +376,9 @@ function DomainCatalogue({
   const domain = useKnowledgeDomain(domainId);
   const [path, setPath] = useState<KnowledgeGroup[]>([]);
   const [source, setSource] = useState<KnowledgeSource | null>(null);
+  const [originals, setOriginals] = useState(false);
+  const showText = () => setOriginals(false);
+  const showOriginals = () => setOriginals(true);
   const [generation, setGeneration] = useState(0);
   const [scopeFailure, setScopeFailure] =
     useState<KnowledgeRequestError | null>(null);
@@ -486,12 +490,32 @@ function DomainCatalogue({
             onRefresh={handleRefresh}
           />
           <h2 className="font-semibold">{t('knowledgeCatalogue.sources')}</h2>
-          <Sources
-            domainId={domainId}
-            groupId={path.at(-1)?.id}
-            onSelect={setSource}
-            onRefresh={handleRefresh}
-          />
+          <div className="flex flex-wrap gap-2">
+            <Button
+              variant={originals ? 'outline' : 'default'}
+              aria-pressed={!originals}
+              onClick={showText}
+            >
+              {t('knowledgeOriginal.textSources')}
+            </Button>
+            <Button
+              variant={originals ? 'default' : 'outline'}
+              aria-pressed={originals}
+              onClick={showOriginals}
+            >
+              {t('knowledgeOriginal.originals')}
+            </Button>
+          </div>
+          {originals ? (
+            <OriginalRevisions domain={domainId} group={path.at(-1)?.id} />
+          ) : (
+            <Sources
+              domainId={domainId}
+              groupId={path.at(-1)?.id}
+              onSelect={setSource}
+              onRefresh={handleRefresh}
+            />
+          )}
         </nav>
         <main
           aria-label={t('knowledgeCatalogue.original')}

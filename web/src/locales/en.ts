@@ -1,5 +1,108 @@
 export default {
   translation: {
+    knowledgeOriginal: {
+      title: 'Document originals',
+      textSources: 'Text sources',
+      originals: 'Original files',
+      scope:
+        'Save one PDF, PPTX, DOCX or UTF-8 text/code file at a time, up to 64MiB. Each upload expires 30 minutes after creation.',
+      registration: 'Register original paths',
+      registrationKey: 'Registration key',
+      name: 'Registration name',
+      paths: 'Logical paths (one per line)',
+      pathsHint:
+        'Enter 1–32 exact relative paths. The logical path and original filename are stored separately.',
+      createRegistration: 'Create registration',
+      resendRegistration: 'Check and resend original configuration',
+      registrationId: 'Registration ID',
+      openRegistration: 'Open original registration',
+      prepare: 'Upload and prepare confirmation',
+      chooseFile: 'Choose one original',
+      fileHint:
+        'PDF/PPTX/DOCX/UTF-8 text or code, 1 byte to 64MiB. Selecting a file does not upload it.',
+      originalName: 'Original filename',
+      path: 'Logical path',
+      bytes: 'Actual size',
+      mediaType: 'Actual media type',
+      group: 'Group',
+      classification: 'Component side and language',
+      revision: 'Fixed revision',
+      expectedRevision: 'Expected previous revision',
+      firstRevision: 'First import',
+      action: 'Save action',
+      created: 'Created',
+      updated: 'Updated',
+      unchanged: 'Unchanged',
+      expires: 'Staging expires',
+      confirmation: 'Confirm original import',
+      consent:
+        'I have checked the original filename, logical path, classification and actual file digest and confirm saving this original.',
+      confirm: 'Confirm saving original',
+      saved: 'Original saved',
+      savedOnly:
+        'Original saved only; not parsed, structured, full-text indexed or vector indexed.',
+      readyHint:
+        'The original is staged and has not been imported. Explicit confirmation saves the original without parsing or indexing.',
+      receipt: 'Fixed save receipt',
+      receiptId: 'Receipt ID',
+      modelCalls: 'Model calls',
+      receiptSnapshot:
+        'The receipt preserves the source snapshot at confirmation. Fixed details show whether the revision is current when read.',
+      fixedDetails: 'View fixed original',
+      another: 'Import another file',
+      newPreparation: 'Prepare a new upload',
+      recovery: 'Check original request',
+      unconfirmed: 'The result is unconfirmed. Check the original result.',
+      checkResult: 'Check original result',
+      resend: 'Explicitly resend original request',
+      notVisible:
+        'The current login or permissions cannot read this result. Sign in again and check using the original request.',
+      conflict:
+        'The request conflicted. Check the original upload using its error code; do not automatically replace its key.',
+      tooLarge: "The file or staging quota exceeds this version's limit.",
+      unsupported: 'The file format or declared media type is unsupported.',
+      slotsBusy: 'All receiving slots are occupied. Check manually later.',
+      expired:
+        'Staging expired. Check the status before preparing a new upload.',
+      invalidInput:
+        'The filename, path, classification or request fields are invalid.',
+      corruptRecovery:
+        'Local recovery metadata is invalid. Creation and resubmission have stopped. Preserve the original request information for investigation.',
+      uploadState: 'Upload status',
+      sent: 'Sent by browser',
+      received: 'Received by server',
+      waitReady:
+        'All bytes have been sent. Waiting for server validation and a fixed preview.',
+      pollingStopped:
+        'Three consecutive checks failed. Automatic polling stopped. The result is unconfirmed; check manually.',
+      cancel: 'Cancel this staging upload',
+      retryHint:
+        'Select a file with the original name and length, then explicitly retransmit it from the beginning. Without a client SHA, matching name and length do not prove identical bytes.',
+      retransmit: 'Explicitly retransmit from start',
+      notReady: 'This runtime is not ready to accept originals.',
+      loginRequired:
+        'Sign in with a valid native user identity before creating an upload.',
+      empty: 'No originals in this scope.',
+      listHint:
+        'Only current original revisions are listed, 20 per page. Refresh the first page after a source changes.',
+      refresh: 'Refresh first page',
+      current: 'Current revision when read',
+      yes: 'Yes',
+      no: 'No',
+      blobHint:
+        'The browser buffers the complete file (up to 64MiB) and verifies its type, length, ETag and complete SHA before downloading.',
+      download: 'Verify and download fixed original',
+      state: {
+        awaiting_bytes: 'Awaiting bytes',
+        receiving: 'Receiving',
+        ready: 'Server validated; awaiting explicit confirmation',
+        interrupted: 'Interrupted; explicit full retransmission available',
+        rejected: 'Rejected',
+        cancelled: 'Cancelled',
+        expired: 'Expired',
+        committed: 'Fixed revision saved',
+      },
+    },
     knowledgeBatch: {
       title: 'Multi-file tasks',
       workspace: 'Batch workspace',
