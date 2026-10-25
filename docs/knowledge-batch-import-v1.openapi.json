@@ -1,0 +1,5003 @@
+{
+  "openapi": "3.1.0",
+  "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
+  "info": {
+    "title": "LFen Second Brain C2 batch import 0.4.0",
+    "version": "0.4.0",
+    "description": "C2 0.4.0 Frozen，真人批准81b81de候选；运行能力须实现及验证后提供，不据冻结推断已部署。"
+  },
+  "servers": [
+    {
+      "url": "/api/v1"
+    }
+  ],
+  "security": [
+    {
+      "nativeSession": []
+    }
+  ],
+  "paths": {
+    "/knowledge/batch-import-contract": {
+      "get": {
+        "operationId": "getKnowledgeBatchImportContract",
+        "summary": "读取未上线候选能力",
+        "description": "C2 0.4.0 Frozen，字段/行为来自获批候选；运行完成情况以验证报告为准。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.4.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "读取或同原请求幂等回放",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CapabilitiesEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "原生会话失效，停止操作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NativeUnauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "不可见或结果未确认；不得推断未提交",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "416": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "暂不可用或结果未知；禁止自动新键重发",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{domain_id}/knowledge/directory-registrations/{registration_id}/batch-previews": {
+      "post": {
+        "operationId": "prepareKnowledgeBatch",
+        "summary": "准备固定批次预览",
+        "description": "C2 0.4.0 Frozen，字段/行为来自获批候选；运行完成情况以验证报告为准。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.4.0"
+            }
+          },
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          },
+          {
+            "name": "registration_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "新建固定资源或清单发布",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchPreviewEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "原生会话失效，停止操作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NativeUnauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "不可见或结果未确认；不得推断未提交",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "416": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "暂不可用或结果未知；禁止自动新键重发",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreviewRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{domain_id}/knowledge/directory-registrations/{registration_id}/batch-previews/{preview_id}": {
+      "get": {
+        "operationId": "getKnowledgeBatchPreview",
+        "summary": "读取批次预览",
+        "description": "C2 0.4.0 Frozen，字段/行为来自获批候选；运行完成情况以验证报告为准。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.4.0"
+            }
+          },
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          },
+          {
+            "name": "registration_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          },
+          {
+            "name": "preview_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "读取或同原请求幂等回放",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchPreviewEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "原生会话失效，停止操作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NativeUnauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "不可见或结果未确认；不得推断未提交",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "416": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "暂不可用或结果未知；禁止自动新键重发",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{domain_id}/knowledge/directory-registrations/{registration_id}/batch-previews/{preview_id}/items/{item_id}/content": {
+      "get": {
+        "operationId": "readKnowledgeBatchPreviewItem",
+        "summary": "读取一项固定原文字节窗口",
+        "description": "C2 0.4.0 Frozen，字段/行为来自获批候选；运行完成情况以验证报告为准。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.4.0"
+            }
+          },
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          },
+          {
+            "name": "registration_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          },
+          {
+            "name": "preview_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          },
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2097152
+            }
+          },
+          {
+            "name": "length",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 65536
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "读取或同原请求幂等回放",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentWindowEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "原生会话失效，停止操作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NativeUnauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "不可见或结果未确认；不得推断未提交",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "416": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "暂不可用或结果未知；禁止自动新键重发",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{domain_id}/knowledge/directory-registrations/{registration_id}/batch-tasks": {
+      "post": {
+        "operationId": "acceptKnowledgeBatchTask",
+        "summary": "认可全部项并持久接受任务",
+        "description": "C2 0.4.0 Frozen，字段/行为来自获批候选；运行完成情况以验证报告为准。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.4.0"
+            }
+          },
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          },
+          {
+            "name": "registration_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "读取或同原请求幂等回放",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskEnvelope"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "持久受理，不代表保存成功",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "原生会话失效，停止操作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NativeUnauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "不可见或结果未确认；不得推断未提交",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "416": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "暂不可用或结果未知；禁止自动新键重发",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AcceptRequest"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "listKnowledgeBatchTasks",
+        "summary": "固定任务ID序列分页",
+        "description": "C2 0.4.0 Frozen，字段/行为来自获批候选；运行完成情况以验证报告为准。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.4.0"
+            }
+          },
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          },
+          {
+            "name": "registration_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024,
+              "pattern": "^[A-Za-z0-9_-]+$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "读取或同原请求幂等回放",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskPageEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "原生会话失效，停止操作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NativeUnauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "不可见或结果未确认；不得推断未提交",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "416": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "暂不可用或结果未知；禁止自动新键重发",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{domain_id}/knowledge/directory-registrations/{registration_id}/batch-tasks/{task_id}": {
+      "get": {
+        "operationId": "getKnowledgeBatchTask",
+        "summary": "读取任务与汇总",
+        "description": "C2 0.4.0 Frozen，字段/行为来自获批候选；运行完成情况以验证报告为准。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.4.0"
+            }
+          },
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          },
+          {
+            "name": "registration_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          },
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "读取或同原请求幂等回放",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "原生会话失效，停止操作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NativeUnauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "不可见或结果未确认；不得推断未提交",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "416": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "暂不可用或结果未知；禁止自动新键重发",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{domain_id}/knowledge/directory-registrations/{registration_id}/batch-tasks/{task_id}/items": {
+      "get": {
+        "operationId": "listKnowledgeBatchTaskItems",
+        "summary": "读取同结果revision的一页",
+        "description": "C2 0.4.0 Frozen，字段/行为来自获批候选；运行完成情况以验证报告为准。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.4.0"
+            }
+          },
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          },
+          {
+            "name": "registration_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          },
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024,
+              "pattern": "^[A-Za-z0-9_-]+$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "读取或同原请求幂等回放",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskItemsPageEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "原生会话失效，停止操作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NativeUnauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "不可见或结果未确认；不得推断未提交",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "416": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "暂不可用或结果未知；禁止自动新键重发",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{domain_id}/knowledge/directory-registrations/{registration_id}/batch-tasks/by-key/{idempotency_key}": {
+      "get": {
+        "operationId": "getKnowledgeBatchTaskByKey",
+        "summary": "按原键只读核查任务",
+        "description": "C2 0.4.0 Frozen，字段/行为来自获批候选；运行完成情况以验证报告为准。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.4.0"
+            }
+          },
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          },
+          {
+            "name": "registration_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          },
+          {
+            "name": "idempotency_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{1,128}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "读取或同原请求幂等回放",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "原生会话失效，停止操作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NativeUnauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "不可见或结果未确认；不得推断未提交",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "416": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "暂不可用或结果未知；禁止自动新键重发",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{domain_id}/knowledge/directory-registrations/{registration_id}/batch-tasks/{task_id}/cancellation": {
+      "post": {
+        "operationId": "cancelKnowledgeBatchTask",
+        "summary": "持久取消尚未提交项",
+        "description": "C2 0.4.0 Frozen，字段/行为来自获批候选；运行完成情况以验证报告为准。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.4.0"
+            }
+          },
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          },
+          {
+            "name": "registration_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          },
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "读取或同原请求幂等回放",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "原生会话失效，停止操作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NativeUnauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "不可见或结果未确认；不得推断未提交",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "416": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "暂不可用或结果未知；禁止自动新键重发",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancellationRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{domain_id}/knowledge/project-manifest-previews": {
+      "post": {
+        "operationId": "prepareKnowledgeProjectManifest",
+        "summary": "从全成功任务和固定基版准备清单",
+        "description": "C2 0.4.0 Frozen，字段/行为来自获批候选；运行完成情况以验证报告为准。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.4.0"
+            }
+          },
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "新建固定资源或清单发布",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ManifestPreviewPageEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "原生会话失效，停止操作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NativeUnauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "不可见或结果未确认；不得推断未提交",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "416": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "暂不可用或结果未知；禁止自动新键重发",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ManifestPreviewRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{domain_id}/knowledge/project-manifest-previews/{preview_id}": {
+      "get": {
+        "operationId": "getKnowledgeProjectManifestPreview",
+        "summary": "固定清单预览分页",
+        "description": "C2 0.4.0 Frozen，字段/行为来自获批候选；运行完成情况以验证报告为准。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.4.0"
+            }
+          },
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          },
+          {
+            "name": "preview_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024,
+              "pattern": "^[A-Za-z0-9_-]+$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "读取或同原请求幂等回放",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ManifestPreviewPageEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "原生会话失效，停止操作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NativeUnauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "不可见或结果未确认；不得推断未提交",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "416": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "暂不可用或结果未知；禁止自动新键重发",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{domain_id}/knowledge/project-manifest-publications": {
+      "post": {
+        "operationId": "publishKnowledgeProjectManifest",
+        "summary": "明确确认并CAS发布清单",
+        "description": "C2 0.4.0 Frozen，字段/行为来自获批候选；运行完成情况以验证报告为准。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.4.0"
+            }
+          },
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "读取或同原请求幂等回放",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ManifestReceiptEnvelope"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "新建固定资源或清单发布",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ManifestReceiptEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "原生会话失效，停止操作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NativeUnauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "不可见或结果未确认；不得推断未提交",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "416": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "暂不可用或结果未知；禁止自动新键重发",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ManifestPublicationRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{domain_id}/knowledge/projects/{project_id}/manifest-publications/by-key/{idempotency_key}": {
+      "get": {
+        "operationId": "getKnowledgeProjectManifestPublicationByKey",
+        "summary": "按原键只读核查发布",
+        "description": "C2 0.4.0 Frozen，字段/行为来自获批候选；运行完成情况以验证报告为准。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.4.0"
+            }
+          },
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          },
+          {
+            "name": "idempotency_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{1,128}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "读取或同原请求幂等回放",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ManifestReceiptEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "原生会话失效，停止操作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NativeUnauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "不可见或结果未确认；不得推断未提交",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "416": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "暂不可用或结果未知；禁止自动新键重发",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{domain_id}/knowledge/projects/{project_id}/manifest-head": {
+      "get": {
+        "operationId": "getKnowledgeProjectManifestHead",
+        "summary": "读取项目清单头",
+        "description": "C2 0.4.0 Frozen，字段/行为来自获批候选；运行完成情况以验证报告为准。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.4.0"
+            }
+          },
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "读取或同原请求幂等回放",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ManifestHeadEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "原生会话失效，停止操作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NativeUnauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "不可见或结果未确认；不得推断未提交",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "416": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "暂不可用或结果未知；禁止自动新键重发",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{domain_id}/knowledge/projects/{project_id}/manifests": {
+      "get": {
+        "operationId": "listKnowledgeProjectManifests",
+        "summary": "固定清单版本历史分页",
+        "description": "C2 0.4.0 Frozen，字段/行为来自获批候选；运行完成情况以验证报告为准。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.4.0"
+            }
+          },
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024,
+              "pattern": "^[A-Za-z0-9_-]+$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "读取或同原请求幂等回放",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ManifestHistoryPageEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "原生会话失效，停止操作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NativeUnauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "不可见或结果未确认；不得推断未提交",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "416": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "暂不可用或结果未知；禁止自动新键重发",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{domain_id}/knowledge/projects/{project_id}/manifests/{manifest_id}": {
+      "get": {
+        "operationId": "getKnowledgeProjectManifest",
+        "summary": "固定清单版本分页",
+        "description": "C2 0.4.0 Frozen，字段/行为来自获批候选；运行完成情况以验证报告为准。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.4.0"
+            }
+          },
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          },
+          {
+            "name": "manifest_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024,
+              "pattern": "^[A-Za-z0-9_-]+$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "读取或同原请求幂等回放",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ManifestVersionPageEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "原生会话失效，停止操作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NativeUnauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "不可见或结果未确认；不得推断未提交",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "416": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "机器码和reason按本文错误映射判断",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "暂不可用或结果未知；禁止自动新键重发",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "nativeSession": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization"
+      }
+    },
+    "schemas": {
+      "Capabilities": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "contract_version",
+          "source_contract_version",
+          "status",
+          "implemented",
+          "task_execution",
+          "prerequisite_directory_version",
+          "mode",
+          "max_items",
+          "max_file_bytes",
+          "max_batch_bytes",
+          "max_manifest_entries",
+          "model_calls",
+          "external_models",
+          "automatic_ingestion",
+          "allowed_model_uses"
+        ],
+        "properties": {
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "source_contract_version": {
+            "const": "0.4.0"
+          },
+          "status": {
+            "const": "Frozen"
+          },
+          "implemented": {
+            "const": true
+          },
+          "task_execution": {
+            "const": "durable_bounded_batch"
+          },
+          "prerequisite_directory_version": {
+            "const": "0.3.0"
+          },
+          "mode": {
+            "const": "catalogue_only"
+          },
+          "max_items": {
+            "const": 32
+          },
+          "max_file_bytes": {
+            "const": 2097152
+          },
+          "max_batch_bytes": {
+            "const": 67108864
+          },
+          "max_manifest_entries": {
+            "const": 1024
+          },
+          "model_calls": {
+            "const": 0
+          },
+          "external_models": {
+            "const": false
+          },
+          "automatic_ingestion": {
+            "const": false
+          },
+          "allowed_model_uses": {
+            "type": "array",
+            "maxItems": 0,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Classification": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "group_id",
+          "component_side",
+          "language"
+        ],
+        "properties": {
+          "group_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{32}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "component_side": {
+            "type": "string",
+            "enum": [
+              "frontend",
+              "backend",
+              "shared",
+              "cli",
+              "non_code"
+            ]
+          },
+          "language": {
+            "type": "string",
+            "maxLength": 32
+          }
+        }
+      },
+      "SelectionItem": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "relative_path",
+          "classification"
+        ],
+        "properties": {
+          "relative_path": {
+            "type": "string",
+            "format": "knowledge-relative-file",
+            "maxLength": 512
+          },
+          "classification": {
+            "$ref": "#/components/schemas/Classification"
+          }
+        }
+      },
+      "PreviewRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "observation_id",
+          "observation_sha256",
+          "selected_items"
+        ],
+        "properties": {
+          "observation_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "observation_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "selected_items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SelectionItem"
+            },
+            "minItems": 1,
+            "maxItems": 32
+          }
+        }
+      },
+      "PreviewItem": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "item_id",
+          "ordinal",
+          "relative_path",
+          "classification",
+          "source_id",
+          "expected_revision_id",
+          "sha256",
+          "byte_length",
+          "action"
+        ],
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "ordinal": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 31
+          },
+          "relative_path": {
+            "type": "string",
+            "format": "knowledge-relative-file",
+            "maxLength": 512
+          },
+          "classification": {
+            "$ref": "#/components/schemas/Classification"
+          },
+          "source_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{32}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "expected_revision_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{32}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "byte_length": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2097152
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "add",
+              "update",
+              "unchanged"
+            ]
+          }
+        }
+      },
+      "BatchPreview": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "preview_id",
+          "domain_id",
+          "registration_id",
+          "observation_id",
+          "observation_sha256",
+          "root_id",
+          "root_version",
+          "policy_version",
+          "manifest_sha256",
+          "mode",
+          "created_at",
+          "expires_at",
+          "byte_length",
+          "items",
+          "consumed_task_id"
+        ],
+        "properties": {
+          "preview_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "domain_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "registration_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "observation_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "observation_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "root_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "root_version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "policy_version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "manifest_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "mode": {
+            "const": "catalogue_only"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "byte_length": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 67108864
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PreviewItem"
+            },
+            "minItems": 1,
+            "maxItems": 32
+          },
+          "consumed_task_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{32}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "ContentWindow": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "preview_id",
+          "item_id",
+          "relative_path",
+          "sha256",
+          "total_bytes",
+          "offset",
+          "byte_length",
+          "text",
+          "next_offset"
+        ],
+        "properties": {
+          "preview_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "item_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "relative_path": {
+            "type": "string",
+            "format": "knowledge-relative-file",
+            "maxLength": 512
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "total_bytes": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2097152
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2097152
+          },
+          "byte_length": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 65536
+          },
+          "text": {
+            "type": "string"
+          },
+          "next_offset": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2097152
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "AcceptRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "preview_id",
+          "manifest_sha256",
+          "idempotency_key",
+          "confirmed_item_ids",
+          "retry_of_task_id"
+        ],
+        "properties": {
+          "preview_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "manifest_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "idempotency_key": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{1,128}$"
+          },
+          "confirmed_item_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            },
+            "minItems": 1,
+            "maxItems": 32,
+            "uniqueItems": true
+          },
+          "retry_of_task_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{32}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "Counts": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "total",
+          "pending",
+          "running",
+          "succeeded",
+          "failed",
+          "cancelled"
+        ],
+        "properties": {
+          "total": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 32
+          },
+          "pending": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 32
+          },
+          "running": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "succeeded": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 32
+          },
+          "failed": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 32
+          },
+          "cancelled": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 32
+          }
+        }
+      },
+      "Task": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "task_id",
+          "domain_id",
+          "registration_id",
+          "preview_id",
+          "manifest_sha256",
+          "idempotency_key",
+          "confirmed_item_ids",
+          "retry_of_task_id",
+          "status",
+          "revision",
+          "counts",
+          "cancel_requested",
+          "mode",
+          "created_at",
+          "updated_at",
+          "execution_deadline",
+          "terminal_at"
+        ],
+        "properties": {
+          "task_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "domain_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "registration_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "preview_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "manifest_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "idempotency_key": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{1,128}$"
+          },
+          "confirmed_item_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            },
+            "minItems": 1,
+            "maxItems": 32,
+            "uniqueItems": true
+          },
+          "retry_of_task_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{32}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "queued",
+              "running",
+              "cancelling",
+              "succeeded",
+              "partial_failed",
+              "failed",
+              "cancelled"
+            ]
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "counts": {
+            "$ref": "#/components/schemas/Counts"
+          },
+          "cancel_requested": {
+            "type": "boolean"
+          },
+          "mode": {
+            "const": "catalogue_only"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "execution_deadline": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "terminal_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "TaskItem": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "item_id",
+          "ordinal",
+          "relative_path",
+          "classification",
+          "sha256",
+          "byte_length",
+          "status",
+          "save_status",
+          "source_id",
+          "source_revision_id",
+          "root_node_id",
+          "catalogue_status",
+          "structure_status",
+          "full_text_status",
+          "vector_status",
+          "code"
+        ],
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "ordinal": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 31
+          },
+          "relative_path": {
+            "type": "string",
+            "format": "knowledge-relative-file",
+            "maxLength": 512
+          },
+          "classification": {
+            "$ref": "#/components/schemas/Classification"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "byte_length": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2097152
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "running",
+              "succeeded",
+              "failed",
+              "cancelled"
+            ]
+          },
+          "save_status": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "created",
+                  "updated",
+                  "unchanged"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "source_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{32}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "source_revision_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{32}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "root_node_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "catalogue_status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "registered",
+              "failed",
+              "cancelled"
+            ]
+          },
+          "structure_status": {
+            "const": "deferred"
+          },
+          "full_text_status": {
+            "const": "disabled"
+          },
+          "vector_status": {
+            "const": "disabled"
+          },
+          "code": {
+            "type": "string",
+            "enum": [
+              "awaiting_execution",
+              "running",
+              "saved",
+              "source_changed",
+              "revision_changed",
+              "root_changed",
+              "policy_changed",
+              "root_unready",
+              "permission_revoked",
+              "save_failed",
+              "execution_expired",
+              "cancelled"
+            ]
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "succeeded"
+                }
+              },
+              "required": [
+                "status"
+              ]
+            },
+            "then": {
+              "properties": {
+                "save_status": {
+                  "type": "string",
+                  "enum": [
+                    "created",
+                    "updated",
+                    "unchanged"
+                  ]
+                },
+                "source_id": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{32}$"
+                },
+                "source_revision_id": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{32}$"
+                },
+                "root_node_id": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "catalogue_status": {
+                  "const": "registered"
+                },
+                "code": {
+                  "const": "saved"
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "save_status": {
+                  "type": "null"
+                },
+                "source_id": {
+                  "type": "null"
+                },
+                "source_revision_id": {
+                  "type": "null"
+                },
+                "root_node_id": {
+                  "type": "null"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "TaskPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "domain_id",
+          "registration_id",
+          "list_snapshot_id",
+          "total_tasks",
+          "captured_at",
+          "expires_at",
+          "items",
+          "next_cursor"
+        ],
+        "properties": {
+          "domain_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "registration_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "list_snapshot_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "total_tasks": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "captured_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Task"
+            },
+            "minItems": 0,
+            "maxItems": 20
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024,
+                "pattern": "^[A-Za-z0-9_-]+$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "TaskItemsPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "task_id",
+          "registration_id",
+          "result_revision",
+          "status",
+          "counts",
+          "items",
+          "next_cursor"
+        ],
+        "properties": {
+          "task_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "registration_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "result_revision": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "queued",
+              "running",
+              "cancelling",
+              "succeeded",
+              "partial_failed",
+              "failed",
+              "cancelled"
+            ]
+          },
+          "counts": {
+            "$ref": "#/components/schemas/Counts"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskItem"
+            },
+            "minItems": 1,
+            "maxItems": 10
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024,
+                "pattern": "^[A-Za-z0-9_-]+$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "CancellationRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "idempotency_key"
+        ],
+        "properties": {
+          "idempotency_key": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{1,128}$"
+          }
+        }
+      },
+      "ManifestPreviewRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "project_id",
+          "task_id",
+          "expected_manifest_id"
+        ],
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "task_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "expected_manifest_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{32}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "ManifestEntry": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "registration_id",
+          "relative_path",
+          "source_id",
+          "source_revision_id",
+          "root_node_id",
+          "sha256",
+          "byte_length",
+          "classification",
+          "origin_task_id"
+        ],
+        "properties": {
+          "registration_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "relative_path": {
+            "type": "string",
+            "format": "knowledge-relative-file",
+            "maxLength": 512
+          },
+          "source_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "source_revision_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "root_node_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "byte_length": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2097152
+          },
+          "classification": {
+            "$ref": "#/components/schemas/Classification"
+          },
+          "origin_task_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          }
+        }
+      },
+      "ManifestPreviewPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "preview_id",
+          "domain_id",
+          "project_id",
+          "task_id",
+          "task_manifest_sha256",
+          "expected_manifest_id",
+          "manifest_sha256",
+          "coverage",
+          "captured_atomically",
+          "created_at",
+          "expires_at",
+          "total_entries",
+          "added",
+          "replaced",
+          "carried",
+          "items",
+          "next_cursor",
+          "consumed_manifest_id"
+        ],
+        "properties": {
+          "preview_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "domain_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "project_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "task_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "task_manifest_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "expected_manifest_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{32}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "manifest_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "coverage": {
+            "const": "explicit_selection"
+          },
+          "captured_atomically": {
+            "const": false
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "total_entries": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1024
+          },
+          "added": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 32
+          },
+          "replaced": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 32
+          },
+          "carried": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1024
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ManifestEntry"
+            },
+            "minItems": 1,
+            "maxItems": 50
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024,
+                "pattern": "^[A-Za-z0-9_-]+$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "consumed_manifest_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{32}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "ManifestPublicationRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "project_id",
+          "preview_id",
+          "manifest_sha256",
+          "idempotency_key"
+        ],
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "preview_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "manifest_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "idempotency_key": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{1,128}$"
+          }
+        }
+      },
+      "ManifestReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "domain_id",
+          "project_id",
+          "manifest_id",
+          "preview_id",
+          "task_id",
+          "manifest_sha256",
+          "idempotency_key",
+          "expected_manifest_id",
+          "coverage",
+          "captured_atomically",
+          "total_entries",
+          "published_at"
+        ],
+        "properties": {
+          "domain_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "project_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "manifest_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "preview_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "task_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "manifest_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "idempotency_key": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{1,128}$"
+          },
+          "expected_manifest_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{32}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "coverage": {
+            "const": "explicit_selection"
+          },
+          "captured_atomically": {
+            "const": false
+          },
+          "total_entries": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1024
+          },
+          "published_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ManifestHead": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "domain_id",
+          "project_id",
+          "manifest_id"
+        ],
+        "properties": {
+          "domain_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "project_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "manifest_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{32}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "ManifestVersionPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "domain_id",
+          "project_id",
+          "manifest_id",
+          "preview_id",
+          "task_id",
+          "manifest_sha256",
+          "expected_manifest_id",
+          "coverage",
+          "captured_atomically",
+          "total_entries",
+          "published_at",
+          "items",
+          "next_cursor"
+        ],
+        "properties": {
+          "domain_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "project_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "manifest_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "preview_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "task_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "manifest_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "expected_manifest_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{32}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "coverage": {
+            "const": "explicit_selection"
+          },
+          "captured_atomically": {
+            "const": false
+          },
+          "total_entries": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1024
+          },
+          "published_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ManifestEntry"
+            },
+            "minItems": 1,
+            "maxItems": 50
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024,
+                "pattern": "^[A-Za-z0-9_-]+$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "ManifestHistoryPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "domain_id",
+          "project_id",
+          "list_snapshot_id",
+          "total_manifests",
+          "captured_at",
+          "expires_at",
+          "items",
+          "next_cursor"
+        ],
+        "properties": {
+          "domain_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "project_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "list_snapshot_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "total_manifests": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "captured_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ManifestReceipt"
+            },
+            "minItems": 0,
+            "maxItems": 20
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024,
+                "pattern": "^[A-Za-z0-9_-]+$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "reason",
+          "contract_version",
+          "source_contract_version",
+          "request_id"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "knowledge_batch_invalid",
+              "knowledge_batch_not_found",
+              "knowledge_batch_version_mismatch",
+              "knowledge_batch_conflict",
+              "knowledge_batch_expired",
+              "knowledge_batch_too_large",
+              "knowledge_batch_range",
+              "knowledge_batch_capacity",
+              "knowledge_batch_unavailable"
+            ]
+          },
+          "message": {
+            "type": "string"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "observation_incomplete",
+                  "observation_mismatch",
+                  "ineligible",
+                  "source_changed",
+                  "revision_changed",
+                  "root_changed",
+                  "policy_changed",
+                  "preview_consumed",
+                  "idempotency_conflict",
+                  "confirmation_mismatch",
+                  "result_changed",
+                  "task_not_succeeded",
+                  "project_head_changed",
+                  "project_membership_changed",
+                  "cursor_invalid",
+                  "retry_parent_invalid",
+                  "root_unready",
+                  "result_unknown"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "source_contract_version": {
+            "const": "0.4.0"
+          },
+          "request_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "code": {
+                  "const": "knowledge_batch_conflict"
+                }
+              },
+              "required": [
+                "code"
+              ]
+            },
+            "then": {
+              "properties": {
+                "reason": {
+                  "type": "string",
+                  "enum": [
+                    "observation_incomplete",
+                    "observation_mismatch",
+                    "ineligible",
+                    "source_changed",
+                    "revision_changed",
+                    "root_changed",
+                    "policy_changed",
+                    "preview_consumed",
+                    "idempotency_conflict",
+                    "confirmation_mismatch",
+                    "result_changed",
+                    "task_not_succeeded",
+                    "project_head_changed",
+                    "project_membership_changed",
+                    "cursor_invalid",
+                    "retry_parent_invalid"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "code": {
+                  "const": "knowledge_batch_unavailable"
+                }
+              },
+              "required": [
+                "code"
+              ]
+            },
+            "then": {
+              "properties": {
+                "reason": {
+                  "type": "string",
+                  "enum": [
+                    "root_unready",
+                    "result_unknown"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "code": {
+                  "not": {
+                    "enum": [
+                      "knowledge_batch_conflict",
+                      "knowledge_batch_unavailable"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "code"
+              ]
+            },
+            "then": {
+              "properties": {
+                "reason": {
+                  "type": "null"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "NativeUnauthorized": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {}
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "additionalProperties": true
+      },
+      "CapabilitiesEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "data",
+          "contract_version",
+          "source_contract_version",
+          "request_id"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Capabilities"
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "source_contract_version": {
+            "const": "0.4.0"
+          },
+          "request_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          }
+        }
+      },
+      "BatchPreviewEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "data",
+          "contract_version",
+          "source_contract_version",
+          "request_id"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/BatchPreview"
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "source_contract_version": {
+            "const": "0.4.0"
+          },
+          "request_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          }
+        }
+      },
+      "ContentWindowEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "data",
+          "contract_version",
+          "source_contract_version",
+          "request_id"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ContentWindow"
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "source_contract_version": {
+            "const": "0.4.0"
+          },
+          "request_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          }
+        }
+      },
+      "TaskEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "data",
+          "contract_version",
+          "source_contract_version",
+          "request_id"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Task"
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "source_contract_version": {
+            "const": "0.4.0"
+          },
+          "request_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          }
+        }
+      },
+      "TaskPageEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "data",
+          "contract_version",
+          "source_contract_version",
+          "request_id"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/TaskPage"
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "source_contract_version": {
+            "const": "0.4.0"
+          },
+          "request_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          }
+        }
+      },
+      "TaskItemsPageEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "data",
+          "contract_version",
+          "source_contract_version",
+          "request_id"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/TaskItemsPage"
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "source_contract_version": {
+            "const": "0.4.0"
+          },
+          "request_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          }
+        }
+      },
+      "ManifestPreviewPageEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "data",
+          "contract_version",
+          "source_contract_version",
+          "request_id"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ManifestPreviewPage"
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "source_contract_version": {
+            "const": "0.4.0"
+          },
+          "request_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          }
+        }
+      },
+      "ManifestReceiptEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "data",
+          "contract_version",
+          "source_contract_version",
+          "request_id"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ManifestReceipt"
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "source_contract_version": {
+            "const": "0.4.0"
+          },
+          "request_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          }
+        }
+      },
+      "ManifestHeadEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "data",
+          "contract_version",
+          "source_contract_version",
+          "request_id"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ManifestHead"
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "source_contract_version": {
+            "const": "0.4.0"
+          },
+          "request_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          }
+        }
+      },
+      "ManifestVersionPageEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "data",
+          "contract_version",
+          "source_contract_version",
+          "request_id"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ManifestVersionPage"
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "source_contract_version": {
+            "const": "0.4.0"
+          },
+          "request_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          }
+        }
+      },
+      "ManifestHistoryPageEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "data",
+          "contract_version",
+          "source_contract_version",
+          "request_id"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ManifestHistoryPage"
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "source_contract_version": {
+            "const": "0.4.0"
+          },
+          "request_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          }
+        }
+      }
+    }
+  },
+  "x-review-status": "Frozen",
+  "x-implemented": true,
+  "x-prerequisites": [
+    {
+      "contract": "C2",
+      "version": "0.3.0",
+      "artifact": "knowledge-directory-import-v1.openapi.json",
+      "sha256": "6144c08d4cfe7ac98374dc51829c98290e2c88e3441dd38d250a3cd9cb4492e6"
+    },
+    {
+      "contract": "C1/C3",
+      "version": "1.0.0",
+      "artifact": "knowledge-foundation-v1.openapi.json",
+      "sha256": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4"
+    }
+  ],
+  "x-normative-semantics": "knowledge-batch-import-v0.4.candidate.md",
+  "x-limits": {
+    "max_post_json_bytes": 32768,
+    "max_metadata_json_bytes": 262144,
+    "max_content_json_bytes": 1048576,
+    "task_page_size": 20,
+    "item_page_size": 10,
+    "manifest_page_size": 50,
+    "preview_ttl_seconds": 600,
+    "execution_deadline_seconds": 1800,
+    "max_active_batch_previews_per_user_domain": 1,
+    "max_active_tasks_per_user_domain": 2,
+    "max_active_manifest_previews_per_user_domain": 2,
+    "lease_seconds": 60,
+    "renewal_seconds": 10,
+    "worker_per_domain": 1,
+    "worker_per_process": 2,
+    "query_wait_seconds": 10
+  },
+  "x-error-mapping": {
+    "400": [
+      {
+        "code": "knowledge_batch_invalid",
+        "reasons": [
+          null
+        ]
+      }
+    ],
+    "404": [
+      {
+        "code": "knowledge_batch_not_found",
+        "reasons": [
+          null
+        ]
+      }
+    ],
+    "409": [
+      {
+        "code": "knowledge_batch_version_mismatch",
+        "reasons": [
+          null
+        ]
+      },
+      {
+        "code": "knowledge_batch_conflict",
+        "reasons": [
+          "observation_incomplete",
+          "observation_mismatch",
+          "ineligible",
+          "source_changed",
+          "revision_changed",
+          "root_changed",
+          "policy_changed",
+          "preview_consumed",
+          "idempotency_conflict",
+          "confirmation_mismatch",
+          "result_changed",
+          "task_not_succeeded",
+          "project_head_changed",
+          "project_membership_changed",
+          "cursor_invalid",
+          "retry_parent_invalid"
+        ]
+      }
+    ],
+    "410": [
+      {
+        "code": "knowledge_batch_expired",
+        "reasons": [
+          null
+        ]
+      }
+    ],
+    "413": [
+      {
+        "code": "knowledge_batch_too_large",
+        "reasons": [
+          null
+        ]
+      }
+    ],
+    "416": [
+      {
+        "code": "knowledge_batch_range",
+        "reasons": [
+          null
+        ]
+      }
+    ],
+    "429": [
+      {
+        "code": "knowledge_batch_capacity",
+        "reasons": [
+          null
+        ]
+      }
+    ],
+    "503": [
+      {
+        "code": "knowledge_batch_unavailable",
+        "reasons": [
+          "root_unready",
+          "result_unknown"
+        ]
+      }
+    ]
+  },
+  "x-digest-projection": {
+    "encoding": "与0.3.0相同：各token以十进制UTF-8字节数:原token字节串联；null为空token，整数十进制；路径UTF-8字节升序，数组先数量。此投影只用于0.4.0，不修改旧摘要。",
+    "batch": [
+      "lfen.batch.preview.v0.4",
+      "preview_id",
+      "domain_id",
+      "user_id",
+      "registration_id",
+      "observation_id",
+      "observation_sha256",
+      "root_id",
+      "root_version",
+      "policy_version",
+      "created_at",
+      "expires_at",
+      "items.length",
+      "items[*]: item_id,ordinal,relative_path,source_id,expected_revision_id,sha256,byte_length,classification.group_id,classification.component_side,classification.language,action"
+    ],
+    "manifest": [
+      "lfen.project.manifest.preview.v0.4",
+      "preview_id",
+      "domain_id",
+      "project_id",
+      "task_id",
+      "task_manifest_sha256",
+      "expected_manifest_id",
+      "coverage",
+      "captured_atomically",
+      "created_at",
+      "expires_at",
+      "items.length",
+      "added",
+      "replaced",
+      "carried",
+      "items[*]: registration_id,relative_path,source_id,source_revision_id,root_node_id,sha256,byte_length,classification.group_id,classification.component_side,classification.language,origin_task_id"
+    ]
+  },
+  "x-freeze-record": "knowledge-batch-import-v1.freeze.json"
+}

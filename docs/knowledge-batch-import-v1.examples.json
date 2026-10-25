@@ -1,0 +1,4798 @@
+{
+  "candidate_version": "0.4.0",
+  "status": "Frozen",
+  "synthetic_only": true,
+  "implemented": true,
+  "schema_cases": [
+    {
+      "id": "capability-not-live",
+      "schema": "Capabilities",
+      "valid": true,
+      "data": {
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "status": "Frozen",
+        "implemented": true,
+        "task_execution": "durable_bounded_batch",
+        "prerequisite_directory_version": "0.3.0",
+        "mode": "catalogue_only",
+        "max_items": 32,
+        "max_file_bytes": 2097152,
+        "max_batch_bytes": 67108864,
+        "max_manifest_entries": 1024,
+        "model_calls": 0,
+        "external_models": false,
+        "automatic_ingestion": false,
+        "allowed_model_uses": []
+      }
+    },
+    {
+      "id": "capability-cannot-claim-implemented",
+      "schema": "Capabilities",
+      "valid": false,
+      "data": {
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "status": "Frozen",
+        "implemented": false,
+        "task_execution": "durable_bounded_batch",
+        "prerequisite_directory_version": "0.3.0",
+        "mode": "catalogue_only",
+        "max_items": 32,
+        "max_file_bytes": 2097152,
+        "max_batch_bytes": 67108864,
+        "max_manifest_entries": 1024,
+        "model_calls": 0,
+        "external_models": false,
+        "automatic_ingestion": false,
+        "allowed_model_uses": []
+      }
+    },
+    {
+      "id": "two-explicit-items",
+      "schema": "PreviewRequest",
+      "valid": true,
+      "data": {
+        "observation_id": "00000000000000000000000000000004",
+        "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+        "selected_items": [
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/空.ts",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "zero-not-batch",
+      "schema": "PreviewRequest",
+      "valid": false,
+      "data": {
+        "observation_id": "00000000000000000000000000000004",
+        "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+        "selected_items": []
+      }
+    },
+    {
+      "id": "thirty-three-rejected",
+      "schema": "PreviewRequest",
+      "valid": false,
+      "data": {
+        "observation_id": "00000000000000000000000000000004",
+        "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+        "selected_items": [
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "unknown-input-rejected",
+      "schema": "PreviewRequest",
+      "valid": false,
+      "data": {
+        "observation_id": "00000000000000000000000000000004",
+        "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+        "selected_items": [
+          {
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/空.ts",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            }
+          }
+        ],
+        "recursive": true
+      }
+    },
+    {
+      "id": "excluded-path-6",
+      "schema": "PreviewRequest",
+      "valid": false,
+      "data": {
+        "observation_id": "00000000000000000000000000000004",
+        "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+        "selected_items": [
+          {
+            "relative_path": "../private.txt",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/空.ts",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "excluded-path-7",
+      "schema": "PreviewRequest",
+      "valid": false,
+      "data": {
+        "observation_id": "00000000000000000000000000000004",
+        "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+        "selected_items": [
+          {
+            "relative_path": "/etc/passwd",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/空.ts",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "excluded-path-8",
+      "schema": "PreviewRequest",
+      "valid": false,
+      "data": {
+        "observation_id": "00000000000000000000000000000004",
+        "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+        "selected_items": [
+          {
+            "relative_path": "C:/private.txt",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/空.ts",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "excluded-path-9",
+      "schema": "PreviewRequest",
+      "valid": false,
+      "data": {
+        "observation_id": "00000000000000000000000000000004",
+        "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+        "selected_items": [
+          {
+            "relative_path": "web\\card.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/空.ts",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "excluded-path-10",
+      "schema": "PreviewRequest",
+      "valid": false,
+      "data": {
+        "observation_id": "00000000000000000000000000000004",
+        "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+        "selected_items": [
+          {
+            "relative_path": "web/*.ts",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/空.ts",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "excluded-path-11",
+      "schema": "PreviewRequest",
+      "valid": false,
+      "data": {
+        "observation_id": "00000000000000000000000000000004",
+        "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+        "selected_items": [
+          {
+            "relative_path": ".env.local",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/空.ts",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "excluded-path-12",
+      "schema": "PreviewRequest",
+      "valid": false,
+      "data": {
+        "observation_id": "00000000000000000000000000000004",
+        "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+        "selected_items": [
+          {
+            "relative_path": "node_modules/a.ts",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/空.ts",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "excluded-path-13",
+      "schema": "PreviewRequest",
+      "valid": false,
+      "data": {
+        "observation_id": "00000000000000000000000000000004",
+        "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+        "selected_items": [
+          {
+            "relative_path": "web/id_rsa",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/空.ts",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "excluded-path-14",
+      "schema": "PreviewRequest",
+      "valid": false,
+      "data": {
+        "observation_id": "00000000000000000000000000000004",
+        "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+        "selected_items": [
+          {
+            "relative_path": "web/con.ts",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/空.ts",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "excluded-path-15",
+      "schema": "PreviewRequest",
+      "valid": false,
+      "data": {
+        "observation_id": "00000000000000000000000000000004",
+        "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+        "selected_items": [
+          {
+            "relative_path": "web/x.pem",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/空.ts",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "excluded-path-16",
+      "schema": "PreviewRequest",
+      "valid": false,
+      "data": {
+        "observation_id": "00000000000000000000000000000004",
+        "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+        "selected_items": [
+          {
+            "relative_path": "web/a/../card.ts",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            }
+          },
+          {
+            "relative_path": "web/空.ts",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "fixed-preview",
+      "schema": "BatchPreview",
+      "valid": true,
+      "data": {
+        "preview_id": "00000000000000000000000000000001",
+        "domain_id": "00000000000000000000000000000002",
+        "registration_id": "00000000000000000000000000000003",
+        "observation_id": "00000000000000000000000000000004",
+        "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+        "root_id": "00000000000000000000000000000005",
+        "root_version": 2,
+        "policy_version": 1,
+        "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+        "mode": "catalogue_only",
+        "created_at": "2026-10-25T08:00:00Z",
+        "expires_at": "2026-10-25T08:10:00Z",
+        "byte_length": 55,
+        "items": [
+          {
+            "item_id": "00000000000000000000000000000006",
+            "ordinal": 0,
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            },
+            "source_id": null,
+            "expected_revision_id": null,
+            "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+            "byte_length": 55,
+            "action": "add"
+          },
+          {
+            "item_id": "00000000000000000000000000000007",
+            "ordinal": 1,
+            "relative_path": "web/空.ts",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            },
+            "source_id": null,
+            "expected_revision_id": null,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "byte_length": 0,
+            "action": "add"
+          }
+        ],
+        "consumed_task_id": null
+      }
+    },
+    {
+      "id": "preview-size-over-2m",
+      "schema": "BatchPreview",
+      "valid": false,
+      "data": {
+        "preview_id": "00000000000000000000000000000001",
+        "domain_id": "00000000000000000000000000000002",
+        "registration_id": "00000000000000000000000000000003",
+        "observation_id": "00000000000000000000000000000004",
+        "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+        "root_id": "00000000000000000000000000000005",
+        "root_version": 2,
+        "policy_version": 1,
+        "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+        "mode": "catalogue_only",
+        "created_at": "2026-10-25T08:00:00Z",
+        "expires_at": "2026-10-25T08:10:00Z",
+        "byte_length": 55,
+        "items": [
+          {
+            "item_id": "00000000000000000000000000000006",
+            "ordinal": 0,
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            },
+            "source_id": null,
+            "expected_revision_id": null,
+            "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+            "byte_length": 2097153,
+            "action": "add"
+          },
+          {
+            "item_id": "00000000000000000000000000000007",
+            "ordinal": 1,
+            "relative_path": "web/空.ts",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            },
+            "source_id": null,
+            "expected_revision_id": null,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "byte_length": 0,
+            "action": "add"
+          }
+        ],
+        "consumed_task_id": null
+      }
+    },
+    {
+      "id": "preview-side-label-rejected",
+      "schema": "BatchPreview",
+      "valid": false,
+      "data": {
+        "preview_id": "00000000000000000000000000000001",
+        "domain_id": "00000000000000000000000000000002",
+        "registration_id": "00000000000000000000000000000003",
+        "observation_id": "00000000000000000000000000000004",
+        "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+        "root_id": "00000000000000000000000000000005",
+        "root_version": 2,
+        "policy_version": 1,
+        "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+        "mode": "catalogue_only",
+        "created_at": "2026-10-25T08:00:00Z",
+        "expires_at": "2026-10-25T08:10:00Z",
+        "byte_length": 55,
+        "items": [
+          {
+            "item_id": "00000000000000000000000000000006",
+            "ordinal": 0,
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "browser",
+              "language": "tsx"
+            },
+            "source_id": null,
+            "expected_revision_id": null,
+            "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+            "byte_length": 55,
+            "action": "add"
+          },
+          {
+            "item_id": "00000000000000000000000000000007",
+            "ordinal": 1,
+            "relative_path": "web/空.ts",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            },
+            "source_id": null,
+            "expected_revision_id": null,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "byte_length": 0,
+            "action": "add"
+          }
+        ],
+        "consumed_task_id": null
+      }
+    },
+    {
+      "id": "explicit-all-confirmed",
+      "schema": "AcceptRequest",
+      "valid": true,
+      "data": {
+        "preview_id": "00000000000000000000000000000001",
+        "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+        "idempotency_key": "synthetic-batch-001",
+        "confirmed_item_ids": [
+          "00000000000000000000000000000006",
+          "00000000000000000000000000000007"
+        ],
+        "retry_of_task_id": null
+      }
+    },
+    {
+      "id": "empty-consent-rejected",
+      "schema": "AcceptRequest",
+      "valid": false,
+      "data": {
+        "preview_id": "00000000000000000000000000000001",
+        "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+        "idempotency_key": "synthetic-batch-001",
+        "confirmed_item_ids": [],
+        "retry_of_task_id": null
+      }
+    },
+    {
+      "id": "duplicate-consent-rejected",
+      "schema": "AcceptRequest",
+      "valid": false,
+      "data": {
+        "preview_id": "00000000000000000000000000000001",
+        "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+        "idempotency_key": "synthetic-batch-001",
+        "confirmed_item_ids": [
+          "00000000000000000000000000000006",
+          "00000000000000000000000000000006"
+        ],
+        "retry_of_task_id": null
+      }
+    },
+    {
+      "id": "unknown-accept-field",
+      "schema": "AcceptRequest",
+      "valid": false,
+      "data": {
+        "preview_id": "00000000000000000000000000000001",
+        "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+        "idempotency_key": "synthetic-batch-001",
+        "confirmed_item_ids": [
+          "00000000000000000000000000000006",
+          "00000000000000000000000000000007"
+        ],
+        "retry_of_task_id": null,
+        "auto_retry": true
+      }
+    },
+    {
+      "id": "queued-not-success",
+      "schema": "Task",
+      "valid": true,
+      "data": {
+        "task_id": "00000000000000000000000000000009",
+        "domain_id": "00000000000000000000000000000002",
+        "registration_id": "00000000000000000000000000000003",
+        "preview_id": "00000000000000000000000000000001",
+        "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+        "idempotency_key": "synthetic-batch-001",
+        "confirmed_item_ids": [
+          "00000000000000000000000000000006",
+          "00000000000000000000000000000007"
+        ],
+        "retry_of_task_id": null,
+        "status": "queued",
+        "revision": 1,
+        "counts": {
+          "total": 2,
+          "pending": 2,
+          "running": 0,
+          "succeeded": 0,
+          "failed": 0,
+          "cancelled": 0
+        },
+        "cancel_requested": false,
+        "mode": "catalogue_only",
+        "created_at": "2026-10-25T08:01:00Z",
+        "updated_at": "2026-10-25T08:01:00Z",
+        "execution_deadline": "2026-10-25T08:31:00Z",
+        "terminal_at": null
+      }
+    },
+    {
+      "id": "partial-failed",
+      "schema": "Task",
+      "valid": true,
+      "data": {
+        "task_id": "00000000000000000000000000000009",
+        "domain_id": "00000000000000000000000000000002",
+        "registration_id": "00000000000000000000000000000003",
+        "preview_id": "00000000000000000000000000000001",
+        "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+        "idempotency_key": "synthetic-batch-001",
+        "confirmed_item_ids": [
+          "00000000000000000000000000000006",
+          "00000000000000000000000000000007"
+        ],
+        "retry_of_task_id": null,
+        "status": "partial_failed",
+        "revision": 5,
+        "counts": {
+          "total": 2,
+          "pending": 0,
+          "running": 0,
+          "succeeded": 1,
+          "failed": 1,
+          "cancelled": 0
+        },
+        "cancel_requested": false,
+        "mode": "catalogue_only",
+        "created_at": "2026-10-25T08:01:00Z",
+        "updated_at": "2026-10-25T08:01:05Z",
+        "execution_deadline": "2026-10-25T08:31:00Z",
+        "terminal_at": "2026-10-25T08:01:05Z"
+      }
+    },
+    {
+      "id": "no-sync-receipt-status",
+      "schema": "Task",
+      "valid": false,
+      "data": {
+        "task_id": "00000000000000000000000000000009",
+        "domain_id": "00000000000000000000000000000002",
+        "registration_id": "00000000000000000000000000000003",
+        "preview_id": "00000000000000000000000000000001",
+        "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+        "idempotency_key": "synthetic-batch-001",
+        "confirmed_item_ids": [
+          "00000000000000000000000000000006",
+          "00000000000000000000000000000007"
+        ],
+        "retry_of_task_id": null,
+        "status": "completed",
+        "revision": 1,
+        "counts": {
+          "total": 2,
+          "pending": 2,
+          "running": 0,
+          "succeeded": 0,
+          "failed": 0,
+          "cancelled": 0
+        },
+        "cancel_requested": false,
+        "mode": "catalogue_only",
+        "created_at": "2026-10-25T08:01:00Z",
+        "updated_at": "2026-10-25T08:01:00Z",
+        "execution_deadline": "2026-10-25T08:31:00Z",
+        "terminal_at": null
+      }
+    },
+    {
+      "id": "fixed-success",
+      "schema": "TaskItem",
+      "valid": true,
+      "data": {
+        "item_id": "00000000000000000000000000000006",
+        "ordinal": 0,
+        "relative_path": "web/卡片.tsx",
+        "classification": {
+          "group_id": "0000000000000000000000000000000c",
+          "component_side": "frontend",
+          "language": "tsx"
+        },
+        "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+        "byte_length": 55,
+        "status": "succeeded",
+        "save_status": "created",
+        "source_id": "00000000000000000000000000000014",
+        "source_revision_id": "00000000000000000000000000000015",
+        "root_node_id": "123402a9409a7a2b160d360e2efff7bdf619d452b7f82b802efb02a1018d4886",
+        "catalogue_status": "registered",
+        "structure_status": "deferred",
+        "full_text_status": "disabled",
+        "vector_status": "disabled",
+        "code": "saved"
+      }
+    },
+    {
+      "id": "failed-no-pointers",
+      "schema": "TaskItem",
+      "valid": true,
+      "data": {
+        "item_id": "00000000000000000000000000000007",
+        "ordinal": 1,
+        "relative_path": "web/空.ts",
+        "classification": {
+          "group_id": "0000000000000000000000000000000c",
+          "component_side": "frontend",
+          "language": "tsx"
+        },
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "byte_length": 0,
+        "status": "failed",
+        "save_status": null,
+        "source_id": null,
+        "source_revision_id": null,
+        "root_node_id": null,
+        "catalogue_status": "failed",
+        "structure_status": "deferred",
+        "full_text_status": "disabled",
+        "vector_status": "disabled",
+        "code": "source_changed"
+      }
+    },
+    {
+      "id": "failed-cannot-have-reading-pointer",
+      "schema": "TaskItem",
+      "valid": false,
+      "data": {
+        "item_id": "00000000000000000000000000000007",
+        "ordinal": 1,
+        "relative_path": "web/空.ts",
+        "classification": {
+          "group_id": "0000000000000000000000000000000c",
+          "component_side": "frontend",
+          "language": "tsx"
+        },
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "byte_length": 0,
+        "status": "failed",
+        "save_status": null,
+        "source_id": "00000000000000000000000000000014",
+        "source_revision_id": null,
+        "root_node_id": null,
+        "catalogue_status": "failed",
+        "structure_status": "deferred",
+        "full_text_status": "disabled",
+        "vector_status": "disabled",
+        "code": "source_changed"
+      }
+    },
+    {
+      "id": "success-requires-node64",
+      "schema": "TaskItem",
+      "valid": false,
+      "data": {
+        "item_id": "00000000000000000000000000000006",
+        "ordinal": 0,
+        "relative_path": "web/卡片.tsx",
+        "classification": {
+          "group_id": "0000000000000000000000000000000c",
+          "component_side": "frontend",
+          "language": "tsx"
+        },
+        "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+        "byte_length": 55,
+        "status": "succeeded",
+        "save_status": "created",
+        "source_id": "00000000000000000000000000000014",
+        "source_revision_id": "00000000000000000000000000000015",
+        "root_node_id": "00000000000000000000000000000016",
+        "catalogue_status": "registered",
+        "structure_status": "deferred",
+        "full_text_status": "disabled",
+        "vector_status": "disabled",
+        "code": "saved"
+      }
+    },
+    {
+      "id": "success-needs-code-saved",
+      "schema": "TaskItem",
+      "valid": false,
+      "data": {
+        "item_id": "00000000000000000000000000000006",
+        "ordinal": 0,
+        "relative_path": "web/卡片.tsx",
+        "classification": {
+          "group_id": "0000000000000000000000000000000c",
+          "component_side": "frontend",
+          "language": "tsx"
+        },
+        "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+        "byte_length": 55,
+        "status": "succeeded",
+        "save_status": "created",
+        "source_id": "00000000000000000000000000000014",
+        "source_revision_id": "00000000000000000000000000000015",
+        "root_node_id": "123402a9409a7a2b160d360e2efff7bdf619d452b7f82b802efb02a1018d4886",
+        "catalogue_status": "registered",
+        "structure_status": "deferred",
+        "full_text_status": "disabled",
+        "vector_status": "disabled",
+        "code": "save_failed"
+      }
+    },
+    {
+      "id": "partial-results-page",
+      "schema": "TaskItemsPage",
+      "valid": true,
+      "data": {
+        "task_id": "00000000000000000000000000000009",
+        "registration_id": "00000000000000000000000000000003",
+        "result_revision": 5,
+        "status": "partial_failed",
+        "counts": {
+          "total": 2,
+          "pending": 0,
+          "running": 0,
+          "succeeded": 1,
+          "failed": 1,
+          "cancelled": 0
+        },
+        "items": [
+          {
+            "item_id": "00000000000000000000000000000006",
+            "ordinal": 0,
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            },
+            "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+            "byte_length": 55,
+            "status": "succeeded",
+            "save_status": "created",
+            "source_id": "00000000000000000000000000000014",
+            "source_revision_id": "00000000000000000000000000000015",
+            "root_node_id": "123402a9409a7a2b160d360e2efff7bdf619d452b7f82b802efb02a1018d4886",
+            "catalogue_status": "registered",
+            "structure_status": "deferred",
+            "full_text_status": "disabled",
+            "vector_status": "disabled",
+            "code": "saved"
+          },
+          {
+            "item_id": "00000000000000000000000000000007",
+            "ordinal": 1,
+            "relative_path": "web/空.ts",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            },
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "byte_length": 0,
+            "status": "failed",
+            "save_status": null,
+            "source_id": null,
+            "source_revision_id": null,
+            "root_node_id": null,
+            "catalogue_status": "failed",
+            "structure_status": "deferred",
+            "full_text_status": "disabled",
+            "vector_status": "disabled",
+            "code": "source_changed"
+          }
+        ],
+        "next_cursor": null
+      }
+    },
+    {
+      "id": "project-preview",
+      "schema": "ManifestPreviewPage",
+      "valid": true,
+      "data": {
+        "preview_id": "0000000000000000000000000000001e",
+        "domain_id": "00000000000000000000000000000002",
+        "project_id": "0000000000000000000000000000000c",
+        "task_id": "00000000000000000000000000000009",
+        "task_manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+        "expected_manifest_id": null,
+        "manifest_sha256": "1400c7a605558d5c288ab15ce28d4dd421652dc474cb39e7ef827b2820d37d66",
+        "coverage": "explicit_selection",
+        "captured_atomically": false,
+        "created_at": "2026-10-25T08:02:00Z",
+        "expires_at": "2026-10-25T08:12:00Z",
+        "total_entries": 2,
+        "added": 2,
+        "replaced": 0,
+        "carried": 0,
+        "items": [
+          {
+            "registration_id": "00000000000000000000000000000003",
+            "relative_path": "web/卡片.tsx",
+            "source_id": "00000000000000000000000000000014",
+            "source_revision_id": "00000000000000000000000000000015",
+            "root_node_id": "123402a9409a7a2b160d360e2efff7bdf619d452b7f82b802efb02a1018d4886",
+            "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+            "byte_length": 55,
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            },
+            "origin_task_id": "00000000000000000000000000000009"
+          },
+          {
+            "registration_id": "00000000000000000000000000000003",
+            "relative_path": "web/空.ts",
+            "source_id": "00000000000000000000000000000016",
+            "source_revision_id": "00000000000000000000000000000017",
+            "root_node_id": "1fd840ddfe459c36b37ae2ead44022c74219dc09e5ae51ac32aa73ba42c93497",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "byte_length": 0,
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            },
+            "origin_task_id": "00000000000000000000000000000009"
+          }
+        ],
+        "next_cursor": null,
+        "consumed_manifest_id": null
+      }
+    },
+    {
+      "id": "project-preview-not-full-repository",
+      "schema": "ManifestPreviewPage",
+      "valid": false,
+      "data": {
+        "preview_id": "0000000000000000000000000000001e",
+        "domain_id": "00000000000000000000000000000002",
+        "project_id": "0000000000000000000000000000000c",
+        "task_id": "00000000000000000000000000000009",
+        "task_manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+        "expected_manifest_id": null,
+        "manifest_sha256": "1400c7a605558d5c288ab15ce28d4dd421652dc474cb39e7ef827b2820d37d66",
+        "coverage": "entire_repository",
+        "captured_atomically": false,
+        "created_at": "2026-10-25T08:02:00Z",
+        "expires_at": "2026-10-25T08:12:00Z",
+        "total_entries": 2,
+        "added": 2,
+        "replaced": 0,
+        "carried": 0,
+        "items": [
+          {
+            "registration_id": "00000000000000000000000000000003",
+            "relative_path": "web/卡片.tsx",
+            "source_id": "00000000000000000000000000000014",
+            "source_revision_id": "00000000000000000000000000000015",
+            "root_node_id": "123402a9409a7a2b160d360e2efff7bdf619d452b7f82b802efb02a1018d4886",
+            "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+            "byte_length": 55,
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            },
+            "origin_task_id": "00000000000000000000000000000009"
+          },
+          {
+            "registration_id": "00000000000000000000000000000003",
+            "relative_path": "web/空.ts",
+            "source_id": "00000000000000000000000000000016",
+            "source_revision_id": "00000000000000000000000000000017",
+            "root_node_id": "1fd840ddfe459c36b37ae2ead44022c74219dc09e5ae51ac32aa73ba42c93497",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "byte_length": 0,
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            },
+            "origin_task_id": "00000000000000000000000000000009"
+          }
+        ],
+        "next_cursor": null,
+        "consumed_manifest_id": null
+      }
+    },
+    {
+      "id": "no-atomic-filesystem-promise",
+      "schema": "ManifestPreviewPage",
+      "valid": false,
+      "data": {
+        "preview_id": "0000000000000000000000000000001e",
+        "domain_id": "00000000000000000000000000000002",
+        "project_id": "0000000000000000000000000000000c",
+        "task_id": "00000000000000000000000000000009",
+        "task_manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+        "expected_manifest_id": null,
+        "manifest_sha256": "1400c7a605558d5c288ab15ce28d4dd421652dc474cb39e7ef827b2820d37d66",
+        "coverage": "explicit_selection",
+        "captured_atomically": true,
+        "created_at": "2026-10-25T08:02:00Z",
+        "expires_at": "2026-10-25T08:12:00Z",
+        "total_entries": 2,
+        "added": 2,
+        "replaced": 0,
+        "carried": 0,
+        "items": [
+          {
+            "registration_id": "00000000000000000000000000000003",
+            "relative_path": "web/卡片.tsx",
+            "source_id": "00000000000000000000000000000014",
+            "source_revision_id": "00000000000000000000000000000015",
+            "root_node_id": "123402a9409a7a2b160d360e2efff7bdf619d452b7f82b802efb02a1018d4886",
+            "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+            "byte_length": 55,
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            },
+            "origin_task_id": "00000000000000000000000000000009"
+          },
+          {
+            "registration_id": "00000000000000000000000000000003",
+            "relative_path": "web/空.ts",
+            "source_id": "00000000000000000000000000000016",
+            "source_revision_id": "00000000000000000000000000000017",
+            "root_node_id": "1fd840ddfe459c36b37ae2ead44022c74219dc09e5ae51ac32aa73ba42c93497",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "byte_length": 0,
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            },
+            "origin_task_id": "00000000000000000000000000000009"
+          }
+        ],
+        "next_cursor": null,
+        "consumed_manifest_id": null
+      }
+    },
+    {
+      "id": "publish-request",
+      "schema": "ManifestPublicationRequest",
+      "valid": true,
+      "data": {
+        "project_id": "0000000000000000000000000000000c",
+        "preview_id": "0000000000000000000000000000001e",
+        "manifest_sha256": "1400c7a605558d5c288ab15ce28d4dd421652dc474cb39e7ef827b2820d37d66",
+        "idempotency_key": "synthetic-project-001"
+      }
+    },
+    {
+      "id": "publication-receipt",
+      "schema": "ManifestReceipt",
+      "valid": true,
+      "data": {
+        "domain_id": "00000000000000000000000000000002",
+        "project_id": "0000000000000000000000000000000c",
+        "manifest_id": "00000000000000000000000000000020",
+        "preview_id": "0000000000000000000000000000001e",
+        "task_id": "00000000000000000000000000000009",
+        "manifest_sha256": "1400c7a605558d5c288ab15ce28d4dd421652dc474cb39e7ef827b2820d37d66",
+        "idempotency_key": "synthetic-project-001",
+        "expected_manifest_id": null,
+        "coverage": "explicit_selection",
+        "captured_atomically": false,
+        "total_entries": 2,
+        "published_at": "2026-10-25T08:02:01Z"
+      }
+    },
+    {
+      "id": "first-project-head",
+      "schema": "ManifestHead",
+      "valid": true,
+      "data": {
+        "domain_id": "00000000000000000000000000000002",
+        "project_id": "0000000000000000000000000000000c",
+        "manifest_id": null
+      }
+    },
+    {
+      "id": "cancel-explicit-key",
+      "schema": "CancellationRequest",
+      "valid": true,
+      "data": {
+        "idempotency_key": "synthetic-cancel-001"
+      }
+    },
+    {
+      "id": "cancel-not-rollback",
+      "schema": "CancellationRequest",
+      "valid": false,
+      "data": {
+        "idempotency_key": "synthetic-cancel-001",
+        "rollback": true
+      }
+    },
+    {
+      "id": "error-400-knowledge_batch_invalid-null",
+      "schema": "Error",
+      "valid": true,
+      "data": {
+        "code": "knowledge_batch_invalid",
+        "message": "合成错误；客户端只按机器码判断",
+        "reason": null,
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "0000000000000000000000000000005a"
+      }
+    },
+    {
+      "id": "error-404-knowledge_batch_not_found-null",
+      "schema": "Error",
+      "valid": true,
+      "data": {
+        "code": "knowledge_batch_not_found",
+        "message": "合成错误；客户端只按机器码判断",
+        "reason": null,
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "0000000000000000000000000000005a"
+      }
+    },
+    {
+      "id": "error-409-knowledge_batch_version_mismatch-null",
+      "schema": "Error",
+      "valid": true,
+      "data": {
+        "code": "knowledge_batch_version_mismatch",
+        "message": "合成错误；客户端只按机器码判断",
+        "reason": null,
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "0000000000000000000000000000005a"
+      }
+    },
+    {
+      "id": "error-409-knowledge_batch_conflict-observation_incomplete",
+      "schema": "Error",
+      "valid": true,
+      "data": {
+        "code": "knowledge_batch_conflict",
+        "message": "合成错误；客户端只按机器码判断",
+        "reason": "observation_incomplete",
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "0000000000000000000000000000005a"
+      }
+    },
+    {
+      "id": "error-409-knowledge_batch_conflict-observation_mismatch",
+      "schema": "Error",
+      "valid": true,
+      "data": {
+        "code": "knowledge_batch_conflict",
+        "message": "合成错误；客户端只按机器码判断",
+        "reason": "observation_mismatch",
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "0000000000000000000000000000005a"
+      }
+    },
+    {
+      "id": "error-409-knowledge_batch_conflict-ineligible",
+      "schema": "Error",
+      "valid": true,
+      "data": {
+        "code": "knowledge_batch_conflict",
+        "message": "合成错误；客户端只按机器码判断",
+        "reason": "ineligible",
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "0000000000000000000000000000005a"
+      }
+    },
+    {
+      "id": "error-409-knowledge_batch_conflict-source_changed",
+      "schema": "Error",
+      "valid": true,
+      "data": {
+        "code": "knowledge_batch_conflict",
+        "message": "合成错误；客户端只按机器码判断",
+        "reason": "source_changed",
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "0000000000000000000000000000005a"
+      }
+    },
+    {
+      "id": "error-409-knowledge_batch_conflict-revision_changed",
+      "schema": "Error",
+      "valid": true,
+      "data": {
+        "code": "knowledge_batch_conflict",
+        "message": "合成错误；客户端只按机器码判断",
+        "reason": "revision_changed",
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "0000000000000000000000000000005a"
+      }
+    },
+    {
+      "id": "error-409-knowledge_batch_conflict-root_changed",
+      "schema": "Error",
+      "valid": true,
+      "data": {
+        "code": "knowledge_batch_conflict",
+        "message": "合成错误；客户端只按机器码判断",
+        "reason": "root_changed",
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "0000000000000000000000000000005a"
+      }
+    },
+    {
+      "id": "error-409-knowledge_batch_conflict-policy_changed",
+      "schema": "Error",
+      "valid": true,
+      "data": {
+        "code": "knowledge_batch_conflict",
+        "message": "合成错误；客户端只按机器码判断",
+        "reason": "policy_changed",
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "0000000000000000000000000000005a"
+      }
+    },
+    {
+      "id": "error-409-knowledge_batch_conflict-preview_consumed",
+      "schema": "Error",
+      "valid": true,
+      "data": {
+        "code": "knowledge_batch_conflict",
+        "message": "合成错误；客户端只按机器码判断",
+        "reason": "preview_consumed",
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "0000000000000000000000000000005a"
+      }
+    },
+    {
+      "id": "error-409-knowledge_batch_conflict-idempotency_conflict",
+      "schema": "Error",
+      "valid": true,
+      "data": {
+        "code": "knowledge_batch_conflict",
+        "message": "合成错误；客户端只按机器码判断",
+        "reason": "idempotency_conflict",
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "0000000000000000000000000000005a"
+      }
+    },
+    {
+      "id": "error-409-knowledge_batch_conflict-confirmation_mismatch",
+      "schema": "Error",
+      "valid": true,
+      "data": {
+        "code": "knowledge_batch_conflict",
+        "message": "合成错误；客户端只按机器码判断",
+        "reason": "confirmation_mismatch",
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "0000000000000000000000000000005a"
+      }
+    },
+    {
+      "id": "error-409-knowledge_batch_conflict-result_changed",
+      "schema": "Error",
+      "valid": true,
+      "data": {
+        "code": "knowledge_batch_conflict",
+        "message": "合成错误；客户端只按机器码判断",
+        "reason": "result_changed",
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "0000000000000000000000000000005a"
+      }
+    },
+    {
+      "id": "error-409-knowledge_batch_conflict-task_not_succeeded",
+      "schema": "Error",
+      "valid": true,
+      "data": {
+        "code": "knowledge_batch_conflict",
+        "message": "合成错误；客户端只按机器码判断",
+        "reason": "task_not_succeeded",
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "0000000000000000000000000000005a"
+      }
+    },
+    {
+      "id": "error-409-knowledge_batch_conflict-project_head_changed",
+      "schema": "Error",
+      "valid": true,
+      "data": {
+        "code": "knowledge_batch_conflict",
+        "message": "合成错误；客户端只按机器码判断",
+        "reason": "project_head_changed",
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "0000000000000000000000000000005a"
+      }
+    },
+    {
+      "id": "error-409-knowledge_batch_conflict-project_membership_changed",
+      "schema": "Error",
+      "valid": true,
+      "data": {
+        "code": "knowledge_batch_conflict",
+        "message": "合成错误；客户端只按机器码判断",
+        "reason": "project_membership_changed",
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "0000000000000000000000000000005a"
+      }
+    },
+    {
+      "id": "error-409-knowledge_batch_conflict-cursor_invalid",
+      "schema": "Error",
+      "valid": true,
+      "data": {
+        "code": "knowledge_batch_conflict",
+        "message": "合成错误；客户端只按机器码判断",
+        "reason": "cursor_invalid",
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "0000000000000000000000000000005a"
+      }
+    },
+    {
+      "id": "error-409-knowledge_batch_conflict-retry_parent_invalid",
+      "schema": "Error",
+      "valid": true,
+      "data": {
+        "code": "knowledge_batch_conflict",
+        "message": "合成错误；客户端只按机器码判断",
+        "reason": "retry_parent_invalid",
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "0000000000000000000000000000005a"
+      }
+    },
+    {
+      "id": "error-410-knowledge_batch_expired-null",
+      "schema": "Error",
+      "valid": true,
+      "data": {
+        "code": "knowledge_batch_expired",
+        "message": "合成错误；客户端只按机器码判断",
+        "reason": null,
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "0000000000000000000000000000005a"
+      }
+    },
+    {
+      "id": "error-413-knowledge_batch_too_large-null",
+      "schema": "Error",
+      "valid": true,
+      "data": {
+        "code": "knowledge_batch_too_large",
+        "message": "合成错误；客户端只按机器码判断",
+        "reason": null,
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "0000000000000000000000000000005a"
+      }
+    },
+    {
+      "id": "error-416-knowledge_batch_range-null",
+      "schema": "Error",
+      "valid": true,
+      "data": {
+        "code": "knowledge_batch_range",
+        "message": "合成错误；客户端只按机器码判断",
+        "reason": null,
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "0000000000000000000000000000005a"
+      }
+    },
+    {
+      "id": "error-429-knowledge_batch_capacity-null",
+      "schema": "Error",
+      "valid": true,
+      "data": {
+        "code": "knowledge_batch_capacity",
+        "message": "合成错误；客户端只按机器码判断",
+        "reason": null,
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "0000000000000000000000000000005a"
+      }
+    },
+    {
+      "id": "error-503-knowledge_batch_unavailable-root_unready",
+      "schema": "Error",
+      "valid": true,
+      "data": {
+        "code": "knowledge_batch_unavailable",
+        "message": "合成错误；客户端只按机器码判断",
+        "reason": "root_unready",
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "0000000000000000000000000000005a"
+      }
+    },
+    {
+      "id": "error-503-knowledge_batch_unavailable-result_unknown",
+      "schema": "Error",
+      "valid": true,
+      "data": {
+        "code": "knowledge_batch_unavailable",
+        "message": "合成错误；客户端只按机器码判断",
+        "reason": "result_unknown",
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "0000000000000000000000000000005a"
+      }
+    },
+    {
+      "id": "expired-cannot-have-unknown-reason",
+      "schema": "Error",
+      "valid": false,
+      "data": {
+        "code": "knowledge_batch_expired",
+        "message": "合成错误；客户端只按机器码判断",
+        "reason": "result_unknown",
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "0000000000000000000000000000005a"
+      }
+    },
+    {
+      "id": "version-cannot-have-source-conflict",
+      "schema": "Error",
+      "valid": false,
+      "data": {
+        "code": "knowledge_batch_version_mismatch",
+        "message": "合成错误；客户端只按机器码判断",
+        "reason": "source_changed",
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "0000000000000000000000000000005a"
+      }
+    },
+    {
+      "id": "conflict-must-have-reason",
+      "schema": "Error",
+      "valid": false,
+      "data": {
+        "code": "knowledge_batch_conflict",
+        "message": "合成错误；客户端只按机器码判断",
+        "reason": null,
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "0000000000000000000000000000005a"
+      }
+    },
+    {
+      "id": "unavailable-must-have-unavailable-reason",
+      "schema": "Error",
+      "valid": false,
+      "data": {
+        "code": "knowledge_batch_unavailable",
+        "message": "合成错误；客户端只按机器码判断",
+        "reason": "revision_changed",
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "0000000000000000000000000000005a"
+      }
+    }
+  ],
+  "semantic_cases": [
+    {
+      "id": "count-sum-valid",
+      "kind": "task",
+      "valid": true,
+      "data": {
+        "task_id": "00000000000000000000000000000009",
+        "domain_id": "00000000000000000000000000000002",
+        "registration_id": "00000000000000000000000000000003",
+        "preview_id": "00000000000000000000000000000001",
+        "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+        "idempotency_key": "synthetic-batch-001",
+        "confirmed_item_ids": [
+          "00000000000000000000000000000006",
+          "00000000000000000000000000000007"
+        ],
+        "retry_of_task_id": null,
+        "status": "queued",
+        "revision": 1,
+        "counts": {
+          "total": 2,
+          "pending": 2,
+          "running": 0,
+          "succeeded": 0,
+          "failed": 0,
+          "cancelled": 0
+        },
+        "cancel_requested": false,
+        "mode": "catalogue_only",
+        "created_at": "2026-10-25T08:01:00Z",
+        "updated_at": "2026-10-25T08:01:00Z",
+        "execution_deadline": "2026-10-25T08:31:00Z",
+        "terminal_at": null
+      }
+    },
+    {
+      "id": "count-sum-invalid",
+      "kind": "task",
+      "valid": false,
+      "data": {
+        "task_id": "00000000000000000000000000000009",
+        "domain_id": "00000000000000000000000000000002",
+        "registration_id": "00000000000000000000000000000003",
+        "preview_id": "00000000000000000000000000000001",
+        "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+        "idempotency_key": "synthetic-batch-001",
+        "confirmed_item_ids": [
+          "00000000000000000000000000000006",
+          "00000000000000000000000000000007"
+        ],
+        "retry_of_task_id": null,
+        "status": "queued",
+        "revision": 1,
+        "counts": {
+          "total": 3,
+          "pending": 2,
+          "running": 0,
+          "succeeded": 0,
+          "failed": 0,
+          "cancelled": 0
+        },
+        "cancel_requested": false,
+        "mode": "catalogue_only",
+        "created_at": "2026-10-25T08:01:00Z",
+        "updated_at": "2026-10-25T08:01:00Z",
+        "execution_deadline": "2026-10-25T08:31:00Z",
+        "terminal_at": null
+      }
+    },
+    {
+      "id": "partial-valid",
+      "kind": "task",
+      "valid": true,
+      "data": {
+        "task_id": "00000000000000000000000000000009",
+        "domain_id": "00000000000000000000000000000002",
+        "registration_id": "00000000000000000000000000000003",
+        "preview_id": "00000000000000000000000000000001",
+        "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+        "idempotency_key": "synthetic-batch-001",
+        "confirmed_item_ids": [
+          "00000000000000000000000000000006",
+          "00000000000000000000000000000007"
+        ],
+        "retry_of_task_id": null,
+        "status": "partial_failed",
+        "revision": 5,
+        "counts": {
+          "total": 2,
+          "pending": 0,
+          "running": 0,
+          "succeeded": 1,
+          "failed": 1,
+          "cancelled": 0
+        },
+        "cancel_requested": false,
+        "mode": "catalogue_only",
+        "created_at": "2026-10-25T08:01:00Z",
+        "updated_at": "2026-10-25T08:01:05Z",
+        "execution_deadline": "2026-10-25T08:31:00Z",
+        "terminal_at": "2026-10-25T08:01:05Z"
+      }
+    },
+    {
+      "id": "partial-cannot-claim-success",
+      "kind": "task",
+      "valid": false,
+      "data": {
+        "task_id": "00000000000000000000000000000009",
+        "domain_id": "00000000000000000000000000000002",
+        "registration_id": "00000000000000000000000000000003",
+        "preview_id": "00000000000000000000000000000001",
+        "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+        "idempotency_key": "synthetic-batch-001",
+        "confirmed_item_ids": [
+          "00000000000000000000000000000006",
+          "00000000000000000000000000000007"
+        ],
+        "retry_of_task_id": null,
+        "status": "succeeded",
+        "revision": 5,
+        "counts": {
+          "total": 2,
+          "pending": 0,
+          "running": 0,
+          "succeeded": 1,
+          "failed": 1,
+          "cancelled": 0
+        },
+        "cancel_requested": false,
+        "mode": "catalogue_only",
+        "created_at": "2026-10-25T08:01:00Z",
+        "updated_at": "2026-10-25T08:01:05Z",
+        "execution_deadline": "2026-10-25T08:31:00Z",
+        "terminal_at": "2026-10-25T08:01:05Z"
+      }
+    },
+    {
+      "id": "terminal-needs-terminal-time",
+      "kind": "task",
+      "valid": false,
+      "data": {
+        "task_id": "00000000000000000000000000000009",
+        "domain_id": "00000000000000000000000000000002",
+        "registration_id": "00000000000000000000000000000003",
+        "preview_id": "00000000000000000000000000000001",
+        "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+        "idempotency_key": "synthetic-batch-001",
+        "confirmed_item_ids": [
+          "00000000000000000000000000000006",
+          "00000000000000000000000000000007"
+        ],
+        "retry_of_task_id": null,
+        "status": "partial_failed",
+        "revision": 5,
+        "counts": {
+          "total": 2,
+          "pending": 0,
+          "running": 0,
+          "succeeded": 1,
+          "failed": 1,
+          "cancelled": 0
+        },
+        "cancel_requested": false,
+        "mode": "catalogue_only",
+        "created_at": "2026-10-25T08:01:00Z",
+        "updated_at": "2026-10-25T08:01:05Z",
+        "execution_deadline": "2026-10-25T08:31:00Z",
+        "terminal_at": null
+      }
+    },
+    {
+      "id": "nonterminal-cannot-have-end-time",
+      "kind": "task",
+      "valid": false,
+      "data": {
+        "task_id": "00000000000000000000000000000009",
+        "domain_id": "00000000000000000000000000000002",
+        "registration_id": "00000000000000000000000000000003",
+        "preview_id": "00000000000000000000000000000001",
+        "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+        "idempotency_key": "synthetic-batch-001",
+        "confirmed_item_ids": [
+          "00000000000000000000000000000006",
+          "00000000000000000000000000000007"
+        ],
+        "retry_of_task_id": null,
+        "status": "queued",
+        "revision": 1,
+        "counts": {
+          "total": 2,
+          "pending": 2,
+          "running": 0,
+          "succeeded": 0,
+          "failed": 0,
+          "cancelled": 0
+        },
+        "cancel_requested": false,
+        "mode": "catalogue_only",
+        "created_at": "2026-10-25T08:01:00Z",
+        "updated_at": "2026-10-25T08:01:00Z",
+        "execution_deadline": "2026-10-25T08:31:00Z",
+        "terminal_at": "2026-10-25T08:01:05Z"
+      }
+    },
+    {
+      "id": "accepted-exact-order",
+      "kind": "consent",
+      "valid": true,
+      "data": {
+        "preview": {
+          "preview_id": "00000000000000000000000000000001",
+          "domain_id": "00000000000000000000000000000002",
+          "registration_id": "00000000000000000000000000000003",
+          "observation_id": "00000000000000000000000000000004",
+          "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+          "root_id": "00000000000000000000000000000005",
+          "root_version": 2,
+          "policy_version": 1,
+          "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "mode": "catalogue_only",
+          "created_at": "2026-10-25T08:00:00Z",
+          "expires_at": "2026-10-25T08:10:00Z",
+          "byte_length": 55,
+          "items": [
+            {
+              "item_id": "00000000000000000000000000000006",
+              "ordinal": 0,
+              "relative_path": "web/卡片.tsx",
+              "classification": {
+                "group_id": "0000000000000000000000000000000c",
+                "component_side": "frontend",
+                "language": "tsx"
+              },
+              "source_id": null,
+              "expected_revision_id": null,
+              "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+              "byte_length": 55,
+              "action": "add"
+            },
+            {
+              "item_id": "00000000000000000000000000000007",
+              "ordinal": 1,
+              "relative_path": "web/空.ts",
+              "classification": {
+                "group_id": "0000000000000000000000000000000c",
+                "component_side": "frontend",
+                "language": "ts"
+              },
+              "source_id": null,
+              "expected_revision_id": null,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "byte_length": 0,
+              "action": "add"
+            }
+          ],
+          "consumed_task_id": null
+        },
+        "request": {
+          "preview_id": "00000000000000000000000000000001",
+          "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "idempotency_key": "synthetic-batch-001",
+          "confirmed_item_ids": [
+            "00000000000000000000000000000006",
+            "00000000000000000000000000000007"
+          ],
+          "retry_of_task_id": null
+        }
+      }
+    },
+    {
+      "id": "missing-one-consent",
+      "kind": "consent",
+      "valid": false,
+      "data": {
+        "preview": {
+          "preview_id": "00000000000000000000000000000001",
+          "domain_id": "00000000000000000000000000000002",
+          "registration_id": "00000000000000000000000000000003",
+          "observation_id": "00000000000000000000000000000004",
+          "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+          "root_id": "00000000000000000000000000000005",
+          "root_version": 2,
+          "policy_version": 1,
+          "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "mode": "catalogue_only",
+          "created_at": "2026-10-25T08:00:00Z",
+          "expires_at": "2026-10-25T08:10:00Z",
+          "byte_length": 55,
+          "items": [
+            {
+              "item_id": "00000000000000000000000000000006",
+              "ordinal": 0,
+              "relative_path": "web/卡片.tsx",
+              "classification": {
+                "group_id": "0000000000000000000000000000000c",
+                "component_side": "frontend",
+                "language": "tsx"
+              },
+              "source_id": null,
+              "expected_revision_id": null,
+              "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+              "byte_length": 55,
+              "action": "add"
+            },
+            {
+              "item_id": "00000000000000000000000000000007",
+              "ordinal": 1,
+              "relative_path": "web/空.ts",
+              "classification": {
+                "group_id": "0000000000000000000000000000000c",
+                "component_side": "frontend",
+                "language": "ts"
+              },
+              "source_id": null,
+              "expected_revision_id": null,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "byte_length": 0,
+              "action": "add"
+            }
+          ],
+          "consumed_task_id": null
+        },
+        "request": {
+          "preview_id": "00000000000000000000000000000001",
+          "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "idempotency_key": "synthetic-batch-001",
+          "confirmed_item_ids": [
+            "00000000000000000000000000000006"
+          ],
+          "retry_of_task_id": null
+        }
+      }
+    },
+    {
+      "id": "reordered-consent",
+      "kind": "consent",
+      "valid": false,
+      "data": {
+        "preview": {
+          "preview_id": "00000000000000000000000000000001",
+          "domain_id": "00000000000000000000000000000002",
+          "registration_id": "00000000000000000000000000000003",
+          "observation_id": "00000000000000000000000000000004",
+          "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+          "root_id": "00000000000000000000000000000005",
+          "root_version": 2,
+          "policy_version": 1,
+          "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "mode": "catalogue_only",
+          "created_at": "2026-10-25T08:00:00Z",
+          "expires_at": "2026-10-25T08:10:00Z",
+          "byte_length": 55,
+          "items": [
+            {
+              "item_id": "00000000000000000000000000000006",
+              "ordinal": 0,
+              "relative_path": "web/卡片.tsx",
+              "classification": {
+                "group_id": "0000000000000000000000000000000c",
+                "component_side": "frontend",
+                "language": "tsx"
+              },
+              "source_id": null,
+              "expected_revision_id": null,
+              "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+              "byte_length": 55,
+              "action": "add"
+            },
+            {
+              "item_id": "00000000000000000000000000000007",
+              "ordinal": 1,
+              "relative_path": "web/空.ts",
+              "classification": {
+                "group_id": "0000000000000000000000000000000c",
+                "component_side": "frontend",
+                "language": "ts"
+              },
+              "source_id": null,
+              "expected_revision_id": null,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "byte_length": 0,
+              "action": "add"
+            }
+          ],
+          "consumed_task_id": null
+        },
+        "request": {
+          "preview_id": "00000000000000000000000000000001",
+          "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "idempotency_key": "synthetic-batch-001",
+          "confirmed_item_ids": [
+            "00000000000000000000000000000007",
+            "00000000000000000000000000000006"
+          ],
+          "retry_of_task_id": null
+        }
+      }
+    },
+    {
+      "id": "another-manifest-consent",
+      "kind": "consent",
+      "valid": false,
+      "data": {
+        "preview": {
+          "preview_id": "00000000000000000000000000000001",
+          "domain_id": "00000000000000000000000000000002",
+          "registration_id": "00000000000000000000000000000003",
+          "observation_id": "00000000000000000000000000000004",
+          "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+          "root_id": "00000000000000000000000000000005",
+          "root_version": 2,
+          "policy_version": 1,
+          "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "mode": "catalogue_only",
+          "created_at": "2026-10-25T08:00:00Z",
+          "expires_at": "2026-10-25T08:10:00Z",
+          "byte_length": 55,
+          "items": [
+            {
+              "item_id": "00000000000000000000000000000006",
+              "ordinal": 0,
+              "relative_path": "web/卡片.tsx",
+              "classification": {
+                "group_id": "0000000000000000000000000000000c",
+                "component_side": "frontend",
+                "language": "tsx"
+              },
+              "source_id": null,
+              "expected_revision_id": null,
+              "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+              "byte_length": 55,
+              "action": "add"
+            },
+            {
+              "item_id": "00000000000000000000000000000007",
+              "ordinal": 1,
+              "relative_path": "web/空.ts",
+              "classification": {
+                "group_id": "0000000000000000000000000000000c",
+                "component_side": "frontend",
+                "language": "ts"
+              },
+              "source_id": null,
+              "expected_revision_id": null,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "byte_length": 0,
+              "action": "add"
+            }
+          ],
+          "consumed_task_id": null
+        },
+        "request": {
+          "preview_id": "00000000000000000000000000000001",
+          "manifest_sha256": "d9298a10d1b0735837dc4bd85dac641b0f3cef27a47e5d53a54f2f3f5b2fcffa",
+          "idempotency_key": "synthetic-batch-001",
+          "confirmed_item_ids": [
+            "00000000000000000000000000000006",
+            "00000000000000000000000000000007"
+          ],
+          "retry_of_task_id": null
+        }
+      }
+    },
+    {
+      "id": "preview-total-correct",
+      "kind": "preview",
+      "valid": true,
+      "data": {
+        "preview_id": "00000000000000000000000000000001",
+        "domain_id": "00000000000000000000000000000002",
+        "registration_id": "00000000000000000000000000000003",
+        "observation_id": "00000000000000000000000000000004",
+        "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+        "root_id": "00000000000000000000000000000005",
+        "root_version": 2,
+        "policy_version": 1,
+        "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+        "mode": "catalogue_only",
+        "created_at": "2026-10-25T08:00:00Z",
+        "expires_at": "2026-10-25T08:10:00Z",
+        "byte_length": 55,
+        "items": [
+          {
+            "item_id": "00000000000000000000000000000006",
+            "ordinal": 0,
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            },
+            "source_id": null,
+            "expected_revision_id": null,
+            "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+            "byte_length": 55,
+            "action": "add"
+          },
+          {
+            "item_id": "00000000000000000000000000000007",
+            "ordinal": 1,
+            "relative_path": "web/空.ts",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            },
+            "source_id": null,
+            "expected_revision_id": null,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "byte_length": 0,
+            "action": "add"
+          }
+        ],
+        "consumed_task_id": null
+      }
+    },
+    {
+      "id": "preview-total-wrong",
+      "kind": "preview",
+      "valid": false,
+      "data": {
+        "preview_id": "00000000000000000000000000000001",
+        "domain_id": "00000000000000000000000000000002",
+        "registration_id": "00000000000000000000000000000003",
+        "observation_id": "00000000000000000000000000000004",
+        "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+        "root_id": "00000000000000000000000000000005",
+        "root_version": 2,
+        "policy_version": 1,
+        "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+        "mode": "catalogue_only",
+        "created_at": "2026-10-25T08:00:00Z",
+        "expires_at": "2026-10-25T08:10:00Z",
+        "byte_length": 0,
+        "items": [
+          {
+            "item_id": "00000000000000000000000000000006",
+            "ordinal": 0,
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            },
+            "source_id": null,
+            "expected_revision_id": null,
+            "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+            "byte_length": 55,
+            "action": "add"
+          },
+          {
+            "item_id": "00000000000000000000000000000007",
+            "ordinal": 1,
+            "relative_path": "web/空.ts",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            },
+            "source_id": null,
+            "expected_revision_id": null,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "byte_length": 0,
+            "action": "add"
+          }
+        ],
+        "consumed_task_id": null
+      }
+    },
+    {
+      "id": "preview-order-wrong",
+      "kind": "preview",
+      "valid": false,
+      "data": {
+        "preview_id": "00000000000000000000000000000001",
+        "domain_id": "00000000000000000000000000000002",
+        "registration_id": "00000000000000000000000000000003",
+        "observation_id": "00000000000000000000000000000004",
+        "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+        "root_id": "00000000000000000000000000000005",
+        "root_version": 2,
+        "policy_version": 1,
+        "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+        "mode": "catalogue_only",
+        "created_at": "2026-10-25T08:00:00Z",
+        "expires_at": "2026-10-25T08:10:00Z",
+        "byte_length": 55,
+        "items": [
+          {
+            "item_id": "00000000000000000000000000000007",
+            "ordinal": 1,
+            "relative_path": "web/空.ts",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            },
+            "source_id": null,
+            "expected_revision_id": null,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "byte_length": 0,
+            "action": "add"
+          },
+          {
+            "item_id": "00000000000000000000000000000006",
+            "ordinal": 0,
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            },
+            "source_id": null,
+            "expected_revision_id": null,
+            "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+            "byte_length": 55,
+            "action": "add"
+          }
+        ],
+        "consumed_task_id": null
+      }
+    },
+    {
+      "id": "duplicate-preview-path",
+      "kind": "preview",
+      "valid": false,
+      "data": {
+        "preview_id": "00000000000000000000000000000001",
+        "domain_id": "00000000000000000000000000000002",
+        "registration_id": "00000000000000000000000000000003",
+        "observation_id": "00000000000000000000000000000004",
+        "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+        "root_id": "00000000000000000000000000000005",
+        "root_version": 2,
+        "policy_version": 1,
+        "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+        "mode": "catalogue_only",
+        "created_at": "2026-10-25T08:00:00Z",
+        "expires_at": "2026-10-25T08:10:00Z",
+        "byte_length": 55,
+        "items": [
+          {
+            "item_id": "00000000000000000000000000000006",
+            "ordinal": 0,
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            },
+            "source_id": null,
+            "expected_revision_id": null,
+            "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+            "byte_length": 55,
+            "action": "add"
+          },
+          {
+            "item_id": "00000000000000000000000000000007",
+            "ordinal": 1,
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            },
+            "source_id": null,
+            "expected_revision_id": null,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "byte_length": 0,
+            "action": "add"
+          }
+        ],
+        "consumed_task_id": null
+      }
+    },
+    {
+      "id": "successful-result-pointers",
+      "kind": "item",
+      "valid": true,
+      "data": {
+        "item_id": "00000000000000000000000000000006",
+        "ordinal": 0,
+        "relative_path": "web/卡片.tsx",
+        "classification": {
+          "group_id": "0000000000000000000000000000000c",
+          "component_side": "frontend",
+          "language": "tsx"
+        },
+        "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+        "byte_length": 55,
+        "status": "succeeded",
+        "save_status": "created",
+        "source_id": "00000000000000000000000000000014",
+        "source_revision_id": "00000000000000000000000000000015",
+        "root_node_id": "123402a9409a7a2b160d360e2efff7bdf619d452b7f82b802efb02a1018d4886",
+        "catalogue_status": "registered",
+        "structure_status": "deferred",
+        "full_text_status": "disabled",
+        "vector_status": "disabled",
+        "code": "saved"
+      }
+    },
+    {
+      "id": "failed-no-result-pointers",
+      "kind": "item",
+      "valid": true,
+      "data": {
+        "item_id": "00000000000000000000000000000007",
+        "ordinal": 1,
+        "relative_path": "web/空.ts",
+        "classification": {
+          "group_id": "0000000000000000000000000000000c",
+          "component_side": "frontend",
+          "language": "tsx"
+        },
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "byte_length": 0,
+        "status": "failed",
+        "save_status": null,
+        "source_id": null,
+        "source_revision_id": null,
+        "root_node_id": null,
+        "catalogue_status": "failed",
+        "structure_status": "deferred",
+        "full_text_status": "disabled",
+        "vector_status": "disabled",
+        "code": "source_changed"
+      }
+    },
+    {
+      "id": "failed-has-pointer",
+      "kind": "item",
+      "valid": false,
+      "data": {
+        "item_id": "00000000000000000000000000000007",
+        "ordinal": 1,
+        "relative_path": "web/空.ts",
+        "classification": {
+          "group_id": "0000000000000000000000000000000c",
+          "component_side": "frontend",
+          "language": "tsx"
+        },
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "byte_length": 0,
+        "status": "failed",
+        "save_status": null,
+        "source_id": "00000000000000000000000000000014",
+        "source_revision_id": null,
+        "root_node_id": null,
+        "catalogue_status": "failed",
+        "structure_status": "deferred",
+        "full_text_status": "disabled",
+        "vector_status": "disabled",
+        "code": "source_changed"
+      }
+    },
+    {
+      "id": "failed-catalogue-wrong",
+      "kind": "item",
+      "valid": false,
+      "data": {
+        "item_id": "00000000000000000000000000000007",
+        "ordinal": 1,
+        "relative_path": "web/空.ts",
+        "classification": {
+          "group_id": "0000000000000000000000000000000c",
+          "component_side": "frontend",
+          "language": "tsx"
+        },
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "byte_length": 0,
+        "status": "failed",
+        "save_status": null,
+        "source_id": null,
+        "source_revision_id": null,
+        "root_node_id": null,
+        "catalogue_status": "registered",
+        "structure_status": "deferred",
+        "full_text_status": "disabled",
+        "vector_status": "disabled",
+        "code": "source_changed"
+      }
+    },
+    {
+      "id": "project-count-equality",
+      "kind": "manifest",
+      "valid": true,
+      "data": {
+        "preview_id": "0000000000000000000000000000001e",
+        "domain_id": "00000000000000000000000000000002",
+        "project_id": "0000000000000000000000000000000c",
+        "task_id": "00000000000000000000000000000009",
+        "task_manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+        "expected_manifest_id": null,
+        "manifest_sha256": "1400c7a605558d5c288ab15ce28d4dd421652dc474cb39e7ef827b2820d37d66",
+        "coverage": "explicit_selection",
+        "captured_atomically": false,
+        "created_at": "2026-10-25T08:02:00Z",
+        "expires_at": "2026-10-25T08:12:00Z",
+        "total_entries": 2,
+        "added": 2,
+        "replaced": 0,
+        "carried": 0,
+        "items": [
+          {
+            "registration_id": "00000000000000000000000000000003",
+            "relative_path": "web/卡片.tsx",
+            "source_id": "00000000000000000000000000000014",
+            "source_revision_id": "00000000000000000000000000000015",
+            "root_node_id": "123402a9409a7a2b160d360e2efff7bdf619d452b7f82b802efb02a1018d4886",
+            "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+            "byte_length": 55,
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            },
+            "origin_task_id": "00000000000000000000000000000009"
+          },
+          {
+            "registration_id": "00000000000000000000000000000003",
+            "relative_path": "web/空.ts",
+            "source_id": "00000000000000000000000000000016",
+            "source_revision_id": "00000000000000000000000000000017",
+            "root_node_id": "1fd840ddfe459c36b37ae2ead44022c74219dc09e5ae51ac32aa73ba42c93497",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "byte_length": 0,
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            },
+            "origin_task_id": "00000000000000000000000000000009"
+          }
+        ],
+        "next_cursor": null,
+        "consumed_manifest_id": null
+      }
+    },
+    {
+      "id": "project-count-mismatch",
+      "kind": "manifest",
+      "valid": false,
+      "data": {
+        "preview_id": "0000000000000000000000000000001e",
+        "domain_id": "00000000000000000000000000000002",
+        "project_id": "0000000000000000000000000000000c",
+        "task_id": "00000000000000000000000000000009",
+        "task_manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+        "expected_manifest_id": null,
+        "manifest_sha256": "1400c7a605558d5c288ab15ce28d4dd421652dc474cb39e7ef827b2820d37d66",
+        "coverage": "explicit_selection",
+        "captured_atomically": false,
+        "created_at": "2026-10-25T08:02:00Z",
+        "expires_at": "2026-10-25T08:12:00Z",
+        "total_entries": 2,
+        "added": 2,
+        "replaced": 0,
+        "carried": 1,
+        "items": [
+          {
+            "registration_id": "00000000000000000000000000000003",
+            "relative_path": "web/卡片.tsx",
+            "source_id": "00000000000000000000000000000014",
+            "source_revision_id": "00000000000000000000000000000015",
+            "root_node_id": "123402a9409a7a2b160d360e2efff7bdf619d452b7f82b802efb02a1018d4886",
+            "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+            "byte_length": 55,
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            },
+            "origin_task_id": "00000000000000000000000000000009"
+          },
+          {
+            "registration_id": "00000000000000000000000000000003",
+            "relative_path": "web/空.ts",
+            "source_id": "00000000000000000000000000000016",
+            "source_revision_id": "00000000000000000000000000000017",
+            "root_node_id": "1fd840ddfe459c36b37ae2ead44022c74219dc09e5ae51ac32aa73ba42c93497",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "byte_length": 0,
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            },
+            "origin_task_id": "00000000000000000000000000000009"
+          }
+        ],
+        "next_cursor": null,
+        "consumed_manifest_id": null
+      }
+    },
+    {
+      "id": "project-explicit-only",
+      "kind": "manifest",
+      "valid": false,
+      "data": {
+        "preview_id": "0000000000000000000000000000001e",
+        "domain_id": "00000000000000000000000000000002",
+        "project_id": "0000000000000000000000000000000c",
+        "task_id": "00000000000000000000000000000009",
+        "task_manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+        "expected_manifest_id": null,
+        "manifest_sha256": "1400c7a605558d5c288ab15ce28d4dd421652dc474cb39e7ef827b2820d37d66",
+        "coverage": "entire_repository",
+        "captured_atomically": false,
+        "created_at": "2026-10-25T08:02:00Z",
+        "expires_at": "2026-10-25T08:12:00Z",
+        "total_entries": 2,
+        "added": 2,
+        "replaced": 0,
+        "carried": 0,
+        "items": [
+          {
+            "registration_id": "00000000000000000000000000000003",
+            "relative_path": "web/卡片.tsx",
+            "source_id": "00000000000000000000000000000014",
+            "source_revision_id": "00000000000000000000000000000015",
+            "root_node_id": "123402a9409a7a2b160d360e2efff7bdf619d452b7f82b802efb02a1018d4886",
+            "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+            "byte_length": 55,
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            },
+            "origin_task_id": "00000000000000000000000000000009"
+          },
+          {
+            "registration_id": "00000000000000000000000000000003",
+            "relative_path": "web/空.ts",
+            "source_id": "00000000000000000000000000000016",
+            "source_revision_id": "00000000000000000000000000000017",
+            "root_node_id": "1fd840ddfe459c36b37ae2ead44022c74219dc09e5ae51ac32aa73ba42c93497",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "byte_length": 0,
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            },
+            "origin_task_id": "00000000000000000000000000000009"
+          }
+        ],
+        "next_cursor": null,
+        "consumed_manifest_id": null
+      }
+    },
+    {
+      "id": "same-batch-recovery",
+      "kind": "task_recovery",
+      "valid": true,
+      "data": {
+        "request": {
+          "preview_id": "00000000000000000000000000000001",
+          "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "idempotency_key": "synthetic-batch-001",
+          "confirmed_item_ids": [
+            "00000000000000000000000000000006",
+            "00000000000000000000000000000007"
+          ],
+          "retry_of_task_id": null
+        },
+        "task": {
+          "task_id": "00000000000000000000000000000009",
+          "domain_id": "00000000000000000000000000000002",
+          "registration_id": "00000000000000000000000000000003",
+          "preview_id": "00000000000000000000000000000001",
+          "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "idempotency_key": "synthetic-batch-001",
+          "confirmed_item_ids": [
+            "00000000000000000000000000000006",
+            "00000000000000000000000000000007"
+          ],
+          "retry_of_task_id": null,
+          "status": "queued",
+          "revision": 1,
+          "counts": {
+            "total": 2,
+            "pending": 2,
+            "running": 0,
+            "succeeded": 0,
+            "failed": 0,
+            "cancelled": 0
+          },
+          "cancel_requested": false,
+          "mode": "catalogue_only",
+          "created_at": "2026-10-25T08:01:00Z",
+          "updated_at": "2026-10-25T08:01:00Z",
+          "execution_deadline": "2026-10-25T08:31:00Z",
+          "terminal_at": null
+        }
+      }
+    },
+    {
+      "id": "cross-batch-recovery",
+      "kind": "task_recovery",
+      "valid": false,
+      "data": {
+        "request": {
+          "preview_id": "00000000000000000000000000000001",
+          "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "idempotency_key": "synthetic-batch-001",
+          "confirmed_item_ids": [
+            "00000000000000000000000000000006",
+            "00000000000000000000000000000007"
+          ],
+          "retry_of_task_id": null
+        },
+        "task": {
+          "task_id": "00000000000000000000000000000009",
+          "domain_id": "00000000000000000000000000000002",
+          "registration_id": "00000000000000000000000000000003",
+          "preview_id": "00000000000000000000000000000063",
+          "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "idempotency_key": "synthetic-batch-001",
+          "confirmed_item_ids": [
+            "00000000000000000000000000000006",
+            "00000000000000000000000000000007"
+          ],
+          "retry_of_task_id": null,
+          "status": "queued",
+          "revision": 1,
+          "counts": {
+            "total": 2,
+            "pending": 2,
+            "running": 0,
+            "succeeded": 0,
+            "failed": 0,
+            "cancelled": 0
+          },
+          "cancel_requested": false,
+          "mode": "catalogue_only",
+          "created_at": "2026-10-25T08:01:00Z",
+          "updated_at": "2026-10-25T08:01:00Z",
+          "execution_deadline": "2026-10-25T08:31:00Z",
+          "terminal_at": null
+        }
+      }
+    },
+    {
+      "id": "same-manifest-recovery",
+      "kind": "manifest_recovery",
+      "valid": true,
+      "data": {
+        "request": {
+          "project_id": "0000000000000000000000000000000c",
+          "preview_id": "0000000000000000000000000000001e",
+          "manifest_sha256": "1400c7a605558d5c288ab15ce28d4dd421652dc474cb39e7ef827b2820d37d66",
+          "idempotency_key": "synthetic-project-001"
+        },
+        "receipt": {
+          "domain_id": "00000000000000000000000000000002",
+          "project_id": "0000000000000000000000000000000c",
+          "manifest_id": "00000000000000000000000000000020",
+          "preview_id": "0000000000000000000000000000001e",
+          "task_id": "00000000000000000000000000000009",
+          "manifest_sha256": "1400c7a605558d5c288ab15ce28d4dd421652dc474cb39e7ef827b2820d37d66",
+          "idempotency_key": "synthetic-project-001",
+          "expected_manifest_id": null,
+          "coverage": "explicit_selection",
+          "captured_atomically": false,
+          "total_entries": 2,
+          "published_at": "2026-10-25T08:02:01Z"
+        },
+        "expected_manifest_id": null,
+        "task_id": "00000000000000000000000000000009",
+        "domain_id": "00000000000000000000000000000002"
+      }
+    },
+    {
+      "id": "wrong-base-manifest-recovery",
+      "kind": "manifest_recovery",
+      "valid": false,
+      "data": {
+        "request": {
+          "project_id": "0000000000000000000000000000000c",
+          "preview_id": "0000000000000000000000000000001e",
+          "manifest_sha256": "1400c7a605558d5c288ab15ce28d4dd421652dc474cb39e7ef827b2820d37d66",
+          "idempotency_key": "synthetic-project-001"
+        },
+        "receipt": {
+          "domain_id": "00000000000000000000000000000002",
+          "project_id": "0000000000000000000000000000000c",
+          "manifest_id": "00000000000000000000000000000020",
+          "preview_id": "0000000000000000000000000000001e",
+          "task_id": "00000000000000000000000000000009",
+          "manifest_sha256": "1400c7a605558d5c288ab15ce28d4dd421652dc474cb39e7ef827b2820d37d66",
+          "idempotency_key": "synthetic-project-001",
+          "expected_manifest_id": null,
+          "coverage": "explicit_selection",
+          "captured_atomically": false,
+          "total_entries": 2,
+          "published_at": "2026-10-25T08:02:01Z"
+        },
+        "expected_manifest_id": "00000000000000000000000000000058",
+        "task_id": "00000000000000000000000000000009",
+        "domain_id": "00000000000000000000000000000002"
+      }
+    },
+    {
+      "id": "wrong-task-manifest-recovery",
+      "kind": "manifest_recovery",
+      "valid": false,
+      "data": {
+        "request": {
+          "project_id": "0000000000000000000000000000000c",
+          "preview_id": "0000000000000000000000000000001e",
+          "manifest_sha256": "1400c7a605558d5c288ab15ce28d4dd421652dc474cb39e7ef827b2820d37d66",
+          "idempotency_key": "synthetic-project-001"
+        },
+        "receipt": {
+          "domain_id": "00000000000000000000000000000002",
+          "project_id": "0000000000000000000000000000000c",
+          "manifest_id": "00000000000000000000000000000020",
+          "preview_id": "0000000000000000000000000000001e",
+          "task_id": "00000000000000000000000000000009",
+          "manifest_sha256": "1400c7a605558d5c288ab15ce28d4dd421652dc474cb39e7ef827b2820d37d66",
+          "idempotency_key": "synthetic-project-001",
+          "expected_manifest_id": null,
+          "coverage": "explicit_selection",
+          "captured_atomically": false,
+          "total_entries": 2,
+          "published_at": "2026-10-25T08:02:01Z"
+        },
+        "expected_manifest_id": null,
+        "task_id": "00000000000000000000000000000057",
+        "domain_id": "00000000000000000000000000000002"
+      }
+    },
+    {
+      "id": "missing-null-base-manifest-recovery",
+      "kind": "manifest_recovery",
+      "valid": false,
+      "data": {
+        "request": {
+          "project_id": "0000000000000000000000000000000c",
+          "preview_id": "0000000000000000000000000000001e",
+          "manifest_sha256": "1400c7a605558d5c288ab15ce28d4dd421652dc474cb39e7ef827b2820d37d66",
+          "idempotency_key": "synthetic-project-001"
+        },
+        "receipt": {
+          "domain_id": "00000000000000000000000000000002",
+          "project_id": "0000000000000000000000000000000c",
+          "manifest_id": "00000000000000000000000000000020",
+          "preview_id": "0000000000000000000000000000001e",
+          "task_id": "00000000000000000000000000000009",
+          "manifest_sha256": "1400c7a605558d5c288ab15ce28d4dd421652dc474cb39e7ef827b2820d37d66",
+          "idempotency_key": "synthetic-project-001",
+          "expected_manifest_id": null,
+          "coverage": "explicit_selection",
+          "captured_atomically": false,
+          "total_entries": 2,
+          "published_at": "2026-10-25T08:02:01Z"
+        },
+        "task_id": "00000000000000000000000000000009",
+        "domain_id": "00000000000000000000000000000002"
+      }
+    },
+    {
+      "id": "http-error-400-knowledge_batch_invalid",
+      "kind": "error",
+      "valid": true,
+      "data": {
+        "http_status": 400,
+        "body": {
+          "code": "knowledge_batch_invalid",
+          "message": "合成错误；客户端只按机器码判断",
+          "reason": null,
+          "contract_version": "1.0.0",
+          "source_contract_version": "0.4.0",
+          "request_id": "0000000000000000000000000000005a"
+        }
+      }
+    },
+    {
+      "id": "http-error-404-knowledge_batch_not_found",
+      "kind": "error",
+      "valid": true,
+      "data": {
+        "http_status": 404,
+        "body": {
+          "code": "knowledge_batch_not_found",
+          "message": "合成错误；客户端只按机器码判断",
+          "reason": null,
+          "contract_version": "1.0.0",
+          "source_contract_version": "0.4.0",
+          "request_id": "0000000000000000000000000000005a"
+        }
+      }
+    },
+    {
+      "id": "http-error-409-knowledge_batch_version_mismatch",
+      "kind": "error",
+      "valid": true,
+      "data": {
+        "http_status": 409,
+        "body": {
+          "code": "knowledge_batch_version_mismatch",
+          "message": "合成错误；客户端只按机器码判断",
+          "reason": null,
+          "contract_version": "1.0.0",
+          "source_contract_version": "0.4.0",
+          "request_id": "0000000000000000000000000000005a"
+        }
+      }
+    },
+    {
+      "id": "http-error-409-observation_incomplete",
+      "kind": "error",
+      "valid": true,
+      "data": {
+        "http_status": 409,
+        "body": {
+          "code": "knowledge_batch_conflict",
+          "message": "合成错误；客户端只按机器码判断",
+          "reason": "observation_incomplete",
+          "contract_version": "1.0.0",
+          "source_contract_version": "0.4.0",
+          "request_id": "0000000000000000000000000000005a"
+        }
+      }
+    },
+    {
+      "id": "http-error-409-observation_mismatch",
+      "kind": "error",
+      "valid": true,
+      "data": {
+        "http_status": 409,
+        "body": {
+          "code": "knowledge_batch_conflict",
+          "message": "合成错误；客户端只按机器码判断",
+          "reason": "observation_mismatch",
+          "contract_version": "1.0.0",
+          "source_contract_version": "0.4.0",
+          "request_id": "0000000000000000000000000000005a"
+        }
+      }
+    },
+    {
+      "id": "http-error-409-ineligible",
+      "kind": "error",
+      "valid": true,
+      "data": {
+        "http_status": 409,
+        "body": {
+          "code": "knowledge_batch_conflict",
+          "message": "合成错误；客户端只按机器码判断",
+          "reason": "ineligible",
+          "contract_version": "1.0.0",
+          "source_contract_version": "0.4.0",
+          "request_id": "0000000000000000000000000000005a"
+        }
+      }
+    },
+    {
+      "id": "http-error-409-source_changed",
+      "kind": "error",
+      "valid": true,
+      "data": {
+        "http_status": 409,
+        "body": {
+          "code": "knowledge_batch_conflict",
+          "message": "合成错误；客户端只按机器码判断",
+          "reason": "source_changed",
+          "contract_version": "1.0.0",
+          "source_contract_version": "0.4.0",
+          "request_id": "0000000000000000000000000000005a"
+        }
+      }
+    },
+    {
+      "id": "http-error-409-revision_changed",
+      "kind": "error",
+      "valid": true,
+      "data": {
+        "http_status": 409,
+        "body": {
+          "code": "knowledge_batch_conflict",
+          "message": "合成错误；客户端只按机器码判断",
+          "reason": "revision_changed",
+          "contract_version": "1.0.0",
+          "source_contract_version": "0.4.0",
+          "request_id": "0000000000000000000000000000005a"
+        }
+      }
+    },
+    {
+      "id": "http-error-409-root_changed",
+      "kind": "error",
+      "valid": true,
+      "data": {
+        "http_status": 409,
+        "body": {
+          "code": "knowledge_batch_conflict",
+          "message": "合成错误；客户端只按机器码判断",
+          "reason": "root_changed",
+          "contract_version": "1.0.0",
+          "source_contract_version": "0.4.0",
+          "request_id": "0000000000000000000000000000005a"
+        }
+      }
+    },
+    {
+      "id": "http-error-409-policy_changed",
+      "kind": "error",
+      "valid": true,
+      "data": {
+        "http_status": 409,
+        "body": {
+          "code": "knowledge_batch_conflict",
+          "message": "合成错误；客户端只按机器码判断",
+          "reason": "policy_changed",
+          "contract_version": "1.0.0",
+          "source_contract_version": "0.4.0",
+          "request_id": "0000000000000000000000000000005a"
+        }
+      }
+    },
+    {
+      "id": "http-error-409-preview_consumed",
+      "kind": "error",
+      "valid": true,
+      "data": {
+        "http_status": 409,
+        "body": {
+          "code": "knowledge_batch_conflict",
+          "message": "合成错误；客户端只按机器码判断",
+          "reason": "preview_consumed",
+          "contract_version": "1.0.0",
+          "source_contract_version": "0.4.0",
+          "request_id": "0000000000000000000000000000005a"
+        }
+      }
+    },
+    {
+      "id": "http-error-409-idempotency_conflict",
+      "kind": "error",
+      "valid": true,
+      "data": {
+        "http_status": 409,
+        "body": {
+          "code": "knowledge_batch_conflict",
+          "message": "合成错误；客户端只按机器码判断",
+          "reason": "idempotency_conflict",
+          "contract_version": "1.0.0",
+          "source_contract_version": "0.4.0",
+          "request_id": "0000000000000000000000000000005a"
+        }
+      }
+    },
+    {
+      "id": "http-error-409-confirmation_mismatch",
+      "kind": "error",
+      "valid": true,
+      "data": {
+        "http_status": 409,
+        "body": {
+          "code": "knowledge_batch_conflict",
+          "message": "合成错误；客户端只按机器码判断",
+          "reason": "confirmation_mismatch",
+          "contract_version": "1.0.0",
+          "source_contract_version": "0.4.0",
+          "request_id": "0000000000000000000000000000005a"
+        }
+      }
+    },
+    {
+      "id": "http-error-409-result_changed",
+      "kind": "error",
+      "valid": true,
+      "data": {
+        "http_status": 409,
+        "body": {
+          "code": "knowledge_batch_conflict",
+          "message": "合成错误；客户端只按机器码判断",
+          "reason": "result_changed",
+          "contract_version": "1.0.0",
+          "source_contract_version": "0.4.0",
+          "request_id": "0000000000000000000000000000005a"
+        }
+      }
+    },
+    {
+      "id": "http-error-409-task_not_succeeded",
+      "kind": "error",
+      "valid": true,
+      "data": {
+        "http_status": 409,
+        "body": {
+          "code": "knowledge_batch_conflict",
+          "message": "合成错误；客户端只按机器码判断",
+          "reason": "task_not_succeeded",
+          "contract_version": "1.0.0",
+          "source_contract_version": "0.4.0",
+          "request_id": "0000000000000000000000000000005a"
+        }
+      }
+    },
+    {
+      "id": "http-error-409-project_head_changed",
+      "kind": "error",
+      "valid": true,
+      "data": {
+        "http_status": 409,
+        "body": {
+          "code": "knowledge_batch_conflict",
+          "message": "合成错误；客户端只按机器码判断",
+          "reason": "project_head_changed",
+          "contract_version": "1.0.0",
+          "source_contract_version": "0.4.0",
+          "request_id": "0000000000000000000000000000005a"
+        }
+      }
+    },
+    {
+      "id": "http-error-409-project_membership_changed",
+      "kind": "error",
+      "valid": true,
+      "data": {
+        "http_status": 409,
+        "body": {
+          "code": "knowledge_batch_conflict",
+          "message": "合成错误；客户端只按机器码判断",
+          "reason": "project_membership_changed",
+          "contract_version": "1.0.0",
+          "source_contract_version": "0.4.0",
+          "request_id": "0000000000000000000000000000005a"
+        }
+      }
+    },
+    {
+      "id": "http-error-409-cursor_invalid",
+      "kind": "error",
+      "valid": true,
+      "data": {
+        "http_status": 409,
+        "body": {
+          "code": "knowledge_batch_conflict",
+          "message": "合成错误；客户端只按机器码判断",
+          "reason": "cursor_invalid",
+          "contract_version": "1.0.0",
+          "source_contract_version": "0.4.0",
+          "request_id": "0000000000000000000000000000005a"
+        }
+      }
+    },
+    {
+      "id": "http-error-409-retry_parent_invalid",
+      "kind": "error",
+      "valid": true,
+      "data": {
+        "http_status": 409,
+        "body": {
+          "code": "knowledge_batch_conflict",
+          "message": "合成错误；客户端只按机器码判断",
+          "reason": "retry_parent_invalid",
+          "contract_version": "1.0.0",
+          "source_contract_version": "0.4.0",
+          "request_id": "0000000000000000000000000000005a"
+        }
+      }
+    },
+    {
+      "id": "http-error-410-knowledge_batch_expired",
+      "kind": "error",
+      "valid": true,
+      "data": {
+        "http_status": 410,
+        "body": {
+          "code": "knowledge_batch_expired",
+          "message": "合成错误；客户端只按机器码判断",
+          "reason": null,
+          "contract_version": "1.0.0",
+          "source_contract_version": "0.4.0",
+          "request_id": "0000000000000000000000000000005a"
+        }
+      }
+    },
+    {
+      "id": "http-error-413-knowledge_batch_too_large",
+      "kind": "error",
+      "valid": true,
+      "data": {
+        "http_status": 413,
+        "body": {
+          "code": "knowledge_batch_too_large",
+          "message": "合成错误；客户端只按机器码判断",
+          "reason": null,
+          "contract_version": "1.0.0",
+          "source_contract_version": "0.4.0",
+          "request_id": "0000000000000000000000000000005a"
+        }
+      }
+    },
+    {
+      "id": "http-error-416-knowledge_batch_range",
+      "kind": "error",
+      "valid": true,
+      "data": {
+        "http_status": 416,
+        "body": {
+          "code": "knowledge_batch_range",
+          "message": "合成错误；客户端只按机器码判断",
+          "reason": null,
+          "contract_version": "1.0.0",
+          "source_contract_version": "0.4.0",
+          "request_id": "0000000000000000000000000000005a"
+        }
+      }
+    },
+    {
+      "id": "http-error-429-knowledge_batch_capacity",
+      "kind": "error",
+      "valid": true,
+      "data": {
+        "http_status": 429,
+        "body": {
+          "code": "knowledge_batch_capacity",
+          "message": "合成错误；客户端只按机器码判断",
+          "reason": null,
+          "contract_version": "1.0.0",
+          "source_contract_version": "0.4.0",
+          "request_id": "0000000000000000000000000000005a"
+        }
+      }
+    },
+    {
+      "id": "http-error-503-root_unready",
+      "kind": "error",
+      "valid": true,
+      "data": {
+        "http_status": 503,
+        "body": {
+          "code": "knowledge_batch_unavailable",
+          "message": "合成错误；客户端只按机器码判断",
+          "reason": "root_unready",
+          "contract_version": "1.0.0",
+          "source_contract_version": "0.4.0",
+          "request_id": "0000000000000000000000000000005a"
+        }
+      }
+    },
+    {
+      "id": "http-error-503-result_unknown",
+      "kind": "error",
+      "valid": true,
+      "data": {
+        "http_status": 503,
+        "body": {
+          "code": "knowledge_batch_unavailable",
+          "message": "合成错误；客户端只按机器码判断",
+          "reason": "result_unknown",
+          "contract_version": "1.0.0",
+          "source_contract_version": "0.4.0",
+          "request_id": "0000000000000000000000000000005a"
+        }
+      }
+    },
+    {
+      "id": "404-cannot-use-conflict-code",
+      "kind": "error",
+      "valid": false,
+      "data": {
+        "http_status": 404,
+        "body": {
+          "code": "knowledge_batch_conflict",
+          "message": "合成错误；客户端只按机器码判断",
+          "reason": "source_changed",
+          "contract_version": "1.0.0",
+          "source_contract_version": "0.4.0",
+          "request_id": "0000000000000000000000000000005a"
+        }
+      }
+    },
+    {
+      "id": "409-version-mismatch-with-null-reason",
+      "kind": "error",
+      "valid": true,
+      "data": {
+        "http_status": 409,
+        "body": {
+          "code": "knowledge_batch_version_mismatch",
+          "message": "合成错误；客户端只按机器码判断",
+          "reason": null,
+          "contract_version": "1.0.0",
+          "source_contract_version": "0.4.0",
+          "request_id": "0000000000000000000000000000005a"
+        }
+      }
+    },
+    {
+      "id": "410-cannot-use-result-unknown",
+      "kind": "error",
+      "valid": false,
+      "data": {
+        "http_status": 410,
+        "body": {
+          "code": "knowledge_batch_expired",
+          "message": "合成错误；客户端只按机器码判断",
+          "reason": "result_unknown",
+          "contract_version": "1.0.0",
+          "source_contract_version": "0.4.0",
+          "request_id": "0000000000000000000000000000005a"
+        }
+      }
+    },
+    {
+      "id": "503-cannot-use-conflict-code",
+      "kind": "error",
+      "valid": false,
+      "data": {
+        "http_status": 503,
+        "body": {
+          "code": "knowledge_batch_conflict",
+          "message": "合成错误；客户端只按机器码判断",
+          "reason": "source_changed",
+          "contract_version": "1.0.0",
+          "source_contract_version": "0.4.0",
+          "request_id": "0000000000000000000000000000005a"
+        }
+      }
+    },
+    {
+      "id": "project-includes-all-successful-items",
+      "kind": "project_from_task",
+      "valid": true,
+      "data": {
+        "preview": {
+          "preview_id": "00000000000000000000000000000001",
+          "domain_id": "00000000000000000000000000000002",
+          "registration_id": "00000000000000000000000000000003",
+          "observation_id": "00000000000000000000000000000004",
+          "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+          "root_id": "00000000000000000000000000000005",
+          "root_version": 2,
+          "policy_version": 1,
+          "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "mode": "catalogue_only",
+          "created_at": "2026-10-25T08:00:00Z",
+          "expires_at": "2026-10-25T08:10:00Z",
+          "byte_length": 55,
+          "items": [
+            {
+              "item_id": "00000000000000000000000000000006",
+              "ordinal": 0,
+              "relative_path": "web/卡片.tsx",
+              "classification": {
+                "group_id": "0000000000000000000000000000000c",
+                "component_side": "frontend",
+                "language": "tsx"
+              },
+              "source_id": null,
+              "expected_revision_id": null,
+              "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+              "byte_length": 55,
+              "action": "add"
+            },
+            {
+              "item_id": "00000000000000000000000000000007",
+              "ordinal": 1,
+              "relative_path": "web/空.ts",
+              "classification": {
+                "group_id": "0000000000000000000000000000000c",
+                "component_side": "frontend",
+                "language": "ts"
+              },
+              "source_id": null,
+              "expected_revision_id": null,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "byte_length": 0,
+              "action": "add"
+            }
+          ],
+          "consumed_task_id": null
+        },
+        "task": {
+          "task_id": "00000000000000000000000000000009",
+          "domain_id": "00000000000000000000000000000002",
+          "registration_id": "00000000000000000000000000000003",
+          "preview_id": "00000000000000000000000000000001",
+          "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "idempotency_key": "synthetic-batch-001",
+          "confirmed_item_ids": [
+            "00000000000000000000000000000006",
+            "00000000000000000000000000000007"
+          ],
+          "retry_of_task_id": null,
+          "status": "succeeded",
+          "revision": 5,
+          "counts": {
+            "total": 2,
+            "pending": 0,
+            "running": 0,
+            "succeeded": 2,
+            "failed": 0,
+            "cancelled": 0
+          },
+          "cancel_requested": false,
+          "mode": "catalogue_only",
+          "created_at": "2026-10-25T08:01:00Z",
+          "updated_at": "2026-10-25T08:01:05Z",
+          "execution_deadline": "2026-10-25T08:31:00Z",
+          "terminal_at": "2026-10-25T08:01:05Z"
+        },
+        "results": [
+          {
+            "item_id": "00000000000000000000000000000006",
+            "ordinal": 0,
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            },
+            "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+            "byte_length": 55,
+            "status": "succeeded",
+            "save_status": "created",
+            "source_id": "00000000000000000000000000000014",
+            "source_revision_id": "00000000000000000000000000000015",
+            "root_node_id": "123402a9409a7a2b160d360e2efff7bdf619d452b7f82b802efb02a1018d4886",
+            "catalogue_status": "registered",
+            "structure_status": "deferred",
+            "full_text_status": "disabled",
+            "vector_status": "disabled",
+            "code": "saved"
+          },
+          {
+            "item_id": "00000000000000000000000000000007",
+            "ordinal": 1,
+            "relative_path": "web/空.ts",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            },
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "byte_length": 0,
+            "status": "succeeded",
+            "save_status": "created",
+            "source_id": "00000000000000000000000000000016",
+            "source_revision_id": "00000000000000000000000000000017",
+            "root_node_id": "1fd840ddfe459c36b37ae2ead44022c74219dc09e5ae51ac32aa73ba42c93497",
+            "catalogue_status": "registered",
+            "structure_status": "deferred",
+            "full_text_status": "disabled",
+            "vector_status": "disabled",
+            "code": "saved"
+          }
+        ],
+        "base_manifest": null,
+        "manifest_preview": {
+          "preview_id": "0000000000000000000000000000001e",
+          "domain_id": "00000000000000000000000000000002",
+          "project_id": "0000000000000000000000000000000c",
+          "task_id": "00000000000000000000000000000009",
+          "task_manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "expected_manifest_id": null,
+          "manifest_sha256": "1400c7a605558d5c288ab15ce28d4dd421652dc474cb39e7ef827b2820d37d66",
+          "coverage": "explicit_selection",
+          "captured_atomically": false,
+          "created_at": "2026-10-25T08:02:00Z",
+          "expires_at": "2026-10-25T08:12:00Z",
+          "total_entries": 2,
+          "added": 2,
+          "replaced": 0,
+          "carried": 0,
+          "items": [
+            {
+              "registration_id": "00000000000000000000000000000003",
+              "relative_path": "web/卡片.tsx",
+              "source_id": "00000000000000000000000000000014",
+              "source_revision_id": "00000000000000000000000000000015",
+              "root_node_id": "123402a9409a7a2b160d360e2efff7bdf619d452b7f82b802efb02a1018d4886",
+              "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+              "byte_length": 55,
+              "classification": {
+                "group_id": "0000000000000000000000000000000c",
+                "component_side": "frontend",
+                "language": "tsx"
+              },
+              "origin_task_id": "00000000000000000000000000000009"
+            },
+            {
+              "registration_id": "00000000000000000000000000000003",
+              "relative_path": "web/空.ts",
+              "source_id": "00000000000000000000000000000016",
+              "source_revision_id": "00000000000000000000000000000017",
+              "root_node_id": "1fd840ddfe459c36b37ae2ead44022c74219dc09e5ae51ac32aa73ba42c93497",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "byte_length": 0,
+              "classification": {
+                "group_id": "0000000000000000000000000000000c",
+                "component_side": "frontend",
+                "language": "ts"
+              },
+              "origin_task_id": "00000000000000000000000000000009"
+            }
+          ],
+          "next_cursor": null,
+          "consumed_manifest_id": null
+        }
+      }
+    },
+    {
+      "id": "project-cannot-omit-empty-file",
+      "kind": "project_from_task",
+      "valid": false,
+      "data": {
+        "preview": {
+          "preview_id": "00000000000000000000000000000001",
+          "domain_id": "00000000000000000000000000000002",
+          "registration_id": "00000000000000000000000000000003",
+          "observation_id": "00000000000000000000000000000004",
+          "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+          "root_id": "00000000000000000000000000000005",
+          "root_version": 2,
+          "policy_version": 1,
+          "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "mode": "catalogue_only",
+          "created_at": "2026-10-25T08:00:00Z",
+          "expires_at": "2026-10-25T08:10:00Z",
+          "byte_length": 55,
+          "items": [
+            {
+              "item_id": "00000000000000000000000000000006",
+              "ordinal": 0,
+              "relative_path": "web/卡片.tsx",
+              "classification": {
+                "group_id": "0000000000000000000000000000000c",
+                "component_side": "frontend",
+                "language": "tsx"
+              },
+              "source_id": null,
+              "expected_revision_id": null,
+              "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+              "byte_length": 55,
+              "action": "add"
+            },
+            {
+              "item_id": "00000000000000000000000000000007",
+              "ordinal": 1,
+              "relative_path": "web/空.ts",
+              "classification": {
+                "group_id": "0000000000000000000000000000000c",
+                "component_side": "frontend",
+                "language": "ts"
+              },
+              "source_id": null,
+              "expected_revision_id": null,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "byte_length": 0,
+              "action": "add"
+            }
+          ],
+          "consumed_task_id": null
+        },
+        "task": {
+          "task_id": "00000000000000000000000000000009",
+          "domain_id": "00000000000000000000000000000002",
+          "registration_id": "00000000000000000000000000000003",
+          "preview_id": "00000000000000000000000000000001",
+          "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "idempotency_key": "synthetic-batch-001",
+          "confirmed_item_ids": [
+            "00000000000000000000000000000006",
+            "00000000000000000000000000000007"
+          ],
+          "retry_of_task_id": null,
+          "status": "succeeded",
+          "revision": 5,
+          "counts": {
+            "total": 2,
+            "pending": 0,
+            "running": 0,
+            "succeeded": 2,
+            "failed": 0,
+            "cancelled": 0
+          },
+          "cancel_requested": false,
+          "mode": "catalogue_only",
+          "created_at": "2026-10-25T08:01:00Z",
+          "updated_at": "2026-10-25T08:01:05Z",
+          "execution_deadline": "2026-10-25T08:31:00Z",
+          "terminal_at": "2026-10-25T08:01:05Z"
+        },
+        "results": [
+          {
+            "item_id": "00000000000000000000000000000006",
+            "ordinal": 0,
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            },
+            "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+            "byte_length": 55,
+            "status": "succeeded",
+            "save_status": "created",
+            "source_id": "00000000000000000000000000000014",
+            "source_revision_id": "00000000000000000000000000000015",
+            "root_node_id": "123402a9409a7a2b160d360e2efff7bdf619d452b7f82b802efb02a1018d4886",
+            "catalogue_status": "registered",
+            "structure_status": "deferred",
+            "full_text_status": "disabled",
+            "vector_status": "disabled",
+            "code": "saved"
+          },
+          {
+            "item_id": "00000000000000000000000000000007",
+            "ordinal": 1,
+            "relative_path": "web/空.ts",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            },
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "byte_length": 0,
+            "status": "succeeded",
+            "save_status": "created",
+            "source_id": "00000000000000000000000000000016",
+            "source_revision_id": "00000000000000000000000000000017",
+            "root_node_id": "1fd840ddfe459c36b37ae2ead44022c74219dc09e5ae51ac32aa73ba42c93497",
+            "catalogue_status": "registered",
+            "structure_status": "deferred",
+            "full_text_status": "disabled",
+            "vector_status": "disabled",
+            "code": "saved"
+          }
+        ],
+        "base_manifest": null,
+        "manifest_preview": {
+          "preview_id": "0000000000000000000000000000001e",
+          "domain_id": "00000000000000000000000000000002",
+          "project_id": "0000000000000000000000000000000c",
+          "task_id": "00000000000000000000000000000009",
+          "task_manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "expected_manifest_id": null,
+          "manifest_sha256": "1400c7a605558d5c288ab15ce28d4dd421652dc474cb39e7ef827b2820d37d66",
+          "coverage": "explicit_selection",
+          "captured_atomically": false,
+          "created_at": "2026-10-25T08:02:00Z",
+          "expires_at": "2026-10-25T08:12:00Z",
+          "total_entries": 1,
+          "added": 1,
+          "replaced": 0,
+          "carried": 0,
+          "items": [
+            {
+              "registration_id": "00000000000000000000000000000003",
+              "relative_path": "web/卡片.tsx",
+              "source_id": "00000000000000000000000000000014",
+              "source_revision_id": "00000000000000000000000000000015",
+              "root_node_id": "123402a9409a7a2b160d360e2efff7bdf619d452b7f82b802efb02a1018d4886",
+              "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+              "byte_length": 55,
+              "classification": {
+                "group_id": "0000000000000000000000000000000c",
+                "component_side": "frontend",
+                "language": "tsx"
+              },
+              "origin_task_id": "00000000000000000000000000000009"
+            }
+          ],
+          "next_cursor": null,
+          "consumed_manifest_id": null
+        }
+      }
+    },
+    {
+      "id": "project-cannot-use-partial-task",
+      "kind": "project_from_task",
+      "valid": false,
+      "data": {
+        "preview": {
+          "preview_id": "00000000000000000000000000000001",
+          "domain_id": "00000000000000000000000000000002",
+          "registration_id": "00000000000000000000000000000003",
+          "observation_id": "00000000000000000000000000000004",
+          "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+          "root_id": "00000000000000000000000000000005",
+          "root_version": 2,
+          "policy_version": 1,
+          "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "mode": "catalogue_only",
+          "created_at": "2026-10-25T08:00:00Z",
+          "expires_at": "2026-10-25T08:10:00Z",
+          "byte_length": 55,
+          "items": [
+            {
+              "item_id": "00000000000000000000000000000006",
+              "ordinal": 0,
+              "relative_path": "web/卡片.tsx",
+              "classification": {
+                "group_id": "0000000000000000000000000000000c",
+                "component_side": "frontend",
+                "language": "tsx"
+              },
+              "source_id": null,
+              "expected_revision_id": null,
+              "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+              "byte_length": 55,
+              "action": "add"
+            },
+            {
+              "item_id": "00000000000000000000000000000007",
+              "ordinal": 1,
+              "relative_path": "web/空.ts",
+              "classification": {
+                "group_id": "0000000000000000000000000000000c",
+                "component_side": "frontend",
+                "language": "ts"
+              },
+              "source_id": null,
+              "expected_revision_id": null,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "byte_length": 0,
+              "action": "add"
+            }
+          ],
+          "consumed_task_id": null
+        },
+        "task": {
+          "task_id": "00000000000000000000000000000009",
+          "domain_id": "00000000000000000000000000000002",
+          "registration_id": "00000000000000000000000000000003",
+          "preview_id": "00000000000000000000000000000001",
+          "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "idempotency_key": "synthetic-batch-001",
+          "confirmed_item_ids": [
+            "00000000000000000000000000000006",
+            "00000000000000000000000000000007"
+          ],
+          "retry_of_task_id": null,
+          "status": "partial_failed",
+          "revision": 5,
+          "counts": {
+            "total": 2,
+            "pending": 0,
+            "running": 0,
+            "succeeded": 1,
+            "failed": 1,
+            "cancelled": 0
+          },
+          "cancel_requested": false,
+          "mode": "catalogue_only",
+          "created_at": "2026-10-25T08:01:00Z",
+          "updated_at": "2026-10-25T08:01:05Z",
+          "execution_deadline": "2026-10-25T08:31:00Z",
+          "terminal_at": "2026-10-25T08:01:05Z"
+        },
+        "results": [
+          {
+            "item_id": "00000000000000000000000000000006",
+            "ordinal": 0,
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            },
+            "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+            "byte_length": 55,
+            "status": "succeeded",
+            "save_status": "created",
+            "source_id": "00000000000000000000000000000014",
+            "source_revision_id": "00000000000000000000000000000015",
+            "root_node_id": "123402a9409a7a2b160d360e2efff7bdf619d452b7f82b802efb02a1018d4886",
+            "catalogue_status": "registered",
+            "structure_status": "deferred",
+            "full_text_status": "disabled",
+            "vector_status": "disabled",
+            "code": "saved"
+          },
+          {
+            "item_id": "00000000000000000000000000000007",
+            "ordinal": 1,
+            "relative_path": "web/空.ts",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            },
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "byte_length": 0,
+            "status": "succeeded",
+            "save_status": "created",
+            "source_id": "00000000000000000000000000000016",
+            "source_revision_id": "00000000000000000000000000000017",
+            "root_node_id": "1fd840ddfe459c36b37ae2ead44022c74219dc09e5ae51ac32aa73ba42c93497",
+            "catalogue_status": "registered",
+            "structure_status": "deferred",
+            "full_text_status": "disabled",
+            "vector_status": "disabled",
+            "code": "saved"
+          }
+        ],
+        "base_manifest": null,
+        "manifest_preview": {
+          "preview_id": "0000000000000000000000000000001e",
+          "domain_id": "00000000000000000000000000000002",
+          "project_id": "0000000000000000000000000000000c",
+          "task_id": "00000000000000000000000000000009",
+          "task_manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "expected_manifest_id": null,
+          "manifest_sha256": "1400c7a605558d5c288ab15ce28d4dd421652dc474cb39e7ef827b2820d37d66",
+          "coverage": "explicit_selection",
+          "captured_atomically": false,
+          "created_at": "2026-10-25T08:02:00Z",
+          "expires_at": "2026-10-25T08:12:00Z",
+          "total_entries": 2,
+          "added": 2,
+          "replaced": 0,
+          "carried": 0,
+          "items": [
+            {
+              "registration_id": "00000000000000000000000000000003",
+              "relative_path": "web/卡片.tsx",
+              "source_id": "00000000000000000000000000000014",
+              "source_revision_id": "00000000000000000000000000000015",
+              "root_node_id": "123402a9409a7a2b160d360e2efff7bdf619d452b7f82b802efb02a1018d4886",
+              "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+              "byte_length": 55,
+              "classification": {
+                "group_id": "0000000000000000000000000000000c",
+                "component_side": "frontend",
+                "language": "tsx"
+              },
+              "origin_task_id": "00000000000000000000000000000009"
+            },
+            {
+              "registration_id": "00000000000000000000000000000003",
+              "relative_path": "web/空.ts",
+              "source_id": "00000000000000000000000000000016",
+              "source_revision_id": "00000000000000000000000000000017",
+              "root_node_id": "1fd840ddfe459c36b37ae2ead44022c74219dc09e5ae51ac32aa73ba42c93497",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "byte_length": 0,
+              "classification": {
+                "group_id": "0000000000000000000000000000000c",
+                "component_side": "frontend",
+                "language": "ts"
+              },
+              "origin_task_id": "00000000000000000000000000000009"
+            }
+          ],
+          "next_cursor": null,
+          "consumed_manifest_id": null
+        }
+      }
+    },
+    {
+      "id": "project-cannot-use-latest-head-substitute",
+      "kind": "project_from_task",
+      "valid": false,
+      "data": {
+        "preview": {
+          "preview_id": "00000000000000000000000000000001",
+          "domain_id": "00000000000000000000000000000002",
+          "registration_id": "00000000000000000000000000000003",
+          "observation_id": "00000000000000000000000000000004",
+          "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+          "root_id": "00000000000000000000000000000005",
+          "root_version": 2,
+          "policy_version": 1,
+          "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "mode": "catalogue_only",
+          "created_at": "2026-10-25T08:00:00Z",
+          "expires_at": "2026-10-25T08:10:00Z",
+          "byte_length": 55,
+          "items": [
+            {
+              "item_id": "00000000000000000000000000000006",
+              "ordinal": 0,
+              "relative_path": "web/卡片.tsx",
+              "classification": {
+                "group_id": "0000000000000000000000000000000c",
+                "component_side": "frontend",
+                "language": "tsx"
+              },
+              "source_id": null,
+              "expected_revision_id": null,
+              "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+              "byte_length": 55,
+              "action": "add"
+            },
+            {
+              "item_id": "00000000000000000000000000000007",
+              "ordinal": 1,
+              "relative_path": "web/空.ts",
+              "classification": {
+                "group_id": "0000000000000000000000000000000c",
+                "component_side": "frontend",
+                "language": "ts"
+              },
+              "source_id": null,
+              "expected_revision_id": null,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "byte_length": 0,
+              "action": "add"
+            }
+          ],
+          "consumed_task_id": null
+        },
+        "task": {
+          "task_id": "00000000000000000000000000000009",
+          "domain_id": "00000000000000000000000000000002",
+          "registration_id": "00000000000000000000000000000003",
+          "preview_id": "00000000000000000000000000000001",
+          "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "idempotency_key": "synthetic-batch-001",
+          "confirmed_item_ids": [
+            "00000000000000000000000000000006",
+            "00000000000000000000000000000007"
+          ],
+          "retry_of_task_id": null,
+          "status": "succeeded",
+          "revision": 5,
+          "counts": {
+            "total": 2,
+            "pending": 0,
+            "running": 0,
+            "succeeded": 2,
+            "failed": 0,
+            "cancelled": 0
+          },
+          "cancel_requested": false,
+          "mode": "catalogue_only",
+          "created_at": "2026-10-25T08:01:00Z",
+          "updated_at": "2026-10-25T08:01:05Z",
+          "execution_deadline": "2026-10-25T08:31:00Z",
+          "terminal_at": "2026-10-25T08:01:05Z"
+        },
+        "results": [
+          {
+            "item_id": "00000000000000000000000000000006",
+            "ordinal": 0,
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            },
+            "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+            "byte_length": 55,
+            "status": "succeeded",
+            "save_status": "created",
+            "source_id": "00000000000000000000000000000014",
+            "source_revision_id": "00000000000000000000000000000015",
+            "root_node_id": "123402a9409a7a2b160d360e2efff7bdf619d452b7f82b802efb02a1018d4886",
+            "catalogue_status": "registered",
+            "structure_status": "deferred",
+            "full_text_status": "disabled",
+            "vector_status": "disabled",
+            "code": "saved"
+          },
+          {
+            "item_id": "00000000000000000000000000000007",
+            "ordinal": 1,
+            "relative_path": "web/空.ts",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            },
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "byte_length": 0,
+            "status": "succeeded",
+            "save_status": "created",
+            "source_id": "00000000000000000000000000000016",
+            "source_revision_id": "00000000000000000000000000000017",
+            "root_node_id": "1fd840ddfe459c36b37ae2ead44022c74219dc09e5ae51ac32aa73ba42c93497",
+            "catalogue_status": "registered",
+            "structure_status": "deferred",
+            "full_text_status": "disabled",
+            "vector_status": "disabled",
+            "code": "saved"
+          }
+        ],
+        "base_manifest": null,
+        "manifest_preview": {
+          "preview_id": "0000000000000000000000000000001e",
+          "domain_id": "00000000000000000000000000000002",
+          "project_id": "0000000000000000000000000000000c",
+          "task_id": "00000000000000000000000000000009",
+          "task_manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "expected_manifest_id": null,
+          "manifest_sha256": "1400c7a605558d5c288ab15ce28d4dd421652dc474cb39e7ef827b2820d37d66",
+          "coverage": "explicit_selection",
+          "captured_atomically": false,
+          "created_at": "2026-10-25T08:02:00Z",
+          "expires_at": "2026-10-25T08:12:00Z",
+          "total_entries": 2,
+          "added": 2,
+          "replaced": 0,
+          "carried": 0,
+          "items": [
+            {
+              "registration_id": "00000000000000000000000000000003",
+              "relative_path": "web/卡片.tsx",
+              "source_id": "00000000000000000000000000000014",
+              "source_revision_id": "00000000000000000000000000000059",
+              "root_node_id": "123402a9409a7a2b160d360e2efff7bdf619d452b7f82b802efb02a1018d4886",
+              "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+              "byte_length": 55,
+              "classification": {
+                "group_id": "0000000000000000000000000000000c",
+                "component_side": "frontend",
+                "language": "tsx"
+              },
+              "origin_task_id": "00000000000000000000000000000009"
+            },
+            {
+              "registration_id": "00000000000000000000000000000003",
+              "relative_path": "web/空.ts",
+              "source_id": "00000000000000000000000000000016",
+              "source_revision_id": "00000000000000000000000000000017",
+              "root_node_id": "1fd840ddfe459c36b37ae2ead44022c74219dc09e5ae51ac32aa73ba42c93497",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "byte_length": 0,
+              "classification": {
+                "group_id": "0000000000000000000000000000000c",
+                "component_side": "frontend",
+                "language": "ts"
+              },
+              "origin_task_id": "00000000000000000000000000000009"
+            }
+          ],
+          "next_cursor": null,
+          "consumed_manifest_id": null
+        }
+      }
+    },
+    {
+      "id": "retry-unfinished-subset",
+      "kind": "retry",
+      "valid": true,
+      "data": {
+        "parent": {
+          "task_id": "00000000000000000000000000000009",
+          "domain_id": "00000000000000000000000000000002",
+          "registration_id": "00000000000000000000000000000003",
+          "preview_id": "00000000000000000000000000000001",
+          "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "idempotency_key": "synthetic-batch-001",
+          "confirmed_item_ids": [
+            "00000000000000000000000000000006",
+            "00000000000000000000000000000007"
+          ],
+          "retry_of_task_id": null,
+          "status": "partial_failed",
+          "revision": 5,
+          "counts": {
+            "total": 2,
+            "pending": 0,
+            "running": 0,
+            "succeeded": 1,
+            "failed": 1,
+            "cancelled": 0
+          },
+          "cancel_requested": false,
+          "mode": "catalogue_only",
+          "created_at": "2026-10-25T08:01:00Z",
+          "updated_at": "2026-10-25T08:01:05Z",
+          "execution_deadline": "2026-10-25T08:31:00Z",
+          "terminal_at": "2026-10-25T08:01:05Z"
+        },
+        "parent_user_id": "00000000000000000000000000000008",
+        "user_id": "00000000000000000000000000000008",
+        "domain_id": "00000000000000000000000000000002",
+        "registration_id": "00000000000000000000000000000003",
+        "parent_paths": [
+          "web/卡片.tsx",
+          "web/空.ts"
+        ],
+        "unfinished_paths": [
+          "web/空.ts"
+        ],
+        "selected_paths": [
+          "web/空.ts"
+        ],
+        "retry_of_task_id": "00000000000000000000000000000009"
+      }
+    },
+    {
+      "id": "retry-whole-original-selection",
+      "kind": "retry",
+      "valid": true,
+      "data": {
+        "parent": {
+          "task_id": "00000000000000000000000000000009",
+          "domain_id": "00000000000000000000000000000002",
+          "registration_id": "00000000000000000000000000000003",
+          "preview_id": "00000000000000000000000000000001",
+          "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "idempotency_key": "synthetic-batch-001",
+          "confirmed_item_ids": [
+            "00000000000000000000000000000006",
+            "00000000000000000000000000000007"
+          ],
+          "retry_of_task_id": null,
+          "status": "partial_failed",
+          "revision": 5,
+          "counts": {
+            "total": 2,
+            "pending": 0,
+            "running": 0,
+            "succeeded": 1,
+            "failed": 1,
+            "cancelled": 0
+          },
+          "cancel_requested": false,
+          "mode": "catalogue_only",
+          "created_at": "2026-10-25T08:01:00Z",
+          "updated_at": "2026-10-25T08:01:05Z",
+          "execution_deadline": "2026-10-25T08:31:00Z",
+          "terminal_at": "2026-10-25T08:01:05Z"
+        },
+        "parent_user_id": "00000000000000000000000000000008",
+        "user_id": "00000000000000000000000000000008",
+        "domain_id": "00000000000000000000000000000002",
+        "registration_id": "00000000000000000000000000000003",
+        "parent_paths": [
+          "web/卡片.tsx",
+          "web/空.ts"
+        ],
+        "unfinished_paths": [
+          "web/空.ts"
+        ],
+        "selected_paths": [
+          "web/卡片.tsx",
+          "web/空.ts"
+        ],
+        "retry_of_task_id": "00000000000000000000000000000009"
+      }
+    },
+    {
+      "id": "retry-cross-user",
+      "kind": "retry",
+      "valid": false,
+      "data": {
+        "parent": {
+          "task_id": "00000000000000000000000000000009",
+          "domain_id": "00000000000000000000000000000002",
+          "registration_id": "00000000000000000000000000000003",
+          "preview_id": "00000000000000000000000000000001",
+          "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "idempotency_key": "synthetic-batch-001",
+          "confirmed_item_ids": [
+            "00000000000000000000000000000006",
+            "00000000000000000000000000000007"
+          ],
+          "retry_of_task_id": null,
+          "status": "partial_failed",
+          "revision": 5,
+          "counts": {
+            "total": 2,
+            "pending": 0,
+            "running": 0,
+            "succeeded": 1,
+            "failed": 1,
+            "cancelled": 0
+          },
+          "cancel_requested": false,
+          "mode": "catalogue_only",
+          "created_at": "2026-10-25T08:01:00Z",
+          "updated_at": "2026-10-25T08:01:05Z",
+          "execution_deadline": "2026-10-25T08:31:00Z",
+          "terminal_at": "2026-10-25T08:01:05Z"
+        },
+        "parent_user_id": "00000000000000000000000000000008",
+        "user_id": "0000000000000000000000000000005b",
+        "domain_id": "00000000000000000000000000000002",
+        "registration_id": "00000000000000000000000000000003",
+        "parent_paths": [
+          "web/卡片.tsx",
+          "web/空.ts"
+        ],
+        "unfinished_paths": [
+          "web/空.ts"
+        ],
+        "selected_paths": [
+          "web/空.ts"
+        ],
+        "retry_of_task_id": "00000000000000000000000000000009"
+      }
+    },
+    {
+      "id": "retry-cross-registration",
+      "kind": "retry",
+      "valid": false,
+      "data": {
+        "parent": {
+          "task_id": "00000000000000000000000000000009",
+          "domain_id": "00000000000000000000000000000002",
+          "registration_id": "00000000000000000000000000000003",
+          "preview_id": "00000000000000000000000000000001",
+          "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "idempotency_key": "synthetic-batch-001",
+          "confirmed_item_ids": [
+            "00000000000000000000000000000006",
+            "00000000000000000000000000000007"
+          ],
+          "retry_of_task_id": null,
+          "status": "partial_failed",
+          "revision": 5,
+          "counts": {
+            "total": 2,
+            "pending": 0,
+            "running": 0,
+            "succeeded": 1,
+            "failed": 1,
+            "cancelled": 0
+          },
+          "cancel_requested": false,
+          "mode": "catalogue_only",
+          "created_at": "2026-10-25T08:01:00Z",
+          "updated_at": "2026-10-25T08:01:05Z",
+          "execution_deadline": "2026-10-25T08:31:00Z",
+          "terminal_at": "2026-10-25T08:01:05Z"
+        },
+        "parent_user_id": "00000000000000000000000000000008",
+        "user_id": "00000000000000000000000000000008",
+        "domain_id": "00000000000000000000000000000002",
+        "registration_id": "0000000000000000000000000000005c",
+        "parent_paths": [
+          "web/卡片.tsx",
+          "web/空.ts"
+        ],
+        "unfinished_paths": [
+          "web/空.ts"
+        ],
+        "selected_paths": [
+          "web/空.ts"
+        ],
+        "retry_of_task_id": "00000000000000000000000000000009"
+      }
+    },
+    {
+      "id": "retry-nonterminal-parent",
+      "kind": "retry",
+      "valid": false,
+      "data": {
+        "parent": {
+          "task_id": "00000000000000000000000000000009",
+          "domain_id": "00000000000000000000000000000002",
+          "registration_id": "00000000000000000000000000000003",
+          "preview_id": "00000000000000000000000000000001",
+          "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "idempotency_key": "synthetic-batch-001",
+          "confirmed_item_ids": [
+            "00000000000000000000000000000006",
+            "00000000000000000000000000000007"
+          ],
+          "retry_of_task_id": null,
+          "status": "queued",
+          "revision": 1,
+          "counts": {
+            "total": 2,
+            "pending": 2,
+            "running": 0,
+            "succeeded": 0,
+            "failed": 0,
+            "cancelled": 0
+          },
+          "cancel_requested": false,
+          "mode": "catalogue_only",
+          "created_at": "2026-10-25T08:01:00Z",
+          "updated_at": "2026-10-25T08:01:00Z",
+          "execution_deadline": "2026-10-25T08:31:00Z",
+          "terminal_at": null
+        },
+        "parent_user_id": "00000000000000000000000000000008",
+        "user_id": "00000000000000000000000000000008",
+        "domain_id": "00000000000000000000000000000002",
+        "registration_id": "00000000000000000000000000000003",
+        "parent_paths": [
+          "web/卡片.tsx",
+          "web/空.ts"
+        ],
+        "unfinished_paths": [
+          "web/空.ts"
+        ],
+        "selected_paths": [
+          "web/空.ts"
+        ],
+        "retry_of_task_id": "00000000000000000000000000000009"
+      }
+    },
+    {
+      "id": "retry-new-unselected-path",
+      "kind": "retry",
+      "valid": false,
+      "data": {
+        "parent": {
+          "task_id": "00000000000000000000000000000009",
+          "domain_id": "00000000000000000000000000000002",
+          "registration_id": "00000000000000000000000000000003",
+          "preview_id": "00000000000000000000000000000001",
+          "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "idempotency_key": "synthetic-batch-001",
+          "confirmed_item_ids": [
+            "00000000000000000000000000000006",
+            "00000000000000000000000000000007"
+          ],
+          "retry_of_task_id": null,
+          "status": "partial_failed",
+          "revision": 5,
+          "counts": {
+            "total": 2,
+            "pending": 0,
+            "running": 0,
+            "succeeded": 1,
+            "failed": 1,
+            "cancelled": 0
+          },
+          "cancel_requested": false,
+          "mode": "catalogue_only",
+          "created_at": "2026-10-25T08:01:00Z",
+          "updated_at": "2026-10-25T08:01:05Z",
+          "execution_deadline": "2026-10-25T08:31:00Z",
+          "terminal_at": "2026-10-25T08:01:05Z"
+        },
+        "parent_user_id": "00000000000000000000000000000008",
+        "user_id": "00000000000000000000000000000008",
+        "domain_id": "00000000000000000000000000000002",
+        "registration_id": "00000000000000000000000000000003",
+        "parent_paths": [
+          "web/卡片.tsx",
+          "web/空.ts"
+        ],
+        "unfinished_paths": [
+          "web/空.ts"
+        ],
+        "selected_paths": [
+          "web/other.ts"
+        ],
+        "retry_of_task_id": "00000000000000000000000000000009"
+      }
+    },
+    {
+      "id": "retry-successful-only-subset",
+      "kind": "retry",
+      "valid": false,
+      "data": {
+        "parent": {
+          "task_id": "00000000000000000000000000000009",
+          "domain_id": "00000000000000000000000000000002",
+          "registration_id": "00000000000000000000000000000003",
+          "preview_id": "00000000000000000000000000000001",
+          "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+          "idempotency_key": "synthetic-batch-001",
+          "confirmed_item_ids": [
+            "00000000000000000000000000000006",
+            "00000000000000000000000000000007"
+          ],
+          "retry_of_task_id": null,
+          "status": "partial_failed",
+          "revision": 5,
+          "counts": {
+            "total": 2,
+            "pending": 0,
+            "running": 0,
+            "succeeded": 1,
+            "failed": 1,
+            "cancelled": 0
+          },
+          "cancel_requested": false,
+          "mode": "catalogue_only",
+          "created_at": "2026-10-25T08:01:00Z",
+          "updated_at": "2026-10-25T08:01:05Z",
+          "execution_deadline": "2026-10-25T08:31:00Z",
+          "terminal_at": "2026-10-25T08:01:05Z"
+        },
+        "parent_user_id": "00000000000000000000000000000008",
+        "user_id": "00000000000000000000000000000008",
+        "domain_id": "00000000000000000000000000000002",
+        "registration_id": "00000000000000000000000000000003",
+        "parent_paths": [
+          "web/卡片.tsx",
+          "web/空.ts"
+        ],
+        "unfinished_paths": [
+          "web/空.ts"
+        ],
+        "selected_paths": [
+          "web/卡片.tsx"
+        ],
+        "retry_of_task_id": "00000000000000000000000000000009"
+      }
+    },
+    {
+      "id": "window-exact-bytes",
+      "kind": "window",
+      "valid": true,
+      "data": {
+        "preview_id": "00000000000000000000000000000001",
+        "item_id": "00000000000000000000000000000006",
+        "relative_path": "web/卡片.tsx",
+        "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+        "total_bytes": 55,
+        "offset": 0,
+        "byte_length": 55,
+        "text": "﻿// 合成卡片\r\nexport const Card = () => \"🧠\";\r\n",
+        "next_offset": null
+      }
+    },
+    {
+      "id": "window-outside-total",
+      "kind": "window",
+      "valid": false,
+      "data": {
+        "preview_id": "00000000000000000000000000000001",
+        "item_id": "00000000000000000000000000000006",
+        "relative_path": "web/卡片.tsx",
+        "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+        "total_bytes": 55,
+        "offset": 55,
+        "byte_length": 55,
+        "text": "﻿// 合成卡片\r\nexport const Card = () => \"🧠\";\r\n",
+        "next_offset": null
+      }
+    },
+    {
+      "id": "window-byte-count-mismatch",
+      "kind": "window",
+      "valid": false,
+      "data": {
+        "preview_id": "00000000000000000000000000000001",
+        "item_id": "00000000000000000000000000000006",
+        "relative_path": "web/卡片.tsx",
+        "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+        "total_bytes": 55,
+        "offset": 0,
+        "byte_length": 54,
+        "text": "﻿// 合成卡片\r\nexport const Card = () => \"🧠\";\r\n",
+        "next_offset": null
+      }
+    },
+    {
+      "id": "window-next-offset-mismatch",
+      "kind": "window",
+      "valid": false,
+      "data": {
+        "preview_id": "00000000000000000000000000000001",
+        "item_id": "00000000000000000000000000000006",
+        "relative_path": "web/卡片.tsx",
+        "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+        "total_bytes": 55,
+        "offset": 0,
+        "byte_length": 55,
+        "text": "﻿// 合成卡片\r\nexport const Card = () => \"🧠\";\r\n",
+        "next_offset": 1
+      }
+    }
+  ],
+  "digest_vectors": [
+    {
+      "id": "batch-preview-v04",
+      "kind": "batch",
+      "input": {
+        "preview_id": "00000000000000000000000000000001",
+        "domain_id": "00000000000000000000000000000002",
+        "registration_id": "00000000000000000000000000000003",
+        "observation_id": "00000000000000000000000000000004",
+        "observation_sha256": "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+        "root_id": "00000000000000000000000000000005",
+        "root_version": 2,
+        "policy_version": 1,
+        "manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+        "mode": "catalogue_only",
+        "created_at": "2026-10-25T08:00:00Z",
+        "expires_at": "2026-10-25T08:10:00Z",
+        "byte_length": 55,
+        "items": [
+          {
+            "item_id": "00000000000000000000000000000006",
+            "ordinal": 0,
+            "relative_path": "web/卡片.tsx",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            },
+            "source_id": null,
+            "expected_revision_id": null,
+            "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+            "byte_length": 55,
+            "action": "add"
+          },
+          {
+            "item_id": "00000000000000000000000000000007",
+            "ordinal": 1,
+            "relative_path": "web/空.ts",
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            },
+            "source_id": null,
+            "expected_revision_id": null,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "byte_length": 0,
+            "action": "add"
+          }
+        ],
+        "consumed_task_id": null
+      },
+      "user_id": "00000000000000000000000000000008",
+      "tokens": [
+        "lfen.batch.preview.v0.4",
+        "00000000000000000000000000000001",
+        "00000000000000000000000000000002",
+        "00000000000000000000000000000008",
+        "00000000000000000000000000000003",
+        "00000000000000000000000000000004",
+        "939b3047ce56e07c8d4e2995a00da00e301035a9cc73fa8e1413a2df70d16564",
+        "00000000000000000000000000000005",
+        2,
+        1,
+        "2026-10-25T08:00:00Z",
+        "2026-10-25T08:10:00Z",
+        2,
+        "00000000000000000000000000000006",
+        0,
+        "web/卡片.tsx",
+        null,
+        null,
+        "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+        55,
+        "0000000000000000000000000000000c",
+        "frontend",
+        "tsx",
+        "add",
+        "00000000000000000000000000000007",
+        1,
+        "web/空.ts",
+        null,
+        null,
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        0,
+        "0000000000000000000000000000000c",
+        "frontend",
+        "ts",
+        "add"
+      ],
+      "encoded_utf8_hex": "32333a6c66656e2e62617463682e707265766965772e76302e3433323a303030303030303030303030303030303030303030303030303030303030303133323a303030303030303030303030303030303030303030303030303030303030303233323a303030303030303030303030303030303030303030303030303030303030303833323a303030303030303030303030303030303030303030303030303030303030303333323a303030303030303030303030303030303030303030303030303030303030303436343a3933396233303437636535366530376338643465323939356130306461303065333031303335613963633733666138653134313361326466373064313635363433323a3030303030303030303030303030303030303030303030303030303030303035313a32313a3132303a323032362d31302d32355430383a30303a30305a32303a323032362d31302d32355430383a31303a30305a313a3233323a3030303030303030303030303030303030303030303030303030303030303036313a3031343a7765622fe58da1e789872e747378303a303a36343a64623534333064643265666533313439393236363665393439386563366434343534393338373632366539326134323434626361316665396565366436353435323a353533323a3030303030303030303030303030303030303030303030303030303030303063383a66726f6e74656e64333a747378333a61646433323a3030303030303030303030303030303030303030303030303030303030303037313a3131303a7765622fe7a9ba2e7473303a303a36343a65336230633434323938666331633134396166626634633839393666623932343237616534316534363439623933346361343935393931623738353262383535313a3033323a3030303030303030303030303030303030303030303030303030303030303063383a66726f6e74656e64323a7473333a616464",
+      "sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873"
+    },
+    {
+      "id": "project-manifest-v04",
+      "kind": "manifest",
+      "input": {
+        "preview_id": "0000000000000000000000000000001e",
+        "domain_id": "00000000000000000000000000000002",
+        "project_id": "0000000000000000000000000000000c",
+        "task_id": "00000000000000000000000000000009",
+        "task_manifest_sha256": "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+        "expected_manifest_id": null,
+        "manifest_sha256": "1400c7a605558d5c288ab15ce28d4dd421652dc474cb39e7ef827b2820d37d66",
+        "coverage": "explicit_selection",
+        "captured_atomically": false,
+        "created_at": "2026-10-25T08:02:00Z",
+        "expires_at": "2026-10-25T08:12:00Z",
+        "total_entries": 2,
+        "added": 2,
+        "replaced": 0,
+        "carried": 0,
+        "items": [
+          {
+            "registration_id": "00000000000000000000000000000003",
+            "relative_path": "web/卡片.tsx",
+            "source_id": "00000000000000000000000000000014",
+            "source_revision_id": "00000000000000000000000000000015",
+            "root_node_id": "123402a9409a7a2b160d360e2efff7bdf619d452b7f82b802efb02a1018d4886",
+            "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+            "byte_length": 55,
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "tsx"
+            },
+            "origin_task_id": "00000000000000000000000000000009"
+          },
+          {
+            "registration_id": "00000000000000000000000000000003",
+            "relative_path": "web/空.ts",
+            "source_id": "00000000000000000000000000000016",
+            "source_revision_id": "00000000000000000000000000000017",
+            "root_node_id": "1fd840ddfe459c36b37ae2ead44022c74219dc09e5ae51ac32aa73ba42c93497",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "byte_length": 0,
+            "classification": {
+              "group_id": "0000000000000000000000000000000c",
+              "component_side": "frontend",
+              "language": "ts"
+            },
+            "origin_task_id": "00000000000000000000000000000009"
+          }
+        ],
+        "next_cursor": null,
+        "consumed_manifest_id": null
+      },
+      "tokens": [
+        "lfen.project.manifest.preview.v0.4",
+        "0000000000000000000000000000001e",
+        "00000000000000000000000000000002",
+        "0000000000000000000000000000000c",
+        "00000000000000000000000000000009",
+        "46bddd47eed354447b2110f0c82678a184b8171ea076383ee63d62d031b8c873",
+        null,
+        "explicit_selection",
+        false,
+        "2026-10-25T08:02:00Z",
+        "2026-10-25T08:12:00Z",
+        2,
+        2,
+        0,
+        0,
+        "00000000000000000000000000000003",
+        "web/卡片.tsx",
+        "00000000000000000000000000000014",
+        "00000000000000000000000000000015",
+        "123402a9409a7a2b160d360e2efff7bdf619d452b7f82b802efb02a1018d4886",
+        "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545",
+        55,
+        "0000000000000000000000000000000c",
+        "frontend",
+        "tsx",
+        "00000000000000000000000000000009",
+        "00000000000000000000000000000003",
+        "web/空.ts",
+        "00000000000000000000000000000016",
+        "00000000000000000000000000000017",
+        "1fd840ddfe459c36b37ae2ead44022c74219dc09e5ae51ac32aa73ba42c93497",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        0,
+        "0000000000000000000000000000000c",
+        "frontend",
+        "ts",
+        "00000000000000000000000000000009"
+      ],
+      "encoded_utf8_hex": "33343a6c66656e2e70726f6a6563742e6d616e69666573742e707265766965772e76302e3433323a303030303030303030303030303030303030303030303030303030303030316533323a303030303030303030303030303030303030303030303030303030303030303233323a303030303030303030303030303030303030303030303030303030303030306333323a303030303030303030303030303030303030303030303030303030303030303936343a34366264646434376565643335343434376232313130663063383236373861313834623831373165613037363338336565363364363264303331623863383733303a31383a6578706c696369745f73656c656374696f6e353a66616c736532303a323032362d31302d32355430383a30323a30305a32303a323032362d31302d32355430383a31323a30305a313a32313a32313a30313a3033323a303030303030303030303030303030303030303030303030303030303030303331343a7765622fe58da1e789872e74737833323a303030303030303030303030303030303030303030303030303030303030313433323a303030303030303030303030303030303030303030303030303030303030313536343a3132333430326139343039613761326231363064333630653265666666376264663631396434353262376638326238303265666230326131303138643438383636343a64623534333064643265666533313439393236363665393439386563366434343534393338373632366539326134323434626361316665396565366436353435323a353533323a3030303030303030303030303030303030303030303030303030303030303063383a66726f6e74656e64333a74737833323a303030303030303030303030303030303030303030303030303030303030303933323a303030303030303030303030303030303030303030303030303030303030303331303a7765622fe7a9ba2e747333323a303030303030303030303030303030303030303030303030303030303030313633323a303030303030303030303030303030303030303030303030303030303030313736343a3166643834306464666534353963333662333761653265616434343032326337343231396463303965356165353161633332616137336261343263393334393736343a65336230633434323938666331633134396166626634633839393666623932343237616534316534363439623933346361343935393931623738353262383535313a3033323a3030303030303030303030303030303030303030303030303030303030303063383a66726f6e74656e64323a747333323a3030303030303030303030303030303030303030303030303030303030303039",
+      "sha256": "1400c7a605558d5c288ab15ce28d4dd421652dc474cb39e7ef827b2820d37d66"
+    }
+  ],
+  "raw_byte_vectors": [
+    {
+      "id": "bom-crlf-chinese-emoji",
+      "relative_path": "web/卡片.tsx",
+      "hex": "efbbbf2f2f20e59088e68890e58da1e789870d0a6578706f727420636f6e73742043617264203d202829203d3e2022f09fa7a0223b0d0a",
+      "byte_length": 55,
+      "sha256": "db5430dd2efe314992666e9498ec6d44549387626e92a4244bca1fe9ee6d6545"
+    },
+    {
+      "id": "empty",
+      "relative_path": "web/空.ts",
+      "hex": "",
+      "byte_length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "runtime_cases": [
+    {
+      "id": "lease-epoch-fencing",
+      "requires": "真实双进程Go/SQL；本轮未执行"
+    },
+    {
+      "id": "restart-mid-publish",
+      "requires": "真实进程中断和原生存储事务；本轮未执行"
+    },
+    {
+      "id": "cancel-commit-race",
+      "requires": "真实取消与逐项提交并发；本轮未执行"
+    },
+    {
+      "id": "project-head-cas",
+      "requires": "真实同基版竞争和固定C1阅读；本轮未执行"
+    }
+  ]
+}

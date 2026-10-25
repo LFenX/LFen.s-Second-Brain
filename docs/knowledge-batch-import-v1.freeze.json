@@ -1,0 +1,45 @@
+{
+  "contract": "C2",
+  "version": "0.4.0",
+  "status": "Frozen",
+  "recorded_at": "2026-10-25T14:45:50.945Z",
+  "authority": {
+    "outcome": "Approved",
+    "response": "确认冻结并继续实施",
+    "source": "本会话真人回答",
+    "question_ref": "call_663bc3f006064691893ce7afc91ed432",
+    "scope": "冻结81b81de候选并由两会话实施R3后端/前端/合成联调，模型0，无多轮审查"
+  },
+  "candidate_commit": "81b81dee62d92e00d2ff77e802e86e2784e618a4",
+  "candidate_hashes": {
+    "docs/knowledge-batch-import-v0.4.candidate.md": "3a3beec92e8bc0baae1c820a18e078717163988277aa9d304d762ff97d027b1f",
+    "docs/knowledge-batch-import-v0.4.candidate.openapi.json": "d57ca240df19a985341c25d60ce18590dacdcf221b5599b8223f558a7c379fc5",
+    "docs/knowledge-batch-import-v0.4.candidate.examples.json": "fe8bde9d99b8aaa7250a40a1adc86c6bee9ecf474cbf01af55253274f2e2e304"
+  },
+  "artifacts": {
+    "openapi": "docs/knowledge-batch-import-v1.openapi.json",
+    "openapi_sha256": "bd13fc400fc2a84f490b92ee865db75f76d89bf79a176658312ac3bea17d0fb8",
+    "examples": "docs/knowledge-batch-import-v1.examples.json",
+    "examples_sha256": "5249cdf57da0313346b7b30db0743079a175aaa8480604120b1bf92e4bdfdc53"
+  },
+  "old_contract_hashes": {
+    "docs/knowledge-sources-v1.openapi.json": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091",
+    "docs/knowledge-sources-v1.example.json": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a",
+    "docs/knowledge-sources-v1.freeze.json": "114bbfa2b4dd51eafc426716032486f666ace8a1a1284f4c1f4c9baf1f1b35c6",
+    "docs/knowledge-foundation-v1.openapi.json": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4",
+    "docs/knowledge-foundation-v1.example.json": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343",
+    "docs/knowledge-directory-import-v1.openapi.json": "6144c08d4cfe7ac98374dc51829c98290e2c88e3441dd38d250a3cd9cb4492e6",
+    "docs/knowledge-directory-import-v1.examples.json": "73618dd78419bb9027520b3dd8b3ef83b1794d3ad1c4d17d904ce7637c54ea72",
+    "docs/knowledge-directory-import-v1.freeze.json": "2af7575cfbc24510550a0b495e18aa30f94decf5f102c23d259d4f3135dbf5f1",
+    "docs/knowledge-directory-import-v0.3.candidate.md": "80eb846a81b6ade430012b585739fe6405ef8a7de5855f27941fe66a31e2cbfa",
+    "docs/knowledge-directory-import-v0.3.candidate.openapi.json": "da2c320b3c3fd8f6af2b566b40507a5b09c55791236b49b224347c8b9a457f3d",
+    "docs/knowledge-directory-import-v0.3.candidate.examples.json": "2680f9786a19cc49a0330ecfcda84249ef36aac20293341a18e17cbdfd132d4e"
+  },
+  "lifecycle_only_changes": [
+    "生命周期/说明/能力状态；请求路径/字段/限制/摘要/行为不变"
+  ],
+  "implementation_status_at_freeze": "AuthorizedNotYetVerified",
+  "user_delivery_decision": {
+    "outcome": "Pending"
+  }
+}

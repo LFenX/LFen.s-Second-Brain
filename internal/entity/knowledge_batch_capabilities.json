@@ -1,0 +1,17 @@
+{
+  "contract_version": "1.0.0",
+  "source_contract_version": "0.4.0",
+  "status": "Frozen",
+  "implemented": true,
+  "task_execution": "durable_bounded_batch",
+  "prerequisite_directory_version": "0.3.0",
+  "mode": "catalogue_only",
+  "max_items": 32,
+  "max_file_bytes": 2097152,
+  "max_batch_bytes": 67108864,
+  "max_manifest_entries": 1024,
+  "model_calls": 0,
+  "external_models": false,
+  "automatic_ingestion": false,
+  "allowed_model_uses": []
+}
