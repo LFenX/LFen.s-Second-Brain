@@ -2,7 +2,7 @@
 
 本地文本、文档与项目代码知识库：结构化整理、可选词法／结构／向量检索、带来源的回答与代码复用；后续通过 Web 和 MCP 共用后端服务。当前POC仍为原生混合检索，可选策略待实施。
 
-**本仓库是后续唯一开发入口，包含当前应用源码、品牌资产、方案和验证记录。** 当前v0.41补齐S2-R4包私有原件格式／暂存准备：[13顶层／76含子例](docs/stage2r4-original-preparation-verification.json)通过，含旧采集组件回归；密集中文近64MiB累计分配由50,562,560降至268,984字节。此前[私有MinIO原语](docs/stage2r4-stream-preparation-verification.json)7顶层／28含子例保持。均未连接Storage新接口、领域模型、路由、SQL、Web或正式应用；数值不是端到端性能。[0.5.0候选](docs/knowledge-original-import-v0.5.candidate.md)仍未冻结／接入，三件套保持37574fb原字节。运行main仍38ce003，[接续](docs/stage2r4-original-handoff.md)区分候选、内部准备与工程验收；主会话active持续目标、唯一写入，消费会话保持真人只读。
+**本仓库是后续唯一开发入口，包含当前应用源码、品牌资产、方案和验证记录。** 当前v0.42提取原生快照的唯一私有元数据核心，保留原字节入口和版本身份，[11顶层／27含子例](docs/stage2r4-snapshot-preparation-verification.json)通过，含C1和0.2／0.3／0.4消费者回归。此前[格式／暂存76项](docs/stage2r4-original-preparation-verification.json)已推送8048ede，[MinIO原语28项](docs/stage2r4-stream-preparation-verification.json)保留。没有新共享接口、领域模型／迁移、路由、Web或正式部署；数值不是端到端性能。[0.5.0候选](docs/knowledge-original-import-v0.5.candidate.md)仍未冻结／接入，三件套保持37574fb原字节。运行main仍38ce003，[接续](docs/stage2r4-original-handoff.md)区分候选、内部准备与工程验收；主会话active持续目标、唯一写入，消费会话保持真人只读。
 
 v0.38已完成S2-R3多文件任务／项目固定版本：用户批准81b81de后冻结[C2 0.4.0](docs/knowledge-batch-import-v1.freeze.json)，源码交付7309daf。Go持久任务、逐项认可、原键恢复、取消、清单基版合并与CAS、正式Web及合成真实联调已完成；[统一报告](docs/stage2r3-batch-verification.json)记录证据和发布状态。工程用户决定Pending；阶段2整体未退出。
 
@@ -23,7 +23,7 @@ v0.17的[知识域与可选Embedding决定](本地第二大脑知识库技术方
 B独立交付`8d62cc7`的68项Mock测试保留历史范围；本次集成增加真实HTTP拦截器回归，**6套69项测试、21文件格式／lint与生产构建通过**。原生Go／MySQL／MinIO真实链路通过，正式18080入口已加载；全量类型检查仍207项，本轮修改4文件0项，不称全仓绿色。[B说明第6节](docs/stage2b-import-ui-handoff.md)指向最新接续。
 
 1. 阅读 [会话接续说明](会话接续说明.md)，了解已确认决定、待确认事项和下一步边界。
-2. 阅读 [完整技术方案 v0.41](本地第二大脑知识库技术方案.md)：第40.15节是R4包私有格式／暂存准备，第40.14节保留流式原语，第40.13节保留候选与持续协调；第40.12节保留R3工程真实证据，第40.11节保留R3候选，第40.10节保留R2。第35章全链路及历史POC／七项问题／对照实验保持原范围。
+2. 阅读 [完整技术方案 v0.42](本地第二大脑知识库技术方案.md)：第40.16节是私有快照元数据核心，第40.15节保留格式／暂存，第40.14节保留流式原语，第40.13节保留候选与持续协调；第40.12节保留R3工程真实证据，第40.11节保留R3候选，第40.10节保留R2。第35章全链路及历史POC／七项问题／对照实验保持原范围。
 3. 需要讨论背景时，查阅 [会话副本](会话副本.md)。副本保存用户消息和助手回复，不含工具日志、内部推理和密钥。
 4. 当前API实测结果见 [百炼验证记录](阶段0-百炼API接入验证.json)；[Moark验证记录](阶段0-API接入验证.json) 及 [旧额度截图](moark-stage0-trial-quota-94.png) 保留历史事实。
 

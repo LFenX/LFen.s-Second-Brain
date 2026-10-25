@@ -56,6 +56,22 @@ func (s *FileCommitService) RecordSourceSnapshot(ctx context.Context, tx *gorm.D
 	if err := store.Put(ctx, source.ParentID, location, content); err != nil {
 		return nil, nil, err
 	}
+	return s.recordSourceSnapshot(ctx, tx, source, authorID, hash, int64(len(content)))
+}
+
+// recordSourceSnapshot records metadata for an object already written at its
+// SHA-256 address. The caller owns byte verification, authorization and the
+// transaction; this function neither reads the object nor publishes its source.
+func (s *FileCommitService) recordSourceSnapshot(ctx context.Context, tx *gorm.DB, source *entity.File, authorID, hash string, byteLength int64) (*entity.FileCommit, *entity.FileCommitItem, error) {
+	if byteLength < 0 || len(hash) != sha256.Size*2 {
+		return nil, nil, fmt.Errorf("invalid native snapshot metadata")
+	}
+	for _, character := range hash {
+		if (character < '0' || character > '9') && (character < 'a' || character > 'f') {
+			return nil, nil, fmt.Errorf("invalid native snapshot metadata")
+		}
+	}
+	location := ".objects/" + hash
 	tree := map[string]interface{}{}
 	previous, err := s.lockFolderCommit(ctx, tx, source.ParentID)
 	if err != nil {
@@ -65,13 +81,16 @@ func (s *FileCommitService) RecordSourceSnapshot(ctx context.Context, tx *gorm.D
 		if err := json.Unmarshal([]byte(*previous.TreeState), &tree); err != nil {
 			return nil, nil, fmt.Errorf("invalid native version tree: %w", err)
 		}
+		if tree == nil {
+			return nil, nil, fmt.Errorf("invalid native version tree: null")
+		}
 	}
 	operation := "add"
 	if _, exists := tree[source.ID]; exists {
 		operation = "modify"
 	}
 	tree[source.ID] = map[string]interface{}{"hash": hash, "location": location, "name": source.Name,
-		"parent_id": source.ParentID, "size": len(content), "status": "1"}
+		"parent_id": source.ParentID, "size": byteLength, "status": "1"}
 	encoded, err := json.Marshal(tree)
 	if err != nil {
 		return nil, nil, err

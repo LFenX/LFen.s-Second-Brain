@@ -1,6 +1,6 @@
 # 阶段2剩余任务与本机会话协作
 
-日期：2026-10-26；版本v0.41。A在`codex/stage2r4-original-preparation`继续完成[私有格式／暂存准备](stage2r4-original-preparation-verification.json)，13顶层／76含子例通过并修复跨块UTF-8分配；此前[私有MinIO原语](stage2r4-stream-preparation-verification.json)已推送00bed83。无共享Storage／领域／路由／SQL／Web或业务接线，[0.5.0候选](knowledge-original-import-v0.5.candidate.md)仍未冻结／接入／部署，三件套保持37574fb原字节。[接续](stage2r4-original-handoff.md)为当前入口。运行main仍38ce003，R3工程事实及用户Pending范围保持，阶段2整体未退出。
+日期：2026-10-26；版本v0.42。A在`codex/stage2r4-original-preparation`提取[原生快照私有核心](stage2r4-snapshot-preparation-verification.json)，11顶层／27含子例通过；保留既有字节入口及共享版本身份，无新公开接口／领域模型／迁移／路由／Web。此前格式／暂存8048ede、MinIO00bed83已推送。[0.5.0候选](knowledge-original-import-v0.5.candidate.md)仍未冻结／接入／部署，三件套保持37574fb原字节。[接续](stage2r4-original-handoff.md)为当前入口。运行main仍38ce003，R3工程事实及用户Pending范围保持，阶段2整体未退出。
 
 ## 1. 当前事实
 
@@ -51,3 +51,5 @@ A随后已把真人这项明确要求登记为**active持续目标**，覆盖阶
 A随后完成私有原件暂存／有限格式检查，复用已有文本探针；实测发现其跨块续字节会复制整块，通过拥有路径的16行必要修复消除按文件规模增长的分配。新原件57项及旧采集19项共76项通过；候选／接口没有因此变化。消费方当前无新写入或重复审查任务，主会话持续推进并维护证据；内部组件通过不代表0.5已批准或原件应用闭环已完成。
 
 阶段3的结构处理／AST／关系图与阅读优化，阶段4的可选索引／检索／引用复用包，阶段5的MCP模块临时授权，阶段6的人格记忆继续按第35章后置。本轮没有提前实施这些能力。
+
+A在8048ede后继续同分支完成原生快照私有元数据核心；现有字节入口统一调用，不新增第二套版本记录模型。无Storage单元、故障事务、原字节和三类导入消费者共27项通过，正式应用未部署。消费会话已接阶段3拥有路径／最小接入顺序的独立只读调查，不写文件或请求API；不是对本轮重复审查。0.5具体确认仍只阻塞受影响接入，主会话继续授权准备。

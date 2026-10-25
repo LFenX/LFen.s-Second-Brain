@@ -1,0 +1,123 @@
+{
+  "document_version": "v0.42",
+  "recorded_local_date": "2026-10-26",
+  "task": "S2-R4原生快照统一私有元数据核心准备",
+  "request_snapshot": "请注意后续的步骤，请你持续不断地进行下去，跟另外一个会话，甚至你可以开其他的会话去协调。但一个讯息是你必须要传达的，就是一定一定不能够停下来。一定一定就是至少说有一个会话不能停下来，要主会话不能停下来，你就是主会话，要牵动其他废话，持续不断地推进咱们这个工作，直到最后完成。",
+  "status": "PrivateSnapshotCoreVerified",
+  "branch": "codex/stage2r4-original-preparation",
+  "baseline": "8048ede8e226ae7ec6d7c2e797443a5bb3a73457",
+  "authority": {
+    "basis": "真人持续推进；既有拥有路径提取私有核心，不新增待批准接口或领域模型",
+    "c2_0_5_freeze": {
+      "outcome": "Pending"
+    },
+    "engineering_user_decision": {
+      "outcome": "Pending"
+    },
+    "multiround_review": "NotRun_UserDeclined"
+  },
+  "changes": {
+    "source_files": {
+      "internal/service/file/source_snapshot.go": "3404ed0010b63c907f4f322d814e70a1cf2adddfbeec59da1af79f787513ef92",
+      "internal/service/file/source_snapshot_metadata_test.go": "6bfc91b6ef45d4531cfce148fd624ab3e10bc90386630457fab85ced77fdcaab"
+    },
+    "public_signatures_changed": 0,
+    "new_shared_models": 0,
+    "routes_or_database_schema_changed": 0,
+    "web_changes": 0,
+    "new_dependencies": 0,
+    "server_built_or_deployed": false,
+    "existing_byte_entry": "RecordSourceSnapshot仍先计算SHA并Put原字节，再调用唯一私有recordSourceSnapshot记录原生版本元数据；函数签名及调用者不变",
+    "private_core": "只接收摘要/长度而不接正文，沿用同一folder锁、原生树、前驱、FileCommit/FileCommitItem；不I/O对象，不改File行，不执行知识修订发布或授权",
+    "necessary_guard": "JSON null版本树不再向nil map赋值；返回错误并由调用方事务回滚，防止拥有路径panic"
+  },
+  "verification": {
+    "command": "docker exec -w /work lfen-secondbrain-stage1-build bash build.sh --test -json -run '^TestKnowledge(SnapshotMetadata.*|SourcePreparationOriginals|AndNativeCommitsShareFolderHead|SnapshotRevisionCASAndNativeRead|SnapshotRollbackDoesNotPublishCatalogue|ImportRoundTripAndIdentity|DirectoryRoundTripAndFixedRevision|BatchRoundTripAndProjectVersions)$' ./internal/service/file ./internal/service/dataset",
+    "tier": "unit，内存SQLite/MemoryStorage或无Storage，无真实服务/网络/模型",
+    "passed": true,
+    "top_level": 11,
+    "including_subtests": 27,
+    "new_metadata": {
+      "top": 4,
+      "including_subtests": 16
+    },
+    "existing_file": {
+      "top": 2,
+      "including_subtests": 6
+    },
+    "existing_dataset": {
+      "top": 5,
+      "including_subtests": 5
+    },
+    "cases": [
+      "TestKnowledgeAndNativeCommitsShareFolderHead",
+      "TestKnowledgeSnapshotMetadataWithoutStorage",
+      "TestKnowledgeSnapshotMetadataRejectsInvalid/negative_length",
+      "TestKnowledgeSnapshotMetadataRejectsInvalid/short_digest",
+      "TestKnowledgeSnapshotMetadataRejectsInvalid/upper_digest",
+      "TestKnowledgeSnapshotMetadataRejectsInvalid/non_hex_digest",
+      "TestKnowledgeSnapshotMetadataRejectsInvalid",
+      "TestKnowledgeSnapshotMetadataFailureRollback/file_commit",
+      "TestKnowledgeSnapshotMetadataFailureRollback/file_commit_item",
+      "TestKnowledgeSnapshotMetadataFailureRollback/invalid_tree",
+      "TestKnowledgeSnapshotMetadataFailureRollback/null_tree",
+      "TestKnowledgeSnapshotMetadataFailureRollback/missing_folder",
+      "TestKnowledgeSnapshotMetadataFailureRollback/canceled",
+      "TestKnowledgeSnapshotMetadataFailureRollback",
+      "TestKnowledgeSnapshotMetadataBytePath/empty",
+      "TestKnowledgeSnapshotMetadataBytePath/unicode_bom_crlf",
+      "TestKnowledgeSnapshotMetadataBytePath",
+      "TestKnowledgeSourcePreparationOriginals/pdf",
+      "TestKnowledgeSourcePreparationOriginals/pptx",
+      "TestKnowledgeSourcePreparationOriginals/docx",
+      "TestKnowledgeSourcePreparationOriginals/bin",
+      "TestKnowledgeSourcePreparationOriginals",
+      "TestKnowledgeBatchRoundTripAndProjectVersions",
+      "TestKnowledgeDirectoryRoundTripAndFixedRevision",
+      "TestKnowledgeImportRoundTripAndIdentity",
+      "TestKnowledgeSnapshotRevisionCASAndNativeRead",
+      "TestKnowledgeSnapshotRollbackDoesNotPublishCatalogue"
+    ],
+    "package_results": [
+      {
+        "package": "ragflow/internal/service/file",
+        "elapsed_seconds": 0.143
+      },
+      {
+        "package": "ragflow/internal/service/dataset",
+        "elapsed_seconds": 0.243
+      }
+    ],
+    "log_sha256": "b8768673d01d3dc66f058832e480b1b28431c27bc07029c9e3f8c79c4d415d2d",
+    "source_equals_build": true,
+    "native_wrapper_units": "自动native/croptest单元通过；integration模型权重/推理测试未运行",
+    "proven": [
+      "无Storage状态可记录0/3MiB/64MiB元数据，不分配或读取声称的正文；同SHA不同File ID不会合并",
+      "完整树保留兄弟项、add/modify语义、固定旧树、共享前驱与严格递增时间，File源行不变",
+      "负长度/非规范SHA不创建记录；commit或item失败、损坏/null树、缺失folder、ctx取消不推进head，事务不泄露部分记录",
+      "既有字节入口的空内容/BOM/CRLF/中文/emoji与合成PDF/PPTX/DOCX/二进制原字节回读，原生/知识共享head",
+      "C1修订CAS/原文/回滚及0.2手工、0.3目录、0.4批次项目版本回归"
+    ],
+    "boundaries": [
+      "无Storage元数据测试不证明对象已存在或摘要对应字节；未来调用方必须先完成ready验证和对象写入",
+      "SQLite不能证明MySQL行锁、跨进程竞争/崩溃恢复或真实MinIO原子性",
+      "既有版本树仍整体JSON载入/序列化，空间随文件数量增长；不是百万文件可扩展性或恒内存证明",
+      "本批未构建/部署服务或浏览器验收，未运行不相关全量测试"
+    ]
+  },
+  "protection": {
+    "artifacts_unchanged": 20,
+    "main_runtime_unchanged": "38ce0031ae31bbf980a2ed27b0eb7ecc607d5a51",
+    "business_api_calls": 0,
+    "models": 0,
+    "online_fetches": 0,
+    "credentials_or_volumes_changed": false,
+    "object_or_history_gc": false
+  },
+  "pending": [
+    "0.5具体确认后才能接入公开流式能力/领域模型/上传状态/确认及固定原件读取",
+    "现有native树的规模问题另按结构阶段设计，不在本私有核心准备中扩大范围",
+    "整个项目持续目标active，阶段2仍未整体退出"
+  ],
+  "governance_note": "使用项目既有文档/忽略证据载体；不声称新一次真人批准、验收或正式机器Gate通过"
+}
