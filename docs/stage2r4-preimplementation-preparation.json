@@ -1,0 +1,306 @@
+{
+  "document_version": "v0.39",
+  "recorded_date": "2026-10-26",
+  "status": "PreimplementationPreparationOnly",
+  "candidate_commit": "37574fbfaa109121d8fba55840c0d669815bd4a3",
+  "candidate_publication_verified": {
+    "local_head_at_capture": "37574fbfaa109121d8fba55840c0d669815bd4a3",
+    "remote_branch_at_capture": "37574fbfaa109121d8fba55840c0d669815bd4a3",
+    "equal": true,
+    "main_unchanged": true,
+    "candidate_three_artifacts_unchanged": true,
+    "protected_contract_files_unchanged": 17
+  },
+  "authority": {
+    "new_business_interfaces": "Pending concrete C2 0.5.0 confirmation",
+    "synthetic_only": true,
+    "model_calls": 0,
+    "multiple_round_review": false,
+    "current_writer": "A",
+    "user_decision": {
+      "outcome": "Pending"
+    }
+  },
+  "fixtures": {
+    "files": 24,
+    "total_bytes": 278933675,
+    "readback_sha256_all_equal": true,
+    "manifest_sha256": "952987a6deedc774c545546edbb2061bcc76e1c968209b0655fdb0e5fc9dfc33",
+    "storage": "ignored .local-data/stage2r4-20261026/fixtures; not Git content",
+    "details": [
+      {
+        "file": "valid/pdf/v1.pdf",
+        "byte_length": 592,
+        "sha256": "f8a356fe976458855dc64bf559296a759c7b0c005171adc9aeb042c36809fa91",
+        "expected": "accept_original",
+        "note": "Minimal structural fixture; Office application rendering not verified"
+      },
+      {
+        "file": "valid/docx/v1.docx",
+        "byte_length": 1014,
+        "sha256": "7735ff48d065e21f2d2f93a48eb772356d4df833e87021442af1c9435ff45ae4",
+        "expected": "accept_original",
+        "note": "Minimal structural fixture; Office application rendering not verified"
+      },
+      {
+        "file": "valid/pptx/v1.pptx",
+        "byte_length": 1715,
+        "sha256": "35a6a1895b9598cf8ddb3b1e4bcaf4ec003e7bc858fcffea7dd222ccd3ea0f5a",
+        "expected": "accept_original",
+        "note": "Minimal structural fixture; Office application rendering not verified"
+      },
+      {
+        "file": "valid/pdf/v2.pdf",
+        "byte_length": 592,
+        "sha256": "a5dba76036921343ffd9628e1c9f0051e42511a0bda215e4d536a47dba41a367",
+        "expected": "accept_original",
+        "note": "Minimal structural fixture; Office application rendering not verified"
+      },
+      {
+        "file": "valid/docx/v2.docx",
+        "byte_length": 1014,
+        "sha256": "c3e9a9e1ccb9bb56c7bbc599997c45adc092e3e9fcea3f5297ea2c392ac3eb31",
+        "expected": "accept_original",
+        "note": "Minimal structural fixture; Office application rendering not verified"
+      },
+      {
+        "file": "valid/pptx/v2.pptx",
+        "byte_length": 1715,
+        "sha256": "9360211192f7f1cfd36a0bc9f0672366fceacab00378f25211842a5fe04eefb2",
+        "expected": "accept_original",
+        "note": "Minimal structural fixture; Office application rendering not verified"
+      },
+      {
+        "file": "valid/text/3MiB-v1.tsx",
+        "byte_length": 3145728,
+        "sha256": "cbdf5538043392ca85004fbe198bda687e1beeba0ff53c193d7f473395a6952f",
+        "expected": "accept_original",
+        "note": "BOM/CRLF/Chinese/NFC+NFD; emoji begins at byte 65534 crossing 64KiB; synthetic TSX, not real project"
+      },
+      {
+        "file": "valid/text/3MiB-v2.tsx",
+        "byte_length": 3145728,
+        "sha256": "c27bcfd10495baa675612b76e01db9caaab30b1f83bfd27bf03a4dfbc257b161",
+        "expected": "accept_original",
+        "note": "BOM/CRLF/Chinese/NFC+NFD; emoji begins at byte 65534 crossing 64KiB; synthetic TSX, not real project"
+      },
+      {
+        "file": "valid/text/32MiB-v1.tsx",
+        "byte_length": 33554432,
+        "sha256": "a28a8e599cef9048f5c2dc2c777e302d0e597dceb8e175c57a00b34017f03221",
+        "expected": "accept_original",
+        "note": "BOM/CRLF/Chinese/NFC+NFD; emoji begins at byte 65534 crossing 64KiB; synthetic TSX, not real project"
+      },
+      {
+        "file": "valid/text/32MiB-v2.tsx",
+        "byte_length": 33554432,
+        "sha256": "561b9e77817aca21995fe88c25cfcc3e60012eb49727e9a85469013df1254955",
+        "expected": "accept_original",
+        "note": "BOM/CRLF/Chinese/NFC+NFD; emoji begins at byte 65534 crossing 64KiB; synthetic TSX, not real project"
+      },
+      {
+        "file": "valid/text/64MiB-v1.tsx",
+        "byte_length": 67108864,
+        "sha256": "3f2b6a6078caad2d45a425561f226108e3a5764b2e506ca24dae01b3863eb666",
+        "expected": "accept_original",
+        "note": "BOM/CRLF/Chinese/NFC+NFD; emoji begins at byte 65534 crossing 64KiB; synthetic TSX, not real project"
+      },
+      {
+        "file": "valid/text/64MiB-v2.tsx",
+        "byte_length": 67108864,
+        "sha256": "94ef8bb8fcb1ca59136103b73990e1e359b47a9d5f5a6e4042d5843b2b84da68",
+        "expected": "accept_original",
+        "note": "BOM/CRLF/Chinese/NFC+NFD; emoji begins at byte 65534 crossing 64KiB; synthetic TSX, not real project"
+      },
+      {
+        "file": "boundary/2MiB.tsx",
+        "byte_length": 2097152,
+        "sha256": "de538935c7bc0c5df4c7cba42bd173208b2bc52da48cb4454bc6f41d9d31d6c5",
+        "expected": "accept_original",
+        "note": "BOM/CRLF/Chinese/NFC+NFD; emoji begins at byte 65534 crossing 64KiB; synthetic TSX, not real project"
+      },
+      {
+        "file": "boundary/2MiB-plus1.tsx",
+        "byte_length": 2097153,
+        "sha256": "626661b32371bddbd798c41c36f192ed050e14a0c0711c9e538770a8d55bba84",
+        "expected": "accept_original",
+        "note": "BOM/CRLF/Chinese/NFC+NFD; emoji begins at byte 65534 crossing 64KiB; synthetic TSX, not real project"
+      },
+      {
+        "file": "boundary/64MiB-plus1.tsx",
+        "byte_length": 67108865,
+        "sha256": "ac45da8ad727651a8645c07ec2f7a0b3bfb81d02d9b9401d9f1ff1aae0930e9f",
+        "expected": "reject_size",
+        "note": "BOM/CRLF/Chinese/NFC+NFD; emoji begins at byte 65534 crossing 64KiB; synthetic TSX, not real project"
+      },
+      {
+        "file": "negative/empty.pdf",
+        "byte_length": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "expected": "reject_size",
+        "note": "Empty binary original unsupported"
+      },
+      {
+        "file": "negative/fake.pdf",
+        "byte_length": 23,
+        "sha256": "b6b2210eedf1ce1cadb13293c09bde71b671fe8e5aabdf21bd07ff570ec596db",
+        "expected": "reject_media",
+        "note": "Wrong signature"
+      },
+      {
+        "file": "negative/truncated.pdf",
+        "byte_length": 200,
+        "sha256": "c36aa24cabf483d60e579dfd1a69b262dceec880969b75e65508f650914dfe1b",
+        "expected": "reject_media",
+        "note": "Missing PDF EOF"
+      },
+      {
+        "file": "negative/invalid-utf8.tsx",
+        "byte_length": 6,
+        "sha256": "d0a541eb0efe9aa50020e72c106c2891a3828256d7b226e4e5ac03ecc14c95a8",
+        "expected": "reject_text",
+        "note": "Invalid UTF-8"
+      },
+      {
+        "file": "negative/nul.tsx",
+        "byte_length": 21,
+        "sha256": "712099289d148fa717ceb7215380c2444d53f54085a3cd96f55710e798107674",
+        "expected": "reject_text",
+        "note": "NUL marker"
+      },
+      {
+        "file": "negative/private-key.tsx",
+        "byte_length": 63,
+        "sha256": "fbcca4f22b8fc20b233f9054d3faaa07d31ecc1fd84e838c0a2bf8b03c90e29d",
+        "expected": "reject_credential_marker",
+        "note": "Not a real key; recognizer rejection case"
+      },
+      {
+        "file": "negative/macro.docx",
+        "byte_length": 1160,
+        "sha256": "3efe9a94554b488c2dc06e2c2e624b3b71c0a7974696ecee7db2f80ff903318d",
+        "expected": "reject_office_macro",
+        "note": "No executable code"
+      },
+      {
+        "file": "negative/zip-slip.docx",
+        "byte_length": 1130,
+        "sha256": "b30259755d2e0f0dc24332dc474ffc819ccfa0ef0560374018c338583fa65f68",
+        "expected": "reject_zip_member",
+        "note": "Archive only; never extract"
+      },
+      {
+        "file": "negative/high-ratio.docx",
+        "byte_length": 3212,
+        "sha256": "313b055de1c63588271f74bd3d958899a20452830856615dbd1cff86b3c48efb",
+        "expected": "reject_zip_ratio",
+        "note": "Bounded synthetic 2MiB member"
+      }
+    ],
+    "coverage": [
+      "PDF/PPTX/DOCX各两版最小结构包",
+      "3/32/64MiB合成TSX各两版，BOM/中文/emoji/NFC+NFD/CRLF",
+      "2MiB、2MiB+1、64MiB+1边界",
+      "空PDF、伪PDF、截断PDF、非法UTF-8、NUL、合成私钥标记",
+      "不执行的Office宏标记、ZIP越级成员、高压缩比"
+    ],
+    "limitations": [
+      "只准备原件输入和回读SHA，不是原件业务接纳通过",
+      "Office包采用已有最小合成结构，未用Office软件渲染",
+      "未上传这些文件到应用或外部模型",
+      "本机忽略夹具与脚本不随Git迁移，正式Go测试将重建所需夹具"
+    ]
+  },
+  "transport_probe": {
+    "passed": true,
+    "cases": [
+      {
+        "name": "File含非UTF8二进制",
+        "passed": true,
+        "byte_length": 6,
+        "sha256": "194e9e9a49a4a5cf35bb3914c3a61eb6afc4d4fddd418cdd922fc046fe2d2137",
+        "same_object": true,
+        "authentication_attached": true,
+        "signal_and_progress_handler_preserved": true
+      },
+      {
+        "name": "Blob含BOM中文emoji和CRLF",
+        "passed": true,
+        "byte_length": 21,
+        "sha256": "075492eeab7a6530cc8b045bd78fdd4a45154bea6a1c109ccfbf2173aa5b3df9",
+        "same_object": true,
+        "authentication_attached": true,
+        "signal_and_progress_handler_preserved": true
+      },
+      {
+        "name": "实际合成PPTX原字节",
+        "passed": true,
+        "byte_length": 1715,
+        "sha256": "35a6a1895b9598cf8ddb3b1e4bcaf4ec003e7bc858fcffea7dd222ccd3ea0f5a",
+        "same_object": true,
+        "authentication_attached": true,
+        "signal_and_progress_handler_preserved": true
+      },
+      {
+        "name": "反例：data直接传File被现有转换成空JSON",
+        "passed": true,
+        "expected_corruption_observed": true
+      },
+      {
+        "name": "既有序列化JSON路径保持",
+        "passed": true
+      },
+      {
+        "name": "已中止请求未进入adapter",
+        "passed": true
+      },
+      {
+        "name": "复用原生401清理和跳转，依赖均为隔离stub",
+        "passed": true
+      }
+    ],
+    "source_modules": {
+      "web/src/utils/common-util.ts": "21a418013e73d3863b2d501cab9a909d801aa9a793ca8e1d2aa836f5e162029e",
+      "web/src/utils/next-request.ts": "0c05154b266e5179f15f393f110f0147042dd2d90ce3b9137f6d873aa1a59c0a",
+      "web/src/utils/register-server.ts": "015ebbb871081a2a7e156b8470dad5380e41150db543dc6529ef86020bfb89fd"
+    },
+    "axios_version": "1.13.6",
+    "real_http_calls": 0,
+    "model_calls": 0,
+    "method": "对实际common-util、next-request和registerNextServer源码仅做TS转译，执行真实Axios请求拦截/转换，使用假adapter和隔离认证/UI依赖",
+    "boundary": "Actual common-util, next-request interceptors and registerNextServer execute against actual Axios with synthetic adapter. No browser/XHR/network/progress emission or server validation was executed; not a new production original-service or R4 runtime pass.",
+    "not_verified": [
+      "真实浏览器XHR/进度发送/中断",
+      "服务端流式接收、SQL、MinIO和固定读取",
+      "正式0.5 service/Hook/页面",
+      "大文件浏览器内存及运行吞吐"
+    ]
+  },
+  "next_source_investigation": {
+    "document": "docs/stage2r5-web-rss-preparation.md",
+    "consumer_thread": "01a17244-5107-7aa3-beed-2ea36062d042",
+    "mode": "本地只读，A抽核关键路径",
+    "new_contract_or_interface": false,
+    "online_requests": 0,
+    "models": 0
+  },
+  "continuity": {
+    "instruction_relayed": true,
+    "current_coordinator_work": "R4候选已推送后继续合成夹具、运输验证和R5事实归档；未等待消费会话停工",
+    "consumer_next_task": "已接R6生命周期只读能力盘点，无写入或真实移动/删除",
+    "human_gate": "具体0.5候选已提交确认；不因持续推进指令默认为已批准新共享接口"
+  },
+  "source_scope": {
+    "application_source_changes": 0,
+    "runtime_changes": 0,
+    "business_http_calls": 0,
+    "online_fetches": 0,
+    "model_calls": 0,
+    "credentials_in_git": false
+  },
+  "incomplete_items": [
+    "R4契约尚未获得新批准，后端/前端工程未开始",
+    "R5和R6只有前置事实调查，不是候选冻结或实施",
+    "整体项目未完成，继续按既定顺序推进"
+  ]
+}

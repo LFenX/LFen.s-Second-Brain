@@ -40,3 +40,11 @@ raw PUT仍走`registerNextServer→next-request`原认证。局部Axios transfor
 离线结构／语义／摘要／端点和17保护哈希的实际结果在统一报告。候选没有业务API、模型、在线来源抓取、Go／Web实现或部署变化，未重跑418项旧Web／176项Go含子例。R4工程验收见行为定义第9节：有效文档和大文本两版SHA、原字节、超限／格式／凭据拒绝、崩溃／租约／同键、失败不推进头、授权Range、C1／0.4隔离、三档各3次性能和零外发。
 
 阶段2仍剩R4实施→R5标准网页／订阅→R6显式移动／归档／保留→R7整体退出。真实资料与模型调用仍未放开；阶段3—6按完整链路继续，当前没有宣称全项目完成。
+
+## 5. 候选提交后的并行准备
+
+候选三件套已在`37574fb`推送，main仍38ce003；具体新契约确认已向真人提交，三件套未因后续准备改变。等待相关接入批准期间A继续准备24份合成原件（278,933,675字节），PDF／PPTX／DOCX及3／32／64MiB文本各两版和边界／格式反例，逐份SHA回读一致；样本仅存本机忽略目录，不上传应用或模型，不称业务接纳通过。
+
+另在隔离adapter下执行真实`common-util→next-request→registerNextServer→Axios1.13.6`：7例通过，覆盖局部transformRequest保留File／Blob及原字节、反例直接data:File被转空JSON、既有JSON、signal和原生401处理；认证／UI依赖被隔离，真实HTTP0。这是实现前运输可行性证据，不是正式service、浏览器XHR／进度、MinIO／SQL或性能验收。[准备记录](stage2r4-preimplementation-preparation.json)保留边界。
+
+消费会话的[R5网页／RSS只读调查](stage2r5-web-rss-preparation.md)已归档，关键路径由A核实；消费方随后接续R6原生生命周期能力盘点，仍无文件写入、真实移动／删除或新接口。主会话负责接续，未把同行完成当作全体停工条件。
