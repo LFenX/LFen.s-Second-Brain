@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useParams } from 'react-router';
+import { Link, useParams, useSearchParams } from 'react-router';
 import { Button } from '@/components/ui/button';
 import {
   useKnowledgeContract,
@@ -9,13 +9,18 @@ import {
   useKnowledgeNode,
   useKnowledgeNodes,
   useKnowledgeSources,
+  useKnowledgeSource,
 } from '@/hooks/use-knowledge-foundation';
 import type {
   KnowledgeGroup,
   KnowledgeNode,
   KnowledgeSource,
 } from '@/interfaces/database/knowledge-foundation';
-import type { KnowledgeRequestError } from '@/services/knowledge-foundation-service';
+import { KnowledgeRequestError } from '@/services/knowledge-foundation-service';
+import {
+  knowledgeFixedTarget,
+  type KnowledgeFixedTarget,
+} from '@/utils/knowledge-source-link';
 import SourceContent from './content';
 import {
   CatalogueEmpty,
@@ -322,7 +327,50 @@ function NodeBrowser({
   );
 }
 
-function DomainCatalogue({ domainId }: { domainId: string }) {
+function FixedRevisionBrowser({
+  domainId,
+  target,
+  onRefresh,
+}: {
+  domainId: string;
+  target: KnowledgeFixedTarget;
+  onRefresh: () => void;
+}) {
+  const query = useKnowledgeSource(domainId, target.revisionId);
+  if (query.isError)
+    return <CatalogueFailure error={query.error} onRetry={onRefresh} />;
+  if (query.isPending) return <CatalogueLoading />;
+  const source = query.data;
+  if (
+    source.domain_id !== domainId ||
+    source.source_id !== target.sourceId ||
+    source.source_revision_id !== target.revisionId ||
+    source.root_node_id !== target.rootNodeId ||
+    source.sha256 !== target.sha256
+  )
+    return (
+      <CatalogueFailure
+        error={new KnowledgeRequestError(409, 'knowledge_source_integrity')}
+        onRetry={onRefresh}
+      />
+    );
+  return (
+    <NodeBrowser
+      key={source.source_revision_id}
+      domainId={domainId}
+      source={source}
+      onRefresh={onRefresh}
+    />
+  );
+}
+
+function DomainCatalogue({
+  domainId,
+  target,
+}: {
+  domainId: string;
+  target: KnowledgeFixedTarget | null;
+}) {
   const { t } = useTranslation();
   const domain = useKnowledgeDomain(domainId);
   const [path, setPath] = useState<KnowledgeGroup[]>([]);
@@ -383,6 +431,12 @@ function DomainCatalogue({ domainId }: { domainId: string }) {
           <Button variant="outline" onClick={handleRefresh}>
             {t('knowledgeCatalogue.refresh')}
           </Button>
+          <Link
+            className="text-sm underline"
+            to={`/dataset/knowledge-import/${domainId}`}
+          >
+            {t('knowledgeImport.title')}
+          </Link>
         </div>
         <p className="text-sm text-text-secondary">
           {t('knowledgeCatalogue.policy')}
@@ -392,6 +446,17 @@ function DomainCatalogue({ domainId }: { domainId: string }) {
           {domain.data.category}
         </p>
       </header>
+      {target && (
+        <p className="pt-3 text-sm text-text-secondary">
+          {t('knowledgeImport.pinnedHint')}{' '}
+          <Link
+            className="underline"
+            to={`/dataset/knowledge-catalogue/${domainId}`}
+          >
+            {t('knowledgeImport.backCatalogue')}
+          </Link>
+        </p>
+      )}
       <div
         key={generation}
         className="grid min-h-0 flex-1 grid-cols-1 gap-6 overflow-auto pt-4 xl:grid-cols-[minmax(16rem,1fr)_minmax(0,2fr)]"
@@ -432,7 +497,13 @@ function DomainCatalogue({ domainId }: { domainId: string }) {
           aria-label={t('knowledgeCatalogue.original')}
           className="min-w-0 overflow-auto"
         >
-          {source ? (
+          {target ? (
+            <FixedRevisionBrowser
+              domainId={domainId}
+              target={target}
+              onRefresh={handleRefresh}
+            />
+          ) : source ? (
             <NodeBrowser
               key={source.source_revision_id}
               domainId={domainId}
@@ -450,11 +521,19 @@ function DomainCatalogue({ domainId }: { domainId: string }) {
 
 export default function KnowledgeCatalogue() {
   const { id = '' } = useParams();
+  const [params, setParams] = useSearchParams();
   const { t } = useTranslation();
   const contract = useKnowledgeContract();
   const handleRetry = () => {
     void contract.refetch();
   };
+  const handleClearTarget = () => setParams({});
+  let target: KnowledgeFixedTarget | null;
+  try {
+    target = knowledgeFixedTarget(params);
+  } catch (error) {
+    return <CatalogueFailure error={error} onRetry={handleClearTarget} />;
+  }
   if (contract.isError)
     return <CatalogueFailure error={contract.error} onRetry={handleRetry} />;
   if (contract.isPending) return <CatalogueLoading />;
@@ -482,7 +561,11 @@ export default function KnowledgeCatalogue() {
       >
         {t('knowledgeCatalogue.datasets')}
       </Link>
-      <DomainCatalogue key={id} domainId={id} />
+      <DomainCatalogue
+        key={`${id}:${params.toString()}`}
+        domainId={id}
+        target={target}
+      />
     </section>
   );
 }

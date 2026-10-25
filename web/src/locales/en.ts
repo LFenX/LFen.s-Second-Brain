@@ -1,5 +1,97 @@
 export default {
   translation: {
+    knowledgeImport: {
+      title: 'Import synthetic text',
+      scope:
+        'One UTF-8 text or code file · Private catalogue and original · No parsing, full-text/vector indexing or model calls',
+      chooseDomain: 'Choose an existing domain',
+      backCatalogue: 'Back to catalogue',
+      steps: 'Import steps',
+      registration: 'Register source',
+      privatePreview: 'Private preview',
+      confirmation: 'Explicit confirmation',
+      receipt: 'Import receipt',
+      registrationHint:
+        'Register 1–16 exact relative paths, one per line. This saves the scope and defaults, not the original text. The same key and configuration recover the existing registration.',
+      registrationKey: 'Registration key',
+      registrationName: 'Source name',
+      includePaths: 'Allowed relative paths',
+      register: 'Save source registration',
+      checkRegistration: 'Check registration using the original configuration',
+      registered: 'Registered; original not imported yet',
+      group: 'Group',
+      noGroup: 'No group',
+      selectedGroup: 'Keep the selected group',
+      rootGroups: 'Domain root groups',
+      childGroups: 'Browse children',
+      componentSide: 'Component side',
+      language: 'Language label (optional)',
+      sourceHint:
+        'Select one registered path and a synthetic file. Maximum 2MiB; UTF-8 text, BOM and line endings are preserved. The server decides supported formats and paths. Any input change requires a new preview.',
+      relativePath: 'Relative path',
+      file: 'Synthetic UTF-8 file',
+      localText: 'Original text for this import (editable)',
+      loadSample: 'Load synthetic example',
+      preview: 'Create private preview',
+      previewHint:
+        'This is a private preview. No original or catalogue entry has been published. The preview lasts 10 minutes; the server decides expiry.',
+      action: 'Operation',
+      add: 'Add',
+      update: 'Update',
+      unchanged: 'Unchanged; keep revision',
+      bytes: 'Original bytes',
+      expectedRevision: 'Preview baseline revision',
+      firstImport: 'First import',
+      expires: 'Preview expires at',
+      consent:
+        'I have checked this synthetic original, path and classification, and explicitly confirm saving it to the private catalogue.',
+      confirm: 'Confirm this import',
+      recovery: 'Confirm result',
+      submitting: 'Submitting. Please wait before taking another action.',
+      pending: 'Import outcome is unknown',
+      pendingHint:
+        'A timeout or disconnect does not cancel an import. Check the receipt with the original preview and idempotent request. No automatic key replacement or retry loop.',
+      checkResult: 'Check original request / receipt',
+      retryPreview: 'Select the file again and preview',
+      anotherFile: 'Import another file',
+      receiptCreated: 'Receipt read; check the business outcome below',
+      receiptId: 'Receipt ID',
+      succeeded: 'This import succeeded',
+      failed: 'This import failed',
+      saved: 'Original saved',
+      saveStatus: 'Original save status',
+      catalogue: 'Catalogue status',
+      catalogued: 'Added to catalogue',
+      notCatalogued: 'Not added by this import',
+      structure: 'Structure processing',
+      deferred: 'Deferred',
+      fullText: 'Full-text index',
+      vector: 'Vector index',
+      disabled: 'Disabled',
+      modelCalls: 'Model calls',
+      unchangedHint:
+        'The original and classification are unchanged. The existing fixed revision is retained.',
+      failedHint:
+        'No new revision was published. Select the file again, create a new preview and explicitly confirm before retrying.',
+      readRevision: 'Read this fixed revision',
+      pinnedHint:
+        'Reading the receipt’s fixed revision. Refreshing the catalogue does not switch versions.',
+      versionMismatch:
+        'Load a backend providing frozen C2 0.2.0 and C1 1.0.0, then retry.',
+      notVisible:
+        'This account cannot access the private domain or content. Sign in again or check permissions.',
+      conflict:
+        'The original request or preview cannot continue. Check the original request / receipt before making a new preview. Do not infer the cause from error text.',
+      tooLarge:
+        'Capacity exceeded: original 2MiB, preview JSON 16MiB, registration / confirmation JSON 16KiB. No automatic truncation.',
+      unsupported:
+        'Only server-supported UTF-8 text or code is allowed. Invalid UTF-8 and NUL are rejected. Check the format and path; no automatic conversion.',
+      invalidInput:
+        'Check the registration key, path count and fields. Registration / confirmation JSON is limited to 16KiB; classification must be explicit.',
+      unavailable:
+        'No reliable result yet. Keep this page and check the outcome. Submitted requests never receive an automatic replacement key.',
+      reload: 'Recheck permissions and versions',
+    },
     knowledgeCatalogue: {
       title: 'Knowledge catalogue',
       loading: 'Loading knowledge catalogue…',

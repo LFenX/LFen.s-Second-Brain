@@ -1,0 +1,356 @@
+{
+  "version": "v0.33",
+  "local_date": "2026-10-25",
+  "recorded_at": "2026-10-25T07:51:26.832Z",
+  "status": "EngineeringVerified_UserAcceptancePending",
+  "user_decision": "Pending",
+  "stage2_overall": "NotComplete",
+  "request_snapshot": "那就开始阶段2 A/B真实联调，在集成分支合并双方代码，解决接续文档冲突，把B前端接到本机冻结后端，跑通四步导入、固定修订阅读和异常恢复。A的新来源组件保持未接入，继续只用合成资料、不调用模型、不启动多轮审查；发现问题做针对性修复，验证后更新报告和B交接说明，推送集成分支，暂不合并main。",
+  "task_profile": {
+    "objective": "在独立集成分支接收B，沿用冻结Go和现有服务/卷，以合成资料验证原生登录、C2四步、C1固定修订及异常恢复，只定向修复并推送。",
+    "carrier": "沿用项目docs和.local-data下before/run/after记录，不迁移项目文档或工程结构，不宣称skill自动Gate通过。",
+    "clarification": {
+      "state": "Settled",
+      "mode": "Skipped",
+      "notice": "范围已明确，本次跳过补充提问：先合并代码、构建前端，再用独立合成知识域联调；异常验证只作用于测试请求或合成记录。",
+      "basis": "用户明确授权集成/运行联调/针对性修复/独立分支推送；真实资料、模型、审查和main排除。",
+      "survey_refs": [
+        "docs/knowledge-sources-v1.freeze.json",
+        "docs/stage2a-c2-handoff.md",
+        "origin/codex/stage2b-import-ui:docs/stage2b-import-ui-handoff.md",
+        "web/AGENTS.md"
+      ]
+    },
+    "proceed": {
+      "outcome": "Approved",
+      "response": "那就开始阶段2 A/B真实联调，在集成分支合并双方代码，解决接续文档冲突，把B前端接到本机冻结后端，跑通四步导入、固定修订阅读和异常恢复。A的新来源组件保持未接入，继续只用合成资料、不调用模型、不启动多轮审查；发现问题做针对性修复，验证后更新报告和B交接说明，推送集成分支，暂不合并main。",
+      "decided_by": "用户",
+      "evidence_ref": "本会话当前用户消息",
+      "observed_at": "2026-10-25T07:19:08.112Z"
+    },
+    "plan": [
+      "创建集成分支，合并双方并解决文档冲突",
+      "复跑B定向测试/格式/lint和生产构建，备份旧Web并加载新产物",
+      "真实登录，建立独立合成域，四步导入和固定修订回读/更新",
+      "仅测试请求/合成记录注入丢失响应、201失败、过期/竞争/撤权，定向修复和回归",
+      "检查模型/旧POC/契约/未接入边界，保存报告与B交接，提交推送集成分支"
+    ],
+    "acceptance": [
+      "A/B提交均保留在集成分支历史，main不变",
+      "冻结契约原字节保持，A新增私有组件不接路由/生产同步器",
+      "实际构建产物在现有同源入口可用，容器/卷/凭据不重建",
+      "真实登录及合成登记/预览/明确确认/回执/C1读取可核对",
+      "原文SHA/修订/分段与旧版读取正确，五类标签不授权",
+      "异常恢复真实后端证据与Mock分开；故障只限定本轮合成资源/请求并恢复",
+      "只用合成/模型0/无多轮审查；报告和交接可接续，远端与本地一致"
+    ]
+  },
+  "git": {
+    "integration_branch": "codex/stage2ab-integration",
+    "a": "5fe4d51ac21a4df6379d7bfaa8a40f9b42e53283",
+    "b": "8d62cc79872fdcd35a706d8632ef06906686ca9d",
+    "shared_frozen_base": "123482016576fec368104e531c257b6e0e523dd5",
+    "main_unchanged": "8aa324e06decc063c141ee3b53614a6d39f15fb5",
+    "merge_conflicts": [
+      "会话接续说明.md"
+    ],
+    "resolution": "保留A内部准备与B原交付历史；顶端统一为当前集成状态。A/B原提交保留，未重写历史。",
+    "commit_reference": "以包含本报告的集成分支提交及其双亲为准；本次只推集成分支，不合main。"
+  },
+  "runtime": {
+    "entrypoint": "http://127.0.0.1:18080",
+    "backend": "existing frozen Go binary; real MySQL and MinIO",
+    "binary_sha256": "b8cf2492a1716bdce62ee29502c39152fa2574f7253be9e9f016239da76a9fab",
+    "container_unchanged": true,
+    "health": "healthy",
+    "frontend": "production Vite build loaded through existing read-only web/dist bind mount",
+    "index_sha256": "7bb2d6fce3093eecd1d1fd6666deb48a6de61d8c347dc3a89193844ab62454e5",
+    "served_index_matches_build": true,
+    "compose_credentials_and_volumes": "reused; no compose recreation, credential reset or volume deletion",
+    "fault_transport": "temporary loopback-only 18082 relay to the same 18080 backend, stopped after verification; no mock success/failure responses",
+    "direct_browser": "原生18080登录、固定旧修订与刷新读取均通过，最终页面保留"
+  },
+  "contracts": {
+    "c2": "0.2.0 Frozen",
+    "c1_c3": "1.0.0",
+    "unchanged": true,
+    "c2_sha256": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091",
+    "c2_examples_sha256": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a",
+    "c1_sha256": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4",
+    "a_source_preparation": "unchanged package-private Go components; not wired, no Go source or runtime binary changes"
+  },
+  "targeted_fix": {
+    "id": "AB2-01",
+    "symptom": "真实确认返回HTTP400 knowledge_invalid_request；登记与预览成功",
+    "cause": "shared next-request interceptor applies lodash snakeCase to manifest_sha256, producing manifest_sha_256 after C2 schema validation",
+    "before_evidence": "新测试使用真实共享interceptor及Axios serializer，修复前复现字段不一致；浏览器400响应和request ID保存在私有证据",
+    "change": "C2 call在验证后显式序列化JSON并指定application/json，沿用原认证/版本/HTTP层；不更改全局转换器、Go或契约",
+    "files": [
+      "web/src/services/knowledge-sources-service.ts",
+      "web/src/services/knowledge-sources-service.test.ts",
+      "web/src/services/knowledge-sources-wire.test.ts",
+      "web/src/pages/dataset/knowledge-import/__tests__/import.test.tsx"
+    ],
+    "recovery": "修复部署后页面重载，原登记/预览/幂等键恢复成功；无需新后端或契约版本"
+  },
+  "verification": [
+    {
+      "id": "AB2-01",
+      "requirement": "双方集成与接续冲突",
+      "result": "Passed",
+      "evidence": "A/B双亲合并；唯一文本冲突已处理，冻结字节与全部Go输入保持"
+    },
+    {
+      "id": "AB2-02",
+      "requirement": "原生登录、目录与父子分组",
+      "result": "Passed",
+      "evidence": "既有合成owner登录；新独立私有域；项目→五类模块选择及登记成功。没有新增账号或授权"
+    },
+    {
+      "id": "AB2-03",
+      "requirement": "登记→预览→明确确认→回执",
+      "result": "Passed",
+      "evidence": "真实201登记/预览；勾选前禁用确认；真实保存/目录ready、结构deferred、全文/向量disabled、model_calls=0。同键同配置登记200，配置不一致409"
+    },
+    {
+      "id": "AB2-04",
+      "requirement": "原字节与固定修订阅读",
+      "result": "Passed",
+      "evidence": "原91字节中文CRLF/emoji文件经界面导入并C1摘要一致；54字节BOM文件真实上传/保存/回读一致；发布新版本后source_id稳定，原修订可读，18082及18080目录刷新保持旧版；同内容unchanged沿用修订"
+    },
+    {
+      "id": "AB2-05",
+      "requirement": "标签、空文件及UTF8分段",
+      "result": "Passed",
+      "evidence": "五类标签/语言/组ID经真实API保存回读；空文件0字节；69640字节文本C1及界面按[0,65535)、[65535,69640)读取，边界中文/emoji完整。五类逐项写入通过真实API；界面实际操作前端分类与父子分组，非五类全部手点"
+    },
+    {
+      "id": "AB2-06",
+      "requirement": "结果未知及201业务失败",
+      "result": "Passed",
+      "evidence": "真实201提交响应截断后显示unknown；重载并用户核查，经GET原预览/已消费任务读取原回执，期间新增确认POST=0且该预览仅1任务。只改本轮合成预览正文触发原生校验失败并持久化201 failed；无source/revision/node发布，界面无阅读链接；新预览、新键、再次确认成功"
+    },
+    {
+      "id": "AB2-07",
+      "requirement": "过期与修订竞争恢复",
+      "result": "Passed",
+      "evidence": "本轮待确认合成预览到期字段置过去触发409；另一次UI持有预览后原生API发布竞争修订触发409。两者都先核查原请求/未消费预览，再允许人工新预览/新键/再次确认并成功；不匹配英文message"
+    },
+    {
+      "id": "AB2-08",
+      "requirement": "授权失败与隔离",
+      "result": "Passed",
+      "evidence": "仅关闭新合成域knowledge_enabled后预览404，导入表单/名称/正文与相关缓存展示隐藏，恢复后显式重新检查并回到空登记表单。另一既有合成账号5条C1/C2读取404，匿名401，owner恢复200；未停用共享用户/成员或扩大权限"
+    },
+    {
+      "id": "AB2-09",
+      "requirement": "零模型与原运行边界",
+      "result": "Passed",
+      "evidence": "回执model_calls均0；模型配置、用量及旧POC行摘要前后一致，仍6份/42块；所有注入字段恢复，测试代理已停止；新A组件/Go二进制/冻结文件/凭据不变"
+    }
+  ],
+  "data": {
+    "synthetic_only": true,
+    "domain_id": "7e84e6f34cd745fd9a4b1a171919f166",
+    "registration_id": "319f29454a2b44b383c5c31e87e4cc8e",
+    "receipt_count": 17,
+    "succeeded": 16,
+    "failed_expected": 1,
+    "source_documents": 11,
+    "model_calls": 0,
+    "retained": "本轮合成域、登记、预览、回执和文件保留供复核；未实施自动清理或删除"
+  },
+  "readback": {
+    "original": {
+      "bytes": 91,
+      "sha256": "78158aea96ebca89494581a3a9322f892485ab38ec9472bc091c60bfee364920",
+      "revision": "43aa7584087342e0a60b04681e214e1d"
+    },
+    "bom": {
+      "bytes": 54,
+      "sha256": "b02e70ecb2b8d3021529d8c8125a0ffb29885a57229227715bc88f8f3cc71d9b",
+      "exact": true
+    },
+    "large": {
+      "relative_path": "docs/large.txt",
+      "side": "non_code",
+      "language": "text",
+      "bytes": 69640,
+      "sha256": "19fdf793fec63ec5540ea854c9f21f6d1197295e4a9060e33c840bb5a469fa51",
+      "revision": "426fd4e14807409498226d84250f8d02",
+      "source_id": "3a13127797ce484596cb69990a9a277a",
+      "root_node_id": "dc639c34a955070a350b45e845c4a949e3aa911a317d547e5293205b597da949",
+      "windows": [
+        {
+          "start": 0,
+          "end": 65535,
+          "bytes": 65535
+        },
+        {
+          "start": 65535,
+          "end": 69640,
+          "bytes": 4105
+        }
+      ]
+    },
+    "empty": {
+      "relative_path": "docs/empty.md",
+      "side": "non_code",
+      "language": "markdown",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "revision": "a12bf0d966a8473490ba493e536f3715",
+      "source_id": "d6ec8d18715f422db95c079a06d53368",
+      "root_node_id": "06a83b0e5075dc734ca8423e14af18da1ac05e3a0135d13db34123ae4ba434f0",
+      "windows": [
+        {
+          "start": 0,
+          "end": 0,
+          "bytes": 0
+        }
+      ]
+    },
+    "old_pinned": {
+      "sha256": "78158aea96ebca89494581a3a9322f892485ab38ec9472bc091c60bfee364920",
+      "is_current": false
+    },
+    "unchanged_revision": "7b0f548f99f14f87862acbeadfabaf1a"
+  },
+  "recovery": {
+    "lost_response": {
+      "task_id": "f2364cbd6eba4db1843a344dcb553b09",
+      "preview_id": "8f8fc0ee09d943a491f7ce5794116ff8",
+      "post_count_for_task": 1,
+      "recovery_method": "GET",
+      "extra_commit_posts_before_recovery": 0,
+      "initial_socket_reset_experiment": "browser transparently replayed same request, native returned same receipt HTTP200; final test truncated actual body to verify UI unknown/reload/GET"
+    },
+    "failure_retry": {
+      "failed_task": "358f3c847b344d6ebc3d0d872cdfe500",
+      "retry_task": "e267c9163f8542fb9fc53eac3718bac0",
+      "new_preview": true,
+      "new_key": true,
+      "no_source_before_retry": true
+    },
+    "permissions": {
+      "visitor_404": 5,
+      "anonymous_401": true,
+      "owner_after_restore_200": true,
+      "scope": "different existing synthetic user and single-domain knowledge switch; no shared membership mutation"
+    },
+    "synthetic_fault_rows_restored": true
+  },
+  "engineering": {
+    "jest": {
+      "suites": 6,
+      "tests": 69,
+      "failed": 0,
+      "transport_regression_before_fix": "1 new real-interceptor test failed as expected",
+      "after_fix": "69/69 passed"
+    },
+    "format_and_lint": {
+      "targeted_files": 21,
+      "format_exit": 0,
+      "lint_exit": 0
+    },
+    "production_build": {
+      "result": "Passed",
+      "duration_seconds": 65,
+      "existing_warnings": [
+        "pdfjs eval",
+        "large chunks"
+      ],
+      "deployed": true
+    },
+    "type_check": {
+      "result": "Failed",
+      "error_count": 207,
+      "errors_in_four_touched_files": 0,
+      "comparison": "B reported207 as its own baseline; this host actually reports207. No claim that the complete repo passes or every baseline diagnostic was diffed."
+    },
+    "backend_tests": "NotRerun_NoGoChanges",
+    "http_counts": {
+      "native": 76,
+      "browser_relay_responses": 121,
+      "c2_double_header_checked": 40,
+      "c1_only_header_checked": 52
+    },
+    "checks_after_runtime": {
+      "go_changed": false,
+      "protected_files_unchanged": true,
+      "private_files_tracked": 0,
+      "relay_stopped": true
+    },
+    "hook_checks": {
+      "framework": "lefthook 2.2.2",
+      "result": "Passed",
+      "checks": [
+        "check-json",
+        "check-yaml",
+        "check-symlinks",
+        "mixed-line-ending",
+        "end-of-file-fixer",
+        "check-merge-conflict",
+        "trailing-whitespace",
+        "check-case-conflict"
+      ],
+      "skipped_by_no_matching_changes": [
+        "ruff",
+        "ruff-format",
+        "gofmt"
+      ],
+      "notes": "实际安装本地Git hook并执行，正常提交时继续运行；现有Python静态检查工具使用本机已装解释器，无新增Python应用逻辑。"
+    }
+  },
+  "evidence": {
+    "screenshots": [
+      "docs/stage2ab-runtime-receipt.png",
+      "docs/stage2ab-runtime-failed.png",
+      "docs/stage2ab-runtime-fixed-revision.png"
+    ],
+    "private_root": ".local-data/stage2ab-20261025",
+    "private_artifacts": [
+      "before.json",
+      "run.jsonl",
+      "after.json",
+      "native-http.jsonl",
+      "browser-http.jsonl",
+      "runtime-results.json",
+      "normal-checks.json",
+      "permissions-checks.json",
+      "fault-events.jsonl",
+      "jest-fixed2.json",
+      "wire-before.log",
+      "build-fixed.log",
+      "typecheck.log",
+      "format-final.log",
+      "lint-final.log",
+      "ui-*.txt"
+    ],
+    "evidence_hashes": {
+      "runtime-results.json": "79bd697edeb3ec4931a19d28856654c9b042273640b6ee4dc7f03eb88cb6fa24",
+      "normal-checks.json": "11ea23040da762b8811f5269f93deb5d02e95fe9fbdd0fc892f1679bf0d6c282",
+      "permissions-checks.json": "9316b8141dc19d3614cf0a5321e531856ca647142339689ee2c9e463f9a95eda",
+      "after.json": "3abde83096eb6b5f77cabfa2b84d3e2baff3e5b03dd31ff74541f1e5885d5bd9",
+      "jest-fixed2.json": "bffee6b023ce1d316d508003a8b851905a2041291f3147501de54ec035da7649"
+    },
+    "private_handling": "私有日志/合成夹具/登录令牌/运行备份受本轮目录ACL限制并被Git忽略；public报告不复制值"
+  },
+  "notes": [
+    "初始测试登录脚本用了username，修正为实际Go路由所需email后通过；错误组ID字段group_id修正为C1响应id，保留5个未使用空合成组。均为夹具问题，未改产品协议。",
+    "C1测试脚本最初携带不支持的content查询参数，去除后按既有UTF8边界处理验证通过；未改C1。",
+    "初次formatter文件列表为空时误跑全web检查，发现22处既有格式问题；检查未写文件。已断言非空并只检查本轮21个文件，不处理无关问题。",
+    "第一次断开socket时Chromium透明重放同一POST，原生幂等返回同一任务HTTP200；最终改为截断实际HTTP201正文，验证应用unknown/重载/GET。没有因此增加应用自动重试。",
+    "临时代理拦截1次登录外壳的PATCH /api/v1/users/me偏好同步；未放行与导入无关写入，没有模型调用。"
+  ],
+  "limitations": [
+    "真实联调仅单个本机浏览器/既有冻结Go/MySQL/MinIO/合成UTF8文件；不是B另一台机器后端验收。",
+    "没有重跑全仓Go、完整类型检查绿色、规模性能/p95/百万文件验收或多轮审查。",
+    "目录/二进制原件/网页/RSSHub/批量任务/生命周期仍候选或包私有准备，未接入。AST/子符号节点、检索/索引/引用优化、MCP与人格记忆仍后续阶段。",
+    "阶段2整体和main合并待用户验收与后续决定；历史A/B报告范围不追溯修改。"
+  ],
+  "adversarial_review": {
+    "outcome": "NotStarted",
+    "reason": "User explicitly excluded multi-round review"
+  }
+}
