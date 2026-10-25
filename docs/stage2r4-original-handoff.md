@@ -1,6 +1,6 @@
 # S2-R4 文档原件接续
 
-日期：2026-10-26；文档v0.40。**C2 0.5.0仍是待确认候选，不是原件功能交付**。运行环境和main仍为已发布R3的`38ce003`；候选在`codex/stage2r4-original-candidate`，A的包私有原语准备在`codex/stage2r4-stream-preparation`，不混为业务接口已实现。
+日期：2026-10-26；文档v0.41。**C2 0.5.0仍是待确认候选，不是原件功能交付**。运行main仍为R3的`38ce003`；候选在`codex/stage2r4-original-candidate`，私有MinIO准备00bed83在`codex/stage2r4-stream-preparation`，当前格式／暂存准备在`codex/stage2r4-original-preparation`；不混为业务接口已实现。
 
 执行入口：[行为定义](knowledge-original-import-v0.5.candidate.md)、[OpenAPI](knowledge-original-import-v0.5.candidate.openapi.json)、[合成向量](knowledge-original-import-v0.5.candidate.examples.json)、[统一核对记录](stage2r4-original-contract-verification.json)。旧C1/C3和C2 0.2／0.3／0.4共17项保护文件保持字节，不创建正式0.5冻结文件或加载未获批接口。
 
@@ -62,3 +62,11 @@ A继续实现`internal/storage/minio_stream.go`及测试，沿用现有MinIO客�
 上传原语信任调用方预先测量／计算的SHA，本身不做格式接纳／授权／发布；读取只验证元信息，部分范围不重算全件SHA。业务后续须完成真实字节验证、暂存与不可变命名、SQL／配额／租约／确认／CAS、原生旁路和Web／真实MinIO验证；旧对象不默认具有新摘要元信息。旧17资源及37574fb候选三件套不改，正式应用未加载本批代码。
 
 消费方[R7退出追踪](stage2r7-exit-readiness.md)已保存。真实AICS／文档／网页退出样本仍需另选范围；模型0下可继续内部准备和获批接口后的合成闭环，不以历史Accepted或本次unit覆盖全阶段验收。
+
+## 7. v0.41格式与暂存内部准备
+
+新增`knowledge_original_prepare.go`、`knowledge_original_office.go`及测试，全部包私有。沿用安全os.Root、文本／凭据规则和流式探针；生成0700目录／0600文件，64KiB缓冲保存已声明字节，超声明的探测字节不写文件，同时计算SHA与兼容原生的XXH128。有限PDF头尾、Office真实中央目录预检／安全成员／预算／必要XML／根关系及CRC检查，失败仅清本次生成临时项，根被替换也不跟随新路径。无共享DTO／领域模型／路由／SQL／Web或正式运行接线。
+
+`build.sh --test -json -run '^TestKnowledge(OriginalPreparation|SourcePreparation)' ./internal/service/dataset`通过13顶层／76含子例：新原件6／57＋旧采集7／19；另在一个测试内有90组输入／分块对标准UTF-8等oracle。首轮近64MiB密集中文累计分配50,562,560字节，定位旧私有探针拼接会复制整块，修复后268,984字节；3MiB由2,441,112降至81,560。日志保留失败与修复，新增场景后的最终运行绑定源码；没有多轮审查。[报告](stage2r4-original-preparation-verification.json)给出边界。
+
+这些是参数化私有原语，测试用2MiB中央目录／256层XML等预算不是公开默认值；小包原型不支持ZIP64／多卷／非UTF-8 XML，不做完整Office schema、渲染／病毒扫描或正文解析。真实ENOSPC／Sync故障未注入，写错／短写由实际复制原语的合成Writer覆盖；整体路径覆盖读错／取消／失败清理／根替换。正式适配前须收敛支持范围与预算，不静默改37574fb或声称0.5冻结。

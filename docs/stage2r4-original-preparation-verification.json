@@ -1,0 +1,210 @@
+{
+  "document_version": "v0.41",
+  "recorded_local_date": "2026-10-26",
+  "task": "S2-R4包私有原件格式与暂存准备",
+  "request_snapshot": "请注意后续的步骤，请你持续不断地进行下去，跟另外一个会话，甚至你可以开其他的会话去协调。但一个讯息是你必须要传达的，就是一定一定不能够停下来。一定一定就是至少说有一个会话不能停下来，要主会话不能停下来，你就是主会话，要牵动其他废话，持续不断地推进咱们这个工作，直到最后完成。",
+  "status": "PrivateOriginalPreparationVerified",
+  "branch": "codex/stage2r4-original-preparation",
+  "baseline": "00bed83d8309ccb1ccb9908bc42c1d4f5132150b",
+  "authority": {
+    "basis": "真人持续推进整个项目；仅包私有组件、必要拥有路径修复及合成验证，不连接待确认接口",
+    "c2_0_5_freeze": {
+      "outcome": "Pending"
+    },
+    "business_integration": false,
+    "engineering_user_decision": {
+      "outcome": "Pending"
+    },
+    "adversarial_review": "NotRun_UserDeclined"
+  },
+  "changes": {
+    "source_files": {
+      "internal/service/dataset/knowledge_original_prepare.go": "aa96779af3cbaf46d4d325a68d95bb13a458daf9a0975966836aa432baa3707b",
+      "internal/service/dataset/knowledge_original_office.go": "1a75e8781b269a549677593b698a065f1a69120901a1a82163359516ac8880c4",
+      "internal/service/dataset/knowledge_original_prepare_test.go": "b53093f6e8e33f1e4a084c6d5b50ca39c7dd924c386bbe7dc1534aa6d97ce2ff",
+      "internal/service/dataset/knowledge_source_collect.go": "dd2f94ca284e6cb3581a52334131a4c8fcf9624c1532cfe77f116a9d1d11c425"
+    },
+    "shared_dtos_or_entities": 0,
+    "database_changes": 0,
+    "routes_or_services_wired": 0,
+    "web_changes": 0,
+    "new_dependencies": 0,
+    "application_deployed": false
+  },
+  "capabilities": [
+    "在现有安全os.Root能力中生成0700目录/0600文件，以64KiB复制已声明字节并检测短/长输入；超声明的探测字节不写进临时文件",
+    "流式计算SHA-256与兼容原生Hash128的32位十六进制值；BOM/CRLF/中文/emoji/组合字符及二进制不转码",
+    "复用文本扩展/凭据路径检查和既有跨块UTF-8/NUL/私钥标记探针；跨块拼接只保留至多3字节，不复制整个新块",
+    "PDF有限头版本/EOF检查；Office在zip.NewReader前检查真实中央目录计数/预算，之后检查安全成员/声明解压量/比例/必要XML/内容类型/根关系/CRC",
+    "仅清理本组件创建的临时文件/目录；根路径替换后仍使用原钉选根，失败及显式close不碰替换目录中的其他文件"
+  ],
+  "tested_private_options": {
+    "file_bytes": 67108864,
+    "office_entries": 2048,
+    "office_declared_expanded_bytes": 268435456,
+    "office_ratio": 100,
+    "office_xml_bytes": 2097152,
+    "office_total_required_xml_bytes": 8388608,
+    "office_directory_bytes": 2097152,
+    "office_xml_depth": 256,
+    "notice": "包私有测试配置，不是新公开能力或已冻结服务默认；中央目录/深度等额外预算和支持范围须在正式适配前收敛。"
+  },
+  "format_boundaries": [
+    "小包原型拒绝ZIP64及多卷，限定UTF-8 XML；未承诺所有合法Office包兼容",
+    "只核验必要包部件/根关系和XML良构，不做完整Office schema/渲染/病毒检查，不提取正文，不跑OCR/解析pipeline/模型",
+    "非必要成员不解压，声明总量及压缩比是接纳检查，不等于全包解压验证",
+    "HTML等白名单文本按原字节保存，不执行或展示为安全HTML；正式读取仍须授权/附件响应策略"
+  ],
+  "verification": {
+    "command": "docker exec -w /work lfen-secondbrain-stage1-build bash build.sh --test -json -run '^TestKnowledge(OriginalPreparation|SourcePreparation)' ./internal/service/dataset",
+    "tier": "unit，无真实服务、DB、网络或模型",
+    "passed": true,
+    "top_level": 13,
+    "including_subtests": 76,
+    "new_original": {
+      "top": 6,
+      "including_subtests": 57,
+      "oracle_combinations_in_probe_test": 90
+    },
+    "existing_source_preparation": {
+      "top": 7,
+      "including_subtests": 19
+    },
+    "package_result": [
+      {
+        "package": "ragflow/internal/service/dataset",
+        "elapsed_seconds": 0.24
+      }
+    ],
+    "cases": [
+      "TestKnowledgeOriginalPreparationPreservesBytes/text",
+      "TestKnowledgeOriginalPreparationPreservesBytes/pdf",
+      "TestKnowledgeOriginalPreparationPreservesBytes/pdf2",
+      "TestKnowledgeOriginalPreparationPreservesBytes/docx",
+      "TestKnowledgeOriginalPreparationPreservesBytes/pptx",
+      "TestKnowledgeOriginalPreparationPreservesBytes",
+      "TestKnowledgeOriginalPreparationRejectsAndCleans/short",
+      "TestKnowledgeOriginalPreparationRejectsAndCleans/long",
+      "TestKnowledgeOriginalPreparationRejectsAndCleans/digest",
+      "TestKnowledgeOriginalPreparationRejectsAndCleans/utf8",
+      "TestKnowledgeOriginalPreparationRejectsAndCleans/incomplete_utf8",
+      "TestKnowledgeOriginalPreparationRejectsAndCleans/nul",
+      "TestKnowledgeOriginalPreparationRejectsAndCleans/secret",
+      "TestKnowledgeOriginalPreparationRejectsAndCleans/type_mismatch",
+      "TestKnowledgeOriginalPreparationRejectsAndCleans/PDF_spoof",
+      "TestKnowledgeOriginalPreparationRejectsAndCleans/PDF_missing_EOF",
+      "TestKnowledgeOriginalPreparationRejectsAndCleans/credentials",
+      "TestKnowledgeOriginalPreparationRejectsAndCleans/private_directory",
+      "TestKnowledgeOriginalPreparationRejectsAndCleans/filename_path",
+      "TestKnowledgeOriginalPreparationRejectsAndCleans/filename_CRLF",
+      "TestKnowledgeOriginalPreparationRejectsAndCleans/empty",
+      "TestKnowledgeOriginalPreparationRejectsAndCleans/over_cap",
+      "TestKnowledgeOriginalPreparationRejectsAndCleans",
+      "TestKnowledgeOriginalPreparationOfficeBounds/missing_part",
+      "TestKnowledgeOriginalPreparationOfficeBounds/wrong_type",
+      "TestKnowledgeOriginalPreparationOfficeBounds/wrong_relationship",
+      "TestKnowledgeOriginalPreparationOfficeBounds/external_relationship",
+      "TestKnowledgeOriginalPreparationOfficeBounds/namespaced_type_attribute",
+      "TestKnowledgeOriginalPreparationOfficeBounds/DTD",
+      "TestKnowledgeOriginalPreparationOfficeBounds/duplicate_XML_attribute",
+      "TestKnowledgeOriginalPreparationOfficeBounds/bad_XML",
+      "TestKnowledgeOriginalPreparationOfficeBounds/zip_slip",
+      "TestKnowledgeOriginalPreparationOfficeBounds/absolute_member",
+      "TestKnowledgeOriginalPreparationOfficeBounds/backslash_member",
+      "TestKnowledgeOriginalPreparationOfficeBounds/duplicate_member",
+      "TestKnowledgeOriginalPreparationOfficeBounds/symlink",
+      "TestKnowledgeOriginalPreparationOfficeBounds/macro",
+      "TestKnowledgeOriginalPreparationOfficeBounds/encrypted",
+      "TestKnowledgeOriginalPreparationOfficeBounds/CRC",
+      "TestKnowledgeOriginalPreparationOfficeBounds/ratio",
+      "TestKnowledgeOriginalPreparationOfficeBounds/entry_budget",
+      "TestKnowledgeOriginalPreparationOfficeBounds/forged_entry_count",
+      "TestKnowledgeOriginalPreparationOfficeBounds/directory_budget",
+      "TestKnowledgeOriginalPreparationOfficeBounds/ZIP64",
+      "TestKnowledgeOriginalPreparationOfficeBounds/XML_budget",
+      "TestKnowledgeOriginalPreparationOfficeBounds/XML_depth",
+      "TestKnowledgeOriginalPreparationOfficeBounds",
+      "TestKnowledgeOriginalPreparationProbeBoundaries",
+      "TestKnowledgeOriginalPreparationCancellationAndRoot/write_failure",
+      "TestKnowledgeOriginalPreparationCancellationAndRoot/short_write",
+      "TestKnowledgeOriginalPreparationCancellationAndRoot/cancel_mid_read",
+      "TestKnowledgeOriginalPreparationCancellationAndRoot/read_failure",
+      "TestKnowledgeOriginalPreparationCancellationAndRoot/root_path_replaced_while_streaming",
+      "TestKnowledgeOriginalPreparationCancellationAndRoot",
+      "TestKnowledgeOriginalPreparationLargeText/3145728",
+      "TestKnowledgeOriginalPreparationLargeText/67108860",
+      "TestKnowledgeOriginalPreparationLargeText",
+      "TestKnowledgeSourcePreparationCollection",
+      "TestKnowledgeSourcePreparationScopeAndBounds/precise_selection",
+      "TestKnowledgeSourcePreparationScopeAndBounds/../outside",
+      "TestKnowledgeSourcePreparationScopeAndBounds//absolute",
+      "TestKnowledgeSourcePreparationScopeAndBounds/C:/private",
+      "TestKnowledgeSourcePreparationScopeAndBounds/web\\a.ts",
+      "TestKnowledgeSourcePreparationScopeAndBounds/web//a.ts",
+      "TestKnowledgeSourcePreparationScopeAndBounds/.env.local",
+      "TestKnowledgeSourcePreparationScopeAndBounds/node_modules",
+      "TestKnowledgeSourcePreparationScopeAndBounds/web/../internal",
+      "TestKnowledgeSourcePreparationScopeAndBounds/count_and_cancellation",
+      "TestKnowledgeSourcePreparationScopeAndBounds/size_utf8_and_secret_boundaries",
+      "TestKnowledgeSourcePreparationScopeAndBounds/missing_selection",
+      "TestKnowledgeSourcePreparationScopeAndBounds",
+      "TestKnowledgeSourcePreparationLinks",
+      "TestKnowledgeSourcePreparationStreamingProbe",
+      "TestKnowledgeSourcePreparationChangedDuringRead",
+      "TestKnowledgeSourcePreparationIncrementalPlan",
+      "TestKnowledgeSourcePreparationIncompleteAndScopeChanges"
+    ],
+    "measurements_before": [
+      {
+        "source_bytes": 3145728,
+        "allocation_bytes": 2441112
+      },
+      {
+        "source_bytes": 67108860,
+        "allocation_bytes": 50562560
+      }
+    ],
+    "measurements_after": [
+      {
+        "source_bytes": 3145728,
+        "allocation_bytes": 81560
+      },
+      {
+        "source_bytes": 67108860,
+        "allocation_bytes": 268984
+      }
+    ],
+    "measurement_boundary": "生成式密集中文、私有暂存/SHA/XXH128/文本探针的TotalAlloc差额，各档一次；近64MiB实际67,108,860字节，保证完整UTF-8；不含后续close清理，不是峰值RSS、真实HTTP/MinIO、冷盘吞吐或生产p95。",
+    "failure_and_fix": {
+      "failure": "original-unit-first.log：64MiB文本累计分配50,562,560，超4MiB阈值",
+      "owner": "knowledgeSourceProbe.Write",
+      "fix": "用4字节栈缓冲完成残留UTF-8字符，再原地检查新块；复用最多3字节pending",
+      "scope_amendment": "original-probe-amendment.json；不改判定语义/接口",
+      "evidence": "90个分块/输入组合对标准utf8.Valid、NUL与两类标记oracle；现有采集准备与新原件测试一起通过"
+    },
+    "source_equals_build": true,
+    "log_sha256": "188097a83be34887659de33cb444f32eb999e350012a5132eeae083d1ef79877",
+    "native_wrapper_units": "build.sh自动native/croptest单元包通过；integration模型权重/推理测试未运行",
+    "server_modes_built_or_deployed": false
+  },
+  "protection": {
+    "old_contract_files": 17,
+    "pending_candidate_artifacts": 3,
+    "all_hashes_unchanged": true,
+    "main_runtime_unchanged": "38ce0031ae31bbf980a2ed27b0eb7ecc607d5a51",
+    "production_configuration_or_volumes_changed": false,
+    "business_api_calls": 0,
+    "model_calls": 0,
+    "online_source_fetches": 0,
+    "history_or_object_gc": false
+  },
+  "incomplete_items": [
+    "0.5未获具体确认，组件没有接入来源登记/SQL/持久任务/路由/客户端",
+    "真实磁盘满及File.Sync故障未注入；写失败/短写在实际复制原语用合成Writer验证，读错/取消及根替换在整体暂存路径验证",
+    "格式为有限接纳，不是正文解析/Office渲染或恶意文档完整扫描；ZIP64/多卷/严格OOXML不同命名空间/非UTF-8 XML支持未实现",
+    "额外私有预算不是默改37574fb；正式适配前应集中决定支持范围与预算，必要时发候选修订",
+    "真实MinIO/SQL原子发布、租约/配额/确认/CAS、原生旁路、固定下载授权、Web及端到端容量/性能仍待后续",
+    "全项目持续目标仍active，阶段2整体未退出"
+  ],
+  "governance_note": "按现有项目载体记录；不改变目录结构或历史验收，不声称正式机器Gate或真人验收通过。"
+}

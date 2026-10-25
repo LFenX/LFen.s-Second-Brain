@@ -1,6 +1,6 @@
 # 阶段2剩余任务与本机会话协作
 
-日期：2026-10-26；版本v0.40。A在`codex/stage2r4-stream-preparation`完成[包私有流式原语／测试](stage2r4-stream-preparation-verification.json)，7顶层／28含子例通过，无共享Storage接口／领域／路由或业务接线；[0.5.0候选](knowledge-original-import-v0.5.candidate.md)仍未冻结／接入／部署，三件套保持37574fb原字节。[接续](stage2r4-original-handoff.md)为当前入口。运行main仍38ce003，S2-R3工程和合成真实联调完成：冻结ceca601、后端7925639、最终源码7309daf。[R3报告](stage2r3-batch-verification.json)及历史工程用户决定Pending保持，阶段2整体未退出。
+日期：2026-10-26；版本v0.41。A在`codex/stage2r4-original-preparation`继续完成[私有格式／暂存准备](stage2r4-original-preparation-verification.json)，13顶层／76含子例通过并修复跨块UTF-8分配；此前[私有MinIO原语](stage2r4-stream-preparation-verification.json)已推送00bed83。无共享Storage／领域／路由／SQL／Web或业务接线，[0.5.0候选](knowledge-original-import-v0.5.candidate.md)仍未冻结／接入／部署，三件套保持37574fb原字节。[接续](stage2r4-original-handoff.md)为当前入口。运行main仍38ce003，R3工程事实及用户Pending范围保持，阶段2整体未退出。
 
 ## 1. 当前事实
 
@@ -47,5 +47,7 @@ R4具体候选与复用清单已保存，需真人确认后再冻结并动共享
 A随后已把真人这项明确要求登记为**active持续目标**，覆盖阶段2剩余及阶段3—6，并将实际目标状态传给消费方；不是只在文档中写“继续”。候选确认、合成／模型0、单写入和真实权限边界继续有效。当前24份合成夹具及7项实际请求转换隔离验证已准备，消费方完成R5调查后继续R6只读盘点；目标未标完成。
 
 消费方已进一步回传R6盘点和[R7退出矩阵](stage2r7-exit-readiness.md)，均只读前置事实，未运行新测试／服务。A随即推进不依赖新共享接入的包私有MinIO流式组件：真实SDK＋合成Transport下0／3／64MiB上传及固定二进制范围／错误／取消通过；不等待消费会话空闲、不要求重复审查。后续可继续不接线的格式／暂存准备；共享DTO／业务接口仍等具体确认。
+
+A随后完成私有原件暂存／有限格式检查，复用已有文本探针；实测发现其跨块续字节会复制整块，通过拥有路径的16行必要修复消除按文件规模增长的分配。新原件57项及旧采集19项共76项通过；候选／接口没有因此变化。消费方当前无新写入或重复审查任务，主会话持续推进并维护证据；内部组件通过不代表0.5已批准或原件应用闭环已完成。
 
 阶段3的结构处理／AST／关系图与阅读优化，阶段4的可选索引／检索／引用复用包，阶段5的MCP模块临时授权，阶段6的人格记忆继续按第35章后置。本轮没有提前实施这些能力。

@@ -292,8 +292,21 @@ func (p *knowledgeSourceProbe) Write(data []byte) (int, error) {
 		return n, nil
 	}
 	if len(p.pending) > 0 {
-		data = append(p.pending, data...)
-		p.pending = nil
+		var prefix [utf8.UTFMax]byte
+		old := len(p.pending)
+		copy(prefix[:], p.pending)
+		added := copy(prefix[old:], data)
+		if !utf8.FullRune(prefix[:old+added]) {
+			p.pending = append(p.pending[:0], prefix[:old+added]...)
+			return n, nil
+		}
+		value, width := utf8.DecodeRune(prefix[:old+added])
+		if value == utf8.RuneError && width == 1 {
+			p.valid = false
+			return n, nil
+		}
+		data = data[width-old:]
+		p.pending = p.pending[:0]
 	}
 	for trim := 0; trim <= min(3, len(data)); trim++ {
 		if utf8.Valid(data[:len(data)-trim]) {
@@ -301,7 +314,7 @@ func (p *knowledgeSourceProbe) Write(data []byte) (int, error) {
 				return n, nil
 			}
 			if !utf8.FullRune(data[len(data)-trim:]) {
-				p.pending = slices.Clone(data[len(data)-trim:])
+				p.pending = append(p.pending[:0], data[len(data)-trim:]...)
 				return n, nil
 			}
 		}
