@@ -231,13 +231,10 @@ func TestKnowledgeBatchSelectionConsentCapacityAndUnknownKey(t *testing.T) {
 	if _, _, e := f.service.AcceptKnowledgeBatchTask(t.Context(), knowledgeTestOwner, knowledgeTestDomain, f.reg.RegistrationID, bad); e == nil {
 		t.Fatal("empty consent accepted")
 	}
-	obs := f.observe(t, "web/card.tsx")
-	_, e := f.service.PrepareKnowledgeBatch(t.Context(), knowledgeTestOwner, knowledgeTestDomain, f.reg.RegistrationID, entity.KnowledgeBatchPreviewRequest{ObservationID: obs.ObservationID, ObservationSHA256: obs.ObservationSHA256, SelectedItems: []entity.KnowledgeBatchSelectionItem{{RelativePath: "web/card.tsx", Classification: f.reg.DefaultClassification}}})
-	assertDirectoryError(t, e, 429, "")
 	task := acceptBatchTest(t, f, p, "same")
 	changed := batchRequest(p, "same")
 	changed.RetryOfTaskID = &task.TaskID
-	_, _, e = f.service.AcceptKnowledgeBatchTask(t.Context(), knowledgeTestOwner, knowledgeTestDomain, f.reg.RegistrationID, changed)
+	_, _, e := f.service.AcceptKnowledgeBatchTask(t.Context(), knowledgeTestOwner, knowledgeTestDomain, f.reg.RegistrationID, changed)
 	assertDirectoryError(t, e, 409, "idempotency_conflict")
 	_, e = f.service.GetKnowledgeBatchTask(t.Context(), knowledgeTestOwner, knowledgeTestDomain, f.reg.RegistrationID, "", "no-record")
 	assertDirectoryError(t, e, 404, "")
@@ -247,6 +244,41 @@ func TestKnowledgeBatchSelectionConsentCapacityAndUnknownKey(t *testing.T) {
 	_, e = claimKnowledgeBatch(t.Context(), knowledgeTestDomain, task.TaskID, common.GenerateUUID())
 	if e != nil {
 		t.Fatal(e)
+	}
+}
+func TestKnowledgeBatchPreviewReplacement(t *testing.T) {
+	f := setupBatchTest(t)
+	p := prepareBatchTest(t, f, "web/card.tsx")
+	req := entity.KnowledgeBatchPreviewRequest{ObservationID: p.ObservationID, ObservationSHA256: p.ObservationSHA256, SelectedItems: []entity.KnowledgeBatchSelectionItem{{RelativePath: "web/other.ts", Classification: f.reg.DefaultClassification}}}
+	_, e := f.service.PrepareKnowledgeBatch(t.Context(), knowledgeTestOwner, knowledgeTestDomain, f.reg.RegistrationID, req)
+	assertDirectoryError(t, e, 409, "observation_mismatch")
+	if _, e = f.service.ReadKnowledgeBatchPreviewItem(t.Context(), knowledgeTestOwner, knowledgeTestDomain, f.reg.RegistrationID, p.PreviewID, p.Items[0].ItemID, 0, 65536); e != nil {
+		t.Fatal("failed preparation invalidated previous preview", e)
+	}
+	req.SelectedItems[0].RelativePath = "web/card.tsx"
+	req.SelectedItems[0].Classification.ComponentSide = "backend"
+	next, e := f.service.PrepareKnowledgeBatch(t.Context(), knowledgeTestOwner, knowledgeTestDomain, f.reg.RegistrationID, req)
+	if e != nil || next.PreviewID == p.PreviewID || next.Items[0].ItemID == p.Items[0].ItemID || next.ManifestSHA256 == p.ManifestSHA256 {
+		t.Fatal("explicit replacement did not create a new confirmation", e)
+	}
+	_, e = f.service.GetKnowledgeBatchPreview(t.Context(), knowledgeTestOwner, knowledgeTestDomain, f.reg.RegistrationID, p.PreviewID)
+	assertDirectoryError(t, e, 410, "")
+	_, _, e = f.service.AcceptKnowledgeBatchTask(t.Context(), knowledgeTestOwner, knowledgeTestDomain, f.reg.RegistrationID, batchRequest(p, "replaced"))
+	assertDirectoryError(t, e, 410, "")
+	var old entity.KnowledgeBatchItemRecord
+	if e = dao.DB.Where("id = ?", p.Items[0].ItemID).Take(&old).Error; e != nil || old.Content != "" || old.Identity != "" {
+		t.Fatal("replaced plaintext retained", e)
+	}
+	var active int64
+	dao.DB.Model(&entity.KnowledgeBatchPreviewRecord{}).Where("consumed_task_id IS NULL AND expires_at > ?", time.Now().UTC()).Count(&active)
+	if active != 1 {
+		t.Fatalf("active previews %d", active)
+	}
+	task := acceptBatchTest(t, f, next, "replacement")
+	prepareBatchTest(t, f, "web/card.tsx")
+	again, e := f.service.GetKnowledgeBatchTask(t.Context(), knowledgeTestOwner, knowledgeTestDomain, f.reg.RegistrationID, "", "replacement")
+	if e != nil || again.TaskID != task.TaskID {
+		t.Fatal("new preparation altered accepted task", e)
 	}
 }
 func TestKnowledgeBatchResultPaginationConflict(t *testing.T) {

@@ -128,13 +128,6 @@ func (d *DatasetService) PrepareKnowledgeBatch(ctx context.Context, user, domain
 		if e != nil {
 			return e
 		}
-		var active int64
-		if e = tx.Model(&entity.KnowledgeBatchPreviewRecord{}).Where("domain_id = ? AND user_id = ? AND consumed_task_id IS NULL AND expires_at > ?", domain, user, now).Count(&active).Error; e != nil {
-			return e
-		}
-		if active >= 1 {
-			return batchError(429, "capacity", "")
-		}
 		expiry, e := time.Parse(time.RFC3339Nano, obs.ExpiresAt)
 		if e != nil {
 			return e
@@ -202,6 +195,15 @@ func (d *DatasetService) PrepareKnowledgeBatch(ctx context.Context, user, domain
 		}
 		if !end.Before(expiry) {
 			return batchError(410, "expired", "")
+		}
+		// Only a complete explicit preparation replaces unconsumed previews.
+		// Both replacement and byte cleanup roll back if the new insert fails.
+		previous := tx.Model(&entity.KnowledgeBatchPreviewRecord{}).Select("id").Where("domain_id = ? AND user_id = ? AND consumed_task_id IS NULL", domain, user)
+		if e = tx.Model(&entity.KnowledgeBatchItemRecord{}).Where("preview_id IN (?) AND task_id IS NULL", previous).Updates(map[string]any{"content": "", "identity": ""}).Error; e != nil {
+			return e
+		}
+		if e = tx.Model(&entity.KnowledgeBatchPreviewRecord{}).Where("domain_id = ? AND user_id = ? AND consumed_task_id IS NULL AND expires_at > ?", domain, user, end).Update("expires_at", end).Error; e != nil {
+			return e
 		}
 		p.ManifestSHA256 = batchPreviewDigest(p, user)
 		row := entity.KnowledgeBatchPreviewRecord{ID: p.PreviewID, DomainID: domain, UserID: user, RegistrationID: registration, Payload: directoryJSON(p), CreatedAt: now, ExpiresAt: expiry}

@@ -1,5 +1,153 @@
 export default {
   translation: {
+    knowledgeBatch: {
+      title: 'Multi-file tasks',
+      workspace: 'Batch workspace',
+      selection: 'Select and preview',
+      tasks: 'Tasks and results',
+      projects: 'Project versions',
+      itemClassification: 'Full item classification',
+      explicitSubset:
+        'Only explicitly checked files will be prepared. Remove ineligible items explicitly; incomplete observations require a new observation.',
+      prepare: 'Prepare batch preview',
+      preview: 'Fixed batch preview',
+      readItem: 'Read fixed original',
+      approveItem: 'I checked and approve this item',
+      stagedOriginal: 'Staged original',
+      approvedCount: 'Approved {{count}} / {{total}} items',
+      accept: 'Submit these {{count}} items',
+      catalogueOnly:
+        'Save originals and catalogue entries only. Structure is deferred; full text and vector indexes are disabled. Model calls: 0.',
+      noScrollRequirement:
+        'Approve each item separately. Scrolling every line is not required. A new preview replaces the previous unsubmitted preview and clears its approvals.',
+      replacementHint:
+        'A successful explicit preparation replaces the previous unsubmitted preview. Approve every item again.',
+      registrationId: 'Registration ID',
+      openRegistration: 'Read existing registration',
+      newRegistration: 'Register a new directory',
+      chooseRegistration:
+        'Read or create a directory registration on the selection page.',
+      taskId: 'Task ID',
+      openTask: 'Read existing task',
+      taskDetails: 'Task details',
+      resultRevision: 'Result revision',
+      progress: 'Completed {{done}} / {{total}} items',
+      counts:
+        'Pending {{pending}} · Running {{running}} · Saved {{succeeded}} · Failed {{failed}} · Cancelled {{cancelled}}',
+      results: 'Item results',
+      manualCheck:
+        'Repeated result checks failed. Automatic checks stopped; check manually. The result remains unconfirmed.',
+      cancelConsent:
+        'I explicitly cancel uncommitted items and retain saved items.',
+      cancel: 'Cancel uncommitted items',
+      retryUnfinished: 'Prepare unfinished items again',
+      retryFull: 'Prepare the full original selection again',
+      retryParent: 'Retry of original task',
+      prepareProject: 'Prepare project manifest',
+      listSnapshot: 'Task list snapshot',
+      listStatesHint:
+        'The task set is fixed. Each page shows states when read.',
+      recovery: 'Original batch request recovery',
+      accepted: 'Task accepted. Saving is determined by its task state.',
+      pending: 'Batch acceptance unconfirmed',
+      recoveryHint:
+        'Checking only reads the original result. It does not resend, replace a key or prepare again. An invisible result does not prove non-submission.',
+      checkOriginal: 'Check original batch request',
+      newBatch: 'Start a new batch',
+      resolveOriginalFirst:
+        'The original batch request is retained. Check its result or explicitly start a new batch after confirmation.',
+      chooseProject: 'Select an existing project group',
+      projectId: 'Project ID',
+      openProject: 'View project versions',
+      fixedManifest: 'Fixed project manifest',
+      explicitCoverage:
+        'This is an explicit selection combined with existing fixed references, not an atomic snapshot of the repository or disk.',
+      history: 'Manifest history',
+      currentHead: 'Current project version',
+      noManifest: 'No project manifest yet',
+      publicationRecovery: 'Original publication recovery',
+      publicationPending: 'Manifest publication unconfirmed',
+      originalBase: 'Original fixed base',
+      checkPublication: 'Check original publication',
+      resendPublication: 'Explicitly resend original publication',
+      publicationReceipt: 'Manifest publication receipt',
+      published: 'Project manifest published',
+      successfulTaskOnly:
+        'Prepare a manifest from a fully successful task. Saving files and publishing a project require separate confirmation.',
+      manifestPreview: 'Project manifest to publish',
+      manifestCounts:
+        'Added {{added}} · Replaced {{replaced}} · Carried {{carried}} · Total {{total}}',
+      publicationConsent:
+        'I checked the complete manifest, coverage and fixed base, and explicitly publish this project version.',
+      loadFullManifest:
+        'Load every manifest entry before checking and confirming.',
+      publish: 'Confirm project version publication',
+      taskStates: {
+        queued: 'Queued',
+        running: 'Running',
+        cancelling: 'Cancelling',
+        succeeded: 'All items saved',
+        partial_failed: 'Some items failed',
+        failed: 'Saving failed',
+        cancelled: 'Cancelled; saved items retained',
+      },
+      itemStates: {
+        pending: 'Pending',
+        running: 'Running',
+        succeeded: 'Saved',
+        failed: 'Failed',
+        cancelled: 'Cancelled',
+      },
+      errors: {
+        versionMismatch: 'Batch contract version mismatch. Operations stopped.',
+        notVisible:
+          'Content is invisible or the result is unconfirmed. Reauthorize and check the original request.',
+        expired:
+          'The fixed preview expired. Observe, prepare and approve again.',
+        capacity:
+          'The staging or task limit was reached. Check existing tasks first.',
+        conflict: 'The fixed context conflicts. Check it before continuing.',
+        invalid:
+          'The request does not match the exact selection or fixed context.',
+        tooLarge: 'The file, batch or request exceeds its limit.',
+        unavailable: 'The result is unconfirmed. Check the original request.',
+      },
+      reasons: {
+        observation_incomplete: 'Observation incomplete; observe again.',
+        observation_mismatch: 'Observation does not match this selection.',
+        ineligible: 'The selection includes ineligible files.',
+        source_changed: 'Source bytes changed. Observe and approve again.',
+        revision_changed: 'The source revision changed.',
+        root_changed: 'The authorized root changed.',
+        policy_changed: 'The domain policy changed.',
+        preview_consumed:
+          'This preview was transferred. Check the original task.',
+        idempotency_conflict:
+          'The original key is bound to a different request. Stopped.',
+        confirmation_mismatch:
+          'Approve every item in the current preview separately.',
+        result_changed: 'Results changed. Reading the first page again.',
+        task_not_succeeded:
+          'The task did not fully succeed. A complete manifest cannot be published.',
+        project_head_changed:
+          'The project base changed. Prepare a new preview and confirm again.',
+        project_membership_changed: 'Project membership changed.',
+        cursor_invalid: 'Pagination context is invalid. Read the list again.',
+        retry_parent_invalid: 'The retry parent or selection is invalid.',
+        root_unready:
+          'The root is unavailable. Saved results can still be checked.',
+        result_unknown:
+          'The result remains unconfirmed. It will not be submitted automatically.',
+        permission_revoked: 'Execution permission was revoked.',
+        save_failed: 'Saving the original failed.',
+        execution_expired:
+          'The execution deadline passed. Prepare and confirm again.',
+        awaiting_execution: 'Awaiting execution',
+        running: 'Running',
+        saved: 'Original saved',
+        cancelled: 'Item cancelled',
+      },
+    },
     knowledgeDirectory: {
       mode: 'Import source',
       manual: 'Manual text',
