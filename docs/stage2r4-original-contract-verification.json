@@ -1,0 +1,1287 @@
+{
+  "document_version": "v0.39",
+  "recorded_date": "2026-10-26",
+  "request_snapshot": [
+    "进入下一步",
+    "请注意后续的步骤，请你持续不断地进行下去，跟另外一个会话，甚至你可以开其他的会话去协调。但一个讯息是你必须要传达的，就是一定一定不能够停下来。一定一定就是至少说有一个会话不能停下来，要主会话不能停下来，你就是主会话，要牵动其他废话，持续不断地推进咱们这个工作，直到最后完成。"
+  ],
+  "objective": "衔接已完成R3，形成R4文档原件与大文件的具体C2 0.5.0候选；由主会话连续协调消费会话核对，不把等待同行当作停工原因。候选批准前不接入业务代码。",
+  "engineering_status": "CandidateReadyForHumanConfirmation",
+  "candidate": {
+    "contract": "C2",
+    "version": "0.5.0",
+    "status": "ReviewCandidate",
+    "frozen": false,
+    "implemented": false,
+    "runtime_loaded": false,
+    "baseline_main": "38ce0031ae31bbf980a2ed27b0eb7ecc607d5a51",
+    "branch": "codex/stage2r4-original-candidate",
+    "artifacts": {
+      "docs/knowledge-original-import-v0.5.candidate.md": "8a1079fe4745b84d178f50939ac25e1ac1fa51bc3f61ed2340ef1f6d9e1638d6",
+      "docs/knowledge-original-import-v0.5.candidate.openapi.json": "b4905ab840c64f26a25a6017dc7454393fd3b974b0e2199edffe2cc5e725a0aa",
+      "docs/knowledge-original-import-v0.5.candidate.examples.json": "16aa77d948f857f93dcc96e0c812d4bee2a8f3ad91205e54b9c0457f78ea8815"
+    }
+  },
+  "clarification": {
+    "notice": "当前需求和仓库现状已核对，本次跳过澄清提问，先按既定R4范围形成候选。",
+    "state": "Settled",
+    "basis": "R3接续和协作计划明确R4先形成候选；本次只形成待确认建议，不提前接受隐私/容量/接口风险。",
+    "questions": []
+  },
+  "authority": {
+    "continue_design": "本会话真人进入下一步与持续推进/协调指令；R3接续明确下一项R4先候选",
+    "freeze": {
+      "outcome": "Pending"
+    },
+    "implementation": {
+      "outcome": "Pending",
+      "reason": "此前候选确认前不接入业务代码的要求仍有效，当前未展示候选不视为已批准"
+    },
+    "user_decision": {
+      "outcome": "Pending"
+    },
+    "adversarial_review": "NotRun_UserDeclined",
+    "data_and_models": "仅合成资料，实际模型调用0，不访问网站或新真实来源"
+  },
+  "coordination": {
+    "shared_checkout": true,
+    "single_writer": true,
+    "current_writer": "A：01a158c6-4366-7792-8768-4aed0b80a6a4",
+    "consumer_thread": "01a17244-5107-7aa3-beed-2ea36062d042",
+    "consumer_write_mode": "ReadOnly_PerLatestHumanInstruction",
+    "continuity_message_delivered": true,
+    "continuity_message_scope": "完成即回报并衔接下一项；主会话持续处理另一条可推进链，不绕过候选批准或权限边界",
+    "r4_feedback_source": {
+      "thread_id": "01a17244-5107-7aa3-beed-2ea36062d042",
+      "turn_id": "01a173f0-49f4-78e1-b0bb-0618c240b2ec",
+      "method": "一次集中消费设计核对＋同一任务补充Axios静态调用顺序",
+      "reviewed_draft_sha256": "0a566f8735f277fc1ee5d2bedcdf2f9675b9e216fb3f5fa4e9070bbe868517c6"
+    },
+    "followup": "消费会话已接R5网页/RSS本地只读能力勘察，不等R4冻结、不重复审查；A继续R4候选与实施准备",
+    "new_independent_recheck": "NotRequested：最终修订由A作定向验证，未声称同行再查或审查通过"
+  },
+  "consumer_findings": [
+    {
+      "id": "R4-C1",
+      "topic": "原始文件名与逻辑路径/修订身份",
+      "resolution": "新增original_filename及basename控制规则；创建摘要/固定元信息绑定，原名变更产生updated，下载用固定原名",
+      "evidence": "candidate.md§3/4/7；CreateUpload/Upload/OriginalRevision"
+    },
+    {
+      "id": "R4-C2",
+      "topic": "创建/确认/登记的丢回复恢复",
+      "resolution": "创建槽保存单文件有界原请求与摘要；确认槽保存完整原确认元组；新增registration by-key，登记原请求重建需原配置摘要，查询不自动重发",
+      "evidence": "candidate.md§8；request/registration摘要向量"
+    },
+    {
+      "id": "R4-C3",
+      "topic": "失败状态/HTTP/配额及迟到回包",
+      "resolution": "新增错误→状态→下一动作矩阵、状态revision/updated_at、GET终态200与过期写410、取消committed返回UploadEnvelope",
+      "evidence": "candidate.md§5；x-upload-outcomes；状态/确认语义向量"
+    },
+    {
+      "id": "R4-C4",
+      "topic": "更新目标修订与列表",
+      "resolution": "独立登记内target?relative_path，0/1当前原件；20条/页游标、范围/TTL及非原子声明；历史首版从固定回执进入",
+      "evidence": "candidate.md§4/7；Target schema及两个例子"
+    },
+    {
+      "id": "R4-C5",
+      "topic": "媒体类型/白名单及原件状态",
+      "resolution": "固定引用旧文本白名单并完整列出，最终text/plain，原名/路径格式族一致；created/updated/unchanged及未解析/索引常量；可空客户端SHA不承诺同名同长同字节",
+      "evidence": "candidate.md§2/3/8；x-media-rules；OriginalRevision常量"
+    },
+    {
+      "id": "R4-C6",
+      "topic": "二进制/HEAD错误和旧契约隔离",
+      "resolution": "成功字节不套JSON，HEAD全部无正文并用错误头，GET错误≤32KiB；旧C1复用既有415而不新增码，过滤后分页；200 If-Range降级不拼块",
+      "evidence": "candidate.md§3/7；HEAD/GET响应和Range向量"
+    }
+  ],
+  "request_coverage": [
+    {
+      "quote": "进入下一步",
+      "status": "已完成本批候选，R4工程未实施",
+      "evidence": "candidate三件套、validation；从R3衔接既定R4"
+    },
+    {
+      "quote": "请注意后续的步骤，请你持续不断地进行下去，跟另外一个会话，甚至你可以开其他的会话去协调。但一个讯息是你必须要传达的，就是一定一定不能够停下来。一定一定就是至少说有一个会话不能停下来，要主会话不能停下来，你就是主会话，要牵动其他废话，持续不断地推进咱们这个工作，直到最后完成。",
+      "reading": "主会话牵动另一会话持续推进、至少保留可推进任务，不因任务间互等停工",
+      "status": "持续执行中，整体项目尚未完成",
+      "evidence": "coordination：实际传达指令、R4集中反馈与R5下一只读任务；A保持唯一写入"
+    },
+    {
+      "quote": "请注意后续的步骤，请你持续不断地进行下去，跟另外一个会话，甚至你可以开其他的会话去协调。但一个讯息是你必须要传达的，就是一定一定不能够停下来。一定一定就是至少说有一个会话不能停下来，要主会话不能停下来，你就是主会话，要牵动其他废话，持续不断地推进咱们这个工作，直到最后完成。",
+      "reading": "可增加会话协调",
+      "status": "当前复用已有两会话；未新建第三会话，不以更多会话扩大权限",
+      "evidence": "coordination.current_writer/consumer_thread"
+    },
+    {
+      "quote": "候选确认前不接入业务代码；只用合成资料、不调用模型、不启动多轮审查",
+      "source": "既有本会话有效约束及R3接续",
+      "status": "已遵守",
+      "evidence": "validation.scope、source_scope、17保护哈希"
+    }
+  ],
+  "validation": {
+    "method": "现有web依赖Ajv2020+ajv-formats离线编译；合成结构正反例、跨字段规则、四类摘要与字段变动绑定、端点一致性和哈希保护",
+    "passed": true,
+    "schemas_compiled": 19,
+    "operations": 17,
+    "counts": {
+      "structure": 49,
+      "semantic": 53,
+      "digests": 39,
+      "endpoint_consistency": 20,
+      "protection": 17,
+      "scope": 2
+    },
+    "details": {
+      "structure": [
+        {
+          "name": "原件精确登记",
+          "passed": true,
+          "expected_valid": true,
+          "actual_valid": true
+        },
+        {
+          "name": "创建原件会话",
+          "passed": true,
+          "expected_valid": true,
+          "actual_valid": true
+        },
+        {
+          "name": "64MiB边界",
+          "passed": true,
+          "expected_valid": true,
+          "actual_valid": true
+        },
+        {
+          "name": "超64MiB",
+          "passed": true,
+          "expected_valid": false,
+          "actual_valid": false
+        },
+        {
+          "name": "零长度原件拒绝",
+          "passed": true,
+          "expected_valid": false,
+          "actual_valid": false
+        },
+        {
+          "name": "PDF固定ready",
+          "passed": true,
+          "expected_valid": true,
+          "actual_valid": true
+        },
+        {
+          "name": "状态-awaiting_bytes",
+          "passed": true,
+          "expected_valid": true,
+          "actual_valid": true
+        },
+        {
+          "name": "状态-receiving",
+          "passed": true,
+          "expected_valid": true,
+          "actual_valid": true
+        },
+        {
+          "name": "状态-interrupted",
+          "passed": true,
+          "expected_valid": true,
+          "actual_valid": true
+        },
+        {
+          "name": "状态-rejected",
+          "passed": true,
+          "expected_valid": true,
+          "actual_valid": true
+        },
+        {
+          "name": "状态-cancelled",
+          "passed": true,
+          "expected_valid": true,
+          "actual_valid": true
+        },
+        {
+          "name": "状态-expired",
+          "passed": true,
+          "expected_valid": true,
+          "actual_valid": true
+        },
+        {
+          "name": "committed携固定回执",
+          "passed": true,
+          "expected_valid": true,
+          "actual_valid": true
+        },
+        {
+          "name": "ready不能没有SHA",
+          "passed": true,
+          "expected_valid": false,
+          "actual_valid": false
+        },
+        {
+          "name": "未确认不能携回执",
+          "passed": true,
+          "expected_valid": false,
+          "actual_valid": false
+        },
+        {
+          "name": "明确确认",
+          "passed": true,
+          "expected_valid": true,
+          "actual_valid": true
+        },
+        {
+          "name": "必须明确true",
+          "passed": true,
+          "expected_valid": false,
+          "actual_valid": false
+        },
+        {
+          "name": "确认未知字段拒绝",
+          "passed": true,
+          "expected_valid": false,
+          "actual_valid": false
+        },
+        {
+          "name": "新原件固定修订",
+          "passed": true,
+          "expected_valid": true,
+          "actual_valid": true
+        },
+        {
+          "name": "原件不可伪造C1根",
+          "passed": true,
+          "expected_valid": false,
+          "actual_valid": false
+        },
+        {
+          "name": "原件不可声称可读文本",
+          "passed": true,
+          "expected_valid": false,
+          "actual_valid": false
+        },
+        {
+          "name": "原件未向量化",
+          "passed": true,
+          "expected_valid": false,
+          "actual_valid": false
+        },
+        {
+          "name": "固定成功回执",
+          "passed": true,
+          "expected_valid": true,
+          "actual_valid": true
+        },
+        {
+          "name": "模型调用必须0",
+          "passed": true,
+          "expected_valid": false,
+          "actual_valid": false
+        },
+        {
+          "name": "成功不可伪装queued",
+          "passed": true,
+          "expected_valid": false,
+          "actual_valid": false
+        },
+        {
+          "name": "原件页",
+          "passed": true,
+          "expected_valid": true,
+          "actual_valid": true
+        },
+        {
+          "name": "21条超过页限",
+          "passed": true,
+          "expected_valid": false,
+          "actual_valid": false
+        },
+        {
+          "name": "UTF8相对路径越级拒绝",
+          "passed": true,
+          "expected_valid": false,
+          "actual_valid": false
+        },
+        {
+          "name": "Windows绝对路径拒绝",
+          "passed": true,
+          "expected_valid": false,
+          "actual_valid": false
+        },
+        {
+          "name": "旧inline_text不接入",
+          "passed": true,
+          "expected_valid": false,
+          "actual_valid": false
+        },
+        {
+          "name": "正文不能塞JSON",
+          "passed": true,
+          "expected_valid": false,
+          "actual_valid": false
+        },
+        {
+          "name": "前端分类",
+          "passed": true,
+          "expected_valid": true,
+          "actual_valid": true
+        },
+        {
+          "name": "分类不能充权限",
+          "passed": true,
+          "expected_valid": false,
+          "actual_valid": false
+        },
+        {
+          "name": "可空客户端SHA",
+          "passed": true,
+          "expected_valid": true,
+          "actual_valid": true
+        },
+        {
+          "name": "非法SHA长度拒绝",
+          "passed": true,
+          "expected_valid": false,
+          "actual_valid": false
+        },
+        {
+          "name": "原确认键为空拒绝",
+          "passed": true,
+          "expected_valid": false,
+          "actual_valid": false
+        },
+        {
+          "name": "移除必填字段拒绝",
+          "passed": true,
+          "expected_valid": false,
+          "actual_valid": false
+        },
+        {
+          "name": "候选能力未运行",
+          "passed": true,
+          "expected_valid": true,
+          "actual_valid": true
+        },
+        {
+          "name": "ready成功包络",
+          "passed": true,
+          "expected_valid": true,
+          "actual_valid": true
+        },
+        {
+          "name": "固定回执包络",
+          "passed": true,
+          "expected_valid": true,
+          "actual_valid": true
+        },
+        {
+          "name": "版本不混用",
+          "passed": true,
+          "expected_valid": false,
+          "actual_valid": false
+        },
+        {
+          "name": "错误包络",
+          "passed": true,
+          "expected_valid": true,
+          "actual_valid": true
+        },
+        {
+          "name": "原始文件名不能是路径",
+          "passed": true,
+          "expected_valid": false,
+          "actual_valid": false
+        },
+        {
+          "name": "原始文件名不能注入响应头",
+          "passed": true,
+          "expected_valid": false,
+          "actual_valid": false
+        },
+        {
+          "name": "目录不是精确文件路径",
+          "passed": true,
+          "expected_valid": false,
+          "actual_valid": false
+        },
+        {
+          "name": "本登记尚无来源",
+          "passed": true,
+          "expected_valid": true,
+          "actual_valid": true
+        },
+        {
+          "name": "本登记已存在原件",
+          "passed": true,
+          "expected_valid": true,
+          "actual_valid": true
+        },
+        {
+          "name": "状态版本必须正整数",
+          "passed": true,
+          "expected_valid": false,
+          "actual_valid": false
+        },
+        {
+          "name": "时间固定UTC秒",
+          "passed": true,
+          "expected_valid": false,
+          "actual_valid": false
+        }
+      ],
+      "semantic": [
+        {
+          "name": "ready实际长度等声明",
+          "passed": true,
+          "expected": true,
+          "actual": true
+        },
+        {
+          "name": "ready截断不成立",
+          "passed": true,
+          "expected": false,
+          "actual": false
+        },
+        {
+          "name": "ready进度不等长度",
+          "passed": true,
+          "expected": false,
+          "actual": false
+        },
+        {
+          "name": "新建必须无当前来源",
+          "passed": true,
+          "expected": false,
+          "actual": false
+        },
+        {
+          "name": "更新必须有旧头",
+          "passed": true,
+          "expected": true,
+          "actual": true
+        },
+        {
+          "name": "更新缺旧头",
+          "passed": true,
+          "expected": false,
+          "actual": false
+        },
+        {
+          "name": "未知旧头不可创建",
+          "passed": true,
+          "expected": false,
+          "actual": false
+        },
+        {
+          "name": "旧同内容复用",
+          "passed": true,
+          "expected": true,
+          "actual": true
+        },
+        {
+          "name": "PDF后缀与MIME一致",
+          "passed": true,
+          "expected": true,
+          "actual": true
+        },
+        {
+          "name": "伪装PDF MIME错误",
+          "passed": true,
+          "expected": false,
+          "actual": false
+        },
+        {
+          "name": "DOCX MIME正确",
+          "passed": true,
+          "expected": true,
+          "actual": true
+        },
+        {
+          "name": "PPTX MIME正确",
+          "passed": true,
+          "expected": true,
+          "actual": true
+        },
+        {
+          "name": "不接ZIP附件",
+          "passed": true,
+          "expected": false,
+          "actual": false
+        },
+        {
+          "name": "大TSX只存原件",
+          "passed": true,
+          "expected": true,
+          "actual": true
+        },
+        {
+          "name": "凭据文件不纳入",
+          "passed": true,
+          "expected": false,
+          "actual": false
+        },
+        {
+          "name": "最多两个预留",
+          "passed": true,
+          "expected": true,
+          "actual": true
+        },
+        {
+          "name": "第三个预留拒绝",
+          "passed": true,
+          "expected": false,
+          "actual": false
+        },
+        {
+          "name": "128MiB预留超限",
+          "passed": true,
+          "expected": false,
+          "actual": false
+        },
+        {
+          "name": "部署接收2槽已满",
+          "passed": true,
+          "expected": false,
+          "actual": false
+        },
+        {
+          "name": "用户域接收已占",
+          "passed": true,
+          "expected": false,
+          "actual": false
+        },
+        {
+          "name": "唯一接收槽",
+          "passed": true,
+          "expected": true,
+          "actual": true
+        },
+        {
+          "name": "PUT状态-awaiting_bytes",
+          "passed": true,
+          "expected": true,
+          "actual": true
+        },
+        {
+          "name": "PUT状态-interrupted",
+          "passed": true,
+          "expected": true,
+          "actual": true
+        },
+        {
+          "name": "PUT状态-ready",
+          "passed": true,
+          "expected": false,
+          "actual": false
+        },
+        {
+          "name": "PUT状态-receiving",
+          "passed": true,
+          "expected": false,
+          "actual": false
+        },
+        {
+          "name": "PUT状态-expired",
+          "passed": true,
+          "expected": false,
+          "actual": false
+        },
+        {
+          "name": "PUT状态-cancelled",
+          "passed": true,
+          "expected": false,
+          "actual": false
+        },
+        {
+          "name": "PUT状态-committed",
+          "passed": true,
+          "expected": false,
+          "actual": false
+        },
+        {
+          "name": "固定确认授权与头一致",
+          "passed": true,
+          "expected": true,
+          "actual": true
+        },
+        {
+          "name": "确认必须-authorized",
+          "passed": true,
+          "expected": false,
+          "actual": false
+        },
+        {
+          "name": "确认必须-unexpired",
+          "passed": true,
+          "expected": false,
+          "actual": false
+        },
+        {
+          "name": "确认必须-manifestEqual",
+          "passed": true,
+          "expected": false,
+          "actual": false
+        },
+        {
+          "name": "确认必须-expectedHeadEqual",
+          "passed": true,
+          "expected": false,
+          "actual": false
+        },
+        {
+          "name": "确认必须-policyEqual",
+          "passed": true,
+          "expected": false,
+          "actual": false
+        },
+        {
+          "name": "确认必须-confirmed",
+          "passed": true,
+          "expected": false,
+          "actual": false
+        },
+        {
+          "name": "已提交同键回放不受暂存TTL影响",
+          "passed": true,
+          "expected": true,
+          "actual": true
+        },
+        {
+          "name": "回放仍须授权",
+          "passed": true,
+          "expected": false,
+          "actual": false
+        },
+        {
+          "name": "范围-完整",
+          "passed": true,
+          "expected": {
+            "status": 200,
+            "start": 0,
+            "end": 4095
+          },
+          "actual": {
+            "status": 200,
+            "start": 0,
+            "end": 4095
+          }
+        },
+        {
+          "name": "范围-起止",
+          "passed": true,
+          "expected": {
+            "status": 206,
+            "start": 0,
+            "end": 31
+          },
+          "actual": {
+            "status": 206,
+            "start": 0,
+            "end": 31
+          }
+        },
+        {
+          "name": "范围-开放末尾",
+          "passed": true,
+          "expected": {
+            "status": 206,
+            "start": 4090,
+            "end": 4095
+          },
+          "actual": {
+            "status": 206,
+            "start": 4090,
+            "end": 4095
+          }
+        },
+        {
+          "name": "范围-suffix",
+          "passed": true,
+          "expected": {
+            "status": 206,
+            "start": 4086,
+            "end": 4095
+          },
+          "actual": {
+            "status": 206,
+            "start": 4086,
+            "end": 4095
+          }
+        },
+        {
+          "name": "范围-末端截EOF",
+          "passed": true,
+          "expected": {
+            "status": 206,
+            "start": 4090,
+            "end": 4095
+          },
+          "actual": {
+            "status": 206,
+            "start": 4090,
+            "end": 4095
+          }
+        },
+        {
+          "name": "范围-起点EOF",
+          "passed": true,
+          "expected": {
+            "status": 416,
+            "start": null,
+            "end": null
+          },
+          "actual": {
+            "status": 416,
+            "start": null,
+            "end": null
+          }
+        },
+        {
+          "name": "范围-零suffix",
+          "passed": true,
+          "expected": {
+            "status": 416,
+            "start": null,
+            "end": null
+          },
+          "actual": {
+            "status": 416,
+            "start": null,
+            "end": null
+          }
+        },
+        {
+          "name": "范围-反向",
+          "passed": true,
+          "expected": {
+            "status": 416,
+            "start": null,
+            "end": null
+          },
+          "actual": {
+            "status": 416,
+            "start": null,
+            "end": null
+          }
+        },
+        {
+          "name": "范围-多范围",
+          "passed": true,
+          "expected": {
+            "status": 416,
+            "start": null,
+            "end": null
+          },
+          "actual": {
+            "status": 416,
+            "start": null,
+            "end": null
+          }
+        },
+        {
+          "name": "范围-非法单位",
+          "passed": true,
+          "expected": {
+            "status": 416,
+            "start": null,
+            "end": null
+          },
+          "actual": {
+            "status": 416,
+            "start": null,
+            "end": null
+          }
+        },
+        {
+          "name": "范围-空范围",
+          "passed": true,
+          "expected": {
+            "status": 416,
+            "start": null,
+            "end": null
+          },
+          "actual": {
+            "status": 416,
+            "start": null,
+            "end": null
+          }
+        },
+        {
+          "name": "范围-不匹配IfRange",
+          "passed": true,
+          "expected": {
+            "status": 200,
+            "start": 0,
+            "end": 4095
+          },
+          "actual": {
+            "status": 200,
+            "start": 0,
+            "end": 4095
+          }
+        },
+        {
+          "name": "范围-强IfRange",
+          "passed": true,
+          "expected": {
+            "status": 206,
+            "start": 0,
+            "end": 31
+          },
+          "actual": {
+            "status": 206,
+            "start": 0,
+            "end": 31
+          }
+        },
+        {
+          "name": "范围-弱IfRange",
+          "passed": true,
+          "expected": {
+            "status": 200,
+            "start": 0,
+            "end": 4095
+          },
+          "actual": {
+            "status": 200,
+            "start": 0,
+            "end": 4095
+          }
+        },
+        {
+          "name": "HEAD忽略非法Range",
+          "passed": true,
+          "expected": {
+            "status": 200,
+            "start": null,
+            "end": null
+          },
+          "actual": {
+            "status": 200,
+            "start": null,
+            "end": null
+          }
+        },
+        {
+          "name": "越域范围不泄漏长度",
+          "passed": true,
+          "expected": {
+            "status": 404,
+            "start": null,
+            "end": null
+          },
+          "actual": {
+            "status": 404,
+            "start": null,
+            "end": null
+          }
+        }
+      ],
+      "digests": [
+        {
+          "name": "registration-0",
+          "passed": true,
+          "sha256": "629762f59864832e8a174a510bf1e42e96f873d5cc0ca841e9c8b8ebfb66fe34"
+        },
+        {
+          "name": "request-0",
+          "passed": true,
+          "sha256": "beef4c787843c7759163234e1440bc5914930e2729c9eb531982ae08e9ef943c"
+        },
+        {
+          "name": "preview-0",
+          "passed": true,
+          "sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4"
+        },
+        {
+          "name": "source_input-0",
+          "passed": true,
+          "sha256": "3033ceeef49f893b38f98efd828e08d34a9cf056a2102a1fa2435c2f146c5c1d"
+        },
+        {
+          "name": "预览绑定-domain_id",
+          "passed": true
+        },
+        {
+          "name": "预览绑定-owner_id",
+          "passed": true
+        },
+        {
+          "name": "预览绑定-registration_id",
+          "passed": true
+        },
+        {
+          "name": "预览绑定-upload_id",
+          "passed": true
+        },
+        {
+          "name": "预览绑定-request_sha256",
+          "passed": true
+        },
+        {
+          "name": "预览绑定-policy_version",
+          "passed": true
+        },
+        {
+          "name": "预览绑定-relative_path",
+          "passed": true
+        },
+        {
+          "name": "预览绑定-classification.group_id",
+          "passed": true
+        },
+        {
+          "name": "预览绑定-classification.component_side",
+          "passed": true
+        },
+        {
+          "name": "预览绑定-classification.language",
+          "passed": true
+        },
+        {
+          "name": "预览绑定-expected_revision_id",
+          "passed": true
+        },
+        {
+          "name": "预览绑定-sha256",
+          "passed": true
+        },
+        {
+          "name": "预览绑定-byte_length",
+          "passed": true
+        },
+        {
+          "name": "预览绑定-media_type",
+          "passed": true
+        },
+        {
+          "name": "预览绑定-action",
+          "passed": true
+        },
+        {
+          "name": "预览绑定-expires_at",
+          "passed": true
+        },
+        {
+          "name": "创建身份绑定-domain_id",
+          "passed": true
+        },
+        {
+          "name": "创建身份绑定-owner_id",
+          "passed": true
+        },
+        {
+          "name": "创建身份绑定-registration_id",
+          "passed": true
+        },
+        {
+          "name": "创建身份绑定-original_filename",
+          "passed": true
+        },
+        {
+          "name": "创建身份绑定-relative_path",
+          "passed": true
+        },
+        {
+          "name": "创建身份绑定-classification.group_id",
+          "passed": true
+        },
+        {
+          "name": "创建身份绑定-classification.component_side",
+          "passed": true
+        },
+        {
+          "name": "创建身份绑定-classification.language",
+          "passed": true
+        },
+        {
+          "name": "创建身份绑定-declared_byte_length",
+          "passed": true
+        },
+        {
+          "name": "创建身份绑定-declared_media_type",
+          "passed": true
+        },
+        {
+          "name": "创建身份绑定-expected_sha256",
+          "passed": true
+        },
+        {
+          "name": "创建身份绑定-expected_revision_id",
+          "passed": true
+        },
+        {
+          "name": "来源输入绑定-sha256",
+          "passed": true
+        },
+        {
+          "name": "来源输入绑定-original_filename",
+          "passed": true
+        },
+        {
+          "name": "来源输入绑定-media_type",
+          "passed": true
+        },
+        {
+          "name": "来源输入绑定-relative_path",
+          "passed": true
+        },
+        {
+          "name": "来源输入绑定-classification.group_id",
+          "passed": true
+        },
+        {
+          "name": "来源输入绑定-classification.component_side",
+          "passed": true
+        },
+        {
+          "name": "来源输入绑定-classification.language",
+          "passed": true
+        }
+      ],
+      "endpoint_consistency": [
+        {
+          "name": "GET /knowledge/original-import-contract",
+          "passed": true
+        },
+        {
+          "name": "POST /datasets/{domain_id}/knowledge/original-registrations",
+          "passed": true
+        },
+        {
+          "name": "GET /datasets/{domain_id}/knowledge/original-registrations/by-key",
+          "passed": true
+        },
+        {
+          "name": "GET /datasets/{domain_id}/knowledge/original-registrations/{registration_id}",
+          "passed": true
+        },
+        {
+          "name": "GET /datasets/{domain_id}/knowledge/original-registrations/{registration_id}/target",
+          "passed": true
+        },
+        {
+          "name": "POST /datasets/{domain_id}/knowledge/original-registrations/{registration_id}/uploads",
+          "passed": true
+        },
+        {
+          "name": "GET /datasets/{domain_id}/knowledge/original-registrations/{registration_id}/uploads/by-key",
+          "passed": true
+        },
+        {
+          "name": "GET /datasets/{domain_id}/knowledge/original-registrations/{registration_id}/uploads/{upload_id}",
+          "passed": true
+        },
+        {
+          "name": "DELETE /datasets/{domain_id}/knowledge/original-registrations/{registration_id}/uploads/{upload_id}",
+          "passed": true
+        },
+        {
+          "name": "PUT /datasets/{domain_id}/knowledge/original-registrations/{registration_id}/uploads/{upload_id}/content",
+          "passed": true
+        },
+        {
+          "name": "POST /datasets/{domain_id}/knowledge/original-registrations/{registration_id}/imports",
+          "passed": true
+        },
+        {
+          "name": "GET /datasets/{domain_id}/knowledge/original-registrations/{registration_id}/imports/by-key",
+          "passed": true
+        },
+        {
+          "name": "GET /datasets/{domain_id}/knowledge/original-registrations/{registration_id}/imports/{import_task_id}",
+          "passed": true
+        },
+        {
+          "name": "GET /datasets/{domain_id}/knowledge/original-revisions",
+          "passed": true
+        },
+        {
+          "name": "GET /datasets/{domain_id}/knowledge/original-revisions/{source_revision_id}",
+          "passed": true
+        },
+        {
+          "name": "GET /datasets/{domain_id}/knowledge/original-revisions/{source_revision_id}/content",
+          "passed": true
+        },
+        {
+          "name": "HEAD /datasets/{domain_id}/knowledge/original-revisions/{source_revision_id}/content",
+          "passed": true
+        },
+        {
+          "name": "operationId唯一",
+          "passed": true
+        },
+        {
+          "name": "上传只接原始二进制",
+          "passed": true
+        },
+        {
+          "name": "HEAD所有状态无正文",
+          "passed": true
+        }
+      ],
+      "protection": [
+        {
+          "name": "docs/knowledge-sources-v1.openapi.json",
+          "expected": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091",
+          "actual": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-sources-v1.example.json",
+          "expected": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a",
+          "actual": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-sources-v1.freeze.json",
+          "expected": "114bbfa2b4dd51eafc426716032486f666ace8a1a1284f4c1f4c9baf1f1b35c6",
+          "actual": "114bbfa2b4dd51eafc426716032486f666ace8a1a1284f4c1f4c9baf1f1b35c6",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-foundation-v1.openapi.json",
+          "expected": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4",
+          "actual": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-foundation-v1.example.json",
+          "expected": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343",
+          "actual": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-directory-import-v1.openapi.json",
+          "expected": "6144c08d4cfe7ac98374dc51829c98290e2c88e3441dd38d250a3cd9cb4492e6",
+          "actual": "6144c08d4cfe7ac98374dc51829c98290e2c88e3441dd38d250a3cd9cb4492e6",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-directory-import-v1.examples.json",
+          "expected": "73618dd78419bb9027520b3dd8b3ef83b1794d3ad1c4d17d904ce7637c54ea72",
+          "actual": "73618dd78419bb9027520b3dd8b3ef83b1794d3ad1c4d17d904ce7637c54ea72",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-directory-import-v1.freeze.json",
+          "expected": "2af7575cfbc24510550a0b495e18aa30f94decf5f102c23d259d4f3135dbf5f1",
+          "actual": "2af7575cfbc24510550a0b495e18aa30f94decf5f102c23d259d4f3135dbf5f1",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-directory-import-v0.3.candidate.md",
+          "expected": "80eb846a81b6ade430012b585739fe6405ef8a7de5855f27941fe66a31e2cbfa",
+          "actual": "80eb846a81b6ade430012b585739fe6405ef8a7de5855f27941fe66a31e2cbfa",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-directory-import-v0.3.candidate.openapi.json",
+          "expected": "da2c320b3c3fd8f6af2b566b40507a5b09c55791236b49b224347c8b9a457f3d",
+          "actual": "da2c320b3c3fd8f6af2b566b40507a5b09c55791236b49b224347c8b9a457f3d",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-directory-import-v0.3.candidate.examples.json",
+          "expected": "2680f9786a19cc49a0330ecfcda84249ef36aac20293341a18e17cbdfd132d4e",
+          "actual": "2680f9786a19cc49a0330ecfcda84249ef36aac20293341a18e17cbdfd132d4e",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-batch-import-v0.4.candidate.md",
+          "expected": "3a3beec92e8bc0baae1c820a18e078717163988277aa9d304d762ff97d027b1f",
+          "actual": "3a3beec92e8bc0baae1c820a18e078717163988277aa9d304d762ff97d027b1f",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-batch-import-v0.4.candidate.openapi.json",
+          "expected": "d57ca240df19a985341c25d60ce18590dacdcf221b5599b8223f558a7c379fc5",
+          "actual": "d57ca240df19a985341c25d60ce18590dacdcf221b5599b8223f558a7c379fc5",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-batch-import-v0.4.candidate.examples.json",
+          "expected": "fe8bde9d99b8aaa7250a40a1adc86c6bee9ecf474cbf01af55253274f2e2e304",
+          "actual": "fe8bde9d99b8aaa7250a40a1adc86c6bee9ecf474cbf01af55253274f2e2e304",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-batch-import-v1.openapi.json",
+          "expected": "bd13fc400fc2a84f490b92ee865db75f76d89bf79a176658312ac3bea17d0fb8",
+          "actual": "bd13fc400fc2a84f490b92ee865db75f76d89bf79a176658312ac3bea17d0fb8",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-batch-import-v1.examples.json",
+          "expected": "5249cdf57da0313346b7b30db0743079a175aaa8480604120b1bf92e4bdfdc53",
+          "actual": "5249cdf57da0313346b7b30db0743079a175aaa8480604120b1bf92e4bdfdc53",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-batch-import-v1.freeze.json",
+          "expected": "1d589290db4b1fe4ab4005dae0ebf1918efdeac9cd57d7c810305087c180f631",
+          "actual": "1d589290db4b1fe4ab4005dae0ebf1918efdeac9cd57d7c810305087c180f631",
+          "passed": true
+        }
+      ],
+      "scope": [
+        {
+          "name": "既有业务源码无改动",
+          "passed": true,
+          "files": [
+            "README.md",
+            "docs/knowledge-original-import-v0.5.candidate.examples.json",
+            "docs/knowledge-original-import-v0.5.candidate.md",
+            "docs/knowledge-original-import-v0.5.candidate.openapi.json",
+            "docs/stage2-local-coordination.md",
+            "docs/stage2r4-original-contract-verification.json",
+            "docs/stage2r4-original-handoff.md",
+            "会话接续说明.md",
+            "本地第二大脑知识库技术方案.md"
+          ]
+        },
+        {
+          "name": "候选声明未实施与零模型",
+          "passed": true
+        }
+      ]
+    },
+    "transport_probe": "静态核实Axios1.13.6 request interceptors→dispatch transform→XHR.send；未运行wire或浏览器运输测试",
+    "runtime_tests_executed": false,
+    "frontend_or_go_tests_repeated": false,
+    "secret_scan": {
+      "passed": true,
+      "scope": "仅本批待提交公开文件，核对本地已知秘密值和真实Key格式；只输出通过/数量，不输出值",
+      "files_checked": 9
+    }
+  },
+  "source_scope": {
+    "production_source_changes": 0,
+    "protected_contract_files": 17,
+    "run_configuration_changes": 0,
+    "business_api_calls": 0,
+    "external_model_calls": 0,
+    "online_source_fetches": 0,
+    "new_dependencies": 0
+  },
+  "incomplete_items": [
+    "真人尚未确认本0.5候选，不伪标冻结或实施批准",
+    "R4流式存储/SQL恢复/授权Range及客户端均待实现",
+    "真实合成HTTP/浏览器/故障/容量性能尚未执行",
+    "R4原件不加入冻结0.4清单；混合清单/目录原件采集另发候选",
+    "R5-R7与阶段3-6未完成；当前不标整个项目完成",
+    "消费会话仅静态核对，没有实际测试/写入权，不称独立最终审查通过"
+  ],
+  "publication": {
+    "target_branch": "codex/stage2r4-original-candidate",
+    "main_unchanged": "38ce0031ae31bbf980a2ed27b0eb7ecc607d5a51",
+    "state": "PreparedForCommit",
+    "note": "候选提交/远端回执在本批接续说明与本地执行证据记录，不把push准备写成成功"
+  },
+  "governance_note": "按项目已有docs及被忽略的本地执行载体留痕；遵守用户保留目录指令，未迁移到新治理目录，未声称正式机器Gate通过。"
+}
