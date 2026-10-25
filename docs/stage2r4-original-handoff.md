@@ -50,3 +50,5 @@ raw PUT仍走`registerNextServer→next-request`原认证。局部Axios transfor
 消费会话的[R5网页／RSS只读调查](stage2r5-web-rss-preparation.md)已归档，关键路径由A核实；消费方随后接续R6原生生命周期能力盘点，仍无文件写入、真实移动／删除或新接口。主会话负责接续，未把同行完成当作全体停工条件。
 
 主会话已实际登记active持续目标并回传消费方，覆盖剩余工程；当前没有标为完成。另有15项合成夹具一致性检查通过：PDF头／xref／EOF，Office ZIP CRC／必要部件／XML良构，全部大文本流式严格UTF-8及跨64KiB的emoji；它们只证明输入准备，不代替应用接纳或Office渲染。
+
+[R6生命周期前置盘点](stage2r6-lifecycle-preparation.md)已回传并由A核实关键路径：现成域归档、来源级状态缺口、原生物理move与逻辑位置区别、历史revision复用和固定清单保留。只形成事实及建议，没有新接口、迁移或实际移动／删除。
