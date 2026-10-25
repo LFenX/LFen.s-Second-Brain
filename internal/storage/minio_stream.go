@@ -16,7 +16,8 @@ import (
 var (
 	errStreamMetadata = errors.New("invalid stream metadata")
 	errStreamRange    = errors.New("invalid stream range")
-	errStreamObject   = errors.New("stream object integrity mismatch")
+	// ErrStreamObjectIntegrity identifies a changed or inconsistent fixed object.
+	ErrStreamObjectIntegrity = errors.New("stream object integrity mismatch")
 )
 
 func isStreamSHA256(value string) bool {
@@ -31,10 +32,10 @@ func isStreamSHA256(value string) bool {
 	return true
 }
 
-// putStream transports a previously measured and hashed source. It does not
+// PutImmutableStream transports a previously measured and hashed source. It does not
 // authorize a source, verify the supplied digest, or publish a catalogue row.
 // A caller must use a private staging key until its admission checks succeed.
-func (m *MinioStorage) putStream(ctx context.Context, bucket, key string, source io.Reader, size int64, contentType, sha256 string) (minio.UploadInfo, error) {
+func (m *MinioStorage) PutImmutableStream(ctx context.Context, bucket, key string, source io.Reader, size int64, contentType, sha256 string) (minio.UploadInfo, error) {
 	if err := ctx.Err(); err != nil {
 		return minio.UploadInfo{}, err
 	}
@@ -56,22 +57,34 @@ func (m *MinioStorage) putStream(ctx context.Context, bucket, key string, source
 	// A known length and one PUT avoid multipart-sized buffers. Content MD5
 	// must remain disabled: the SDK buffers non-seekable sources to compute it.
 	limited := &io.LimitedReader{R: source, N: size}
-	info, err := m.client.PutObject(ctx, bucket, key, limited, size, minio.PutObjectOptions{
+	opts := minio.PutObjectOptions{
 		ContentType:      contentType,
 		UserMetadata:     map[string]string{"sha256": sha256},
 		DisableMultipart: true,
 		SendContentMd5:   false,
-	})
+	}
+	opts.SetMatchETagExcept("*")
+	info, err := m.client.PutObject(ctx, bucket, key, limited, size, opts)
+	if err != nil && minio.ToErrorResponse(err).Code == "PreconditionFailed" {
+		existing, statErr := m.client.StatObject(ctx, bucket, key, minio.StatObjectOptions{})
+		if statErr != nil {
+			return minio.UploadInfo{}, statErr
+		}
+		if existing.Size != size || existing.Metadata.Get("X-Amz-Meta-Sha256") != sha256 || existing.ETag == "" {
+			return minio.UploadInfo{}, ErrStreamObjectIntegrity
+		}
+		return minio.UploadInfo{Size: existing.Size, ETag: existing.ETag, VersionID: existing.VersionID}, nil
+	}
 	if err == nil && limited.N != 0 {
 		return minio.UploadInfo{}, io.ErrUnexpectedEOF
 	}
 	return info, err
 }
 
-// openStream pins a stored object before returning an exact byte range. Digest
+// OpenStream pins a stored object before returning an exact byte range. Digest
 // metadata is checked here; this does not recompute a whole-object digest from
 // a partial read. Authorization and public HTTP Range handling belong to callers.
-func (m *MinioStorage) openStream(ctx context.Context, bucket, key string, size int64, sha256 string, offset, length int64) (io.ReadCloser, error) {
+func (m *MinioStorage) OpenStream(ctx context.Context, bucket, key string, size int64, sha256 string, offset, length int64) (io.ReadCloser, error) {
 	if err := ctx.Err(); err != nil {
 		return nil, err
 	}
@@ -87,7 +100,7 @@ func (m *MinioStorage) openStream(ctx context.Context, bucket, key string, size 
 		return nil, err
 	}
 	if info.Size != size || info.Metadata.Get("X-Amz-Meta-Sha256") != sha256 || info.ETag == "" {
-		return nil, errStreamObject
+		return nil, ErrStreamObjectIntegrity
 	}
 	if length == 0 {
 		return io.NopCloser(bytes.NewReader(nil)), nil
@@ -104,13 +117,16 @@ func (m *MinioStorage) openStream(ctx context.Context, bucket, key string, size 
 	// lazy and would postpone status/range failures until after a caller's headers.
 	body, actual, header, err := (minio.Core{Client: m.client}).GetObject(ctx, bucket, key, opts)
 	if err != nil {
+		if minio.ToErrorResponse(err).Code == "PreconditionFailed" {
+			return nil, errors.Join(ErrStreamObjectIntegrity, err)
+		}
 		return nil, err
 	}
 	wantRange := fmt.Sprintf("bytes %d-%d/%d", offset, end, size)
 	if actual.Size != length || actual.ETag != info.ETag || header.Get("Content-Range") != wantRange ||
 		header.Get("X-Amz-Meta-Sha256") != sha256 {
 		_ = body.Close()
-		return nil, errStreamObject
+		return nil, ErrStreamObjectIntegrity
 	}
 	return &minioStreamReader{ctx: ctx, body: body, remaining: length}, nil
 }

@@ -1,6 +1,6 @@
 # 阶段2剩余任务与本机会话协作
 
-日期：2026-10-26；版本v0.43。真人已批准37574fb，[C2 0.5.0冻结](knowledge-original-import-v1.freeze.json)，A转入R4正式Go实现。[真实对象原语集成](stage2r4-stream-integration-verification.json)20项及三档各3次通过，暂未业务／SQL／Web接线。当前A唯一写入，新会话“R4 原件导入客户端与界面”01a1746b-2de2-7413-906b-d2a4544017e3先只读准备，后端固定后明确交权；旧消费会话继续真人只读。[接续](stage2r4-original-handoff.md)为当前入口。运行main仍38ce003，R3工程事实及用户Pending范围保持，阶段2整体未退出。
+日期：2026-10-26；版本v0.44。C2 0.5.0正式后端已在本机跑通，[验证报告](stage2r4-backend-verification.json)含171项定向unit、真实MySQL1项、对象原语21项及17次实际接口响应。固定后端提交后，A向“R4 原件导入客户端与界面”01a1746b-2de2-7413-906b-d2a4544017e3交接23文件写权；A只做忽略目录内运行验证，不写源码／文档／Git，待清洁提交回交后集成。旧消费方继续真人只读。main仍38ce003，R4 Web／业务容量／崩溃等联调和工程验收未完成，阶段2整体未退出。旧章节是历史时点，当前细则见[接续第10节](stage2r4-original-handoff.md)。
 
 ## 1. 当前事实
 

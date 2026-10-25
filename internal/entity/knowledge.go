@@ -28,22 +28,26 @@ func (KnowledgeGroup) TableName() string { return "knowledge_group" }
 // KnowledgeSourceRevision projects an immutable native FileCommitItem into a domain.
 // DocumentID is also the stable source_id. Raw content remains in native storage.
 type KnowledgeSourceRevision struct {
-	ID            string  `gorm:"primaryKey;size:32" json:"source_revision_id"`
-	DomainID      string  `gorm:"size:32;not null;index;uniqueIndex:idx_knowledge_source_input" json:"domain_id"`
-	DocumentID    string  `gorm:"size:32;not null;index;uniqueIndex:idx_knowledge_source_input" json:"source_id"`
-	FileID        string  `gorm:"size:32;not null" json:"native_file_id"`
-	CommitID      string  `gorm:"size:32;not null" json:"native_commit_id"`
-	FolderID      string  `gorm:"size:32;not null" json:"-"`
-	GroupID       *string `gorm:"size:32;index" json:"group_id"`
-	RelativePath  string  `gorm:"size:512;not null" json:"relative_path"`
-	ComponentSide string  `gorm:"size:16;not null" json:"component_side"`
-	Language      string  `gorm:"size:32;not null;default:''" json:"language"`
-	SHA256        string  `gorm:"size:64;not null" json:"sha256"`
-	InputHash     string  `gorm:"size:64;not null;uniqueIndex:idx_knowledge_source_input" json:"-"`
-	ByteLength    int64   `gorm:"not null" json:"byte_length"`
-	LineCount     int64   `gorm:"not null" json:"line_count"`
-	IsCurrent     bool    `gorm:"not null;default:true;index" json:"is_current"`
-	RootNodeID    string  `gorm:"-" json:"root_node_id"`
+	ID                     string  `gorm:"primaryKey;size:32" json:"source_revision_id"`
+	DomainID               string  `gorm:"size:32;not null;index;uniqueIndex:idx_knowledge_source_input" json:"domain_id"`
+	DocumentID             string  `gorm:"size:32;not null;index;uniqueIndex:idx_knowledge_source_input" json:"source_id"`
+	FileID                 string  `gorm:"size:32;not null" json:"native_file_id"`
+	CommitID               string  `gorm:"size:32;not null" json:"native_commit_id"`
+	FolderID               string  `gorm:"size:32;not null" json:"-"`
+	GroupID                *string `gorm:"size:32;index" json:"group_id"`
+	RelativePath           string  `gorm:"size:512;not null" json:"relative_path"`
+	ComponentSide          string  `gorm:"size:16;not null" json:"component_side"`
+	Language               string  `gorm:"size:32;not null;default:''" json:"language"`
+	SHA256                 string  `gorm:"size:64;not null" json:"sha256"`
+	InputHash              string  `gorm:"size:64;not null;uniqueIndex:idx_knowledge_source_input" json:"-"`
+	ByteLength             int64   `gorm:"not null" json:"byte_length"`
+	LineCount              int64   `gorm:"not null" json:"line_count"`
+	IsCurrent              bool    `gorm:"not null;default:true;index" json:"is_current"`
+	RootNodeID             string  `gorm:"-" json:"root_node_id"`
+	RepresentationKind     string  `gorm:"size:24;not null;default:'text';index" json:"-"`
+	OriginalFilename       string  `gorm:"size:256;not null;default:''" json:"-"`
+	OriginalMediaType      string  `gorm:"size:128;not null;default:''" json:"-"`
+	OriginalRegistrationID string  `gorm:"size:32;not null;default:'';index" json:"-"`
 	BaseModel
 }
 

@@ -1,0 +1,26 @@
+{
+  "contract_version": "1.0.0",
+  "source_contract_version": "0.5.0",
+  "runtime_ready": false,
+  "max_file_bytes": 67108864,
+  "max_open_uploads_per_user_domain": 2,
+  "reserved_bytes_per_user_domain": 134217728,
+  "receiving_per_user_domain": 1,
+  "receiving_deployment": 2,
+  "upload_ttl_seconds": 1800,
+  "receive_timeout_seconds": 120,
+  "lease_seconds": 30,
+  "heartbeat_seconds": 10,
+  "json_max_bytes": 32768,
+  "supported_formats": [
+    "pdf",
+    "pptx",
+    "docx",
+    "utf8_text_code"
+  ],
+  "resumable_parts": false,
+  "parses_automatically": false,
+  "model_calls": 0,
+  "storage_engine": "minio",
+  "reading": "authenticated_fixed_revision_single_range"
+}

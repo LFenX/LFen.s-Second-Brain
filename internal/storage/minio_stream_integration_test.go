@@ -96,7 +96,7 @@ func TestMinioStreamIntegration(t *testing.T) {
 					var before, after runtime.MemStats
 					runtime.ReadMemStats(&before)
 					start := time.Now()
-					info, err := store.putStream(ctx, domain, key, source, size, "application/octet-stream", hash)
+					info, err := store.PutImmutableStream(ctx, domain, key, source, size, "application/octet-stream", hash)
 					putElapsed := time.Since(start)
 					runtime.ReadMemStats(&after)
 					if err != nil || info.Size != size || source.readBytes != size {
@@ -105,7 +105,7 @@ func TestMinioStreamIntegration(t *testing.T) {
 					putAllocation := after.TotalAlloc - before.TotalAlloc
 					runtime.ReadMemStats(&before)
 					start = time.Now()
-					body, err := store.openStream(ctx, domain, key, size, hash, 0, size)
+					body, err := store.OpenStream(ctx, domain, key, size, hash, 0, size)
 					if err != nil {
 						t.Fatal(err)
 					}
@@ -132,7 +132,7 @@ func TestMinioStreamIntegration(t *testing.T) {
 		content[i] = byte(i % 251)
 	}
 	hash := streamDigest(content)
-	if _, err := store.putStream(ctx, domain, "ranges.bin", bytes.NewReader(content), int64(len(content)), "application/octet-stream", hash); err != nil {
+	if _, err := store.PutImmutableStream(ctx, domain, "ranges.bin", bytes.NewReader(content), int64(len(content)), "application/octet-stream", hash); err != nil {
 		t.Fatal(err)
 	}
 	t.Run("ranges", func(t *testing.T) {
@@ -142,7 +142,7 @@ func TestMinioStreamIntegration(t *testing.T) {
 			length int64
 		}{{"first", 0, 1}, {"across_buffer", 65530, 31}, {"tail", int64(len(content) - 17), 17}, {"empty_at_end", int64(len(content)), 0}} {
 			t.Run(test.name, func(t *testing.T) {
-				body, err := store.openStream(ctx, domain, "ranges.bin", int64(len(content)), hash, test.offset, test.length)
+				body, err := store.OpenStream(ctx, domain, "ranges.bin", int64(len(content)), hash, test.offset, test.length)
 				if err != nil {
 					t.Fatal(err)
 				}
@@ -155,10 +155,10 @@ func TestMinioStreamIntegration(t *testing.T) {
 		}
 	})
 	t.Run("empty_object", func(t *testing.T) {
-		if _, err := store.putStream(ctx, domain, "empty.bin", strings.NewReader(""), 0, "application/octet-stream", streamDigest(nil)); err != nil {
+		if _, err := store.PutImmutableStream(ctx, domain, "empty.bin", strings.NewReader(""), 0, "application/octet-stream", streamDigest(nil)); err != nil {
 			t.Fatal(err)
 		}
-		body, err := store.openStream(ctx, domain, "empty.bin", 0, streamDigest(nil), 0, 0)
+		body, err := store.OpenStream(ctx, domain, "empty.bin", 0, streamDigest(nil), 0, 0)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -172,18 +172,18 @@ func TestMinioStreamIntegration(t *testing.T) {
 			size int64
 			hash string
 		}{{int64(len(content)) + 1, hash}, {int64(len(content)), strings.Repeat("a", 64)}} {
-			body, err := store.openStream(ctx, domain, "ranges.bin", mismatch.size, mismatch.hash, 0, 1)
-			if body != nil || !errors.Is(err, errStreamObject) {
+			body, err := store.OpenStream(ctx, domain, "ranges.bin", mismatch.size, mismatch.hash, 0, 1)
+			if body != nil || !errors.Is(err, ErrStreamObjectIntegrity) {
 				t.Fatalf("wrong metadata accepted: %v", err)
 			}
 		}
-		body, err := store.openStream(ctx, domain, "missing.bin", 1, hash, 0, 1)
+		body, err := store.OpenStream(ctx, domain, "missing.bin", 1, hash, 0, 1)
 		if body != nil || err == nil {
 			t.Fatal("missing object was readable")
 		}
 	})
 	t.Run("early_close_and_cancel", func(t *testing.T) {
-		body, err := store.openStream(ctx, domain, "ranges.bin", int64(len(content)), hash, 0, int64(len(content)))
+		body, err := store.OpenStream(ctx, domain, "ranges.bin", int64(len(content)), hash, 0, int64(len(content)))
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -195,17 +195,17 @@ func TestMinioStreamIntegration(t *testing.T) {
 		}
 		canceled, stop := context.WithCancel(ctx)
 		stop()
-		if body, err := store.openStream(canceled, domain, "ranges.bin", int64(len(content)), hash, 0, 1); body != nil || !errors.Is(err, context.Canceled) {
+		if body, err := store.OpenStream(canceled, domain, "ranges.bin", int64(len(content)), hash, 0, 1); body != nil || !errors.Is(err, context.Canceled) {
 			t.Fatalf("canceled read: %v", err)
 		}
-		if _, err := store.putStream(canceled, domain, "canceled.bin", strings.NewReader("x"), 1, "text/plain", streamDigest([]byte("x"))); !errors.Is(err, context.Canceled) {
+		if _, err := store.PutImmutableStream(canceled, domain, "canceled.bin", strings.NewReader("x"), 1, "text/plain", streamDigest([]byte("x"))); !errors.Is(err, context.Canceled) {
 			t.Fatalf("canceled write: %v", err)
 		}
 	})
 	t.Run("etag_change_between_stat_and_get", func(t *testing.T) {
 		const key = "etag-race.bin"
 		old := []byte("synthetic original")
-		if _, err := store.putStream(ctx, domain, key, bytes.NewReader(old), int64(len(old)), "application/octet-stream", streamDigest(old)); err != nil {
+		if _, err := store.PutImmutableStream(ctx, domain, key, bytes.NewReader(old), int64(len(old)), "application/octet-stream", streamDigest(old)); err != nil {
 			t.Fatal(err)
 		}
 		replaced := false
@@ -214,15 +214,35 @@ func TestMinioStreamIntegration(t *testing.T) {
 			if req.Method == http.MethodHead && strings.HasSuffix(req.URL.Path, "/"+key) && !replaced {
 				replaced = true
 				replacement := []byte("synthetic modified")
-				_, err := store.putStream(ctx, domain, key, bytes.NewReader(replacement), int64(len(replacement)), "application/octet-stream", streamDigest(replacement))
+				actualBucket, actualKey := store.resolveBucketAndPath(domain, key)
+				_, err := client.PutObject(ctx, actualBucket, actualKey, bytes.NewReader(replacement), int64(len(replacement)), minio.PutObjectOptions{ContentType: "application/octet-stream", UserMetadata: map[string]string{"sha256": streamDigest(replacement)}, DisableMultipart: true})
 				return err
 			}
 			return nil
 		}
 		pinned := &MinioStorage{client: newClient(race), bucket: bucket, prefixPath: "stage2r4"}
-		body, err := pinned.openStream(ctx, domain, key, int64(len(old)), streamDigest(old), 0, int64(len(old)))
-		if body != nil || !replaced || race.failure != nil || minio.ToErrorResponse(err).Code != "PreconditionFailed" {
-			t.Fatalf("object changed after stat: replaced=%t code=%s hook_failed=%t", replaced, minio.ToErrorResponse(err).Code, race.failure != nil)
+		body, err := pinned.OpenStream(ctx, domain, key, int64(len(old)), streamDigest(old), 0, int64(len(old)))
+		var response minio.ErrorResponse
+		if body != nil || !replaced || race.failure != nil || !errors.Is(err, ErrStreamObjectIntegrity) || !errors.As(err, &response) || response.Code != "PreconditionFailed" {
+			t.Fatalf("object changed after stat: replaced=%t code=%s hook_failed=%t", replaced, response.Code, race.failure != nil)
+		}
+	})
+	t.Run("immutable_object_reuse_and_mismatch", func(t *testing.T) {
+		if _, err := store.PutImmutableStream(ctx, domain, "ranges.bin", bytes.NewReader(content), int64(len(content)), "application/octet-stream", hash); err != nil {
+			t.Fatal(err)
+		}
+		modified := bytes.Repeat([]byte{0xff}, len(content))
+		if _, err := store.PutImmutableStream(ctx, domain, "ranges.bin", bytes.NewReader(modified), int64(len(modified)), "application/octet-stream", streamDigest(modified)); !errors.Is(err, ErrStreamObjectIntegrity) {
+			t.Fatalf("immutable address accepted replacement metadata: %v", err)
+		}
+		body, err := store.OpenStream(ctx, domain, "ranges.bin", int64(len(content)), hash, 0, int64(len(content)))
+		if err != nil {
+			t.Fatal(err)
+		}
+		actual, readErr := io.ReadAll(body)
+		closeErr := body.Close()
+		if readErr != nil || closeErr != nil || !bytes.Equal(actual, content) {
+			t.Fatalf("immutable object overwritten: read=%v close=%v", readErr, closeErr)
 		}
 	})
 }

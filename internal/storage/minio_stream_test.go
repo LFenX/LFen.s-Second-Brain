@@ -111,6 +111,9 @@ func TestMinioStreamPutBounded(t *testing.T) {
 				if r.Header.Get("Content-Md5") != "" {
 					t.Fatal("whole-object MD5 buffering enabled")
 				}
+				if r.Header.Get("If-None-Match") != "*" {
+					t.Fatal("immutable write condition missing")
+				}
 				actual := sha256.New()
 				var count int64
 				var err error
@@ -125,7 +128,7 @@ func TestMinioStreamPutBounded(t *testing.T) {
 			source := &minioPatternReader{remaining: size}
 			var before, after runtime.MemStats
 			runtime.ReadMemStats(&before)
-			info, err := store.putStream(t.Context(), "domain", "source.bin", source, size, "application/octet-stream", digest)
+			info, err := store.PutImmutableStream(t.Context(), "domain", "source.bin", source, size, "application/octet-stream", digest)
 			runtime.ReadMemStats(&after)
 			if err != nil || info.Size != size || source.readBytes != size || calls != 1 {
 				t.Fatalf("put failed: size=%d read=%d calls=%d err=%v", info.Size, source.readBytes, calls, err)
@@ -157,7 +160,7 @@ func TestMinioStreamPutCreatesBucket(t *testing.T) {
 		return minioStreamResponse(r, http.StatusOK, minioStreamHeaders(0, streamDigest([]byte("x")), "stored"), nil), nil
 	})
 	store.bucket, store.prefixPath = "", ""
-	if _, err := store.putStream(t.Context(), "new-bucket", "sample.bin", strings.NewReader("x"), 1, "text/plain", streamDigest([]byte("x"))); err != nil {
+	if _, err := store.PutImmutableStream(t.Context(), "new-bucket", "sample.bin", strings.NewReader("x"), 1, "text/plain", streamDigest([]byte("x"))); err != nil {
 		t.Fatal(err)
 	}
 	want := []string{"HEAD /new-bucket/", "PUT /new-bucket/", "PUT /new-bucket/sample.bin"}
@@ -176,7 +179,7 @@ func TestMinioStreamPutLimitsAndFailures(t *testing.T) {
 			}
 			return minioStreamResponse(r, http.StatusOK, minioStreamHeaders(0, "", "stored"), nil), nil
 		})
-		if _, err := store.putStream(t.Context(), "domain", "item", source, 8, "text/plain", streamDigest([]byte("original"))); err != nil {
+		if _, err := store.PutImmutableStream(t.Context(), "domain", "item", source, 8, "text/plain", streamDigest([]byte("original"))); err != nil {
 			t.Fatal(err)
 		}
 		if source.Len() != len("-extra") {
@@ -190,7 +193,7 @@ func TestMinioStreamPutLimitsAndFailures(t *testing.T) {
 			}
 			return minioStreamResponse(r, http.StatusOK, minioStreamHeaders(0, "", "stored"), nil), nil
 		})
-		_, err := store.putStream(t.Context(), "domain", "item", strings.NewReader("short"), 100, "text/plain", streamDigest([]byte("short")))
+		_, err := store.PutImmutableStream(t.Context(), "domain", "item", strings.NewReader("short"), 100, "text/plain", streamDigest([]byte("short")))
 		if !errors.Is(err, io.ErrUnexpectedEOF) {
 			t.Fatalf("short body reported success: %v", err)
 		}
@@ -199,7 +202,7 @@ func TestMinioStreamPutLimitsAndFailures(t *testing.T) {
 		failure := errors.New("synthetic transport failure")
 		calls := 0
 		store := newMinioStreamStorage(t, func(r *http.Request) (*http.Response, error) { calls++; return nil, failure })
-		if _, err := store.putStream(t.Context(), "domain", "item", strings.NewReader("x"), 1, "text/plain", streamDigest([]byte("x"))); err == nil || calls != 1 {
+		if _, err := store.PutImmutableStream(t.Context(), "domain", "item", strings.NewReader("x"), 1, "text/plain", streamDigest([]byte("x"))); err == nil || calls != 1 {
 			t.Fatalf("failure/retry mismatch: calls=%d err=%v", calls, err)
 		}
 	})
@@ -214,7 +217,7 @@ func TestMinioStreamPutLimitsAndFailures(t *testing.T) {
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			store := newMinioStreamStorage(t, func(*http.Request) (*http.Response, error) { t.Fatal("invalid metadata sent HTTP"); return nil, nil })
-			if _, err := store.putStream(t.Context(), "domain", "item", strings.NewReader("x"), test.size, "text/plain", test.hash); !errors.Is(err, errStreamMetadata) {
+			if _, err := store.PutImmutableStream(t.Context(), "domain", "item", strings.NewReader("x"), test.size, "text/plain", test.hash); !errors.Is(err, errStreamMetadata) {
 				t.Fatal(err)
 			}
 		})
@@ -244,7 +247,7 @@ func TestMinioStreamReadExactBinaryRanges(t *testing.T) {
 				header.Set("Content-Range", fmt.Sprintf("bytes %d-%d/10", start, end))
 				return minioStreamResponse(r, http.StatusPartialContent, header, io.NopCloser(bytes.NewReader(content[start:start+length]))), nil
 			})
-			body, err := store.openStream(t.Context(), "domain", "item", 10, digest, bounds[0], bounds[1])
+			body, err := store.OpenStream(t.Context(), "domain", "item", 10, digest, bounds[0], bounds[1])
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -303,7 +306,7 @@ func TestMinioStreamReadRejectsChangedObject(t *testing.T) {
 				}
 				return minioStreamResponse(r, http.StatusPartialContent, header, tracked), nil
 			})
-			body, err := store.openStream(t.Context(), "domain", "item", 8, digest, 2, 4)
+			body, err := store.OpenStream(t.Context(), "domain", "item", 8, digest, 2, 4)
 			if scenario == "truncated body" {
 				if err != nil {
 					t.Fatal(err)
@@ -329,7 +332,7 @@ func TestMinioStreamReadRejectsChangedObject(t *testing.T) {
 func TestMinioStreamRejectsRangeBeforeHTTP(t *testing.T) {
 	for _, bounds := range [][2]int64{{-1, 1}, {0, -1}, {8, 1}, {math.MaxInt64, 1}, {1, math.MaxInt64}} {
 		store := newMinioStreamStorage(t, func(*http.Request) (*http.Response, error) { t.Fatal("invalid range sent HTTP"); return nil, nil })
-		if body, err := store.openStream(t.Context(), "domain", "item", 8, strings.Repeat("a", 64), bounds[0], bounds[1]); !errors.Is(err, errStreamRange) || body != nil {
+		if body, err := store.OpenStream(t.Context(), "domain", "item", 8, strings.Repeat("a", 64), bounds[0], bounds[1]); !errors.Is(err, errStreamRange) || body != nil {
 			t.Fatalf("invalid range accepted: %v %v", bounds, err)
 		}
 	}
@@ -339,10 +342,10 @@ func TestMinioStreamCancellation(t *testing.T) {
 	ctx, cancel := context.WithCancel(t.Context())
 	cancel()
 	store := newMinioStreamStorage(t, func(*http.Request) (*http.Response, error) { t.Fatal("cancelled request sent HTTP"); return nil, nil })
-	if _, err := store.putStream(ctx, "domain", "item", strings.NewReader("x"), 1, "text/plain", streamDigest([]byte("x"))); !errors.Is(err, context.Canceled) {
+	if _, err := store.PutImmutableStream(ctx, "domain", "item", strings.NewReader("x"), 1, "text/plain", streamDigest([]byte("x"))); !errors.Is(err, context.Canceled) {
 		t.Fatal(err)
 	}
-	if _, err := store.openStream(ctx, "domain", "item", 1, streamDigest([]byte("x")), 0, 1); !errors.Is(err, context.Canceled) {
+	if _, err := store.OpenStream(ctx, "domain", "item", 1, streamDigest([]byte("x")), 0, 1); !errors.Is(err, context.Canceled) {
 		t.Fatal(err)
 	}
 	body := &minioStreamReader{ctx: ctx, body: io.NopCloser(strings.NewReader("x")), remaining: 1}

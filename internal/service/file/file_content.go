@@ -25,6 +25,9 @@ func (s *FileService) GetFileContent(ctx context.Context, uid, fileID string) (*
 	if err := checkFileAccess(ctx, uid, file, permission.OperationRead); err != nil {
 		return nil, err
 	}
+	if file.SourceType == "knowledgebase" && file.Location != nil && strings.HasPrefix(*file.Location, storage.KnowledgeOriginalObjectPrefix) {
+		return nil, permission.ErrKnowledgeIngestionDenied
+	}
 	return file, nil
 }
 

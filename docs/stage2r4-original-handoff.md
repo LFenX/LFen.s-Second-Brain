@@ -1,6 +1,6 @@
 # S2-R4 文档原件接续
 
-日期：2026-10-26；文档v0.43。**真人已批准37574fb，C2 0.5.0已冻结，正式实现进行中**。当前运行main仍为R3的`38ce003`；准备分支`codex/stage2r4-original-preparation`已有MinIO00bed83、格式／暂存8048ede和快照核心2a5135b。冻结和原语测试不等于原件业务闭环已交付；本文较早章节的“待确认”保留对应历史时点，以本段和第9节当前状态为准。
+日期：2026-10-26；文档v0.44。**C2 0.5.0后端最小闭环已实现并在本机运行，正式Web和全链路联调进行中**。[后端报告](stage2r4-backend-verification.json)记录171项unit、MySQL1项、实际对象原语21项及17次接口响应；不等同R4全部交付。main仍38ce003，开发分支codex/stage2r4-original。当前接续以第10节为准，前9节准备与冻结证据保留原范围。
 
 执行入口：[冻结记录](knowledge-original-import-v1.freeze.json)、[正式OpenAPI](knowledge-original-import-v1.openapi.json)、[正式合成向量](knowledge-original-import-v1.examples.json)与原37574fb[行为定义](knowledge-original-import-v0.5.candidate.md)。候选三件套及旧C1/C3和C2 0.2／0.3／0.4共20项保护文件保持原字节。
 
@@ -84,3 +84,21 @@ A继续实现`internal/storage/minio_stream.go`及测试，沿用现有MinIO客�
 新integration标签测试在既有对象服务（实际镜像pgsty/silo，标识见[报告](stage2r4-stream-integration-verification.json)）执行20项。3／32／64MiB各3次完整SHA回读、固定范围、空件、元信息拒绝、提前关闭／取消及真实HEAD后对象改变的If-Match拒绝通过。64MiB PUT累计分配约4.4MB、GET约0.1—0.2MB，最大源Read64KiB；这是内部网络／重复合成正文、客户端TotalAlloc，不是峰值RSS／端到端性能。测试私有bucket保留，不删应用对象；凭据经stdin给进程、不落文件／build上下文，临时网络已恢复。
 
 A当前全部写权，正式复用这些原语接入0.5。新客户端会话01a1746b-2de2-7413-906b-d2a4544017e3已收到冻结资源，只读准备；A交固定后端提交和明确窗口后才写Web，交回清洁版本后A集成。旧消费会话01a17244-5107-7aa3-beed-2ea36062d042仍遵守其真人只读要求，不向它下写入任务。[阶段3盘点](stage3-structure-preparation.md)只作后续设计输入。
+
+
+## 10. v0.44固定后端与Web单写入接续
+
+0.5的17操作已由Go实现；完整范围、源码SHA和实际结果见[后端报告](stage2r4-backend-verification.json)。MySQL真实业务库原用ai_ci比较，限定登记键／精确路径／上传与确认键四列为utf8mb4_bin；隔离库两次实际迁移保留旧ID／值，大小写及NFC／NFD分别存储。本机新binary已加载，Nginx只对原件content关闭请求／响应缓冲与gzip，旧链路保持；授权下载从.objects/original/SHA命名空间读取，旧原生整件读取拒绝此空间。
+
+**写入交接以A的实际会话消息为准，不由本文自动触发。** 固定后端提交在codex/stage2r4-original；main暂不合并。接方先核HEAD／清洁状态／正式三件套及23保护SHA，再仅写下列23文件（12生产新增、4局部修改、7测试），不得切分支、改冻结资源／Go／Docker／依赖／共享UI或自动部署。A交权后不写任何受版本管理文件／Git，只在忽略目录运行本机合成验证；若需后端修复，先由接方交清洁checkpoint和写权，A修复后再交，不并发改检出。
+
+- 新增request/database的knowledge-original.ts、services/knowledge-original-service.ts、hooks/use-knowledge-original.ts、utils/knowledge-original-schema.ts及knowledge-original.ts。
+- 新增pages/dataset/knowledge-import内original.tsx、original-fields.tsx、original-upload.tsx、original-confirmation.tsx、original-revisions.tsx、use-original-flow.ts。
+- 只局部改knowledge-import/index.tsx、knowledge-catalogue/index.tsx、locales/zh.ts和en.ts；目录页需独立原件视图，因为旧C1列表在SQL分页前已排除original_only。
+- 新增services/knowledge-original-service.test.ts、knowledge-original-wire.test.ts，utils/knowledge-original.test.ts，hooks/__tests__/use-knowledge-original.test.tsx，knowledge-import/__tests__/original-fixture.ts与original.test.tsx，以及knowledge-catalogue/__tests__/original.test.tsx。
+
+正式客户端17操作、原生认证／query-key factory、局部raw File/Blob transform、32KiB元信息验证、双恢复槽／原确认元组、单调revision和明确重试／确认必须一起落地。浏览器下载首版≤64MiB整件Blob，校验200／MIME／强SHA ETag／长度与完整SHA，释放URL；不能声称浏览器恒内存。固定原件显示未解析／未建结构／未索引，不跳入旧C1伪根。
+
+本机入口http://127.0.0.1:18080，合成域／项目／登记和固定修订的非秘密ID可从A明确发给接方的smoke报告核对；认证继续本机既有登录，不在消息／公共文档传Token或密码。实际模型调用0、合成原件不送解析／索引队列。接方只读使用A提供的忽略目录夹具，测试后报告改动文件、测试／格式／lint／类型增量／构建与限制，正常hooks提交清洁版本后回交。未经A明确下一窗口，不自行重复审查、改部署或main。
+
+当前待验：正式Web与真实浏览器，三档业务全链路各3次及API峰值RSS／暂存盘，真实崩溃／取消／传输中断／CAS竞争及同版旧链路回归；通过后按真人既有授权合main并push。工程Acceptance仍Pending，阶段2整体及持续目标均未完成。

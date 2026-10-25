@@ -115,7 +115,7 @@ func validateProjectEntries(tx *gorm.DB, domain, project string, entries []entit
 		sourceIDs[i.SourceID] = true
 		paths[i.RegistrationID+"/"+i.RelativePath] = true
 		r, ok := byID[i.SourceRevisionID]
-		if !ok || r.DocumentID != i.SourceID || r.RelativePath != i.RelativePath || r.SHA256 != i.SHA256 || r.ByteLength != i.ByteLength || knowledgeRoot(&r).ID != i.RootNodeID || directoryJSON(entity.KnowledgeDirectoryClassification{GroupID: r.GroupID, ComponentSide: r.ComponentSide, Language: r.Language}) != directoryJSON(i.Classification) {
+		if !ok || r.RepresentationKind == "original_only" || r.DocumentID != i.SourceID || r.RelativePath != i.RelativePath || r.SHA256 != i.SHA256 || r.ByteLength != i.ByteLength || knowledgeRoot(&r).ID != i.RootNodeID || directoryJSON(entity.KnowledgeDirectoryClassification{GroupID: r.GroupID, ComponentSide: r.ComponentSide, Language: r.Language}) != directoryJSON(i.Classification) {
 			return batchConflict("project_membership_changed")
 		}
 		var n int64

@@ -56,14 +56,14 @@ func (s *FileCommitService) RecordSourceSnapshot(ctx context.Context, tx *gorm.D
 	if err := store.Put(ctx, source.ParentID, location, content); err != nil {
 		return nil, nil, err
 	}
-	return s.recordSourceSnapshot(ctx, tx, source, authorID, hash, int64(len(content)))
+	return s.RecordSourceSnapshotObject(ctx, tx, source, authorID, hash, location, int64(len(content)))
 }
 
-// recordSourceSnapshot records metadata for an object already written at its
+// RecordSourceSnapshotObject records metadata for an object already written at its
 // SHA-256 address. The caller owns byte verification, authorization and the
 // transaction; this function neither reads the object nor publishes its source.
-func (s *FileCommitService) recordSourceSnapshot(ctx context.Context, tx *gorm.DB, source *entity.File, authorID, hash string, byteLength int64) (*entity.FileCommit, *entity.FileCommitItem, error) {
-	if byteLength < 0 || len(hash) != sha256.Size*2 {
+func (s *FileCommitService) RecordSourceSnapshotObject(ctx context.Context, tx *gorm.DB, source *entity.File, authorID, hash, location string, byteLength int64) (*entity.FileCommit, *entity.FileCommitItem, error) {
+	if byteLength < 0 || len(hash) != sha256.Size*2 || (location != ".objects/"+hash && location != storage.KnowledgeOriginalObjectPrefix+hash) {
 		return nil, nil, fmt.Errorf("invalid native snapshot metadata")
 	}
 	for _, character := range hash {
@@ -71,7 +71,6 @@ func (s *FileCommitService) recordSourceSnapshot(ctx context.Context, tx *gorm.D
 			return nil, nil, fmt.Errorf("invalid native snapshot metadata")
 		}
 	}
-	location := ".objects/" + hash
 	tree := map[string]interface{}{}
 	previous, err := s.lockFolderCommit(ctx, tx, source.ParentID)
 	if err != nil {

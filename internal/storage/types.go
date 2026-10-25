@@ -18,8 +18,21 @@ package storage
 
 import (
 	"context"
+	"io"
 	"time"
+
+	"github.com/minio/minio-go/v7"
 )
+
+// StreamingStorage is an optional capability for measured immutable originals.
+// Ordinary Storage implementations do not imply streaming support.
+type StreamingStorage interface {
+	PutImmutableStream(context.Context, string, string, io.Reader, int64, string, string) (minio.UploadInfo, error)
+	OpenStream(context.Context, string, string, int64, string, int64, int64) (io.ReadCloser, error)
+}
+
+// KnowledgeOriginalObjectPrefix isolates immutable originals from older byte writers.
+const KnowledgeOriginalObjectPrefix = ".objects/original/"
 
 // StorageType represents the type of storage backend
 type StorageType int

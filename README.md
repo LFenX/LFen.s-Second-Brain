@@ -2,7 +2,7 @@
 
 本地文本、文档与项目代码知识库：结构化整理、可选词法／结构／向量检索、带来源的回答与代码复用；后续通过 Web 和 MCP 共用后端服务。当前POC仍为原生混合检索，可选策略待实施。
 
-**本仓库是后续唯一开发入口，包含当前应用源码、品牌资产、方案和验证记录。** 当前v0.43已按真人“确认冻结并继续实施”冻结[C2 0.5.0](docs/knowledge-original-import-v1.freeze.json)，开始R4正式实现。[真实对象存储集成](docs/stage2r4-stream-integration-verification.json)20项通过，3／32／64MiB各3次完整SHA回读；仅原语验证，不是业务原件上传闭环或端到端性能。此前[快照核心27项](docs/stage2r4-snapshot-preparation-verification.json)、[格式／暂存76项](docs/stage2r4-original-preparation-verification.json)和[SDK隔离28项](docs/stage2r4-stream-preparation-verification.json)保留。候选及20保护资源原字节保持，正式接口／SQL／Web尚待实现；运行main仍38ce003。[接续](docs/stage2r4-original-handoff.md)区分冻结、实现与验收；A当前唯一写入，新会话“R4 原件导入客户端与界面”先只读准备，旧消费方继续其真人只读限制。
+**本仓库是后续唯一开发入口，包含当前应用源码、品牌资产、方案和验证记录。** 当前v0.44已完成冻结[C2 0.5.0](docs/knowledge-original-import-v1.freeze.json)的Go后端最小闭环：[报告](docs/stage2r4-backend-verification.json)记录47顶层／171含子例、真实MySQL 1项、对象原语21项及17次真实接口响应，原件登记／暂存／明确确认／回执恢复／固定GET、HEAD和Range通过；6份42块旧POC、模型配置与用量指纹未变。23保护文件不改，模型0。新API二进制已在本机运行，Git main仍38ce003；Web、业务容量／崩溃联调和R4整体工程验收尚未完成。[接续](docs/stage2r4-original-handoff.md)第10节为当前入口：A固定后端提交后，Web会话接23文件单写入窗口，A仅推进忽略目录中的运行证据；旧消费方保持真人只读。
 
 v0.38已完成S2-R3多文件任务／项目固定版本：用户批准81b81de后冻结[C2 0.4.0](docs/knowledge-batch-import-v1.freeze.json)，源码交付7309daf。Go持久任务、逐项认可、原键恢复、取消、清单基版合并与CAS、正式Web及合成真实联调已完成；[统一报告](docs/stage2r3-batch-verification.json)记录证据和发布状态。工程用户决定Pending；阶段2整体未退出。
 

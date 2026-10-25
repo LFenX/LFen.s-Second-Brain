@@ -1122,6 +1122,9 @@ func (s *FileCommitService) GetCommitFileContent(ctx context.Context, folderID, 
 	if err != nil {
 		return nil, fmt.Errorf("file not found in commit: %w", err)
 	}
+	if (item.NewLocation != nil && strings.HasPrefix(*item.NewLocation, storage.KnowledgeOriginalObjectPrefix)) || (item.OldLocation != nil && strings.HasPrefix(*item.OldLocation, storage.KnowledgeOriginalObjectPrefix)) {
+		return nil, permission.ErrKnowledgeIngestionDenied
+	}
 
 	if item.NewHash == nil && item.OldHash == nil {
 		return nil, fmt.Errorf("file has no content in this commit")

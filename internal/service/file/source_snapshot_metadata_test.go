@@ -61,7 +61,7 @@ func TestKnowledgeSnapshotMetadataWithoutStorage(t *testing.T) {
 		var item *entity.FileCommitItem
 		err := db.Transaction(func(tx *gorm.DB) error {
 			var err error
-			commit, item, err = svc.recordSourceSnapshot(t.Context(), tx, &current, "owner", hash, byteLength)
+			commit, item, err = svc.RecordSourceSnapshotObject(t.Context(), tx, &current, "owner", hash, ".objects/"+hash, byteLength)
 			return err
 		})
 		if err != nil {
@@ -121,7 +121,7 @@ func TestKnowledgeSnapshotMetadataRejectsInvalid(t *testing.T) {
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			err := db.Transaction(func(tx *gorm.DB) error {
-				_, _, err := svc.recordSourceSnapshot(t.Context(), tx, &source, "owner", test.hash, test.size)
+				_, _, err := svc.RecordSourceSnapshotObject(t.Context(), tx, &source, "owner", test.hash, ".objects/"+test.hash, test.size)
 				return err
 			})
 			if err == nil {
@@ -145,7 +145,7 @@ func TestKnowledgeSnapshotMetadataFailureRollback(t *testing.T) {
 			var first *entity.FileCommit
 			if err := db.Transaction(func(tx *gorm.DB) error {
 				var err error
-				first, _, err = svc.recordSourceSnapshot(t.Context(), tx, &source, "owner", hash, 1)
+				first, _, err = svc.RecordSourceSnapshotObject(t.Context(), tx, &source, "owner", hash, ".objects/"+hash, 1)
 				return err
 			}); err != nil {
 				t.Fatal(err)
@@ -177,7 +177,7 @@ func TestKnowledgeSnapshotMetadataFailureRollback(t *testing.T) {
 				cancel()
 			}
 			err := db.Transaction(func(tx *gorm.DB) error {
-				_, _, err := svc.recordSourceSnapshot(ctx, tx, &source, "owner", strings.Repeat("b", 64), 2)
+				_, _, err := svc.RecordSourceSnapshotObject(ctx, tx, &source, "owner", strings.Repeat("b", 64), ".objects/"+strings.Repeat("b", 64), 2)
 				return err
 			})
 			if err == nil || (strings.HasPrefix(failure, "file_commit") && !errors.Is(err, sentinel)) || (failure == "canceled" && !errors.Is(err, context.Canceled)) {

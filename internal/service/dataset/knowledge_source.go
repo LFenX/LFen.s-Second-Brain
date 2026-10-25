@@ -59,6 +59,13 @@ func (d *DatasetService) SnapshotKnowledgeSource(ctx context.Context, userID, do
 		}
 		return nil, err
 	}
+	var originalCount int64
+	if err := dao.DB.WithContext(ctx).Model(&entity.KnowledgeSourceRevision{}).Where("domain_id = ? AND document_id = ? AND representation_kind = ?", kb.ID, document.ID, "original_only").Count(&originalCount).Error; err != nil {
+		return nil, err
+	}
+	if originalCount > 0 {
+		return nil, knowledgeError(415, "knowledge_source_unsupported", "Original-only sources have no C1 text representation")
+	}
 	if document.Location == nil || document.Name == nil || document.Size < 0 || document.Size > knowledgeMaxSourceBytes {
 		return nil, knowledgeInvalid("Source must have readable content of at most 2 MiB")
 	}
@@ -148,6 +155,9 @@ func publishKnowledgeSource(ctx context.Context, tx *gorm.DB, kb *entity.Knowled
 	if currentErr != nil && !errors.Is(currentErr, gorm.ErrRecordNotFound) {
 		return currentErr
 	}
+	if currentErr == nil && current.RepresentationKind == "original_only" {
+		return knowledgeError(415, "knowledge_source_unsupported", "Original-only sources have no C1 text representation")
+	}
 	if currentErr == nil && current.InputHash == inputHash {
 		current.RootNodeID = knowledgeRoot(&current).ID
 		result.Source, result.Root = current, knowledgeRoot(&current)
@@ -201,6 +211,9 @@ func (d *DatasetService) knowledgeSource(ctx context.Context, domainID, revision
 	if err != nil {
 		return nil, knowledgeDBError(err, "source lookup")
 	}
+	if source.RepresentationKind == "original_only" {
+		return nil, knowledgeError(415, "knowledge_source_unsupported", "Original-only sources have no C1 text representation")
+	}
 	source.RootNodeID = knowledgeRoot(&source).ID
 	return &source, nil
 }
@@ -212,7 +225,7 @@ func (d *DatasetService) ListKnowledgeSources(ctx context.Context, userID, domai
 	}
 	// A subquery keeps cursor/order columns unambiguous in the outer query.
 	validDocuments := dao.DB.WithContext(ctx).Model(&entity.Document{}).Select("id").Where("kb_id = ? AND status = ?", kb.ID, string(entity.StatusValid))
-	query := dao.DB.WithContext(ctx).Model(&entity.KnowledgeSourceRevision{}).Where("domain_id = ? AND is_current = ? AND document_id IN (?)", kb.ID, true, validDocuments)
+	query := dao.DB.WithContext(ctx).Model(&entity.KnowledgeSourceRevision{}).Where("domain_id = ? AND is_current = ? AND representation_kind = ? AND document_id IN (?)", kb.ID, true, "text", validDocuments)
 	if groupID != "" {
 		if _, err := d.knowledgeGroup(ctx, kb.ID, groupID); err != nil {
 			return nil, err
@@ -267,6 +280,9 @@ func (d *DatasetService) knowledgeNode(ctx context.Context, domainID, nodeID str
 }
 
 func knowledgeSourceBytes(ctx context.Context, source *entity.KnowledgeSourceRevision) ([]byte, error) {
+	if source.RepresentationKind == "original_only" {
+		return nil, knowledgeError(415, "knowledge_source_unsupported", "Original-only sources have no C1 text representation")
+	}
 	content, err := file.NewFileCommitService().GetCommitFileContent(ctx, source.FolderID, source.CommitID, source.FileID)
 	if err != nil {
 		return nil, knowledgeError(503, "knowledge_storage_unavailable", "Source revision could not be read")
