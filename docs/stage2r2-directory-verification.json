@@ -2,11 +2,12 @@
   "version": "v0.36",
   "task": "S2-R2 受控目录最小导入闭环",
   "request_snapshot": "候选方案通过，冻结 C2 0.3.0，开始推进 S2-R2 受控目录最小导入闭环。由你和新会话按单写入规则交替完成后端、客户端和界面，跑通精确选择、观察、单文件预览确认、回执恢复及固定修订阅读。保持 C2 0.2.0 不变，只用合成资料、不调用模型、不启动多轮审查，验证后推送 main。",
-  "recorded_at": "2026-10-25T12:03:38.950Z",
-  "engineering_status": "真实后端与界面初版已验证；接续修复和前端测试待完成",
+  "recorded_at": "2026-10-25T12:40:24.860Z",
+  "engineering_status": "ImplementedAndVerified",
   "user_decision": {
-    "status": "Pending",
-    "scope": "本轮S2-R2工程交付；候选已获用户批准冻结，不能替代实现验收"
+    "outcome": "Pending",
+    "scope": "本轮S2-R2工程交付，不等同阶段2整体验收",
+    "basis": "本轮仅已有候选批准与实施/推送授权，未收到工程交付的真人验收决定"
   },
   "stage2_overall": "NotExited",
   "target": {
@@ -15,10 +16,12 @@
     "backend": "e934fc237928214978d43624a5734f8cb512036e",
     "frontend_initial": "ae17ed396c6ed6202d4ec168ab035ac5c3aeb0bc",
     "go_binary_sha256": "a1a4a0d250a217677b8d5fadacf74acccdc670fa3b63db1cc191bf707d656413",
-    "build_input_committed_files_equal": 17
+    "build_input_committed_files_equal": 17,
+    "frontend_final": "72c74c521473323be908b3d564c768389e10560c",
+    "final_application_source": "Go e934fc2 + Web 72c74c5；后续文档提交不改变应用代码"
   },
   "frozen": {
-    "checked_at": "2026-10-25T12:02:13.536Z",
+    "checked_at": "2026-10-25T12:32:15.912Z",
     "schema_cases": 76,
     "schemas": 29,
     "lifecycle_only_projection_equal": true,
@@ -158,7 +161,19 @@
       "fixture_volume": "lfen-ragflow-poc-s2r2-fixtures",
       "scope": "仅合成只读样本卷；原业务卷/凭据未删除或重建。旧临时根保持离线授权以验证持久恢复，未重绑其身份。"
     },
-    "limitation": "Windows完整服务与共享盘读取未通过；未验证平台/文件系统按不就绪拒绝。Windows探针只证明适配器关闭能力，不能称Windows读取已支持。"
+    "limitation": "Windows完整服务与共享盘读取未通过；未验证平台/文件系统按不就绪拒绝。Windows探针只证明适配器关闭能力，不能称Windows读取已支持。",
+    "cleanup": {
+      "synthetic_root_grant_restored": true,
+      "staged_fault_consumed_and_content_cleared": true,
+      "drop_fault_inactive": true,
+      "secondary_api_stopped_by_restart": true,
+      "synthetic_writer_container_stopped_and_removed": true,
+      "synthetic_volume_preserved": true,
+      "relay_stopped": true,
+      "real_native_app_kept_running": true,
+      "build_container_returned_to_stopped": true
+    },
+    "application_health": "healthy"
   },
   "frontend": {
     "initial": {
@@ -170,7 +185,98 @@
       "build": "Passed: 41.59s, --minify false --sourcemap false",
       "tests": "NotRun"
     },
-    "next_test_batch": "新4套及旧6套回归、定向修复、最终类型/格式/lint/生产构建待消费会话接续"
+    "final": {
+      "commit": "72c74c521473323be908b3d564c768389e10560c",
+      "files": 18,
+      "tests": {
+        "result": "Passed",
+        "suites": 10,
+        "passed": 238,
+        "failed": 0,
+        "new_suites": 4,
+        "new_tests": 169,
+        "old_suites": 6,
+        "old_tests": 69,
+        "by_new_suite": {
+          "page": 25,
+          "utils": 116,
+          "service": 27,
+          "wire": 1
+        },
+        "frozen_structure_cases": 76,
+        "frozen_semantic_cases": 11,
+        "evidence": [
+          "tests-final.log",
+          "tests-final.json"
+        ],
+        "runner": "Jest local config, runInBand, no coverage, only listed 10 suites; mocked transport except real Axios adapter wire test"
+      },
+      "red_green": {
+        "red": {
+          "failed": 4,
+          "evidence": "ui-red.log"
+        },
+        "green": {
+          "passed": 4,
+          "evidence": "ui-fix-green.log"
+        },
+        "later_coverage": "success and failed receipt after reload; original-request expiration and explicit resend; 401/404/version restoration errors; revoked root then reauthorization; offline root without RootPicker"
+      },
+      "format": {
+        "result": "Passed",
+        "files": 18,
+        "evidence": [
+          "format-phase2.log",
+          "format-phase2-check.log"
+        ]
+      },
+      "lint": {
+        "result": "Passed",
+        "files": 18,
+        "exit_code": 0,
+        "evidence": "lint-phase2-final.log"
+      },
+      "typecheck": {
+        "result": "BaselineUnchanged_NotGreen",
+        "before": 207,
+        "after": 207,
+        "added": 0,
+        "removed": 0,
+        "diagnostic_diff": [],
+        "exit_code": 2,
+        "evidence": [
+          "typecheck-phase2-before.log",
+          "typecheck-phase2-final.log",
+          "typecheck-phase2-diff.json"
+        ]
+      },
+      "production_build": {
+        "result": "Passed",
+        "exit_code": 0,
+        "duration_seconds": 39.85,
+        "output": ".local-data/stage2r2-20261025/consumer/web-dist",
+        "ignored": true,
+        "minify": false,
+        "sourcemap": false,
+        "node_options": "--max-old-space-size=8192",
+        "files": 1058,
+        "map_files": 0,
+        "index_sha256": "1c1ae0c3b04640756721cf5dc2da2c23200d68c0441158735f613017a458fae9",
+        "evidence": "build-phase2.log",
+        "deployed": true,
+        "loaded_by": "协调会话在原固定Web挂载逐文件发布，未重建应用",
+        "verified_files": 1058,
+        "live_index_sha256": "1c1ae0c3b04640756721cf5dc2da2c23200d68c0441158735f613017a458fae9"
+      },
+      "hooks": {
+        "result": "Passed_NormalCommit",
+        "lefthook": "2.2.2",
+        "passed_checks": 8,
+        "unrelated_go_python_jobs": "Skipped_NoMatchingFiles",
+        "bypass": false,
+        "evidence": "commit-phase2.log"
+      }
+    }
   },
   "browser": {
     "synthetic_login": true,
@@ -195,22 +301,69 @@
       "followup_issue": "Reloaded recovery -> select and observe again loses fixed registration and asks blank registration form"
     },
     "request_attempts": 83,
-    "model_routes_allowed": false
+    "model_routes_allowed": false,
+    "final": {
+      "checked_at": "2026-10-25T12:32:15.399Z",
+      "source_commit": "72c74c521473323be908b3d564c768389e10560c",
+      "passed": true,
+      "live_assets_verified": 1058,
+      "live_index_sha256": "1c1ae0c3b04640756721cf5dc2da2c23200d68c0441158735f613017a458fae9",
+      "restored_fixed_registration_before_new_observation": true,
+      "posts_during_restore": 0,
+      "directory_registered_hint_correct": true,
+      "utf8_window": {
+        "total_bytes": 65546,
+        "windows": [
+          [
+            0,
+            65535
+          ],
+          [
+            65535,
+            65546
+          ]
+        ],
+        "first_boundary_rejected_416_then_bounded_get_shrink": true,
+        "tail": "🧠尾巴\n",
+        "confirmed_once": true,
+        "persisted_c1_tail_matches": true,
+        "source_revision_id": "ab92ca0257b843a1baa2819d37cc8e49",
+        "root_node_id": "40582b600a3a8a76fe7ec891875e0a48bb486bb4f9e016f7fde8d4fab66291f1",
+        "sha256": "f9e9b5268b810635b842bbbaf29522ec463d0908cc6717d0296c0fe301853eab"
+      },
+      "existing_poc_provider_usage_queue_unchanged": true,
+      "model_calls": 0,
+      "native_entrypoint": "http://127.0.0.1:18080",
+      "native_chinese_fixed_original_visible": true,
+      "native_original_source_sha256": "f0e5e924de66b156292c124baac6dd8c0b6e062faedf3b3a379c9aa3c05c3c68"
+    }
   },
   "issues": [
     {
       "id": "S2R2-UI-01",
-      "status": "Open",
+      "status": "Closed",
       "severity": "P2",
       "observed": "已提交响应丢失→重载→根撤权404隐藏→恢复授权GET200原回执→点击重新观察，显示空白登记表，丢失固定登记上下文。",
-      "fix_scope": "只用现有GET登记恢复原上下文，再允许明确重观察；不自动POST、不清除未核实原请求。新增定向回归。"
+      "fix_scope": "只用现有GET登记恢复原上下文，再允许明确重观察；不自动POST、不清除未核实原请求。新增定向回归。",
+      "resolved_commit": "72c74c521473323be908b3d564c768389e10560c",
+      "verification": [
+        "4项红→绿回归",
+        "238项最终定向测试",
+        "同版真实浏览器恢复登记和准确提示复验"
+      ]
     },
     {
       "id": "S2R2-UI-02",
-      "status": "Open",
+      "status": "Closed",
       "severity": "P3",
       "observed": "登记中已保存过文件，重新观察时仍显示Registered; original not imported yet，不能准确表达登记状态。",
-      "fix_scope": "仅0.3目录模式改为来源已登记/请选择观察，使用独立文案；不改旧0.2共享文案语义。"
+      "fix_scope": "仅0.3目录模式改为来源已登记/请选择观察，使用独立文案；不改旧0.2共享文案语义。",
+      "resolved_commit": "72c74c521473323be908b3d564c768389e10560c",
+      "verification": [
+        "4项红→绿回归",
+        "238项最终定向测试",
+        "同版真实浏览器恢复登记和准确提示复验"
+      ]
     }
   ],
   "boundaries": {
@@ -220,17 +373,91 @@
     "multi_round_review": false,
     "old_02_files_unchanged": true,
     "new_source_components_other_than_directory_connected": false,
-    "push_main": "Pending after final validation"
+    "push_main": {
+      "authorization": "用户原话已授权验证后推送main",
+      "verification": "最终Git main/远端HEAD一致由实际推送及ls-remote确认；实际提交绑定保存在本轮after.json与最终答复，避免自引用哈希"
+    }
   },
   "evidence": {
     "private_task": ".local-data/stage2r2-20261025",
     "screenshots": {
       "docs/stage2r2-directory-preview.png": "b6a642c1917c0258f5c02f1b2ae001990e06c64df13c3b6bf7ac7a2766cf65a0",
-      "docs/stage2r2-directory-receipt.png": "b829c7fac69d77bc08f01d6ae898221495dd6c1a890c03966c5d6125697488b6",
-      "docs/stage2r2-directory-fixed-revision.png": "bff67443016d0c8f5d71da3317dd45af454306324a4c9c61c3b9ebda513abe16",
+      "docs/stage2r2-directory-receipt.png": "bf35ce31c3b2668cb1c656ea9ad6b38f475badea36cc36e674066fa9db6a036a",
+      "docs/stage2r2-directory-fixed-revision.png": "855bfcb26544af935a9317905b76775216d886737497d2928096d60870e95496",
       "docs/stage2r2-directory-invisible.png": "e4e12391ac708b7bb156201fca00a838095ac2560272f987a433bc4658917f26",
       "docs/stage2r2-directory-recovered.png": "0c35aec9652927c30002171d41721a7a63a7be128c4461df9b9394577d58c1da",
-      "docs/stage2r2-directory-failed.png": "05ad17755663bd5d71c8821dff6e2fed5ffdf83bd058d85ad7496394b3298b7c"
+      "docs/stage2r2-directory-failed.png": "05ad17755663bd5d71c8821dff6e2fed5ffdf83bd058d85ad7496394b3298b7c",
+      "docs/stage2r2-directory-resumed.png": "312af40e578b85f72c4c75c91e063acb8d3cadc780007674bd45721efe6c9e57",
+      "docs/stage2r2-directory-utf8-window.png": "76bc925a7c589ef36eb799ba40e00ac800ee6348ce7da1816fdd5c956905299e"
+    },
+    "consumer_result": {
+      "path": ".local-data/stage2r2-20261025/consumer/final-result.json",
+      "sha256": "0594ba36ef25c03a36c8ecba6e260205f1e1066977bcea506b8d5f400a4d21c4"
+    },
+    "consumer_test_result": {
+      "path": ".local-data/stage2r2-20261025/consumer/tests-final.json",
+      "sha256": "491a131ed3005c0ab128b0a4400fb94e109b5b1e41c4a8fdf9912576fd2a7bc1"
     }
+  },
+  "candidate_approval": {
+    "outcome": "Approved",
+    "target": "95c22f1a30779f97a8ba93b342326ead2ccbc672",
+    "evidence": "docs/knowledge-directory-import-v1.freeze.json"
+  },
+  "requirement_coverage": [
+    {
+      "requirement": "冻结0.3.0",
+      "evidence": "0996462正式冻结；候选/旧冻结哈希保持"
+    },
+    {
+      "requirement": "受控目录最小闭环",
+      "evidence": "14操作Go及18文件Web；只读合成卷真实链路"
+    },
+    {
+      "requirement": "两个会话单写交替",
+      "evidence": "e934fc2→ae17ed3→a8ee3a2→72c74c5→A最终复验，每次明确清洁基线/文件/回执"
+    },
+    {
+      "requirement": "精确选择及观察",
+      "evidence": "固定分页不扩大选择；32/33、完整/资格分离、缺失不删除"
+    },
+    {
+      "requirement": "单文件预览确认",
+      "evidence": "固定暂存字节、完整分类、独立consent、内容/头/策略/根复核"
+    },
+    {
+      "requirement": "回执恢复",
+      "evidence": "GET核查不POST；丢响应重载/撤权恢复；独立进程等待及崩溃回滚"
+    },
+    {
+      "requirement": "固定修订",
+      "evidence": "57字节原文与旧版本稳定；65546字节真实UTF8分窗及C1尾窗一致"
+    },
+    {
+      "requirement": "0.2.0不变",
+      "evidence": "原3份冻结原字节、旧69项回归及真实手动闭环"
+    },
+    {
+      "requirement": "合成/零模型/无审查",
+      "evidence": "合成根与合成账号；旧POC/模型配置/用量/队列保持；无对抗性审查"
+    },
+    {
+      "requirement": "验证后推main",
+      "evidence": "用户已授权；最终Git交付核对独立于用户工程验收决定"
+    }
+  ],
+  "remaining_scope": [
+    "Windows完整服务和共享盘读取尚未开放；不把关闭能力探针称为Windows支持",
+    "冷盘/真实项目/生产负载性能及全量类型技术债不在本轮通过声明内",
+    "R3—R7和阶段3—6未启动；真实资料、二进制原件、解析/索引/模型、MCP及人格记忆不因本轮自动开放"
+  ],
+  "publication_security": {
+    "checked_at": "2026-10-25T12:41:48.304Z",
+    "changed_public_files": 53,
+    "production_assets": 1058,
+    "checked_files": 1111,
+    "live_credential_hits": 0,
+    "private_files_in_public_change_set": 0,
+    "credential_values_printed": false
   }
 }
