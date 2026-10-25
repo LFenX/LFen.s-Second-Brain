@@ -1,0 +1,325 @@
+{
+  "document_version": "v0.37",
+  "recorded_at": "2026-10-25T14:05:42.489Z",
+  "request_snapshot": "继续推进，你们两个怎么停下来了",
+  "objective": "推进S2-R3多文件任务与项目清单候选，与本机消费会话直接核对，补充可核对的契约、例子、恢复和实施验收标准，不将继续推进解释为未展示候选已获冻结批准。",
+  "engineering_status": "CandidateReadyForHumanConfirmation",
+  "candidate": {
+    "contract": "C2",
+    "version": "0.4.0",
+    "status": "ReviewCandidate",
+    "frozen": false,
+    "implemented": false,
+    "runtime_loaded": false,
+    "baseline_main": "6577af32a1755e3a7889bbf1b7b387544a920ac5",
+    "initial_candidate_commit": "d9d2ce1968485e002a42fb80867a44eecf244f94",
+    "consumer_handoff_commit": "8d79e9018909ea98072916450678ee5ecfd45d8b",
+    "revised_candidate_commit": "855d8fd05a9d597b2327818c75bf0e478d1495f4",
+    "artifacts": {
+      "docs/knowledge-batch-import-v0.4.candidate.md": "3a3beec92e8bc0baae1c820a18e078717163988277aa9d304d762ff97d027b1f",
+      "docs/knowledge-batch-import-v0.4.candidate.openapi.json": "d57ca240df19a985341c25d60ce18590dacdcf221b5599b8223f558a7c379fc5",
+      "docs/knowledge-batch-import-v0.4.candidate.examples.json": "fe8bde9d99b8aaa7250a40a1adc86c6bee9ecf474cbf01af55253274f2e2e304"
+    }
+  },
+  "authority": {
+    "continue_design": "本轮真人继续推进指令与既有本机多会话授权",
+    "freeze": {
+      "outcome": "Pending"
+    },
+    "implementation": {
+      "outcome": "Pending",
+      "reason": "保持此前候选确认前不接入业务代码的边界"
+    },
+    "user_decision": {
+      "outcome": "Pending"
+    },
+    "adversarial_review": "NotRun_UserDeclined",
+    "models": "仅合成、模型调用0"
+  },
+  "coordination": {
+    "shared_checkout": true,
+    "single_writer": true,
+    "current_writer": "A：01a158c6-4366-7792-8768-4aed0b80a6a4",
+    "consumer_thread": "01a17244-5107-7aa3-beed-2ea36062d042",
+    "sequence": [
+      "A仅写候选三文件并提交d9d2ce1",
+      "消费会话按白名单独立静态核对并提交8d79e90，明确回交干净工作树及全部写权",
+      "A集中修订四项855d8fd并做针对性验证，消费者只读"
+    ],
+    "consumer_initial_result": "一次集中核对完成；给定41结构/25语义/2摘要通过，但发现四项候选定义缺口",
+    "final_independent_consumer_recheck": "NotRequested：按本轮不增加核对轮次收口；A定向验证不代替新的消费者或真人批准",
+    "consumer_evidence": "docs/stage2r3-batch-consumer-handoff.md"
+  },
+  "request_coverage": [
+    {
+      "request": "继续推进",
+      "result": "从已完成R2推进既定R3候选，17操作、35schema、身份/权限/确认/任务/取消/分页/恢复/项目CAS及分阶段实施标准已保存",
+      "evidence": "docs/knowledge-batch-import-v0.4.candidate.md 第1—9节及候选OpenAPI"
+    },
+    {
+      "request": "你们两个",
+      "result": "已实际唤醒既有消费会话核对，完成A→消费方→A单写入交接，未等待外部B",
+      "evidence": "coordination及消费核对文档"
+    },
+    {
+      "request": "既有合成、零模型、无多轮审查约束",
+      "result": "本轮仅公开候选/文档和离线合成静态校验；未调业务API、模型、worker或修改运行配置",
+      "evidence": "validation.scope及source_scope"
+    },
+    {
+      "request": "既有冻结契约及历史保持",
+      "result": "旧11份受保护文件逐字节SHA不变；本轮不重新解释R2验收",
+      "evidence": "protected_hashes"
+    }
+  ],
+  "validation": {
+    "scope": "静态候选结构/语义/摘要/消费核对；不是业务运行测试",
+    "command": "node .local-data/stage2r3-20261025/check-final.cjs 855d8fd",
+    "summary": {
+      "compilation": {
+        "total": 35,
+        "passed": 35,
+        "failed": 0
+      },
+      "structures": {
+        "total": 70,
+        "passed": 70,
+        "failed": 0
+      },
+      "semantics": {
+        "total": 71,
+        "passed": 71,
+        "failed": 0
+      },
+      "digests": {
+        "total": 2,
+        "passed": 2,
+        "failed": 0
+      },
+      "rawBytes": {
+        "total": 2,
+        "passed": 2,
+        "failed": 0
+      },
+      "operations": {
+        "total": 17,
+        "passed": 17,
+        "failed": 0
+      },
+      "frozen": {
+        "total": 11,
+        "passed": 11,
+        "failed": 0
+      },
+      "prerequisites": {
+        "total": 2,
+        "passed": 2,
+        "failed": 0
+      },
+      "additions": {
+        "total": 8,
+        "passed": 8,
+        "failed": 0
+      },
+      "schemaCoverage": {
+        "total": 35,
+        "passed": 35,
+        "failed": 0
+      }
+    },
+    "negative_semantic_cases": 32,
+    "initial_summary": {
+      "compilation": {
+        "total": 35,
+        "passed": 35,
+        "failed": 0
+      },
+      "structures": {
+        "total": 41,
+        "passed": 41,
+        "failed": 0
+      },
+      "semantics": {
+        "total": 25,
+        "passed": 25,
+        "failed": 0
+      },
+      "digests": {
+        "total": 2,
+        "passed": 2,
+        "failed": 0
+      },
+      "rawBytes": {
+        "total": 2,
+        "passed": 2,
+        "failed": 0
+      },
+      "operations": {
+        "total": 17,
+        "passed": 17,
+        "failed": 0
+      },
+      "frozen": {
+        "total": 11,
+        "passed": 11,
+        "failed": 0
+      },
+      "prerequisites": {
+        "total": 2,
+        "passed": 2,
+        "failed": 0
+      },
+      "additions": {
+        "total": 8,
+        "passed": 8,
+        "failed": 0
+      },
+      "schemaCoverage": {
+        "total": 35,
+        "passed": 35,
+        "failed": 0
+      }
+    },
+    "source_hashes": {
+      "docs/knowledge-batch-import-v0.4.candidate.openapi.json": "d57ca240df19a985341c25d60ce18590dacdcf221b5599b8223f558a7c379fc5",
+      "docs/knowledge-batch-import-v0.4.candidate.examples.json": "fe8bde9d99b8aaa7250a40a1adc86c6bee9ecf474cbf01af55253274f2e2e304",
+      "docs/knowledge-batch-import-v0.4.candidate.md": "3a3beec92e8bc0baae1c820a18e078717163988277aa9d304d762ff97d027b1f"
+    },
+    "projection_links": {
+      "manifest_task_digest_matches_batch": true,
+      "batch_item_count": 2,
+      "manifest_total_entries": 2,
+      "manifest_added": 2,
+      "manifest_replaced": 0,
+      "manifest_carried": 0,
+      "note": "修订后项目向量固定包含两项成功结果；跨对象成员遗漏由project_from_task正反例验证。",
+      "expected_with_null_base_and_succeeded_task": 2,
+      "omitted_task_paths": []
+    },
+    "error_mapping": {
+      "version_mismatch_code_in_error_schema": true,
+      "version_mismatch_code_in_409_mapping": true,
+      "error_semantic_examples": 29
+    },
+    "targeted_resolution": [
+      {
+        "id": "R3-CONS-01",
+        "passed": true
+      },
+      {
+        "id": "R3-CONS-02",
+        "passed": true
+      },
+      {
+        "id": "R3-CONS-03",
+        "passed": true
+      },
+      {
+        "id": "R3-CONS-04",
+        "passed": true
+      }
+    ],
+    "evidence_hashes": {
+      "initial_script": "bdb859646777c40445f96ba6d95dfd3d71e8c570cee423c7796d2d265cf8a6bf",
+      "initial_result": "2200db106db0620fcb6936f715c55af7af6afd1ca595913c6b65df926e914e35",
+      "final_script": "b203aaf8a2e57a782a570287460eaa261165726ddf1e91fcad926a17725262f2",
+      "final_result": "e7b7085dc085eace382350416a5d91a9c69e315c3f11bd62adb8b3f72befcee4"
+    },
+    "cases_are_independent_synthetic_scenarios": true,
+    "business_api_calls": 0,
+    "model_calls": 0,
+    "production_builds": 0,
+    "runtime_tests": false,
+    "old_238_tests_rerun": false
+  },
+  "findings": [
+    {
+      "id": "R3-CONS-01",
+      "finding": "项目向量遗漏同批空文本成功项",
+      "resolution": "显式两项完整成功任务、两项清单与回执；输入重建向量，增加遗漏与错误修订反例",
+      "evidence": "project_from_task 4例、digest_vectors与targeted_resolution",
+      "status": "ResolvedAndTargetedStaticVerified",
+      "user_accepted": false
+    },
+    {
+      "id": "R3-CONS-02",
+      "finding": "HTTP/code/reason映射不一致",
+      "resolution": "409分别声明版本错误与具名冲突，schema约束reason，HTTP三元组精确映射；29错误语义例",
+      "evidence": "Error.allOf、x-error-mapping、error语义例",
+      "status": "ResolvedAndTargetedStaticVerified",
+      "user_accepted": false
+    },
+    {
+      "id": "R3-CONS-03",
+      "finding": "重试父任务与新选择规则不完整",
+      "resolution": "同用户/域/登记，父终态限定，未成功子集或原完整选择，其他路径必须普通新任务；新预览和确认",
+      "evidence": "候选第4节、retry 7例",
+      "status": "ResolvedAndTargetedStaticVerified",
+      "user_accepted": false
+    },
+    {
+      "id": "R3-CONS-04",
+      "finding": "清单发布恢复上下文未单列",
+      "resolution": "单独保存项目/任务/预览/摘要/原键/原基版，显式null不省略；错基版/错任务/漏null拒绝",
+      "evidence": "候选第7节、manifest_recovery 4例",
+      "status": "ResolvedAndTargetedStaticVerified",
+      "user_accepted": false
+    }
+  ],
+  "protected_hashes": {
+    "docs/knowledge-sources-v1.openapi.json": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091",
+    "docs/knowledge-sources-v1.example.json": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a",
+    "docs/knowledge-sources-v1.freeze.json": "114bbfa2b4dd51eafc426716032486f666ace8a1a1284f4c1f4c9baf1f1b35c6",
+    "docs/knowledge-foundation-v1.openapi.json": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4",
+    "docs/knowledge-foundation-v1.example.json": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343",
+    "docs/knowledge-directory-import-v1.openapi.json": "6144c08d4cfe7ac98374dc51829c98290e2c88e3441dd38d250a3cd9cb4492e6",
+    "docs/knowledge-directory-import-v1.examples.json": "73618dd78419bb9027520b3dd8b3ef83b1794d3ad1c4d17d904ce7637c54ea72",
+    "docs/knowledge-directory-import-v1.freeze.json": "2af7575cfbc24510550a0b495e18aa30f94decf5f102c23d259d4f3135dbf5f1",
+    "docs/knowledge-directory-import-v0.3.candidate.md": "80eb846a81b6ade430012b585739fe6405ef8a7de5855f27941fe66a31e2cbfa",
+    "docs/knowledge-directory-import-v0.3.candidate.openapi.json": "da2c320b3c3fd8f6af2b566b40507a5b09c55791236b49b224347c8b9a457f3d",
+    "docs/knowledge-directory-import-v0.3.candidate.examples.json": "2680f9786a19cc49a0330ecfcda84249ef36aac20293341a18e17cbdfd132d4e"
+  },
+  "source_scope": {
+    "allowed": "docs/及既有README、会话接续说明、技术方案入口；验证脚本/原始日志仅忽略目录",
+    "production_code_changed": false,
+    "runtime_config_changed": false,
+    "data_volumes_changed": false,
+    "credentials_read_or_changed": false,
+    "main": "保持6577af3，候选分支独立推送，不自动合main"
+  },
+  "incomplete_items": [
+    {
+      "item": "C2 0.4.0冻结与业务接入",
+      "status": "等待用户确认具体候选；不能把继续推进写成未展示协议已获批准"
+    },
+    {
+      "item": "真实Go任务/逐项事务/租约fencing/重启/取消/撤权/存储故障",
+      "status": "未实施未验证，属于R3.1—R3.2"
+    },
+    {
+      "item": "非null项目基版沿用/替换/子模块归属/1024上限与CAS竞争",
+      "status": "候选行为已定义；本轮关联例仅覆盖首次两项完整任务，运行验收后置"
+    },
+    {
+      "item": "正式Web客户端/界面/浏览器恢复和旧入口回归",
+      "status": "未实施未执行，属于R3.3—R3.4"
+    },
+    {
+      "item": "容量/延迟/峰值内存/生产p95及百万行库",
+      "status": "无本轮实测结论；不能沿用R2热缓存小样本作为R3性能"
+    },
+    {
+      "item": "阶段2整体退出",
+      "status": "仍需R3后续实现及R4—R7，当前未完成"
+    }
+  ],
+  "next_steps": [
+    "确认本候选后A冻结并实现持久有界任务及Go定向验证",
+    "A补取消、结果revision分页和项目清单CAS及合成真实后端验证",
+    "清洁固定提交交接消费会话Web白名单，A只读",
+    "消费方交回后A做同版合成HTTP/浏览器/故障验证，按明确授权集成推送"
+  ],
+  "user_decision": {
+    "outcome": "Pending"
+  }
+}
