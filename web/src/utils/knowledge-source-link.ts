@@ -10,7 +10,10 @@ export interface KnowledgeFixedTarget {
 
 export function knowledgeReceiptLink(
   domainId: string,
-  item: KnowledgeSavedItem,
+  item: Pick<
+    KnowledgeSavedItem,
+    'source_id' | 'source_revision_id' | 'root_node_id' | 'sha256'
+  >,
 ) {
   const params = new URLSearchParams({
     source: item.source_id,

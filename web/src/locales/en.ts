@@ -1,5 +1,112 @@
 export default {
   translation: {
+    knowledgeDirectory: {
+      mode: 'Import source',
+      manual: 'Manual text',
+      title: 'Controlled directory',
+      platform:
+        'Only local directories in a Linux container have been verified. Native Windows and shared mounts remain unverified.',
+      root: 'Authorized root',
+      chooseRoot: 'Select an authorized root',
+      notReady: 'Not ready',
+      noRoots: 'No authorized roots are available in this domain.',
+      scope: 'Allowed relative directories (one per line; . means root)',
+      retryRegistration: 'Resend original registration',
+      relativeDirectory: 'Relative directory to browse',
+      prefix: 'Filename prefix (optional)',
+      browse: 'Browse directory',
+      metadataOnly: 'Metadata only; eligibility requires observation',
+      listComplete: 'Directory listing complete',
+      listIncomplete: 'Directory listing incomplete',
+      exactSelection:
+        'Exact file paths (one per line; no directories or wildcards)',
+      selectedCount: 'Selected {{count}} / 32 files',
+      observe: 'Observe selected files',
+      observationComplete:
+        'Exact observation complete. Only eligible files can be previewed.',
+      observationIncomplete:
+        'Observation incomplete. Adjust the selection and observe again before previewing.',
+      oneFile: 'Single file to preview',
+      chooseFile: 'Select one eligible file',
+      readPreview: 'Read staged original',
+      catalogueOnly:
+        'Save the original and register it in the catalogue only. Structure is deferred; full text and vector indexes are disabled. Model calls: 0.',
+      consent:
+        'I checked the path, classification and staged original, and confirm saving this file only.',
+      pending: 'Save result unconfirmed',
+      pendingHint:
+        'Checking only reads results. It never saves automatically. The original request is retained; an invisible result does not prove that saving failed.',
+      resendConsent:
+        'I checked the result and explicitly choose to resend the original save request.',
+      resend: 'Resend original request',
+      newObservation: 'Select and observe again',
+      retryFailed:
+        'Saving failed and has no reading link. Retrying requires a new observation, preview and explicit consent.',
+      savedHint:
+        'Read the fixed revision directly. Refreshing the catalogue does not change the revision in this receipt.',
+      saved: {
+        created: 'Created',
+        updated: 'Updated',
+        unchanged: 'Unchanged; existing revision retained',
+        failed: 'Save failed',
+      },
+      states: {
+        verified: 'Verified and eligible',
+        ineligible: 'Ineligible',
+        missing: 'Path missing',
+        unobserved: 'Not observed',
+      },
+      errors: {
+        versionMismatch:
+          'Directory contract version mismatch. Operations stopped. Check the running version.',
+        notVisible:
+          'Content is invisible or the result is unconfirmed. Current content is hidden; original request identifiers are retained.',
+        expired:
+          'The observation or preview expired. Check the original request before starting a new observation.',
+        capacity:
+          'Temporary capacity reached. Wait for existing temporary resources to expire.',
+        conflict:
+          'The source or confirmation context changed. Check the original request before observing again.',
+        invalid: 'Check the exact paths, scope and classification.',
+        tooLarge: 'The request or file exceeds the allowed size.',
+        unsupported: 'This format or path is unsupported.',
+        unavailable:
+          'The operation did not complete. If a save request was sent, check its original result first.',
+      },
+      reasons: {
+        platform_unverified: 'Directory safety is unverified on this platform',
+        unavailable: 'Root unavailable',
+        link: 'Linked paths cannot be selected',
+        hardlink: 'Files with multiple hard links cannot be selected',
+        not_regular: 'Not a regular file',
+        unreadable: 'Cannot read this path',
+        identity_unverified: 'Cannot verify file identity',
+        limit_reached: 'Entry limit reached; narrow the listing scope',
+        read_error: 'Directory read failed',
+        timeout: 'Read timed out',
+        changed_during_read: 'File changed during reading',
+        unsupported_format: 'Unsupported format',
+        too_large: 'File exceeds the size limit',
+        invalid_utf8: 'Invalid UTF-8 text',
+        nul_byte: 'Text contains a null byte',
+        secret_marker: 'Private key marker detected',
+        missing: 'Exact path does not exist',
+        budget_exhausted: 'Read budget reached',
+        root_changed: 'Root version changed',
+        policy_changed: 'Domain policy changed',
+        source_changed: 'File bytes or identity changed',
+        revision_changed: 'Source revision changed',
+        observation_incomplete: 'Observation incomplete',
+        observation_mismatch: 'Observation mismatch',
+        ineligible: 'File is ineligible',
+        preview_consumed:
+          'Preview consumed; staged text cleared. Check the receipt.',
+        idempotency_conflict:
+          'Original request identifiers conflict with an existing result',
+        root_unready: 'Root not ready; saved receipts can still be checked',
+        result_unknown: 'Save result unknown; check the original request',
+      },
+    },
     knowledgeImport: {
       title: 'Import synthetic text',
       scope:

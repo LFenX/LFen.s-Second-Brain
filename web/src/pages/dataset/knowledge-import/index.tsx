@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useParams } from 'react-router';
+import { Link, useParams, useSearchParams } from 'react-router';
 import dayjs from 'dayjs';
 import { Button } from '@/components/ui/button';
 import {
@@ -27,6 +27,7 @@ import {
 } from '../knowledge-catalogue/state';
 import { RegistrationForm, SourceForm } from './fields';
 import { useImportFlow } from './use-import-flow';
+import DirectoryImport from './directory';
 
 export function ImportFailure({
   error,
@@ -75,7 +76,13 @@ export function ImportFailure({
   );
 }
 
-function DomainPicker({ onSelect }: { onSelect: () => void }) {
+function DomainPicker({
+  onSelect,
+  directory,
+}: {
+  onSelect: () => void;
+  directory: boolean;
+}) {
   const { t } = useTranslation();
   const query = useKnowledgeDomains();
   const handleRetry = () => {
@@ -95,7 +102,7 @@ function DomainPicker({ onSelect }: { onSelect: () => void }) {
           <Link
             key={domain.domain_id}
             className="block rounded-lg border border-border-button p-3"
-            to={`/dataset/knowledge-import/${domain.domain_id}`}
+            to={`/dataset/knowledge-import/${domain.domain_id}${directory ? '?mode=directory' : ''}`}
             onClick={onSelect}
           >
             {domain.name}
@@ -470,10 +477,22 @@ function AuthorizedImport({ domainId }: { domainId: string }) {
 
 export default function KnowledgeImport() {
   const { id = '' } = useParams();
+  const [params, setParams] = useSearchParams();
+  const directory = params.get('mode') === 'directory';
   const { t } = useTranslation();
   const [chooseDomain, setChooseDomain] = useState(false);
   const handleChooseDomain = () => setChooseDomain(!chooseDomain);
   const handleDomainSelected = () => setChooseDomain(false);
+  const handleManual = () => {
+    const next = new URLSearchParams(params);
+    next.delete('mode');
+    setParams(next);
+  };
+  const handleDirectory = () => {
+    const next = new URLSearchParams(params);
+    next.set('mode', 'directory');
+    setParams(next);
+  };
   return (
     <section className="min-w-0 space-y-4 overflow-auto p-6 text-text-primary">
       <div className="flex flex-wrap gap-4">
@@ -487,8 +506,32 @@ export default function KnowledgeImport() {
           {t('knowledgeImport.chooseDomain')}
         </Button>
       </div>
+      <nav
+        aria-label={t('knowledgeDirectory.mode')}
+        className="flex flex-wrap gap-2"
+      >
+        <Button
+          variant={directory ? 'outline' : 'default'}
+          aria-pressed={!directory}
+          onClick={handleManual}
+        >
+          {t('knowledgeDirectory.manual')}
+        </Button>
+        <Button
+          variant={directory ? 'default' : 'outline'}
+          aria-pressed={directory}
+          onClick={handleDirectory}
+        >
+          {t('knowledgeDirectory.title')}
+        </Button>
+      </nav>
       {chooseDomain ? (
-        <DomainPicker onSelect={handleDomainSelected} />
+        <DomainPicker onSelect={handleDomainSelected} directory={directory} />
+      ) : directory ? (
+        <DirectoryImport
+          key={`${id}:${getKnowledgeSessionScope()}`}
+          domain={id}
+        />
       ) : (
         <AuthorizedImport
           key={`${id}:${getKnowledgeSessionScope()}`}
