@@ -1,0 +1,229 @@
+{
+  "document_version": "v0.47",
+  "recorded_date": "2026-10-26",
+  "request_snapshot": [
+    "请注意后续的步骤，请你持续不断地进行下去，跟另外一个会话，甚至你可以开其他的会话去协调。但一个讯息是你必须要传达的，就是一定一定不能够停下来。一定一定就是至少说有一个会话不能停下来，要主会话不能停下来，你就是主会话，要牵动其他废话，持续不断地推进咱们这个工作，直到最后完成。"
+  ],
+  "objective": "具体0.6待答复期间继续包内离线安全阅读原语与合成验证；不接新共享接口或业务路径。",
+  "engineering_status": "PrivateComponentVerified_NotWired",
+  "baseline": "d798893dee370e95b4133aff637e10a4ca722f89",
+  "branch": "codex/stage2r5-reading-preparation",
+  "authority": {
+    "scope": "既有持续推进及独立内部准备；单写入、不改共享契约",
+    "c2_0_6": {
+      "outcome": "Approved_Subsequently",
+      "answer": "确认冻结并继续实施",
+      "source": "真人对call_abccb90207ed413d9385cc66105f3857的具体d798893问答",
+      "meaning": "本批组件准备未提前冒用；接下来另制正式冻结并实施"
+    },
+    "user_decision": {
+      "outcome": "Pending"
+    },
+    "r4_acceptance": "Pending_Independent",
+    "adversarial_review": "NotRun_UserProhibited"
+  },
+  "changes": {
+    "source_files": {
+      "internal/syncer/connector/knowledge_reading.go": "cafd8bff9c1082f894788f41f33334bac349bfc3258aa871ff87feecaabbefe1",
+      "internal/syncer/connector/knowledge_reading_test.go": "946a0739c1e96a093878daad88d09eb4f0bcc0159d9a39cea99a4de3b1178d8d"
+    },
+    "new_dependencies": 0,
+    "public_symbols": 0,
+    "production_callers": 0,
+    "existing_source_preparation_changed": false,
+    "handler_routes_changed": false,
+    "shared_dtos_changed": false,
+    "persistence_changed": false,
+    "frontend_changed": false,
+    "runtime_deployed": false
+  },
+  "implementation": {
+    "owner": "internal/syncer/connector existing offline preparation area",
+    "reader": "同一包私有HTML/plain-text renderer，现有x/net/html，无HTTP／DB／模型路径",
+    "properties": [
+      "有界词法预检与DOM深度／节点预算、输出与引用预算、ctx取消",
+      "严格body标签及属性白名单；脚本／导航／自动资源移除",
+      "HTML code换行／Tab／中文emoji及合并表格保留，原字节不改",
+      "纯文本显示为字面值；不会把Atom type=text当HTML",
+      "原href、base、fragment、媒体与标签保留，危险scheme只作不可导航引用，稳定去重",
+      "固定禁外连CSP；未来父页空sandbox／独立引用，不依赖子页桥接"
+    ]
+  },
+  "verification": {
+    "unit": {
+      "command": "bash build.sh --test -json -run ^TestKnowledgeReading ./internal/syncer/connector",
+      "status": 0,
+      "top_level": 6,
+      "including_subtests": 24,
+      "cases": [
+        "TestKnowledgeReadingPreservesCodeAndTable",
+        "TestKnowledgeReadingRemovesActiveContent/<script_src=\"https://never.example.",
+        "TestKnowledgeReadingRemovesActiveContent/<meta_http-equiv=\"refresh\"_content=",
+        "TestKnowledgeReadingRemovesActiveContent/<iframe_srcdoc=\"<script>run()</scri",
+        "TestKnowledgeReadingRemovesActiveContent/<svg><foreignObject><img_src=\"https",
+        "TestKnowledgeReadingRemovesActiveContent/<form_action=\"https://never.example",
+        "TestKnowledgeReadingRemovesActiveContent/<a_href=\"javascript:run()\"_target=\"",
+        "TestKnowledgeReadingRemovesActiveContent/<table><tr><td_background=\"https://",
+        "TestKnowledgeReadingRemovesActiveContent/<template><base_href=\"https://never",
+        "TestKnowledgeReadingRemovesActiveContent/<noscript><img_src=\"https://never.e",
+        "TestKnowledgeReadingRemovesActiveContent",
+        "TestKnowledgeReadingPlainTextStaysLiteral",
+        "TestKnowledgeReadingReferenceDeduplication",
+        "TestKnowledgeReadingDoesNotFetchResources",
+        "TestKnowledgeReadingRejectsLimitsAndEncoding/invalid_UTF8",
+        "TestKnowledgeReadingRejectsLimitsAndEncoding/NUL",
+        "TestKnowledgeReadingRejectsLimitsAndEncoding/input",
+        "TestKnowledgeReadingRejectsLimitsAndEncoding/escaped_output",
+        "TestKnowledgeReadingRejectsLimitsAndEncoding/2MiB_dense_output_includes_envelope",
+        "TestKnowledgeReadingRejectsLimitsAndEncoding/depth",
+        "TestKnowledgeReadingRejectsLimitsAndEncoding/nodes",
+        "TestKnowledgeReadingRejectsLimitsAndEncoding/unsupported_media",
+        "TestKnowledgeReadingRejectsLimitsAndEncoding/invalid_limits",
+        "TestKnowledgeReadingRejectsLimitsAndEncoding"
+      ],
+      "log_sha256": "272267cff9d657f7dcc79ade0364a52fcc19a1a11839ed3693ee371044d9dfaf",
+      "source_equals_build": true,
+      "native_wrapper": "native/croptest的unit通过；未运行integration权重／推理"
+    },
+    "component_probe": {
+      "command": "bash build.sh --test -json -run ^TestKnowledgeReadingProbe$ ./internal/syncer/connector",
+      "probe_test_sha256": "67fbdf7130c44437e4b239adf75c96a73c968ef3dc207134dc60f63b40de8160",
+      "passed": true,
+      "log_sha256": "d407273630566959005f0db88c2845eb9c50de4058651c6e01b62ddaff8a4f5d",
+      "measurements": [
+        {
+          "attempt": 1,
+          "elapsed_ms": 15.209,
+          "input_bytes": 2097152,
+          "output_bytes": 1049240,
+          "output_sha256": "8015b55610be6db033fcc852d9fd2c2408e9871e38b5ac4fb10f137364ae891a",
+          "total_alloc_bytes": 14677440
+        },
+        {
+          "attempt": 2,
+          "elapsed_ms": 13.115,
+          "input_bytes": 2097152,
+          "output_bytes": 1049240,
+          "output_sha256": "8015b55610be6db033fcc852d9fd2c2408e9871e38b5ac4fb10f137364ae891a",
+          "total_alloc_bytes": 14677312
+        },
+        {
+          "attempt": 3,
+          "elapsed_ms": 11.889,
+          "input_bytes": 2097152,
+          "output_bytes": 1049240,
+          "output_sha256": "8015b55610be6db033fcc852d9fd2c2408e9871e38b5ac4fb10f137364ae891a",
+          "total_alloc_bytes": 14677328
+        },
+        {
+          "attempt": 4,
+          "elapsed_ms": 12.246,
+          "input_bytes": 2097152,
+          "output_bytes": 1049240,
+          "output_sha256": "8015b55610be6db033fcc852d9fd2c2408e9871e38b5ac4fb10f137364ae891a",
+          "total_alloc_bytes": 14677312
+        },
+        {
+          "attempt": 5,
+          "elapsed_ms": 13.156,
+          "input_bytes": 2097152,
+          "output_bytes": 1049240,
+          "output_sha256": "8015b55610be6db033fcc852d9fd2c2408e9871e38b5ac4fb10f137364ae891a",
+          "total_alloc_bytes": 14682888
+        }
+      ],
+      "elapsed_median_ms": 13.115,
+      "elapsed_max_ms": 15.209,
+      "allocation_max_bytes": 14682888,
+      "allocation_limit_bytes": 33554432,
+      "boundary": "2MiB原HTML，含1MiB可见code及其余注释填充；同机暖5次。仅TotalAlloc差额，不是峰值RSS／网络／端到端／生产p95；密集2MiB输出含HTML包络会超过独立阅读预算，单元明确拒绝不截断。"
+    },
+    "browser": {
+      "scope": "隔离组件页及空sandbox srcDoc，不是R5应用页面",
+      "input_output": "由同一Go私有renderer实际生成1123字节固定HTML，SHA60638d454f9878b24e4888f96bb8085836c7698fcd62889aceb285ac19b73abe",
+      "observed": {
+        "code": "const 名称 = \"合成 🧠\";\n  if (名称) {\n    show(名称);\n  }",
+        "rowspan": 2,
+        "colspan": 2,
+        "active_elements": 0,
+        "trigger_attributes": 0,
+        "iframe_sandbox": "",
+        "resource_requests": 0
+      },
+      "wire_sha256": "631d051cae61ff852dcb0c7bcc0c1627a35c4c19453794f6f4d4a49fd701faff",
+      "temporary_source_stopped": true,
+      "tab_closed": true,
+      "screenshot": {
+        "path": "docs/stage2r5-reading-component.png",
+        "sha256": "821ac6133251673d5b422b5dcc932051c72fe72df97ba508609546a42d896618"
+      }
+    },
+    "syntax_retry": {
+      "first_step": "gofmt发现一个for缺闭合括号，未进入编译或服务",
+      "correction": "补齐该括号，再gofmt／定向unit；未改判定／共享接口"
+    },
+    "protected": {
+      "prior23_unchanged": true,
+      "candidate_artifacts_unchanged": true,
+      "hashes": {
+        "docs/knowledge-sources-v1.openapi.json": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091",
+        "docs/knowledge-sources-v1.example.json": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a",
+        "docs/knowledge-sources-v1.freeze.json": "114bbfa2b4dd51eafc426716032486f666ace8a1a1284f4c1f4c9baf1f1b35c6",
+        "docs/knowledge-foundation-v1.openapi.json": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4",
+        "docs/knowledge-foundation-v1.example.json": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343",
+        "docs/knowledge-directory-import-v1.openapi.json": "6144c08d4cfe7ac98374dc51829c98290e2c88e3441dd38d250a3cd9cb4492e6",
+        "docs/knowledge-directory-import-v1.examples.json": "73618dd78419bb9027520b3dd8b3ef83b1794d3ad1c4d17d904ce7637c54ea72",
+        "docs/knowledge-directory-import-v1.freeze.json": "2af7575cfbc24510550a0b495e18aa30f94decf5f102c23d259d4f3135dbf5f1",
+        "docs/knowledge-directory-import-v0.3.candidate.md": "80eb846a81b6ade430012b585739fe6405ef8a7de5855f27941fe66a31e2cbfa",
+        "docs/knowledge-directory-import-v0.3.candidate.openapi.json": "da2c320b3c3fd8f6af2b566b40507a5b09c55791236b49b224347c8b9a457f3d",
+        "docs/knowledge-directory-import-v0.3.candidate.examples.json": "2680f9786a19cc49a0330ecfcda84249ef36aac20293341a18e17cbdfd132d4e",
+        "docs/knowledge-batch-import-v0.4.candidate.md": "3a3beec92e8bc0baae1c820a18e078717163988277aa9d304d762ff97d027b1f",
+        "docs/knowledge-batch-import-v0.4.candidate.openapi.json": "d57ca240df19a985341c25d60ce18590dacdcf221b5599b8223f558a7c379fc5",
+        "docs/knowledge-batch-import-v0.4.candidate.examples.json": "fe8bde9d99b8aaa7250a40a1adc86c6bee9ecf474cbf01af55253274f2e2e304",
+        "docs/knowledge-batch-import-v1.openapi.json": "bd13fc400fc2a84f490b92ee865db75f76d89bf79a176658312ac3bea17d0fb8",
+        "docs/knowledge-batch-import-v1.examples.json": "5249cdf57da0313346b7b30db0743079a175aaa8480604120b1bf92e4bdfdc53",
+        "docs/knowledge-batch-import-v1.freeze.json": "1d589290db4b1fe4ab4005dae0ebf1918efdeac9cd57d7c810305087c180f631",
+        "docs/knowledge-original-import-v0.5.candidate.md": "8a1079fe4745b84d178f50939ac25e1ac1fa51bc3f61ed2340ef1f6d9e1638d6",
+        "docs/knowledge-original-import-v0.5.candidate.openapi.json": "b4905ab840c64f26a25a6017dc7454393fd3b974b0e2199edffe2cc5e725a0aa",
+        "docs/knowledge-original-import-v0.5.candidate.examples.json": "16aa77d948f857f93dcc96e0c812d4bee2a8f3ad91205e54b9c0457f78ea8815",
+        "docs/knowledge-original-import-v1.openapi.json": "3c48ebe0a2bfc8b3078262ce6c1a8258b312f6111bd9ed2b07b7b4fb433a5efd",
+        "docs/knowledge-original-import-v1.examples.json": "550f7be69c506a02cc2798d2196e17ca06c73b06f08d934ea3cbf823551d5cb1",
+        "docs/knowledge-original-import-v1.freeze.json": "116ddc4161001c0fdb440b45b227952978ca3d291197d712830a92d5aaaca3b9",
+        "docs/knowledge-web-import-v0.6.candidate.md": "577a76624d8b43e26dde890df49140f0b5a2c458dc493dbecd7f5467e13175fb",
+        "docs/knowledge-web-import-v0.6.candidate.openapi.json": "a167a1977f1f0a313061b093d21f035631dd5fafaea95cd8545601e17af35a88",
+        "docs/knowledge-web-import-v0.6.candidate.examples.json": "81372c6270c3e2b3989b4e088bd029883326f75fe6e254d651b93f951e0b7573",
+        "tools/scripts/verify_knowledge_web_contract.cjs": "ab28b6ae6edc5f08a6ce361580ca47e954dd290ca1e488f07935c320ab8a2cc8"
+      }
+    }
+  },
+  "coordination": {
+    "single_writer": "A",
+    "consumer": "01a1746b-2de2-7413-906b-d2a4544017e3只读完成R6决策输入，见docs/stage2r6-lifecycle-design-input.md",
+    "old_consumer": "真人只读限制保持"
+  },
+  "execution": {
+    "synthetic_only": true,
+    "application_api_calls": 0,
+    "model_calls": 0,
+    "local_model_inference": 0,
+    "real_source_fetches": 0,
+    "physical_gc": false,
+    "volumes_or_credentials_recreated": false,
+    "main_modified": false
+  },
+  "acceptance": [
+    "24项包内unit通过，不返回超预算部分结果",
+    "五次组件分配≤32MiB；实测范围不扩大为R5性能",
+    "浏览器代码／表格可见、资源请求0，临时页／源已收尾",
+    "23旧保护及具体候选原字节保持，无路由／模型／迁移／Web／部署接线"
+  ],
+  "incomplete_items": [
+    "正式C2 0.6冻结及所有业务后端／客户端／真实合成联调接下来执行",
+    "此组件不替代完整RSS／Atom标准化、XML实体／编码／元信息／身份／增量或SSRF",
+    "网页资源列表不宣称穷尽CSS／srcset等",
+    "PPT／PDF阅读及阶段3结构尚未改善",
+    "没有端到端／峰值RSS或生产容量结论",
+    "R6仅设计输入、未定义共享接口或实施"
+  ],
+  "goal_status": "active"
+}
