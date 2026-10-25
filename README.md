@@ -3,7 +3,7 @@
 本地文本、文档与项目代码知识库：结构化整理、可选词法／结构／向量检索、带来源的回答与代码复用；后续通过 Web 和 MCP 共用后端服务。当前POC仍为原生混合检索，可选策略待实施。
 
 **本仓库是后续唯一开发入口，包含当前应用源码、品牌资产、方案和验证记录。** v0.45已完成冻结[C2 0.5.0](docs/knowledge-original-import-v1.freeze.json)的文档原件／大文件闭环：登记、单件≤64MiB上传暂存、明确确认、原键／回执恢复、同一分组树中的原件卡片与固定授权下载。[统一报告](docs/stage2r4-original-verification.json)区分172项Go定向结果、前端506项及实际身份修复后9项、真实MySQL／对象存储／浏览器／崩溃／SQL回滚与三档各3次容量证据。23保护文件原字节保持、模型0；新二进制与前端已在本机加载，代码已合本地main并随本批正常推送，发布以远端main与提交回执核对。原件不自动解析／建结构／全文或向量索引，阶段2整体尚未退出，R5网页／RSS候选继续推进。[当前接续](docs/stage2r4-original-handoff.md)第11节。
-当前推进[R5网页／RSS候选](docs/knowledge-web-import-v0.6.candidate.md)：本地快照与明确单次在线取得、固定观察／精确选择／全原子确认／安全阅读；34操作与54schema已做候选核验，**未冻结、未接业务、未部署**。[接续与未验范围](docs/stage2r5-web-handoff.md)区分真实RSSHub／站点、性能和后续工程；main及本机应用仍为已推送7c564a7的R4实现。
+当前推进[R5网页／RSS](docs/stage2r5-web-handoff.md)：真人已批准d798893并冻结[C2 0.6.0](docs/knowledge-web-import-v1.freeze.json)，34操作与54schema保持候选语义，后端实施中。包内安全阅读组件24项单元及独立合成浏览器验证已保存e194924，尚未接入应用；完整来源／网络／原子确认与页面闭环未完成。main及本机应用仍为7c564a7的R4实现，真实网站／RSSHub与模型仍不调用。
 
 v0.38已完成S2-R3多文件任务／项目固定版本：用户批准81b81de后冻结[C2 0.4.0](docs/knowledge-batch-import-v1.freeze.json)，源码交付7309daf。Go持久任务、逐项认可、原键恢复、取消、清单基版合并与CAS、正式Web及合成真实联调已完成；[统一报告](docs/stage2r3-batch-verification.json)记录证据和发布状态。工程用户决定Pending；阶段2整体未退出。
 
