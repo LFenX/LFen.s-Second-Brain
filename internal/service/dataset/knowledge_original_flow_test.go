@@ -36,6 +36,48 @@ func newOriginalFlowStore() *originalFlowStore {
 	return &originalFlowStore{Storage: storage.NewMemoryStorage(), objects: map[string][]byte{}, digests: map[string]string{}}
 }
 
+// net/http can cancel its parent context when the read deadline fires before
+// the independent context timer. This fixture preserves that observed ordering.
+type originalHTTPDeadlineContext struct {
+	context.Context
+	deadline time.Time
+}
+
+func (c originalHTTPDeadlineContext) Deadline() (time.Time, bool) { return c.deadline, true }
+
+type originalHTTPDeadlineBody struct {
+	deadline time.Time
+	cancel   context.CancelFunc
+}
+
+func (b originalHTTPDeadlineBody) Read([]byte) (int, error) {
+	timer := time.NewTimer(max(time.Until(b.deadline), 0))
+	defer timer.Stop()
+	<-timer.C
+	b.cancel()
+	return 0, context.Canceled
+}
+
+func (b originalHTTPDeadlineBody) Close() error { return nil }
+
+func TestKnowledgeOriginalHTTPDeadlineCancellationIsTimeout(t *testing.T) {
+	s, reg, _ := originalFlowFixture(t)
+	upload, _, err := s.CreateKnowledgeOriginalUpload(t.Context(), knowledgeTestOwner, reg.DomainID, reg.RegistrationID, originalTestRequest("deadline:race"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	parent, cancel := context.WithCancel(t.Context())
+	defer cancel()
+	deadline := time.Now().Add(100 * time.Millisecond)
+	ctx := originalHTTPDeadlineContext{Context: parent, deadline: deadline}
+	_, err = s.ReceiveKnowledgeOriginal(ctx, knowledgeTestOwner, reg.DomainID, reg.RegistrationID, upload.UploadID, originalHTTPDeadlineBody{deadline, cancel}, -1, "", "", "application/octet-stream")
+	assertOriginalCode(t, err, 409, "upload_timeout")
+	view, err := s.GetKnowledgeOriginalUpload(t.Context(), knowledgeTestOwner, reg.DomainID, reg.RegistrationID, upload.UploadID, "")
+	if err != nil || view.State != "interrupted" || view.Code == nil || *view.Code != "upload_timeout" || view.ManifestSHA256 != nil || view.ImportTaskID != nil {
+		t.Fatalf("deadline state=%+v err=%v", view, err)
+	}
+}
+
 func (s *originalFlowStore) Get(ctx context.Context, bucket, key string, tenant ...string) ([]byte, error) {
 	s.wholeReads++
 	return s.Storage.Get(ctx, bucket, key, tenant...)

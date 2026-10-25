@@ -176,6 +176,15 @@ func originalPreparationError(err error, received int64) error {
 	}
 }
 
+// The HTTP read deadline can cancel the request just before its context timer
+// runs. The shared elapsed deadline still identifies a timeout, not a disconnect.
+func originalReceiveContextError(ctx context.Context) error {
+	if deadline, ok := ctx.Deadline(); ok && !time.Now().Before(deadline) {
+		return context.DeadlineExceeded
+	}
+	return ctx.Err()
+}
+
 func (d *DatasetService) finishOriginalTransfer(ctx context.Context, transfer *originalTransfer, stage *knowledgeOriginalStage, failure error, received int64) (*entity.KnowledgeOriginalUpload, error) {
 	v := transfer.upload
 	var result *entity.KnowledgeOriginalUpload
@@ -313,12 +322,12 @@ func (d *DatasetService) ReceiveKnowledgeOriginal(ctx context.Context, user, dom
 			failure = originalError(503, "original_storage_unavailable")
 		}
 	}
-	if err := ctx.Err(); err != nil {
-		failure = originalPreparationError(err, received.Load())
-	}
 	stopRenew()
 	if renewalErr := <-renewed; renewalErr != nil {
 		failure = renewalErr
+	}
+	if err := originalReceiveContextError(ctx); err != nil {
+		failure = originalPreparationError(err, received.Load())
 	}
 	finishCtx, cancel := context.WithTimeout(context.WithoutCancel(ctx), 10*time.Second)
 	defer cancel()

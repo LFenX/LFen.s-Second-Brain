@@ -2,6 +2,7 @@ package handler
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -268,13 +269,16 @@ func (h *DatasetsHandler) KnowledgeOriginal(operation string) gin.HandlerFunc {
 			data, err = h.datasetsService.GetKnowledgeOriginalUpload(ctx, actor.ID, domain, registration, c.Param("upload_id"), query.Get("idempotency_key"))
 		case "putKnowledgeOriginalUploadBytes":
 			controller := http.NewResponseController(c.Writer)
-			if err := controller.SetReadDeadline(time.Now().Add(120 * time.Second)); err != nil {
+			deadline := time.Now().Add(120 * time.Second)
+			receiveCtx, cancelReceive := context.WithDeadline(ctx, deadline)
+			defer cancelReceive()
+			if err := controller.SetReadDeadline(deadline); err != nil {
 				originalHandlerError(c, 503, "original_storage_unavailable")
 				return
 			}
 			defer controller.SetReadDeadline(time.Time{})
 			media, _, _ := mime.ParseMediaType(c.GetHeader("Content-Type"))
-			data, err = h.datasetsService.ReceiveKnowledgeOriginal(ctx, actor.ID, domain, registration, c.Param("upload_id"), &originalRequestBody{c.Request.Body, controller}, c.Request.ContentLength, c.GetHeader("Content-Range"), c.GetHeader("Content-Encoding"), media)
+			data, err = h.datasetsService.ReceiveKnowledgeOriginal(receiveCtx, actor.ID, domain, registration, c.Param("upload_id"), &originalRequestBody{c.Request.Body, controller}, c.Request.ContentLength, c.GetHeader("Content-Range"), c.GetHeader("Content-Encoding"), media)
 			if err != nil {
 				c.Request.Close = true
 				c.Header("Connection", "close")
