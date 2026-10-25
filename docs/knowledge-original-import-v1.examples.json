@@ -1,0 +1,3060 @@
+{
+  "status": "Frozen",
+  "notice": "已冻结的合成数据与规则向量；不是生产、已部署或工程运行验收结果",
+  "samples": {
+    "registration": {
+      "registration_key": "r4-originals",
+      "name": "合成原件",
+      "source_kind": "original_document",
+      "input_mode": "original_upload",
+      "include_paths": [
+        "docs/合成.pdf",
+        "notes/大文件.tsx"
+      ],
+      "default_classification": {
+        "group_id": null,
+        "component_side": "non_code",
+        "language": ""
+      }
+    },
+    "request": {
+      "original_filename": "原始合成.pdf",
+      "relative_path": "docs/合成.pdf",
+      "classification": {
+        "group_id": null,
+        "component_side": "non_code",
+        "language": ""
+      },
+      "declared_byte_length": 4096,
+      "declared_media_type": "application/pdf",
+      "expected_sha256": null,
+      "expected_revision_id": null,
+      "idempotency_key": "r4:create:001"
+    },
+    "ready": {
+      "upload_id": "dddddddddddddddddddddddddddddddd",
+      "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "owner_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "registration_id": "cccccccccccccccccccccccccccccccc",
+      "idempotency_key": "r4:create:001",
+      "request_sha256": "beef4c787843c7759163234e1440bc5914930e2729c9eb531982ae08e9ef943c",
+      "original_filename": "原始合成.pdf",
+      "relative_path": "docs/合成.pdf",
+      "classification": {
+        "group_id": null,
+        "component_side": "non_code",
+        "language": ""
+      },
+      "declared_byte_length": 4096,
+      "declared_media_type": "application/pdf",
+      "expected_sha256": null,
+      "expected_revision_id": null,
+      "state": "ready",
+      "received_bytes": 4096,
+      "byte_length": 4096,
+      "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "media_type": "application/pdf",
+      "source_id": null,
+      "policy_version": 1,
+      "action": "created",
+      "manifest_sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+      "import_task_id": null,
+      "code": null,
+      "revision": 2,
+      "created_at": "2026-10-26T01:00:00Z",
+      "updated_at": "2026-10-26T01:00:05Z",
+      "expires_at": "2026-10-26T01:30:00Z"
+    },
+    "confirm": {
+      "upload_id": "dddddddddddddddddddddddddddddddd",
+      "manifest_sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+      "idempotency_key": "r4:confirm:001",
+      "confirmed": true
+    },
+    "revision": {
+      "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "registration_id": "cccccccccccccccccccccccccccccccc",
+      "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "source_revision_id": "ffffffffffffffffffffffffffffffff",
+      "original_filename": "原始合成.pdf",
+      "relative_path": "docs/合成.pdf",
+      "classification": {
+        "group_id": null,
+        "component_side": "non_code",
+        "language": ""
+      },
+      "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "byte_length": 4096,
+      "media_type": "application/pdf",
+      "representation_kind": "original_only",
+      "root_node_id": null,
+      "text_available": false,
+      "parse_status": "not_parsed",
+      "structure_status": "not_built",
+      "full_text_status": "not_built",
+      "vector_status": "not_built",
+      "is_current": true,
+      "created_at": "2026-10-26T01:05:00Z"
+    },
+    "receipt": {
+      "import_task_id": "11111111111111111111111111111111",
+      "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "registration_id": "cccccccccccccccccccccccccccccccc",
+      "upload_id": "dddddddddddddddddddddddddddddddd",
+      "idempotency_key": "r4:confirm:001",
+      "manifest_sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+      "status": "succeeded",
+      "save_status": "created",
+      "model_calls": 0,
+      "source": {
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "source_revision_id": "ffffffffffffffffffffffffffffffff",
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "byte_length": 4096,
+        "media_type": "application/pdf",
+        "representation_kind": "original_only",
+        "root_node_id": null,
+        "text_available": false,
+        "parse_status": "not_parsed",
+        "structure_status": "not_built",
+        "full_text_status": "not_built",
+        "vector_status": "not_built",
+        "is_current": true,
+        "created_at": "2026-10-26T01:05:00Z"
+      },
+      "created_at": "2026-10-26T01:05:00Z"
+    },
+    "capabilities": {
+      "contract_version": "1.0.0",
+      "source_contract_version": "0.5.0",
+      "runtime_ready": false,
+      "max_file_bytes": 67108864,
+      "max_open_uploads_per_user_domain": 2,
+      "reserved_bytes_per_user_domain": 134217728,
+      "receiving_per_user_domain": 1,
+      "receiving_deployment": 2,
+      "upload_ttl_seconds": 1800,
+      "receive_timeout_seconds": 120,
+      "lease_seconds": 30,
+      "heartbeat_seconds": 10,
+      "json_max_bytes": 32768,
+      "supported_formats": [
+        "pdf",
+        "pptx",
+        "docx",
+        "utf8_text_code"
+      ],
+      "resumable_parts": false,
+      "parses_automatically": false,
+      "model_calls": 0,
+      "storage_engine": "minio",
+      "reading": "authenticated_fixed_revision_single_range"
+    }
+  },
+  "structure_cases": [
+    {
+      "name": "原件精确登记",
+      "schema": "CreateRegistration",
+      "value": {
+        "registration_key": "r4-originals",
+        "name": "合成原件",
+        "source_kind": "original_document",
+        "input_mode": "original_upload",
+        "include_paths": [
+          "docs/合成.pdf",
+          "notes/大文件.tsx"
+        ],
+        "default_classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        }
+      },
+      "valid": true
+    },
+    {
+      "name": "创建原件会话",
+      "schema": "CreateUpload",
+      "value": {
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "idempotency_key": "r4:create:001"
+      },
+      "valid": true
+    },
+    {
+      "name": "64MiB边界",
+      "schema": "CreateUpload",
+      "value": {
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 67108864,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "idempotency_key": "r4:create:001"
+      },
+      "valid": true
+    },
+    {
+      "name": "超64MiB",
+      "schema": "CreateUpload",
+      "value": {
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 67108865,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "idempotency_key": "r4:create:001"
+      },
+      "valid": false
+    },
+    {
+      "name": "零长度原件拒绝",
+      "schema": "CreateUpload",
+      "value": {
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 0,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "idempotency_key": "r4:create:001"
+      },
+      "valid": false
+    },
+    {
+      "name": "PDF固定ready",
+      "schema": "Upload",
+      "value": {
+        "upload_id": "dddddddddddddddddddddddddddddddd",
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "owner_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "idempotency_key": "r4:create:001",
+        "request_sha256": "beef4c787843c7759163234e1440bc5914930e2729c9eb531982ae08e9ef943c",
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "state": "ready",
+        "received_bytes": 4096,
+        "byte_length": 4096,
+        "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "media_type": "application/pdf",
+        "source_id": null,
+        "policy_version": 1,
+        "action": "created",
+        "manifest_sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+        "import_task_id": null,
+        "code": null,
+        "revision": 2,
+        "created_at": "2026-10-26T01:00:00Z",
+        "updated_at": "2026-10-26T01:00:05Z",
+        "expires_at": "2026-10-26T01:30:00Z"
+      },
+      "valid": true
+    },
+    {
+      "name": "状态-awaiting_bytes",
+      "schema": "Upload",
+      "value": {
+        "upload_id": "dddddddddddddddddddddddddddddddd",
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "owner_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "idempotency_key": "r4:create:001",
+        "request_sha256": "beef4c787843c7759163234e1440bc5914930e2729c9eb531982ae08e9ef943c",
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "state": "awaiting_bytes",
+        "received_bytes": 0,
+        "byte_length": null,
+        "sha256": null,
+        "media_type": null,
+        "source_id": null,
+        "policy_version": 1,
+        "action": null,
+        "manifest_sha256": null,
+        "import_task_id": null,
+        "code": null,
+        "revision": 2,
+        "created_at": "2026-10-26T01:00:00Z",
+        "updated_at": "2026-10-26T01:00:05Z",
+        "expires_at": "2026-10-26T01:30:00Z"
+      },
+      "valid": true
+    },
+    {
+      "name": "状态-receiving",
+      "schema": "Upload",
+      "value": {
+        "upload_id": "dddddddddddddddddddddddddddddddd",
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "owner_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "idempotency_key": "r4:create:001",
+        "request_sha256": "beef4c787843c7759163234e1440bc5914930e2729c9eb531982ae08e9ef943c",
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "state": "receiving",
+        "received_bytes": 0,
+        "byte_length": null,
+        "sha256": null,
+        "media_type": null,
+        "source_id": null,
+        "policy_version": 1,
+        "action": null,
+        "manifest_sha256": null,
+        "import_task_id": null,
+        "code": null,
+        "revision": 2,
+        "created_at": "2026-10-26T01:00:00Z",
+        "updated_at": "2026-10-26T01:00:05Z",
+        "expires_at": "2026-10-26T01:30:00Z"
+      },
+      "valid": true
+    },
+    {
+      "name": "状态-interrupted",
+      "schema": "Upload",
+      "value": {
+        "upload_id": "dddddddddddddddddddddddddddddddd",
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "owner_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "idempotency_key": "r4:create:001",
+        "request_sha256": "beef4c787843c7759163234e1440bc5914930e2729c9eb531982ae08e9ef943c",
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "state": "interrupted",
+        "received_bytes": 0,
+        "byte_length": null,
+        "sha256": null,
+        "media_type": null,
+        "source_id": null,
+        "policy_version": 1,
+        "action": null,
+        "manifest_sha256": null,
+        "import_task_id": null,
+        "code": "upload_interrupted",
+        "revision": 2,
+        "created_at": "2026-10-26T01:00:00Z",
+        "updated_at": "2026-10-26T01:00:05Z",
+        "expires_at": "2026-10-26T01:30:00Z"
+      },
+      "valid": true
+    },
+    {
+      "name": "状态-rejected",
+      "schema": "Upload",
+      "value": {
+        "upload_id": "dddddddddddddddddddddddddddddddd",
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "owner_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "idempotency_key": "r4:create:001",
+        "request_sha256": "beef4c787843c7759163234e1440bc5914930e2729c9eb531982ae08e9ef943c",
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "state": "rejected",
+        "received_bytes": 0,
+        "byte_length": null,
+        "sha256": null,
+        "media_type": null,
+        "source_id": null,
+        "policy_version": 1,
+        "action": null,
+        "manifest_sha256": null,
+        "import_task_id": null,
+        "code": "upload_format_unsupported",
+        "revision": 2,
+        "created_at": "2026-10-26T01:00:00Z",
+        "updated_at": "2026-10-26T01:00:05Z",
+        "expires_at": "2026-10-26T01:30:00Z"
+      },
+      "valid": true
+    },
+    {
+      "name": "状态-cancelled",
+      "schema": "Upload",
+      "value": {
+        "upload_id": "dddddddddddddddddddddddddddddddd",
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "owner_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "idempotency_key": "r4:create:001",
+        "request_sha256": "beef4c787843c7759163234e1440bc5914930e2729c9eb531982ae08e9ef943c",
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "state": "cancelled",
+        "received_bytes": 0,
+        "byte_length": null,
+        "sha256": null,
+        "media_type": null,
+        "source_id": null,
+        "policy_version": 1,
+        "action": null,
+        "manifest_sha256": null,
+        "import_task_id": null,
+        "code": "upload_cancelled",
+        "revision": 2,
+        "created_at": "2026-10-26T01:00:00Z",
+        "updated_at": "2026-10-26T01:00:05Z",
+        "expires_at": "2026-10-26T01:30:00Z"
+      },
+      "valid": true
+    },
+    {
+      "name": "状态-expired",
+      "schema": "Upload",
+      "value": {
+        "upload_id": "dddddddddddddddddddddddddddddddd",
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "owner_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "idempotency_key": "r4:create:001",
+        "request_sha256": "beef4c787843c7759163234e1440bc5914930e2729c9eb531982ae08e9ef943c",
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "state": "expired",
+        "received_bytes": 0,
+        "byte_length": null,
+        "sha256": null,
+        "media_type": null,
+        "source_id": null,
+        "policy_version": 1,
+        "action": null,
+        "manifest_sha256": null,
+        "import_task_id": null,
+        "code": "upload_expired",
+        "revision": 2,
+        "created_at": "2026-10-26T01:00:00Z",
+        "updated_at": "2026-10-26T01:00:05Z",
+        "expires_at": "2026-10-26T01:30:00Z"
+      },
+      "valid": true
+    },
+    {
+      "name": "committed携固定回执",
+      "schema": "Upload",
+      "value": {
+        "upload_id": "dddddddddddddddddddddddddddddddd",
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "owner_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "idempotency_key": "r4:create:001",
+        "request_sha256": "beef4c787843c7759163234e1440bc5914930e2729c9eb531982ae08e9ef943c",
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "state": "committed",
+        "received_bytes": 4096,
+        "byte_length": 4096,
+        "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "media_type": "application/pdf",
+        "source_id": null,
+        "policy_version": 1,
+        "action": "created",
+        "manifest_sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+        "import_task_id": "11111111111111111111111111111111",
+        "code": null,
+        "revision": 2,
+        "created_at": "2026-10-26T01:00:00Z",
+        "updated_at": "2026-10-26T01:00:05Z",
+        "expires_at": "2026-10-26T01:30:00Z"
+      },
+      "valid": true
+    },
+    {
+      "name": "ready不能没有SHA",
+      "schema": "Upload",
+      "value": {
+        "upload_id": "dddddddddddddddddddddddddddddddd",
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "owner_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "idempotency_key": "r4:create:001",
+        "request_sha256": "beef4c787843c7759163234e1440bc5914930e2729c9eb531982ae08e9ef943c",
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "state": "ready",
+        "received_bytes": 4096,
+        "byte_length": 4096,
+        "sha256": null,
+        "media_type": "application/pdf",
+        "source_id": null,
+        "policy_version": 1,
+        "action": "created",
+        "manifest_sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+        "import_task_id": null,
+        "code": null,
+        "revision": 2,
+        "created_at": "2026-10-26T01:00:00Z",
+        "updated_at": "2026-10-26T01:00:05Z",
+        "expires_at": "2026-10-26T01:30:00Z"
+      },
+      "valid": false
+    },
+    {
+      "name": "未确认不能携回执",
+      "schema": "Upload",
+      "value": {
+        "upload_id": "dddddddddddddddddddddddddddddddd",
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "owner_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "idempotency_key": "r4:create:001",
+        "request_sha256": "beef4c787843c7759163234e1440bc5914930e2729c9eb531982ae08e9ef943c",
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "state": "ready",
+        "received_bytes": 4096,
+        "byte_length": 4096,
+        "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "media_type": "application/pdf",
+        "source_id": null,
+        "policy_version": 1,
+        "action": "created",
+        "manifest_sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+        "import_task_id": "11111111111111111111111111111111",
+        "code": null,
+        "revision": 2,
+        "created_at": "2026-10-26T01:00:00Z",
+        "updated_at": "2026-10-26T01:00:05Z",
+        "expires_at": "2026-10-26T01:30:00Z"
+      },
+      "valid": false
+    },
+    {
+      "name": "明确确认",
+      "schema": "Confirm",
+      "value": {
+        "upload_id": "dddddddddddddddddddddddddddddddd",
+        "manifest_sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+        "idempotency_key": "r4:confirm:001",
+        "confirmed": true
+      },
+      "valid": true
+    },
+    {
+      "name": "必须明确true",
+      "schema": "Confirm",
+      "value": {
+        "upload_id": "dddddddddddddddddddddddddddddddd",
+        "manifest_sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+        "idempotency_key": "r4:confirm:001",
+        "confirmed": false
+      },
+      "valid": false
+    },
+    {
+      "name": "确认未知字段拒绝",
+      "schema": "Confirm",
+      "value": {
+        "upload_id": "dddddddddddddddddddddddddddddddd",
+        "manifest_sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+        "idempotency_key": "r4:confirm:001",
+        "confirmed": true,
+        "auto_parse": true
+      },
+      "valid": false
+    },
+    {
+      "name": "新原件固定修订",
+      "schema": "OriginalRevision",
+      "value": {
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "source_revision_id": "ffffffffffffffffffffffffffffffff",
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "byte_length": 4096,
+        "media_type": "application/pdf",
+        "representation_kind": "original_only",
+        "root_node_id": null,
+        "text_available": false,
+        "parse_status": "not_parsed",
+        "structure_status": "not_built",
+        "full_text_status": "not_built",
+        "vector_status": "not_built",
+        "is_current": true,
+        "created_at": "2026-10-26T01:05:00Z"
+      },
+      "valid": true
+    },
+    {
+      "name": "原件不可伪造C1根",
+      "schema": "OriginalRevision",
+      "value": {
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "source_revision_id": "ffffffffffffffffffffffffffffffff",
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "byte_length": 4096,
+        "media_type": "application/pdf",
+        "representation_kind": "original_only",
+        "root_node_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "text_available": false,
+        "parse_status": "not_parsed",
+        "structure_status": "not_built",
+        "full_text_status": "not_built",
+        "vector_status": "not_built",
+        "is_current": true,
+        "created_at": "2026-10-26T01:05:00Z"
+      },
+      "valid": false
+    },
+    {
+      "name": "原件不可声称可读文本",
+      "schema": "OriginalRevision",
+      "value": {
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "source_revision_id": "ffffffffffffffffffffffffffffffff",
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "byte_length": 4096,
+        "media_type": "application/pdf",
+        "representation_kind": "original_only",
+        "root_node_id": null,
+        "text_available": true,
+        "parse_status": "not_parsed",
+        "structure_status": "not_built",
+        "full_text_status": "not_built",
+        "vector_status": "not_built",
+        "is_current": true,
+        "created_at": "2026-10-26T01:05:00Z"
+      },
+      "valid": false
+    },
+    {
+      "name": "原件未向量化",
+      "schema": "OriginalRevision",
+      "value": {
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "source_revision_id": "ffffffffffffffffffffffffffffffff",
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "byte_length": 4096,
+        "media_type": "application/pdf",
+        "representation_kind": "original_only",
+        "root_node_id": null,
+        "text_available": false,
+        "parse_status": "not_parsed",
+        "structure_status": "not_built",
+        "full_text_status": "not_built",
+        "vector_status": "indexed",
+        "is_current": true,
+        "created_at": "2026-10-26T01:05:00Z"
+      },
+      "valid": false
+    },
+    {
+      "name": "固定成功回执",
+      "schema": "Receipt",
+      "value": {
+        "import_task_id": "11111111111111111111111111111111",
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "upload_id": "dddddddddddddddddddddddddddddddd",
+        "idempotency_key": "r4:confirm:001",
+        "manifest_sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+        "status": "succeeded",
+        "save_status": "created",
+        "model_calls": 0,
+        "source": {
+          "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "registration_id": "cccccccccccccccccccccccccccccccc",
+          "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "source_revision_id": "ffffffffffffffffffffffffffffffff",
+          "original_filename": "原始合成.pdf",
+          "relative_path": "docs/合成.pdf",
+          "classification": {
+            "group_id": null,
+            "component_side": "non_code",
+            "language": ""
+          },
+          "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "byte_length": 4096,
+          "media_type": "application/pdf",
+          "representation_kind": "original_only",
+          "root_node_id": null,
+          "text_available": false,
+          "parse_status": "not_parsed",
+          "structure_status": "not_built",
+          "full_text_status": "not_built",
+          "vector_status": "not_built",
+          "is_current": true,
+          "created_at": "2026-10-26T01:05:00Z"
+        },
+        "created_at": "2026-10-26T01:05:00Z"
+      },
+      "valid": true
+    },
+    {
+      "name": "模型调用必须0",
+      "schema": "Receipt",
+      "value": {
+        "import_task_id": "11111111111111111111111111111111",
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "upload_id": "dddddddddddddddddddddddddddddddd",
+        "idempotency_key": "r4:confirm:001",
+        "manifest_sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+        "status": "succeeded",
+        "save_status": "created",
+        "model_calls": 1,
+        "source": {
+          "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "registration_id": "cccccccccccccccccccccccccccccccc",
+          "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "source_revision_id": "ffffffffffffffffffffffffffffffff",
+          "original_filename": "原始合成.pdf",
+          "relative_path": "docs/合成.pdf",
+          "classification": {
+            "group_id": null,
+            "component_side": "non_code",
+            "language": ""
+          },
+          "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "byte_length": 4096,
+          "media_type": "application/pdf",
+          "representation_kind": "original_only",
+          "root_node_id": null,
+          "text_available": false,
+          "parse_status": "not_parsed",
+          "structure_status": "not_built",
+          "full_text_status": "not_built",
+          "vector_status": "not_built",
+          "is_current": true,
+          "created_at": "2026-10-26T01:05:00Z"
+        },
+        "created_at": "2026-10-26T01:05:00Z"
+      },
+      "valid": false
+    },
+    {
+      "name": "成功不可伪装queued",
+      "schema": "Receipt",
+      "value": {
+        "import_task_id": "11111111111111111111111111111111",
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "upload_id": "dddddddddddddddddddddddddddddddd",
+        "idempotency_key": "r4:confirm:001",
+        "manifest_sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+        "status": "queued",
+        "save_status": "created",
+        "model_calls": 0,
+        "source": {
+          "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "registration_id": "cccccccccccccccccccccccccccccccc",
+          "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "source_revision_id": "ffffffffffffffffffffffffffffffff",
+          "original_filename": "原始合成.pdf",
+          "relative_path": "docs/合成.pdf",
+          "classification": {
+            "group_id": null,
+            "component_side": "non_code",
+            "language": ""
+          },
+          "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "byte_length": 4096,
+          "media_type": "application/pdf",
+          "representation_kind": "original_only",
+          "root_node_id": null,
+          "text_available": false,
+          "parse_status": "not_parsed",
+          "structure_status": "not_built",
+          "full_text_status": "not_built",
+          "vector_status": "not_built",
+          "is_current": true,
+          "created_at": "2026-10-26T01:05:00Z"
+        },
+        "created_at": "2026-10-26T01:05:00Z"
+      },
+      "valid": false
+    },
+    {
+      "name": "原件页",
+      "schema": "OriginalPage",
+      "value": {
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "items": [
+          {
+            "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "registration_id": "cccccccccccccccccccccccccccccccc",
+            "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "source_revision_id": "ffffffffffffffffffffffffffffffff",
+            "original_filename": "原始合成.pdf",
+            "relative_path": "docs/合成.pdf",
+            "classification": {
+              "group_id": null,
+              "component_side": "non_code",
+              "language": ""
+            },
+            "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "byte_length": 4096,
+            "media_type": "application/pdf",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T01:05:00Z"
+          }
+        ],
+        "next_cursor": null
+      },
+      "valid": true
+    },
+    {
+      "name": "21条超过页限",
+      "schema": "OriginalPage",
+      "value": {
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "items": [
+          {
+            "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "registration_id": "cccccccccccccccccccccccccccccccc",
+            "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "source_revision_id": "ffffffffffffffffffffffffffffffff",
+            "original_filename": "原始合成.pdf",
+            "relative_path": "docs/合成.pdf",
+            "classification": {
+              "group_id": null,
+              "component_side": "non_code",
+              "language": ""
+            },
+            "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "byte_length": 4096,
+            "media_type": "application/pdf",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T01:05:00Z"
+          },
+          {
+            "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "registration_id": "cccccccccccccccccccccccccccccccc",
+            "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "source_revision_id": "ffffffffffffffffffffffffffffffff",
+            "original_filename": "原始合成.pdf",
+            "relative_path": "docs/合成.pdf",
+            "classification": {
+              "group_id": null,
+              "component_side": "non_code",
+              "language": ""
+            },
+            "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "byte_length": 4096,
+            "media_type": "application/pdf",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T01:05:00Z"
+          },
+          {
+            "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "registration_id": "cccccccccccccccccccccccccccccccc",
+            "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "source_revision_id": "ffffffffffffffffffffffffffffffff",
+            "original_filename": "原始合成.pdf",
+            "relative_path": "docs/合成.pdf",
+            "classification": {
+              "group_id": null,
+              "component_side": "non_code",
+              "language": ""
+            },
+            "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "byte_length": 4096,
+            "media_type": "application/pdf",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T01:05:00Z"
+          },
+          {
+            "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "registration_id": "cccccccccccccccccccccccccccccccc",
+            "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "source_revision_id": "ffffffffffffffffffffffffffffffff",
+            "original_filename": "原始合成.pdf",
+            "relative_path": "docs/合成.pdf",
+            "classification": {
+              "group_id": null,
+              "component_side": "non_code",
+              "language": ""
+            },
+            "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "byte_length": 4096,
+            "media_type": "application/pdf",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T01:05:00Z"
+          },
+          {
+            "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "registration_id": "cccccccccccccccccccccccccccccccc",
+            "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "source_revision_id": "ffffffffffffffffffffffffffffffff",
+            "original_filename": "原始合成.pdf",
+            "relative_path": "docs/合成.pdf",
+            "classification": {
+              "group_id": null,
+              "component_side": "non_code",
+              "language": ""
+            },
+            "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "byte_length": 4096,
+            "media_type": "application/pdf",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T01:05:00Z"
+          },
+          {
+            "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "registration_id": "cccccccccccccccccccccccccccccccc",
+            "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "source_revision_id": "ffffffffffffffffffffffffffffffff",
+            "original_filename": "原始合成.pdf",
+            "relative_path": "docs/合成.pdf",
+            "classification": {
+              "group_id": null,
+              "component_side": "non_code",
+              "language": ""
+            },
+            "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "byte_length": 4096,
+            "media_type": "application/pdf",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T01:05:00Z"
+          },
+          {
+            "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "registration_id": "cccccccccccccccccccccccccccccccc",
+            "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "source_revision_id": "ffffffffffffffffffffffffffffffff",
+            "original_filename": "原始合成.pdf",
+            "relative_path": "docs/合成.pdf",
+            "classification": {
+              "group_id": null,
+              "component_side": "non_code",
+              "language": ""
+            },
+            "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "byte_length": 4096,
+            "media_type": "application/pdf",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T01:05:00Z"
+          },
+          {
+            "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "registration_id": "cccccccccccccccccccccccccccccccc",
+            "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "source_revision_id": "ffffffffffffffffffffffffffffffff",
+            "original_filename": "原始合成.pdf",
+            "relative_path": "docs/合成.pdf",
+            "classification": {
+              "group_id": null,
+              "component_side": "non_code",
+              "language": ""
+            },
+            "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "byte_length": 4096,
+            "media_type": "application/pdf",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T01:05:00Z"
+          },
+          {
+            "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "registration_id": "cccccccccccccccccccccccccccccccc",
+            "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "source_revision_id": "ffffffffffffffffffffffffffffffff",
+            "original_filename": "原始合成.pdf",
+            "relative_path": "docs/合成.pdf",
+            "classification": {
+              "group_id": null,
+              "component_side": "non_code",
+              "language": ""
+            },
+            "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "byte_length": 4096,
+            "media_type": "application/pdf",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T01:05:00Z"
+          },
+          {
+            "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "registration_id": "cccccccccccccccccccccccccccccccc",
+            "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "source_revision_id": "ffffffffffffffffffffffffffffffff",
+            "original_filename": "原始合成.pdf",
+            "relative_path": "docs/合成.pdf",
+            "classification": {
+              "group_id": null,
+              "component_side": "non_code",
+              "language": ""
+            },
+            "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "byte_length": 4096,
+            "media_type": "application/pdf",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T01:05:00Z"
+          },
+          {
+            "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "registration_id": "cccccccccccccccccccccccccccccccc",
+            "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "source_revision_id": "ffffffffffffffffffffffffffffffff",
+            "original_filename": "原始合成.pdf",
+            "relative_path": "docs/合成.pdf",
+            "classification": {
+              "group_id": null,
+              "component_side": "non_code",
+              "language": ""
+            },
+            "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "byte_length": 4096,
+            "media_type": "application/pdf",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T01:05:00Z"
+          },
+          {
+            "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "registration_id": "cccccccccccccccccccccccccccccccc",
+            "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "source_revision_id": "ffffffffffffffffffffffffffffffff",
+            "original_filename": "原始合成.pdf",
+            "relative_path": "docs/合成.pdf",
+            "classification": {
+              "group_id": null,
+              "component_side": "non_code",
+              "language": ""
+            },
+            "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "byte_length": 4096,
+            "media_type": "application/pdf",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T01:05:00Z"
+          },
+          {
+            "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "registration_id": "cccccccccccccccccccccccccccccccc",
+            "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "source_revision_id": "ffffffffffffffffffffffffffffffff",
+            "original_filename": "原始合成.pdf",
+            "relative_path": "docs/合成.pdf",
+            "classification": {
+              "group_id": null,
+              "component_side": "non_code",
+              "language": ""
+            },
+            "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "byte_length": 4096,
+            "media_type": "application/pdf",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T01:05:00Z"
+          },
+          {
+            "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "registration_id": "cccccccccccccccccccccccccccccccc",
+            "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "source_revision_id": "ffffffffffffffffffffffffffffffff",
+            "original_filename": "原始合成.pdf",
+            "relative_path": "docs/合成.pdf",
+            "classification": {
+              "group_id": null,
+              "component_side": "non_code",
+              "language": ""
+            },
+            "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "byte_length": 4096,
+            "media_type": "application/pdf",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T01:05:00Z"
+          },
+          {
+            "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "registration_id": "cccccccccccccccccccccccccccccccc",
+            "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "source_revision_id": "ffffffffffffffffffffffffffffffff",
+            "original_filename": "原始合成.pdf",
+            "relative_path": "docs/合成.pdf",
+            "classification": {
+              "group_id": null,
+              "component_side": "non_code",
+              "language": ""
+            },
+            "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "byte_length": 4096,
+            "media_type": "application/pdf",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T01:05:00Z"
+          },
+          {
+            "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "registration_id": "cccccccccccccccccccccccccccccccc",
+            "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "source_revision_id": "ffffffffffffffffffffffffffffffff",
+            "original_filename": "原始合成.pdf",
+            "relative_path": "docs/合成.pdf",
+            "classification": {
+              "group_id": null,
+              "component_side": "non_code",
+              "language": ""
+            },
+            "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "byte_length": 4096,
+            "media_type": "application/pdf",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T01:05:00Z"
+          },
+          {
+            "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "registration_id": "cccccccccccccccccccccccccccccccc",
+            "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "source_revision_id": "ffffffffffffffffffffffffffffffff",
+            "original_filename": "原始合成.pdf",
+            "relative_path": "docs/合成.pdf",
+            "classification": {
+              "group_id": null,
+              "component_side": "non_code",
+              "language": ""
+            },
+            "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "byte_length": 4096,
+            "media_type": "application/pdf",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T01:05:00Z"
+          },
+          {
+            "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "registration_id": "cccccccccccccccccccccccccccccccc",
+            "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "source_revision_id": "ffffffffffffffffffffffffffffffff",
+            "original_filename": "原始合成.pdf",
+            "relative_path": "docs/合成.pdf",
+            "classification": {
+              "group_id": null,
+              "component_side": "non_code",
+              "language": ""
+            },
+            "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "byte_length": 4096,
+            "media_type": "application/pdf",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T01:05:00Z"
+          },
+          {
+            "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "registration_id": "cccccccccccccccccccccccccccccccc",
+            "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "source_revision_id": "ffffffffffffffffffffffffffffffff",
+            "original_filename": "原始合成.pdf",
+            "relative_path": "docs/合成.pdf",
+            "classification": {
+              "group_id": null,
+              "component_side": "non_code",
+              "language": ""
+            },
+            "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "byte_length": 4096,
+            "media_type": "application/pdf",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T01:05:00Z"
+          },
+          {
+            "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "registration_id": "cccccccccccccccccccccccccccccccc",
+            "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "source_revision_id": "ffffffffffffffffffffffffffffffff",
+            "original_filename": "原始合成.pdf",
+            "relative_path": "docs/合成.pdf",
+            "classification": {
+              "group_id": null,
+              "component_side": "non_code",
+              "language": ""
+            },
+            "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "byte_length": 4096,
+            "media_type": "application/pdf",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T01:05:00Z"
+          },
+          {
+            "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "registration_id": "cccccccccccccccccccccccccccccccc",
+            "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "source_revision_id": "ffffffffffffffffffffffffffffffff",
+            "original_filename": "原始合成.pdf",
+            "relative_path": "docs/合成.pdf",
+            "classification": {
+              "group_id": null,
+              "component_side": "non_code",
+              "language": ""
+            },
+            "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "byte_length": 4096,
+            "media_type": "application/pdf",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T01:05:00Z"
+          }
+        ],
+        "next_cursor": null
+      },
+      "valid": false
+    },
+    {
+      "name": "UTF8相对路径越级拒绝",
+      "schema": "CreateUpload",
+      "value": {
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/../private.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "idempotency_key": "r4:create:001"
+      },
+      "valid": false
+    },
+    {
+      "name": "Windows绝对路径拒绝",
+      "schema": "CreateUpload",
+      "value": {
+        "original_filename": "原始合成.pdf",
+        "relative_path": "D:\\private.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "idempotency_key": "r4:create:001"
+      },
+      "valid": false
+    },
+    {
+      "name": "旧inline_text不接入",
+      "schema": "CreateRegistration",
+      "value": {
+        "registration_key": "r4-originals",
+        "name": "合成原件",
+        "source_kind": "original_document",
+        "input_mode": "inline_text",
+        "include_paths": [
+          "docs/合成.pdf",
+          "notes/大文件.tsx"
+        ],
+        "default_classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        }
+      },
+      "valid": false
+    },
+    {
+      "name": "正文不能塞JSON",
+      "schema": "CreateUpload",
+      "value": {
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "idempotency_key": "r4:create:001",
+        "content": "base64body"
+      },
+      "valid": false
+    },
+    {
+      "name": "前端分类",
+      "schema": "CreateUpload",
+      "value": {
+        "original_filename": "原始合成.pdf",
+        "relative_path": "notes/大文件.tsx",
+        "classification": {
+          "group_id": "33333333333333333333333333333333",
+          "component_side": "frontend",
+          "language": "typescript"
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "text/plain",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "idempotency_key": "r4:create:001"
+      },
+      "valid": true
+    },
+    {
+      "name": "分类不能充权限",
+      "schema": "CreateUpload",
+      "value": {
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "private",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "idempotency_key": "r4:create:001"
+      },
+      "valid": false
+    },
+    {
+      "name": "可空客户端SHA",
+      "schema": "CreateUpload",
+      "value": {
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+        "expected_revision_id": null,
+        "idempotency_key": "r4:create:001"
+      },
+      "valid": true
+    },
+    {
+      "name": "非法SHA长度拒绝",
+      "schema": "CreateUpload",
+      "value": {
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": "abc",
+        "expected_revision_id": null,
+        "idempotency_key": "r4:create:001"
+      },
+      "valid": false
+    },
+    {
+      "name": "原确认键为空拒绝",
+      "schema": "Confirm",
+      "value": {
+        "upload_id": "dddddddddddddddddddddddddddddddd",
+        "manifest_sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+        "idempotency_key": "",
+        "confirmed": true
+      },
+      "valid": false
+    },
+    {
+      "name": "移除必填字段拒绝",
+      "schema": "Confirm",
+      "value": {
+        "upload_id": "dddddddddddddddddddddddddddddddd",
+        "manifest_sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+        "idempotency_key": "r4:confirm:001"
+      },
+      "valid": false
+    },
+    {
+      "name": "候选能力未运行",
+      "schema": "Capabilities",
+      "value": {
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.5.0",
+        "runtime_ready": false,
+        "max_file_bytes": 67108864,
+        "max_open_uploads_per_user_domain": 2,
+        "reserved_bytes_per_user_domain": 134217728,
+        "receiving_per_user_domain": 1,
+        "receiving_deployment": 2,
+        "upload_ttl_seconds": 1800,
+        "receive_timeout_seconds": 120,
+        "lease_seconds": 30,
+        "heartbeat_seconds": 10,
+        "json_max_bytes": 32768,
+        "supported_formats": [
+          "pdf",
+          "pptx",
+          "docx",
+          "utf8_text_code"
+        ],
+        "resumable_parts": false,
+        "parses_automatically": false,
+        "model_calls": 0,
+        "storage_engine": "minio",
+        "reading": "authenticated_fixed_revision_single_range"
+      },
+      "valid": true
+    },
+    {
+      "name": "ready成功包络",
+      "schema": "UploadEnvelope",
+      "value": {
+        "code": 0,
+        "message": "合成示例",
+        "data": {
+          "upload_id": "dddddddddddddddddddddddddddddddd",
+          "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "owner_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "registration_id": "cccccccccccccccccccccccccccccccc",
+          "idempotency_key": "r4:create:001",
+          "request_sha256": "beef4c787843c7759163234e1440bc5914930e2729c9eb531982ae08e9ef943c",
+          "original_filename": "原始合成.pdf",
+          "relative_path": "docs/合成.pdf",
+          "classification": {
+            "group_id": null,
+            "component_side": "non_code",
+            "language": ""
+          },
+          "declared_byte_length": 4096,
+          "declared_media_type": "application/pdf",
+          "expected_sha256": null,
+          "expected_revision_id": null,
+          "state": "ready",
+          "received_bytes": 4096,
+          "byte_length": 4096,
+          "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "media_type": "application/pdf",
+          "source_id": null,
+          "policy_version": 1,
+          "action": "created",
+          "manifest_sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+          "import_task_id": null,
+          "code": null,
+          "revision": 2,
+          "created_at": "2026-10-26T01:00:00Z",
+          "updated_at": "2026-10-26T01:00:05Z",
+          "expires_at": "2026-10-26T01:30:00Z"
+        },
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.5.0",
+        "request_id": "55555555555555555555555555555555"
+      },
+      "valid": true
+    },
+    {
+      "name": "固定回执包络",
+      "schema": "ReceiptEnvelope",
+      "value": {
+        "code": 0,
+        "message": "合成示例",
+        "data": {
+          "import_task_id": "11111111111111111111111111111111",
+          "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "registration_id": "cccccccccccccccccccccccccccccccc",
+          "upload_id": "dddddddddddddddddddddddddddddddd",
+          "idempotency_key": "r4:confirm:001",
+          "manifest_sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+          "status": "succeeded",
+          "save_status": "created",
+          "model_calls": 0,
+          "source": {
+            "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "registration_id": "cccccccccccccccccccccccccccccccc",
+            "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "source_revision_id": "ffffffffffffffffffffffffffffffff",
+            "original_filename": "原始合成.pdf",
+            "relative_path": "docs/合成.pdf",
+            "classification": {
+              "group_id": null,
+              "component_side": "non_code",
+              "language": ""
+            },
+            "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "byte_length": 4096,
+            "media_type": "application/pdf",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T01:05:00Z"
+          },
+          "created_at": "2026-10-26T01:05:00Z"
+        },
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.5.0",
+        "request_id": "55555555555555555555555555555555"
+      },
+      "valid": true
+    },
+    {
+      "name": "版本不混用",
+      "schema": "UploadEnvelope",
+      "value": {
+        "code": 0,
+        "message": "合成示例",
+        "data": {
+          "upload_id": "dddddddddddddddddddddddddddddddd",
+          "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "owner_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "registration_id": "cccccccccccccccccccccccccccccccc",
+          "idempotency_key": "r4:create:001",
+          "request_sha256": "beef4c787843c7759163234e1440bc5914930e2729c9eb531982ae08e9ef943c",
+          "original_filename": "原始合成.pdf",
+          "relative_path": "docs/合成.pdf",
+          "classification": {
+            "group_id": null,
+            "component_side": "non_code",
+            "language": ""
+          },
+          "declared_byte_length": 4096,
+          "declared_media_type": "application/pdf",
+          "expected_sha256": null,
+          "expected_revision_id": null,
+          "state": "ready",
+          "received_bytes": 4096,
+          "byte_length": 4096,
+          "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "media_type": "application/pdf",
+          "source_id": null,
+          "policy_version": 1,
+          "action": "created",
+          "manifest_sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+          "import_task_id": null,
+          "code": null,
+          "revision": 2,
+          "created_at": "2026-10-26T01:00:00Z",
+          "updated_at": "2026-10-26T01:00:05Z",
+          "expires_at": "2026-10-26T01:30:00Z"
+        },
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.4.0",
+        "request_id": "55555555555555555555555555555555"
+      },
+      "valid": false
+    },
+    {
+      "name": "错误包络",
+      "schema": "Error",
+      "value": {
+        "code": "result_unknown",
+        "message": "结果未确认",
+        "data": null,
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.5.0",
+        "request_id": "55555555555555555555555555555555"
+      },
+      "valid": true
+    },
+    {
+      "name": "原始文件名不能是路径",
+      "schema": "CreateUpload",
+      "value": {
+        "original_filename": "folder/a.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "idempotency_key": "r4:create:001"
+      },
+      "valid": false
+    },
+    {
+      "name": "原始文件名不能注入响应头",
+      "schema": "CreateUpload",
+      "value": {
+        "original_filename": "a.pdf\r\nX-Foo: value",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "idempotency_key": "r4:create:001"
+      },
+      "valid": false
+    },
+    {
+      "name": "目录不是精确文件路径",
+      "schema": "CreateUpload",
+      "value": {
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "idempotency_key": "r4:create:001"
+      },
+      "valid": false
+    },
+    {
+      "name": "本登记尚无来源",
+      "schema": "Target",
+      "value": {
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "relative_path": "docs/合成.pdf",
+        "source": null
+      },
+      "valid": true
+    },
+    {
+      "name": "本登记已存在原件",
+      "schema": "Target",
+      "value": {
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "relative_path": "docs/合成.pdf",
+        "source": {
+          "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "registration_id": "cccccccccccccccccccccccccccccccc",
+          "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "source_revision_id": "ffffffffffffffffffffffffffffffff",
+          "original_filename": "原始合成.pdf",
+          "relative_path": "docs/合成.pdf",
+          "classification": {
+            "group_id": null,
+            "component_side": "non_code",
+            "language": ""
+          },
+          "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "byte_length": 4096,
+          "media_type": "application/pdf",
+          "representation_kind": "original_only",
+          "root_node_id": null,
+          "text_available": false,
+          "parse_status": "not_parsed",
+          "structure_status": "not_built",
+          "full_text_status": "not_built",
+          "vector_status": "not_built",
+          "is_current": true,
+          "created_at": "2026-10-26T01:05:00Z"
+        }
+      },
+      "valid": true
+    },
+    {
+      "name": "状态版本必须正整数",
+      "schema": "Upload",
+      "value": {
+        "upload_id": "dddddddddddddddddddddddddddddddd",
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "owner_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "idempotency_key": "r4:create:001",
+        "request_sha256": "beef4c787843c7759163234e1440bc5914930e2729c9eb531982ae08e9ef943c",
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "state": "ready",
+        "received_bytes": 4096,
+        "byte_length": 4096,
+        "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "media_type": "application/pdf",
+        "source_id": null,
+        "policy_version": 1,
+        "action": "created",
+        "manifest_sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+        "import_task_id": null,
+        "code": null,
+        "revision": 0,
+        "created_at": "2026-10-26T01:00:00Z",
+        "updated_at": "2026-10-26T01:00:05Z",
+        "expires_at": "2026-10-26T01:30:00Z"
+      },
+      "valid": false
+    },
+    {
+      "name": "时间固定UTC秒",
+      "schema": "Upload",
+      "value": {
+        "upload_id": "dddddddddddddddddddddddddddddddd",
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "owner_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "idempotency_key": "r4:create:001",
+        "request_sha256": "beef4c787843c7759163234e1440bc5914930e2729c9eb531982ae08e9ef943c",
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "state": "ready",
+        "received_bytes": 4096,
+        "byte_length": 4096,
+        "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "media_type": "application/pdf",
+        "source_id": null,
+        "policy_version": 1,
+        "action": "created",
+        "manifest_sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+        "import_task_id": null,
+        "code": null,
+        "revision": 2,
+        "created_at": "2026-10-26T01:00:00Z",
+        "updated_at": "2026-10-26T01:00:05Z",
+        "expires_at": "2026-10-26T01:30:00+00:00"
+      },
+      "valid": false
+    }
+  ],
+  "semantic_cases": [
+    {
+      "name": "ready实际长度等声明",
+      "kind": "ready",
+      "input": {
+        "upload_id": "dddddddddddddddddddddddddddddddd",
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "owner_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "idempotency_key": "r4:create:001",
+        "request_sha256": "beef4c787843c7759163234e1440bc5914930e2729c9eb531982ae08e9ef943c",
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "state": "ready",
+        "received_bytes": 4096,
+        "byte_length": 4096,
+        "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "media_type": "application/pdf",
+        "source_id": null,
+        "policy_version": 1,
+        "action": "created",
+        "manifest_sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+        "import_task_id": null,
+        "code": null,
+        "revision": 2,
+        "created_at": "2026-10-26T01:00:00Z",
+        "updated_at": "2026-10-26T01:00:05Z",
+        "expires_at": "2026-10-26T01:30:00Z"
+      },
+      "expected": true
+    },
+    {
+      "name": "ready截断不成立",
+      "kind": "ready",
+      "input": {
+        "upload_id": "dddddddddddddddddddddddddddddddd",
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "owner_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "idempotency_key": "r4:create:001",
+        "request_sha256": "beef4c787843c7759163234e1440bc5914930e2729c9eb531982ae08e9ef943c",
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "state": "ready",
+        "received_bytes": 4096,
+        "byte_length": 4095,
+        "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "media_type": "application/pdf",
+        "source_id": null,
+        "policy_version": 1,
+        "action": "created",
+        "manifest_sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+        "import_task_id": null,
+        "code": null,
+        "revision": 2,
+        "created_at": "2026-10-26T01:00:00Z",
+        "updated_at": "2026-10-26T01:00:05Z",
+        "expires_at": "2026-10-26T01:30:00Z"
+      },
+      "expected": false
+    },
+    {
+      "name": "ready进度不等长度",
+      "kind": "ready",
+      "input": {
+        "upload_id": "dddddddddddddddddddddddddddddddd",
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "owner_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "idempotency_key": "r4:create:001",
+        "request_sha256": "beef4c787843c7759163234e1440bc5914930e2729c9eb531982ae08e9ef943c",
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "state": "ready",
+        "received_bytes": 4000,
+        "byte_length": 4096,
+        "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "media_type": "application/pdf",
+        "source_id": null,
+        "policy_version": 1,
+        "action": "created",
+        "manifest_sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+        "import_task_id": null,
+        "code": null,
+        "revision": 2,
+        "created_at": "2026-10-26T01:00:00Z",
+        "updated_at": "2026-10-26T01:00:05Z",
+        "expires_at": "2026-10-26T01:30:00Z"
+      },
+      "expected": false
+    },
+    {
+      "name": "新建必须无当前来源",
+      "kind": "ready",
+      "input": {
+        "upload_id": "dddddddddddddddddddddddddddddddd",
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "owner_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "idempotency_key": "r4:create:001",
+        "request_sha256": "beef4c787843c7759163234e1440bc5914930e2729c9eb531982ae08e9ef943c",
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "state": "ready",
+        "received_bytes": 4096,
+        "byte_length": 4096,
+        "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "media_type": "application/pdf",
+        "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "policy_version": 1,
+        "action": "created",
+        "manifest_sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+        "import_task_id": null,
+        "code": null,
+        "revision": 2,
+        "created_at": "2026-10-26T01:00:00Z",
+        "updated_at": "2026-10-26T01:00:05Z",
+        "expires_at": "2026-10-26T01:30:00Z"
+      },
+      "expected": false
+    },
+    {
+      "name": "更新必须有旧头",
+      "kind": "ready",
+      "input": {
+        "upload_id": "dddddddddddddddddddddddddddddddd",
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "owner_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "idempotency_key": "r4:create:001",
+        "request_sha256": "beef4c787843c7759163234e1440bc5914930e2729c9eb531982ae08e9ef943c",
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": "ffffffffffffffffffffffffffffffff",
+        "state": "ready",
+        "received_bytes": 4096,
+        "byte_length": 4096,
+        "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "media_type": "application/pdf",
+        "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "policy_version": 1,
+        "action": "updated",
+        "manifest_sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+        "import_task_id": null,
+        "code": null,
+        "revision": 2,
+        "created_at": "2026-10-26T01:00:00Z",
+        "updated_at": "2026-10-26T01:00:05Z",
+        "expires_at": "2026-10-26T01:30:00Z"
+      },
+      "expected": true
+    },
+    {
+      "name": "更新缺旧头",
+      "kind": "ready",
+      "input": {
+        "upload_id": "dddddddddddddddddddddddddddddddd",
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "owner_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "idempotency_key": "r4:create:001",
+        "request_sha256": "beef4c787843c7759163234e1440bc5914930e2729c9eb531982ae08e9ef943c",
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "state": "ready",
+        "received_bytes": 4096,
+        "byte_length": 4096,
+        "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "media_type": "application/pdf",
+        "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "policy_version": 1,
+        "action": "updated",
+        "manifest_sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+        "import_task_id": null,
+        "code": null,
+        "revision": 2,
+        "created_at": "2026-10-26T01:00:00Z",
+        "updated_at": "2026-10-26T01:00:05Z",
+        "expires_at": "2026-10-26T01:30:00Z"
+      },
+      "expected": false
+    },
+    {
+      "name": "未知旧头不可创建",
+      "kind": "ready",
+      "input": {
+        "upload_id": "dddddddddddddddddddddddddddddddd",
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "owner_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "idempotency_key": "r4:create:001",
+        "request_sha256": "beef4c787843c7759163234e1440bc5914930e2729c9eb531982ae08e9ef943c",
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": "ffffffffffffffffffffffffffffffff",
+        "state": "ready",
+        "received_bytes": 4096,
+        "byte_length": 4096,
+        "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "media_type": "application/pdf",
+        "source_id": null,
+        "policy_version": 1,
+        "action": "created",
+        "manifest_sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+        "import_task_id": null,
+        "code": null,
+        "revision": 2,
+        "created_at": "2026-10-26T01:00:00Z",
+        "updated_at": "2026-10-26T01:00:05Z",
+        "expires_at": "2026-10-26T01:30:00Z"
+      },
+      "expected": false
+    },
+    {
+      "name": "旧同内容复用",
+      "kind": "ready",
+      "input": {
+        "upload_id": "dddddddddddddddddddddddddddddddd",
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "owner_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "idempotency_key": "r4:create:001",
+        "request_sha256": "beef4c787843c7759163234e1440bc5914930e2729c9eb531982ae08e9ef943c",
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": "ffffffffffffffffffffffffffffffff",
+        "state": "ready",
+        "received_bytes": 4096,
+        "byte_length": 4096,
+        "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "media_type": "application/pdf",
+        "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "policy_version": 1,
+        "action": "unchanged",
+        "manifest_sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+        "import_task_id": null,
+        "code": null,
+        "revision": 2,
+        "created_at": "2026-10-26T01:00:00Z",
+        "updated_at": "2026-10-26T01:00:05Z",
+        "expires_at": "2026-10-26T01:30:00Z"
+      },
+      "expected": true
+    },
+    {
+      "name": "PDF后缀与MIME一致",
+      "kind": "media",
+      "input": {
+        "path": "docs/a.pdf",
+        "media": "application/pdf"
+      },
+      "expected": true
+    },
+    {
+      "name": "伪装PDF MIME错误",
+      "kind": "media",
+      "input": {
+        "path": "docs/a.pdf",
+        "media": "text/plain"
+      },
+      "expected": false
+    },
+    {
+      "name": "DOCX MIME正确",
+      "kind": "media",
+      "input": {
+        "path": "docs/a.docx",
+        "media": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      },
+      "expected": true
+    },
+    {
+      "name": "PPTX MIME正确",
+      "kind": "media",
+      "input": {
+        "path": "docs/a.pptx",
+        "media": "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+      },
+      "expected": true
+    },
+    {
+      "name": "不接ZIP附件",
+      "kind": "media",
+      "input": {
+        "path": "docs/a.zip",
+        "media": "application/octet-stream"
+      },
+      "expected": false
+    },
+    {
+      "name": "大TSX只存原件",
+      "kind": "media",
+      "input": {
+        "path": "web/a.tsx",
+        "media": "text/plain"
+      },
+      "expected": true
+    },
+    {
+      "name": "凭据文件不纳入",
+      "kind": "media",
+      "input": {
+        "path": ".env",
+        "media": "text/plain"
+      },
+      "expected": false
+    },
+    {
+      "name": "最多两个预留",
+      "kind": "quota",
+      "input": {
+        "open": 1,
+        "reserved": 67108864,
+        "requested": 67108864,
+        "receivingOwner": 0,
+        "receivingDeployment": 0
+      },
+      "expected": true
+    },
+    {
+      "name": "第三个预留拒绝",
+      "kind": "quota",
+      "input": {
+        "open": 2,
+        "reserved": 2,
+        "requested": 1,
+        "receivingOwner": 0,
+        "receivingDeployment": 0
+      },
+      "expected": false
+    },
+    {
+      "name": "128MiB预留超限",
+      "kind": "quota",
+      "input": {
+        "open": 1,
+        "reserved": 67108864,
+        "requested": 67108865,
+        "receivingOwner": 0,
+        "receivingDeployment": 0
+      },
+      "expected": false
+    },
+    {
+      "name": "部署接收2槽已满",
+      "kind": "receive_slot",
+      "input": {
+        "owner": 0,
+        "deployment": 2
+      },
+      "expected": false
+    },
+    {
+      "name": "用户域接收已占",
+      "kind": "receive_slot",
+      "input": {
+        "owner": 1,
+        "deployment": 1
+      },
+      "expected": false
+    },
+    {
+      "name": "唯一接收槽",
+      "kind": "receive_slot",
+      "input": {
+        "owner": 0,
+        "deployment": 1
+      },
+      "expected": true
+    },
+    {
+      "name": "PUT状态-awaiting_bytes",
+      "kind": "put_state",
+      "input": {
+        "state": "awaiting_bytes"
+      },
+      "expected": true
+    },
+    {
+      "name": "PUT状态-interrupted",
+      "kind": "put_state",
+      "input": {
+        "state": "interrupted"
+      },
+      "expected": true
+    },
+    {
+      "name": "PUT状态-ready",
+      "kind": "put_state",
+      "input": {
+        "state": "ready"
+      },
+      "expected": false
+    },
+    {
+      "name": "PUT状态-receiving",
+      "kind": "put_state",
+      "input": {
+        "state": "receiving"
+      },
+      "expected": false
+    },
+    {
+      "name": "PUT状态-expired",
+      "kind": "put_state",
+      "input": {
+        "state": "expired"
+      },
+      "expected": false
+    },
+    {
+      "name": "PUT状态-cancelled",
+      "kind": "put_state",
+      "input": {
+        "state": "cancelled"
+      },
+      "expected": false
+    },
+    {
+      "name": "PUT状态-committed",
+      "kind": "put_state",
+      "input": {
+        "state": "committed"
+      },
+      "expected": false
+    },
+    {
+      "name": "固定确认授权与头一致",
+      "kind": "confirm",
+      "input": {
+        "state": "ready",
+        "authorized": true,
+        "unexpired": true,
+        "manifestEqual": true,
+        "expectedHeadEqual": true,
+        "policyEqual": true,
+        "confirmed": true,
+        "replay": false
+      },
+      "expected": true
+    },
+    {
+      "name": "确认必须-authorized",
+      "kind": "confirm",
+      "input": {
+        "state": "ready",
+        "authorized": false,
+        "unexpired": true,
+        "manifestEqual": true,
+        "expectedHeadEqual": true,
+        "policyEqual": true,
+        "confirmed": true,
+        "replay": false
+      },
+      "expected": false
+    },
+    {
+      "name": "确认必须-unexpired",
+      "kind": "confirm",
+      "input": {
+        "state": "ready",
+        "authorized": true,
+        "unexpired": false,
+        "manifestEqual": true,
+        "expectedHeadEqual": true,
+        "policyEqual": true,
+        "confirmed": true,
+        "replay": false
+      },
+      "expected": false
+    },
+    {
+      "name": "确认必须-manifestEqual",
+      "kind": "confirm",
+      "input": {
+        "state": "ready",
+        "authorized": true,
+        "unexpired": true,
+        "manifestEqual": false,
+        "expectedHeadEqual": true,
+        "policyEqual": true,
+        "confirmed": true,
+        "replay": false
+      },
+      "expected": false
+    },
+    {
+      "name": "确认必须-expectedHeadEqual",
+      "kind": "confirm",
+      "input": {
+        "state": "ready",
+        "authorized": true,
+        "unexpired": true,
+        "manifestEqual": true,
+        "expectedHeadEqual": false,
+        "policyEqual": true,
+        "confirmed": true,
+        "replay": false
+      },
+      "expected": false
+    },
+    {
+      "name": "确认必须-policyEqual",
+      "kind": "confirm",
+      "input": {
+        "state": "ready",
+        "authorized": true,
+        "unexpired": true,
+        "manifestEqual": true,
+        "expectedHeadEqual": true,
+        "policyEqual": false,
+        "confirmed": true,
+        "replay": false
+      },
+      "expected": false
+    },
+    {
+      "name": "确认必须-confirmed",
+      "kind": "confirm",
+      "input": {
+        "state": "ready",
+        "authorized": true,
+        "unexpired": true,
+        "manifestEqual": true,
+        "expectedHeadEqual": true,
+        "policyEqual": true,
+        "confirmed": false,
+        "replay": false
+      },
+      "expected": false
+    },
+    {
+      "name": "已提交同键回放不受暂存TTL影响",
+      "kind": "confirm",
+      "input": {
+        "state": "committed",
+        "authorized": true,
+        "unexpired": false,
+        "manifestEqual": true,
+        "expectedHeadEqual": false,
+        "policyEqual": true,
+        "confirmed": true,
+        "replay": true
+      },
+      "expected": true
+    },
+    {
+      "name": "回放仍须授权",
+      "kind": "confirm",
+      "input": {
+        "state": "committed",
+        "authorized": false,
+        "unexpired": false,
+        "manifestEqual": true,
+        "expectedHeadEqual": false,
+        "policyEqual": true,
+        "confirmed": true,
+        "replay": true
+      },
+      "expected": false
+    },
+    {
+      "name": "范围-完整",
+      "kind": "range",
+      "input": {
+        "length": 4096,
+        "etag": "\"sha256-2222222222222222222222222222222222222222222222222222222222222222\"",
+        "range": null,
+        "ifRange": null,
+        "method": "GET",
+        "authorized": true
+      },
+      "expected": {
+        "status": 200,
+        "start": 0,
+        "end": 4095
+      }
+    },
+    {
+      "name": "范围-起止",
+      "kind": "range",
+      "input": {
+        "length": 4096,
+        "etag": "\"sha256-2222222222222222222222222222222222222222222222222222222222222222\"",
+        "range": "bytes=0-31",
+        "ifRange": null,
+        "method": "GET",
+        "authorized": true
+      },
+      "expected": {
+        "status": 206,
+        "start": 0,
+        "end": 31
+      }
+    },
+    {
+      "name": "范围-开放末尾",
+      "kind": "range",
+      "input": {
+        "length": 4096,
+        "etag": "\"sha256-2222222222222222222222222222222222222222222222222222222222222222\"",
+        "range": "bytes=4090-",
+        "ifRange": null,
+        "method": "GET",
+        "authorized": true
+      },
+      "expected": {
+        "status": 206,
+        "start": 4090,
+        "end": 4095
+      }
+    },
+    {
+      "name": "范围-suffix",
+      "kind": "range",
+      "input": {
+        "length": 4096,
+        "etag": "\"sha256-2222222222222222222222222222222222222222222222222222222222222222\"",
+        "range": "bytes=-10",
+        "ifRange": null,
+        "method": "GET",
+        "authorized": true
+      },
+      "expected": {
+        "status": 206,
+        "start": 4086,
+        "end": 4095
+      }
+    },
+    {
+      "name": "范围-末端截EOF",
+      "kind": "range",
+      "input": {
+        "length": 4096,
+        "etag": "\"sha256-2222222222222222222222222222222222222222222222222222222222222222\"",
+        "range": "bytes=4090-9999",
+        "ifRange": null,
+        "method": "GET",
+        "authorized": true
+      },
+      "expected": {
+        "status": 206,
+        "start": 4090,
+        "end": 4095
+      }
+    },
+    {
+      "name": "范围-起点EOF",
+      "kind": "range",
+      "input": {
+        "length": 4096,
+        "etag": "\"sha256-2222222222222222222222222222222222222222222222222222222222222222\"",
+        "range": "bytes=4096-",
+        "ifRange": null,
+        "method": "GET",
+        "authorized": true
+      },
+      "expected": {
+        "status": 416,
+        "start": null,
+        "end": null
+      }
+    },
+    {
+      "name": "范围-零suffix",
+      "kind": "range",
+      "input": {
+        "length": 4096,
+        "etag": "\"sha256-2222222222222222222222222222222222222222222222222222222222222222\"",
+        "range": "bytes=-0",
+        "ifRange": null,
+        "method": "GET",
+        "authorized": true
+      },
+      "expected": {
+        "status": 416,
+        "start": null,
+        "end": null
+      }
+    },
+    {
+      "name": "范围-反向",
+      "kind": "range",
+      "input": {
+        "length": 4096,
+        "etag": "\"sha256-2222222222222222222222222222222222222222222222222222222222222222\"",
+        "range": "bytes=8-2",
+        "ifRange": null,
+        "method": "GET",
+        "authorized": true
+      },
+      "expected": {
+        "status": 416,
+        "start": null,
+        "end": null
+      }
+    },
+    {
+      "name": "范围-多范围",
+      "kind": "range",
+      "input": {
+        "length": 4096,
+        "etag": "\"sha256-2222222222222222222222222222222222222222222222222222222222222222\"",
+        "range": "bytes=0-1,3-4",
+        "ifRange": null,
+        "method": "GET",
+        "authorized": true
+      },
+      "expected": {
+        "status": 416,
+        "start": null,
+        "end": null
+      }
+    },
+    {
+      "name": "范围-非法单位",
+      "kind": "range",
+      "input": {
+        "length": 4096,
+        "etag": "\"sha256-2222222222222222222222222222222222222222222222222222222222222222\"",
+        "range": "items=0-1",
+        "ifRange": null,
+        "method": "GET",
+        "authorized": true
+      },
+      "expected": {
+        "status": 416,
+        "start": null,
+        "end": null
+      }
+    },
+    {
+      "name": "范围-空范围",
+      "kind": "range",
+      "input": {
+        "length": 4096,
+        "etag": "\"sha256-2222222222222222222222222222222222222222222222222222222222222222\"",
+        "range": "bytes=-",
+        "ifRange": null,
+        "method": "GET",
+        "authorized": true
+      },
+      "expected": {
+        "status": 416,
+        "start": null,
+        "end": null
+      }
+    },
+    {
+      "name": "范围-不匹配IfRange",
+      "kind": "range",
+      "input": {
+        "length": 4096,
+        "etag": "\"sha256-2222222222222222222222222222222222222222222222222222222222222222\"",
+        "range": "bytes=0-31",
+        "ifRange": "\"other\"",
+        "method": "GET",
+        "authorized": true
+      },
+      "expected": {
+        "status": 200,
+        "start": 0,
+        "end": 4095
+      }
+    },
+    {
+      "name": "范围-强IfRange",
+      "kind": "range",
+      "input": {
+        "length": 4096,
+        "etag": "\"sha256-2222222222222222222222222222222222222222222222222222222222222222\"",
+        "range": "bytes=0-31",
+        "ifRange": "\"sha256-2222222222222222222222222222222222222222222222222222222222222222\"",
+        "method": "GET",
+        "authorized": true
+      },
+      "expected": {
+        "status": 206,
+        "start": 0,
+        "end": 31
+      }
+    },
+    {
+      "name": "范围-弱IfRange",
+      "kind": "range",
+      "input": {
+        "length": 4096,
+        "etag": "\"sha256-2222222222222222222222222222222222222222222222222222222222222222\"",
+        "range": "bytes=0-31",
+        "ifRange": "W/\"sha256-2222222222222222222222222222222222222222222222222222222222222222\"",
+        "method": "GET",
+        "authorized": true
+      },
+      "expected": {
+        "status": 200,
+        "start": 0,
+        "end": 4095
+      }
+    },
+    {
+      "name": "HEAD忽略非法Range",
+      "kind": "range",
+      "input": {
+        "length": 4096,
+        "etag": "\"sha256-2222222222222222222222222222222222222222222222222222222222222222\"",
+        "range": "bad",
+        "ifRange": null,
+        "method": "HEAD",
+        "authorized": true
+      },
+      "expected": {
+        "status": 200,
+        "start": null,
+        "end": null
+      }
+    },
+    {
+      "name": "越域范围不泄漏长度",
+      "kind": "range",
+      "input": {
+        "length": 4096,
+        "etag": "\"sha256-2222222222222222222222222222222222222222222222222222222222222222\"",
+        "range": "bytes=99999-",
+        "ifRange": null,
+        "method": "GET",
+        "authorized": false
+      },
+      "expected": {
+        "status": 404,
+        "start": null,
+        "end": null
+      }
+    }
+  ],
+  "digest_vectors": [
+    {
+      "registration": {
+        "registration_key": "r4-originals",
+        "name": "合成原件",
+        "source_kind": "original_document",
+        "input_mode": "original_upload",
+        "include_paths": [
+          "docs/合成.pdf",
+          "notes/大文件.tsx"
+        ],
+        "default_classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "owner_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      },
+      "registration_digest": {
+        "sha256": "629762f59864832e8a174a510bf1e42e96f873d5cc0ca841e9c8b8ebfb66fe34",
+        "encoded_hex": "33353a6b6e6f776c656467652d6f726967696e616c2d726567697374726174696f6e2f302e3533323a616161616161616161616161616161616161616161616161616161616161616133323a626262626262626262626262626262626262626262626262626262626262626231323a72342d6f726967696e616c7331323ae59088e68890e58e9fe4bbb631373a6f726967696e616c5f646f63756d656e7431353a6f726967696e616c5f75706c6f6164313a3231353a646f63732fe59088e688902e70646631393a6e6f7465732fe5a4a7e69687e4bbb62e747378303a383a6e6f6e5f636f6465303a"
+      },
+      "request": {
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "idempotency_key": "r4:create:001",
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "owner_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "registration_id": "cccccccccccccccccccccccccccccccc"
+      },
+      "request_digest": {
+        "sha256": "beef4c787843c7759163234e1440bc5914930e2729c9eb531982ae08e9ef943c",
+        "encoded_hex": "33373a6b6e6f776c656467652d6f726967696e616c2d75706c6f61642d726571756573742f302e3533323a616161616161616161616161616161616161616161616161616161616161616133323a626262626262626262626262626262626262626262626262626262626262626233323a636363636363636363636363636363636363636363636363636363636363636331363ae58e9fe5a78be59088e688902e70646631353a646f63732fe59088e688902e706466303a383a6e6f6e5f636f6465303a343a3430393631353a6170706c69636174696f6e2f706466303a303a"
+      },
+      "preview": {
+        "upload_id": "dddddddddddddddddddddddddddddddd",
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "owner_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "idempotency_key": "r4:create:001",
+        "request_sha256": "beef4c787843c7759163234e1440bc5914930e2729c9eb531982ae08e9ef943c",
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "declared_byte_length": 4096,
+        "declared_media_type": "application/pdf",
+        "expected_sha256": null,
+        "expected_revision_id": null,
+        "state": "ready",
+        "received_bytes": 4096,
+        "byte_length": 4096,
+        "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "media_type": "application/pdf",
+        "source_id": null,
+        "policy_version": 1,
+        "action": "created",
+        "manifest_sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+        "import_task_id": null,
+        "code": null,
+        "revision": 2,
+        "created_at": "2026-10-26T01:00:00Z",
+        "updated_at": "2026-10-26T01:00:05Z",
+        "expires_at": "2026-10-26T01:30:00Z"
+      },
+      "preview_digest": {
+        "sha256": "60d65d4ecf05047030e3f6f8bd69553bd5ec432285f3158ffa86d0c1a9b35af4",
+        "encoded_hex": "33303a6b6e6f776c656467652d6f726967696e616c2d707265766965772f302e3533323a616161616161616161616161616161616161616161616161616161616161616133323a626262626262626262626262626262626262626262626262626262626262626233323a636363636363636363636363636363636363636363636363636363636363636333323a646464646464646464646464646464646464646464646464646464646464646436343a62656566346337383738343363373735393136333233346531343430626335393134393330653237323963396562353331393832616530386539656639343363313a3131353a646f63732fe59088e688902e706466303a383a6e6f6e5f636f6465303a303a36343a32323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232343a3430393631353a6170706c69636174696f6e2f706466373a6372656174656432303a323032362d31302d32365430313a33303a30305a"
+      },
+      "source_input": {
+        "domain_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "registration_id": "cccccccccccccccccccccccccccccccc",
+        "source_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "source_revision_id": "ffffffffffffffffffffffffffffffff",
+        "original_filename": "原始合成.pdf",
+        "relative_path": "docs/合成.pdf",
+        "classification": {
+          "group_id": null,
+          "component_side": "non_code",
+          "language": ""
+        },
+        "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "byte_length": 4096,
+        "media_type": "application/pdf",
+        "representation_kind": "original_only",
+        "root_node_id": null,
+        "text_available": false,
+        "parse_status": "not_parsed",
+        "structure_status": "not_built",
+        "full_text_status": "not_built",
+        "vector_status": "not_built",
+        "is_current": true,
+        "created_at": "2026-10-26T01:05:00Z"
+      },
+      "source_input_digest": {
+        "sha256": "3033ceeef49f893b38f98efd828e08d34a9cf056a2102a1fa2435c2f146c5c1d",
+        "encoded_hex": "32393a6b6e6f776c656467652d6f726967696e616c2d736f757263652f302e3536343a3232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323231363ae58e9fe5a78be59088e688902e70646631353a6170706c69636174696f6e2f70646631353a646f63732fe59088e688902e706466303a383a6e6f6e5f636f6465303a"
+      }
+    }
+  ]
+}

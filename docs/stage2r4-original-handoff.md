@@ -1,8 +1,8 @@
 # S2-R4 文档原件接续
 
-日期：2026-10-26；文档v0.42。**C2 0.5.0仍是待确认候选，不是原件功能交付**。运行main仍为R3的`38ce003`；候选在`codex/stage2r4-original-candidate`，MinIO私有准备00bed83、格式／暂存8048ede及当前快照核心准备在后续准备分支，当前检出`codex/stage2r4-original-preparation`；不混为业务接口已实现。
+日期：2026-10-26；文档v0.43。**真人已批准37574fb，C2 0.5.0已冻结，正式实现进行中**。当前运行main仍为R3的`38ce003`；准备分支`codex/stage2r4-original-preparation`已有MinIO00bed83、格式／暂存8048ede和快照核心2a5135b。冻结和原语测试不等于原件业务闭环已交付；本文较早章节的“待确认”保留对应历史时点，以本段和第9节当前状态为准。
 
-执行入口：[行为定义](knowledge-original-import-v0.5.candidate.md)、[OpenAPI](knowledge-original-import-v0.5.candidate.openapi.json)、[合成向量](knowledge-original-import-v0.5.candidate.examples.json)、[统一核对记录](stage2r4-original-contract-verification.json)。旧C1/C3和C2 0.2／0.3／0.4共17项保护文件保持字节，不创建正式0.5冻结文件或加载未获批接口。
+执行入口：[冻结记录](knowledge-original-import-v1.freeze.json)、[正式OpenAPI](knowledge-original-import-v1.openapi.json)、[正式合成向量](knowledge-original-import-v1.examples.json)与原37574fb[行为定义](knowledge-original-import-v0.5.candidate.md)。候选三件套及旧C1/C3和C2 0.2／0.3／0.4共20项保护文件保持原字节。
 
 ## 1. 谁在推进
 
@@ -76,3 +76,11 @@ A继续实现`internal/storage/minio_stream.go`及测试，沿用现有MinIO客�
 `RecordSourceSnapshot`签名／调用者保持，仍写SHA地址对象；后续原生树／前驱／提交和提交项记录提取为同文件的唯一私有`recordSourceSnapshot`。它接摘要和长度，不接正文、不I/O对象、不更新File或知识修订、不执行授权。未来流式确认经具体批准后才能调用正式适配，不能把无Storage元数据单元当作对象存在证明。
 
 11顶层／27含子例通过：新私有核心4／16、既有file路径2／6、dataset消费者5／5。覆盖同SHA不同身份、0／3MiB／64MiB元数据、固定旧树／兄弟项／未来时钟前驱、源行不变，非法摘要／长度、SQL写错／损坏及null树／缺失folder／取消不推进头，以及C1和手工／目录／批次回归。[报告](stage2r4-snapshot-preparation-verification.json)绑定最终源码；SQLite不证明MySQL并发，既有原生树仍整件JSON、空间随树规模增长。正式应用／0.5／Web未因此接线。
+
+## 9. 冻结后的当前执行
+
+真人对call_c19f9f3231b44521b499c70d16dbd010回答“确认冻结并继续实施”，授权完成后端／客户端／合成联调并在验证后推送main；不授权真实资料、模型、多轮审查或物理GC。正式资源仅生命周期变化，19schema／49结构例、20保护资源通过；工程用户决定仍Pending。
+
+新integration标签测试在既有对象服务（实际镜像pgsty/silo，标识见[报告](stage2r4-stream-integration-verification.json)）执行20项。3／32／64MiB各3次完整SHA回读、固定范围、空件、元信息拒绝、提前关闭／取消及真实HEAD后对象改变的If-Match拒绝通过。64MiB PUT累计分配约4.4MB、GET约0.1—0.2MB，最大源Read64KiB；这是内部网络／重复合成正文、客户端TotalAlloc，不是峰值RSS／端到端性能。测试私有bucket保留，不删应用对象；凭据经stdin给进程、不落文件／build上下文，临时网络已恢复。
+
+A当前全部写权，正式复用这些原语接入0.5。新客户端会话01a1746b-2de2-7413-906b-d2a4544017e3已收到冻结资源，只读准备；A交固定后端提交和明确窗口后才写Web，交回清洁版本后A集成。旧消费会话01a17244-5107-7aa3-beed-2ea36062d042仍遵守其真人只读要求，不向它下写入任务。[阶段3盘点](stage3-structure-preparation.md)只作后续设计输入。

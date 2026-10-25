@@ -1,0 +1,222 @@
+{
+  "document_version": "v0.43",
+  "recorded_local_date": "2026-10-26",
+  "task": "S2-R4私有流式原语真实MinIO合成集成验证",
+  "request_snapshot": "请注意后续的步骤，请你持续不断地进行下去，跟另外一个会话，甚至你可以开其他的会话去协调。但一个讯息是你必须要传达的，就是一定一定不能够停下来。一定一定就是至少说有一个会话不能停下来，要主会话不能停下来，你就是主会话，要牵动其他废话，持续不断地推进咱们这个工作，直到最后完成。",
+  "status": "PrivateStreamIntegrationVerified_C2Frozen_ImplementationAuthorized",
+  "baseline": "2a5135bd18e5b383c180d3ea04ec02b139557996",
+  "authority": {
+    "outcome": "Approved",
+    "response": "确认冻结并继续实施",
+    "source": "本会话真人异步回答",
+    "question_ref": "call_c19f9f3231b44521b499c70d16dbd010",
+    "scope": "冻结37574fb候选，单写入完成后端/客户端/合成联调，验证后推送main；仅合成、模型0、无多轮审查"
+  },
+  "new_frontend_thread": {
+    "thread_id": "01a1746b-2de2-7413-906b-d2a4544017e3",
+    "title": "R4 原件导入客户端与界面",
+    "current_write_rights": "read-only preparation; A sole writer"
+  },
+  "changes": {
+    "source_files": {
+      "internal/storage/minio_stream_integration_test.go": "28d17051d56babe4133791a92c8cc5d558b7a3d1f3e2d053af203021c3f459f0"
+    },
+    "production_go_changes": 0,
+    "public_http_or_sql_connected": false,
+    "server_built_or_deployed": false
+  },
+  "contract_freeze": {
+    "version": "0.5.0",
+    "candidate_commit": "37574fbfaa109121d8fba55840c0d669815bd4a3",
+    "old_and_candidate_protected": 20,
+    "formal_schemas": 19,
+    "formal_structure_cases": 49,
+    "paths_or_schema_or_digest_changed": false,
+    "freeze_record": "docs/knowledge-original-import-v1.freeze.json",
+    "freeze_sha256": "116ddc4161001c0fdb440b45b227952978ca3d291197d712830a92d5aaaca3b9",
+    "business_implementation": "AuthorizedNotYetVerified"
+  },
+  "verification": {
+    "command": "bash build.sh --test-integration-go -json -run '^TestMinioStreamIntegration$' ./internal/storage",
+    "tier": "integration，既有本机S3兼容对象服务，无SQL/业务API/模型",
+    "passed": true,
+    "top_level": 1,
+    "including_subtests": 20,
+    "cases": [
+      "TestMinioStreamIntegration/capacity/3145728/1",
+      "TestMinioStreamIntegration/capacity/3145728/2",
+      "TestMinioStreamIntegration/capacity/3145728/3",
+      "TestMinioStreamIntegration/capacity/33554432/1",
+      "TestMinioStreamIntegration/capacity/33554432/2",
+      "TestMinioStreamIntegration/capacity/33554432/3",
+      "TestMinioStreamIntegration/capacity/67108864/1",
+      "TestMinioStreamIntegration/capacity/67108864/2",
+      "TestMinioStreamIntegration/capacity/67108864/3",
+      "TestMinioStreamIntegration/capacity",
+      "TestMinioStreamIntegration/ranges/first",
+      "TestMinioStreamIntegration/ranges/across_buffer",
+      "TestMinioStreamIntegration/ranges/tail",
+      "TestMinioStreamIntegration/ranges/empty_at_end",
+      "TestMinioStreamIntegration/ranges",
+      "TestMinioStreamIntegration/empty_object",
+      "TestMinioStreamIntegration/metadata_rejection",
+      "TestMinioStreamIntegration/early_close_and_cancel",
+      "TestMinioStreamIntegration/etag_change_between_stat_and_get",
+      "TestMinioStreamIntegration"
+    ],
+    "log_sha256": "93e2d445dd6d5a29783a4817db642939d3493043d3843f04e3113fd4730112b3",
+    "source_equals_build": true,
+    "server": {
+      "minio_image": "pgsty/silo@sha256:29a498b24669cae1fed11c1a2fb2b3d73c68829a0a9c0b14e71b386671d38fac",
+      "minio_image_id": "sha256:29a498b24669cae1fed11c1a2fb2b3d73c68829a0a9c0b14e71b386671d38fac",
+      "build_networks": {
+        "bridge": {
+          "IPAMConfig": null,
+          "Links": null,
+          "Aliases": null,
+          "DriverOpts": null,
+          "GwPriority": 0,
+          "NetworkID": "f22bb151eb43fd75abf4380820ce81ec44c15b3e144d6350e09311fcb8b139ef",
+          "EndpointID": "751978edcfe37f85177cc66f100df9460f27a1758da009891f91f0a7de91262d",
+          "Gateway": "172.17.0.1",
+          "IPAddress": "172.17.0.4",
+          "MacAddress": "a6:97:52:9e:86:c9",
+          "IPPrefixLen": 16,
+          "IPv6Gateway": "",
+          "GlobalIPv6Address": "",
+          "GlobalIPv6PrefixLen": 0,
+          "DNSNames": null
+        }
+      }
+    },
+    "minio_binary_version": "NotAvailable: image has no minio executable on PATH; image digest is the verified identity",
+    "measurements": [
+      {
+        "size_bytes": 3145728,
+        "run": 1,
+        "put_ms": 11.425532,
+        "get_with_sha_ms": 5.045835,
+        "put_mib_s": 262.5698304464072,
+        "get_mib_s": 594.5497623287325,
+        "put_total_alloc": 807832,
+        "get_total_alloc": 133816,
+        "max_source_read": 65536
+      },
+      {
+        "size_bytes": 3145728,
+        "run": 2,
+        "put_ms": 11.665543,
+        "get_with_sha_ms": 3.606668,
+        "put_mib_s": 257.16762605906985,
+        "get_mib_s": 831.7926684685144,
+        "put_total_alloc": 757752,
+        "get_total_alloc": 96080,
+        "max_source_read": 65536
+      },
+      {
+        "size_bytes": 3145728,
+        "run": 3,
+        "put_ms": 12.001258,
+        "get_with_sha_ms": 3.703873,
+        "put_mib_s": 249.9737944138856,
+        "get_mib_s": 809.9629765923399,
+        "put_total_alloc": 716304,
+        "get_total_alloc": 95744,
+        "max_source_read": 65536
+      },
+      {
+        "size_bytes": 33554432,
+        "run": 1,
+        "put_ms": 65.171731,
+        "get_with_sha_ms": 12.319373,
+        "put_mib_s": 491.0104351839297,
+        "get_mib_s": 2597.53479336976,
+        "put_total_alloc": 2474456,
+        "get_total_alloc": 184720,
+        "max_source_read": 65536
+      },
+      {
+        "size_bytes": 33554432,
+        "run": 2,
+        "put_ms": 61.302051,
+        "get_with_sha_ms": 24.538641,
+        "put_mib_s": 522.0053730339299,
+        "get_mib_s": 1304.0656978518084,
+        "put_total_alloc": 2521320,
+        "get_total_alloc": 146760,
+        "max_source_read": 65536
+      },
+      {
+        "size_bytes": 33554432,
+        "run": 3,
+        "put_ms": 62.331699,
+        "get_with_sha_ms": 13.558431,
+        "put_mib_s": 513.3824444605625,
+        "get_mib_s": 2360.1550946418506,
+        "put_total_alloc": 2483072,
+        "get_total_alloc": 108704,
+        "max_source_read": 65536
+      },
+      {
+        "size_bytes": 67108864,
+        "run": 1,
+        "put_ms": 114.014403,
+        "get_with_sha_ms": 28.935046,
+        "put_mib_s": 561.3325888309041,
+        "get_mib_s": 2211.8506395324202,
+        "put_total_alloc": 4412288,
+        "get_total_alloc": 108704,
+        "max_source_read": 65536
+      },
+      {
+        "size_bytes": 67108864,
+        "run": 2,
+        "put_ms": 118.038189,
+        "get_with_sha_ms": 27.467978,
+        "put_mib_s": 542.1974069764829,
+        "get_mib_s": 2329.985847520338,
+        "put_total_alloc": 4445008,
+        "get_total_alloc": 184720,
+        "max_source_read": 65536
+      },
+      {
+        "size_bytes": 67108864,
+        "run": 3,
+        "put_ms": 281.203078,
+        "get_with_sha_ms": 20.967775,
+        "put_mib_s": 227.59352584326976,
+        "get_mib_s": 3052.3028790608446,
+        "put_total_alloc": 4445216,
+        "get_total_alloc": 184720,
+        "max_source_read": 65536
+      }
+    ],
+    "measurement_boundary": "HTTP明文内部Docker网络、单客户端顺序、已建连接、重复0xa7合成正文；PUT不含预哈希，GET包括SHA；TotalAlloc为Go客户端进程累计分配差额，按文件长度有分块开销，不是峰值RSS/服务器内存/磁盘持久化时延/端到端或生产p95。",
+    "proven": [
+      "3/32/64MiB各3次实际PUT/stat/完整GET，字节数与整件SHA一致，最大源Read64KiB",
+      "位置不同字节的小合成对象精确首段/跨缓冲/末段及空范围；空对象",
+      "长度/摘要元信息不符和缺失对象拒绝；提前close和预取消读写",
+      "在真实HEAD返回后覆盖本测试独立对象，真实GET If-Match收到PreconditionFailed，不返回旧身份下的新正文"
+    ],
+    "retained_test_bucket": "lfen-r4-stream-456c1d21c3e841aeb364d4bd5c15ab5a",
+    "retained_capacity_bytes": 311427072,
+    "fixture_retention": "独立私有测试bucket与合成对象保留，无业务记录；没有删除历史/对象或清理应用bucket"
+  },
+  "environment": {
+    "temporary_build_network_restored": true,
+    "credential_files_created": false,
+    "credential_values_printed": false,
+    "existing_credentials_recreated": false,
+    "models": 0,
+    "native_model_integration_executed": false,
+    "main_runtime": "38ce0031ae31bbf980a2ed27b0eb7ecc607d5a51"
+  },
+  "next": [
+    "已获批准，转入0.5状态/租约/配额、原生发布/隔离和授权Range后端实现",
+    "固定后端提交后给新前端会话明确写权窗口，主会话保持集成与真实合成联调",
+    "本次对象原语集成不替代上传/ready/确认/下载全链路的三档性能或工程Acceptance"
+  ],
+  "user_delivery_decision": {
+    "outcome": "Pending"
+  }
+}
