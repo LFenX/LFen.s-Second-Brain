@@ -284,8 +284,10 @@
     "production_code_changed": false,
     "runtime_config_changed": false,
     "data_volumes_changed": false,
-    "credentials_read_or_changed": false,
-    "main": "保持6577af3，候选分支独立推送，不自动合main"
+    "main": "保持6577af3，候选分支独立推送，不自动合main",
+    "credentials_changed": false,
+    "credential_values_printed": false,
+    "known_local_credentials_read_only_for_secret_scan": true
   },
   "incomplete_items": [
     {
@@ -321,5 +323,14 @@
   ],
   "user_decision": {
     "outcome": "Pending"
+  },
+  "publication_checks": {
+    "public_files": 9,
+    "known_local_secret_hits": 0,
+    "private_files_staged": 0,
+    "protected_files_unchanged": 11,
+    "new_candidate_links_resolve": true,
+    "production_code_or_runtime_config_changed": false,
+    "scan_scope": "Only changed public candidate/documentation paths; known local env and synthetic credential values scanned without printing."
   }
 }
