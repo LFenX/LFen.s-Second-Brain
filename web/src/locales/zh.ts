@@ -12,6 +12,7 @@ export default {
       noRoots: '本知识域没有可用的受权根目录。',
       scope: '允许的相对目录（每行一项，. 表示根）',
       retryRegistration: '重发原登记请求',
+      registered: '来源已登记，请选择并观察文件',
       relativeDirectory: '浏览相对目录',
       prefix: '文件名起始文字（可留空）',
       browse: '浏览目录',

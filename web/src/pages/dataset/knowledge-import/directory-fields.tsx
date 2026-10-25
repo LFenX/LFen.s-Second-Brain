@@ -323,7 +323,7 @@ export function DirectorySelection({
   return (
     <section className="space-y-5">
       <p className="break-all">
-        {t('knowledgeImport.registered')}: {registration.name}
+        {t('knowledgeDirectory.registered')}: {registration.name}
       </p>
       <form onSubmit={handleBrowse} className="space-y-2">
         <fieldset disabled={allBusy} className="space-y-2">

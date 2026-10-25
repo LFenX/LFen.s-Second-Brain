@@ -32,6 +32,7 @@ import {
   directoryPreviewMatches,
   directoryReceiptMatches,
   directoryWindowMatches,
+  sameDirectoryClassification,
   type DirectoryPending,
 } from '@/utils/knowledge-directory';
 
@@ -312,18 +313,44 @@ export function useDirectoryFlow(
     setWindow(null);
     if (observation) setPhase('observation');
   }
-  function restart() {
-    if (Busy.current || (pending && phase !== 'receipt' && !canRestart)) return;
-    sessionStorage.removeItem(storageKey);
-    setPending(null);
-    setReceipt(null);
-    setObservation(null);
-    setPreview(null);
-    setWindow(null);
-    setError(null);
-    setCanRestart(false);
-    setPhase(registration ? 'selection' : 'registration');
-  }
+  const restart = () =>
+    run(async () => {
+      if (pending && phase !== 'receipt' && !canRestart) return;
+      const restored = pending
+        ? (
+            await Actions.current.run(() =>
+              service.registration(domain, pending.registrationId),
+            )
+          ).data
+        : registration;
+      if (
+        registration &&
+        restored &&
+        (registration.root_id !== restored.root_id ||
+          registration.registration_key !== restored.registration_key ||
+          registration.name !== restored.name ||
+          !sameDirectoryClassification(
+            registration.default_classification,
+            restored.default_classification,
+          ) ||
+          JSON.stringify([...registration.scope_directories].sort()) !==
+            JSON.stringify([...restored.scope_directories].sort()))
+      )
+        throw new DirectoryRequestError(
+          502,
+          'knowledge_directory_invalid_response',
+        );
+      if (!Alive.current) return;
+      sessionStorage.removeItem(storageKey);
+      setPending(null);
+      setRegistration(restored);
+      setReceipt(null);
+      setObservation(null);
+      setPreview(null);
+      setWindow(null);
+      setCanRestart(false);
+      setPhase(restored ? 'selection' : 'registration');
+    });
   function changeSelection() {
     if (pending) return;
     setObservation(null);

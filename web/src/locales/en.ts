@@ -12,6 +12,7 @@ export default {
       noRoots: 'No authorized roots are available in this domain.',
       scope: 'Allowed relative directories (one per line; . means root)',
       retryRegistration: 'Resend original registration',
+      registered: 'Source registered. Select and observe files',
       relativeDirectory: 'Relative directory to browse',
       prefix: 'Filename prefix (optional)',
       browse: 'Browse directory',
