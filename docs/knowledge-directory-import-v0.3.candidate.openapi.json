@@ -1571,7 +1571,7 @@
         }
       },
       "Unauthorized": {
-        "description": "原生登录失败可保留原生envelope；停止当前操作。",
+        "description": "401使用原生登录失败envelope，不包装为目录Error；停止当前操作。",
         "headers": {
           "Cache-Control": {
             "schema": {
@@ -1584,14 +1584,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/Error"
-                },
-                {
-                  "$ref": "#/components/schemas/NativeUnauthorized"
-                }
-              ]
+              "$ref": "#/components/schemas/NativeUnauthorized"
             }
           }
         }
@@ -2377,6 +2370,52 @@
             "if": {
               "properties": {
                 "state": {
+                  "const": "missing"
+                },
+                "change_kind": {
+                  "const": "missing_proposal"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "source_id": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{32}$"
+                },
+                "expected_revision_id": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{32}$"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "state": {
+                  "const": "missing"
+                },
+                "change_kind": {
+                  "const": "unobserved"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "source_id": {
+                  "type": "null"
+                },
+                "expected_revision_id": {
+                  "type": "null"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "state": {
                   "const": "unobserved"
                 }
               }
@@ -2917,7 +2956,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "pattern": "^[a-f0-9]{32}$"
+                "pattern": "^[a-f0-9]{64}$"
               },
               {
                 "type": "null"
@@ -2999,7 +3038,7 @@
                 },
                 "root_node_id": {
                   "type": "string",
-                  "pattern": "^[a-f0-9]{32}$"
+                  "pattern": "^[a-f0-9]{64}$"
                 },
                 "code": {
                   "const": "saved"
@@ -3425,6 +3464,62 @@
           "contract_version",
           "source_contract_version",
           "request_id"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "code": {
+                  "const": "knowledge_directory_conflict"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "reason": {
+                  "type": "string",
+                  "enum": [
+                    "root_changed",
+                    "policy_changed",
+                    "source_changed",
+                    "revision_changed",
+                    "observation_incomplete",
+                    "observation_mismatch",
+                    "ineligible",
+                    "preview_consumed",
+                    "idempotency_conflict"
+                  ]
+                }
+              }
+            },
+            "else": {
+              "if": {
+                "properties": {
+                  "code": {
+                    "const": "knowledge_directory_unavailable"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "enum": [
+                      "root_unready",
+                      "result_unknown"
+                    ]
+                  }
+                }
+              },
+              "else": {
+                "properties": {
+                  "reason": {
+                    "type": "null"
+                  }
+                }
+              }
+            }
+          }
         ]
       },
       "NativeUnauthorized": {
@@ -3761,6 +3856,47 @@
     "path_depth": 32,
     "name_prefix_utf8_bytes": 128
   },
+  "x-http-error-codes": {
+    "400": [
+      "knowledge_directory_invalid"
+    ],
+    "404": [
+      "knowledge_directory_not_found"
+    ],
+    "409": [
+      "knowledge_directory_version_mismatch",
+      "knowledge_directory_conflict"
+    ],
+    "410": [
+      "knowledge_directory_expired"
+    ],
+    "413": [
+      "knowledge_directory_too_large"
+    ],
+    "415": [
+      "knowledge_directory_unsupported"
+    ],
+    "416": [
+      "knowledge_directory_range"
+    ],
+    "429": [
+      "knowledge_directory_capacity"
+    ],
+    "500": [
+      "knowledge_directory_unavailable"
+    ],
+    "503": [
+      "knowledge_directory_unavailable"
+    ]
+  },
+  "x-cross-field-invariants": [
+    "Observation.selected_paths和items相对路径均唯一、UTF-8字节排序且一一对应",
+    "complete=true不能包含missing/unobserved；missing_proposal必须成对的已有来源/修订指针",
+    "ContentWindow.byte_length等于text的UTF-8实际字节且offset+byte_length<=total_bytes",
+    "Receipt须匹配本次待确认的registration_id/preview_id/manifest_sha256，200不表示可忽略请求关联",
+    "Error须同时通过HTTP/code/reason对应；500只用unavailable/result_unknown；401用NativeUnauthorized",
+    "404无记录和撤权不可区分；统一不可见/结果未确认，不证明未提交"
+  ],
   "x-digest-projection": {
     "encoding": "LP(token)=ASCII十进制UTF-8字节长+冒号+token的UTF-8原字节；顺序连接LP，不加换行；int十进制；bool true/false；null为空token；数组前置项数token。路径按UTF-8字节升序。摘要为连接字节的SHA256小写hex；客户端只回送。",
     "observation": [

@@ -23,7 +23,7 @@
 | 目录浏览快照 | `listing_id`，绑定登记、根版本、相对目录、文件名前缀、固定条目及过期时间；不是内容修订 | 新增短期元数据视图 |
 | 精确观察清单 | `observation_id`及`observation_sha256`；绑定排序去重后的`selected_paths`、逐项观察、原生预期修订、默认分类、策略和根版本 | 包装私有collector／plan；私有`prep:`和`Complete/C2Eligible`不直接公开 |
 | 单文件预览 | `preview_id`和`manifest_sha256`；绑定某清单的一条精确路径、实际暂存字节、预期原生修订及完整分类 | 复用现有单项预览思想，新增服务端读文件和暂存原文读取 |
-| 原生来源与修订 | 稳定绑定`(registration_id, relative_path)`→原生Document／File；成功后返回`source_id/source_revision_id/root_node_id` | 复用唯一绑定、原件快照、修订和C1节点；客户端不计算ID |
+| 原生来源与修订 | 稳定绑定`(registration_id, relative_path)`→原生Document／File；成功后`source_id/source_revision_id`为32位小写hex，`root_node_id`为64位小写hex | 复用唯一绑定、原件快照、修订和C1节点；客户端不计算ID。64位节点不是32位受控目录`root_id` |
 | 回执 | `(registration_id, idempotency_key)`持久唯一，`import_task_id`仍是同步单项结果ID；不是后台任务 | 复用回执／幂等领域；新增按原键查回执 |
 
 相同字节在不同路径／登记下仍是不同来源。目录新增、重新选择、列表分页或根授权版本变动不改既有来源身份。物理根换位置须新`root_id`与新登记，禁止把原ID重新绑定另一个物理根；本版不做跨根迁移或按哈希猜移动。
@@ -67,10 +67,10 @@ API前缀`/api/v1`；表中`D`=`/datasets/{domain_id}/knowledge`，`R`=`D/direct
 | GET `R/observations/{observation_id}` | 无 | 清单及逐项资格／差异；不返回正文 |
 | POST `R/previews` | 观察ID／摘要、一条路径、完整分类 | 201单文件预览；清单完整且目标eligible；重新读实际文件并与观察字节／原生修订核对后暂存 |
 | GET `R/previews/{preview_id}` | 无 | 预览元数据／`consumed_task_id`；已消费链接可供恢复 |
-| GET `R/previews/{preview_id}/content` | `offset`、`length`（字节） | 预览暂存原文窗口及SHA／总字节；≤64KiB；不从当前磁盘重取文本替代预览 |
+| GET `R/previews/{preview_id}/content` | `offset`、`length`（字节） | 未消费、未过期预览的暂存原文窗口及SHA／总字节；≤64KiB；消费后409，未消费过期410；不从当前磁盘替代预览 |
 | POST `R/imports` | `preview_id/manifest_sha256/idempotency_key` | 首次201／同键同请求回放200；终态回执可能`succeeded`或`failed`，HTTP成功不等于保存成功 |
 | GET `R/imports/{import_task_id}` | 无 | 持久单项回执；不读取磁盘，不触发执行 |
-| GET `R/imports/by-key/{idempotency_key}` | 无 | 持久原键回查；不依赖预览存活，200回执或明确404；不是执行重试 |
+| GET `R/imports/by-key/{idempotency_key}` | 无 | 持久原键回查；不依赖预览存活；200回执或404不可见／未确认，不能从404证明没有提交；不是执行重试 |
 
 ### 4.1 数值提案与容量处理
 
@@ -83,7 +83,7 @@ API前缀`/api/v1`；表中`D`=`/datasets/{domain_id}/knowledge`，`R`=`D/direct
 | 超时 | 浏览10秒、观察30秒、预览／确认文件读取各10秒；按键回查等候同键执行最多10秒，到时503结果未知。已获得的观察结果标明未完整，不补后台任务，不靠无限重试完成 |
 | 请求／响应 | 所有候选POST JSON≤32KiB，无正文上传；除原文窗口外单个JSON响应≤256KiB。`/content`原文≤65,536字节，JSON按实际转义计入1MiB上限；不可只按字符数限制 |
 | 时效 | 列表／观察600秒；预览有效期为`min(创建后600秒,观察过期时刻)`；过期原文拒绝410，不能重新延长旧确认 |
-| 暂存与元数据 | 每主体／域最多8个未过期列表、4个观察、4个未消费预览；超限429。已消费预览释放正文占额；临时正文到期物理清理，未消费预览元数据保留24小时用于解释过期 |
+| 暂存与元数据 | 每主体／域最多8个未过期列表、4个观察、4个未消费预览；超限429。消费后立即清除暂存正文并释放占额，`/content`不再可读；未消费正文到期物理清理，未消费预览元数据保留24小时用于解释过期 |
 | 持久恢复 | 已消费预览→回执关联、回执、原键唯一记录随登记持久保留，本版不自动清理；按键回查不受24小时临时元数据时限影响 |
 
 所有限制由服务端最终判断。POST无正文但路径包含多字节仍按UTF-8字节检查；JSON逃逸导致的超限不能通过截断、改码、分段确认绕过。预算不够或读取中止时清单`complete=false`，未读项显式`unobserved`；缩小选择必须新建完整观察。
@@ -98,7 +98,7 @@ API前缀`/api/v1`；表中`D`=`/datasets/{domain_id}/knowledge`，`R`=`D/direct
 
 ### 5.2 固定观察清单
 
-每个精确路径都有一项，无静默丢项。`state`与`eligible`分开：
+每个精确路径都有一项，无静默丢项。`selected_paths`与`items[].relative_path`须各自唯一、按相同UTF-8字节序排序且集合相等；结构schema本身不能完成跨数组对应验证。`missing_proposal`必须有成对的既有`source_id/expected_revision_id`；新路径缺失则两者null并为`unobserved`。`state`与`eligible`分开：
 
 | state | eligible与正文 | 对complete的影响 | change_kind |
 | --- | --- | --- | --- |
@@ -121,7 +121,7 @@ API前缀`/api/v1`；表中`D`=`/datasets/{domain_id}/knowledge`，`R`=`D/direct
 
 1. 预览先验证完整观察、根／策略版本、路径资格及原生预期头，再安全重读**一个**文件。读取前／打开后／读后核对文件身份、长度及变化属性；计算实际字节SHA并与观察匹配，不匹配409`source_changed`。暂存完整原字节，不转码、删BOM、改换行或去空白，空文件允许。
 2. 预览包含原字节SHA、长度、完整分类、`expected_revision_id`、`action`、过期时间；原文窗口只能读该暂存字节。客户端需显示路径、分类、add/update/unchanged、大小、固定原文和“未索引”，再给单独确认按钮；观察、页面访问、恢复请求都不等于用户同意。
-3. `/content`采用零起始字节窗口：`offset>=0`，`1<=length<=65536`，末尾允许缩短；起点或终点切入UTF-8码点返回416，客户端按现有C1策略收缩1—3字节并重试；空文件`offset=0`返回空文本，`offset>total`返回416。SHA是完整暂存内容，不是窗口SHA。
+3. `/content`采用零起始字节窗口：`offset>=0`，`1<=length<=65536`，末尾允许缩短；起点或终点切入UTF-8码点返回416，客户端按现有C1策略收缩1—3字节并重试；空文件`offset=0`返回空文本，`offset>total`返回416。响应`byte_length`须等于文本UTF-8字节数且窗口不越界；SHA是完整暂存内容，不是窗口SHA。已消费预览先按409`preview_consumed`拒绝原文，即使原TTL尚未结束或已结束；未消费且到期才返回410。成功后转C1固定阅读，失败后必须重新观察，不依赖旧暂存正文。
 4. 确认在当前授权下核对预览／观察未过期、同一根／策略版本和原生头。再次安全读取当前文件、比较原字节SHA及文件身份；变化／消失则409，不发布旧预览冒充最新磁盘文件。最终发布只使用**已预览的暂存字节**。
 5. 该复核不能锁住外部编辑器。文件在最终复核之后仍可变化；修订表示该次捕获的固定字节，不承诺“提交瞬间整个目录原子快照”。下一观察再发现变化。实现不得用mtime或大小相等代替SHA与身份验证。
 6. 原生发布和成功回执必须在同一DB事务内可见，头指针按预期修订CAS；存储暂存失败／并发冲突不得推进头。`unchanged`返回既有固定修订，不制造新来源／新修订。所有成功保存项都能按C1读取同版原文；失败项`source_id/source_revision_id/root_node_id=null`、无阅读链接。
@@ -140,9 +140,9 @@ API前缀`/api/v1`；表中`D`=`/datasets/{domain_id}/knowledge`，`R`=`D/direct
 | 确认双击／网络超时／HTTP 5xx | 页面保存原`preview_id+manifest_sha256+idempotency_key`，同一登记最多一个页面待确认请求；不自动生成新键、不自动循环POST |
 | 已记录同键同请求 | 先查持久回执，再考虑临时预览是否过期；当前授权仍有效则200回放，即使磁盘已改／临时正文已清理，也不再次执行 |
 | 同键异请求／同预览换键 | 409`idempotency_conflict`或`preview_consumed`；不得以新键绕过，先查旧回执 |
-| 响应丢失且预览仍可读 | 明确点击“核查结果”，GET预览；有`consumed_task_id`则GET回执，无则按键查回执；GET不触发执行 |
-| 预览过期／元数据已清理 | 仍可GET按原键查回执；404表示在该次序列化核查时无已提交回执，**不能据此自动换键**。保留未知状态，用户可明确重发完全相同原请求，由服务端先判重再校验过期 |
-| 按键查询与仍在执行的POST相遇 | 与该键／预览的写操作使用同一持久序列化／fencing边界；查询等待该执行终结，超时503`result_unknown`，不能返回假404。进程崩溃后事务回滚或回执完整存在，不得出现来源头已发布而原键查不到成功结果 |
+| 响应丢失且预览仍可读 | 明确点击“核查结果”，GET预览；有`consumed_task_id`则GET回执，无则按键查回执；GET不触发执行。回执200也须逐项比对原登记ID、预览ID、manifest摘要，并通过成功／失败结构校验，不能只见200就接受别的请求结果 |
+| 预览过期／元数据已清理 | 仍可GET按原键查回执；公开404统一表示**不可见／结果未确认**，既可来自无记录，也可来自撤权／跨域，客户端不能区分或宣称“未提交”。停止并隐藏敏感视图，保留原请求标识；不匹配message、不自动换键。当前主体重新授权后，用户可明确重发完全相同原请求，由服务端先判重再校验过期 |
+| 按键查询与仍在执行的POST相遇 | 授权通过后的内部查询，与该键／预览写操作使用同一持久序列化／fencing边界；等待该执行终结，超时503`result_unknown`，不能返回假“无记录”。只有授权通过且序列化完成的内部路径才可确认此时无回执；该内部保证不能由客户端从普通404推导。进程崩溃后事务回滚或回执完整存在，不得出现来源头已发布而原键查不到成功结果 |
 | 无结果且原预览已失效 | 相同原请求在判重后返回明确410／409；保持不自动换键。用户显式重观察、重预览、核对新状态并再次确认后才能新键提交 |
 | 已知failed回执 | 记录失败且原键回放同失败；无成功指针。新观察／预览及新明确确认才可新键重试，不重用失败预览 |
 | 版本、401或权限／根撤销 | 停止操作，不后台重试；隐藏当前敏感视图。恢复后重新校验主体、版本、根和策略；不从缓存继续提交 |
@@ -150,6 +150,12 @@ API前缀`/api/v1`；表中`D`=`/datasets/{domain_id}/knowledge`，`R`=`D/direct
 POST是同步请求，不暴露`running/queued`任务。同步处理异常是否留下failed回执取决于是否已获得可消费预览并完成持久结果事务；在事务前的400／401／404／409／410／413／415／429／503拒绝不消费预览。发生不确定响应统一先核查，不能从HTTP码推导“肯定没执行”。
 
 新增错误使用候选机器`code`，不匹配英文message。400`knowledge_directory_invalid`；404`knowledge_directory_not_found`；409`knowledge_directory_version_mismatch`或`knowledge_directory_conflict`（reason限定root_changed/policy_changed/source_changed/revision_changed/observation_incomplete/observation_mismatch/ineligible/preview_consumed/idempotency_conflict）；410`knowledge_directory_expired`；413`knowledge_directory_too_large`；415`knowledge_directory_unsupported`；416`knowledge_directory_range`；429`knowledge_directory_capacity`；503`knowledge_directory_unavailable`（reason限定root_unready/result_unknown）。新错误不反向添加到0.2.0。
+
+### 7.1 服务端与消费者的必要语义校验
+
+除结构schema，双方必须校验选择集合／条目一一对应、唯一和排序，原生指针对、窗口实际UTF-8字节与范围、200回执和原请求三元组，以及HTTP状态／机器code／reason的对应。503及不确定500以`unavailable/result_unknown`进入核查；原生401按原envelope识别。字段缺失、重复、跨请求回执或不一致一律停止，不以宽松断言／强制类型转换继续显示或确认。
+
+`knowledge-relative-file/directory`为候选自定义format；AJV／浏览器不会自动获得校验器。后续目录schema适配器必须显式注册第3.1节的路径规则和UTF-8字节校验；所有字节、根、路径、权限及状态约束仍由服务端最终判断。合成文件中`schema_cases`与`semantic_cases`分别标记结构与跨字段期望；二者均不是业务运行结果。
 
 ## 8. 复用、自研、待验证与开发边界
 

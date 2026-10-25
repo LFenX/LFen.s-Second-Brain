@@ -321,7 +321,7 @@
         "vector_status": "disabled",
         "source_id": "00000000000000000000000000000007",
         "source_revision_id": "00000000000000000000000000000008",
-        "root_node_id": "00000000000000000000000000000009",
+        "root_node_id": "0000000000000000000000000000000000000000000000000000000000000009",
         "sha256": "f0e5e924de66b156292c124baac6dd8c0b6e062faedf3b3a379c9aa3c05c3c68",
         "byte_length": 57,
         "code": "saved"
@@ -356,7 +356,7 @@
             "vector_status": "disabled",
             "source_id": "00000000000000000000000000000007",
             "source_revision_id": "00000000000000000000000000000008",
-            "root_node_id": "00000000000000000000000000000009",
+            "root_node_id": "0000000000000000000000000000000000000000000000000000000000000009",
             "sha256": "f0e5e924de66b156292c124baac6dd8c0b6e062faedf3b3a379c9aa3c05c3c68",
             "byte_length": 57,
             "code": "saved"
@@ -787,7 +787,7 @@
               "vector_status": "disabled",
               "source_id": "00000000000000000000000000000007",
               "source_revision_id": "00000000000000000000000000000008",
-              "root_node_id": "00000000000000000000000000000009",
+              "root_node_id": "0000000000000000000000000000000000000000000000000000000000000009",
               "sha256": "f0e5e924de66b156292c124baac6dd8c0b6e062faedf3b3a379c9aa3c05c3c68",
               "byte_length": 57,
               "code": "saved"
@@ -965,6 +965,30 @@
         "source_id": "00000000000000000000000000000007",
         "expected_revision_id": "00000000000000000000000000000008",
         "change_kind": "missing_proposal"
+      }
+    },
+    {
+      "id": "valid-native-c1-node64",
+      "schema": "Result",
+      "valid": true,
+      "data": {
+        "relative_path": "web/card.tsx",
+        "classification": {
+          "group_id": null,
+          "component_side": "frontend",
+          "language": "tsx"
+        },
+        "save_status": "created",
+        "catalogue_status": "registered",
+        "structure_status": "deferred",
+        "full_text_status": "disabled",
+        "vector_status": "disabled",
+        "source_id": "00000000000000000000000000000007",
+        "source_revision_id": "00000000000000000000000000000008",
+        "root_node_id": "0000000000000000000000000000000000000000000000000000000000000009",
+        "sha256": "f0e5e924de66b156292c124baac6dd8c0b6e062faedf3b3a379c9aa3c05c3c68",
+        "byte_length": 57,
+        "code": "saved"
       }
     },
     {
@@ -1486,7 +1510,7 @@
             "vector_status": "disabled",
             "source_id": "00000000000000000000000000000007",
             "source_revision_id": "00000000000000000000000000000008",
-            "root_node_id": "00000000000000000000000000000009",
+            "root_node_id": "0000000000000000000000000000000000000000000000000000000000000009",
             "sha256": "f0e5e924de66b156292c124baac6dd8c0b6e062faedf3b3a379c9aa3c05c3c68",
             "byte_length": 57,
             "code": "saved"
@@ -1513,7 +1537,7 @@
         "vector_status": "enabled",
         "source_id": "00000000000000000000000000000007",
         "source_revision_id": "00000000000000000000000000000008",
-        "root_node_id": "00000000000000000000000000000009",
+        "root_node_id": "0000000000000000000000000000000000000000000000000000000000000009",
         "sha256": "f0e5e924de66b156292c124baac6dd8c0b6e062faedf3b3a379c9aa3c05c3c68",
         "byte_length": 57,
         "code": "saved"
@@ -1627,7 +1651,7 @@
               "vector_status": "disabled",
               "source_id": "00000000000000000000000000000007",
               "source_revision_id": "00000000000000000000000000000008",
-              "root_node_id": "00000000000000000000000000000009",
+              "root_node_id": "0000000000000000000000000000000000000000000000000000000000000009",
               "sha256": "f0e5e924de66b156292c124baac6dd8c0b6e062faedf3b3a379c9aa3c05c3c68",
               "byte_length": 57,
               "code": "saved"
@@ -1652,6 +1676,462 @@
         "ready": true,
         "reason": null,
         "absolute_path": "/synthetic/private"
+      }
+    },
+    {
+      "id": "reject-native-c1-node32",
+      "schema": "Result",
+      "valid": false,
+      "data": {
+        "relative_path": "web/card.tsx",
+        "classification": {
+          "group_id": null,
+          "component_side": "frontend",
+          "language": "tsx"
+        },
+        "save_status": "created",
+        "catalogue_status": "registered",
+        "structure_status": "deferred",
+        "full_text_status": "disabled",
+        "vector_status": "disabled",
+        "source_id": "00000000000000000000000000000007",
+        "source_revision_id": "00000000000000000000000000000008",
+        "root_node_id": "00000000000000000000000000000009",
+        "sha256": "f0e5e924de66b156292c124baac6dd8c0b6e062faedf3b3a379c9aa3c05c3c68",
+        "byte_length": 57,
+        "code": "saved"
+      }
+    },
+    {
+      "id": "reject-missing-proposal-without-native-pointers",
+      "schema": "ObservationItem",
+      "valid": false,
+      "data": {
+        "relative_path": "web/old.ts",
+        "state": "missing",
+        "eligible": false,
+        "reason": "missing",
+        "byte_length": null,
+        "sha256": null,
+        "source_id": null,
+        "expected_revision_id": null,
+        "change_kind": "missing_proposal"
+      }
+    },
+    {
+      "id": "reject-error-code-reason-mismatch",
+      "schema": "Error",
+      "valid": false,
+      "data": {
+        "code": "knowledge_directory_not_found",
+        "reason": "source_changed",
+        "message": "合成文件已变化，需要新观察。",
+        "data": null,
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.3.0",
+        "request_id": "0000000000000000000000000000000c"
+      }
+    },
+    {
+      "id": "reject-conflict-with-null-reason",
+      "schema": "Error",
+      "valid": false,
+      "data": {
+        "code": "knowledge_directory_conflict",
+        "reason": null,
+        "message": "合成文件已变化，需要新观察。",
+        "data": null,
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.3.0",
+        "request_id": "0000000000000000000000000000000c"
+      }
+    },
+    {
+      "id": "reject-path-over-512-utf8-bytes",
+      "schema": "ObservationRequest",
+      "valid": false,
+      "data": {
+        "selected_paths": [
+          "web/合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合合.ts"
+        ]
+      }
+    },
+    {
+      "id": "valid-404-not-visible",
+      "schema": "Error",
+      "valid": true,
+      "data": {
+        "code": "knowledge_directory_not_found",
+        "reason": null,
+        "message": "不可见或结果未确认",
+        "data": null,
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.3.0",
+        "request_id": "0000000000000000000000000000000c"
+      }
+    }
+  ],
+  "semantic_cases": [
+    {
+      "id": "semantic-complete-mixed-eligibility",
+      "schema": "Observation",
+      "schema_valid": true,
+      "semantic_valid": true,
+      "data": {
+        "observation_id": "00000000000000000000000000000005",
+        "domain_id": "00000000000000000000000000000001",
+        "registration_id": "00000000000000000000000000000002",
+        "root_id": "00000000000000000000000000000003",
+        "root_version": 1,
+        "policy_version": 1,
+        "default_classification": {
+          "group_id": null,
+          "component_side": "frontend",
+          "language": "tsx"
+        },
+        "selected_paths": [
+          "web/card.tsx",
+          "web/readme.pdf"
+        ],
+        "complete": true,
+        "observation_sha256": "5b33dd3db12f166cc9cd6ca93c154c503d44fbd037ce043a13842a080a004bc5",
+        "captured_at": "2026-10-25T09:00:00Z",
+        "expires_at": "2026-10-25T09:10:00Z",
+        "items": [
+          {
+            "relative_path": "web/card.tsx",
+            "state": "verified",
+            "eligible": true,
+            "reason": null,
+            "byte_length": 57,
+            "sha256": "f0e5e924de66b156292c124baac6dd8c0b6e062faedf3b3a379c9aa3c05c3c68",
+            "source_id": null,
+            "expected_revision_id": null,
+            "change_kind": "add"
+          },
+          {
+            "relative_path": "web/readme.pdf",
+            "state": "ineligible",
+            "eligible": false,
+            "reason": "unsupported_format",
+            "byte_length": 1024,
+            "sha256": null,
+            "source_id": null,
+            "expected_revision_id": null,
+            "change_kind": "blocked"
+          }
+        ]
+      }
+    },
+    {
+      "id": "semantic-reject-missing-item",
+      "schema": "Observation",
+      "schema_valid": true,
+      "semantic_valid": false,
+      "expected_reason": "selection_mismatch",
+      "data": {
+        "observation_id": "00000000000000000000000000000005",
+        "domain_id": "00000000000000000000000000000001",
+        "registration_id": "00000000000000000000000000000002",
+        "root_id": "00000000000000000000000000000003",
+        "root_version": 1,
+        "policy_version": 1,
+        "default_classification": {
+          "group_id": null,
+          "component_side": "frontend",
+          "language": "tsx"
+        },
+        "selected_paths": [
+          "web/card.tsx",
+          "web/readme.pdf"
+        ],
+        "complete": true,
+        "observation_sha256": "5b33dd3db12f166cc9cd6ca93c154c503d44fbd037ce043a13842a080a004bc5",
+        "captured_at": "2026-10-25T09:00:00Z",
+        "expires_at": "2026-10-25T09:10:00Z",
+        "items": [
+          {
+            "relative_path": "web/card.tsx",
+            "state": "verified",
+            "eligible": true,
+            "reason": null,
+            "byte_length": 57,
+            "sha256": "f0e5e924de66b156292c124baac6dd8c0b6e062faedf3b3a379c9aa3c05c3c68",
+            "source_id": null,
+            "expected_revision_id": null,
+            "change_kind": "add"
+          }
+        ]
+      }
+    },
+    {
+      "id": "semantic-reject-duplicate-item",
+      "schema": "Observation",
+      "schema_valid": true,
+      "semantic_valid": false,
+      "expected_reason": "duplicate_item",
+      "data": {
+        "observation_id": "00000000000000000000000000000005",
+        "domain_id": "00000000000000000000000000000001",
+        "registration_id": "00000000000000000000000000000002",
+        "root_id": "00000000000000000000000000000003",
+        "root_version": 1,
+        "policy_version": 1,
+        "default_classification": {
+          "group_id": null,
+          "component_side": "frontend",
+          "language": "tsx"
+        },
+        "selected_paths": [
+          "web/card.tsx",
+          "web/readme.pdf"
+        ],
+        "complete": true,
+        "observation_sha256": "5b33dd3db12f166cc9cd6ca93c154c503d44fbd037ce043a13842a080a004bc5",
+        "captured_at": "2026-10-25T09:00:00Z",
+        "expires_at": "2026-10-25T09:10:00Z",
+        "items": [
+          {
+            "relative_path": "web/card.tsx",
+            "state": "verified",
+            "eligible": true,
+            "reason": null,
+            "byte_length": 57,
+            "sha256": "f0e5e924de66b156292c124baac6dd8c0b6e062faedf3b3a379c9aa3c05c3c68",
+            "source_id": null,
+            "expected_revision_id": null,
+            "change_kind": "add"
+          },
+          {
+            "relative_path": "web/card.tsx",
+            "state": "verified",
+            "eligible": true,
+            "reason": null,
+            "byte_length": 57,
+            "sha256": "f0e5e924de66b156292c124baac6dd8c0b6e062faedf3b3a379c9aa3c05c3c68",
+            "source_id": null,
+            "expected_revision_id": null,
+            "change_kind": "add"
+          }
+        ]
+      }
+    },
+    {
+      "id": "semantic-reject-unsorted-selection",
+      "schema": "Observation",
+      "schema_valid": true,
+      "semantic_valid": false,
+      "expected_reason": "selection_order",
+      "data": {
+        "observation_id": "00000000000000000000000000000005",
+        "domain_id": "00000000000000000000000000000001",
+        "registration_id": "00000000000000000000000000000002",
+        "root_id": "00000000000000000000000000000003",
+        "root_version": 1,
+        "policy_version": 1,
+        "default_classification": {
+          "group_id": null,
+          "component_side": "frontend",
+          "language": "tsx"
+        },
+        "selected_paths": [
+          "web/readme.pdf",
+          "web/card.tsx"
+        ],
+        "complete": true,
+        "observation_sha256": "5b33dd3db12f166cc9cd6ca93c154c503d44fbd037ce043a13842a080a004bc5",
+        "captured_at": "2026-10-25T09:00:00Z",
+        "expires_at": "2026-10-25T09:10:00Z",
+        "items": [
+          {
+            "relative_path": "web/card.tsx",
+            "state": "verified",
+            "eligible": true,
+            "reason": null,
+            "byte_length": 57,
+            "sha256": "f0e5e924de66b156292c124baac6dd8c0b6e062faedf3b3a379c9aa3c05c3c68",
+            "source_id": null,
+            "expected_revision_id": null,
+            "change_kind": "add"
+          },
+          {
+            "relative_path": "web/readme.pdf",
+            "state": "ineligible",
+            "eligible": false,
+            "reason": "unsupported_format",
+            "byte_length": 1024,
+            "sha256": null,
+            "source_id": null,
+            "expected_revision_id": null,
+            "change_kind": "blocked"
+          }
+        ]
+      }
+    },
+    {
+      "id": "semantic-exact-utf8-window",
+      "schema": "ContentWindow",
+      "schema_valid": true,
+      "semantic_valid": true,
+      "data": {
+        "preview_id": "00000000000000000000000000000006",
+        "offset": 0,
+        "byte_length": 57,
+        "total_bytes": 57,
+        "sha256": "f0e5e924de66b156292c124baac6dd8c0b6e062faedf3b3a379c9aa3c05c3c68",
+        "text": "﻿// 合成资料\r\nexport const title = \"你好 🧠\";\r\n"
+      }
+    },
+    {
+      "id": "semantic-reject-byte-count-not-character-count",
+      "schema": "ContentWindow",
+      "schema_valid": true,
+      "semantic_valid": false,
+      "expected_reason": "byte_count_mismatch",
+      "data": {
+        "preview_id": "00000000000000000000000000000006",
+        "offset": 0,
+        "byte_length": 41,
+        "total_bytes": 57,
+        "sha256": "f0e5e924de66b156292c124baac6dd8c0b6e062faedf3b3a379c9aa3c05c3c68",
+        "text": "﻿// 合成资料\r\nexport const title = \"你好 🧠\";\r\n"
+      }
+    },
+    {
+      "id": "semantic-reject-window-out-of-range",
+      "schema": "ContentWindow",
+      "schema_valid": true,
+      "semantic_valid": false,
+      "expected_reason": "window_out_of_range",
+      "data": {
+        "preview_id": "00000000000000000000000000000006",
+        "offset": 57,
+        "byte_length": 57,
+        "total_bytes": 57,
+        "sha256": "f0e5e924de66b156292c124baac6dd8c0b6e062faedf3b3a379c9aa3c05c3c68",
+        "text": "﻿// 合成资料\r\nexport const title = \"你好 🧠\";\r\n"
+      }
+    },
+    {
+      "id": "semantic-match-original-receipt",
+      "schema": "Receipt",
+      "schema_valid": true,
+      "semantic_valid": true,
+      "data": {
+        "import_task_id": "0000000000000000000000000000000a",
+        "domain_id": "00000000000000000000000000000001",
+        "registration_id": "00000000000000000000000000000002",
+        "preview_id": "00000000000000000000000000000006",
+        "observation_id": "00000000000000000000000000000005",
+        "manifest_sha256": "f8d3850d4ae900d143300f53b49a584f9c6f91c85f14b5f645414344117d2df3",
+        "status": "succeeded",
+        "model_calls": 0,
+        "mode": "catalogue_only",
+        "items": [
+          {
+            "relative_path": "web/card.tsx",
+            "classification": {
+              "group_id": null,
+              "component_side": "frontend",
+              "language": "tsx"
+            },
+            "save_status": "created",
+            "catalogue_status": "registered",
+            "structure_status": "deferred",
+            "full_text_status": "disabled",
+            "vector_status": "disabled",
+            "source_id": "00000000000000000000000000000007",
+            "source_revision_id": "00000000000000000000000000000008",
+            "root_node_id": "0000000000000000000000000000000000000000000000000000000000000009",
+            "sha256": "f0e5e924de66b156292c124baac6dd8c0b6e062faedf3b3a379c9aa3c05c3c68",
+            "byte_length": 57,
+            "code": "saved"
+          }
+        ],
+        "created_at": "2026-10-25T09:00:00Z"
+      },
+      "expected_request": {
+        "registration_id": "00000000000000000000000000000002",
+        "preview_id": "00000000000000000000000000000006",
+        "manifest_sha256": "f8d3850d4ae900d143300f53b49a584f9c6f91c85f14b5f645414344117d2df3"
+      }
+    },
+    {
+      "id": "semantic-reject-foreign-receipt",
+      "schema": "Receipt",
+      "schema_valid": true,
+      "semantic_valid": false,
+      "expected_reason": "receipt_request_mismatch",
+      "data": {
+        "import_task_id": "0000000000000000000000000000000a",
+        "domain_id": "00000000000000000000000000000001",
+        "registration_id": "00000000000000000000000000000002",
+        "preview_id": "00000000000000000000000000000006",
+        "observation_id": "00000000000000000000000000000005",
+        "manifest_sha256": "f8d3850d4ae900d143300f53b49a584f9c6f91c85f14b5f645414344117d2df3",
+        "status": "succeeded",
+        "model_calls": 0,
+        "mode": "catalogue_only",
+        "items": [
+          {
+            "relative_path": "web/card.tsx",
+            "classification": {
+              "group_id": null,
+              "component_side": "frontend",
+              "language": "tsx"
+            },
+            "save_status": "created",
+            "catalogue_status": "registered",
+            "structure_status": "deferred",
+            "full_text_status": "disabled",
+            "vector_status": "disabled",
+            "source_id": "00000000000000000000000000000007",
+            "source_revision_id": "00000000000000000000000000000008",
+            "root_node_id": "0000000000000000000000000000000000000000000000000000000000000009",
+            "sha256": "f0e5e924de66b156292c124baac6dd8c0b6e062faedf3b3a379c9aa3c05c3c68",
+            "byte_length": 57,
+            "code": "saved"
+          }
+        ],
+        "created_at": "2026-10-25T09:00:00Z"
+      },
+      "expected_request": {
+        "registration_id": "00000000000000000000000000000002",
+        "preview_id": "00000000000000000000000000000063",
+        "manifest_sha256": "f8d3850d4ae900d143300f53b49a584f9c6f91c85f14b5f645414344117d2df3"
+      }
+    },
+    {
+      "id": "semantic-valid-409-code-reason",
+      "schema": "Error",
+      "schema_valid": true,
+      "semantic_valid": true,
+      "http_status": 409,
+      "data": {
+        "code": "knowledge_directory_conflict",
+        "reason": "source_changed",
+        "message": "合成文件已变化，需要新观察。",
+        "data": null,
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.3.0",
+        "request_id": "0000000000000000000000000000000c"
+      }
+    },
+    {
+      "id": "semantic-reject-http-code-mismatch",
+      "schema": "Error",
+      "schema_valid": true,
+      "semantic_valid": false,
+      "expected_reason": "http_code_mismatch",
+      "http_status": 404,
+      "data": {
+        "code": "knowledge_directory_conflict",
+        "reason": "source_changed",
+        "message": "合成文件已变化，需要新观察。",
+        "data": null,
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.3.0",
+        "request_id": "0000000000000000000000000000000c"
       }
     }
   ],
@@ -1776,7 +2256,7 @@
     {
       "id": "S10",
       "input": "201 envelope code=0, receipt.status=failed",
-      "expected": "展示保存失败，三个来源指针null，禁止阅读链接；重试须新预览和同意。"
+      "expected": "展示保存失败，三个来源指针null，禁止阅读链接；重试须新观察、新预览及再次明确同意。"
     },
     {
       "id": "S11",
@@ -1797,6 +2277,39 @@
       "id": "S14",
       "input": "清单合格项、预览和确认只用合成资料",
       "expected": "catalogue_only，无解析、全文/向量、模型、自动同步、外发。"
+    },
+    {
+      "id": "S15",
+      "input": "授权有效且无原键记录；按键查询返回404/not_found",
+      "response": {
+        "code": "knowledge_directory_not_found",
+        "reason": null,
+        "message": "不可见或结果未确认",
+        "data": null,
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.3.0",
+        "request_id": "0000000000000000000000000000000c"
+      },
+      "expected": "公开响应不可区分，不可见/结果未确认；停止并隐藏敏感视图，保留原请求，不证明未提交，不换键。"
+    },
+    {
+      "id": "S16",
+      "input": "该键已有成功回执但根授权撤销；按键查询同样404/not_found",
+      "response": {
+        "code": "knowledge_directory_not_found",
+        "reason": null,
+        "message": "不可见或结果未确认",
+        "data": null,
+        "contract_version": "1.0.0",
+        "source_contract_version": "0.3.0",
+        "request_id": "0000000000000000000000000000000c"
+      },
+      "expected": "与S15完全相同的公开响应和保守消费；不泄漏回执存在性，不猜message。"
+    },
+    {
+      "id": "S17",
+      "input": "消费后原TTL未到或已过，GET预览/content",
+      "expected": "暂存正文立即清除，两种时间均409/preview_consumed；成功转C1，失败新观察，不重建暂存。"
     }
   ]
 }
