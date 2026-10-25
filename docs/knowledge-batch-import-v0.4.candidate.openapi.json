@@ -2881,7 +2881,10 @@
           "max_file_bytes",
           "max_batch_bytes",
           "max_manifest_entries",
-          "model_calls"
+          "model_calls",
+          "external_models",
+          "automatic_ingestion",
+          "allowed_model_uses"
         ],
         "properties": {
           "contract_version": {
@@ -2918,7 +2921,20 @@
             "const": 1024
           },
           "model_calls": {
+            "const": 0
+          },
+          "external_models": {
             "const": false
+          },
+          "automatic_ingestion": {
+            "const": false
+          },
+          "allowed_model_uses": {
+            "type": "array",
+            "maxItems": 0,
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -4333,6 +4349,7 @@
                   "project_head_changed",
                   "project_membership_changed",
                   "cursor_invalid",
+                  "retry_parent_invalid",
                   "root_unready",
                   "result_unknown"
                 ]
@@ -4352,7 +4369,93 @@
             "type": "string",
             "pattern": "^[0-9a-f]{32}$"
           }
-        }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "code": {
+                  "const": "knowledge_batch_conflict"
+                }
+              },
+              "required": [
+                "code"
+              ]
+            },
+            "then": {
+              "properties": {
+                "reason": {
+                  "type": "string",
+                  "enum": [
+                    "observation_incomplete",
+                    "observation_mismatch",
+                    "ineligible",
+                    "source_changed",
+                    "revision_changed",
+                    "root_changed",
+                    "policy_changed",
+                    "preview_consumed",
+                    "idempotency_conflict",
+                    "confirmation_mismatch",
+                    "result_changed",
+                    "task_not_succeeded",
+                    "project_head_changed",
+                    "project_membership_changed",
+                    "cursor_invalid",
+                    "retry_parent_invalid"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "code": {
+                  "const": "knowledge_batch_unavailable"
+                }
+              },
+              "required": [
+                "code"
+              ]
+            },
+            "then": {
+              "properties": {
+                "reason": {
+                  "type": "string",
+                  "enum": [
+                    "root_unready",
+                    "result_unknown"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "code": {
+                  "not": {
+                    "enum": [
+                      "knowledge_batch_conflict",
+                      "knowledge_batch_unavailable"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "code"
+              ]
+            },
+            "then": {
+              "properties": {
+                "reason": {
+                  "type": "null"
+                }
+              }
+            }
+          }
+        ]
       },
       "NativeUnauthorized": {
         "type": "object",
@@ -4773,36 +4876,90 @@
   },
   "x-error-mapping": {
     "400": [
-      "knowledge_batch_invalid",
-      null
+      {
+        "code": "knowledge_batch_invalid",
+        "reasons": [
+          null
+        ]
+      }
     ],
     "404": [
-      "knowledge_batch_not_found",
-      null
+      {
+        "code": "knowledge_batch_not_found",
+        "reasons": [
+          null
+        ]
+      }
     ],
     "409": [
-      "knowledge_batch_conflict",
-      "version_mismatch_or_named_conflict"
+      {
+        "code": "knowledge_batch_version_mismatch",
+        "reasons": [
+          null
+        ]
+      },
+      {
+        "code": "knowledge_batch_conflict",
+        "reasons": [
+          "observation_incomplete",
+          "observation_mismatch",
+          "ineligible",
+          "source_changed",
+          "revision_changed",
+          "root_changed",
+          "policy_changed",
+          "preview_consumed",
+          "idempotency_conflict",
+          "confirmation_mismatch",
+          "result_changed",
+          "task_not_succeeded",
+          "project_head_changed",
+          "project_membership_changed",
+          "cursor_invalid",
+          "retry_parent_invalid"
+        ]
+      }
     ],
     "410": [
-      "knowledge_batch_expired",
-      null
+      {
+        "code": "knowledge_batch_expired",
+        "reasons": [
+          null
+        ]
+      }
     ],
     "413": [
-      "knowledge_batch_too_large",
-      null
+      {
+        "code": "knowledge_batch_too_large",
+        "reasons": [
+          null
+        ]
+      }
     ],
     "416": [
-      "knowledge_batch_range",
-      null
+      {
+        "code": "knowledge_batch_range",
+        "reasons": [
+          null
+        ]
+      }
     ],
     "429": [
-      "knowledge_batch_capacity",
-      null
+      {
+        "code": "knowledge_batch_capacity",
+        "reasons": [
+          null
+        ]
+      }
     ],
     "503": [
-      "knowledge_batch_unavailable",
-      "root_unready_or_result_unknown"
+      {
+        "code": "knowledge_batch_unavailable",
+        "reasons": [
+          "root_unready",
+          "result_unknown"
+        ]
+      }
     ]
   },
   "x-digest-projection": {

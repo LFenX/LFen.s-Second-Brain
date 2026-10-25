@@ -64,6 +64,8 @@
 - 取消为幂等、持久操作；终态任务返回当前终态，不把它改成cancelled。锁内先到的单项提交可成功；取消锁内获准后所有尚未提交项不能再成功。已成功项保留并可固定读取，不承诺整批回滚。
 - 已知失败／取消的项不自动重试。用户可选择重新准备未完成项或原完整选择，经新观察、预览、逐项确认产生**新任务、新键**；旧任务不变。新任务的 `retry_of_task_id` 只作受校验的来历，不改变旧结果。
 
+`retry_of_task_id`非null时，父任务必须与当前用户、域、登记完全一致，且终态为`partial_failed/failed/cancelled`。新选择只能是父任务尚未成功路径的非空子集，或父任务原始完整选择；完整重试可以包含已成功项，但仍逐项重新预览／确认，未变来源返回unchanged，不复制旧成功指针冒充新结果。不能只挑父任务已成功的一个子集或混入新路径；父任务非终态、全成功、越域／越用户／越登记、非法集合均409 `retry_parent_invalid`（不可见父任务先404）。需要新增路径时创建普通新任务且该字段为null。
+
 逐项 `failed` 无 source/revision/root 指针；错误码明确 `source_changed/revision_changed/root_changed/policy_changed/root_unready/permission_revoked/save_failed/execution_expired`。公开错误不带绝对路径、正文或凭据。终态任务 `revision` 固定，非终态每次可见变化递增，用于分页一致性与消费者防倒退。
 
 ## 5. 分页、丢响应与恢复
@@ -115,7 +117,11 @@
 
 POST JSON≤32KiB，元数据响应≤256KiB；内容窗口原文≤64KiB／实际JSON≤1MiB。任务和清单的分页不能借截断把结果说成完整。所有查询只GET；取消只改变任务执行意图，不触发重试或新导入。请求未知字段拒绝。HTTP错误机器码、原因及重试规则见OpenAPI，不用英文message分流。
 
-清单原键恢复必须验证回执的项目ID、预览ID、摘要、原键和expected_manifest_id；原键404／503仍是结果未确认。同键判重先于预览TTL；消费记录和发布回执持久保留，不依赖预览元数据存活。
+清单原键恢复必须验证回执的域ID、项目ID、预览ID、摘要、原键、task_id和expected_manifest_id；原键404／503仍是结果未确认。同键判重先于预览TTL；消费记录和发布回执持久保留，不依赖预览元数据存活。
+
+清单发布前单独保存**清单发布恢复上下文**：当前用户／域、两个协议版本、project_id、preview_id、manifest_sha256、idempotency_key、expected_manifest_id和task_id。首次基版必须保存显式null，不能省略或在重开页面时读取新Head替换。404／503隐藏内容并保留这份原上下文；同主体重新授权后GET原键，核对全部身份及原基版；明确重发仅回送原发布请求，不自动换键／改基版。这里没有原文、路径、绝对根或令牌，不复用批次恢复存储槽。
+
+错误映射是HTTP状态＋`code/reason`三元组：400 invalid、404 not_found、410 expired、413 too_large、416 range、429 capacity的reason必须null；409分version_mismatch/null和conflict/具名原因；503只允许unavailable/root_unready或unavailable/result_unknown。精确机器值在OpenAPI `x-error-mapping`；schema限制code/reason组合，独立语义验证还须检查HTTP状态。不能把404包成source_changed冲突、把expired包成result_unknown。
 
 ## 8. 复用、需自研与待实测
 
