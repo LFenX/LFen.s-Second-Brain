@@ -1,0 +1,43 @@
+{
+  "document_version": "v0.38",
+  "recorded_at": "2026-10-25T15:09:22.122Z",
+  "engineering_status": "BackendImplemented_SmallRuntimeVerified_FrontendPending",
+  "frozen_contract": "docs/knowledge-batch-import-v1.freeze.json",
+  "freeze_commit": "ceca601",
+  "unit_tests": {
+    "top_level": 79,
+    "including_subtests": 175,
+    "failed": 0,
+    "scope": "5 relevant Go packages TestKnowledge and native unit tier"
+  },
+  "build": {
+    "passed": true,
+    "linker": "LLD22.1.8",
+    "binary_sha256": "55c54e09fb7df70fedcba56929253ba23d6b52c6d27984615b7c91815f6854b7",
+    "help_modes": [
+      "api",
+      "admin",
+      "ingestor",
+      "syncer"
+    ],
+    "recognized_help_exit_code": 1
+  },
+  "runtime_smoke": {
+    "passed": true,
+    "requests": 16,
+    "accepted_queued": true,
+    "succeeded": 2,
+    "project_entries": 2,
+    "fixed_c1": true,
+    "model_calls": 0
+  },
+  "incomplete_items": [
+    "Full concurrency/restart/cancellation/capacity/permission runtime checks pending",
+    "Formal frontend/test/build/browser checks pending",
+    "Final proof and main integration pending"
+  ],
+  "model_calls": 0,
+  "user_decision": {
+    "outcome": "Pending"
+  }
+}

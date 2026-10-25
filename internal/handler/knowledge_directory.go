@@ -48,11 +48,15 @@ func (w *directoryBufferedWriter) Written() bool { return w.written }
 
 // KnowledgeDirectoryAuth reuses native authentication and keeps its non-401 errors inside C2.
 func KnowledgeDirectoryAuth(auth gin.HandlerFunc) gin.HandlerFunc {
+	return knowledgeSourceAuth(auth, "0.3.0", "directory", directoryResponse)
+}
+
+func knowledgeSourceAuth(auth gin.HandlerFunc, version, kind string, respond func(*gin.Context, int, any, error)) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Header("Cache-Control", "no-store")
 		c.Set("knowledge_request_id", common.GenerateUUID())
 		c.Header("X-Knowledge-Contract-Version", "1.0.0")
-		c.Header("X-Knowledge-Source-Contract-Version", "0.3.0")
+		c.Header("X-Knowledge-Source-Contract-Version", version)
 		original := c.Writer
 		buffer := &directoryBufferedWriter{ResponseWriter: original, status: 200}
 		c.Writer = buffer
@@ -60,26 +64,30 @@ func KnowledgeDirectoryAuth(auth gin.HandlerFunc) gin.HandlerFunc {
 			failure := recover()
 			c.Writer = original
 			if failure != nil {
-				common.Warn("Knowledge directory operation panicked")
+				common.Warn("Knowledge source operation panicked")
 				reason := "result_unknown"
-				directoryResponse(c, 500, nil, &dataset.KnowledgeDirectoryError{Status: 500, Code: "knowledge_directory_unavailable", Reason: &reason})
+				status := 503
+				if kind == "directory" {
+					status = 500
+				}
+				respond(c, status, nil, &dataset.KnowledgeDirectoryError{Status: status, Code: "knowledge_" + kind + "_unavailable", Reason: &reason})
 				c.Abort()
 				return
 			}
 			if buffer.overflow {
-				directoryHandlerError(c, 413, "too_large")
+				respond(c, 413, nil, &dataset.KnowledgeDirectoryError{Status: 413, Code: "knowledge_" + kind + "_too_large"})
 				return
 			}
 			var envelope struct {
 				Source string `json:"source_contract_version"`
 			}
 			_ = json.Unmarshal(buffer.body.Bytes(), &envelope)
-			if buffer.status >= 400 && buffer.status != 401 && envelope.Source != "0.3.0" {
+			if buffer.status >= 400 && buffer.status != 401 && envelope.Source != version {
 				if buffer.status == 403 || buffer.status == 404 {
-					directoryHandlerError(c, 404, "not_found")
+					respond(c, 404, nil, &dataset.KnowledgeDirectoryError{Status: 404, Code: "knowledge_" + kind + "_not_found"})
 				} else {
 					reason := "result_unknown"
-					directoryResponse(c, 503, nil, &dataset.KnowledgeDirectoryError{Status: 503, Code: "knowledge_directory_unavailable", Reason: &reason})
+					respond(c, 503, nil, &dataset.KnowledgeDirectoryError{Status: 503, Code: "knowledge_" + kind + "_unavailable", Reason: &reason})
 				}
 				return
 			}
@@ -142,6 +150,18 @@ func validateDirectoryObject(raw []byte, typ reflect.Type) error {
 	}
 	if bytes.Equal(bytes.TrimSpace(raw), []byte("null")) {
 		return errors.New("null is not allowed")
+	}
+	if typ.Kind() == reflect.Slice {
+		var items []json.RawMessage
+		if json.Unmarshal(raw, &items) != nil {
+			return errors.New("array required")
+		}
+		for _, item := range items {
+			if err := validateDirectoryObject(item, typ.Elem()); err != nil {
+				return err
+			}
+		}
+		return nil
 	}
 	if typ.Kind() != reflect.Struct {
 		return nil

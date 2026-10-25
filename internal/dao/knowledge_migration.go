@@ -25,6 +25,11 @@ func migrateKnowledgeFoundation(ctx context.Context, db *gorm.DB) error {
 			return fmt.Errorf("migrate knowledge foundation: %w", err)
 		}
 	}
+	for _, model := range []any{&entity.KnowledgeBatchPreviewRecord{}, &entity.KnowledgeBatchItemRecord{}, &entity.KnowledgeBatchTaskRecord{}, &entity.KnowledgeBatchViewRecord{}, &entity.KnowledgeProjectManifestRecord{}, &entity.KnowledgeProjectManifestHeadRecord{}, &entity.KnowledgeBatchCommandRecord{}} {
+		if err := autoMigrateSafely(ctx, db, model); err != nil {
+			return fmt.Errorf("migrate knowledge batch: %w", err)
+		}
+	}
 	if !m.HasColumn(&entity.File{}, "KnowledgePrivateOwnerID") {
 		if err := m.AddColumn(&entity.File{}, "KnowledgePrivateOwnerID"); err != nil {
 			return fmt.Errorf("add private folder ownership: %w", err)
