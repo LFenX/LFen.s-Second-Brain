@@ -1,9 +1,8 @@
-import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react';
+import { useState, type ChangeEvent, type FormEvent } from 'react';
 import { useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import authorizationStorage from '@/utils/authorization-util';
 import {
   useKnowledgeDomain,
   getKnowledgeSessionScope,
@@ -183,15 +182,10 @@ export default function OriginalImport({ domain }: { domain: string }) {
     [params] = useSearchParams();
   const query = useKnowledgeDomain(domain),
     contract = useOriginalContract();
-  const [owner, setOwner] = useState('');
   const session = getKnowledgeSessionScope();
-  useEffect(() => {
-    try {
-      setOwner(authorizationStorage.getUserInfoObject()?.id || '');
-    } catch {
-      setOwner('');
-    }
-  }, [session]);
+  // C1 authorizes this owner-only domain only when its owner is the native actor.
+  // The login's local display profile intentionally contains no user ID.
+  const owner = query.data?.owner_id || '';
   const retry = () => {
     void query.refetch();
     void contract.refetch();

@@ -43,7 +43,9 @@ jest.mock('@/utils/next-request', () => ({
 }));
 jest.mock('@/utils/authorization-util', () => ({
   __esModule: true,
-  default: { getUserInfoObject: () => ({ id: 'b'.repeat(32) }) },
+  default: {
+    getUserInfoObject: () => ({ name: 'Native login profile has no ID' }),
+  },
   getAuthorization: () => 'synthetic-original-session',
 }));
 jest.mock('react-i18next', () => ({
