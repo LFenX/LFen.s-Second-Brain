@@ -2,8 +2,30 @@
   "version": "v0.33",
   "local_date": "2026-10-25",
   "recorded_at": "2026-10-25T07:51:26.832Z",
-  "status": "EngineeringVerified_UserAcceptancePending",
-  "user_decision": "Pending",
+  "status": "EngineeringVerified_UserAccepted",
+  "user_decision": {
+    "outcome": "Approved",
+    "response": "验收通过",
+    "decided_by": "用户",
+    "recorded_at": "2026-10-25T08:16:58.008Z",
+    "time_basis": "用户回复未提供精确点击时间，recorded_at仅为本轮归档时间。",
+    "evidence_ref": "本会话真实 request_user_input_async 回复",
+    "question_item_id": "[\"request_user_input_async\",\"call_5794778be0224306b202d0a06b8a0a2a\",0]",
+    "subject": {
+      "commit": "2674e4d39f2493c4461b7765be6e317711d546e4",
+      "branch": "codex/stage2ab-integration",
+      "report": "docs/stage2ab-runtime-verification.json",
+      "report_sha256": "40208b98021f8fe3c3a0f429ab60c9d66c7e4e7b103b4e100a7793f2f0ddcb7e",
+      "scope": "本轮阶段2 A/B真实联调：四步导入、固定修订、异常恢复及定向修复",
+      "excludes": [
+        "阶段2整体退出",
+        "合并main",
+        "启动审查",
+        "A新来源组件接入",
+        "新模型调用"
+      ]
+    }
+  },
   "stage2_overall": "NotComplete",
   "request_snapshot": "那就开始阶段2 A/B真实联调，在集成分支合并双方代码，解决接续文档冲突，把B前端接到本机冻结后端，跑通四步导入、固定修订阅读和异常恢复。A的新来源组件保持未接入，继续只用合成资料、不调用模型、不启动多轮审查；发现问题做针对性修复，验证后更新报告和B交接说明，推送集成分支，暂不合并main。",
   "task_profile": {

@@ -2,7 +2,7 @@
 
 本地文本、文档与项目代码知识库：结构化整理、可选词法／结构／向量检索、带来源的回答与代码复用；后续通过 Web 和 MCP 共用后端服务。当前POC仍为原生混合检索，可选策略待实施。
 
-**本仓库是后续唯一开发入口，包含当前应用源码、品牌资产、方案和验证记录。** 当前v0.33在`codex/stage2ab-integration`汇合A `5fe4d51`与B `8d62cc7`，完成合成真实后端的登录、四步导入、固定修订及异常恢复联调，并修复C2确认摘要字段被通用snakeCase改名的问题。工程结果与未验项见[真实报告](docs/stage2ab-runtime-verification.json)及[集成交接](docs/stage2ab-integration-handoff.md)，本轮用户验收Pending，阶段2整体未完成。
+**本仓库是后续唯一开发入口，包含当前应用源码、品牌资产、方案和验证记录。** 当前v0.33在`codex/stage2ab-integration`汇合A `5fe4d51`与B `8d62cc7`，完成合成真实后端的登录、四步导入、固定修订及异常恢复联调，并修复C2确认摘要字段被通用snakeCase改名的问题。工程结果与未验项见[真实报告](docs/stage2ab-runtime-verification.json)及[集成交接](docs/stage2ab-integration-handoff.md)，本轮联调交付已获用户验收（2674e4d），阶段2整体未完成。
 
 本轮只推集成分支，**不合main**，main保持已验收阶段1基线`8aa324e`。**C2 0.2.0 Frozen与C1／C3 1.0.0原字节保持**；Go仍使用既有冻结二进制，只更新Web。A的[六项内部来源准备](docs/stage2a-source-preparation.md)保持包私有且未接入，新接口／共享模型／批量与生命周期仅候选。继续只合成、模型0、不启动多轮审查；B从集成头接续，边界见[C2交接第11节](docs/stage2a-c2-handoff.md)。v0.29—v0.32报告和B独立交付的Mock证据保留原时点。
 

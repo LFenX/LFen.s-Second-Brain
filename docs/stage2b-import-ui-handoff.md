@@ -85,4 +85,4 @@ npm run build
 
 真实联调发现确认字段被通用snakeCase改为`manifest_sha_256`。C2客户端现于schema验证后显式JSON序列化并设置Content-Type；Go、全局请求层和冻结契约未改。新增真实interceptor／Axios序列化回归，合计6套69项通过，21文件格式／lint及生产构建通过；本机全量类型检查仍207项，本轮改动4文件0项。
 
-完整情况以[真实报告](stage2ab-runtime-verification.json)与[集成交接](stage2ab-integration-handoff.md)为准。B从集成头接续并保留该修复，不再从旧头重复实现；A的新来源仍未接入。继续只合成／模型0／不审查／不合main，本轮用户验收和阶段2整体退出保持待定。
+完整情况以[真实报告](stage2ab-runtime-verification.json)与[集成交接](stage2ab-integration-handoff.md)为准。B从集成头接续并保留该修复，不再从旧头重复实现；A的新来源仍未接入。继续只合成／模型0／不审查／不合main，本轮联调已获用户验收（2674e4d）；阶段2整体退出和main合并保持待定。
