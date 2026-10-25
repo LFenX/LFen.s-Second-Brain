@@ -286,6 +286,10 @@
   },
   "continuity": {
     "instruction_relayed": true,
+    "persistent_goal_registered": true,
+    "goal_thread_id": "01a158c6-4366-7792-8768-4aed0b80a6a4",
+    "goal_status_at_record": "active",
+    "goal_source": "本会话真人明确要求持续不断推进直到完成；实际create_goal工具已返回active，并已传达消费会话",
     "current_coordinator_work": "R4候选已推送后继续合成夹具、运输验证和R5事实归档；未等待消费会话停工",
     "consumer_next_task": "已接R6生命周期只读能力盘点，无写入或真实移动/删除",
     "human_gate": "具体0.5候选已提交确认；不因持续推进指令默认为已批准新共享接口"

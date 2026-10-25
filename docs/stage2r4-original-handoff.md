@@ -48,3 +48,5 @@ raw PUT仍走`registerNextServer→next-request`原认证。局部Axios transfor
 另在隔离adapter下执行真实`common-util→next-request→registerNextServer→Axios1.13.6`：7例通过，覆盖局部transformRequest保留File／Blob及原字节、反例直接data:File被转空JSON、既有JSON、signal和原生401处理；认证／UI依赖被隔离，真实HTTP0。这是实现前运输可行性证据，不是正式service、浏览器XHR／进度、MinIO／SQL或性能验收。[准备记录](stage2r4-preimplementation-preparation.json)保留边界。
 
 消费会话的[R5网页／RSS只读调查](stage2r5-web-rss-preparation.md)已归档，关键路径由A核实；消费方随后接续R6原生生命周期能力盘点，仍无文件写入、真实移动／删除或新接口。主会话负责接续，未把同行完成当作全体停工条件。
+
+主会话已实际登记active持续目标并回传消费方，覆盖剩余工程；当前没有标为完成。另有15项合成夹具一致性检查通过：PDF头／xref／EOF，Office ZIP CRC／必要部件／XML良构，全部大文本流式严格UTF-8及跨64KiB的emoji；它们只证明输入准备，不代替应用接纳或Office渲染。
