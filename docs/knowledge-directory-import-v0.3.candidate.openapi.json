@@ -1,0 +1,3829 @@
+{
+  "openapi": "3.1.0",
+  "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
+  "info": {
+    "title": "LFen Second Brain C2 controlled-directory candidate",
+    "version": "0.3.0",
+    "description": "ReviewCandidate，不是Frozen且没有实现；独立新增资源，C2 0.2.0及C1/C3原字节不变。"
+  },
+  "servers": [
+    {
+      "url": "/api/v1"
+    }
+  ],
+  "security": [
+    {
+      "nativeSession": []
+    }
+  ],
+  "paths": {
+    "/knowledge/directory-import-contract": {
+      "get": {
+        "operationId": "getDirectoryImportCandidate",
+        "summary": "读取候选能力（未上线）",
+        "description": "ReviewCandidate：接口尚未接入。完整语义及授权/增量/恢复见knowledge-directory-import-v0.3.candidate.md。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.3.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "读取或同键同请求回放",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "原文／目录／回执均不缓存。"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CapabilitiesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "409": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "410": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "413": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "415": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "416": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "429": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "500": {
+            "$ref": "#/components/responses/UnknownResult"
+          },
+          "503": {
+            "$ref": "#/components/responses/DirectoryError"
+          }
+        }
+      }
+    },
+    "/datasets/{domain_id}/knowledge/directory-roots": {
+      "get": {
+        "operationId": "listDirectoryRoots",
+        "summary": "列出本域受权根",
+        "description": "ReviewCandidate：接口尚未接入。完整语义及授权/增量/恢复见knowledge-directory-import-v0.3.candidate.md。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.3.0"
+            }
+          },
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "读取或同键同请求回放",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "原文／目录／回执均不缓存。"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RootsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "409": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "410": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "413": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "415": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "416": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "429": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "500": {
+            "$ref": "#/components/responses/UnknownResult"
+          },
+          "503": {
+            "$ref": "#/components/responses/DirectoryError"
+          }
+        }
+      }
+    },
+    "/datasets/{domain_id}/knowledge/directory-registrations": {
+      "post": {
+        "operationId": "createDirectoryRegistration",
+        "summary": "不可变目录登记，同键同配置复用",
+        "description": "ReviewCandidate：接口尚未接入。完整语义及授权/增量/恢复见knowledge-directory-import-v0.3.candidate.md。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.3.0"
+            }
+          },
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "读取或同键同请求回放",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "原文／目录／回执均不缓存。"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "同步完成；Receipt仍须检查status，可能failed",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "原文／目录／回执均不缓存。"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "409": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "410": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "413": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "415": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "416": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "429": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "500": {
+            "$ref": "#/components/responses/UnknownResult"
+          },
+          "503": {
+            "$ref": "#/components/responses/DirectoryError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{domain_id}/knowledge/directory-registrations/{registration_id}": {
+      "get": {
+        "operationId": "getDirectoryRegistration",
+        "summary": "读取登记",
+        "description": "ReviewCandidate：接口尚未接入。完整语义及授权/增量/恢复见knowledge-directory-import-v0.3.candidate.md。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.3.0"
+            }
+          },
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "registration_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "读取或同键同请求回放",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "原文／目录／回执均不缓存。"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "409": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "410": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "413": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "415": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "416": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "429": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "500": {
+            "$ref": "#/components/responses/UnknownResult"
+          },
+          "503": {
+            "$ref": "#/components/responses/DirectoryError"
+          }
+        }
+      }
+    },
+    "/datasets/{domain_id}/knowledge/directory-registrations/{registration_id}/listings": {
+      "post": {
+        "operationId": "createDirectoryListing",
+        "summary": "冻结非递归目录元数据首页",
+        "description": "ReviewCandidate：接口尚未接入。完整语义及授权/增量/恢复见knowledge-directory-import-v0.3.candidate.md。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.3.0"
+            }
+          },
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "registration_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "同步完成；Receipt仍须检查status，可能failed",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "原文／目录／回执均不缓存。"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListingResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "409": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "410": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "413": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "415": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "416": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "429": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "500": {
+            "$ref": "#/components/responses/UnknownResult"
+          },
+          "503": {
+            "$ref": "#/components/responses/DirectoryError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ListingRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{domain_id}/knowledge/directory-registrations/{registration_id}/listings/{listing_id}": {
+      "get": {
+        "operationId": "getDirectoryListingPage",
+        "summary": "读取固定浏览页",
+        "description": "ReviewCandidate：接口尚未接入。完整语义及授权/增量/恢复见knowledge-directory-import-v0.3.candidate.md。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.3.0"
+            }
+          },
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "registration_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "listing_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 256,
+              "minLength": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "读取或同键同请求回放",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "原文／目录／回执均不缓存。"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListingResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "409": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "410": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "413": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "415": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "416": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "429": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "500": {
+            "$ref": "#/components/responses/UnknownResult"
+          },
+          "503": {
+            "$ref": "#/components/responses/DirectoryError"
+          }
+        }
+      }
+    },
+    "/datasets/{domain_id}/knowledge/directory-registrations/{registration_id}/observations": {
+      "post": {
+        "operationId": "createDirectoryObservation",
+        "summary": "固定精确选择及逐项字节观察",
+        "description": "ReviewCandidate：接口尚未接入。完整语义及授权/增量/恢复见knowledge-directory-import-v0.3.candidate.md。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.3.0"
+            }
+          },
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "registration_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "同步完成；Receipt仍须检查status，可能failed",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "原文／目录／回执均不缓存。"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObservationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "409": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "410": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "413": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "415": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "416": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "429": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "500": {
+            "$ref": "#/components/responses/UnknownResult"
+          },
+          "503": {
+            "$ref": "#/components/responses/DirectoryError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ObservationRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{domain_id}/knowledge/directory-registrations/{registration_id}/observations/{observation_id}": {
+      "get": {
+        "operationId": "getDirectoryObservation",
+        "summary": "读取固定观察，无正文",
+        "description": "ReviewCandidate：接口尚未接入。完整语义及授权/增量/恢复见knowledge-directory-import-v0.3.candidate.md。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.3.0"
+            }
+          },
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "registration_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "observation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "读取或同键同请求回放",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "原文／目录／回执均不缓存。"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObservationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "409": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "410": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "413": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "415": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "416": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "429": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "500": {
+            "$ref": "#/components/responses/UnknownResult"
+          },
+          "503": {
+            "$ref": "#/components/responses/DirectoryError"
+          }
+        }
+      }
+    },
+    "/datasets/{domain_id}/knowledge/directory-registrations/{registration_id}/previews": {
+      "post": {
+        "operationId": "createDirectoryPreview",
+        "summary": "重读一项并暂存预览",
+        "description": "ReviewCandidate：接口尚未接入。完整语义及授权/增量/恢复见knowledge-directory-import-v0.3.candidate.md。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.3.0"
+            }
+          },
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "registration_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "同步完成；Receipt仍须检查status，可能failed",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "原文／目录／回执均不缓存。"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreviewResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "409": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "410": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "413": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "415": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "416": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "429": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "500": {
+            "$ref": "#/components/responses/UnknownResult"
+          },
+          "503": {
+            "$ref": "#/components/responses/DirectoryError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreviewRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{domain_id}/knowledge/directory-registrations/{registration_id}/previews/{preview_id}": {
+      "get": {
+        "operationId": "getDirectoryPreview",
+        "summary": "读取预览或已消费回执指针",
+        "description": "ReviewCandidate：接口尚未接入。完整语义及授权/增量/恢复见knowledge-directory-import-v0.3.candidate.md。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.3.0"
+            }
+          },
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "registration_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "preview_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "读取或同键同请求回放",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "原文／目录／回执均不缓存。"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreviewResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "409": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "410": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "413": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "415": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "416": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "429": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "500": {
+            "$ref": "#/components/responses/UnknownResult"
+          },
+          "503": {
+            "$ref": "#/components/responses/DirectoryError"
+          }
+        }
+      }
+    },
+    "/datasets/{domain_id}/knowledge/directory-registrations/{registration_id}/previews/{preview_id}/content": {
+      "get": {
+        "operationId": "readDirectoryPreviewContent",
+        "summary": "读取固定暂存原文字节窗口",
+        "description": "ReviewCandidate：接口尚未接入。完整语义及授权/增量/恢复见knowledge-directory-import-v0.3.candidate.md。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.3.0"
+            }
+          },
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "registration_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "preview_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            }
+          },
+          {
+            "name": "length",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 65536
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "读取或同键同请求回放",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "原文／目录／回执均不缓存。"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentWindowResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "409": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "410": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "413": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "415": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "416": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "429": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "500": {
+            "$ref": "#/components/responses/UnknownResult"
+          },
+          "503": {
+            "$ref": "#/components/responses/DirectoryError"
+          }
+        }
+      }
+    },
+    "/datasets/{domain_id}/knowledge/directory-registrations/{registration_id}/imports": {
+      "post": {
+        "operationId": "commitDirectoryImport",
+        "summary": "单项明确确认与同键回放",
+        "description": "ReviewCandidate：接口尚未接入。完整语义及授权/增量/恢复见knowledge-directory-import-v0.3.candidate.md。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.3.0"
+            }
+          },
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "registration_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "读取或同键同请求回放",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "原文／目录／回执均不缓存。"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptResponse"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "同步完成；Receipt仍须检查status，可能failed",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "原文／目录／回执均不缓存。"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "409": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "410": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "413": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "415": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "416": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "429": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "500": {
+            "$ref": "#/components/responses/UnknownResult"
+          },
+          "503": {
+            "$ref": "#/components/responses/DirectoryError"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommitRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{domain_id}/knowledge/directory-registrations/{registration_id}/imports/{import_task_id}": {
+      "get": {
+        "operationId": "getDirectoryImport",
+        "summary": "读取持久回执",
+        "description": "ReviewCandidate：接口尚未接入。完整语义及授权/增量/恢复见knowledge-directory-import-v0.3.candidate.md。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.3.0"
+            }
+          },
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "registration_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "import_task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "读取或同键同请求回放",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "原文／目录／回执均不缓存。"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "409": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "410": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "413": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "415": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "416": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "429": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "500": {
+            "$ref": "#/components/responses/UnknownResult"
+          },
+          "503": {
+            "$ref": "#/components/responses/DirectoryError"
+          }
+        }
+      }
+    },
+    "/datasets/{domain_id}/knowledge/directory-registrations/{registration_id}/imports/by-key/{idempotency_key}": {
+      "get": {
+        "operationId": "getDirectoryImportByKey",
+        "summary": "持久原键回查，不触发执行",
+        "description": "ReviewCandidate：接口尚未接入。完整语义及授权/增量/恢复见knowledge-directory-import-v0.3.candidate.md。",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "0.3.0"
+            }
+          },
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "registration_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "idempotency_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_-]+$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "读取或同键同请求回放",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "原文／目录／回执均不缓存。"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "409": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "410": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "413": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "415": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "416": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "429": {
+            "$ref": "#/components/responses/DirectoryError"
+          },
+          "500": {
+            "$ref": "#/components/responses/UnknownResult"
+          },
+          "503": {
+            "$ref": "#/components/responses/DirectoryError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "nativeSession": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "复用当前登录会话及逐次域/根授权，不是模型Key。"
+      }
+    },
+    "responses": {
+      "DirectoryError": {
+        "description": "按候选文档7节判断；不从英文message猜原因，不自动换键重试。",
+        "headers": {
+          "Cache-Control": {
+            "schema": {
+              "type": "string",
+              "const": "no-store"
+            },
+            "description": "原文／目录／回执均不缓存。"
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "原生登录失败可保留原生envelope；停止当前操作。",
+        "headers": {
+          "Cache-Control": {
+            "schema": {
+              "type": "string",
+              "const": "no-store"
+            },
+            "description": "原文／目录／回执均不缓存。"
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/Error"
+                },
+                {
+                  "$ref": "#/components/schemas/NativeUnauthorized"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "UnknownResult": {
+        "description": "可能执行结果未知；先按原键核查，不据HTTP状态推测无副作用。",
+        "headers": {
+          "Cache-Control": {
+            "schema": {
+              "type": "string",
+              "const": "no-store"
+            },
+            "description": "原文／目录／回执均不缓存。"
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Classification": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "group_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{32}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "component_side": {
+            "type": "string",
+            "enum": [
+              "frontend",
+              "backend",
+              "shared",
+              "cli",
+              "non_code"
+            ]
+          },
+          "language": {
+            "type": "string",
+            "maxLength": 32,
+            "pattern": "^(?:\\S(?:[^\\u0000-\\u001f\\u007f]*\\S)?)?$"
+          }
+        },
+        "required": [
+          "group_id",
+          "component_side",
+          "language"
+        ]
+      },
+      "Root": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "root_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "display_name": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1
+          },
+          "root_version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "runtime_platform": {
+            "type": "string",
+            "enum": [
+              "linux",
+              "windows"
+            ]
+          },
+          "ready": {
+            "type": "boolean"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "platform_unverified",
+                  "unavailable"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "root_id",
+          "display_name",
+          "root_version",
+          "runtime_platform",
+          "ready",
+          "reason"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "ready": {
+                  "const": true
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "reason": {
+                  "type": "null"
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "reason": {
+                  "type": "string",
+                  "enum": [
+                    "platform_unverified",
+                    "unavailable"
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Roots": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "domain_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Root"
+            },
+            "minItems": 0,
+            "maxItems": 32
+          }
+        },
+        "required": [
+          "domain_id",
+          "items"
+        ]
+      },
+      "RegistrationRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "registration_key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "^[A-Za-z0-9_-]+$"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1
+          },
+          "source_kind": {
+            "const": "controlled_directory"
+          },
+          "input_mode": {
+            "const": "server_read"
+          },
+          "root_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "scope_directories": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512,
+              "format": "knowledge-relative-directory",
+              "description": "仅这里允许.代表根，其余遵循相对路径规则。"
+            },
+            "minItems": 1,
+            "maxItems": 16,
+            "uniqueItems": true
+          },
+          "default_classification": {
+            "$ref": "#/components/schemas/Classification"
+          }
+        },
+        "required": [
+          "registration_key",
+          "name",
+          "source_kind",
+          "input_mode",
+          "root_id",
+          "scope_directories",
+          "default_classification"
+        ]
+      },
+      "Registration": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "registration_key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "^[A-Za-z0-9_-]+$"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1
+          },
+          "source_kind": {
+            "const": "controlled_directory"
+          },
+          "input_mode": {
+            "const": "server_read"
+          },
+          "root_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "scope_directories": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512,
+              "format": "knowledge-relative-directory",
+              "description": "仅这里允许.代表根，其余遵循相对路径规则。"
+            },
+            "minItems": 1,
+            "maxItems": 16,
+            "uniqueItems": true
+          },
+          "default_classification": {
+            "$ref": "#/components/schemas/Classification"
+          },
+          "registration_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "domain_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "registration_key",
+          "name",
+          "source_kind",
+          "input_mode",
+          "root_id",
+          "scope_directories",
+          "default_classification",
+          "registration_id",
+          "domain_id",
+          "created_at"
+        ]
+      },
+      "ListingRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "relative_directory": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "format": "knowledge-relative-directory",
+            "description": "仅这里允许.代表根，其余遵循相对路径规则。"
+          },
+          "name_prefix": {
+            "type": "string",
+            "maxLength": 128,
+            "pattern": "^[^/\\\\:*?\\[\\]{}\\u0000-\\u001f\\u007f]*$",
+            "description": "单个文件名的字面前缀，不是glob；UTF-8字节≤128。"
+          }
+        },
+        "required": [
+          "relative_directory",
+          "name_prefix"
+        ]
+      },
+      "Entry": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "relative_path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "format": "knowledge-relative-file",
+            "description": "候选文档3.1：UTF-8字节≤512、实际拼写、深度≤32、排除及平台校验；不是任意文件路径。"
+          },
+          "entry_kind": {
+            "type": "string",
+            "enum": [
+              "file",
+              "directory",
+              "blocked"
+            ]
+          },
+          "byte_length": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "selectable": {
+            "type": "boolean"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "link",
+                  "hardlink",
+                  "not_regular",
+                  "unreadable",
+                  "identity_unverified"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "relative_path",
+          "entry_kind",
+          "byte_length",
+          "selectable",
+          "reason"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "entry_kind": {
+                  "const": "file"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "selectable": {
+                  "const": true
+                },
+                "reason": {
+                  "type": "null"
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "selectable": {
+                  "const": false
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Listing": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "listing_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "domain_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "registration_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "root_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "root_version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "relative_directory": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "format": "knowledge-relative-directory",
+            "description": "仅这里允许.代表根，其余遵循相对路径规则。"
+          },
+          "name_prefix": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "captured_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "complete": {
+            "type": "boolean"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "limit_reached",
+                  "read_error",
+                  "timeout",
+                  "changed_during_read"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "total_entries": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 512
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Entry"
+            },
+            "minItems": 0,
+            "maxItems": 50
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 256,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "listing_id",
+          "domain_id",
+          "registration_id",
+          "root_id",
+          "root_version",
+          "relative_directory",
+          "name_prefix",
+          "captured_at",
+          "expires_at",
+          "complete",
+          "reason",
+          "total_entries",
+          "items",
+          "next_cursor"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "complete": {
+                  "const": true
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "reason": {
+                  "type": "null"
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "reason": {
+                  "type": "string",
+                  "enum": [
+                    "limit_reached",
+                    "read_error",
+                    "timeout",
+                    "changed_during_read"
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      },
+      "ObservationRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "selected_paths": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512,
+              "format": "knowledge-relative-file",
+              "description": "候选文档3.1：UTF-8字节≤512、实际拼写、深度≤32、排除及平台校验；不是任意文件路径。"
+            },
+            "minItems": 1,
+            "maxItems": 32,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "selected_paths"
+        ]
+      },
+      "ObservationItem": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "relative_path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "format": "knowledge-relative-file",
+            "description": "候选文档3.1：UTF-8字节≤512、实际拼写、深度≤32、排除及平台校验；不是任意文件路径。"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "verified",
+              "ineligible",
+              "missing",
+              "unobserved"
+            ]
+          },
+          "eligible": {
+            "type": "boolean"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "unsupported_format",
+                  "too_large",
+                  "invalid_utf8",
+                  "nul_byte",
+                  "secret_marker",
+                  "not_regular",
+                  "link",
+                  "hardlink",
+                  "identity_unverified",
+                  "missing",
+                  "unreadable",
+                  "changed_during_read",
+                  "timeout",
+                  "budget_exhausted",
+                  "platform_unverified"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "byte_length": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "sha256": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "source_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{32}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "expected_revision_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{32}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "change_kind": {
+            "type": "string",
+            "enum": [
+              "add",
+              "update",
+              "unchanged",
+              "blocked",
+              "missing_proposal",
+              "unobserved"
+            ]
+          }
+        },
+        "required": [
+          "relative_path",
+          "state",
+          "eligible",
+          "reason",
+          "byte_length",
+          "sha256",
+          "source_id",
+          "expected_revision_id",
+          "change_kind"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "state": {
+                  "const": "verified"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "eligible": {
+                  "const": true
+                },
+                "reason": {
+                  "type": "null"
+                },
+                "byte_length": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 2097152
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "change_kind": {
+                  "type": "string",
+                  "enum": [
+                    "add",
+                    "update",
+                    "unchanged"
+                  ]
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "eligible": {
+                  "const": false
+                },
+                "sha256": {
+                  "type": "null"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "state": {
+                  "const": "ineligible"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "reason": {
+                  "type": "string",
+                  "enum": [
+                    "unsupported_format",
+                    "too_large",
+                    "invalid_utf8",
+                    "nul_byte",
+                    "secret_marker",
+                    "not_regular",
+                    "link",
+                    "hardlink",
+                    "identity_unverified"
+                  ]
+                },
+                "source_id": {
+                  "type": "null"
+                },
+                "expected_revision_id": {
+                  "type": "null"
+                },
+                "change_kind": {
+                  "const": "blocked"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "state": {
+                  "const": "missing"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "reason": {
+                  "const": "missing"
+                },
+                "byte_length": {
+                  "type": "null"
+                },
+                "change_kind": {
+                  "type": "string",
+                  "enum": [
+                    "missing_proposal",
+                    "unobserved"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "state": {
+                  "const": "unobserved"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "reason": {
+                  "type": "string",
+                  "enum": [
+                    "unreadable",
+                    "changed_during_read",
+                    "timeout",
+                    "budget_exhausted",
+                    "platform_unverified"
+                  ]
+                },
+                "byte_length": {
+                  "type": "null"
+                },
+                "source_id": {
+                  "type": "null"
+                },
+                "expected_revision_id": {
+                  "type": "null"
+                },
+                "change_kind": {
+                  "const": "unobserved"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "state": {
+                  "const": "verified"
+                },
+                "change_kind": {
+                  "const": "add"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "source_id": {
+                  "type": "null"
+                },
+                "expected_revision_id": {
+                  "type": "null"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "state": {
+                  "const": "verified"
+                },
+                "change_kind": {
+                  "enum": [
+                    "update",
+                    "unchanged"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "source_id": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{32}$"
+                },
+                "expected_revision_id": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{32}$"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Observation": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "observation_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "domain_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "registration_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "root_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "root_version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "policy_version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "default_classification": {
+            "$ref": "#/components/schemas/Classification"
+          },
+          "selected_paths": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512,
+              "format": "knowledge-relative-file",
+              "description": "候选文档3.1：UTF-8字节≤512、实际拼写、深度≤32、排除及平台校验；不是任意文件路径。"
+            },
+            "minItems": 1,
+            "maxItems": 32,
+            "uniqueItems": true
+          },
+          "complete": {
+            "type": "boolean"
+          },
+          "observation_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "captured_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ObservationItem"
+            },
+            "minItems": 1,
+            "maxItems": 32
+          }
+        },
+        "required": [
+          "observation_id",
+          "domain_id",
+          "registration_id",
+          "root_id",
+          "root_version",
+          "policy_version",
+          "default_classification",
+          "selected_paths",
+          "complete",
+          "observation_sha256",
+          "captured_at",
+          "expires_at",
+          "items"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "complete": {
+                  "const": true
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "items": {
+                  "items": {
+                    "properties": {
+                      "state": {
+                        "type": "string",
+                        "enum": [
+                          "verified",
+                          "ineligible"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "PreviewRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "observation_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "observation_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "relative_path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "format": "knowledge-relative-file",
+            "description": "候选文档3.1：UTF-8字节≤512、实际拼写、深度≤32、排除及平台校验；不是任意文件路径。"
+          },
+          "classification": {
+            "$ref": "#/components/schemas/Classification"
+          }
+        },
+        "required": [
+          "observation_id",
+          "observation_sha256",
+          "relative_path",
+          "classification"
+        ]
+      },
+      "PreviewItem": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "relative_path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "format": "knowledge-relative-file",
+            "description": "候选文档3.1：UTF-8字节≤512、实际拼写、深度≤32、排除及平台校验；不是任意文件路径。"
+          },
+          "classification": {
+            "$ref": "#/components/schemas/Classification"
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "add",
+              "update",
+              "unchanged"
+            ]
+          },
+          "source_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{32}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "expected_revision_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{32}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "byte_length": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2097152
+          }
+        },
+        "required": [
+          "relative_path",
+          "classification",
+          "action",
+          "source_id",
+          "expected_revision_id",
+          "sha256",
+          "byte_length"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "action": {
+                  "const": "add"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "source_id": {
+                  "type": "null"
+                },
+                "expected_revision_id": {
+                  "type": "null"
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "source_id": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{32}$"
+                },
+                "expected_revision_id": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{32}$"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Preview": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "preview_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "domain_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "registration_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "root_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "root_version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "policy_version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "observation_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "observation_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "manifest_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "captured_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "consumed_task_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{32}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PreviewItem"
+            },
+            "minItems": 1,
+            "maxItems": 1
+          }
+        },
+        "required": [
+          "preview_id",
+          "domain_id",
+          "registration_id",
+          "root_id",
+          "root_version",
+          "policy_version",
+          "observation_id",
+          "observation_sha256",
+          "manifest_sha256",
+          "captured_at",
+          "expires_at",
+          "consumed_task_id",
+          "items"
+        ]
+      },
+      "ContentWindow": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "preview_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "byte_length": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 65536
+          },
+          "total_bytes": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2097152
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 65536
+          }
+        },
+        "required": [
+          "preview_id",
+          "offset",
+          "byte_length",
+          "total_bytes",
+          "sha256",
+          "text"
+        ]
+      },
+      "CommitRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "preview_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "manifest_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "idempotency_key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_-]+$"
+          }
+        },
+        "required": [
+          "preview_id",
+          "manifest_sha256",
+          "idempotency_key"
+        ]
+      },
+      "Result": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "relative_path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "format": "knowledge-relative-file",
+            "description": "候选文档3.1：UTF-8字节≤512、实际拼写、深度≤32、排除及平台校验；不是任意文件路径。"
+          },
+          "classification": {
+            "$ref": "#/components/schemas/Classification"
+          },
+          "save_status": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "unchanged",
+              "failed"
+            ]
+          },
+          "catalogue_status": {
+            "type": "string",
+            "enum": [
+              "registered",
+              "failed"
+            ]
+          },
+          "structure_status": {
+            "const": "deferred"
+          },
+          "full_text_status": {
+            "const": "disabled"
+          },
+          "vector_status": {
+            "const": "disabled"
+          },
+          "source_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{32}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "source_revision_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{32}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "root_node_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{32}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "byte_length": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2097152
+          },
+          "code": {
+            "type": "string",
+            "enum": [
+              "saved",
+              "save_failed"
+            ]
+          }
+        },
+        "required": [
+          "relative_path",
+          "classification",
+          "save_status",
+          "catalogue_status",
+          "structure_status",
+          "full_text_status",
+          "vector_status",
+          "source_id",
+          "source_revision_id",
+          "root_node_id",
+          "sha256",
+          "byte_length",
+          "code"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "save_status": {
+                  "const": "failed"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "catalogue_status": {
+                  "const": "failed"
+                },
+                "source_id": {
+                  "type": "null"
+                },
+                "source_revision_id": {
+                  "type": "null"
+                },
+                "root_node_id": {
+                  "type": "null"
+                },
+                "code": {
+                  "const": "save_failed"
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "catalogue_status": {
+                  "const": "registered"
+                },
+                "source_id": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{32}$"
+                },
+                "source_revision_id": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{32}$"
+                },
+                "root_node_id": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{32}$"
+                },
+                "code": {
+                  "const": "saved"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Receipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "import_task_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "domain_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "registration_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "preview_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "observation_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          },
+          "manifest_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "succeeded",
+              "failed"
+            ]
+          },
+          "model_calls": {
+            "const": 0
+          },
+          "mode": {
+            "const": "catalogue_only"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Result"
+            },
+            "minItems": 1,
+            "maxItems": 1
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "import_task_id",
+          "domain_id",
+          "registration_id",
+          "preview_id",
+          "observation_id",
+          "manifest_sha256",
+          "status",
+          "model_calls",
+          "mode",
+          "items",
+          "created_at"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "failed"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "items": {
+                  "items": {
+                    "properties": {
+                      "save_status": {
+                        "const": "failed"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "items": {
+                  "items": {
+                    "properties": {
+                      "save_status": {
+                        "type": "string",
+                        "enum": [
+                          "created",
+                          "updated",
+                          "unchanged"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Capabilities": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "contract": {
+            "const": "C2"
+          },
+          "version": {
+            "const": "0.3.0"
+          },
+          "status": {
+            "const": "ReviewCandidate"
+          },
+          "implemented": {
+            "const": false
+          },
+          "task_execution": {
+            "const": "synchronous_single_item"
+          },
+          "source_kind": {
+            "const": "controlled_directory"
+          },
+          "input_mode": {
+            "const": "server_read"
+          },
+          "mode": {
+            "const": "catalogue_only"
+          },
+          "structure": {
+            "const": "deferred"
+          },
+          "full_text": {
+            "const": "disabled"
+          },
+          "vector": {
+            "const": "disabled"
+          },
+          "model_calls": {
+            "const": 0
+          },
+          "external_models": {
+            "const": false
+          },
+          "automatic_ingestion": {
+            "const": false
+          },
+          "allowed_model_uses": {
+            "type": "array",
+            "maxItems": 0,
+            "items": false
+          },
+          "text_extensions": {
+            "type": "array",
+            "const": [
+              ".txt",
+              ".md",
+              ".markdown",
+              ".ts",
+              ".tsx",
+              ".js",
+              ".jsx",
+              ".go",
+              ".css",
+              ".scss",
+              ".json",
+              ".yaml",
+              ".yml",
+              ".html",
+              ".htm",
+              ".sql",
+              ".sh",
+              ".c",
+              ".cpp",
+              ".h",
+              ".hpp",
+              ".java",
+              ".rs",
+              ".py"
+            ]
+          },
+          "limits": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "roots_per_domain": {
+                "type": "integer",
+                "const": 32
+              },
+              "scope_directories": {
+                "type": "integer",
+                "const": 16
+              },
+              "listing_entries": {
+                "type": "integer",
+                "const": 512
+              },
+              "listing_page_size": {
+                "type": "integer",
+                "const": 50
+              },
+              "selected_paths": {
+                "type": "integer",
+                "const": 32
+              },
+              "source_bytes": {
+                "type": "integer",
+                "const": 2097152
+              },
+              "observation_read_bytes": {
+                "type": "integer",
+                "const": 67108864
+              },
+              "request_json_bytes": {
+                "type": "integer",
+                "const": 32768
+              },
+              "response_json_bytes": {
+                "type": "integer",
+                "const": 262144
+              },
+              "content_window_bytes": {
+                "type": "integer",
+                "const": 65536
+              },
+              "content_response_json_bytes": {
+                "type": "integer",
+                "const": 1048576
+              },
+              "listing_timeout_seconds": {
+                "type": "integer",
+                "const": 10
+              },
+              "observation_timeout_seconds": {
+                "type": "integer",
+                "const": 30
+              },
+              "preview_read_timeout_seconds": {
+                "type": "integer",
+                "const": 10
+              },
+              "confirmation_read_timeout_seconds": {
+                "type": "integer",
+                "const": 10
+              },
+              "key_lookup_wait_seconds": {
+                "type": "integer",
+                "const": 10
+              },
+              "snapshot_ttl_seconds": {
+                "type": "integer",
+                "const": 600
+              },
+              "preview_max_ttl_seconds": {
+                "type": "integer",
+                "const": 600
+              },
+              "unconsumed_preview_metadata_hours": {
+                "type": "integer",
+                "const": 24
+              },
+              "active_listings": {
+                "type": "integer",
+                "const": 8
+              },
+              "active_observations": {
+                "type": "integer",
+                "const": 4
+              },
+              "active_previews": {
+                "type": "integer",
+                "const": 4
+              },
+              "path_utf8_bytes": {
+                "type": "integer",
+                "const": 512
+              },
+              "path_depth": {
+                "type": "integer",
+                "const": 32
+              },
+              "name_prefix_utf8_bytes": {
+                "type": "integer",
+                "const": 128
+              }
+            },
+            "required": [
+              "roots_per_domain",
+              "scope_directories",
+              "listing_entries",
+              "listing_page_size",
+              "selected_paths",
+              "source_bytes",
+              "observation_read_bytes",
+              "request_json_bytes",
+              "response_json_bytes",
+              "content_window_bytes",
+              "content_response_json_bytes",
+              "listing_timeout_seconds",
+              "observation_timeout_seconds",
+              "preview_read_timeout_seconds",
+              "confirmation_read_timeout_seconds",
+              "key_lookup_wait_seconds",
+              "snapshot_ttl_seconds",
+              "preview_max_ttl_seconds",
+              "unconsumed_preview_metadata_hours",
+              "active_listings",
+              "active_observations",
+              "active_previews",
+              "path_utf8_bytes",
+              "path_depth",
+              "name_prefix_utf8_bytes"
+            ]
+          },
+          "receipt_retention": {
+            "const": "no_automatic_cleanup"
+          }
+        },
+        "required": [
+          "contract",
+          "version",
+          "status",
+          "implemented",
+          "task_execution",
+          "source_kind",
+          "input_mode",
+          "mode",
+          "structure",
+          "full_text",
+          "vector",
+          "model_calls",
+          "external_models",
+          "automatic_ingestion",
+          "allowed_model_uses",
+          "text_extensions",
+          "limits",
+          "receipt_retention"
+        ]
+      },
+      "Error": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "knowledge_directory_invalid",
+              "knowledge_directory_not_found",
+              "knowledge_directory_version_mismatch",
+              "knowledge_directory_conflict",
+              "knowledge_directory_expired",
+              "knowledge_directory_too_large",
+              "knowledge_directory_unsupported",
+              "knowledge_directory_range",
+              "knowledge_directory_capacity",
+              "knowledge_directory_unavailable"
+            ]
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "root_changed",
+                  "policy_changed",
+                  "source_changed",
+                  "revision_changed",
+                  "observation_incomplete",
+                  "observation_mismatch",
+                  "ineligible",
+                  "preview_consumed",
+                  "idempotency_conflict",
+                  "root_unready",
+                  "result_unknown"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "data": {
+            "type": "null"
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "source_contract_version": {
+            "const": "0.3.0"
+          },
+          "request_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          }
+        },
+        "required": [
+          "code",
+          "reason",
+          "message",
+          "data",
+          "contract_version",
+          "source_contract_version",
+          "request_id"
+        ]
+      },
+      "NativeUnauthorized": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "data": {
+            "type": "null"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ]
+      },
+      "CapabilitiesResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "integer",
+            "const": 0
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "data": {
+            "$ref": "#/components/schemas/Capabilities"
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "source_contract_version": {
+            "const": "0.3.0"
+          },
+          "request_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data",
+          "contract_version",
+          "source_contract_version",
+          "request_id"
+        ]
+      },
+      "RootsResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "integer",
+            "const": 0
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "data": {
+            "$ref": "#/components/schemas/Roots"
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "source_contract_version": {
+            "const": "0.3.0"
+          },
+          "request_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data",
+          "contract_version",
+          "source_contract_version",
+          "request_id"
+        ]
+      },
+      "RegistrationResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "integer",
+            "const": 0
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "data": {
+            "$ref": "#/components/schemas/Registration"
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "source_contract_version": {
+            "const": "0.3.0"
+          },
+          "request_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data",
+          "contract_version",
+          "source_contract_version",
+          "request_id"
+        ]
+      },
+      "ListingResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "integer",
+            "const": 0
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "data": {
+            "$ref": "#/components/schemas/Listing"
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "source_contract_version": {
+            "const": "0.3.0"
+          },
+          "request_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data",
+          "contract_version",
+          "source_contract_version",
+          "request_id"
+        ]
+      },
+      "ObservationResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "integer",
+            "const": 0
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "data": {
+            "$ref": "#/components/schemas/Observation"
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "source_contract_version": {
+            "const": "0.3.0"
+          },
+          "request_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data",
+          "contract_version",
+          "source_contract_version",
+          "request_id"
+        ]
+      },
+      "PreviewResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "integer",
+            "const": 0
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "data": {
+            "$ref": "#/components/schemas/Preview"
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "source_contract_version": {
+            "const": "0.3.0"
+          },
+          "request_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data",
+          "contract_version",
+          "source_contract_version",
+          "request_id"
+        ]
+      },
+      "ContentWindowResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "integer",
+            "const": 0
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "data": {
+            "$ref": "#/components/schemas/ContentWindow"
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "source_contract_version": {
+            "const": "0.3.0"
+          },
+          "request_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data",
+          "contract_version",
+          "source_contract_version",
+          "request_id"
+        ]
+      },
+      "ReceiptResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "integer",
+            "const": 0
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "data": {
+            "$ref": "#/components/schemas/Receipt"
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "source_contract_version": {
+            "const": "0.3.0"
+          },
+          "request_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data",
+          "contract_version",
+          "source_contract_version",
+          "request_id"
+        ]
+      }
+    }
+  },
+  "x-review-status": "ReviewCandidate",
+  "x-implemented": false,
+  "x-normative-document": "docs/knowledge-directory-import-v0.3.candidate.md",
+  "x-base-frozen-contract": "docs/knowledge-sources-v1.freeze.json",
+  "x-scope-limits": {
+    "roots_per_domain": 32,
+    "scope_directories": 16,
+    "listing_entries": 512,
+    "listing_page_size": 50,
+    "selected_paths": 32,
+    "source_bytes": 2097152,
+    "observation_read_bytes": 67108864,
+    "request_json_bytes": 32768,
+    "response_json_bytes": 262144,
+    "content_window_bytes": 65536,
+    "content_response_json_bytes": 1048576,
+    "listing_timeout_seconds": 10,
+    "observation_timeout_seconds": 30,
+    "preview_read_timeout_seconds": 10,
+    "confirmation_read_timeout_seconds": 10,
+    "key_lookup_wait_seconds": 10,
+    "snapshot_ttl_seconds": 600,
+    "preview_max_ttl_seconds": 600,
+    "unconsumed_preview_metadata_hours": 24,
+    "active_listings": 8,
+    "active_observations": 4,
+    "active_previews": 4,
+    "path_utf8_bytes": 512,
+    "path_depth": 32,
+    "name_prefix_utf8_bytes": 128
+  },
+  "x-digest-projection": {
+    "encoding": "LP(token)=ASCII十进制UTF-8字节长+冒号+token的UTF-8原字节；顺序连接LP，不加换行；int十进制；bool true/false；null为空token；数组前置项数token。路径按UTF-8字节升序。摘要为连接字节的SHA256小写hex；客户端只回送。",
+    "observation": [
+      "C2-DIR-OBS-1",
+      "observation_id",
+      "domain_id",
+      "registration_id",
+      "root_id",
+      "root_version",
+      "policy_version",
+      "default_classification.group_id",
+      "default_classification.component_side",
+      "default_classification.language",
+      "captured_at",
+      "expires_at",
+      "complete",
+      "selected_paths.length",
+      "selected_paths[]",
+      "items.length",
+      "items[].relative_path",
+      "items[].state",
+      "items[].eligible",
+      "items[].reason",
+      "items[].byte_length",
+      "items[].sha256",
+      "items[].source_id",
+      "items[].expected_revision_id",
+      "items[].change_kind"
+    ],
+    "preview": [
+      "C2-DIR-PREVIEW-1",
+      "preview_id",
+      "domain_id",
+      "registration_id",
+      "root_id",
+      "root_version",
+      "policy_version",
+      "observation_id",
+      "observation_sha256",
+      "captured_at",
+      "expires_at",
+      "items[0].relative_path",
+      "items[0].classification.group_id",
+      "items[0].classification.component_side",
+      "items[0].classification.language",
+      "items[0].action",
+      "items[0].source_id",
+      "items[0].expected_revision_id",
+      "items[0].sha256",
+      "items[0].byte_length"
+    ],
+    "note": "数组按每项所有字段逐行展开，不是按列聚合；consumed_task_id不入预览摘要。空group_id/null与空language只在各固定字段位置使用，不混淆。"
+  },
+  "x-exclusions": [
+    "batch_commit",
+    "background_job",
+    "binary_original",
+    "web_rss",
+    "move_delete",
+    "parsing",
+    "indexing",
+    "models",
+    "mcp",
+    "memory"
+  ]
+}
