@@ -1,0 +1,1887 @@
+{
+  "document_version": "v0.61-inputs",
+  "recorded_at": "2026-10-26T14:36:19.954Z",
+  "status": "PreparationEvidenceOnly_NoBusinessIntegration",
+  "objective": "提前固定文档结构的合成语义输入、近上限I/O基准和人工Wiki复用依据，使具体确认后能按真实事实推进实现与性能验证。",
+  "request_snapshot": {
+    "continuous_original": "请注意后续的步骤，请你持续不断地进行下去，跟另外一个会话，甚至你可以开其他的会话去协调。但一个讯息是你必须要传达的，就是一定一定不能够停下来。一定一定就是至少说有一个会话不能停下来，要主会话不能停下来，你就是主会话，要牵动其他废话，持续不断地推进咱们这个工作，直到最后完成。",
+    "scope_constraint": "新共享候选具体确认后才实施；合成资料、模型/本地推理0、不启动多轮审查，源码/Git/运行单写入。",
+    "shared_contract_gate": "候选确认前不接入业务代码"
+  },
+  "clarification": {
+    "state": "Settled",
+    "notice": "本轮准备范围已明确，不追加问题；R2具体冻结请求仍保持原对象，不重复提问。",
+    "scope": "仅独立输入／源码准备，不是新业务的Proceed。"
+  },
+  "first_principles_analysis": {
+    "result": "后续性能与保真验证有先于输出的固定输入，复用边界有拥有路径证据。",
+    "facts": [
+      {
+        "fact": "两份既有Office原生提取存在顺序/inline/列表属性损失；源事实必须独立于输出。",
+        "evidence_refs": [
+          {
+            "path": ".local-data/stage3-20261026/rich-document-candidate-draft/r2-native/native-assessment.json",
+            "sha256": "2b96810240ace0e233001b945b1622852f471c1fd14b4d83a6edfafb35dd6563",
+            "byte_length": 63211
+          }
+        ]
+      },
+      {
+        "fact": "语义矩阵已绑定27源事实与1身份要求，28项新profile全部NotRun。",
+        "evidence_refs": [
+          {
+            "path": ".local-data/stage3-20261026/rich-document-candidate-draft/source-fact-matrix-v1.json",
+            "sha256": "c7533ffb28660fdf5a743ccdac422d5be0539443c30ab8789d236807e9ff8016",
+            "byte_length": 104470
+          }
+        ]
+      },
+      {
+        "fact": "三格式各7.75MiB固定源输入已准备；source字节/包预算/页树独立核对，应用性能NotRun。",
+        "evidence_refs": [
+          {
+            "path": ".local-data/stage3-20261026/rich-document-candidate-draft/capacity-independent-binding.json",
+            "sha256": "726050e0bd1133085243a0b421401fd4f0f36c9291d0de0cb8699e2b227be430",
+            "byte_length": 1841
+          }
+        ]
+      },
+      {
+        "fact": "现有.2只保护preview到confirm，旧Wiki编辑与历史分开提交；后续人工页不能直接套用其版本语义。",
+        "evidence_refs": [
+          {
+            "path": ".local-data/stage3-20261026/wiki-next-slice-backend-input/source-map.json",
+            "sha256": "839d92005676cb9ae1ba3273bf9893e52ccd1a4526336f335644e774768205d6",
+            "byte_length": 45005
+          },
+          {
+            "path": ".local-data/stage3-20261026/wiki-next-slice-ui-input.json",
+            "sha256": "e3273a184a39615916705a60b41aa6b596b16ab70345b2b1a729e754144845cd",
+            "byte_length": 16010
+          }
+        ]
+      }
+    ],
+    "constraints": [
+      {
+        "constraint": "R2三件仍为02c1951原文，具体确认前不接业务；旧41保护件、原验收范围不变。",
+        "source_refs": [
+          "docs/stage3r2-document-handoff.md",
+          "docs/knowledge-document-structure-v0.1.candidate.md",
+          "docs/knowledge-document-structure-v0.1.candidate.openapi.json",
+          "docs/knowledge-document-structure-v0.1.candidate.examples.json"
+        ]
+      },
+      {
+        "constraint": "合成资料、模型/本地推理0、不启动多轮审查、A唯一tracked/Git/运行写入。",
+        "source_refs": [
+          "AGENTS.md",
+          "docs/stage2-local-coordination.md"
+        ]
+      },
+      {
+        "constraint": "项目原目录/命名保持，原六服务/卷/凭据不重建。",
+        "source_refs": [
+          "AGENTS.md"
+        ]
+      }
+    ],
+    "assumptions": [
+      {
+        "assumption": "新Go源投影能正确处理已预标源事实与容量输入。",
+        "validation": "具体批准后实现生产器并逐层验证；当前没有输出，不能标通过。"
+      },
+      {
+        "assumption": "固定近上限I/O输入在候选时间/RSS门槛内可完成。",
+        "validation": "冻结后按原阈值实测；不能由源字节或PDF.js核对推算Go应用速度。"
+      }
+    ],
+    "unknowns": [
+      {
+        "item": "R2具体冻结真人决定",
+        "owner": "用户",
+        "blocks": "新共享接口/业务实施",
+        "release": "针对02c1951三件的真实明确回复；当前Pending"
+      },
+      {
+        "item": "源保真、任务/子模式、权限与实际性能",
+        "owner": "A与后续获Web单写窗会话",
+        "blocks": "R2工程验收",
+        "release": "具体确认后实现并完成同版合成真实验证"
+      },
+      {
+        "item": "人工Wiki页面身份/编辑基准/正文和关系原子范围/固定引用及依赖权限",
+        "owner": "后续具体候选",
+        "blocks": "人工Wiki业务实施",
+        "release": "另批形成具体候选并确认；当前只读盘点不代替决定"
+      }
+    ],
+    "fundamentals": [
+      "源字节与事实",
+      "固定身份与来源",
+      "性能样本与计量边界",
+      "拥有层复用",
+      "真实权限与明确冻结"
+    ],
+    "causal_chain": [
+      "小型例不证明近上限I/O→分离正文和惰性padding→固定三格式7.75MiB输入，不宣称最坏情况。",
+      "原生输出已有损失→先封存源预标和所有摘要→新生产器不能反向改预期。",
+      "人工编辑与导入CAS阶段不同→查明真实拥有路径→后续明确编辑基准和原子范围，避免直接沿用。"
+    ],
+    "alternatives": [
+      {
+        "choice": "维持只有小型样本",
+        "effect": "无法准备近上限I/O及实际源规模的固定计量。"
+      },
+      {
+        "choice": "未获具体冻结就接生产器和新接口",
+        "effect": "违反现有共享契约确认门槛，不采用。"
+      },
+      {
+        "choice": "准备固定源输入与拥有层证据，确认后再实施",
+        "effect": "本轮采用；推动独立工作且保留授权和实测边界。"
+      }
+    ],
+    "decision_criteria": [
+      "性能先于基础设施扩建",
+      "源真值先于输出",
+      "旧契约不变",
+      "不扩大真实资料/模型权限",
+      "证据可核对与计量诚实"
+    ],
+    "derived_plan": [
+      "源事实封存→绑定矩阵；服务于保真验证。",
+      "三格式固定源规模→摘要/包预算/视觉核对；服务于后续计量。",
+      "前后端拥有层盘点→分开事实/未知；服务于人工Wiki后续候选。",
+      "保存补充报告并推候选分支→具体确认对象仍不变；不合main或接业务。"
+    ],
+    "verification": "字节/摘要/源路径及源码锚点检查；不以这些检查替代新Go/native/API/浏览器或性能。"
+  },
+  "source": {
+    "based_on_candidate_commit": "02c1951f8a84327ff2ed7257b694529cb79eef17",
+    "base_main": "abdb141ae17b80a7f980f042220f07e349b868c0",
+    "branch": "codex/stage3r2-document-candidate",
+    "candidate_artifacts": [
+      {
+        "path": "docs/knowledge-document-structure-v0.1.candidate.md",
+        "sha256": "0ea3c83a7cf8a33a1c65c0ecff8535f37fe6c080fdf4965503f8252ef5e5829f",
+        "byte_length": 26810
+      },
+      {
+        "path": "docs/knowledge-document-structure-v0.1.candidate.openapi.json",
+        "sha256": "57f87a1331c588ad9601d51313ea7ae0811a297ecd117bc47ac7e7332e7d4d53",
+        "byte_length": 277819
+      },
+      {
+        "path": "docs/knowledge-document-structure-v0.1.candidate.examples.json",
+        "sha256": "ae15b5f1a85de61aea885c0a758390629f78b82ad82b3c8c26cfd666f4ebbeb7",
+        "byte_length": 1110483
+      }
+    ],
+    "candidate_artifacts_unchanged": true,
+    "initial_R2_report_unchanged": true,
+    "R1_report_unchanged": true,
+    "tracked_business_changes": 0,
+    "dependency_changes": 0,
+    "runtime_changes": 0
+  },
+  "task_profile": {
+    "delivery": "输入/源码准备及既有docs证据补充",
+    "carrier": "本报告、准备说明、既有交接及本机忽略目录原始记录",
+    "new_public_contract": false,
+    "adversarial_review": false
+  },
+  "semantic_inputs": {
+    "matrix": {
+      "path": ".local-data/stage3-20261026/rich-document-candidate-draft/source-fact-matrix-v1.json",
+      "sha256": "c7533ffb28660fdf5a743ccdac422d5be0539443c30ab8789d236807e9ff8016",
+      "byte_length": 104470
+    },
+    "counts": {
+      "office_v1_source_facts": 9,
+      "office_v2_source_facts": 16,
+      "pdf_source_facts": 2,
+      "normative_identity_cases": 1,
+      "total_source_facts": 27,
+      "total_cases": 28,
+      "new_profile_passed": 0,
+      "new_profile_not_run": 28
+    },
+    "originals": [
+      {
+        "path": ".local-data/stage3-20261026/rich-document-candidate-draft/fixtures-v1/synthetic-outline-table-list-image.docx",
+        "sha256": "e78dcf5e61c432d100711a182fc67fcd79850cc185bbc097a688ec720790f6e5",
+        "byte_length": 6423
+      },
+      {
+        "path": ".local-data/stage3-20261026/rich-document-candidate-draft/fixtures-v1/synthetic-slides-table-image.pptx",
+        "sha256": "8b1ded9d9d0a588f99a5160dfab1ab9299b7eb1c5a9bd04f24dba3a81fa2519f",
+        "byte_length": 7248
+      },
+      {
+        "path": ".local-data/stage3-20261026/rich-document-candidate-draft/source-fixtures-v2/synthetic-docx-source-semantics-v2.docx",
+        "sha256": "c07bd44fcb7475969bba31c3573d92333f032946dcd8e385d726e2bd08181b4e",
+        "byte_length": 7620
+      },
+      {
+        "path": ".local-data/stage3-20261026/rich-document-candidate-draft/source-fixtures-v2/synthetic-pptx-source-order-v2.pptx",
+        "sha256": "2bcaf2927b6394a9b6adb81e7e568eaa796a7e18166d0882ed879296b807b1a4",
+        "byte_length": 9698
+      },
+      {
+        "path": ".local-data/stage3-20261026/document-fixtures/pdf/blank-physical-page.pdf",
+        "sha256": "ca3522dab8464a7d1b186cce98f336a43a5ae5b10593ac6fa4f29d80a17c4094",
+        "byte_length": 1884
+      },
+      {
+        "path": ".local-data/stage3-20261026/document-fixtures/pdf/image-only-physical-page.pdf",
+        "sha256": "59d9c33321ae7f3f14faa4e54e4f481e5e640a1238b28226cee08a85d0f9bf35",
+        "byte_length": 7434
+      }
+    ],
+    "raw_negative_parts": [
+      {
+        "path": ".local-data/stage3-20261026/rich-document-candidate-draft/source-fixtures-v2/negative-style-cycle.document.xml",
+        "sha256": "d3798bdca23f90657f48fbc3fd290b9d0b517be64ec916d5616886c10094258c",
+        "byte_length": 793
+      },
+      {
+        "path": ".local-data/stage3-20261026/rich-document-candidate-draft/source-fixtures-v2/negative-style-cycle.styles.xml",
+        "sha256": "ffb09c40dffc0ec90ea94aebee508c655fb7831da59b9a69bdf424de2234b442",
+        "byte_length": 365
+      },
+      {
+        "path": ".local-data/stage3-20261026/rich-document-candidate-draft/source-fixtures-v2/negative-style-depth.document.xml",
+        "sha256": "0fe5f68bfdc016d4216d493c32df9d69fcd25b27d26060f104aec7d462c62f14",
+        "byte_length": 803
+      },
+      {
+        "path": ".local-data/stage3-20261026/rich-document-candidate-draft/source-fixtures-v2/negative-style-depth.styles.xml",
+        "sha256": "1f27a45e62b8fddcd3f300eb0dc730e1c3e0e8b5f4f819848ebaebecac91e12d",
+        "byte_length": 3957
+      }
+    ],
+    "case_ids": [
+      {
+        "id": "RD10",
+        "category": "source_fact",
+        "group": "office_v1",
+        "profile_id": "pptx-ooxml-slides/1",
+        "result": "NotRun"
+      },
+      {
+        "id": "RD11",
+        "category": "source_fact",
+        "group": "office_v1",
+        "profile_id": "pptx-ooxml-slides/1",
+        "result": "NotRun"
+      },
+      {
+        "id": "RD13",
+        "category": "source_fact",
+        "group": "office_v1",
+        "profile_id": "docx-ooxml-blocks/1",
+        "result": "NotRun"
+      },
+      {
+        "id": "RD14",
+        "category": "source_fact",
+        "group": "office_v1",
+        "profile_id": "docx-ooxml-blocks/1",
+        "result": "NotRun"
+      },
+      {
+        "id": "RD15",
+        "category": "source_fact",
+        "group": "office_v1",
+        "profile_id": "docx-ooxml-blocks/1",
+        "result": "NotRun"
+      },
+      {
+        "id": "RD16",
+        "category": "source_fact",
+        "group": "office_v1",
+        "profile_id": "docx-ooxml-blocks/1",
+        "result": "NotRun"
+      },
+      {
+        "id": "RD17",
+        "category": "source_fact",
+        "group": "office_v1",
+        "profile_id": "docx-ooxml-blocks/1",
+        "result": "NotRun"
+      },
+      {
+        "id": "RD19",
+        "category": "source_fact",
+        "group": "office_v1",
+        "profile_id": "docx-ooxml-blocks/1",
+        "result": "NotRun"
+      },
+      {
+        "id": "RD20",
+        "category": "source_fact",
+        "group": "office_v1",
+        "profile_id": "docx-ooxml-blocks/1",
+        "result": "NotRun"
+      },
+      {
+        "id": "R2S01",
+        "category": "source_fact",
+        "group": "office_v2",
+        "profile_id": "docx-ooxml-blocks/1",
+        "result": "NotRun"
+      },
+      {
+        "id": "R2S02",
+        "category": "source_fact",
+        "group": "office_v2",
+        "profile_id": "docx-ooxml-blocks/1",
+        "result": "NotRun"
+      },
+      {
+        "id": "R2S03",
+        "category": "source_fact",
+        "group": "office_v2",
+        "profile_id": "docx-ooxml-blocks/1",
+        "result": "NotRun"
+      },
+      {
+        "id": "R2S04",
+        "category": "source_fact",
+        "group": "office_v2",
+        "profile_id": "docx-ooxml-blocks/1",
+        "result": "NotRun"
+      },
+      {
+        "id": "R2S05",
+        "category": "source_fact",
+        "group": "office_v2",
+        "profile_id": "docx-ooxml-blocks/1",
+        "result": "NotRun"
+      },
+      {
+        "id": "R2S06",
+        "category": "source_fact",
+        "group": "office_v2",
+        "profile_id": "docx-ooxml-blocks/1",
+        "result": "NotRun"
+      },
+      {
+        "id": "R2S07",
+        "category": "source_fact",
+        "group": "office_v2",
+        "profile_id": "docx-ooxml-blocks/1",
+        "result": "NotRun"
+      },
+      {
+        "id": "R2S08",
+        "category": "source_fact",
+        "group": "office_v2",
+        "profile_id": "docx-ooxml-blocks/1",
+        "result": "NotRun"
+      },
+      {
+        "id": "R2S09",
+        "category": "source_fact",
+        "group": "office_v2",
+        "profile_id": "pptx-ooxml-slides/1",
+        "result": "NotRun"
+      },
+      {
+        "id": "R2S10",
+        "category": "source_fact",
+        "group": "office_v2",
+        "profile_id": "pptx-ooxml-slides/1",
+        "result": "NotRun"
+      },
+      {
+        "id": "R2S11",
+        "category": "source_fact",
+        "group": "office_v2",
+        "profile_id": "pptx-ooxml-slides/1",
+        "result": "NotRun"
+      },
+      {
+        "id": "R2S12",
+        "category": "source_fact",
+        "group": "office_v2",
+        "profile_id": "pptx-ooxml-slides/1",
+        "result": "NotRun"
+      },
+      {
+        "id": "R2S13",
+        "category": "source_fact",
+        "group": "office_v2",
+        "profile_id": "pptx-ooxml-slides/1",
+        "result": "NotRun"
+      },
+      {
+        "id": "R2S14",
+        "category": "source_fact",
+        "group": "office_v2",
+        "profile_id": "pptx-ooxml-slides/1",
+        "result": "NotRun"
+      },
+      {
+        "id": "R2S15",
+        "category": "source_fact",
+        "group": "office_v2",
+        "profile_id": "docx-ooxml-blocks/1",
+        "result": "NotRun"
+      },
+      {
+        "id": "R2S16",
+        "category": "source_fact",
+        "group": "office_v2",
+        "profile_id": "docx-ooxml-blocks/1",
+        "result": "NotRun"
+      },
+      {
+        "id": "R2P01",
+        "category": "source_fact",
+        "group": "pdf_source",
+        "profile_id": "pdf-plain-pages/1",
+        "result": "NotRun"
+      },
+      {
+        "id": "R2P02",
+        "category": "source_fact",
+        "group": "pdf_source",
+        "profile_id": "pdf-plain-pages/1",
+        "result": "NotRun"
+      },
+      {
+        "id": "R2I01",
+        "category": "normative_identity_case",
+        "group": "cross_original",
+        "profile_id": "pdf-plain-pages/1",
+        "result": "NotRun"
+      }
+    ],
+    "source_v2": {
+      "path": ".local-data/stage3-20261026/rich-document-candidate-draft/source-fixtures-v2/source-truth-v2.json",
+      "sha256": "1c645e05c2d80e0140245a47d36bf056fee538151e8bcfb6145db0cc33f1424f",
+      "byte_length": 81443
+    },
+    "source_v2_binding": {
+      "path": ".local-data/stage3-20261026/rich-document-candidate-draft/v2-source-independent-binding.json",
+      "sha256": "2c90c4ac2854e55099283a69dfc3705c6c7897d60eee48e2b2c33f3ed818a225",
+      "byte_length": 635,
+      "result": {
+        "recorded_at": "2026-10-26T14:05:46.497Z",
+        "passed": true,
+        "status": "SourceEvidenceBound_NotProducerVerified",
+        "scope": "Independent exact bytes/hash and expanded source path binding only.",
+        "manifest_sha256": "381c753881db9eb611c953c32ad423efa1b79d0ba8f7626aaf13dc9c007aafe7",
+        "source_truth_sha256": "1c645e05c2d80e0140245a47d36bf056fee538151e8bcfb6145db0cc33f1424f",
+        "manifest_files": 10,
+        "protected_files": 26,
+        "new_facts": 16,
+        "xml_fragments_and_paths": 34,
+        "old_candidate_unchanged": true,
+        "producer_runs": 0,
+        "native_parses": 0,
+        "application_calls": 0,
+        "model_calls": 0,
+        "local_inference": 0
+      }
+    },
+    "scope": "输入共28案，27源事实+1身份要求；不是28通过或覆盖率。"
+  },
+  "capacity_inputs": {
+    "source_manifest": {
+      "path": ".local-data/stage3-20261026/rich-document-candidate-draft/capacity-fixtures-v1/source-manifest.json",
+      "sha256": "c1ed1c32ee75986f9680fef1dcb732bce07f142a7121f837c721e985bc02d4a4",
+      "byte_length": 49537
+    },
+    "delivery_manifest": {
+      "path": ".local-data/stage3-20261026/rich-document-candidate-draft/capacity-fixtures-v1/delivery-manifest.json",
+      "sha256": "4a7f8db50af654fa332bf67a8c30de267fb856e855ecd114d02c328a849cc474",
+      "byte_length": 2641
+    },
+    "source_records": {
+      "path": ".local-data/stage3-20261026/rich-document-candidate-draft/capacity-fixtures-v1/source-records.json",
+      "sha256": "c76ccbab11785289a10a56608bfb3c8772b264a65d8821ac1d49e9d9c0308a02",
+      "byte_length": 1164305
+    },
+    "status": "SourcePrepared_NotProducerVerified",
+    "application_performance": "NotRun",
+    "fixed_date": "2026-10-26T00:00:00.000Z",
+    "seed_label": "LFEN-S3-R2-CAPACITY-1",
+    "documents": [
+      {
+        "name": "capacity-pdf-128-pages.pdf",
+        "format": "pdf",
+        "byte_length": 8126464,
+        "sha256": "31d44917c7908d32d7de62bfe010451bd6c4ebcdeaa5d2d6966f2eb111a5669a",
+        "physical_pages": 128,
+        "physical_slides": null,
+        "ordinary_body_paragraphs": null,
+        "source_text": {
+          "source_text_runs": 4480,
+          "unicode_scalar_values": 290560,
+          "utf8_bytes_without_structural_separators": 290560,
+          "text_concatenation_sha256": "1339d0d58714acf9c0347a30bb57c51bb9f7b7355290e5e293a84c372bb13926",
+          "source_text_plus_one_LF_per_run_upper_bound": 295040
+        },
+        "padding": {
+          "kind": "legal_uncompressed_inert_PDF_stream",
+          "catalog_key": "LFenCapacityPadding",
+          "object_reference": "261 0 R",
+          "byte_length": 7853814,
+          "sha256": "2fc660b05888daca4aea39ec6767131c4d21689457ab5a39856ea44eab76f6a2",
+          "fixed_seed_hex": "4c464e31",
+          "page_content_reference_count": 0,
+          "follows_EOF": false
+        },
+        "non_padding_file_bytes": 272650,
+        "package_layout": null,
+        "node_estimate": {
+          "status": "Unverified_ProducerNotRun",
+          "approximate_nodes": 400,
+          "explanation": "Heuristic root/pages/text blocks/passages only; not a measured output-node count."
+        }
+      },
+      {
+        "name": "capacity-docx-1000-paragraphs.docx",
+        "format": "docx",
+        "byte_length": 8126464,
+        "sha256": "6247d2c9f18dd1ec56df80d567e56c38b8732bcea6d71e6b1c23b720fbeee3c1",
+        "physical_pages": null,
+        "physical_slides": null,
+        "ordinary_body_paragraphs": 1000,
+        "source_text": {
+          "source_text_runs": 1000,
+          "unicode_scalar_values": 83000,
+          "utf8_bytes_without_structural_separators": 83000,
+          "text_concatenation_sha256": "cc81690e7d4caa2279cf714f6c88bec168488ab8e49960fe8dae7811ac65c5a6",
+          "source_text_plus_one_LF_per_run_upper_bound": 84000
+        },
+        "padding": {
+          "kind": "uncompressed_unreferenced_OPC_binary_part",
+          "part": "_lfen_benchmark/padding.bin",
+          "byte_length": 7987084,
+          "sha256": "939c73470c763229e0c87f1e2bff2114f66a8f05120d8a6bdc14f374ab05b97e",
+          "fixed_seed_hex": "4c464e32",
+          "relationship_reference_count": 0
+        },
+        "non_padding_file_bytes": 139380,
+        "package_layout": {
+          "entry_count": 6,
+          "expanded_total_bytes": 8125752,
+          "all_XML_bytes": 138668,
+          "max_single_XML_bytes": 137222,
+          "max_XML_depth": 5,
+          "ZIP_method": "stored"
+        },
+        "node_estimate": {
+          "status": "Unverified_ProducerNotRun",
+          "approximate_nodes": 1050,
+          "explanation": "Heuristic source containers/leaves/passages only; no producer output or schema validation was run."
+        }
+      },
+      {
+        "name": "capacity-pptx-128-slides.pptx",
+        "format": "pptx",
+        "byte_length": 8126464,
+        "sha256": "b2c5fb92478415d23995392e3c3c8149b159f940ac288f7b28f649b61f4e4d00",
+        "physical_pages": null,
+        "physical_slides": 128,
+        "ordinary_body_paragraphs": null,
+        "source_text": {
+          "source_text_runs": 1152,
+          "unicode_scalar_values": 68608,
+          "utf8_bytes_without_structural_separators": 68608,
+          "text_concatenation_sha256": "9d906880f74f50c4bbf2214c5b766bfb96b4b98c14b23088f54c04a004873f7f",
+          "source_text_plus_one_LF_per_run_upper_bound": 69760
+        },
+        "padding": {
+          "kind": "uncompressed_unreferenced_OPC_binary_part",
+          "part": "_lfen_benchmark/padding.bin",
+          "byte_length": 7847245,
+          "sha256": "eabc44ea86df75bb996ee71061ff3a564c795a1aa114a681218f545ec7496396",
+          "fixed_seed_hex": "4c464e33",
+          "relationship_reference_count": 0
+        },
+        "non_padding_file_bytes": 279219,
+        "package_layout": {
+          "entry_count": 133,
+          "expanded_total_bytes": 8110230,
+          "all_XML_bytes": 262985,
+          "max_single_XML_bytes": 18075,
+          "max_XML_depth": 8,
+          "ZIP_method": "stored"
+        },
+        "node_estimate": {
+          "status": "Unverified_ProducerNotRun",
+          "approximate_nodes": 1550,
+          "explanation": "Heuristic source containers/leaves/passages only; no producer output or schema validation was run."
+        }
+      }
+    ],
+    "independent_binding": {
+      "path": ".local-data/stage3-20261026/rich-document-candidate-draft/capacity-independent-binding.json",
+      "sha256": "726050e0bd1133085243a0b421401fd4f0f36c9291d0de0cb8699e2b227be430",
+      "byte_length": 1841,
+      "result": {
+        "recorded_at": "2026-10-26T14:23:33.761Z",
+        "passed": true,
+        "status": "InputBytesAndBudgetsBound_NotProducerVerified",
+        "scope": "Independent file/hash/ZIP/XML source-budget/PDF page-tree and padding checks; not Go/native or application performance.",
+        "source_manifest_sha256": "c1ed1c32ee75986f9680fef1dcb732bce07f142a7121f837c721e985bc02d4a4",
+        "delivery_manifest_sha256": "4a7f8db50af654fa332bf67a8c30de267fb856e855ecd114d02c328a849cc474",
+        "delivery_files": 13,
+        "protected_files": 36,
+        "xml_parts": 137,
+        "documents": [
+          {
+            "name": "capacity-pdf-128-pages.pdf",
+            "format": "pdf",
+            "byte_length": 8126464,
+            "sha256": "31d44917c7908d32d7de62bfe010451bd6c4ebcdeaa5d2d6966f2eb111a5669a",
+            "source_text_bytes": 290560,
+            "padding_bytes": 7853814,
+            "physical_pages": 128,
+            "padding_outside_page_contents": true
+          },
+          {
+            "name": "capacity-docx-1000-paragraphs.docx",
+            "format": "docx",
+            "byte_length": 8126464,
+            "sha256": "6247d2c9f18dd1ec56df80d567e56c38b8732bcea6d71e6b1c23b720fbeee3c1",
+            "source_text_bytes": 83000,
+            "padding_bytes": 7987084,
+            "body_paragraphs": 1000,
+            "entries": 6,
+            "expanded_bytes": 8125752,
+            "max_xml_bytes": 137222,
+            "unreferenced_padding": true
+          },
+          {
+            "name": "capacity-pptx-128-slides.pptx",
+            "format": "pptx",
+            "byte_length": 8126464,
+            "sha256": "b2c5fb92478415d23995392e3c3c8149b159f940ac288f7b28f649b61f4e4d00",
+            "source_text_bytes": 68608,
+            "padding_bytes": 7847245,
+            "source_slide_ids": 128,
+            "entries": 133,
+            "expanded_bytes": 8110230,
+            "max_xml_bytes": 18075,
+            "unreferenced_padding": true
+          }
+        ],
+        "application_performance": "NotRun",
+        "producer_runs": 0,
+        "go_native_runs": 0,
+        "model_calls": 0,
+        "local_inference": 0
+      }
+    },
+    "pdf_creation_marker": {
+      "path": ".local-data/stage3-20261026/rich-document-candidate-draft/capacity-fixtures-v1/artifact-operation-marker.json",
+      "sha256": "7593983aed652b6904422fb0ca616094f58ba218df57455d178664f6b3264700",
+      "byte_length": 536
+    },
+    "pdf_source_verification": {
+      "path": ".local-data/stage3-20261026/rich-document-candidate-draft/capacity-fixtures-v1/pdf-offline-verification.json",
+      "sha256": "1c4f6ce326ad87f7d9718d3c7138688237251e720c39c58b1adf90f2c2d4fb72",
+      "byte_length": 30594
+    },
+    "pdf_visual_inspection": {
+      "path": ".local-data/stage3-20261026/rich-document-candidate-draft/capacity-fixtures-v1/pdf-visual-inspection.json",
+      "sha256": "4e38c0469ab67a1dc2569792ebcd1023e1a1057dd5aa003f36028f5d4cdc493f",
+      "byte_length": 1691
+    },
+    "limitation": "三件7.75MiB主要由明确惰性padding达到近上限；不是最大正文/节点/压缩/排版压力或最坏情况。PDF.js/Canvas源核对不是Go原生或应用性能。"
+  },
+  "wiki_owning_paths": {
+    "status": "只读拥有层证据，尚未形成新共享契约",
+    "backend": {
+      "map": {
+        "path": ".local-data/stage3-20261026/wiki-next-slice-backend-input/source-map.json",
+        "sha256": "839d92005676cb9ae1ba3273bf9893e52ccd1a4526336f335644e774768205d6",
+        "byte_length": 45005
+      },
+      "binding": {
+        "path": ".local-data/stage3-20261026/wiki-next-slice-backend-input/independent-source-binding.json",
+        "sha256": "31a0dc6fe435343d36d89e8f89576f6bd1784bbcd2705a447b0d42edcccefc0b",
+        "byte_length": 483,
+        "result": {
+          "recorded_at": "2026-10-26T14:16:10.130Z",
+          "passed": true,
+          "status": "SourceEvidenceBound_NotBehaviorVerified",
+          "scope": "Verify source bytes/line spans/anchor bindings only; not full-path review or executed behavior.",
+          "map_sha256": "839d92005676cb9ae1ba3273bf9893e52ccd1a4526336f335644e774768205d6",
+          "items": 15,
+          "references": 41,
+          "files": 20,
+          "public_candidate_unchanged": true,
+          "tests_run": 0,
+          "api_calls": 0,
+          "model_calls": 0,
+          "local_inference": 0
+        }
+      },
+      "items": [
+        {
+          "id": "WM01",
+          "topic": "现有入口及确认形状",
+          "evidence": [
+            {
+              "file": "internal/router/router.go",
+              "function_or_anchor": "CommitKnowledgeImport",
+              "start_line": 337,
+              "end_line": 362,
+              "file_sha256": "21e8f6f3015638c7b9475629dd2befbd2de70ef38eb372e6066c28fb8d737187",
+              "excerpt_sha256": "c86ad3e4218594d1de5d4550577ec966ce2629cd6fd5d1d892507d147b62d11b",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 361,
+              "anchor_text": "datasets.POST(\"/:dataset_id/knowledge/registrations/:registration_id/imports\", r.datasetsHandler.CommitKnowledgeImport)"
+            },
+            {
+              "file": "internal/handler/knowledge_import.go",
+              "function_or_anchor": "CommitKnowledgeImport",
+              "start_line": 93,
+              "end_line": 124,
+              "file_sha256": "7ba0512b7d4aefbc8a092984c592466eb512466ebe98a8534eb7b933e93523b4",
+              "excerpt_sha256": "0fd075106b573dad5e88514f9a543ff635c4bed06ddb8f84edf56ebb417e459f",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 93,
+              "anchor_text": "func (h *DatasetsHandler) CommitKnowledgeImport(c *gin.Context) {"
+            },
+            {
+              "file": "internal/entity/knowledge_import.go",
+              "function_or_anchor": "CommitKnowledgeImportRequest",
+              "start_line": 93,
+              "end_line": 97,
+              "file_sha256": "0e5a8126a5a992f5e7ba62b54c5ad5f0ea8bf21498d98c02bfe67b5754768afd",
+              "excerpt_sha256": "8a8ff01bf6ed56496502de1243cdb8ab90cb6a46bcb056f0b9adc80592c763df",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 93,
+              "anchor_text": "type CommitKnowledgeImportRequest struct {"
+            }
+          ],
+          "facts": [
+            "C1已有source/node/content入口；C2 .2已有登记、预览、固定preview GET、确认POST及已知import_task_id GET。",
+            "确认body只有preview_id、manifest_sha256、idempotency_key；没有confirmed布尔、编辑器基准expected_revision或Wiki元信息字段。首次持久结果201、重放200。",
+            "该路由组及该handler/service没有独立GET by-key；原键恢复路径是保存同preview/manifest/key后重发原POST，或取得task_id后固定GET。"
+          ],
+          "boundary": "这是既有C2确认/恢复形状；不宣称已经满足人工Wiki编辑器的基准CAS或固定拒绝恢复协议。"
+        },
+        {
+          "id": "WM02",
+          "topic": "登记与稳定source绑定",
+          "evidence": [
+            {
+              "file": "internal/service/dataset/knowledge_import.go",
+              "function_or_anchor": "CreateKnowledgeRegistration",
+              "start_line": 86,
+              "end_line": 127,
+              "file_sha256": "46b9b0a3f4c81c517c9e81568ce49908c3cb5bfbfdd944b2174ad822edf1b182",
+              "excerpt_sha256": "4dee3e3a0c2e43e1fb5da1107d37627c9d797e94165cb85051760c52ee79207e",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 86,
+              "anchor_text": "func (d *DatasetService) CreateKnowledgeRegistration(ctx context.Context, userID, domainID string, req entity.CreateKnowledgeRegistrationRequest) (*entity.KnowledgeSourceRegistration, bool, error) {"
+            },
+            {
+              "file": "internal/entity/knowledge_import.go",
+              "function_or_anchor": "KnowledgeSourceBinding",
+              "start_line": 46,
+              "end_line": 56,
+              "file_sha256": "0e5a8126a5a992f5e7ba62b54c5ad5f0ea8bf21498d98c02bfe67b5754768afd",
+              "excerpt_sha256": "707683725cd2909c64b660f00beb6b2af70555e4f44d72bce819704a5d91d58c",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 46,
+              "anchor_text": "// KnowledgeSourceBinding keeps one native Document across successful imports."
+            }
+          ],
+          "facts": [
+            "登记仅text_file+inline_text；include_paths为1—16个精确逻辑路径；同domain/registration_key配置相同返回原登记，异配置冲突。",
+            "绑定以registration_id+relative_path唯一，保存同一DocumentID/FileID；DocumentID即对外source_id。更新复用稳定source，不按内容SHA跨来源合并。"
+          ],
+          "boundary": "登记的name是输入范围名称，不是已确认的Wiki页身份/标题模型。"
+        },
+        {
+          "id": "WM03",
+          "topic": "预览固定字节与当前修订观察",
+          "evidence": [
+            {
+              "file": "internal/service/dataset/knowledge_import.go",
+              "function_or_anchor": "PreviewKnowledgeImport",
+              "start_line": 154,
+              "end_line": 218,
+              "file_sha256": "46b9b0a3f4c81c517c9e81568ce49908c3cb5bfbfdd944b2174ad822edf1b182",
+              "excerpt_sha256": "93642a9b3dc0e00c6529cd235f8f1d535af22edb752d7da1ca78501f16fe8f11",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 154,
+              "anchor_text": "func (d *DatasetService) PreviewKnowledgeImport(ctx context.Context, userID, domainID, registrationID string, req entity.PreviewKnowledgeImportRequest) (*entity.KnowledgeImportPreviewView, error) {"
+            },
+            {
+              "file": "internal/entity/knowledge_import.go",
+              "function_or_anchor": "PreviewKnowledgeImportRequest",
+              "start_line": 38,
+              "end_line": 44,
+              "file_sha256": "0e5a8126a5a992f5e7ba62b54c5ad5f0ea8bf21498d98c02bfe67b5754768afd",
+              "excerpt_sha256": "f362eced4b9911b17ca35e46b38b4ffdaa2f2e3e0f17a1eb2bf8dc2c31adeb28",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 38,
+              "anchor_text": "type PreviewKnowledgeImportRequest struct {"
+            },
+            {
+              "file": "internal/entity/knowledge_import.go",
+              "function_or_anchor": "KnowledgeImportPreview",
+              "start_line": 58,
+              "end_line": 79,
+              "file_sha256": "0e5a8126a5a992f5e7ba62b54c5ad5f0ea8bf21498d98c02bfe67b5754768afd",
+              "excerpt_sha256": "278479d4da64d810fa87f3a5b46495aef0042eaa3b52021f24c2b3c123c86f12",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 58,
+              "anchor_text": "// KnowledgeImportPreview holds private temporary text; public views omit it."
+            }
+          ],
+          "facts": [
+            "预览接收精确relative_path、text和分类；保存原UTF-8字节、SHA/长度、policy version和10分钟到期；公开view不回正文。",
+            "已有binding时从当前source读取ExpectedRevisionID，标记update或unchanged；同事务保存text_preview的生命周期fence。",
+            "Preview请求没有打开编辑器时的expected revision；预览捕获的是创建preview时服务器的current。"
+          ],
+          "boundary": "现成CAS保护预览后至确认的变化；“用哪个编辑基准保存”需要后续领域设计决定。"
+        },
+        {
+          "id": "WM04",
+          "topic": "确认、原键与SQL发布原子边界",
+          "evidence": [
+            {
+              "file": "internal/service/dataset/knowledge_import.go",
+              "function_or_anchor": "CommitKnowledgeImport",
+              "start_line": 273,
+              "end_line": 373,
+              "file_sha256": "46b9b0a3f4c81c517c9e81568ce49908c3cb5bfbfdd944b2174ad822edf1b182",
+              "excerpt_sha256": "d80748f543d15c496290ec8ff06b62160b6129bf127a7d06dcec8c243cdd7021",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 273,
+              "anchor_text": "func (d *DatasetService) CommitKnowledgeImport(ctx context.Context, userID, domainID, registrationID string, req entity.CommitKnowledgeImportRequest) (*entity.KnowledgeImportReceipt, bool, error) {"
+            }
+          ],
+          "facts": [
+            "先授权，再在持久域行UPDATE锁事务内查registration+原键；同preview/manifest回存量Receipt，异body冲突。",
+            "首次确认检查preview未消费/未过期、当前policy、manifest、自身重新计算、选择范围、fence与当前revision。",
+            "native/C1发布在savepoint内；发布失败回滚该部分后保存failed receipt。成功发布、Receipt、preview consumed在同一外层SQL事务提交。",
+            "语义检查阶段返回错误会回滚事务；此路径没有Structure家族那样的完整固定Rejection记录。"
+          ],
+          "boundary": "SQL原子范围覆盖本导入结果，不含未来Wiki页面元信息/引用关系；不能把对象存储写入称为分布式事务。"
+        },
+        {
+          "id": "WM05",
+          "topic": "同source新修订与历史输入复用",
+          "evidence": [
+            {
+              "file": "internal/service/dataset/knowledge_import.go",
+              "function_or_anchor": "publishKnowledgeImport",
+              "start_line": 377,
+              "end_line": 444,
+              "file_sha256": "46b9b0a3f4c81c517c9e81568ce49908c3cb5bfbfdd944b2174ad822edf1b182",
+              "excerpt_sha256": "97bb79a7ba33a3bc7035bf6d59e7f17d17b65282e223c3204b5db36fa8e7a904",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 377,
+              "anchor_text": "func publishKnowledgeImport(ctx context.Context, tx *gorm.DB, kb *entity.Knowledgebase, userID string, binding *entity.KnowledgeSourceBinding, p *entity.KnowledgeImportPreview) (*entity.KnowledgeSnapshot, error) {"
+            },
+            {
+              "file": "internal/service/dataset/knowledge_source.go",
+              "function_or_anchor": "publishKnowledgeSource",
+              "start_line": 185,
+              "end_line": 249,
+              "file_sha256": "74bfae71ce187a08c847580a6bc821a598291e5d03f2c7c2e985d24a7de14b5c",
+              "excerpt_sha256": "eef964653efa3c1815dd42d487f85fe55e71954098063ca4766729b2ed126768",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 193,
+              "anchor_text": "// publishKnowledgeSource is the shared C1/C2 publication path. The caller holds the domain lock."
+            }
+          ],
+          "facts": [
+            "文本先写域内.knowledge-import/<DocumentID>/<SHA>对象，更新或创建原生Document/File，再进入同一共享C1 publication。",
+            "共享publication先核expected_revision_id；输入身份包含字节SHA、路径、分组、side和language。",
+            "尚未出现的(domain,document,input_hash)创建FileCommitItem ID作为source_revision_id并创建全量file根；当前相同input返回原修订。",
+            "历史上已存在的相同input会重新指向原source_revision_id并切换is_current；A→B→A不是每次编辑都分配新的revision ID，世代另行推进。"
+          ],
+          "boundary": "支持同稳定source的固定新内容；“每次人工编辑都留一个独立事件版本”不是现有source revision身份承诺。"
+        },
+        {
+          "id": "WM06",
+          "topic": "原生固定正文与事务拥有者",
+          "evidence": [
+            {
+              "file": "internal/service/file/source_snapshot.go",
+              "function_or_anchor": "RecordSourceSnapshot",
+              "start_line": 20,
+              "end_line": 59,
+              "file_sha256": "f1634aeeb0205b0a6df204f0f20dc5ff9c31a5cee0cf11d2c81c748984f9437f",
+              "excerpt_sha256": "db805c68f2436a8afb68bd2a7c7e85d05dbf084edd44cd2a23236b98563e88c2",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 45,
+              "anchor_text": "// RecordSourceSnapshot writes native version records in the caller's catalogue"
+            },
+            {
+              "file": "internal/service/file/source_snapshot.go",
+              "function_or_anchor": "RecordSourceSnapshotObjects",
+              "start_line": 82,
+              "end_line": 143,
+              "file_sha256": "f1634aeeb0205b0a6df204f0f20dc5ff9c31a5cee0cf11d2c81c748984f9437f",
+              "excerpt_sha256": "394b916241a1156c98274fc031ea1ce662d63563b4fc19540ffbec4b0dbceca3",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 82,
+              "anchor_text": "// RecordSourceSnapshotObjects publishes one folder commit for the complete"
+            },
+            {
+              "file": "internal/service/file/file_commit.go",
+              "function_or_anchor": "GetCommitFileContent",
+              "start_line": 1114,
+              "end_line": 1152,
+              "file_sha256": "5e09499f60a5e1499597cdeedc0eb70cbb67d3e6355a88dc6b4330ac1d3e4626",
+              "excerpt_sha256": "3512c5795e8cb8cee6a9e8cd8f1f26d056e21945b73fed5b8cd665cf4623df4c",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 1114,
+              "anchor_text": "// GetCommitFileContent gets file content as it existed in a given commit"
+            }
+          ],
+          "facts": [
+            "RecordSourceSnapshot要求调用方先授权，在调用方SQL事务中建立原生commit/item/tree；文件夹行UPDATE锁和持久head读取串行父链。",
+            "正文必须先成功写入folder的.objects/<SHA>；存储不可用/Put失败返回错误，不生成空定位的成功snapshot。",
+            "GetCommitFileContent按commit+file取得固定SHA对象，不读当前Document.Location；对象写入本身不随SQL回滚。"
+          ],
+          "boundary": "与旧Wiki审计的独立事务和可空正文位置不同；本轮未执行存储/事务验证。"
+        },
+        {
+          "id": "WM07",
+          "topic": ".7当前世代入口与ABA栅栏",
+          "evidence": [
+            {
+              "file": "internal/router/knowledge_lifecycle.go",
+              "function_or_anchor": "getKnowledgeSourceLifecycle",
+              "start_line": 11,
+              "end_line": 19,
+              "file_sha256": "bffc3d6259dcc49d76a9bdc890b3442e1f9725d088d0bdf56555ecc1b75dd492",
+              "excerpt_sha256": "dc1b8f1a36b915ccb6f1ee92a248db4775f44e93bad2c7df32698e80b47f58b0",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 11,
+              "anchor_text": "group.GET(\"/knowledge/source-lifecycle-contract\", r.datasetsHandler.KnowledgeLifecycle(\"getKnowledgeSourceLifecycleContract\"))"
+            },
+            {
+              "file": "internal/service/dataset/knowledge_lifecycle.go",
+              "function_or_anchor": "GetKnowledgeSourceLifecycle",
+              "start_line": 111,
+              "end_line": 161,
+              "file_sha256": "ca5dc3d5e6e6d11123837d438a733181546a2a6265090aa3a0503b01d1594053",
+              "excerpt_sha256": "2325a0eda726dd20cc5d593294aaa0f44a04fa271ebb514c73b5bc719d143588",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 137,
+              "anchor_text": "func (d *DatasetService) GetKnowledgeSourceLifecycle(ctx context.Context, user, domain, source string) (*entity.KnowledgeLifecycleDetail, error) {"
+            },
+            {
+              "file": "internal/service/dataset/knowledge_lifecycle_fence.go",
+              "function_or_anchor": "lifecyclePublishState",
+              "start_line": 28,
+              "end_line": 75,
+              "file_sha256": "dd8bbba6150948975a7cf3d4878da3017b76de2105a67aa2ec9ed5d692946401",
+              "excerpt_sha256": "fa590a30cf473cd6f38e1b58c5a9c02c072a035f1a0d8a2025ed97a032c18e7e",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 44,
+              "anchor_text": "func lifecyclePublishState(tx *gorm.DB, domain, source string, isNew, changed bool) error {"
+            },
+            {
+              "file": "internal/service/dataset/knowledge_lifecycle_fence.go",
+              "function_or_anchor": "lifecycleVerifyFence",
+              "start_line": 102,
+              "end_line": 177,
+              "file_sha256": "dd8bbba6150948975a7cf3d4878da3017b76de2105a67aa2ec9ed5d692946401",
+              "excerpt_sha256": "2593304f2c0092859f90417cabe8de1b692d394a73a96de035f3b456b90ebc30",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 144,
+              "anchor_text": "func lifecycleVerifyFence(tx *gorm.DB, fence *entity.KnowledgeSourceFence, source string) error {"
+            }
+          ],
+          "facts": [
+            "GET source-lifecycles/{source_id}通过域事务返回current source_revision、输入SHA、lifecycle_version、state、路径/分类和policy版本。",
+            "新source从active/version1起；活跃且input改变则持久CAS加代，无变化不加代；归档阻止发布。",
+            "预览fence保存source_id+单调世代；确认重验active和相同世代，含退役位置/新绑定检查，补足revision ID被复用的ABA区分。"
+          ],
+          "boundary": "这是source生命周期；人工页引用的stale计算/依赖集合尚未定义。"
+        },
+        {
+          "id": "WM08",
+          "topic": "当前授权和模型边界",
+          "evidence": [
+            {
+              "file": "internal/service/dataset/knowledge.go",
+              "function_or_anchor": "knowledgeBase",
+              "start_line": 46,
+              "end_line": 77,
+              "file_sha256": "3cfa5439c11fdf20f71da2ae9b1dcda8ae85ab63b9cc994a32f2d94654624043",
+              "excerpt_sha256": "713b082c87c040b66c3802a881e61f2bc910c2318cbeb48487f77260a85bc948",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 46,
+              "anchor_text": "func (d *DatasetService) knowledgeBase(ctx context.Context, userID, domainID string, registered bool) (*entity.Knowledgebase, error) {"
+            },
+            {
+              "file": "internal/service/dataset/knowledge_import.go",
+              "function_or_anchor": "lockKnowledgeImportDomain",
+              "start_line": 41,
+              "end_line": 53,
+              "file_sha256": "46b9b0a3f4c81c517c9e81568ce49908c3cb5bfbfdd944b2174ad822edf1b182",
+              "excerpt_sha256": "7fa158aacdf4e0f176c35c4a6270b1f9df735b022b3fa17fb9233ba38f168d88",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 41,
+              "anchor_text": "func lockKnowledgeImportDomain(ctx context.Context, tx *gorm.DB, userID, domainID string) (*entity.Knowledgebase, error) {"
+            },
+            {
+              "file": "internal/permission/database_source.go",
+              "function_or_anchor": "datasetResource",
+              "start_line": 965,
+              "end_line": 987,
+              "file_sha256": "187ee47529e4654e0165ea5ddb4ebccc124084d6b22e4089d50afc42f9b8a77d",
+              "excerpt_sha256": "31206d30eec416038af79898e2252a0c971e56918f2ec807e977ba37fbe874aa",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 965,
+              "anchor_text": "func datasetResource(dataset *entity.Knowledgebase, ownerIDsByTenant map[string]string) Resource {"
+            },
+            {
+              "file": "internal/permission/knowledge.go",
+              "function_or_anchor": "CheckDatasetModelUse",
+              "start_line": 17,
+              "end_line": 54,
+              "file_sha256": "d20c054714b9252d81561e86311b99011aadfbc2a53de248335d4825cab78aa1",
+              "excerpt_sha256": "b477d652506c43d365e72fec46c4ed617cb94ea17c2ccfa5d02ddff9bfbb1594",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 26,
+              "anchor_text": "// CheckDatasetModelUse is an execution guard, not the dry-run policy endpoint."
+            }
+          ],
+          "facts": [
+            "C1/C2公开服务通过knowledgeBase检查owner、knowledge_enabled、active tenant membership和OperationRead；写入事务再次锁定私有me域及活跃成员。",
+            "KnowledgeEnabled使资源owner为CreatedBy且私有；现有基础策略禁止embedding/rerank/generation/remote_parse/wiki/memory模型用途及普通ingestion。",
+            "上述wiki用途是模型执行策略，不等于已经存在一个人工Wiki编辑许可。"
+          ],
+          "boundary": "只记录现有调用与策略；不据此提出权限漏洞结论或扩大权限。人工页及其引用依赖的授权仍待明确。"
+        },
+        {
+          "id": "WM09",
+          "topic": "C1可承载人工页原始正文的字节层",
+          "evidence": [
+            {
+              "file": "internal/utility/knowledge.go",
+              "function_or_anchor": "IsKnowledgeTextSource",
+              "start_line": 10,
+              "end_line": 17,
+              "file_sha256": "98c9104dc8d3229f11530640bc3b07418495c48a96de050365f4dd81224bf3fa",
+              "excerpt_sha256": "8b5d0a5e9dc1cd2adee0afc5fc1ca213ee596a13c378a088139e56872b529556",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 10,
+              "anchor_text": "// IsKnowledgeTextSource is the shared allowlist for catalogue upload and snapshot."
+            },
+            {
+              "file": "internal/entity/knowledge.go",
+              "function_or_anchor": "KnowledgeMaxSourceBytes",
+              "start_line": 9,
+              "end_line": 13,
+              "file_sha256": "e1e2552ef61ee8972e11916ed4fa1b08571a71de02ba13d8e2060d41618ff6ea",
+              "excerpt_sha256": "c77105edb28641885ca6fb0ec3d27866d51a2bb1d2091e8f92a3241462e74a56",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 12,
+              "anchor_text": "// KnowledgeMaxSourceBytes bounds the unparsed foundation snapshot, not future import pipelines."
+            },
+            {
+              "file": "internal/service/dataset/knowledge_source.go",
+              "function_or_anchor": "knowledgeRoot",
+              "start_line": 26,
+              "end_line": 30,
+              "file_sha256": "74bfae71ce187a08c847580a6bc821a598291e5d03f2c7c2e985d24a7de14b5c",
+              "excerpt_sha256": "112014201d4823c03a0e24a5d9be362c589a7ae7670d9d2bfe4ab625e9aaa679",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 26,
+              "anchor_text": "func knowledgeRoot(source *entity.KnowledgeSourceRevision) entity.KnowledgeNode {"
+            },
+            {
+              "file": "internal/service/dataset/knowledge_source.go",
+              "function_or_anchor": "knowledgeSource",
+              "start_line": 253,
+              "end_line": 266,
+              "file_sha256": "74bfae71ce187a08c847580a6bc821a598291e5d03f2c7c2e985d24a7de14b5c",
+              "excerpt_sha256": "aabb7af562392bf5b7481d39cdc24e156ee483fa5f5199dbda1af5296d3e6690",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 253,
+              "anchor_text": "func (d *DatasetService) knowledgeSource(ctx context.Context, domainID, revisionID string) (*entity.KnowledgeSourceRevision, error) {"
+            },
+            {
+              "file": "internal/service/dataset/knowledge_source.go",
+              "function_or_anchor": "knowledgeSourceBytes",
+              "start_line": 331,
+              "end_line": 350,
+              "file_sha256": "74bfae71ce187a08c847580a6bc821a598291e5d03f2c7c2e985d24a7de14b5c",
+              "excerpt_sha256": "b16f23adf8931548128ab24c2a2140c084c6d577039b9ab237534927d337b46a",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 331,
+              "anchor_text": "func knowledgeSourceBytes(ctx context.Context, source *entity.KnowledgeSourceRevision) ([]byte, error) {"
+            }
+          ],
+          "facts": [
+            "text allowlist包含.md/.markdown/.txt；必须合法UTF-8且无NUL，源上限2MiB。预览保存req.Text原字节；文本层没有非空最小长度。",
+            "C1 file根覆盖0..byte_length，身份绑定稳定source、固定revision与source-v1；从原生固定commit读正文并核SHA/长度。",
+            "固定source lookup不要求is_current，因此已有历史固定正文仍可按当前域授权读取；original_only/web_capture明确排除C1文本。",
+            "这证明正文/固定位置有现成载体；不证明已有人工Wiki页保存、标题、组织或引用能力。"
+          ],
+          "boundary": "零字节正文在文本层可表达；旧Wiki PUT的空字符串语义另见WM12，不能混为一谈。"
+        },
+        {
+          "id": "WM10",
+          "topic": "C1手工节点与有界固定读取",
+          "evidence": [
+            {
+              "file": "internal/service/dataset/knowledge_source.go",
+              "function_or_anchor": "CreateKnowledgeNode",
+              "start_line": 353,
+              "end_line": 445,
+              "file_sha256": "74bfae71ce187a08c847580a6bc821a598291e5d03f2c7c2e985d24a7de14b5c",
+              "excerpt_sha256": "113cd815b238b53de27f25e46f983e4c2ba01a5486bc765996314c250df65f4a",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 353,
+              "anchor_text": "func (d *DatasetService) CreateKnowledgeNode(ctx context.Context, userID, domainID string, req entity.CreateKnowledgeNodeRequest) (*entity.KnowledgeNode, bool, error) {"
+            },
+            {
+              "file": "internal/service/dataset/knowledge_source.go",
+              "function_or_anchor": "ReadKnowledgeNode",
+              "start_line": 448,
+              "end_line": 525,
+              "file_sha256": "74bfae71ce187a08c847580a6bc821a598291e5d03f2c7c2e985d24a7de14b5c",
+              "excerpt_sha256": "e649221d348b42c098f7815347b6ca7ea867a6d8beb05c92602cf48217cc24dc",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 495,
+              "anchor_text": "func (d *DatasetService) ReadKnowledgeNode(ctx context.Context, userID, domainID, nodeID string, start, end *int64) (*entity.KnowledgeNodeContent, error) {"
+            }
+          ],
+          "facts": [
+            "手工节点仅section/symbol/passage，manual-v1；必须同revision、父范围包含、UTF-8边界、深度≤16。",
+            "只在当前revision创建；域锁下再次检查current。同逻辑身份的parent/name/range不可变；历史节点只读。",
+            "Get/List/Read每次走当前域授权。Read按固定正文原字节窗口≤65536返回source/revision/SHA；默认整个节点，超过预算报413，不自动分页。",
+            "根/范围能够承载人工页正文及局部引用，但手工节点不包含Wiki人工引用关系字段；页面正文发布和后续manual节点创建不是单个现成原子动作。"
+          ],
+          "boundary": "固定节点不是可编辑Wiki页面记录；不应原地改node正文。"
+        },
+        {
+          "id": "WM11",
+          "topic": "现有固定代码view引用拥有路径",
+          "evidence": [
+            {
+              "file": "internal/service/dataset/knowledge_structure_read.go",
+              "function_or_anchor": "structureReadView",
+              "start_line": 45,
+              "end_line": 116,
+              "file_sha256": "1e4f37d14c5672384a2ebc26bacd631b6288fd843a3b07c774ca09097d85a1a6",
+              "excerpt_sha256": "7da493f0b3e9b8569305dd2397fb0e732e18747db726e30d9d28ab8b51ca0281",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 50,
+              "anchor_text": "func (d *DatasetService) structureReadView(ctx context.Context, user, domain, id string) (*entity.KnowledgeStructureView, error) {"
+            },
+            {
+              "file": "internal/service/dataset/knowledge_structure_read.go",
+              "function_or_anchor": "ReadKnowledgeStructureNode",
+              "start_line": 219,
+              "end_line": 265,
+              "file_sha256": "1e4f37d14c5672384a2ebc26bacd631b6288fd843a3b07c774ca09097d85a1a6",
+              "excerpt_sha256": "3f361b29ded6213dc914f249416176fa16450ecc8736d84d19ffab2840db287a",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 219,
+              "anchor_text": "func (d *DatasetService) ReadKnowledgeStructureNode(ctx context.Context, user, domain, viewID, nodeID string, start, end *int64) (*entity.KnowledgeStructureContent, error) {"
+            },
+            {
+              "file": "internal/service/dataset/knowledge_structure_read.go",
+              "function_or_anchor": "GetKnowledgeStructureHead",
+              "start_line": 417,
+              "end_line": 489,
+              "file_sha256": "1e4f37d14c5672384a2ebc26bacd631b6288fd843a3b07c774ca09097d85a1a6",
+              "excerpt_sha256": "3d5a53f5f79310e8a96068ac0f6e376591a1538b0786b3f642708cc2ed9b3bdd",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 417,
+              "anchor_text": "func (d *DatasetService) GetKnowledgeStructureHead(ctx context.Context, user, domain, project string) (*entity.KnowledgeStructureHead, error) {"
+            }
+          ],
+          "facts": [
+            "固定view按owner/domain/published读取；返回任何元信息前校验全部固定member的source/revision/SHA/长度/C1根。",
+            "结构节点必须属于该view与member；content返回source_utf8、固定source/revision、fragment SHA和64KiB窗口。",
+            "当前head独立比较manifest/policy/current revision/世代；固定历史view读取与currentness不是同一件事。",
+            "既有读取可作为未来引用目标依据，但没有因此建立“Wiki page revision→固定view/node”的持久关系。"
+          ],
+          "boundary": "后续需确认引用/展示哪些固定身份及授权依赖；不能用当前head代替已保存引用。"
+        },
+        {
+          "id": "WM12",
+          "topic": "旧Wiki正文与source_doc_ids的真实含义",
+          "evidence": [
+            {
+              "file": "internal/service/dataset_artifact_service.go",
+              "function_or_anchor": "UpdateWikiPage",
+              "start_line": 287,
+              "end_line": 410,
+              "file_sha256": "a957127f5d5da7a852c5d1ac65c2da8d5cbd222df8e62dd58f2e7ebbde68080e",
+              "excerpt_sha256": "527f99dcbc07867b429f684768e5700a0be2af96a5ac78fb92ac853ff2dc7a89",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 331,
+              "anchor_text": "// client can pass it straight back to GetWikiPage/UpdateWikiPage without the"
+            }
+          ],
+          "facts": [
+            "GetWikiPage从DocEngine中按page_type/slug、wiki_page、available_int=1查合并编译行，必要时GetChunk加载正文。",
+            "出处字段为source_doc_ids/source_chunk_ids；该详情结构没有固定source_revision、C1 node、代码view或document representation。",
+            "UpdateWikiPage对非空content/title/outlinks更新当前DocEngine行再回读；空串/空数组表示不更新，不是显式清空。",
+            "该service签名没有expected revision、原键、C1 publication或页面引用事务。"
+          ],
+          "boundary": "这是编译产物编辑路径；不等于C2原字节+固定C1修订的拥有路径。"
+        },
+        {
+          "id": "WM13",
+          "topic": "旧Wiki请求与best-effort审计顺序",
+          "evidence": [
+            {
+              "file": "internal/handler/dataset_artifact.go",
+              "function_or_anchor": "datasetOwner",
+              "start_line": 57,
+              "end_line": 79,
+              "file_sha256": "5d17f7eacb81acb1baffdfb2d60883b17a303834069d86358dec742f650ed44f",
+              "excerpt_sha256": "7e97627f71bb68ec6d268e3ce97d8dd2505a75b3cdc58c08fc6cd63bf527f8ea",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 57,
+              "anchor_text": "func (h *DatasetArtifactHandler) datasetOwner(c *gin.Context, datasetID string) (*entity.User, string, string) {"
+            },
+            {
+              "file": "internal/handler/dataset_artifact.go",
+              "function_or_anchor": "UpdateArtifact",
+              "start_line": 132,
+              "end_line": 201,
+              "file_sha256": "5d17f7eacb81acb1baffdfb2d60883b17a303834069d86358dec742f650ed44f",
+              "excerpt_sha256": "30b1de1f5de642ad5f8607e05a229b6d00bcbc9c3b18b6e7dc3ce6b570072f6e",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 132,
+              "anchor_text": "// UpdateArtifact handles PUT /artifacts/<page_type>/<slug> — edit a wiki page."
+            }
+          ],
+          "facts": [
+            "旧artifact handler共用datasetOwner/OperationRead；PUT body只有content_md/title/comments/outlinks。",
+            "先尝试读旧正文，再UpdateWikiPage；只有旧值已知且正文变化时调用RecordPageEdit。",
+            "注释及执行均明确审计best-effort：审计失败仅日志，已保存页面不回滚。"
+          ],
+          "boundary": "本轮不运行权限测试、不判定安全问题；这里只区分它与待设计的人工页CAS/原键/原子历史。"
+        },
+        {
+          "id": "WM14",
+          "topic": "旧Wiki历史并非固定C1正文提交",
+          "evidence": [
+            {
+              "file": "internal/service/file/file_commit.go",
+              "function_or_anchor": "RecordPageEdit",
+              "start_line": 301,
+              "end_line": 441,
+              "file_sha256": "5e09499f60a5e1499597cdeedc0eb70cbb67d3e6355a88dc6b4330ac1d3e4626",
+              "excerpt_sha256": "a484ff8c4feb6adb8a632239686481bd4931f1bd98f383c502753bce0f1661d5",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 328,
+              "anchor_text": "// RecordPageEdit records a wiki/skill page edit as an audit commit with a"
+            }
+          ],
+          "facts": [
+            "审计file key是dataset/page_type/slug，与原生workspace File/tree无关；保存diff及可选content-after对象位置。",
+            "storePageContent缺存储或Put失败返回空位置；随后SQL审计commit/item仍可提交。",
+            "父链选择由进程内pageCommitLocks串行；正文DocEngine写发生在此调用前，不在这个SQL事务中。"
+          ],
+          "boundary": "不能直接将审计parent链当跨进程编辑CAS、持久原键或页面/固定正文同事务证明。"
+        },
+        {
+          "id": "WM15",
+          "topic": "dirty编译刷新与文档候选边界",
+          "evidence": [
+            {
+              "file": "internal/ingestion/knowledge_compile/wiki_dirty.go",
+              "function_or_anchor": "WikiDirtyRequest",
+              "start_line": 35,
+              "end_line": 69,
+              "file_sha256": "f675adb93e7dcd83bc59cf4810146f1757ca5bd441e0babd77ce16ed6f10663c",
+              "excerpt_sha256": "e32fb1a4ad754e6b709f215fe6eedb315af03b1af2956e915de72bb367018b82",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 41,
+              "anchor_text": "// WikiDirtyRequest describes one debounced document-level Wiki refresh."
+            },
+            {
+              "file": "internal/ingestion/knowledge_compile/wiki_dirty.go",
+              "function_or_anchor": "processWikiDirty",
+              "start_line": 160,
+              "end_line": 193,
+              "file_sha256": "f675adb93e7dcd83bc59cf4810146f1757ca5bd441e0babd77ce16ed6f10663c",
+              "excerpt_sha256": "e852dd0df2ae5a055c876235f967c771ef3b19db9a1f07b2eee5c926ae441214",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 160,
+              "anchor_text": "func processWikiDirty(ctx context.Context, db *gorm.DB, owner string, row entity.WikiDocumentDirty) {"
+            },
+            {
+              "file": "docs/knowledge-document-structure-v0.1.candidate.md",
+              "function_or_anchor": "候选",
+              "start_line": 1,
+              "end_line": 3,
+              "file_sha256": "0ea3c83a7cf8a33a1c65c0ecff8535f37fe6c080fdf4965503f8252ef5e5829f",
+              "excerpt_sha256": "66a32233c31c69c1d8daaf378f6d60c585b11c705625deaab1114e208897365d",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 1,
+              "anchor_text": "# 阶段3-R2：Document Structure 0.1.0具体候选"
+            },
+            {
+              "file": "docs/knowledge-document-structure-v0.1.candidate.md",
+              "function_or_anchor": "root_document_node_id",
+              "start_line": 39,
+              "end_line": 48,
+              "file_sha256": "0ea3c83a7cf8a33a1c65c0ecff8535f37fe6c080fdf4965503f8252ef5e5829f",
+              "excerpt_sha256": "395f09cf5668a3ccad7509fb0b8711ad98657c640d830e8a4c66bd2e4842d032",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 41,
+              "anchor_text": "2. **派生结构**：独立Representation／DocumentNode，绑定原source／revision／original SHA、当前世代与分类、producer／configuration及内容manifest。新`root_document_node_id`不是C1根。contains只由单一parent投影，不另存重复边。"
+            },
+            {
+              "file": "docs/knowledge-document-structure-v0.1.candidate.md",
+              "function_or_anchor": "固定表示",
+              "start_line": 125,
+              "end_line": 135,
+              "file_sha256": "0ea3c83a7cf8a33a1c65c0ecff8535f37fe6c080fdf4965503f8252ef5e5829f",
+              "excerpt_sha256": "08f02266cad10edcf4be172abb6e74408d112c47205088cf56c2ff57b60ea9fd",
+              "excerpt_hash_format": "UTF-8; selected source lines joined with LF and one final LF",
+              "anchor_line": 127,
+              "anchor_text": "固定表示与当前head独立缓存；新原件／策略变化只标stale，不改变已打开representation。先取表示元数据的root_document_node_id再懒读直接子节点，页≤20。cursor32hex绑定主体／域／source／representation／parent／limit和首次600秒截止，不续期；错scope／过滤400，失权404，无published表示不暴露节点／计数。"
+            }
+          ],
+          "facts": [
+            "dirty队列使用document_id/affected chunk及自身revision，经20秒debounce、10分钟lease调用文档编译回调；不是人工编辑保护或固定引用stale集合。",
+            "Document Structure当前仍候选未冻结/未接入/未验收；其拟定representation/document_node属于derived_utf8，根不是C1根，原件回链仍.5。",
+            "现有代码view/C1读取与文档候选是不同版本/坐标家族；R2批准也不会自动批准Wiki。"
+          ],
+          "boundary": "后续人工页引用文档表示需等具体能力确认与实现；不调度自动生成，不改Document Structure候选。"
+        }
+      ],
+      "unknowns": [
+        {
+          "id": "U01",
+          "topic": "页面身份与正文拥有者",
+          "unknown": "人工页是否复用text_file登记/binding，以及标题、slug、组织parent与source的关系未确认。",
+          "evidence": [
+            "WM02",
+            "WM09"
+          ],
+          "owner": "A后续领域候选/真人具体确认"
+        },
+        {
+          "id": "U02",
+          "topic": "编辑基准与版本语义",
+          "unknown": "需确认编辑基准是打开时revision/世代还是新的preview；是否需要每次编辑独立事件，或沿用input相同即复用revision。",
+          "evidence": [
+            "WM03",
+            "WM05",
+            "WM07"
+          ],
+          "owner": "A后续领域候选/真人具体确认"
+        },
+        {
+          "id": "U03",
+          "topic": "页面保存原子范围与恢复",
+          "unknown": "正文、标题、组织、引用及历史是否同一事务；失败/空值清空/冲突/原键恢复语义尚未确认。现有.2仅保证本导入SQL范围，且无独立GET by-key/固定拒绝。",
+          "evidence": [
+            "WM01",
+            "WM04",
+            "WM06",
+            "WM12",
+            "WM13"
+          ],
+          "owner": "A后续领域候选/真人具体确认"
+        },
+        {
+          "id": "U04",
+          "topic": "固定C1引用",
+          "unknown": "已有domain/source/revision/node/SHA和source_utf8范围可读；人工页如何保存、校验、去重和展示引用，以及source变化如何标stale尚未确认。此列是现有目标身份边界盘点，不是新DTO设计。",
+          "evidence": [
+            "WM09",
+            "WM10"
+          ],
+          "owner": "A后续领域候选/真人具体确认"
+        },
+        {
+          "id": "U05",
+          "topic": "固定代码view引用",
+          "unknown": "已有固定view/structure_node/source revision/C1根及source_utf8范围；人工页如何绑定固定view、引用跨页/跨域规则和当前性提示未确认，不能静默改成current head。",
+          "evidence": [
+            "WM11"
+          ],
+          "owner": "A后续领域候选/真人具体确认"
+        },
+        {
+          "id": "U06",
+          "topic": "固定文档representation引用",
+          "unknown": "需先实现并确认R2，保留原件source/revision/SHA、representation/document_node与派生文字SHA/derived_utf8的区别；人工引用保存/读取/原件回链/范围校验未确认。没有在本轮建立新共享引用接口。",
+          "evidence": [
+            "WM15"
+          ],
+          "owner": "A文档切片及后续Wiki候选/真人具体确认"
+        },
+        {
+          "id": "U07",
+          "topic": "依赖授权与人工保护",
+          "unknown": "引用失权如何作用于已写入正文、关系/计数/缓存；人工页是否允许派生、何时显式重建、如何禁止编译覆盖，以及stale依赖集合未确认。",
+          "evidence": [
+            "WM08",
+            "WM11",
+            "WM13",
+            "WM15"
+          ],
+          "owner": "A后续领域候选/真人具体确认"
+        }
+      ]
+    },
+    "ui": {
+      "input": {
+        "path": ".local-data/stage3-20261026/wiki-next-slice-ui-input.json",
+        "sha256": "e3273a184a39615916705a60b41aa6b596b16ab70345b2b1a729e754144845cd",
+        "byte_length": 16010
+      },
+      "source_thread_id": "01a1746b-2de2-7413-906b-d2a4544017e3",
+      "source_title": "R4 原件导入客户端与界面",
+      "counts": {
+        "items": 10,
+        "references": 22,
+        "files": 18
+      },
+      "entries": [
+        {
+          "id": "WUI01",
+          "topic": "空正文",
+          "fact": "编辑状态接受空串，提交body携带content_md；前端未加非空正文校验。",
+          "unknown": "不能据此证明旧后端已经持久清空；旧非空更新语义另有后端源码证据。",
+          "evidence": [
+            {
+              "file": "web/src/pages/dataset/compilation/hooks/use-wiki-editor.ts",
+              "start_line": 14,
+              "end_line": 29,
+              "anchor_line": 17,
+              "anchor_text": "  const handleContentChange = useCallback(",
+              "file_sha256": "6486d0591bf46c632c5baba99b148311d09a5db01f9a2283f9aee2f3b3f8399a",
+              "excerpt_sha256": "5a633dc29b21a975306049518653d092efa5ea2dce0cd74e52e85ff066a4519e",
+              "scope": "Static source evidence supplied by read-only peer, anchor bytes bound by A; no behavior execution."
+            },
+            {
+              "file": "web/src/pages/dataset/compilation/hooks/use-commit-artifact.ts",
+              "start_line": 48,
+              "end_line": 63,
+              "anchor_line": 51,
+              "anchor_text": "      const result = await updateArtifactPage({",
+              "file_sha256": "59d74885a177ef2cda1789544646d4114bca28b51ced606d3b9f80f9e40ad78a",
+              "excerpt_sha256": "6f3ead0890aec46e5f8168199e87c7b02943bd528dff0773c847064404549b57",
+              "scope": "Static source evidence supplied by read-only peer, anchor bytes bound by A; no behavior execution."
+            }
+          ]
+        },
+        {
+          "id": "WUI02",
+          "topic": "链接清除",
+          "fact": "链接弹窗仅在URL真值时dispatch；更新DTO只有content_md/comments/title。",
+          "unknown": "未提供显式unlink或outlinks空数组替换；正文删链接不等于链接元数据清空已验证。",
+          "evidence": [
+            {
+              "file": "web/src/lib/editor/plugins/floating-selection-toolbar.tsx",
+              "start_line": 94,
+              "end_line": 109,
+              "anchor_line": 97,
+              "anchor_text": "  const toggleLink = () => {",
+              "file_sha256": "65d5bb6a997a21611b016719ed580ffe4c23d96205a14346ae10687c63fd4a1e",
+              "excerpt_sha256": "a51c1efbc92e4262e3d9da8b5dfa6c66a10000b250a165ceb74b558642354488",
+              "scope": "Static source evidence supplied by read-only peer, anchor bytes bound by A; no behavior execution."
+            },
+            {
+              "file": "web/src/interfaces/request/knowledge.ts",
+              "start_line": 63,
+              "end_line": 77,
+              "anchor_line": 66,
+              "anchor_text": "export interface IUpdateArtifactPageRequestBody {",
+              "file_sha256": "8617ffe22a155f5d4e9ef4dd1ef32facfc096adad7be00a10ef36edb10b7239d",
+              "excerpt_sha256": "b9c26974785014a2c1ebb59496f38cc10906a37830afb28625fa7bdb9e4c8153",
+              "scope": "Static source evidence supplied by read-only peer, anchor bytes bound by A; no behavior execution."
+            }
+          ]
+        },
+        {
+          "id": "WUI03",
+          "topic": "人工提交",
+          "fact": "变化保存在本地草稿，dirty时取消/提交；提交表单要求非空说明。",
+          "unknown": "该交互不能替代持久原键或后端提交证明。",
+          "evidence": [
+            {
+              "file": "web/src/pages/dataset/compilation/wiki-detail-toolbar.tsx",
+              "start_line": 32,
+              "end_line": 47,
+              "anchor_line": 35,
+              "anchor_text": "  if (isDirty) {",
+              "file_sha256": "67ef3e0a06d36b82864c15594035a1ec1939257d79aae0f54d2784b2f0f7348d",
+              "excerpt_sha256": "8b5dd4c3f7fa517b8c63707399cf8340714b04bf4845b1ecc7aa1ce4f2bf54ce",
+              "scope": "Static source evidence supplied by read-only peer, anchor bytes bound by A; no behavior execution."
+            },
+            {
+              "file": "web/src/pages/dataset/compilation/hooks/use-commit-artifact.ts",
+              "start_line": 24,
+              "end_line": 39,
+              "anchor_line": 27,
+              "anchor_text": "  const CommitFormSchema = useMemo(",
+              "file_sha256": "59d74885a177ef2cda1789544646d4114bca28b51ced606d3b9f80f9e40ad78a",
+              "excerpt_sha256": "6f1d2d101f9e5ffc9605d71e9039afca2ffb89e00feee699ba8ffec4181f7f5c",
+              "scope": "Static source evidence supplied by read-only peer, anchor bytes bound by A; no behavior execution."
+            }
+          ]
+        },
+        {
+          "id": "WUI04",
+          "topic": "编辑基准",
+          "fact": "页DTO没有编辑打开时revision token；历史content_after进入同一编辑状态。",
+          "unknown": "历史恢复、只读与新版本语义未确定；新Wiki需独立确认编辑基准。",
+          "evidence": [
+            {
+              "file": "web/src/interfaces/database/dataset.ts",
+              "start_line": 235,
+              "end_line": 250,
+              "anchor_line": 238,
+              "anchor_text": "export interface IArtifactPage {",
+              "file_sha256": "56405f2cd939edfa07700c00d7b4f1de7b33d95edabfc703860ac69f89ef1bc0",
+              "excerpt_sha256": "c297758bd39ce0b14e4ef990f2f5dd532f95eb6a2098a499a854406ef8ef3769",
+              "scope": "Static source evidence supplied by read-only peer, anchor bytes bound by A; no behavior execution."
+            },
+            {
+              "file": "web/src/pages/dataset/compilation/hooks/use-wiki-detail-content.ts",
+              "start_line": 76,
+              "end_line": 91,
+              "anchor_line": 79,
+              "anchor_text": "  const content = isVersionView",
+              "file_sha256": "be8ebbbc3461f834607ce153670534fef25f79a1921819075e68595ad1229f48",
+              "excerpt_sha256": "005aab7b9202beececaddffe9829ac7b409655a3cbd02fccb6bc78226b0614a3",
+              "scope": "Static source evidence supplied by read-only peer, anchor bytes bound by A; no behavior execution."
+            }
+          ]
+        },
+        {
+          "id": "WUI05",
+          "topic": "历史差异",
+          "fact": "commit详情提供diff/content_after等；diff展示筛选增删行。",
+          "unknown": "不是任意两版本比较或可应用patch、强审计与版本化出处证明。",
+          "evidence": [
+            {
+              "file": "web/src/interfaces/database/dataset.ts",
+              "start_line": 258,
+              "end_line": 273,
+              "anchor_line": 261,
+              "anchor_text": "export interface IWikiCommitDetail extends IWikiCommit {",
+              "file_sha256": "56405f2cd939edfa07700c00d7b4f1de7b33d95edabfc703860ac69f89ef1bc0",
+              "excerpt_sha256": "113c6808089619e30bd2b03950160252a12d93083f92b90be5ea16fb2a054367",
+              "scope": "Static source evidence supplied by read-only peer, anchor bytes bound by A; no behavior execution."
+            },
+            {
+              "file": "web/src/pages/dataset/compilation/utils/parse-wiki-diff.ts",
+              "start_line": 46,
+              "end_line": 54,
+              "anchor_line": 49,
+              "anchor_text": "export function getWikiDiffChanges(hunks: WikiDiffHunk[]): WikiDiffLine[] {",
+              "file_sha256": "8f2e2571d0b3eaa394b10992b81c4a7c198f17af0832adbccd2497cf68618862",
+              "excerpt_sha256": "0c78d9370d3ad1fe9871a96760f3d81ca332d4238c734c5d19d86bfbe9d1f3e9",
+              "scope": "Static source evidence supplied by read-only peer, anchor bytes bound by A; no behavior execution."
+            }
+          ]
+        },
+        {
+          "id": "WUI06",
+          "topic": "人工与生成入口",
+          "fact": "人工保存service直接PUT页面，同页面另有编译状态查询。",
+          "unknown": "仅查前端路径，未调用PUT或推断服务端调度/模型。",
+          "evidence": [
+            {
+              "file": "web/src/services/knowledge-service.ts",
+              "start_line": 553,
+              "end_line": 568,
+              "anchor_line": 556,
+              "anchor_text": "export const updateArtifactPage = (",
+              "file_sha256": "c2609a4821f8b5c85a7587b56f1b9052660d99d15280a378e80e840b842ef52d",
+              "excerpt_sha256": "e3f5c28ebe2ff3aee49f67ef6de908358b05b3ae3d380f19893dffb568cc71a7",
+              "scope": "Static source evidence supplied by read-only peer, anchor bytes bound by A; no behavior execution."
+            },
+            {
+              "file": "web/src/pages/dataset/compilation/llm-wiki-view.tsx",
+              "start_line": 35,
+              "end_line": 50,
+              "anchor_line": 38,
+              "anchor_text": "  const { data: artifactRunData } = useTraceRunData(GenerateType.Artifact);",
+              "file_sha256": "eaca5c58ac673eb5a9030499d2a127e473a6b1ee8fa6c217b939a4ee78e14576",
+              "excerpt_sha256": "7711df9f23d51bff50f70de9eaf10e046597e018371758b2532b29d5c84838be",
+              "scope": "Static source evidence supplied by read-only peer, anchor bytes bound by A; no behavior execution."
+            }
+          ]
+        },
+        {
+          "id": "WUI07",
+          "topic": "资源呈现",
+          "fact": "编辑器含Mermaid生成SVG；Wiki点击插件仅截获已识别内部链接。",
+          "unknown": "现成编辑器不是纯转义文本呈现；未验证实际网络或安全行为，不报告泄漏。",
+          "evidence": [
+            {
+              "file": "web/src/lib/editor/mermaid-node.tsx",
+              "start_line": 146,
+              "end_line": 161,
+              "anchor_line": 149,
+              "anchor_text": "    mermaid.initialize({",
+              "file_sha256": "fd59485e41b28838043efc3a877d2a0b774aa7dcc2d51a540cf5a8f727214418",
+              "excerpt_sha256": "f81860f815fa64023b05980f6656a4fbfeffc5df0aab269f1e665c04ce4f2f06",
+              "scope": "Static source evidence supplied by read-only peer, anchor bytes bound by A; no behavior execution."
+            },
+            {
+              "file": "web/src/lib/editor/plugins/wiki-link-click-plugin.tsx",
+              "start_line": 31,
+              "end_line": 46,
+              "anchor_line": 34,
+              "anchor_text": "      const parsed = parseWikiLinkHref(href);",
+              "file_sha256": "3203091a8eca2d5a5f2cd6d3826cf963d4f1ab3c24bccbe1b2ea52a4d5277190",
+              "excerpt_sha256": "caa3524d9dbd1036915ca32ef5d7f96102a7f6df32d5728797dc9d43715287c8",
+              "scope": "Static source evidence supplied by read-only peer, anchor bytes bound by A; no behavior execution."
+            }
+          ]
+        },
+        {
+          "id": "WUI08",
+          "topic": "来源指向",
+          "fact": "Wiki来源字段是source_chunk_ids/source_doc_ids，文档预览按当前doc_id URL取得。",
+          "unknown": "该链没有C1固定source revision/SHA/node或文档representation绑定。",
+          "evidence": [
+            {
+              "file": "web/src/interfaces/database/dataset.ts",
+              "start_line": 244,
+              "end_line": 259,
+              "anchor_line": 247,
+              "anchor_text": "  source_chunk_ids: string[];",
+              "file_sha256": "56405f2cd939edfa07700c00d7b4f1de7b33d95edabfc703860ac69f89ef1bc0",
+              "excerpt_sha256": "9e48a6b01327cd3b442a6e7e6ea923002ff1e60155da887435e6e48ebdb39bbb",
+              "scope": "Static source evidence supplied by read-only peer, anchor bytes bound by A; no behavior execution."
+            },
+            {
+              "file": "web/src/hooks/use-document-request.ts",
+              "start_line": 733,
+              "end_line": 748,
+              "anchor_line": 736,
+              "anchor_text": "export const useGetDocumentUrl = (documentId?: string) => {",
+              "file_sha256": "20a35c33581230d75252e4faa6541d597e4fb55848a7b557c07c04d630b9c63c",
+              "excerpt_sha256": "db14df4f643daa2a86db94b31a9a1335048491639bdcaa4ca56275e62f93bcfc",
+              "scope": "Static source evidence supplied by read-only peer, anchor bytes bound by A; no behavior execution."
+            }
+          ]
+        },
+        {
+          "id": "WUI09",
+          "topic": "会话与迟到",
+          "fact": "既有页/commit查询键未含owner/session；全局401清授权跳登录；外部content变化重置草稿和dirty。",
+          "unknown": "未执行用户切换/迟到/换页实验，不作已复现泄漏结论。",
+          "evidence": [
+            {
+              "file": "web/src/hooks/use-knowledge-request.ts",
+              "start_line": 475,
+              "end_line": 490,
+              "anchor_line": 478,
+              "anchor_text": "  detail: (datasetId: string, pageType: string, slug: string) =>",
+              "file_sha256": "2520c4f6a0662521e5fd31b6c08b35a1f138bf8d1230d452eb71a05507b6429c",
+              "excerpt_sha256": "8dded9d7be86f61b2b84d6af3015dab148f819bb846b857591fa5a662db8b94d",
+              "scope": "Static source evidence supplied by read-only peer, anchor bytes bound by A; no behavior execution."
+            },
+            {
+              "file": "web/src/utils/next-request.ts",
+              "start_line": 166,
+              "end_line": 181,
+              "anchor_line": 169,
+              "anchor_text": "    // Handle HTTP 401 (token expired / invalid)",
+              "file_sha256": "0c05154b266e5179f15f393f110f0147042dd2d90ce3b9137f6d873aa1a59c0a",
+              "excerpt_sha256": "5ec7e66816a04ed5979822f16bf4629d6f648b3490819f9e94be5b7c6c443188",
+              "scope": "Static source evidence supplied by read-only peer, anchor bytes bound by A; no behavior execution."
+            },
+            {
+              "file": "web/src/pages/dataset/compilation/hooks/use-wiki-editor.ts",
+              "start_line": 8,
+              "end_line": 23,
+              "anchor_line": 11,
+              "anchor_text": "",
+              "file_sha256": "6486d0591bf46c632c5baba99b148311d09a5db01f9a2283f9aee2f3b3f8399a",
+              "excerpt_sha256": "d091e438c61e7310d6e1541f35502e2925458dedca893d0d260f6e208a9fd28a",
+              "scope": "Static source evidence supplied by read-only peer, anchor bytes bound by A; no behavior execution."
+            }
+          ]
+        },
+        {
+          "id": "WUI10",
+          "topic": "可复用展示",
+          "fact": "标题头、差异文字面板和说明Modal具备props/回调式呈现。",
+          "unknown": "VersionHistorySheet带查询，MarkdownEditor带编辑器与Mermaid；不能当纯展示直接继承旧保存/来源逻辑。",
+          "evidence": [
+            {
+              "file": "web/src/pages/dataset/compilation/wiki-detail-header.tsx",
+              "start_line": 18,
+              "end_line": 33,
+              "anchor_line": 21,
+              "anchor_text": "export function WikiDetailHeader({",
+              "file_sha256": "a71b6084399bd3a1795640aa85faa3a8e46e28b55acd6825fb7c93df4ca829e1",
+              "excerpt_sha256": "98f015f5d7d1c6f404db9c53f44054e26d45f2f52263a89b771918502ea35fc7",
+              "scope": "Static source evidence supplied by read-only peer, anchor bytes bound by A; no behavior execution."
+            },
+            {
+              "file": "web/src/pages/dataset/compilation/wiki-version-diff-panel.tsx",
+              "start_line": 26,
+              "end_line": 41,
+              "anchor_line": 29,
+              "anchor_text": "export function WikiVersionDiffPanel({",
+              "file_sha256": "32b3bc75c332a993e4dc17034dd36df0915e4bd0b55fb88242507c208c90445e",
+              "excerpt_sha256": "9a8b479012e9d1682caaad7dad9034a7db3b06215681202e60c3b42a8b2fd960",
+              "scope": "Static source evidence supplied by read-only peer, anchor bytes bound by A; no behavior execution."
+            },
+            {
+              "file": "web/src/pages/dataset/compilation/wiki-commit-modal.tsx",
+              "start_line": 14,
+              "end_line": 29,
+              "anchor_line": 17,
+              "anchor_text": "export function WikiCommitModal({",
+              "file_sha256": "159f0543786e1bb30955fbafc81184c62e07d776dde9710f1c78578b372f37e5",
+              "excerpt_sha256": "112d3c18362396feeb3a132c8793763a3578ebb0d6fb36a75f4ee2e7742a30f2",
+              "scope": "Static source evidence supplied by read-only peer, anchor bytes bound by A; no behavior execution."
+            }
+          ]
+        }
+      ]
+    },
+    "ownership": "A持全部tracked/Git/运行写权；子任务仅写指定忽略目录，Web会话只读聊天回传，未交开发窗。",
+    "limitation": "源码盘点和字节锚点不证明运行权限/事务/HTML/资源/会话行为；不报告已复现安全问题，不启动审查。"
+  },
+  "measurement_protocol": {
+    "path": "docs/stage3r2-input-readiness.md",
+    "status": "NotRun",
+    "target_source": "docs/knowledge-document-structure-v0.1.candidate.md#10",
+    "formats": 3,
+    "tasks_per_format": 5,
+    "max_task_ms": 10000,
+    "serial_reads_per_kind_per_format": 20,
+    "max_read_ms": 1000,
+    "nominal_RSS_sample_ms": 50,
+    "max_parent_plus_owned_child_RSS_growth_bytes": 268435456,
+    "first_screen_target_ms": 3000,
+    "limitations": [
+      "实际首次解析和实际缓存复用分别报告；不删缓存/历史伪造冷态。",
+      "子进程启动/阶段计时未知保持null；任务总耗时包括排队及轮询。",
+      "失败/取消/无效运行留档，不混入成功吞吐。",
+      "离散样本与RSS采样不证明生产p95、硬内存上限或百万规模。"
+    ]
+  },
+  "contracts": {
+    "protected_count": 41,
+    "unchanged": true,
+    "protected_map": "docs/stage3r1-structure-backend-verification.json#/contracts/protected_files"
+  },
+  "delivery_guard": {
+    "path": ".local-data/stage3-20261026/rich-document-candidate-draft/inputs-delivery-guard.json",
+    "sha256": "1d55d6d1b4bb0fd7b7c2a147811cdc88d29d96605b822e290c06580b8e1c1ca0",
+    "byte_length": 1638,
+    "result": {
+      "recorded_at": "2026-10-26T14:36:19.573Z",
+      "passed": true,
+      "scope": "Supplement delivery docs/source/runtime/credential guards, not business/API execution.",
+      "base_candidate": "02c1951f8a84327ff2ed7257b694529cb79eef17",
+      "remote_refs_before_supplement": {
+        "refs/heads/codex/stage3r2-document-candidate": "02c1951f8a84327ff2ed7257b694529cb79eef17",
+        "refs/heads/main": "abdb141ae17b80a7f980f042220f07e349b868c0"
+      },
+      "changed_files": [
+        "README.md",
+        "docs/stage2-local-coordination.md",
+        "docs/stage3r2-document-handoff.md",
+        "会话接续说明.md",
+        "本地第二大脑知识库技术方案.md",
+        "docs/stage3r2-input-readiness-verification.json",
+        "docs/stage3r2-input-readiness.md"
+      ],
+      "tracked_business_changes": 0,
+      "candidate_three_and_initial_report_unchanged": true,
+      "old_protected_files": 41,
+      "old_protected_unchanged": true,
+      "R1_report_unchanged": true,
+      "services": [
+        {
+          "name": "lfen-ragflow-poc-ragflow-cpu-1",
+          "status": "Up 2 hours (healthy)"
+        },
+        {
+          "name": "lfen-ragflow-poc-mysql-1",
+          "status": "Up 3 days (healthy)"
+        },
+        {
+          "name": "lfen-ragflow-poc-kvrocks-1",
+          "status": "Up 3 days (healthy)"
+        },
+        {
+          "name": "lfen-ragflow-poc-es01-1",
+          "status": "Up 3 days (healthy)"
+        },
+        {
+          "name": "lfen-ragflow-poc-minio-1",
+          "status": "Up 3 days (healthy)"
+        },
+        {
+          "name": "lfen-ragflow-poc-nats-1",
+          "status": "Up 3 days (healthy)"
+        }
+      ],
+      "helper_stopped": true,
+      "credential_literals_checked": 18,
+      "credential_matches": 0,
+      "model_calls": 0,
+      "application_calls": 0
+    }
+  },
+  "progress_audit": {
+    "previous_goal_turn": "Progress",
+    "previous_evidence": "02c1951远端候选、16追加源事实与独立绑定已完成。",
+    "current_goal_turn": "Progress",
+    "current_evidence": [
+      "28案固定源输入矩阵",
+      "三格式各7.75MiB固定基准与独立源预算绑定",
+      "人工Wiki后端15项/前端10项拥有层证据"
+    ],
+    "remaining_gate": "R2具体真人冻结尚未收到；只限制受影响业务，不能把自动继续消息当批准。"
+  },
+  "incomplete_items": [
+    "新Go源结构生产器/PDF应用适配",
+    "独立文档许可/路由/任务/受控子模式/原子表示",
+    "正式Web与同版真实HTTP/存储/浏览器",
+    "三格式实际性能/父子RSS/首屏",
+    "人工Wiki具体契约与实现",
+    "真实资料退出及阶段3整体，阶段4—6"
+  ],
+  "acceptance": {
+    "outcome": "未实施新业务，不作工程通过声明",
+    "scope": "本批仅封存输入和源码证据；新Go/API/浏览器/性能NotRun。"
+  },
+  "user_decision": {
+    "outcome": "Pending",
+    "scope": "原R2 Document Structure具体冻结02c1951；本补充不另立确认、不改变三件候选。"
+  },
+  "previous_acceptance_scopes": {
+    "R1": "Pending，报告未改",
+    "R6": "既有Approved保持",
+    "R7_synthetic": "既有Approved保持",
+    "real_exit": "NotRun"
+  },
+  "calls": {
+    "new_go_native_runs": 0,
+    "application_calls": 0,
+    "browser_calls": 0,
+    "model_calls": 0,
+    "local_inference": 0,
+    "real_sites": 0
+  },
+  "explanatory_document": "docs/stage3r2-input-readiness.md"
+}

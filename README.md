@@ -1,5 +1,7 @@
 # LFen's Second Brain
 
+**v0.61准备补充**：[固定输入与计量协议](docs/stage3r2-input-readiness.md)和[证据报告](docs/stage3r2-input-readiness-verification.json)已保存：27源事实＋1身份要求、新profile全部NotRun；三份7.75MiB合成I/O基准及人工Wiki前后端拥有层盘点完成。仅独立准备，R2冻结对象仍为`02c1951`的三件原文，未接业务／合main／运行性能，模型0。
+
 **v0.61／阶段3-R2具体候选**：[文档结构方案](docs/knowledge-document-structure-v0.1.candidate.md)、[OpenAPI](docs/knowledge-document-structure-v0.1.candidate.openapi.json)及[合成示例／向量](docs/knowledge-document-structure-v0.1.candidate.examples.json)已整理到`codex/stage3r2-document-candidate`，**未冻结、未接业务、未合main**。[准备报告](docs/stage3r2-document-candidate-verification.json)记录12操作／101schema、140合法／148拒绝例、28双编码器摘要和10字串向量通过。两份实际合成Office的9项源事实为6保留／3部分，暴露PPTX重排和DOCX内联位置损失，因此新方案采用有界OOXML源顺序；PDF保留物理页文字。[接续顺序](docs/stage3r2-document-handoff.md)明确独立默认关闭许可、共享任务核心、受控子进程与固定派生阅读，具体确认后才实施。旧41件、运行与依赖不变，模型／本地推理0、无多轮审查；R1工程验收及真实资料退出保持独立。
 
 **v0.60／阶段3-R1合成结构闭环**：冻结的Structure 0.1.0已完成Go、正式Web与同版联调。[统一报告](docs/stage3r1-structure-verification.json)记录8文件／48节点／80关系、50事实、100%原字节覆盖、10组后端真实验证和11项浏览器检查。DataTable符号、父子树、跨文件类型关系、固定修订回链及64KiB窗口已可使用；本机Web为70eebed，Go二进制SHA为0efd5563…dcc061。固定约0.94MiB基准5次任务最长4.316秒，局部读取三类各20次最长109.061ms；RSS采样增长59.43MiB。41保护件不变，模型／本地推理0；工程人的决定Pending，main实际提交以[发布回执](docs/stage3r1-main-integration.json)为准。[当前接续](docs/stage3r1-structure-handoff.md)明确富文档／Wiki和阶段4—6仍待推进。
