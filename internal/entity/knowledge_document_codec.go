@@ -23,6 +23,8 @@ var knowledgeDocumentSchemasJSON []byte
 
 var knowledgeDocumentXMLLocalName = regexp.MustCompile("^[_\\p{L}][_\\p{L}\\p{N}\\p{M}.\\-\\x{00b7}]*$")
 
+var knowledgeDocumentKeyPattern = regexp.MustCompile("^[A-Za-z0-9_-]{1,128}$")
+
 var knowledgeDocumentSchemas = func() map[string]map[string]any {
 	decoder := json.NewDecoder(bytes.NewReader(knowledgeDocumentSchemasJSON))
 	decoder.UseNumber()
@@ -311,6 +313,21 @@ func knowledgeDocumentValidateSchema(schema map[string]any, value any, depth int
 		return fmt.Errorf("document schema depth exceeds bound")
 	}
 	fail := func() error { return fmt.Errorf("document value does not match the frozen schema") }
+	// Existing discriminator consts are necessary object constraints. Reject
+	// impossible branches before nested work without changing oneOf counting.
+	if object, ok := value.(map[string]any); ok {
+		properties, _ := schema["properties"].(map[string]any)
+		for _, key := range [...]string{"kind", "scheme"} {
+			child, exists := object[key]
+			if !exists {
+				continue
+			}
+			property := knowledgeDocumentSchemaMap(properties[key])
+			if constant, ok := property["const"].(string); ok && !knowledgeDocumentEqual(child, constant) {
+				return fail()
+			}
+		}
+	}
 	if ref, ok := schema["$ref"].(string); ok {
 		target, exists := knowledgeDocumentSchemas[strings.TrimPrefix(ref, "#/components/schemas/")]
 		if !exists {
@@ -542,6 +559,14 @@ func knowledgeDocumentPattern(pattern, value string) bool {
 			return true
 		}
 		return value != "." && value != ".." && !strings.Contains(value, "/")
+	}
+	switch pattern {
+	case "^[0-9a-f]{32}$":
+		return knowledgeDocumentHex(value, 32)
+	case "^[0-9a-f]{64}$":
+		return knowledgeDocumentHex(value, 64)
+	case "^[A-Za-z0-9_-]{1,128}$":
+		return knowledgeDocumentKeyPattern.MatchString(value)
 	}
 	matched, err := regexp.MatchString(pattern, value)
 	return err == nil && matched

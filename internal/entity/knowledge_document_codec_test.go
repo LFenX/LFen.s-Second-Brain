@@ -2,6 +2,8 @@ package entity
 
 import (
 	"encoding/json"
+	"regexp"
+	"strings"
 	"testing"
 )
 
@@ -159,4 +161,55 @@ func TestKnowledgeDocumentCodecScalarAndUnionEquivalence(t *testing.T) {
 			})
 		}
 	})
+}
+
+func TestKnowledgeDocumentPatternEquivalence(t *testing.T) {
+	patterns := []string{
+		"^[0-9a-f]{32}$",
+		"^[0-9a-f]{64}$",
+		"^[A-Za-z0-9_-]{1,128}$",
+		"^[ab]+$",
+		"[",
+	}
+	values := []struct {
+		name  string
+		value string
+	}{
+		{"empty", ""},
+		{"one_letter", "a"},
+		{"hyphen", "-"},
+		{"underscore", "_"},
+		{"mixed_key", "A0_z-"},
+		{"hex31", strings.Repeat("a", 31)},
+		{"hex32", strings.Repeat("a", 32)},
+		{"hex33", strings.Repeat("a", 33)},
+		{"hex63", strings.Repeat("f", 63)},
+		{"hex64", strings.Repeat("f", 64)},
+		{"hex65", strings.Repeat("f", 65)},
+		{"mixed_lower_hex32", strings.Repeat("01af", 8)},
+		{"uppercase32", strings.Repeat("A", 32)},
+		{"nonhex32", strings.Repeat("a", 31) + "g"},
+		{"key128", strings.Repeat("Z", 128)},
+		{"key129", strings.Repeat("Z", 129)},
+		{"newline_after_hex", strings.Repeat("a", 32) + "\n"},
+		{"newline_instead_of_hex", strings.Repeat("a", 31) + "\n"},
+		{"tab", "a\tb"},
+		{"nul", "a\x00b"},
+		{"space", "a b"},
+		{"slash", "a/b"},
+		{"unicode", "节"},
+		{"non_ascii_letter", "é"},
+		{"invalid_utf8", string([]byte{0xff})},
+	}
+	for _, pattern := range patterns {
+		t.Run(pattern, func(t *testing.T) {
+			for _, value := range values {
+				want, err := regexp.MatchString(pattern, value.value)
+				want = err == nil && want
+				if got := knowledgeDocumentPattern(pattern, value.value); got != want {
+					t.Fatalf("case=%s match=%t, original regexp=%t", value.name, got, want)
+				}
+			}
+		})
+	}
 }
