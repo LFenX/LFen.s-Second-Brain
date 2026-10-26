@@ -23,6 +23,7 @@ import {
 } from '../knowledge-catalogue/state';
 import WebReading from './web-reading';
 import { WebFailure } from './web-fields';
+import { LifecycleSourceLink } from '../knowledge-catalogue/lifecycle';
 
 export default function WebRevisions({
   domain,
@@ -150,6 +151,7 @@ export function WebRevisionDetail({
     <div className="space-y-3">
       <h2>{t('knowledgeWeb.fixedRevision')}</h2>
       <p className="break-all text-xs">{query.data.source_revision_id}</p>
+      <LifecycleSourceLink domain={domain} source={query.data.source_id} />
       <WebReading
         key={revision + ':' + inputSha}
         target={{ revision: query.data }}

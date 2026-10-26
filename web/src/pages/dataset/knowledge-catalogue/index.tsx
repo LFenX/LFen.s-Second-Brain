@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams, useSearchParams } from 'react-router';
 import { Button } from '@/components/ui/button';
@@ -24,6 +24,7 @@ import {
 import SourceContent from './content';
 import OriginalRevisions from '../knowledge-import/original-revisions';
 import WebRevisions from '../knowledge-import/web-revisions';
+import LifecycleBrowser, { LifecycleSourceLink } from './lifecycle';
 import {
   CatalogueEmpty,
   CatalogueFailure,
@@ -375,14 +376,27 @@ function DomainCatalogue({
 }) {
   const { t } = useTranslation();
   const domain = useKnowledgeDomain(domainId);
+  const [params, setParams] = useSearchParams();
   const [path, setPath] = useState<KnowledgeGroup[]>([]);
   const [source, setSource] = useState<KnowledgeSource | null>(null);
-  const [sourceView, setSourceView] = useState<'text' | 'original' | 'web'>(
-    'text',
+  const [sourceView, setSourceView] = useState<
+    'text' | 'original' | 'web' | 'lifecycle'
+  >(
+    params.has('lifecycle_source') || params.get('lifecycle_view') === '1'
+      ? 'lifecycle'
+      : 'text',
   );
   const showText = () => setSourceView('text');
   const showOriginals = () => setSourceView('original');
   const showWeb = () => setSourceView('web');
+  const showLifecycle = () => {
+    setSourceView('lifecycle');
+    setParams({ lifecycle_view: '1' });
+  };
+  const lifecycleSource = params.get('lifecycle_source');
+  useEffect(() => {
+    if (lifecycleSource) setSourceView('lifecycle');
+  }, [lifecycleSource]);
   const [generation, setGeneration] = useState(0);
   const [scopeFailure, setScopeFailure] =
     useState<KnowledgeRequestError | null>(null);
@@ -516,8 +530,19 @@ function DomainCatalogue({
             >
               {t('knowledgeWeb.revisions')}
             </Button>
+            <Button
+              variant={sourceView === 'lifecycle' ? 'default' : 'outline'}
+              aria-pressed={sourceView === 'lifecycle'}
+              onClick={showLifecycle}
+            >
+              {t('knowledgeLifecycle.title')}
+            </Button>
           </div>
-          {sourceView === 'web' ? (
+          {sourceView === 'lifecycle' ? (
+            <p className="text-sm text-text-secondary">
+              {t('knowledgeLifecycle.selectSource')}
+            </p>
+          ) : sourceView === 'web' ? (
             <WebRevisions
               domain={domainId}
               owner={domain.data.owner_id}
@@ -538,7 +563,13 @@ function DomainCatalogue({
           aria-label={t('knowledgeCatalogue.original')}
           className="min-w-0 overflow-auto"
         >
-          {target ? (
+          {sourceView === 'lifecycle' ? (
+            <LifecycleBrowser
+              domain={domainId}
+              owner={domain.data.owner_id}
+              group={path.at(-1)?.id}
+            />
+          ) : target ? (
             <FixedRevisionBrowser
               domainId={domainId}
               target={target}
@@ -553,6 +584,12 @@ function DomainCatalogue({
             />
           ) : (
             <CatalogueEmpty label="selectSource" />
+          )}
+          {sourceView !== 'lifecycle' && (target || source) && (
+            <LifecycleSourceLink
+              domain={domainId}
+              source={target?.sourceId || source!.source_id}
+            />
           )}
         </main>
       </div>
@@ -603,7 +640,7 @@ export default function KnowledgeCatalogue() {
         {t('knowledgeCatalogue.datasets')}
       </Link>
       <DomainCatalogue
-        key={`${id}:${params.toString()}`}
+        key={`${id}:${target ? [target.sourceId, target.revisionId, target.rootNodeId, target.sha256].join(':') : 'browse'}`}
         domainId={id}
         target={target}
       />

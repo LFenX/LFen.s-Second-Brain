@@ -1,5 +1,96 @@
 export default {
   translation: {
+    knowledgeLifecycle: {
+      title: 'Source lifecycle',
+      openSource: 'View current source state',
+      scope:
+        'Manage organization and archive state by stable source ID. Fixed history remains intact; actions do not start models, indexes or automatic tasks.',
+      currentDetails: 'Current source details',
+      source: 'Source ID',
+      revision: 'Revision',
+      generation: 'Lifecycle version',
+      path: 'Logical location',
+      classification: 'Classification',
+      state: 'State',
+      active: 'Active',
+      archived: 'Archived',
+      actions: 'Explicit changes',
+      action: 'Action',
+      reclassify: 'Reclassify',
+      move: 'Move logical location',
+      archive: 'Archive',
+      restore: 'Restore',
+      expected: 'Expected revision / lifecycle / policy version',
+      targetPath: 'Allowed target in the same registration',
+      chooseTarget: 'Choose a target',
+      checkTarget: 'Check target availability',
+      targetAllowed: 'Target is currently available',
+      notReserved:
+        'This check does not reserve the location; confirmation checks again',
+      consent:
+        'I checked the changes and confirm this action using the displayed revision, lifecycle and policy versions.',
+      confirm: 'Confirm action',
+      refresh: 'Reload current details',
+      archiveHint:
+        'Archiving retains authorized access to originals, fixed revisions and receipts. It does not delete content or expand access.',
+      restoreHint:
+        'Restoration keeps the current body. It does not restore domains, permissions, subscriptions, tasks or indexes.',
+      metadataHint:
+        'Only organization changes. Original bytes and fixed history remain intact.',
+      receipt: 'Fixed command receipt',
+      receiptHint:
+        'This is the result of that command. Current details are read separately; replaying a receipt never applies the action again.',
+      applied: 'Applied',
+      unchanged: 'Unchanged',
+      commandId: 'Command ID',
+      completedAt: 'Completed at',
+      recovery: 'Original request recovery',
+      unknown:
+        'This domain has an unresolved original request. Check its result first; no automatic resend or replacement key.',
+      savedOriginal:
+        'The latest original request is retained for reading its fixed receipt.',
+      checkOriginal: 'Check original result',
+      resend: 'Explicitly resend the same original request',
+      abandon: 'Verify rejection and abandon old preparation',
+      pendingElsewhere:
+        'Another source in this domain has an unresolved command. Check it first.',
+      openPending: 'Open unresolved source',
+      corruptRecovery:
+        'The recovery record is invalid, belongs to another scope or exceeds capacity. New submissions stopped; retain it for investigation.',
+      failure:
+        'The operation did not complete. Check its original result. Reloading or changing the target requires fresh acknowledgement.',
+      notVisible:
+        'This source or result is not currently accessible. A missing result does not prove the command never ran.',
+      conflict:
+        'The source changed and the old expectations were rejected. Check the original result before explicitly preparing from fresh details.',
+      notReady: 'Source lifecycle migration is not ready. Reload later.',
+      filters: 'Source filters',
+      groupScope: 'Group scope',
+      all: 'Any',
+      exactGroup: 'Only the selected group',
+      languageFilter: 'Language filter',
+      exactLanguage: 'Exact language',
+      language: 'Language',
+      applyFilters: 'Apply filters',
+      selectSource:
+        'Select a source to view its current state and available actions.',
+      prepareRead: 'Prepare current fixed revision',
+      contentSha: 'Native body SHA-256',
+      decodedSha: 'Decoded body SHA-256 (not the original feed digest)',
+      reason: {
+        source_archived:
+          'The source is archived. Restore it or read fixed history.',
+        action_unsupported: 'Logical movement is unsupported for this source.',
+        target_not_registered:
+          'The target is outside the registration’s exact allowlist.',
+        target_occupied:
+          'An active, archived or retired location occupies the target.',
+        target_media_mismatch:
+          'The target media family differs from the original.',
+        invalid_target: 'The target logical path is invalid.',
+        source_active: 'The source is already active.',
+      },
+    },
     knowledgeWeb: {
       title: 'Web pages and feeds',
       scope:

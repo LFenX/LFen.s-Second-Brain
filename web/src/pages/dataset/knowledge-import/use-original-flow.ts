@@ -13,6 +13,7 @@ import type {
 import service, {
   OriginalRequestError,
 } from '@/services/knowledge-original-service';
+import foundationService from '@/services/knowledge-foundation-service';
 import {
   useOriginalActions,
   KnowledgeOriginalKeys,
@@ -83,6 +84,7 @@ export function useOriginalFlow(
     Cancelling = useRef(false),
     Action = useRef(actions);
   const Confirmation = useRef(confirmPending);
+  const RejectedConfirmation = useRef<string | null>(null);
   Confirmation.current = confirmPending;
   Action.current = actions;
   useEffect(() => {
@@ -97,6 +99,9 @@ export function useOriginalFlow(
       if (!Alive.current) return;
       setError(value);
       if (originalScopeFailure(value)) {
+        RejectedConfirmation.current = null;
+        setCanReset(false);
+        setCanResend(false);
         setBlocked(true);
         setRegistration(null);
         setUpload(null);
@@ -191,6 +196,8 @@ export function useOriginalFlow(
       throw Error('Recovered another receipt');
     saveConfirm({ ...original, import_task_id: value.import_task_id });
     setReceipt(value);
+    RejectedConfirmation.current = null;
+    setCanReset(false);
     setUnknown(false);
     setBlocked(false);
     setCanResend(false);
@@ -215,6 +222,94 @@ export function useOriginalFlow(
       (createPending && (createPending.kind === 'upload' || !registration))
     )
       throw Error('Resolve the original request first');
+  }
+  async function sendConfirmation(original: OriginalConfirmPending) {
+    RejectedConfirmation.current = null;
+    setCanReset(false);
+    try {
+      const result = await request(() =>
+        service.confirm(domain, original.registration_id, original.request),
+      );
+      acceptReceipt(result.data, original);
+    } catch (issue) {
+      if (
+        issue instanceof OriginalRequestError &&
+        issue.status === 409 &&
+        issue.code === 'revision_changed'
+      )
+        RejectedConfirmation.current = original.request.idempotency_key;
+      throw issue;
+    }
+  }
+  async function findConfirmation(original: OriginalConfirmPending) {
+    try {
+      const result = await request(() => service.receiptByKey(original));
+      acceptReceipt(result.data, original);
+      return true;
+    } catch (issue) {
+      if (
+        issue instanceof OriginalRequestError &&
+        issue.status === 404 &&
+        issue.code === 'knowledge_not_found'
+      )
+        return false;
+      throw issue;
+    }
+  }
+  async function readConfirmationContext(original: OriginalConfirmPending) {
+    if (
+      createPending?.kind !== 'upload' ||
+      createPending.registration_id !== original.registration_id ||
+      createPending.upload_id !== original.request.upload_id
+    )
+      throw Error('Restore the original upload request first');
+    const currentDomain = await request(() => foundationService.domain(domain));
+    if (currentDomain.domain_id !== domain || currentDomain.owner_id !== owner)
+      throw new OriginalRequestError(404, 'knowledge_not_found');
+    const reg = (
+      await request(() =>
+        service.registration(domain, original.registration_id, owner),
+      )
+    ).data;
+    const value = (
+      await request(() =>
+        service.upload(
+          domain,
+          original.registration_id,
+          original.request.upload_id,
+        ),
+      )
+    ).data;
+    await checkOriginalUpload(
+      value,
+      createPending.request,
+      domain,
+      owner,
+      original.registration_id,
+    );
+    if (
+      value.upload_id !== original.request.upload_id ||
+      (['ready', 'committed'].includes(value.state) &&
+        value.manifest_sha256 !== original.request.manifest_sha256)
+    )
+      throw Error('Recovered another confirmation upload');
+    return { registration: reg, upload: value };
+  }
+  async function committedConfirmation(
+    value: OriginalUpload,
+    original: OriginalConfirmPending,
+  ) {
+    if (value.state !== 'committed') return false;
+    if (!value.import_task_id) throw Error('Committed upload has no receipt');
+    acceptReceipt(
+      (
+        await request(() =>
+          service.receipt(domain, value.registration_id, value.import_task_id!),
+        )
+      ).data,
+      original,
+    );
+    return true;
   }
   const openRegistration = (reg: string) =>
     run(async () => {
@@ -416,26 +511,34 @@ export function useOriginalFlow(
       };
       saveConfirm(original);
       setUnknown(true);
-      acceptReceipt(
-        (
-          await request(() =>
-            service.confirm(domain, original.registration_id, original.request),
-          )
-        ).data,
-        original,
-      );
+      await sendConfirmation(original);
     });
   const recover = () =>
     run(async () => {
       setCanResend(false);
+      if (confirmPending) {
+        setCanReset(false);
+        if (await findConfirmation(confirmPending)) return;
+        const context = await readConfirmationContext(confirmPending);
+        const current = rememberUpload(context.upload);
+        setRegistration(context.registration);
+        if (await committedConfirmation(current, confirmPending)) return;
+        setBlocked(false);
+        setUnknown(true);
+        setCanResend(true);
+        const rejected =
+          RejectedConfirmation.current ===
+          confirmPending.request.idempotency_key;
+        setCanReset(rejected);
+        setError(
+          new OriginalRequestError(
+            rejected ? 409 : 404,
+            rejected ? 'revision_changed' : 'knowledge_not_found',
+          ),
+        );
+        return;
+      }
       try {
-        if (confirmPending) {
-          acceptReceipt(
-            (await request(() => service.receiptByKey(confirmPending))).data,
-            confirmPending,
-          );
-          return;
-        }
         if (createPending?.kind === 'registration') {
           const result = await request(() =>
             service.registrationByKey(
@@ -489,18 +592,11 @@ export function useOriginalFlow(
       setUnknown(true);
       setCanResend(false);
       if (confirmPending) {
-        acceptReceipt(
-          (
-            await request(() =>
-              service.confirm(
-                domain,
-                confirmPending.registration_id,
-                confirmPending.request,
-              ),
-            )
-          ).data,
-          confirmPending,
-        );
+        const context = await readConfirmationContext(confirmPending);
+        rememberUpload(context.upload);
+        setRegistration(context.registration);
+        setBlocked(false);
+        await sendConfirmation(confirmPending);
         return;
       }
       if (createPending?.kind === 'upload')
@@ -555,6 +651,38 @@ export function useOriginalFlow(
   }
   const startAnother = () =>
     run(async () => {
+      let recoveredRegistration: OriginalRegistration | null = null;
+      if (confirmPending && !receipt) {
+        if (
+          !canReset ||
+          RejectedConfirmation.current !==
+            confirmPending.request.idempotency_key
+        )
+          throw Error('Check the rejected original confirmation first');
+        setCanReset(false);
+        setCanResend(false);
+        if (await findConfirmation(confirmPending)) return;
+        const context = await readConfirmationContext(confirmPending);
+        let current = rememberUpload(context.upload);
+        recoveredRegistration = context.registration;
+        if (await committedConfirmation(current, confirmPending)) return;
+        if (!['rejected', 'cancelled', 'expired'].includes(current.state)) {
+          current = rememberUpload(
+            (
+              await request(() =>
+                service.cancel(
+                  domain,
+                  current.registration_id,
+                  current.upload_id,
+                ),
+              )
+            ).data,
+          );
+          if (await committedConfirmation(current, confirmPending)) return;
+        }
+        if (!['rejected', 'cancelled', 'expired'].includes(current.state))
+          throw Error('Cancel the original upload before new preparation');
+      }
       if (
         !receipt &&
         !canReset &&
@@ -563,6 +691,7 @@ export function useOriginalFlow(
       )
         throw Error('Resolve or cancel the original upload first');
       const reg =
+        recoveredRegistration ||
         registration ||
         (createPending?.registration_id
           ? (
@@ -591,6 +720,8 @@ export function useOriginalFlow(
       setUnknown(false);
       setCanResend(false);
       setCanReset(false);
+      RejectedConfirmation.current = null;
+      setBlocked(false);
       setRegistration(reg);
       setProgress(0);
     });

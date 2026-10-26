@@ -31,6 +31,8 @@ export const KnowledgeKeys = {
     ['knowledge', session, domainId, 'groups', parentId] as const,
   sources: (session: number, domainId: string, groupId?: string) =>
     ['knowledge', session, domainId, 'sources', groupId] as const,
+  sourceLists: (session: number, domainId: string) =>
+    ['knowledge', session, domainId, 'sources'] as const,
   source: (session: number, domainId: string, revisionId: string) =>
     ['knowledge', session, domainId, 'source', revisionId] as const,
   nodes: (

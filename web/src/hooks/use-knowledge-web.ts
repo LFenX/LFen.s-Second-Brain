@@ -49,6 +49,8 @@ export const KnowledgeWebKeys = {
       group,
       registration,
     ] as const,
+  revisionLists: (session: number, domain: string, owner: string) =>
+    [...KnowledgeWebKeys.scope(session, domain, owner), 'revisions'] as const,
   revision: (session: number, domain: string, owner: string, id: string) =>
     [
       ...KnowledgeWebKeys.scope(session, domain, owner),

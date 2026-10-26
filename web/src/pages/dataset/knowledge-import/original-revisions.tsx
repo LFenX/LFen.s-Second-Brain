@@ -19,6 +19,7 @@ import {
   LoadMore,
 } from '../knowledge-catalogue/state';
 import { OriginalFailure } from './original-fields';
+import { LifecycleSourceLink } from '../knowledge-catalogue/lifecycle';
 
 export function OriginalRevisionFacts({
   source,
@@ -238,6 +239,7 @@ export function OriginalRevisionDetail({
         {t('knowledgeOriginal.fixedDetails')}
       </h2>
       <OriginalRevisionFacts source={source} />
+      <LifecycleSourceLink domain={domain} source={source.source_id} />
       {!!error && <OriginalFailure error={error} />}
       <p className="text-sm text-text-secondary">
         {t('knowledgeOriginal.blobHint')}

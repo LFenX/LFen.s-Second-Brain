@@ -1,0 +1,521 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-26T04:07:56.731Z",
+  "objective": "完成已冻结C2 0.7.0客户端、页面与恢复，并修复已授权旧0.5过渡出口，保存工程结果后清洁回交。",
+  "baseline_commit": "2bfa0d9990e7c42c4927a47af747f12da4e3712e",
+  "branch": "codex/stage2r6-lifecycle",
+  "delivery_commit": "本报告所属提交；最终完整SHA及提交hooks结果见本机after.json和回交消息，避免自引用SHA。",
+  "request_snapshot_source": "主会话明确交窗及追加授权原文；用户原始决定沿用主会话记录，不构造新的真人决定。",
+  "request_snapshot": [
+    "现在正式交出本轮唯一源码／Git写权。清洁固定 HEAD 2bfa0d9990e7c42c4927a47af747f12da4e3712e，分支 codex/stage2r6-lifecycle，已推远端，工作区干净。按 docs/stage2r6-lifecycle-client-handoff.md 的白名单实施正式0.7客户端、Hooks、页面与恢复及定向验证；正式契约3件、32份旧保护和Go均不可改。准确能力／SHA在 docs/stage2r6-lifecycle-verification.json（35保护）。后端已加载 af6e939567afe2edb176d110096fd4626d2e1b8d92a59a31643f6ac9583c915e，runtime_ready=true，真实MySQL／S3最小闭环通过，Web仍R5；不得回切旧无世代后端。一次只读清单已采纳，可直接实施，无需重复审查。你仅运行合成Mock、局部格式／lint、6套新增＋相关旧回归、生产构建、类型增量与正常hooks，不操作实际API／账户／Docker／SQL或模型，不合main。A从本消息起对所有受跟踪源码及Git只读，只在忽略目录准备真实合成并发／故障／容量证据。若需白名单外改动，回传具体问题和现场，不自行扩范围。交回清洁HEAD、完整文件、真实命令计数／构建／类型前后和浏览器缺口后立即只读；A再收回联调发布。请持续推进到清洁回交，不因等待其他机器而停下。",
+    "已独立核对现有 use-original-flow.ts 的 confirm/recover/fail/startAnother 和 originalScopeFailure：问题成立，明确把 web/src/pages/dataset/knowledge-import/use-original-flow.ts 这一文件加入本次唯一写窗。继续由你写，A不动源码／Git。仅修0.7上线导致的旧0.5过渡出口，不改旧DTO／摘要／共享utils／其他旧flow。验收边界：只有已知确认阶段409 revision_changed + 原动作／原键先查回执 + 当前域／登记／原Upload均重新核验后，才启用明确放弃旧准备／新Upload；任意404、网络/503未知、401失权均不得据此清槽换键。刷新丢失已知拒绝证据时，仍先原键查验／明确同body重发取得已知结果，不能靠GET404猜未执行。恢复可见状态与blocked必须一致；旧ready会话仍需可明确取消，不能丢失原槽后留下无处解决的配额占用。沿用已有canReset/startAnother与按钮，用户明确准备新会话后完整重新上传。新增定向测试放现有已批准恢复套，至少覆盖已知拒绝恢复出口、未知404不放开、重读失权仍隔离、原回执已存在时保留成功。完成其余验证／构建到清洁回交；不需要重复审查。"
+  ],
+  "clarification": {
+    "state": "Settled",
+    "notice": "沿用已批准范围，本次跳过重复提问"
+  },
+  "authority": {
+    "source_thread": "01a158c6-4366-7792-8768-4aed0b80a6a4",
+    "handoff": "docs/stage2r6-lifecycle-client-handoff.md",
+    "added_file": "web/src/pages/dataset/knowledge-import/use-original-flow.ts",
+    "writer": "客户端消费会话独占源码/Git写窗，清洁回交后立即只读"
+  },
+  "plan": [
+    "读取正式契约与现有拥有路径，核对固定HEAD和35保护文件。",
+    "新增service／DTO／schema／摘要和恢复槽，再接Hooks与独立生命周期页面。",
+    "保持固定历史阅读，修复主会话追加授权的旧0.5确认过渡出口。",
+    "完成合成回归、局部格式/lint、类型增量和生产构建，正常hooks提交后回交。"
+  ],
+  "requirements": [
+    {
+      "requirement": "正式service覆盖全部10操作，原生登录及局部双版本头，25秒、32KiB、严格正式schema、错误outcome_known；不能修改全局request或旧协议。",
+      "implementation": [
+        "web/src/services/knowledge-lifecycle-service.ts",
+        "web/src/interfaces/request/knowledge-lifecycle.ts",
+        "web/src/interfaces/database/knowledge-lifecycle.ts",
+        "web/src/utils/knowledge-lifecycle-schema.ts"
+      ],
+      "evidence": [
+        "web/src/services/__tests__/knowledge-lifecycle-service.test.ts",
+        "web/src/services/__tests__/knowledge-lifecycle-wire.test.ts",
+        "web/src/utils/__tests__/knowledge-lifecycle.test.ts"
+      ],
+      "status": "合成验证通过"
+    },
+    {
+      "requirement": "Hooks使用统一key factory，按session／owner／domain／source及完整过滤隔离；空语言、未传语言、all／ungrouped／exact不同。列表每页最多20，允许预算缩页；cursor复用完整原筛选和limit。",
+      "implementation": [
+        "web/src/hooks/use-knowledge-lifecycle.ts"
+      ],
+      "evidence": [
+        "web/src/hooks/__tests__/use-knowledge-lifecycle.test.tsx",
+        "web/src/services/__tests__/knowledge-lifecycle-service.test.ts"
+      ],
+      "status": "合成验证通过"
+    },
+    {
+      "requirement": "页面提供当前与归档列表、独立当前详情、四动作差异与默认未认可。移动读取原登记精确目标，单独GET核对但不预约；目录／Web／无登记C1禁移动。状态no-op按协议处理，UI突出当前有意义的动作。",
+      "implementation": [
+        "web/src/pages/dataset/knowledge-catalogue/lifecycle.tsx",
+        "web/src/pages/dataset/knowledge-catalogue/lifecycle-actions.tsx"
+      ],
+      "evidence": [
+        "web/src/pages/dataset/knowledge-catalogue/__tests__/lifecycle.test.tsx",
+        "web/src/utils/__tests__/knowledge-lifecycle.test.ts"
+      ],
+      "status": "合成验证通过；真实浏览器待主会话验证"
+    },
+    {
+      "requirement": "先持久化完整原请求槽，再POST；每主体域1个未决、最多8域、单槽8KiB，满／损坏／存储失败禁止POST，不驱逐unknown。刷新／丢响应／超时／503先GET原动作原键；404不是未执行证明，核验当前访问后只明确重发相同body/key。失权清可见信息但保留隔离槽；换新准备必须先查原结果并明确放弃，重新读详情、换键及认可。",
+      "implementation": [
+        "web/src/utils/knowledge-lifecycle.ts",
+        "web/src/pages/dataset/knowledge-catalogue/use-lifecycle-flow.ts"
+      ],
+      "evidence": [
+        "web/src/pages/dataset/knowledge-catalogue/__tests__/lifecycle-recovery.test.tsx",
+        "web/src/utils/__tests__/knowledge-lifecycle.test.ts"
+      ],
+      "status": "合成验证通过；跨标签页真实浏览器待验证"
+    },
+    {
+      "requirement": "固定回执与当前详情分开；回放旧archive不重归档。C1、原件和网页固定阅读继续旧协议，网页snapshot SHA为decoded正文，原Feed另有SHA。成功后精确失效当前来源列表，不把回执after当当前状态。",
+      "implementation": [
+        "web/src/pages/dataset/knowledge-catalogue/lifecycle-receipt.tsx",
+        "web/src/services/knowledge-lifecycle-service.ts",
+        "web/src/hooks/use-knowledge-lifecycle.ts",
+        "web/src/pages/dataset/knowledge-import/original-revisions.tsx",
+        "web/src/pages/dataset/knowledge-import/web-revisions.tsx",
+        "web/src/pages/dataset/knowledge-catalogue/index.tsx"
+      ],
+      "evidence": [
+        "web/src/pages/dataset/knowledge-catalogue/__tests__/lifecycle.test.tsx",
+        "web/src/pages/dataset/knowledge-catalogue/__tests__/lifecycle-recovery.test.tsx",
+        "web/src/hooks/__tests__/use-knowledge-lifecycle.test.tsx",
+        "web/src/services/__tests__/knowledge-lifecycle-service.test.ts"
+      ],
+      "status": "合成验证通过；真实固定阅读由主会话接手"
+    },
+    {
+      "requirement": "schema／摘要／HTTP wire、动作／认可重置、恢复／主体切换和容量槽、旧固定入口与已知过渡错误定向验证；旧用例只运行相关范围，不扩全仓错误修复。",
+      "implementation": [
+        "web/src/services/__tests__/knowledge-lifecycle-service.test.ts",
+        "web/src/services/__tests__/knowledge-lifecycle-wire.test.ts",
+        "web/src/utils/__tests__/knowledge-lifecycle.test.ts",
+        "web/src/hooks/__tests__/use-knowledge-lifecycle.test.tsx",
+        "web/src/pages/dataset/knowledge-catalogue/__tests__/lifecycle-fixture.ts",
+        "web/src/pages/dataset/knowledge-catalogue/__tests__/lifecycle.test.tsx",
+        "web/src/pages/dataset/knowledge-catalogue/__tests__/lifecycle-recovery.test.tsx"
+      ],
+      "evidence": [
+        ".local-data/stage2r6-client-20261026/jest-final.json",
+        ".local-data/stage2r6-client-20261026/types-before.log",
+        ".local-data/stage2r6-client-20261026/types-final.log",
+        ".local-data/stage2r6-client-20261026/build-final.log"
+      ],
+      "status": "33套929项通过；类型207→207且逐条一致；生产构建通过"
+    },
+    {
+      "requirement": "已独立核对现有 use-original-flow.ts 的 confirm/recover/fail/startAnother 和 originalScopeFailure：问题成立，明确把 web/src/pages/dataset/knowledge-import/use-original-flow.ts 这一文件加入本次唯一写窗。继续由你写，A不动源码／Git。仅修0.7上线导致的旧0.5过渡出口，不改旧DTO／摘要／共享utils／其他旧flow。验收边界：只有已知确认阶段409 revision_changed + 原动作／原键先查回执 + 当前域／登记／原Upload均重新核验后，才启用明确放弃旧准备／新Upload；任意404、网络/503未知、401失权均不得据此清槽换键。刷新丢失已知拒绝证据时，仍先原键查验／明确同body重发取得已知结果，不能靠GET404猜未执行。恢复可见状态与blocked必须一致；旧ready会话仍需可明确取消，不能丢失原槽后留下无处解决的配额占用。沿用已有canReset/startAnother与按钮，用户明确准备新会话后完整重新上传。新增定向测试放现有已批准恢复套，至少覆盖已知拒绝恢复出口、未知404不放开、重读失权仍隔离、原回执已存在时保留成功。完成其余验证／构建到清洁回交；不需要重复审查。",
+      "implementation": [
+        "web/src/pages/dataset/knowledge-import/use-original-flow.ts"
+      ],
+      "evidence": [
+        "web/src/pages/dataset/knowledge-catalogue/__tests__/lifecycle-recovery.test.tsx"
+      ],
+      "status": "已知409＋原键查验＋域／登记／原Upload重读后开放明确出口；取消旧会话后完整新上传；合成验证通过"
+    }
+  ],
+  "file_manifest": {
+    "total": 27,
+    "web": 25,
+    "production": 18,
+    "tests_and_fixture": 7,
+    "paths": [
+      "web/src/interfaces/request/knowledge-lifecycle.ts",
+      "web/src/interfaces/database/knowledge-lifecycle.ts",
+      "web/src/services/knowledge-lifecycle-service.ts",
+      "web/src/hooks/use-knowledge-lifecycle.ts",
+      "web/src/utils/knowledge-lifecycle-schema.ts",
+      "web/src/utils/knowledge-lifecycle.ts",
+      "web/src/pages/dataset/knowledge-catalogue/lifecycle.tsx",
+      "web/src/pages/dataset/knowledge-catalogue/lifecycle-actions.tsx",
+      "web/src/pages/dataset/knowledge-catalogue/lifecycle-receipt.tsx",
+      "web/src/pages/dataset/knowledge-catalogue/use-lifecycle-flow.ts",
+      "web/src/pages/dataset/knowledge-catalogue/index.tsx",
+      "web/src/pages/dataset/knowledge-import/original-revisions.tsx",
+      "web/src/pages/dataset/knowledge-import/web-revisions.tsx",
+      "web/src/hooks/use-knowledge-foundation.ts",
+      "web/src/hooks/use-knowledge-web.ts",
+      "web/src/locales/zh.ts",
+      "web/src/locales/en.ts",
+      "web/src/services/__tests__/knowledge-lifecycle-service.test.ts",
+      "web/src/services/__tests__/knowledge-lifecycle-wire.test.ts",
+      "web/src/utils/__tests__/knowledge-lifecycle.test.ts",
+      "web/src/hooks/__tests__/use-knowledge-lifecycle.test.tsx",
+      "web/src/pages/dataset/knowledge-catalogue/__tests__/lifecycle-fixture.ts",
+      "web/src/pages/dataset/knowledge-catalogue/__tests__/lifecycle.test.tsx",
+      "web/src/pages/dataset/knowledge-catalogue/__tests__/lifecycle-recovery.test.tsx",
+      "web/src/pages/dataset/knowledge-import/use-original-flow.ts",
+      "docs/stage2r6-lifecycle-client-verification.json",
+      "docs/stage2r6-lifecycle-client-notes.md"
+    ],
+    "verified_source_sha256": {
+      "web/src/interfaces/request/knowledge-lifecycle.ts": "f7683555c53c74560d2b14982326957ca22dd96d9c8a4a45a027f5f90c345911",
+      "web/src/interfaces/database/knowledge-lifecycle.ts": "191859dcbc025d728c8bea4e14b734e3f6e5ef0804bab269990149f1718692a6",
+      "web/src/services/knowledge-lifecycle-service.ts": "d09c49ccb1ca1b75d20ac8853ed6c2f9e828e4c9ae3fde3597dcb6147eddd624",
+      "web/src/hooks/use-knowledge-lifecycle.ts": "08c4d6fe47824cd600e7bda9fd0439748d0d8199e0cb062235b542b38e69e926",
+      "web/src/utils/knowledge-lifecycle-schema.ts": "dd0e610f6e524a75d4c7f715c898f56dd180d6c8149eb2041e0bc6f6761ed689",
+      "web/src/utils/knowledge-lifecycle.ts": "4b6aea115e5681f9ded2ef0e3625b803a7de462244a48a2bad5c4453aa2d323b",
+      "web/src/pages/dataset/knowledge-catalogue/lifecycle.tsx": "c2ec4d4a8ef3a2becb914d1bfd4e4f2df541dcdd0c090cdfa77022fb324dc4c5",
+      "web/src/pages/dataset/knowledge-catalogue/lifecycle-actions.tsx": "734590181a7ff59bc2228dbf5bdc81f78b6516bca35a9528217da1709872a1bd",
+      "web/src/pages/dataset/knowledge-catalogue/lifecycle-receipt.tsx": "0d4aaf46b9fce3082c9e0baeb28b6a51acd405110e7263797fe90bf2ee3e1fcb",
+      "web/src/pages/dataset/knowledge-catalogue/use-lifecycle-flow.ts": "0f435f718af24297240e449b904b54d5d14ccee57c455b5cb0ff723f0d4b1cc7",
+      "web/src/pages/dataset/knowledge-catalogue/index.tsx": "98f49c7332f95c65a8146a3255aaff71145adb0c894327bed772b8ea3e522024",
+      "web/src/pages/dataset/knowledge-import/original-revisions.tsx": "a4689aeecc066e52a85b052033786b21f9dafe27aabd00eae666f828e30e4427",
+      "web/src/pages/dataset/knowledge-import/web-revisions.tsx": "b847a3ac37ef4913f028223e178976effa1a97c1f55f608eaf295698538f6745",
+      "web/src/hooks/use-knowledge-foundation.ts": "9ff25d7ae51d4fabad5ea35ae97e3b91ab2991d66dbce681433a5cfc2dbcf393",
+      "web/src/hooks/use-knowledge-web.ts": "4ad681f1a0a34f3c43c7f395280da67aa1ee3c0b9b2a76269dfaae6f6082927c",
+      "web/src/locales/zh.ts": "890c609f4b0a2fa4e246c31b96c283dd3be2484e4d345386fb69b56cd71b8cc4",
+      "web/src/locales/en.ts": "0915e26117c8467c64d2fe71d16441f5083b4fe8fc1e6a9720dee734f93221cd",
+      "web/src/services/__tests__/knowledge-lifecycle-service.test.ts": "6b03c5b09895a8971cfcd700f7851f7142734f9ffef108635e439c2431da8cfa",
+      "web/src/services/__tests__/knowledge-lifecycle-wire.test.ts": "93a6def5a4791f602800f736eb79c2c9c49e0b737e675f1200ccc3f7b70176ad",
+      "web/src/utils/__tests__/knowledge-lifecycle.test.ts": "6e17094d44dbef7cd65dab4f6917ad1ddabd4d884dd2bcd308b622a16d74a9ba",
+      "web/src/hooks/__tests__/use-knowledge-lifecycle.test.tsx": "14edd53484932eba54aee8843b85499229ff5d98eec0e6d7ad489303808d17f2",
+      "web/src/pages/dataset/knowledge-catalogue/__tests__/lifecycle-fixture.ts": "a051a95b395c83124bd64ed815bcefd950ab23e3bae9d614e4028f7e5047f850",
+      "web/src/pages/dataset/knowledge-catalogue/__tests__/lifecycle.test.tsx": "51b3b6048e194a9c957fc81a7dae9abf83d1194583517ab560ea8ee008949271",
+      "web/src/pages/dataset/knowledge-catalogue/__tests__/lifecycle-recovery.test.tsx": "f6640d03831c25f6c29b59499de786791718e189a26b047002c8ba6a94373a5f",
+      "web/src/pages/dataset/knowledge-import/use-original-flow.ts": "4ae0b854d16ce4c3ea11f0f836a9c6a4b99d0707c855878499663b08bc06590c"
+    }
+  },
+  "verification": {
+    "scope": "仅合成Mock和本地构建；未访问实际业务API／账户／Docker／SQL／真实网站／模型。",
+    "formatting": {
+      "command": "web/node_modules/.bin/oxfmt.cmd --check <files.json中25个Web文件>",
+      "passed": true,
+      "files": 25
+    },
+    "lint": {
+      "command": "web/node_modules/.bin/oxlint.cmd <files.json中25个Web文件>",
+      "passed": true
+    },
+    "jest": {
+      "cwd": "web",
+      "command": "./node_modules/.bin/jest.cmd --runInBand --no-coverage --runTestsByPath <test-files.json中33套> --json --outputFile ../.local-data/stage2r6-client-20261026/jest-final.json",
+      "passed": true,
+      "suites": 33,
+      "tests": 929,
+      "new_suites": 6,
+      "new_tests": 211,
+      "unchanged_related_suites": 27,
+      "unchanged_related_tests": 718,
+      "suite_results": [
+        {
+          "file": "web/src/pages/dataset/knowledge-import/__tests__/directory.test.tsx",
+          "passed": 25,
+          "failed": 0
+        },
+        {
+          "file": "web/src/pages/dataset/knowledge-import/__tests__/import.test.tsx",
+          "passed": 13,
+          "failed": 0
+        },
+        {
+          "file": "web/src/pages/dataset/knowledge-import/__tests__/batch.test.tsx",
+          "passed": 7,
+          "failed": 0
+        },
+        {
+          "file": "web/src/pages/dataset/knowledge-import/__tests__/original.test.tsx",
+          "passed": 6,
+          "failed": 0
+        },
+        {
+          "file": "web/src/pages/dataset/knowledge-catalogue/__tests__/catalogue.test.tsx",
+          "passed": 17,
+          "failed": 0
+        },
+        {
+          "file": "web/src/pages/dataset/knowledge-import/__tests__/batch-manifest.test.tsx",
+          "passed": 4,
+          "failed": 0
+        },
+        {
+          "file": "web/src/pages/dataset/knowledge-catalogue/__tests__/lifecycle.test.tsx",
+          "passed": 11,
+          "failed": 0
+        },
+        {
+          "file": "web/src/pages/dataset/knowledge-import/__tests__/web.test.tsx",
+          "passed": 16,
+          "failed": 0
+        },
+        {
+          "file": "web/src/hooks/__tests__/use-knowledge-original.test.tsx",
+          "passed": 7,
+          "failed": 0
+        },
+        {
+          "file": "web/src/pages/dataset/knowledge-catalogue/__tests__/lifecycle-recovery.test.tsx",
+          "passed": 22,
+          "failed": 0
+        },
+        {
+          "file": "web/src/hooks/__tests__/use-knowledge-web.test.tsx",
+          "passed": 5,
+          "failed": 0
+        },
+        {
+          "file": "web/src/pages/dataset/knowledge-catalogue/__tests__/original.test.tsx",
+          "passed": 3,
+          "failed": 0
+        },
+        {
+          "file": "web/src/hooks/__tests__/use-knowledge-lifecycle.test.tsx",
+          "passed": 4,
+          "failed": 0
+        },
+        {
+          "file": "web/src/pages/dataset/knowledge-catalogue/__tests__/web.test.tsx",
+          "passed": 2,
+          "failed": 0
+        },
+        {
+          "file": "web/src/services/__tests__/knowledge-lifecycle-service.test.ts",
+          "passed": 16,
+          "failed": 0
+        },
+        {
+          "file": "web/src/utils/knowledge-batch.test.ts",
+          "passed": 150,
+          "failed": 0
+        },
+        {
+          "file": "web/src/services/__tests__/knowledge-lifecycle-wire.test.ts",
+          "passed": 2,
+          "failed": 0
+        },
+        {
+          "file": "web/src/services/__tests__/knowledge-web-service.test.ts",
+          "passed": 39,
+          "failed": 0
+        },
+        {
+          "file": "web/src/utils/knowledge-import.test.ts",
+          "passed": 6,
+          "failed": 0
+        },
+        {
+          "file": "web/src/utils/__tests__/knowledge-lifecycle.test.ts",
+          "passed": 156,
+          "failed": 0
+        },
+        {
+          "file": "web/src/services/knowledge-batch-service.test.ts",
+          "passed": 18,
+          "failed": 0
+        },
+        {
+          "file": "web/src/services/knowledge-batch-wire.test.ts",
+          "passed": 1,
+          "failed": 0
+        },
+        {
+          "file": "web/src/utils/__tests__/knowledge-web.test.ts",
+          "passed": 148,
+          "failed": 0
+        },
+        {
+          "file": "web/src/services/__tests__/knowledge-web-wire.test.ts",
+          "passed": 2,
+          "failed": 0
+        },
+        {
+          "file": "web/src/utils/knowledge-directory.test.ts",
+          "passed": 116,
+          "failed": 0
+        },
+        {
+          "file": "web/src/services/knowledge-directory-service.test.ts",
+          "passed": 27,
+          "failed": 0
+        },
+        {
+          "file": "web/src/services/knowledge-original-service.test.ts",
+          "passed": 14,
+          "failed": 0
+        },
+        {
+          "file": "web/src/services/knowledge-original-wire.test.ts",
+          "passed": 3,
+          "failed": 0
+        },
+        {
+          "file": "web/src/services/knowledge-directory-wire.test.ts",
+          "passed": 1,
+          "failed": 0
+        },
+        {
+          "file": "web/src/utils/knowledge-original.test.ts",
+          "passed": 55,
+          "failed": 0
+        },
+        {
+          "file": "web/src/services/knowledge-sources-service.test.ts",
+          "passed": 20,
+          "failed": 0
+        },
+        {
+          "file": "web/src/services/knowledge-sources-wire.test.ts",
+          "passed": 1,
+          "failed": 0
+        },
+        {
+          "file": "web/src/services/knowledge-foundation-service.test.ts",
+          "passed": 12,
+          "failed": 0
+        }
+      ],
+      "new_suite_results": [
+        {
+          "file": "web/src/pages/dataset/knowledge-catalogue/__tests__/lifecycle.test.tsx",
+          "passed": 11,
+          "failed": 0
+        },
+        {
+          "file": "web/src/pages/dataset/knowledge-catalogue/__tests__/lifecycle-recovery.test.tsx",
+          "passed": 22,
+          "failed": 0
+        },
+        {
+          "file": "web/src/hooks/__tests__/use-knowledge-lifecycle.test.tsx",
+          "passed": 4,
+          "failed": 0
+        },
+        {
+          "file": "web/src/services/__tests__/knowledge-lifecycle-service.test.ts",
+          "passed": 16,
+          "failed": 0
+        },
+        {
+          "file": "web/src/services/__tests__/knowledge-lifecycle-wire.test.ts",
+          "passed": 2,
+          "failed": 0
+        },
+        {
+          "file": "web/src/utils/__tests__/knowledge-lifecycle.test.ts",
+          "passed": 156,
+          "failed": 0
+        }
+      ],
+      "log": ".local-data/stage2r6-client-20261026/jest-final.log"
+    },
+    "formal_vectors": {
+      "schemas": 20,
+      "structure_cases": 110,
+      "digest_vectors": 14,
+      "query_cases": 7,
+      "path_pairs": 3,
+      "error_mappings": 15,
+      "note": "路径为3组字节对，不把断言数误报为向量组数；后端决策与栅栏向量不冒充客户端已执行。"
+    },
+    "types": {
+      "command": "web/node_modules/.bin/tsc.cmd --noEmit --pretty false --project web/tsconfig.json",
+      "exit_code": 2,
+      "overall_passed": false,
+      "before": 207,
+      "after": 207,
+      "new": 0,
+      "removed": 0,
+      "exact_diagnostic_lines_equal": true,
+      "note": "全量类型检查仍失败于既有207项；仅新增0，未扩大范围修复旧错误。",
+      "before_log": ".local-data/stage2r6-client-20261026/types-before.log",
+      "after_log": ".local-data/stage2r6-client-20261026/types-final.log"
+    },
+    "build": {
+      "cwd": "web",
+      "command": "./node_modules/.bin/vite.cmd build --mode production --outDir <绝对路径到.local-data/stage2r6-client-20261026/dist> --emptyOutDir",
+      "environment": {
+        "NODE_OPTIONS": "--max-old-space-size=8192",
+        "VITE_BUILD_SOURCEMAP": "false",
+        "VITE_MINIFY": "esbuild"
+      },
+      "passed": true,
+      "seconds": 42.33,
+      "warnings": [
+        "产物存在超过1000kB的chunk提示"
+      ],
+      "log": ".local-data/stage2r6-client-20261026/build-final.log",
+      "output": ".local-data/stage2r6-client-20261026/dist"
+    },
+    "protected_count": 35,
+    "protected_changed": 0,
+    "protected_hashes": {
+      "docs/knowledge-sources-v1.openapi.json": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091",
+      "docs/knowledge-sources-v1.example.json": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a",
+      "docs/knowledge-sources-v1.freeze.json": "114bbfa2b4dd51eafc426716032486f666ace8a1a1284f4c1f4c9baf1f1b35c6",
+      "docs/knowledge-foundation-v1.openapi.json": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4",
+      "docs/knowledge-foundation-v1.example.json": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343",
+      "docs/knowledge-directory-import-v1.openapi.json": "6144c08d4cfe7ac98374dc51829c98290e2c88e3441dd38d250a3cd9cb4492e6",
+      "docs/knowledge-directory-import-v1.examples.json": "73618dd78419bb9027520b3dd8b3ef83b1794d3ad1c4d17d904ce7637c54ea72",
+      "docs/knowledge-directory-import-v1.freeze.json": "2af7575cfbc24510550a0b495e18aa30f94decf5f102c23d259d4f3135dbf5f1",
+      "docs/knowledge-directory-import-v0.3.candidate.md": "80eb846a81b6ade430012b585739fe6405ef8a7de5855f27941fe66a31e2cbfa",
+      "docs/knowledge-directory-import-v0.3.candidate.openapi.json": "da2c320b3c3fd8f6af2b566b40507a5b09c55791236b49b224347c8b9a457f3d",
+      "docs/knowledge-directory-import-v0.3.candidate.examples.json": "2680f9786a19cc49a0330ecfcda84249ef36aac20293341a18e17cbdfd132d4e",
+      "docs/knowledge-batch-import-v0.4.candidate.md": "3a3beec92e8bc0baae1c820a18e078717163988277aa9d304d762ff97d027b1f",
+      "docs/knowledge-batch-import-v0.4.candidate.openapi.json": "d57ca240df19a985341c25d60ce18590dacdcf221b5599b8223f558a7c379fc5",
+      "docs/knowledge-batch-import-v0.4.candidate.examples.json": "fe8bde9d99b8aaa7250a40a1adc86c6bee9ecf474cbf01af55253274f2e2e304",
+      "docs/knowledge-batch-import-v1.openapi.json": "bd13fc400fc2a84f490b92ee865db75f76d89bf79a176658312ac3bea17d0fb8",
+      "docs/knowledge-batch-import-v1.examples.json": "5249cdf57da0313346b7b30db0743079a175aaa8480604120b1bf92e4bdfdc53",
+      "docs/knowledge-batch-import-v1.freeze.json": "1d589290db4b1fe4ab4005dae0ebf1918efdeac9cd57d7c810305087c180f631",
+      "docs/knowledge-original-import-v0.5.candidate.md": "8a1079fe4745b84d178f50939ac25e1ac1fa51bc3f61ed2340ef1f6d9e1638d6",
+      "docs/knowledge-original-import-v0.5.candidate.openapi.json": "b4905ab840c64f26a25a6017dc7454393fd3b974b0e2199edffe2cc5e725a0aa",
+      "docs/knowledge-original-import-v0.5.candidate.examples.json": "16aa77d948f857f93dcc96e0c812d4bee2a8f3ad91205e54b9c0457f78ea8815",
+      "docs/knowledge-original-import-v1.openapi.json": "3c48ebe0a2bfc8b3078262ce6c1a8258b312f6111bd9ed2b07b7b4fb433a5efd",
+      "docs/knowledge-original-import-v1.examples.json": "550f7be69c506a02cc2798d2196e17ca06c73b06f08d934ea3cbf823551d5cb1",
+      "docs/knowledge-original-import-v1.freeze.json": "116ddc4161001c0fdb440b45b227952978ca3d291197d712830a92d5aaaca3b9",
+      "docs/knowledge-web-import-v0.6.candidate.md": "577a76624d8b43e26dde890df49140f0b5a2c458dc493dbecd7f5467e13175fb",
+      "docs/knowledge-web-import-v0.6.candidate.openapi.json": "a167a1977f1f0a313061b093d21f035631dd5fafaea95cd8545601e17af35a88",
+      "docs/knowledge-web-import-v0.6.candidate.examples.json": "81372c6270c3e2b3989b4e088bd029883326f75fe6e254d651b93f951e0b7573",
+      "docs/knowledge-web-import-v1.freeze.json": "bba4e9f0c2341658ac69741d57f5a4a9032ac74b6ec848f13a195e4ab96c66c2",
+      "docs/knowledge-web-import-v1.openapi.json": "673092ab81263bdf7b79e85e06206bb02f8eb8996b476c8643dbafed17e259ed",
+      "docs/knowledge-web-import-v1.examples.json": "71019ae8645ad0fd4527565c42f6f80f93924c26266ffe08696de5e9b1c5671d",
+      "docs/knowledge-source-lifecycle-v0.7.candidate.md": "53b78e36a127c6c0f35048bf0ac511417639aba7cca90a418c007caa1b7f39f9",
+      "docs/knowledge-source-lifecycle-v0.7.candidate.openapi.json": "47d159cfee61708a79475879f5371cb97a38b41eb768e759ff802e1ebd0cdd0d",
+      "docs/knowledge-source-lifecycle-v0.7.candidate.examples.json": "a20bf10a7ac93ce36a8d3cd04cd95b035d8e6f2a1f3301accfdd711d86eb2f41",
+      "docs/knowledge-source-lifecycle-v1.freeze.json": "f6545f908a802d0d326fe73dfb3f8e5b2860abf67306b8a1e022c572bbd984c3",
+      "docs/knowledge-source-lifecycle-v1.openapi.json": "526685f1ab09e07f87f3f9c8cee3cf44347d6bdcf9efed94c356ef32b22725db",
+      "docs/knowledge-source-lifecycle-v1.examples.json": "cfe6c24c3f3a24907220c4e2ead993867c33053c6b2d197b70d93c03f168fb3c"
+    },
+    "git_diff_check": "通过；暂存及提交后继续核对",
+    "normal_hooks": {
+      "required": true,
+      "bypass": false,
+      "result_source": ".local-data/stage2r6-client-20261026/commit.log 与提交后 after.json"
+    },
+    "local_evidence_sha256": {
+      "jest-final.json": "2bb0f5faa97d4869245c54a153c20161bc329584a9186b3afc84a356cdae9a66",
+      "jest-final.log": "100d57bc054e40a2315bf6b5ed3a6b29253c09b18901174d1bde04a564b3b0b0",
+      "types-before.log": "ff7c463090fe6d1e3418c7e9981d6e4a7ed70d06c2c22c5bc9832bea6c5cd449",
+      "types-final.log": "ff7c463090fe6d1e3418c7e9981d6e4a7ed70d06c2c22c5bc9832bea6c5cd449",
+      "build-final.log": "0ce567254ac09685a414577cdae9e7b1cf3fceda8b1b68ae0ab2046a957bd78c",
+      "jest-recovery-fix.json": "2a82cc2a21c74dc0631bb653471c72a6da56a8b8fa0bac57e5098d6fb07581b4",
+      "jest-recovery-fix.log": "4cee2814335a9ec326d1c4ed7d035ba065aac8a711636a30d6511f79db4ce26f"
+    },
+    "model_calls": 0
+  },
+  "limitations": [
+    "本窗未运行真实浏览器、账号登录或后端接口；主会话接手四种来源、撤权、刷新恢复与固定阅读联调。",
+    "本窗未执行双API竞态、SQL/进程故障、1000来源容量或64MiB对象IO补证；不合并主会话其他证据到本窗计数。",
+    "跨标签页恢复槽锁需真实浏览器验证；单进程竞争已由Mock覆盖。",
+    "未部署、未推main；R6工程验收由真人独立决定。"
+  ],
+  "governance": {
+    "carrier": "沿用主会话既有治理，本窗仅写获批客户端两份报告及忽略证据；不新增治理目录。",
+    "machine_gate": "本窗未独立运行governance机器门禁，不声称其通过。",
+    "adversarial_review": "用户已明确不启动多轮审查；本窗未启动、未重复询问。"
+  },
+  "user_decision": {
+    "outcome": "Pending",
+    "scope": "R6工程验收；不影响既有R5已接受决定"
+  }
+}
