@@ -1,6 +1,6 @@
 {
-  "document_version": "v0.49",
-  "recorded_at": "2026-10-25T23:53:28.460Z",
+  "document_version": "v0.50",
+  "recorded_at": "2026-10-26T00:10:33.458Z",
   "objective": "实施已批准C2 0.6.0的Go后端，先保存可核对单元／回归与二进制结果，再继续真实合成联调和Web交替。",
   "request_snapshot": [
     "确认冻结并继续实施"
@@ -15,7 +15,7 @@
     "formal_freeze": "9c5cc1f",
     "not_engineering_acceptance": true
   },
-  "engineering_status": "BackendUnitVerified_RuntimeAndFrontendPending",
+  "engineering_status": "BackendMinimumRuntimeVerified_FrontendAndFullIntegrationPending",
   "acceptance": {
     "user_decision": {
       "outcome": "Pending"
@@ -233,7 +233,7 @@
       "probe_correction": "首次help误按0判断；源码及R4证据定义help退出1，实际Usage已输出。只复验四mode启动，不重做已通过编译。"
     },
     "covered": [
-      "54schema对应的Go投影及21个正式样本往返、13摘要／12typed向量",
+      "正式数据投影的21个样本往返、13摘要／12typed向量；54个契约schema在最小运行核验器中编译",
       "HTML／RSS／Atom、1000项、嵌套base、总节点预算和身份／元信息变化",
       "公网地址／混合DNS／钉选接口／逐跳／超时／gzip／304／源站401分层；此处为合成IO单元",
       "登记／Capture／配额／原键／取消／到期、上传原字节与超时、在线唯一一次",
@@ -248,17 +248,46 @@
       "能力比对首次把候选runtime_ready=false当常量；依schema保留动态boolean并独立验证当前true，所有固定限制／版本仍逐项相等。",
       "相对HTML base被应用两次；修正一次求值与canonical解析基址，新增定向反例通过。",
       "help探针首次错按exit0判断；原生help实际exit1且打印Usage，只按真实行为验证，不更改server模式。"
-    ]
+    ],
+    "minimum_runtime": {
+      "smoke_sha256": "ad612baf23dfb822fdad194ab755a5a535520b0b3a682a42456413b226cd6979",
+      "checks_sha256": "65b589f8297bd4bf58ed84165fd3feb04355fe62de56968107057851dba03769",
+      "http_log_sha256": "6ba979fe2fce202ec008a843d0d9dc477a86149ce3655a7a7a921ddc1e7cb23d",
+      "no_real_sites_or_models": true
+    }
   },
   "runtime": {
-    "deployed": false,
-    "running_main": "7c564a738597e924e411f3b191aaa02d14ae42d8",
+    "deployed": true,
+    "source_commit": "1ac4e4f3cd0ca74e79ba10e71593287c18bc98ac",
+    "binary_sha256": "2a7de569de80c9f27ed549ab10dc9de60519ecce0a52ad519c615919e8a37502",
+    "main_unchanged": "7c564a738597e924e411f3b191aaa02d14ae42d8",
+    "app_healthy": true,
     "nginx_syntax_test_passed": true,
-    "private_rollback_snapshot_prepared": true,
-    "compose_applied": false
+    "real_mysql_and_s3_minimum": true,
+    "object_service": "既有pgsty/silo S3兼容服务；沿用SDK和凭据",
+    "synthetic_http_responses": 38,
+    "compiled_response_schemas": 54,
+    "selected_items": 2,
+    "raw_sha256": "5d50e567d5e6fd159952c3bac58123a530f342d6fdfccc787408ddd2a3b3b3e8",
+    "fixed_revision_count": 2,
+    "exact_case_sensitive_128_keys": true,
+    "loopback_rejected_before_dial": true,
+    "online_attempt_once_replay": true,
+    "fixed_read_after_capture_cancelled": true,
+    "foreign_404": true,
+    "range_416": true,
+    "model_and_legacy_fingerprint_unchanged": true,
+    "legacy_documents": 6,
+    "legacy_chunks": 42,
+    "credentials_regenerated": false,
+    "volumes_deleted": false,
+    "compose_changes": [
+      "既有app二进制mount指向本批产物；其他compose字段相等"
+    ],
+    "scope_boundary": "在线成功、跨跳/TLS真实故障装配、并发/崩溃、前端和5次容量尚未由本批最小闭环验收"
   },
   "remaining": [
-    "真实MySQL迁移／精确键／同版S3与API最小闭环；此报告不声称已通过",
+    "真实MySQL精确键和最小闭环已通过；双进程并发、完整来源类型／故障与容量仍须同版执行",
     "清洁固定后端提交交客户端唯一Web写权，完成34操作客户端／恢复／安全阅读／目录入口",
     "同版真实浏览器、合成在线测试装配、进程中断／并发／撤权与旧链路实际回归",
     "2MiB／1000条／32选择各5次容量及RSS／延迟门槛；不能外推生产p95",

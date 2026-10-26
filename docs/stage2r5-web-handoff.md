@@ -1,9 +1,10 @@
 # S2-R5 网页／RSS 候选接续
 
-日期：2026-10-26；v0.48；状态 **C2 0.6.0 已获真人批准并正式冻结，后端实施中**。真人对具体d798893回答“确认冻结并继续实施”，见[冻结记录](knowledge-web-import-v1.freeze.json)。当前运行和远端main仍为`7c564a738597e924e411f3b191aaa02d14ae42d8`；R4工程结果见[统一报告](stage2r4-original-verification.json)，R4人的验收仍Pending，不能与0.6冻结混淆。
+日期：2026-10-26；v0.50；状态 **C2 0.6.0 后端最小真实闭环通过，准备交Web单写入窗口**。真人对具体d798893回答“确认冻结并继续实施”，见[冻结记录](knowledge-web-import-v1.freeze.json)。远端main仍为R4的`7c564a738597e924e411f3b191aaa02d14ae42d8`；本机API已加载功能分支`1ac4e4f3cd0ca74e79ba10e71593287c18bc98ac`，Web仍为R4。R4人的验收Pending，与0.6批准独立。
 
 ## 当前实施增量
 
+- v0.50实际同版MySQL／S3兼容存储／API闭环通过：原生合成账号登录、登记、上传、观察／精确两项预览确认、原键回执、固定原Capture／安全阅读／引用及当前列表。128字符大小写键分别保存；明确在线acquire在拨号前拒绝loopback，原Capture重复请求只回原状态；取消Capture后固定历史可读，越权404和Range416。旧POC6／42、模型配置／用量和活动任务指纹相等，模型0、真实站点0；[报告](stage2r5-backend-verification.json)记录本批38响应，不能代替全部网络故障／并发／浏览器／容量验收。
 - v0.49已完成34操作的Go接线及[后端定向报告](stage2r5-backend-verification.json)：7包89顶层／327含子例，旧0.2—0.4等定向回归45／102，二进制构建与四mode help通过。真实MySQL／S3／API、前端和容量／故障联调仍待执行；运行仍R4，不能把能力端点代码的ready=true当已部署或验收。
 - 观察产物采用≤12MiB的内部有界pack，一次对象保存并批量保存条目元信息；每条正文／阅读仍有独立SHA、长度及读取范围，确认前再准备所选原生解码快照。未改公开字段或预算。准备阶段未接入的Markdown／prep身份原型已收敛到正式0.6实现，原文件路径保留，原生通用RSS入口保持。
 - 正式[OpenAPI](knowledge-web-import-v1.openapi.json)与[向量](knowledge-web-import-v1.examples.json)保留获批候选全部路径、schema、摘要、限制和规则；候选三件套及先前23份保护文件未改。冻结不表示工程验收。
