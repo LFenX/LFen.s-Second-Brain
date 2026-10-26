@@ -1,0 +1,785 @@
+{
+  "document_version": "v0.57",
+  "recorded_at": "2026-10-26T06:58:07.911Z",
+  "status": "DocumentLibraryPreparation_Verified_NotIntegrated",
+  "request_snapshot": [
+    "请注意后续的步骤，请你持续不断地进行下去，跟另外一个会话，甚至你可以开其他的会话去协调。但一个讯息是你必须要传达的，就是一定一定不能够停下来。一定一定就是至少说有一个会话不能停下来，要主会话不能停下来，你就是主会话，要牵动其他废话，持续不断地推进咱们这个工作，直到最后完成。",
+    "那就开始整理“受控目录＋精确选择清单”的下一版契约候选，由你和新会话直接核对，明确接口、身份、权限、增量与恢复语义及验收标准。保持C2 0.2.0冻结契约不变，候选确认前不接入业务代码；继续只用合成资料、不调用模型、不启动多轮审查，完成后保存并推送远端。"
+  ],
+  "objective": "在Structure0.1具体冻结等待期间，验证现有Go本地文档解析的真实页序／内容保留与零模型路径，为后续文档切片补事实和前端适配边界。",
+  "authority": {
+    "continuous_preparation": "沿用真人持续推进、合成、零模型及单写入授权；内部目标续行不是新增共享接口批准。",
+    "structure_0_1": {
+      "candidate_commit": "ddc5630c947ded113917e4dd2bc19521128ac073",
+      "outcome": "Pending",
+      "new_contracts_implemented": false
+    },
+    "rich_document_contract": {
+      "status": "NotDrafted_NotFrozen"
+    },
+    "new_model_scope": false
+  },
+  "baseline": {
+    "main": "e6452d41afd159ba73e908f7ee20c43850a01f48",
+    "candidate": "ddc5630c947ded113917e4dd2bc19521128ac073",
+    "application_backend": "2bfa0d9990e7c42c4927a47af747f12da4e3712e",
+    "application_frontend": "c759990b62f44704b9370c19bcbf402668764899"
+  },
+  "scope": {
+    "synthetic_only": true,
+    "primary_business_changes": 0,
+    "shared_interfaces_changed": 0,
+    "project_dependency_changes": 0,
+    "application_deployments": 0,
+    "application_calls": 0,
+    "model_calls": 0,
+    "local_inference": 0,
+    "real_source_reads": 0,
+    "real_site_requests": 0,
+    "adversarial_review": "NotRun_UserProhibited"
+  },
+  "execution": {
+    "method": "在现有隔离构建副本追加私有测试驱动，通过build.sh --test执行；不写主检出Go源码，不启动模型／服务处理。",
+    "tier": "unit + cgo/static; no external services",
+    "go_version": "go1.27.3",
+    "linker": "LLD 22.1.8; checked before execution",
+    "root_test": "TestStage3DocumentNativeProbe",
+    "top_level_scenarios": 15,
+    "passed_test_events_including_root_and_nested": 36,
+    "failed_test_events": 0,
+    "counts_note": "36包含1根测试及其子项，15一级场景为子集，不能相加；不是整个parser包或全项目测试通过。",
+    "source_files_compared": 19,
+    "source_hashes": {
+      "go.mod": "be436e9f362848b611c4df0ff8866191bad27993d60f9011d6fce70df49629a5",
+      "go.sum": "daeb317bfcfba03000d416253f685db1716b4155776bc49e0d8a08b412fb982f",
+      "build.sh": "ce422df95e92705f0829702599c9c240e5957da5b70b39ffc9353652b8a2efb5",
+      "internal/parser/parser/pdf_parser_common.go": "4a288e5d04f8f495c795149b1dfb3acc3d3e8ef9d28ae3c88d4db250e21bfc33",
+      "internal/parser/parser/pdf_parser_remote_common.go": "789dacddef37350bea51e25b70dfe5aafc3af0175a342042fb4c5bcf0d38db10",
+      "internal/parser/parser/pdf_parser_pages_test.go": "b987555b1cc33a738410e2c35f2d4c22e0ed12eade3d3ca01dc0b4fac2338c4a",
+      "internal/parser/parser/pptx_parser.go": "d254c9a18d96b9e8f7e72307215bdab97ba8300e750448a2d19502c5736cef8b",
+      "internal/parser/parser/pptx_ir.go": "9e83ef1a793018dc1d6d9793a44a05e1edc8fb455d5be5ba98bc39dfbb2ab868",
+      "internal/parser/parser/ppt_parser_cgo_test.go": "c055be26a0ec884756c28d6e2ab53174b9b3265bf2ebff2b1a4c51048df047a0",
+      "internal/parser/parser/pptx_ir_test.go": "3d16061d1c6e01a8671c564ee4a72f66224352b52a0762a5dfaba8a66c840755",
+      "internal/parser/parser/docx_parser.go": "3654ef3dc99ae8973c45a116fc8f98fc9688c6ecf11c3c87ddb87d25b976f210",
+      "internal/parser/parser/docx_ir.go": "3a239be69840cb1148a7a146e58fc4ddf00b5b320d421ee0327af63861d7c981",
+      "internal/parser/parser/docx_postprocess.go": "4e97bf6e13a3516ad56bf968ac67290443b1d6900bb7cc1fb96684fec62b4f0c",
+      "internal/parser/parser/docx_parser_cgo_test.go": "7fbb755478ccbe1c956f54b96f0beeb3c83e5af22eda7302bd64223da232b1ce",
+      "internal/parser/parser/docx_ir_test.go": "31d387778a6dd3418a79751829b2003c825b16ee52eaf9adc1e8fa056414f375",
+      "internal/parser/parser/docx_postprocess_test.go": "d895418a60128965349018bf1adfc5b781e4f1ab031fe565d20cb1b600862d52",
+      "internal/deepdoc/parser/pdf/plaintext_cgo.go": "eb379e265b97bda3ed3f617216fb699760f88799bbad751848d306462ddf6ee6",
+      "internal/deepdoc/parser/office/engine_cgo.go": "8a69f4e3d9010eab2f86f47127376f02437c63d98fe4885a8fb437e1e68b69b7",
+      "internal/deepdoc/parser/type/types.go": "a172d6ddbe3756c19a765df139d37eb7990f86fb037e7ec0a547c568b11a0e35"
+    },
+    "command_status": 0,
+    "runner_elapsed_ms": 17355,
+    "filter_note": "GOFLAGS global run filter selects only TestStage3DocumentNativeProbe; build.sh native-unit appendage has no matching tests, not counted as coverage",
+    "network": "helper detached from its bridge during test; original network restored afterwards; no runtime service networks changed",
+    "go_http_transport_attempts": 0,
+    "native_analyzer_creation_attempts": 0,
+    "model_guard": "构造本地DocAnalyzer前计数并panic；本批计数0。Go默认HTTP transport拒绝并计数，本批0；不将此称为生产全网络审计。",
+    "cleanup": [
+      {
+        "action": "remove_exact_private_test_from_build_copy",
+        "status": 0
+      },
+      {
+        "action": "restore_existing_helper_bridge",
+        "status": 0
+      },
+      {
+        "action": "stop_helper",
+        "status": 0
+      }
+    ],
+    "log_sha256": "93f6440b80a1fbb5a6cdc9f51d25309993d2804f2ce5d27426f4fdcffb271249",
+    "test_driver_sha256": "fee58dfba30d4344b2e749a2bbd16e92dd7f86786391f096cae56f53c989d088",
+    "result_sha256": "2210bc1860d5bad6967252e7a49df1b4dbdf8c9a2defbdbf92dc1b9ccc384ffb"
+  },
+  "native_results": [
+    {
+      "elapsed_ms": 5.001,
+      "json_preserves_empty_page": true,
+      "name": "blank-physical-page.pdf",
+      "pages": [
+        {
+          "derived_text_sha256": "08e548c038b1608847f6285d147959da2c6632aca2cda9fd1166ec8f32b460e7",
+          "derived_utf8_bytes": 8,
+          "physical_page": 1,
+          "text": "page one"
+        },
+        {
+          "derived_text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "derived_utf8_bytes": 0,
+          "physical_page": 2,
+          "text": ""
+        },
+        {
+          "derived_text_sha256": "60a1419be88c7111da0bb9419487a48c4b370f47cac4a13348155b0aa3f60f41",
+          "derived_utf8_bytes": 10,
+          "physical_page": 3,
+          "text": "page three"
+        }
+      ],
+      "physical_pages": 3,
+      "selected_page2_keeps_physical_identity": true,
+      "source_bytes": 1884,
+      "source_sha256": "ca3522dab8464a7d1b186cce98f336a43a5ae5b10593ac6fa4f29d80a17c4094"
+    },
+    {
+      "elapsed_ms": 0.342,
+      "json_preserves_empty_page": true,
+      "name": "image-only-physical-page.pdf",
+      "pages": [
+        {
+          "derived_text_sha256": "08e548c038b1608847f6285d147959da2c6632aca2cda9fd1166ec8f32b460e7",
+          "derived_utf8_bytes": 8,
+          "physical_page": 1,
+          "text": "page one"
+        },
+        {
+          "derived_text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "derived_utf8_bytes": 0,
+          "physical_page": 2,
+          "text": ""
+        },
+        {
+          "derived_text_sha256": "60a1419be88c7111da0bb9419487a48c4b370f47cac4a13348155b0aa3f60f41",
+          "derived_utf8_bytes": 10,
+          "physical_page": 3,
+          "text": "page three"
+        }
+      ],
+      "physical_pages": 3,
+      "selected_page2_keeps_physical_identity": true,
+      "source_bytes": 7434,
+      "source_sha256": "59d9c33321ae7f3f14faa4e54e4f481e5e640a1238b28226cee08a85d0f9bf35"
+    },
+    {
+      "evidence_kind": "existing_synthetic_template_test",
+      "name": "existing_pdf_page_selection",
+      "passed": true
+    },
+    {
+      "evidence_kind": "existing_synthetic_template_test",
+      "name": "existing_pptx_multislide",
+      "passed": true
+    },
+    {
+      "evidence_kind": "existing_synthetic_template_test",
+      "name": "existing_pptx_empty_slide",
+      "passed": true
+    },
+    {
+      "evidence_kind": "existing_synthetic_template_test",
+      "name": "existing_pptx_ir_tables",
+      "passed": true
+    },
+    {
+      "evidence_kind": "existing_synthetic_template_test",
+      "name": "existing_pptx_ir_media_order",
+      "passed": true
+    },
+    {
+      "evidence_kind": "existing_synthetic_template_test",
+      "name": "existing_pptx_document_fallback",
+      "passed": true
+    },
+    {
+      "evidence_kind": "existing_synthetic_template_test",
+      "name": "existing_docx_ir_sections",
+      "passed": true
+    },
+    {
+      "evidence_kind": "existing_synthetic_template_test",
+      "name": "existing_docx_inline_media_order",
+      "passed": true
+    },
+    {
+      "evidence_kind": "existing_synthetic_template_test",
+      "name": "existing_docx_table_cell_media",
+      "passed": true
+    },
+    {
+      "evidence_kind": "existing_synthetic_template_test",
+      "name": "existing_docx_outline_levels",
+      "passed": true
+    },
+    {
+      "evidence_kind": "existing_synthetic_template_test",
+      "name": "existing_docx_xml_entities",
+      "passed": true
+    },
+    {
+      "column": 1,
+      "media_order": 1,
+      "name": "real_docx_table_image_without_analyzer",
+      "png_decoded": true,
+      "row": 1,
+      "source_sha256": "484a9b6aaafebb9f40c76404e0a8519bfaca948f82358c1b6ed923981bae867a"
+    },
+    {
+      "media_order": 1,
+      "name": "real_pptx_image_without_analyzer",
+      "slide_number": 1,
+      "source_sha256": "51caa991479f1b6ab77c9e0b9012c6ca2c5574e9e46a05d76d1bb32e5d5f5074"
+    }
+  ],
+  "postcheck": {
+    "source_files": 19,
+    "matched_before_after_and_primary": true,
+    "helper_state": "exited",
+    "helper_networks": [
+      "bridge"
+    ],
+    "private_test_removed": true,
+    "evidence_sha256": "cbcb74408cae92bb5b6effe96dcb71848c36c8cd9862aadd31a398afc0729743"
+  },
+  "source_pdf_evidence": [
+    {
+      "file": "blank-physical-page.pdf",
+      "source_sha256": "ca3522dab8464a7d1b186cce98f336a43a5ae5b10593ac6fa4f29d80a17c4094",
+      "byte_length": 1884,
+      "physical_pages": 3,
+      "second_page": {
+        "physical_page": 2,
+        "text": "",
+        "text_item_count": 0,
+        "text_operators": 0,
+        "image_operators": 0,
+        "nonwhite_pixels": 0,
+        "png": "blank-physical-page-page-2.png",
+        "png_sha256": "b0723e9f983c8e1a2bd07d7b4292222d9060c99c93f0cb7d28cfe1529bbc3b2f"
+      },
+      "visual_inspection": "Passed"
+    },
+    {
+      "file": "image-only-physical-page.pdf",
+      "source_sha256": "59d9c33321ae7f3f14faa4e54e4f481e5e640a1238b28226cee08a85d0f9bf35",
+      "byte_length": 7434,
+      "physical_pages": 3,
+      "second_page": {
+        "physical_page": 2,
+        "text": "",
+        "text_item_count": 0,
+        "text_operators": 0,
+        "image_operators": 1,
+        "nonwhite_pixels": 30888,
+        "png": "image-only-physical-page-page-2.png",
+        "png_sha256": "0cc0527a30487d6d7c190bf6138b4e39a601c7327e0a42663a7e78f7211af414"
+      },
+      "visual_inspection": "Passed"
+    }
+  ],
+  "conclusions": [
+    "新空白页与仅图页PDF通过原生pdf_oxide plain_text及Go JSON路径：物理页1/2/3保持，空文字页仍在，单选第2页不重编号。",
+    "两件原始PDF的SHA不同，但各自第2页的派生文字均为空、SHA相同；空文字不证明页面空白，更不能作为来源节点唯一身份。图片/空白真值来自独立样本内容流和视觉检查。",
+    "既有PPTX真实多slide/空slide、IR表格/媒体次序及整件fallback模板通过；构造IR不等于该事实已通过原生二进制与应用全链路。",
+    "DOCX IR标题/段落/列表/表格/图片顺序、大纲0起始映射与真实字符实体解码通过；新直接图片场景未创建模型分析器。",
+    "这些是本地解析库证据，未发布派生表示、结构节点、关系、索引或引用；不得据此宣布阶段3、文档阅读或权限联调完成。"
+  ],
+  "document_facts": {
+    "count": 25,
+    "existing_template_facts": 23,
+    "new_pdf_binary_facts": 2,
+    "items": [
+      {
+        "id": "P01",
+        "template": "internal/parser/parser/pdf_parser_pages_test.go",
+        "expected": {
+          "physical_page_count": 3
+        },
+        "coordinate_note": "threePagePDF页树",
+        "status": "CoveredByIsolatedLibraryOrTemplateProbe_NotApplication",
+        "evidence_level": "SyntheticBinaryTemplate",
+        "public_coordinate_contract_implemented": false
+      },
+      {
+        "id": "P02",
+        "template": "internal/parser/parser/pdf_parser_pages_test.go",
+        "expected": {
+          "physical_page": 1,
+          "text": "page one"
+        },
+        "coordinate_note": "仅页级，无bbox",
+        "status": "CoveredByIsolatedLibraryOrTemplateProbe_NotApplication",
+        "evidence_level": "SyntheticBinaryTemplate",
+        "public_coordinate_contract_implemented": false
+      },
+      {
+        "id": "P03",
+        "template": "internal/parser/parser/pdf_parser_pages_test.go",
+        "expected": {
+          "physical_page": 2,
+          "text": "page two"
+        },
+        "coordinate_note": "仅页级，无bbox",
+        "status": "CoveredByIsolatedLibraryOrTemplateProbe_NotApplication",
+        "evidence_level": "SyntheticBinaryTemplate",
+        "public_coordinate_contract_implemented": false
+      },
+      {
+        "id": "P04",
+        "template": "internal/parser/parser/pdf_parser_pages_test.go",
+        "expected": {
+          "physical_page": 3,
+          "text": "page three"
+        },
+        "coordinate_note": "不按筛选结果重编号",
+        "status": "CoveredByIsolatedLibraryOrTemplateProbe_NotApplication",
+        "evidence_level": "SyntheticBinaryTemplate",
+        "public_coordinate_contract_implemented": false
+      },
+      {
+        "id": "P05",
+        "template": "internal/parser/parser/pdf_parser_pages_test.go",
+        "expected": {
+          "selected_pages": [
+            2,
+            3
+          ],
+          "physical_page_count": 3
+        },
+        "coordinate_note": "未选第1页不返回其正文",
+        "status": "CoveredByIsolatedLibraryOrTemplateProbe_NotApplication",
+        "evidence_level": "SyntheticBinaryTemplate",
+        "public_coordinate_contract_implemented": false
+      },
+      {
+        "id": "P06",
+        "template": null,
+        "expected": {
+          "physical_page": 2,
+          "text": "",
+          "input_truth": "blank"
+        },
+        "coordinate_note": "待生成合法三页PDF，空文本本身不证明空白",
+        "status": "CoveredByIsolatedLibraryOrTemplateProbe_NotApplication",
+        "evidence_level": "NewSyntheticPDF_NativeBinary",
+        "public_coordinate_contract_implemented": false
+      },
+      {
+        "id": "P07",
+        "template": null,
+        "expected": {
+          "physical_page": 2,
+          "text": "",
+          "input_truth": "image_only_no_hidden_text"
+        },
+        "coordinate_note": "待生成仅图PDF；plain_text不OCR，不能从空文本推断图片",
+        "status": "CoveredByIsolatedLibraryOrTemplateProbe_NotApplication",
+        "evidence_level": "NewSyntheticPDF_NativeBinary",
+        "public_coordinate_contract_implemented": false
+      },
+      {
+        "id": "T01",
+        "template": "internal/parser/parser/ppt_parser_cgo_test.go",
+        "expected": {
+          "slide": 1,
+          "title": "Slide One Title"
+        },
+        "coordinate_note": "IR section映射，待真实二进制执行",
+        "status": "CoveredByIsolatedLibraryOrTemplateProbe_NotApplication",
+        "evidence_level": "SyntheticBinaryTemplate",
+        "public_coordinate_contract_implemented": false
+      },
+      {
+        "id": "T02",
+        "template": "internal/parser/parser/ppt_parser_cgo_test.go",
+        "expected": {
+          "slide": 1,
+          "body": "First slide body about the Alpha topic."
+        },
+        "coordinate_note": "标题后换行，不串slide2",
+        "status": "CoveredByIsolatedLibraryOrTemplateProbe_NotApplication",
+        "evidence_level": "SyntheticBinaryTemplate",
+        "public_coordinate_contract_implemented": false
+      },
+      {
+        "id": "T03",
+        "template": "internal/parser/parser/ppt_parser_cgo_test.go",
+        "expected": {
+          "slide": 2,
+          "title": "Slide Two Title"
+        },
+        "coordinate_note": "slide1起始编号",
+        "status": "CoveredByIsolatedLibraryOrTemplateProbe_NotApplication",
+        "evidence_level": "SyntheticBinaryTemplate",
+        "public_coordinate_contract_implemented": false
+      },
+      {
+        "id": "T04",
+        "template": "internal/parser/parser/ppt_parser_cgo_test.go",
+        "expected": {
+          "slide": 2,
+          "body": "Second slide body about the Beta topic."
+        },
+        "coordinate_note": "同slide2派生文字",
+        "status": "CoveredByIsolatedLibraryOrTemplateProbe_NotApplication",
+        "evidence_level": "SyntheticBinaryTemplate",
+        "public_coordinate_contract_implemented": false
+      },
+      {
+        "id": "T05",
+        "template": "internal/parser/parser/ppt_parser_cgo_test.go",
+        "expected": {
+          "slide2_text": "",
+          "slide3_title": "Third Title",
+          "slide3_body": "Third body."
+        },
+        "coordinate_note": "空slide保留位置，不重编号",
+        "status": "CoveredByIsolatedLibraryOrTemplateProbe_NotApplication",
+        "evidence_level": "SyntheticBinaryTemplate",
+        "public_coordinate_contract_implemented": false
+      },
+      {
+        "id": "T06",
+        "template": "internal/parser/parser/pptx_ir_test.go",
+        "expected": {
+          "slide": 1,
+          "input_row": 2,
+          "input_column": 2,
+          "text": "b"
+        },
+        "coordinate_note": "现产物只是H1/H2/a/b的slide文字，不宣称有公共单元格坐标",
+        "status": "CoveredByIsolatedLibraryOrTemplateProbe_NotApplication",
+        "evidence_level": "ConstructedIRTemplate",
+        "public_coordinate_contract_implemented": false
+      },
+      {
+        "id": "T07",
+        "template": "internal/parser/parser/pptx_ir_test.go",
+        "expected": {
+          "slide": 2,
+          "media_order": 1,
+          "text": ""
+        },
+        "coordinate_note": "IR仅图桩，不能充当真实PNG二进制证据",
+        "status": "CoveredByIsolatedLibraryOrTemplateProbe_NotApplication",
+        "evidence_level": "ConstructedIRTemplate",
+        "public_coordinate_contract_implemented": false
+      },
+      {
+        "id": "T08",
+        "template": "internal/parser/parser/pptx_ir_test.go",
+        "expected": {
+          "text": "whole deck text",
+          "coordinate_scope": "document"
+        },
+        "coordinate_note": "降级item无slide_number，不猜页",
+        "status": "CoveredByIsolatedLibraryOrTemplateProbe_NotApplication",
+        "evidence_level": "ConstructedIRTemplate",
+        "public_coordinate_contract_implemented": false
+      },
+      {
+        "id": "D01",
+        "template": "internal/parser/parser/docx_postprocess_test.go",
+        "expected": {
+          "title": "第一章 概述",
+          "ir_heading_level": 1,
+          "outline_level": 0
+        },
+        "coordinate_note": "无物理页",
+        "status": "CoveredByIsolatedLibraryOrTemplateProbe_NotApplication",
+        "evidence_level": "ConstructedIRTemplate",
+        "public_coordinate_contract_implemented": false
+      },
+      {
+        "id": "D02",
+        "template": "internal/parser/parser/docx_postprocess_test.go",
+        "expected": {
+          "title": "1.1 背景",
+          "ir_heading_level": 2,
+          "outline_level": 1
+        },
+        "coordinate_note": "章节层级与IR元素地址",
+        "status": "CoveredByIsolatedLibraryOrTemplateProbe_NotApplication",
+        "evidence_level": "ConstructedIRTemplate",
+        "public_coordinate_contract_implemented": false
+      },
+      {
+        "id": "D03",
+        "template": "internal/parser/parser/docx_ir_test.go",
+        "expected": {
+          "element": 1,
+          "text": "Title",
+          "kind": "heading"
+        },
+        "coordinate_note": "现JSON项不保留完整章节树",
+        "status": "CoveredByIsolatedLibraryOrTemplateProbe_NotApplication",
+        "evidence_level": "ConstructedIRTemplate",
+        "public_coordinate_contract_implemented": false
+      },
+      {
+        "id": "D04",
+        "template": "internal/parser/parser/docx_ir_test.go",
+        "expected": {
+          "element": 2,
+          "text": "Hello"
+        },
+        "coordinate_note": "段落顺序，不造页号",
+        "status": "CoveredByIsolatedLibraryOrTemplateProbe_NotApplication",
+        "evidence_level": "ConstructedIRTemplate",
+        "public_coordinate_contract_implemented": false
+      },
+      {
+        "id": "D05",
+        "template": "internal/parser/parser/docx_ir_test.go",
+        "expected": {
+          "table": 1,
+          "row": 1,
+          "column": 1,
+          "text": "cell",
+          "row_span": 1,
+          "col_span": 1
+        },
+        "coordinate_note": "普通表格ID未全覆盖；HeaderRows默认值不是源表头语义证明",
+        "status": "CoveredByIsolatedLibraryOrTemplateProbe_NotApplication",
+        "evidence_level": "ConstructedIRTemplate",
+        "public_coordinate_contract_implemented": false
+      },
+      {
+        "id": "D06",
+        "template": "internal/parser/parser/docx_ir_test.go",
+        "expected": {
+          "element": 5,
+          "list_item": 1,
+          "text": "item1"
+        },
+        "coordinate_note": "列表层级另需保留",
+        "status": "CoveredByIsolatedLibraryOrTemplateProbe_NotApplication",
+        "evidence_level": "ConstructedIRTemplate",
+        "public_coordinate_contract_implemented": false
+      },
+      {
+        "id": "D07",
+        "template": "internal/parser/parser/docx_ir_test.go",
+        "expected": {
+          "sequence": [
+            "before",
+            "image",
+            "after"
+          ]
+        },
+        "coordinate_note": "内联图不能吞相邻文字",
+        "status": "CoveredByIsolatedLibraryOrTemplateProbe_NotApplication",
+        "evidence_level": "ConstructedIRTemplate",
+        "public_coordinate_contract_implemented": false
+      },
+      {
+        "id": "D08",
+        "template": "internal/parser/parser/office_image_fixture_cgo_test.go",
+        "expected": {
+          "table": 1,
+          "row": 1,
+          "column": 1,
+          "media_order": 1,
+          "png_decodable": true
+        },
+        "coordinate_note": "表格内位置不是物理页坐标；OCR失败桩不是调用尝试计数",
+        "status": "CoveredByIsolatedLibraryOrTemplateProbe_NotApplication",
+        "evidence_level": "SyntheticBinaryTemplate",
+        "public_coordinate_contract_implemented": false
+      },
+      {
+        "id": "D09",
+        "template": "internal/parser/parser/docx_parser_cgo_test.go",
+        "expected": {
+          "source_xml_literal": "&lt;SEP&gt;",
+          "derived_text": "<SEP>",
+          "markdown_text": "\\<SEP\\>"
+        },
+        "coordinate_note": "以测试源字面值为准，避免聊天HTML再次转义；表示SHA/偏移独立",
+        "status": "CoveredByIsolatedLibraryOrTemplateProbe_NotApplication",
+        "evidence_level": "SyntheticBinaryTemplate",
+        "public_coordinate_contract_implemented": false
+      },
+      {
+        "id": "D10",
+        "template": "internal/parser/parser/docx_parser_cgo_test.go",
+        "expected": {
+          "source_xml_literal": "a&#8212;b",
+          "derived_text": "a—b",
+          "utf8_bytes": 5,
+          "unicode_code_points": 3
+        },
+        "coordinate_note": "只声明块内长度，不编造全局派生偏移",
+        "status": "CoveredByIsolatedLibraryOrTemplateProbe_NotApplication",
+        "evidence_level": "SyntheticBinaryTemplate",
+        "public_coordinate_contract_implemented": false
+      }
+    ],
+    "note": "地址是预标输入或库结果的位置语义，尚无公开派生块/页/slide/章节API。D09/D10按测试源字面值归一聊天HTML转义；不编造全表示偏移。"
+  },
+  "frontend_readiness": {
+    "source_hashes": {
+      "web/src/services/knowledge-original-service.ts": "46372f087f2d9b2621c7a928c91369f47376e5e95528cc6126be7ff067e27fbb",
+      "web/src/hooks/use-knowledge-original.ts": "f88ca40300fc7dc244cf5887c939c95e95774185e2619647426bf97043a1c862",
+      "web/src/pages/dataset/knowledge-import/original-revisions.tsx": "a4689aeecc066e52a85b052033786b21f9dafe27aabd00eae666f828e30e4427",
+      "web/src/components/document-preview/index.tsx": "28e39ec18d7087cb4ca1d9ce17596f40fac23ab422898240124c49117ea58d57",
+      "web/src/components/document-preview/pdf-preview.tsx": "0c605de2fa2e398153cbb55a0b80ebd61392e927dab8197aa2eadea8ea406882",
+      "web/src/components/document-preview/ppt-preview.tsx": "b1aca8dcdaa28559bcd9659a5ba6ba1b90561a1d851069f55536eaa30573bde3",
+      "web/src/components/document-preview/doc-preview.tsx": "614b3b675b5c76efd77d78d16a03d8eacaf34e2bc01a9a9608b81dcc21ddc484",
+      "web/src/components/document-preview/hooks.ts": "5076271933ce05d6459e456f4c0a63a5ccfa64f97953c38fc9ffafedca9f36af"
+    },
+    "observation_scope": "A核对拥有组件/服务相关代码；消费会话额外只读已安装依赖/类型，不是浏览器或网络验收。",
+    "installed_versions": {
+      "pptx_preview": "1.0.7",
+      "react_docx": "0.6.7",
+      "react_pdf_highlighter": "6.1.0"
+    },
+    "a_confirmed": [
+      {
+        "path": "web/src/services/knowledge-original-service.ts",
+        "fact": "固定原件service提供HEAD/整件/Range/If-Range与响应校验，整件download经verifyOriginalBlob；局部Range响应校验不等于完整原件SHA证明。"
+      },
+      {
+        "path": "web/src/components/document-preview/pdf-preview.tsx",
+        "fact": "PDF props有highlights但没有独立page参数；当前跳转依赖highlight position且使用100ms timer；worker/cmaps/fonts显式同源。"
+      },
+      {
+        "path": "web/src/components/document-preview/ppt-preview.tsx",
+        "fact": "PPT包装仅url/className，整件Blob→ArrayBuffer→preview，无slide参数或实例生命周期接线。"
+      },
+      {
+        "path": "web/src/components/document-preview/doc-preview.tsx",
+        "fact": "DOCX包装会修改styles.xml默认行距并重新打包视觉Blob；不能把该Blob称原件或沿用其SHA；当前pageVirtualization=false。"
+      },
+      {
+        "path": "web/src/components/document-preview/hooks.ts",
+        "fact": "PDF错误hook额外axios GET原URL，Authorization在挂载时memo；不能当受.5固定service校验的HEAD/Range或无额外下载。"
+      },
+      {
+        "path": "web/src/components/document-preview/index.tsx",
+        "fact": "positions传给Excel，PPT/DOCX没有定位参数接线；给通用包装传slide/section不会自动实现定位。"
+      }
+    ],
+    "sdk_type_observed": "pptx-preview类型公开slideCount/renderSingleSlide/destroy和list/slide mode；包装未接，真实索引边界/销毁/定位仍需后续验证。",
+    "consumer_design_input": {
+      "thread_id": "01a1746b-2de2-7413-906b-d2a4544017e3",
+      "title": "R4 原件导入客户端与界面",
+      "scope": "一次只读前端复用输入；未执行浏览器/API/模型；完全只读，无新写权。",
+      "summary_sha256": "7e4c2ad94b1aa01fb41cd6278d51ba0b09263240900f1246ea55ac76d7593bdd"
+    },
+    "not_verified": [
+      "SVG嵌套资源、字体、外部链接与注释链接的全部真实网络行为。",
+      "固定.5授权Range transport接入PDF renderer和指定物理页定位。",
+      "PPTX本地slide定位、OLE .ppt支持及DOCX浏览器重排页到源章节映射。",
+      "64MiB Office原件的渲染内存、首屏和大文件处理预算。"
+    ]
+  },
+  "remaining_adapter_work": [
+    "在后续具体文档契约中分开原件、派生表示/生产配置、页/slide/IR块及UTF-8范围；原件型来源无C1根，不能套R1必填source_node_id。",
+    "PDF只承诺真实页号；plain_text没有bbox/表格结构，不能伪造引用框；空文字页分类保持unknown，除非另有证据。",
+    "PPTX的整件plainText降级必须明确无slide定位；IR表格当前展开成slide文本，细粒度结构要在拥有层保留。",
+    "DOCX保留heading level、稳定块/表格/列表/媒体路径；无物理页契约，复杂合并表头未知；TOC等清洗是配置化派生，不能拿其偏移当二进制位置。",
+    "按原件/视觉派生/阅读表示分区；原件已保存、解析失败/降级/未就绪/陈旧分别显示，引用始终回同一固定修订。",
+    "实际网络0、授权/撤权、固定派生读取、缓存/增量、布局及性能仍须正式切片同版联调。"
+  ],
+  "protected": {
+    "old_frozen_and_historical_files": 35,
+    "hashes": {
+      "docs/knowledge-sources-v1.openapi.json": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091",
+      "docs/knowledge-sources-v1.example.json": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a",
+      "docs/knowledge-sources-v1.freeze.json": "114bbfa2b4dd51eafc426716032486f666ace8a1a1284f4c1f4c9baf1f1b35c6",
+      "docs/knowledge-foundation-v1.openapi.json": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4",
+      "docs/knowledge-foundation-v1.example.json": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343",
+      "docs/knowledge-directory-import-v1.openapi.json": "6144c08d4cfe7ac98374dc51829c98290e2c88e3441dd38d250a3cd9cb4492e6",
+      "docs/knowledge-directory-import-v1.examples.json": "73618dd78419bb9027520b3dd8b3ef83b1794d3ad1c4d17d904ce7637c54ea72",
+      "docs/knowledge-directory-import-v1.freeze.json": "2af7575cfbc24510550a0b495e18aa30f94decf5f102c23d259d4f3135dbf5f1",
+      "docs/knowledge-directory-import-v0.3.candidate.md": "80eb846a81b6ade430012b585739fe6405ef8a7de5855f27941fe66a31e2cbfa",
+      "docs/knowledge-directory-import-v0.3.candidate.openapi.json": "da2c320b3c3fd8f6af2b566b40507a5b09c55791236b49b224347c8b9a457f3d",
+      "docs/knowledge-directory-import-v0.3.candidate.examples.json": "2680f9786a19cc49a0330ecfcda84249ef36aac20293341a18e17cbdfd132d4e",
+      "docs/knowledge-batch-import-v0.4.candidate.md": "3a3beec92e8bc0baae1c820a18e078717163988277aa9d304d762ff97d027b1f",
+      "docs/knowledge-batch-import-v0.4.candidate.openapi.json": "d57ca240df19a985341c25d60ce18590dacdcf221b5599b8223f558a7c379fc5",
+      "docs/knowledge-batch-import-v0.4.candidate.examples.json": "fe8bde9d99b8aaa7250a40a1adc86c6bee9ecf474cbf01af55253274f2e2e304",
+      "docs/knowledge-batch-import-v1.openapi.json": "bd13fc400fc2a84f490b92ee865db75f76d89bf79a176658312ac3bea17d0fb8",
+      "docs/knowledge-batch-import-v1.examples.json": "5249cdf57da0313346b7b30db0743079a175aaa8480604120b1bf92e4bdfdc53",
+      "docs/knowledge-batch-import-v1.freeze.json": "1d589290db4b1fe4ab4005dae0ebf1918efdeac9cd57d7c810305087c180f631",
+      "docs/knowledge-original-import-v0.5.candidate.md": "8a1079fe4745b84d178f50939ac25e1ac1fa51bc3f61ed2340ef1f6d9e1638d6",
+      "docs/knowledge-original-import-v0.5.candidate.openapi.json": "b4905ab840c64f26a25a6017dc7454393fd3b974b0e2199edffe2cc5e725a0aa",
+      "docs/knowledge-original-import-v0.5.candidate.examples.json": "16aa77d948f857f93dcc96e0c812d4bee2a8f3ad91205e54b9c0457f78ea8815",
+      "docs/knowledge-original-import-v1.openapi.json": "3c48ebe0a2bfc8b3078262ce6c1a8258b312f6111bd9ed2b07b7b4fb433a5efd",
+      "docs/knowledge-original-import-v1.examples.json": "550f7be69c506a02cc2798d2196e17ca06c73b06f08d934ea3cbf823551d5cb1",
+      "docs/knowledge-original-import-v1.freeze.json": "116ddc4161001c0fdb440b45b227952978ca3d291197d712830a92d5aaaca3b9",
+      "docs/knowledge-web-import-v0.6.candidate.md": "577a76624d8b43e26dde890df49140f0b5a2c458dc493dbecd7f5467e13175fb",
+      "docs/knowledge-web-import-v0.6.candidate.openapi.json": "a167a1977f1f0a313061b093d21f035631dd5fafaea95cd8545601e17af35a88",
+      "docs/knowledge-web-import-v0.6.candidate.examples.json": "81372c6270c3e2b3989b4e088bd029883326f75fe6e254d651b93f951e0b7573",
+      "docs/knowledge-web-import-v1.freeze.json": "bba4e9f0c2341658ac69741d57f5a4a9032ac74b6ec848f13a195e4ab96c66c2",
+      "docs/knowledge-web-import-v1.openapi.json": "673092ab81263bdf7b79e85e06206bb02f8eb8996b476c8643dbafed17e259ed",
+      "docs/knowledge-web-import-v1.examples.json": "71019ae8645ad0fd4527565c42f6f80f93924c26266ffe08696de5e9b1c5671d",
+      "docs/knowledge-source-lifecycle-v0.7.candidate.md": "53b78e36a127c6c0f35048bf0ac511417639aba7cca90a418c007caa1b7f39f9",
+      "docs/knowledge-source-lifecycle-v0.7.candidate.openapi.json": "47d159cfee61708a79475879f5371cb97a38b41eb768e759ff802e1ebd0cdd0d",
+      "docs/knowledge-source-lifecycle-v0.7.candidate.examples.json": "a20bf10a7ac93ce36a8d3cd04cd95b035d8e6f2a1f3301accfdd711d86eb2f41",
+      "docs/knowledge-source-lifecycle-v1.freeze.json": "f6545f908a802d0d326fe73dfb3f8e5b2860abf67306b8a1e022c572bbd984c3",
+      "docs/knowledge-source-lifecycle-v1.openapi.json": "526685f1ab09e07f87f3f9c8cee3cf44347d6bdcf9efed94c356ef32b22725db",
+      "docs/knowledge-source-lifecycle-v1.examples.json": "cfe6c24c3f3a24907220c4e2ead993867c33053c6b2d197b70d93c03f168fb3c"
+    },
+    "structure_0_1_candidate_files_unchanged": {
+      "docs/knowledge-structure-v0.1.candidate.md": "5c61af1a3a6be72337895b665d26cef29a711518f184bdb77a822800df0256d1",
+      "docs/knowledge-structure-v0.1.candidate.openapi.json": "0db14cc46e86e42e6ca5a6ffff3050968644372a76f5091bb380f50dff1c4630",
+      "docs/knowledge-structure-v0.1.candidate.examples.json": "195f83957c6b06ff2fb67b5dc61353c82abee92870b551f9ff14bb02217c9bea"
+    },
+    "candidate_freeze": "Pending",
+    "old_contracts_changed": false
+  },
+  "reproducibility": {
+    "committed_templates": "已有上游合成生成器/IR断言在所列测试文件中。",
+    "private_inputs": "本机新PDF/位图/接触表、测试驱动及完整运行日志在忽略目录；未发布新的主检出测试或CI任务。",
+    "limitation": "单机库准备证据；正式实施时需将所需纯合成用例纳入可重复的Go/前端测试，不能把当前记录作为发布后全链路替代。",
+    "evidence_location": ".local-data/stage3-20261026/"
+  },
+  "acceptance": {
+    "engineering": "LibraryPreparationVerified",
+    "user_decision": {
+      "outcome": "Pending"
+    },
+    "scope": "仅内部准备；不追加新冻结或多轮审查请求。",
+    "stage2_real_exit": "NotRun_ScopeNotApproved",
+    "stage2_complete": false,
+    "stage3_complete": false,
+    "whole_project_complete": false
+  },
+  "continuation": {
+    "blocked_action": "新增Structure0.1业务实施",
+    "required_authority": "真人确认ddc5630三件具体候选；当前未收到，持续推进不代替具体批准。",
+    "next_after_approval": "正式冻结→Go后端→清洁固定Web写窗→同版合成联调/性能→按授权推main。"
+  },
+  "publication_checks": {
+    "recorded_at": "2026-10-26T07:00:12.959Z",
+    "branch": "codex/stage3-document-readiness",
+    "changed_files": [
+      "README.md",
+      "docs/stage2-local-coordination.md",
+      "docs/stage3-document-readiness-verification.json",
+      "docs/stage3-document-readiness.md",
+      "会话接续说明.md",
+      "本地第二大脑知识库技术方案.md"
+    ],
+    "primary_business_changes": 0,
+    "old_protected_files_unchanged": 35,
+    "candidate_files_unchanged": 3,
+    "unchanged_dependency_hashes": {
+      "go.mod": "be436e9f362848b611c4df0ff8866191bad27993d60f9011d6fce70df49629a5",
+      "go.sum": "daeb317bfcfba03000d416253f685db1716b4155776bc49e0d8a08b412fb982f",
+      "web/package.json": "c483f146590f718242292f9084366e8432082b40eca7158cd2dcf0866f664df2",
+      "web/package-lock.json": "1137574d9f47db47ae5394936806f42f2b8269f3b5342eb59a652e322b784e66"
+    },
+    "live_credential_literals_checked": 11,
+    "credential_matches": 0,
+    "secret_scope": "root/Docker ignored env and Docker auth JSON; values never printed",
+    "new_links": "Passed",
+    "helper_stopped": true,
+    "helper_bridge_restored": true,
+    "healthy_services": [
+      "lfen-ragflow-poc-ragflow-cpu-1",
+      "lfen-ragflow-poc-mysql-1",
+      "lfen-ragflow-poc-kvrocks-1",
+      "lfen-ragflow-poc-es01-1",
+      "lfen-ragflow-poc-minio-1",
+      "lfen-ragflow-poc-nats-1"
+    ],
+    "application_deployments": 0,
+    "model_calls": 0,
+    "local_inference": 0
+  }
+}
