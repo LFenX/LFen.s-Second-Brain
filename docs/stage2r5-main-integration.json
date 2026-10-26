@@ -25,10 +25,21 @@
   "credentials_in_git": false,
   "adversarial_review": "NotRun_UserProhibited",
   "acceptance": {
-    "user_decision": "Pending",
+    "user_decision": {
+      "outcome": "Approved",
+      "answer": "验收通过",
+      "decided_by": "human_user",
+      "decision_time": "NotSuppliedByMessage",
+      "recorded_at": "2026-10-26T02:38:52.862Z",
+      "evidence_ref": "request_user_input_async/call_645dadf5622d48c3832154bc5827df5a/0",
+      "subject_commit": "81f3a8c8bb176155e70e4150906555af0d3cac88",
+      "subject_sha256": "8d05c5e9ba7e34db7acb6eb67e38606d8593831ac68baaa18d28e5bbac998ae2",
+      "scope": "仅R5/C2 0.6.0已发布工程交付；不包含R4、阶段2整体、真实来源或后续R6工程验收。"
+    },
     "r4_user_decision": "Pending_Independent",
     "stage2_exit": false,
-    "whole_project_complete": false
+    "whole_project_complete": false,
+    "current_verification_sha256": "f5222f5d39a2d8033a92332dc116753ac2238acbe85582976b4572b1dc46496c"
   },
   "note": "本回执记录主体工程与文档6e6dfb2的实际远端验证；回执自身随后正常提交推送，不将工程批准当用户验收。"
 }
