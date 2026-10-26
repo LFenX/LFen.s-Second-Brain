@@ -1,0 +1,656 @@
+{
+  "document_version": "v0.60",
+  "recorded_at": "2026-10-26T12:55:27.741Z",
+  "status": "EngineeringVerified_SyntheticOnly",
+  "objective": "完成已冻结Structure 0.1.0的代码/Markdown结构、确定性片段、静态一跳关系、固定原文、任务恢复及现有知识目录内的正式Web闭环。",
+  "request_snapshot": {
+    "approved_reply": "确认冻结并继续实施",
+    "question_ref": "request_user_input_async/call_209b5c0e88ed4206aec601e3a8f55fdb/0",
+    "subject_commit": "ddc5630c947ded113917e4dd2bc19521128ac073",
+    "subject_hashes": {
+      "docs/knowledge-structure-v0.1.candidate.md": "5c61af1a3a6be72337895b665d26cef29a711518f184bdb77a822800df0256d1",
+      "docs/knowledge-structure-v0.1.candidate.openapi.json": "0db14cc46e86e42e6ca5a6ffff3050968644372a76f5091bb380f50dff1c4630",
+      "docs/knowledge-structure-v0.1.candidate.examples.json": "195f83957c6b06ff2fb67b5dc61353c82abee92870b551f9ff14bb02217c9bea"
+    },
+    "boundaries": [
+      "合成TS/TSX/Go/Markdown",
+      "模型及本地推理0",
+      "不启动多轮审查",
+      "不改旧C1/C3/C2冻结件",
+      "后端固定后客户端唯一写窗；完整联调/性能后main"
+    ]
+  },
+  "clarification": {
+    "state": "Settled",
+    "source": "真人对ddc5630明确回复“确认冻结并继续实施”；不重复申请已批准范围。",
+    "boundaries": [
+      "仅合成TS/TSX/Go/Markdown",
+      "旧41保护件不改",
+      "模型/本地推理0",
+      "不启动多轮审查",
+      "单检出交替写入",
+      "验证后按已授权范围推main"
+    ]
+  },
+  "task_profile": {
+    "delivery": "Go + Web + synthetic real integration + main publication",
+    "governance_carrier": "本报告、已有接续/技术方案及忽略目录真实证据",
+    "review": "No multi-round review",
+    "scope_excludes": [
+      "真实资料退出",
+      "富文档结构",
+      "Wiki",
+      "阶段4—6"
+    ]
+  },
+  "source": {
+    "base_main": "e6452d41afd159ba73e908f7ee20c43850a01f48",
+    "backend_commit": "49fe2d47a340706331d34fb2f28c1d827f487f02",
+    "client_commit": "ca74ff8377590294727099dbf604d031ac5d83cc",
+    "targeted_ui_fix_commit": "70eebed9283141c96b6f54876fe6c7e4cd771537",
+    "backend_files": 34,
+    "backend_source_map": {
+      "path": "docs/stage3r1-structure-backend-verification.json",
+      "sha256": "801eeea484c912b8d19a6f4748bea180c22f3e3683ddfc757bcd340f36c2a5e6"
+    },
+    "protected_files": 41,
+    "protected_map": "docs/stage3r1-structure-backend-verification.json#/contracts/protected_files",
+    "all_protected_unchanged": true,
+    "all_verified_source_unchanged": true
+  },
+  "implementation": {
+    "directly_reused": [
+      "原生登录及域所有者授权",
+      "Document/File/FileCommitItem固定来源与C1原文服务",
+      "C2 .4精确项目清单、.7单调世代及域锁",
+      "现有Go/entity/dao/router及Compose六服务",
+      "现有Web service/hook、组织树/分栏、只读本地Monaco与列表"
+    ],
+    "project_owned": [
+      "独立默认关闭structure-only子策略",
+      "TS/TSX语法、Go AST、Markdown确定性结构生产与覆盖片段",
+      "独立结构节点/视图/有证据关系身份和一跳读取",
+      "原子发布/缓存重新绑定/清单-世代-head栅栏",
+      "持久任务/固定语义拒绝/租约接管与三类原键恢复",
+      "知识目录内正式结构界面和跨文件联动"
+    ],
+    "output": "代码为文件→声明/符号→覆盖passage；Markdown为文件→章节→passage。组织父级和结构父级及关系边分别表达。",
+    "coordinates": "固定UTF-8原字节0起半开区间；passage目标4KiB/硬8KiB/overlap0，原文窗口≤64KiB。",
+    "relations": "contains由父级投影，不重复存边；UI样本40个关系表记录+40个contains投影，共80。静态事实保守解析，范围外/歧义/动态保留unresolved。"
+  },
+  "plan": [
+    {
+      "id": "S3-R1.0",
+      "status": "Done",
+      "result": "真人具体冻结与三件摘要绑定，原候选保持"
+    },
+    {
+      "id": "S3-R1.1",
+      "status": "Done",
+      "result": "确定性生产、50事实、物理坐标/身份/完整覆盖"
+    },
+    {
+      "id": "S3-R1.2",
+      "status": "Done",
+      "result": "实际持久任务、发布、权限、竞争、取消/接管和ABA"
+    },
+    {
+      "id": "S3-R1.3",
+      "status": "Done",
+      "result": "正式客户端/局部结构页面、三类恢复、同版构建；A收回写权"
+    },
+    {
+      "id": "S3-R1.4",
+      "status": "Verified",
+      "result": "实际浏览器、故障和5次性能通过；main实际提交见独立发布回执"
+    }
+  ],
+  "verification": {
+    "go": [
+      {
+        "scope": [
+          "-json",
+          "-run",
+          "^Test(SyntheticFacts|DeterministicSelectionAndAliases|ConservativeTypeScriptResolution|PassagePartitionAndBoundaries|ControlledFailures|DuplicateAndScopeIdentity|OutputBudgets|FrozenSyntheticBenchmark)$",
+          "./internal/parser/structure"
+        ],
+        "exit_code": 0,
+        "top_level": 7,
+        "pass_events": 95,
+        "evidence": {
+          "path": ".local-data/stage3-20261026/structure-go-1793010482778.json",
+          "sha256": "4472e51b7037a4510a5ca7086a19d636f2d1e1a9c04c7b2b5f01627e753ffa34"
+        }
+      },
+      {
+        "scope": [
+          "-json",
+          "-run",
+          "^TestSyntheticFacts$",
+          "./internal/parser/structure"
+        ],
+        "exit_code": 0,
+        "top_level": 1,
+        "pass_events": 51,
+        "evidence": {
+          "path": ".local-data/stage3-20261026/structure-go-1793010632681.json",
+          "sha256": "33214617b1e9cd5ba864df87b3901c9ea80dec625530a60c8272344d8dace1e9"
+        }
+      },
+      {
+        "scope": [
+          "-json",
+          "-run",
+          "^TestKnowledgeStructure|^TestSyntheticFacts|^TestMarkdownContainer",
+          "./internal/entity",
+          "./internal/dao",
+          "./internal/service/dataset",
+          "./internal/handler",
+          "./internal/router",
+          "./internal/parser/structure"
+        ],
+        "exit_code": 0,
+        "top_level": 25,
+        "pass_events": 108,
+        "evidence": {
+          "path": ".local-data/stage3-20261026/structure-go-1793010920168.json",
+          "sha256": "39a7e8a6bbd1c93e9387b1544201668e1fdb02463b73b857e3b545e01a2022a1"
+        }
+      },
+      {
+        "scope": [
+          "-json",
+          "-run",
+          "^TestKnowledge(Snapshot|SourceFence|Foundation|Lifecycle|Import|Directory|Batch|Original|Web)",
+          "./internal/entity",
+          "./internal/dao",
+          "./internal/service/dataset",
+          "./internal/handler",
+          "./internal/router"
+        ],
+        "exit_code": 0,
+        "top_level": 111,
+        "pass_events": 354,
+        "evidence": {
+          "path": ".local-data/stage3-20261026/structure-go-1793011539073.json",
+          "sha256": "03b88898b09439d50d6bfee55bd4a8db3347acca82c55bb0dc47f5fa9b5e0fe4"
+        }
+      },
+      {
+        "scope": [
+          "-json",
+          "-run",
+          "^TestKnowledgeStructureCapabilityRoundTrip$",
+          "./internal/entity"
+        ],
+        "exit_code": 0,
+        "top_level": 1,
+        "pass_events": 1,
+        "evidence": {
+          "path": ".local-data/stage3-20261026/structure-go-1793011860294.json",
+          "sha256": "034d8f97792a8149dba8237b560fa427497323d22194f1b053024a14145013df"
+        }
+      }
+    ],
+    "counting": "Go各运行和Web1082/29覆盖重叠，不相加为独立用例；不是全仓测试通过。",
+    "actual_backend": [
+      {
+        "id": "core",
+        "passed": true,
+        "observed": "真实API固定8来源/48节点/80关系、50事实、100%passage原字节覆盖、身份及10条访客隐藏路径",
+        "evidence": {
+          "path": ".local-data/stage3-20261026/structure-core-verification.json",
+          "sha256": "4bfe4a15d60581dc2ae04e13851545adc3cfa1ab9ba3104fb0c31ffba91a9e3e"
+        }
+      },
+      {
+        "id": "performance",
+        "passed": true,
+        "observed": "冻结8文件982755字节，5次任务与三类各20次读取及同一Go PID的RSS采样",
+        "evidence": {
+          "path": ".local-data/stage3-20261026/performance-draft/run/performance-verification.json",
+          "sha256": "922a025091fb0c71cc91e81482c080ff9fbf68dabcd721861721ad05fc9bf4f8"
+        }
+      },
+      {
+        "id": "dual_api",
+        "passed": true,
+        "observed": "两个实际API同键回同Task，异键同旧head并发仅一胜，无孤儿产物",
+        "evidence": {
+          "path": ".local-data/stage3-20261026/fault-draft/races.report.json",
+          "sha256": "d1481b551feaee49f6a777dd011907d49b4d2140b3dc86b31678e2ff50a26b1f"
+        }
+      },
+      {
+        "id": "in_flight_cancel",
+        "passed": true,
+        "observed": "真实processing期间取消，最终cancelled且不发布head",
+        "evidence": {
+          "path": ".local-data/stage3-20261026/fault-draft/cancel.report.json",
+          "sha256": "c87343863625180944737cd378150ddcd384c17a6b69ab8ec2d5f602190aa75c"
+        }
+      },
+      {
+        "id": "admission_api_restart",
+        "passed": true,
+        "observed": "第二API重启、原键取回同任务；本项不冒充实际持租约worker崩溃",
+        "evidence": {
+          "path": ".local-data/stage3-20261026/fault-draft/restart.report.json",
+          "sha256": "d77000ab6ca7916be89041d2478c65120a5168ecea65fb9000b40fbdbd81654d"
+        }
+      },
+      {
+        "id": "strict_capacity",
+        "passed": true,
+        "observed": "每域1执行+1等待，第三项429固定拒绝，容量释放后原拒绝不改变",
+        "evidence": {
+          "path": ".local-data/stage3-20261026/fault-draft/capacity.report.json",
+          "sha256": "85e8f1bdac000b83ab19363e571d3f96645267114fecaf0e67dfbc9977e93854"
+        }
+      },
+      {
+        "id": "history",
+        "passed": true,
+        "observed": "HTTP策略关闭/开启与归档/恢复世代变化，固定旧view/正文保留，旧准备拒绝",
+        "evidence": {
+          "path": ".local-data/stage3-20261026/structure-history-verification.json",
+          "sha256": "b2d78e95406eaeae02f9a21f180896918cae3cf513c0511adaee2bafcb555a12"
+        }
+      },
+      {
+        "id": "boundary",
+        "passed": true,
+        "observed": "6项语法/节点/深度/类型/总字节失败，候选API隐藏且SQL无半发布",
+        "evidence": {
+          "path": ".local-data/stage3-20261026/boundary-draft/boundary-verification.json",
+          "sha256": "4d0d33dbd1b513a6085439fef07e4089c26da5b9ec713789143f19b29635e0f8"
+        }
+      },
+      {
+        "id": "worker_sigkill",
+        "passed": true,
+        "observed": "持租约的真实Go子进程SIGKILL137，自然30秒租约过期后原Task接管到attempt2，旧epoch拒绝",
+        "evidence": {
+          "path": ".local-data/stage3-20261026/fault-draft/worker-original-key-recovery.report.json",
+          "sha256": "049d8b188987605efac4aafacaf54e016532a001af2a1b9827444769f567a19e"
+        }
+      },
+      {
+        "id": "in_flight_aba",
+        "passed": true,
+        "observed": "生产Go服务已staged后执行策略或来源ABA，实际MySQL/Silo激活栅栏拒绝且旧view不变",
+        "evidence": {
+          "path": ".local-data/stage3-20261026/fault-draft/aba-matched-timezone.report.json",
+          "sha256": "dc7c6d0a0f1fa393130cf87f62b2e98c92255d456f0fff79895f215b7a2641be"
+        }
+      }
+    ],
+    "core": {
+      "files": 8,
+      "bytes": 2313,
+      "nodes": 48,
+      "relations": 80,
+      "preannotated_facts": 50,
+      "passed_facts": 50,
+      "passage_raw_byte_coverage": 1,
+      "identity_and_evidence_independently_checked": true
+    },
+    "frontend": {
+      "baseline_commit": "ca74ff8",
+      "suites": 39,
+      "passed": 1082,
+      "failed": 0,
+      "new_suites": 6,
+      "new_tests": 153,
+      "after_targeted_ui_fix": {
+        "commit": "70eebed",
+        "suites": 2,
+        "passed": 29,
+        "failed": 0,
+        "actual_browser_replay": "Pass"
+      },
+      "format": "Pass",
+      "lint": "Pass; zero warnings",
+      "types": {
+        "baseline": 207,
+        "current": 207,
+        "new": 0,
+        "resolved": 0,
+        "complete_tsc_exit": 2
+      },
+      "build": {
+        "status": "Pass",
+        "inputs": 1961,
+        "final_artifacts": 1061,
+        "vite_seconds": 49.1,
+        "index_sha256": "6c52067bf88e73e8fc78a85733505e2727e97a08b27d56598d0687995b49821b"
+      },
+      "reports": [
+        {
+          "path": "docs/stage3r1-structure-client-verification.json",
+          "sha256": "e4275a59ec45e0ba40c5aa07e7a45d757f9ca37c987deccce6f1aa1169ff9755"
+        },
+        {
+          "path": "docs/stage3r1-structure-ui-fix-verification.json",
+          "sha256": "243566800f331897a78af788098ec9a03685ef903ea64d55d5fa223dff2a076c"
+        }
+      ]
+    },
+    "browser": {
+      "status": "Pass",
+      "cases": [
+        {
+          "id": "B01",
+          "observed": "同版原生登录、知识目录、前后端/共享/非代码成员分类及明确项目选择",
+          "passed": true
+        },
+        {
+          "id": "B02",
+          "observed": "默认关闭；明确开启本地结构策略、精确8来源和alias选择；真实任务成功",
+          "passed": true
+        },
+        {
+          "id": "B03",
+          "observed": "刷新继续同项目/固定view，成功任务身份由实际SQL核对",
+          "passed": true
+        },
+        {
+          "id": "B04",
+          "observed": "DataTable符号、UTF-8绝对[151,308)原文和一跳关系",
+          "passed": true
+        },
+        {
+          "id": "B05",
+          "observed": "跳转已解析Row类型后成员、结构树、原文路径均为types.ts",
+          "passed": true
+        },
+        {
+          "id": "B06",
+          "observed": "完整技术回执及关系证据默认折叠，可显式展开",
+          "passed": true
+        },
+        {
+          "id": "B07",
+          "observed": "关闭解析到version3，历史仍可读；明确刷新head后显示策略变化stale",
+          "passed": true
+        },
+        {
+          "id": "B08",
+          "observed": "C1回链固定source/revision/root/SHA，380原字节保持",
+          "passed": true
+        },
+        {
+          "id": "B09",
+          "observed": "较大文件下一/上一窗口保持固定view/node，范围为0—65536—122825",
+          "passed": true
+        },
+        {
+          "id": "B10",
+          "observed": "实际合成访客仅得统一404，无节点、代码、统计内容",
+          "passed": true
+        },
+        {
+          "id": "B11",
+          "observed": "HTML图片引用为Monaco源代码，DOM无远程img/iframe元素",
+          "passed": true
+        }
+      ],
+      "evidence": {
+        "path": "D:\\LFEN_project\\dev_project\\LFEN的第二大脑-知识库\\.local-data\\stage3-20261026/structure-browser-verification.json",
+        "sha256": "d437970e678c3b4adef4a164df139d4a9ac5e1c17fce5f8983acbc1b7ff5a8e4"
+      },
+      "lost_response_injection": "NotRun; evidence scopes kept separate",
+      "remote_image_proof": {
+        "rendered_remote_image_elements": 0,
+        "rendered_remote_iframe_elements": 0,
+        "raw_html_shown_as_code": true,
+        "renderer": "Read-only local Monaco with links=false; no HTML/Markdown render path",
+        "network_capture": "NotInstrumented: CUA exposes DOM and page assets, not a request trace. DOM/source proof is not reported as a measured packet/request count.",
+        "producer_no_fetch": "Independent Go synthetic no-fetch checks; see backend report"
+      }
+    },
+    "performance": {
+      "sources": 8,
+      "source_bytes": 982755,
+      "task_runs_ms": [
+        4315.551099999999,
+        4297.9876,
+        2236.7956000000013,
+        2250.7933999999987,
+        2252.8456000000006
+      ],
+      "task_max_ms": 4315.551099999999,
+      "task_limit_ms": 10000,
+      "serial_samples_per_read_kind": 20,
+      "read_maxima_ms": {
+        "metadata": 102.4513999999981,
+        "local_relations": 109.0606000000007,
+        "content_windows": 103.4545999999973
+      },
+      "read_limit_ms": 1000,
+      "memory": {
+        "samples": 449,
+        "nominal_interval_ms": 50,
+        "max_observed_gap_ms": 60.000000026775524,
+        "baseline_rss_bytes": 369704960,
+        "sampled_peak_rss_bytes": 432021504,
+        "sampled_delta_bytes": 62316544,
+        "limit_bytes": 268435456
+      },
+      "interpretation": "Five planned runs on eight padded synthetic sources; first new-content fact materialization, then actual reused members. Same warm process; max is not production p95. RSS is sampled, not a hard memory cap.",
+      "limitations": [
+        "首轮是新内容事实物化，API进程已热；后4轮成员实际reused。",
+        "RSS离散采样不是硬内存上限，VmHWM为进程累计峰值。",
+        "5次最长不是p95、吞吐或百万库结论。"
+      ]
+    },
+    "runtime": {
+      "passed": true,
+      "binary_sha256": "0efd5563a48a87d0cc41c2661a2ee58dcbc2a1ec88b2bc952b53e152acdcc061",
+      "web_source_commit": "70eebed9283141c96b6f54876fe6c7e4cd771537",
+      "web_index_sha256": "6c52067bf88e73e8fc78a85733505e2727e97a08b27d56598d0687995b49821b",
+      "app_healthy": true,
+      "runtime_ready": true,
+      "original_six_services_volumes_credentials_preserved": true,
+      "old_poc_documents": 6,
+      "old_poc_chunks": 42,
+      "model_configuration_and_usage_fingerprint_unchanged": true,
+      "helper_build_container": "Stopped after verification; caches/volumes retained",
+      "proof": {
+        "path": "D:\\LFEN_project\\dev_project\\LFEN的第二大脑-知识库\\.local-data\\stage3-20261026/final-runtime-guard.json",
+        "sha256": "75eec817cfc8383d8b04ab8ceb4ef78ba23c6cadc2c43953cc1230f10c3b0965"
+      }
+    },
+    "credentials": {
+      "actual_ignored_credential_literals": 18,
+      "scanned_delivery_files": 81,
+      "matches": 0,
+      "compiled_artifact_literals_checked": 11,
+      "compiled_artifact_matches": 0,
+      "proof": {
+        "path": "D:\\LFEN_project\\dev_project\\LFEN的第二大脑-知识库\\.local-data\\stage3-20261026/branch-secret-check-for-final-report.json",
+        "sha256": "47335ef046eb2385a6622ce058f38ce22756aa1c723fd334a7dbd9cf53a42d70"
+      }
+    }
+  },
+  "requirement_trace": [
+    {
+      "requirement": "固定版本/身份/原字节/父子/静态事实",
+      "evidence": [
+        "Go producer & joint tests",
+        "core 50 facts",
+        "B04/B05/B08/B09"
+      ],
+      "status": "Verified"
+    },
+    {
+      "requirement": "默认关闭独立许可、模型禁止、精确选择及世代",
+      "evidence": [
+        "core",
+        "history",
+        "in_flight_aba",
+        "B02/B07"
+      ],
+      "status": "Verified"
+    },
+    {
+      "requirement": "原键/固定拒绝/恢复/取消及不半发布",
+      "evidence": [
+        "Go joint tests",
+        "dual_api",
+        "strict_capacity",
+        "worker_sigkill",
+        "in_flight_cancel",
+        "boundary",
+        "client recovery tests"
+      ],
+      "status": "Verified"
+    },
+    {
+      "requirement": "所有者范围及历史与当前头区分",
+      "evidence": [
+        "core 10 hidden visitor paths",
+        "history",
+        "B07/B08/B10"
+      ],
+      "status": "Verified"
+    },
+    {
+      "requirement": "正式页面与安全原文阅读",
+      "evidence": [
+        "39 suite client report",
+        "29 focused cases",
+        "B01—B11"
+      ],
+      "status": "Verified with DOM/source no-fetch evidence; browser packet trace not captured"
+    },
+    {
+      "requirement": "冻结性能上限",
+      "evidence": [
+        "performance 5 tasks + 60 reads + RSS samples"
+      ],
+      "status": "Verified on fixed synthetic local benchmark"
+    }
+  ],
+  "failure_and_correction": [
+    {
+      "kind": "fixture_source",
+      "observation": "Go测试字符串直接包含两个BOM，gofmt拒绝",
+      "correction": "用Go Unicode escape表达；运行原字节和固定SHA不变"
+    },
+    {
+      "kind": "validation_strength",
+      "observation": "原章节测试允许祖先覆盖，嵌套标题原实现未限制document父级",
+      "correction": "对冻结标题精确起点断言，并新增嵌套容器不得提升为全局section的定向测试",
+      "result": "50项事实和新增容器场景通过"
+    },
+    {
+      "kind": "admission_limit",
+      "observation": "初稿只限制两个非终态，不能确保最多一个queued",
+      "correction": "域锁下同时检查queued数量；新增1执行+1等待和固定容量拒绝测试"
+    },
+    {
+      "kind": "capability_dto",
+      "observation": "第一次实际启动HTTP503；const parser_ids数组被生成器映射成int",
+      "correction": "修正生成器，加完整能力JSON往返测试，以新不可变二进制路径重建部署",
+      "first_binary_sha256": "b866c4825db53f9540d0f6d1fd35b50458f5d98c6f2e60ee605abc2bd82560d9",
+      "final_binary_sha256": "0efd5563a48a87d0cc41c2661a2ee58dcbc2a1ec88b2bc952b53e152acdcc061",
+      "result": "ready=true；未在失败版本接收结构任务"
+    },
+    {
+      "kind": "synthetic_source_harness",
+      "observation": "准备脚本曾对旧基础接口强加no-store、未排序.4选择及把.4首次受理误设201",
+      "correction": "按旧冻结协议修正为有序选择及202，并用原键恢复原8项任务，无新键重复导入；旧业务代码不改"
+    },
+    {
+      "observed": "实际浏览器跨文件跳转时成员树未同步，技术证据默认占据主流程。",
+      "resolution": "70eebed局部修复，29项定向测试及实际浏览器复验通过，不改接口或共享组件。"
+    },
+    {
+      "observed": "第一次worker驱动的时区与app不一致；第二次实际claim/crash/takeover通过，但尾部HTTP读取结果未知。",
+      "resolution": "原未通过报告保留。匹配app时区后，只用原key/body做独立GET恢复核验，未重复故障或新建任务。",
+      "evidence": [
+        "fault-draft/worker-crash.report.json",
+        "fault-draft/worker-crash-matched-timezone.report.json"
+      ]
+    },
+    {
+      "observed": "Windows Node fs.cpSync崩溃，尚未修改运行挂载。",
+      "resolution": "目标边界检查后用PowerShell Copy-Item到新的不可变目录；1061件完整摘要及运行index核对通过。"
+    },
+    {
+      "observed": "最终只读核验一度将关系表行数误当含contains的API总数，并以无认证读取受保护能力端点。",
+      "resolution": "核验驱动按冻结设计改为40记录+40父级投影，并通过合成既有账号认证读取；应用代码不变。"
+    }
+  ],
+  "incomplete_items": [
+    {
+      "item": "实际SQL连接中断及Silo网络断开",
+      "status": "NotRun in R1; unchanged earlier reports are not substituted as this run"
+    },
+    {
+      "item": "浏览器人为丢失HTTP响应",
+      "status": "NotRun; Mock recovery, real backend faults and normal refresh each retain own scope"
+    },
+    {
+      "item": "浏览器请求级远程图片追踪",
+      "status": "NotInstrumented; actual DOM/source no-render proof and independent producer no-fetch only"
+    },
+    {
+      "item": "Structure单件>2MiB经HTTP进入",
+      "status": "NotReachableThroughIngress; C2 already rejects2MiB+1, Go unit covers internal limit"
+    },
+    {
+      "item": "真实AICS/AOCI/文档/网站退出",
+      "status": "NotRun"
+    },
+    {
+      "item": "PDF/PPTX/DOCX结构、人工Wiki及阶段3整体",
+      "status": "NotImplemented; only independent readiness/design inputs"
+    },
+    {
+      "item": "可选索引/召回/重排/引用/复用包，MCP临时授权，人格记忆",
+      "status": "Stage4—6 pending; existing POC not treated as this batch delivery"
+    }
+  ],
+  "evidence": {
+    "private_root": ".local-data/stage3-20261026",
+    "backend_exit": {
+      "path": "D:\\LFEN_project\\dev_project\\LFEN的第二大脑-知识库\\.local-data\\stage3-20261026/structure-backend-exit.json",
+      "sha256": "5dcfac792af75364da1fdb0a9ca41df4be191c0bf5a3ee8145710a38c5691ab4"
+    },
+    "browser": {
+      "path": "D:\\LFEN_project\\dev_project\\LFEN的第二大脑-知识库\\.local-data\\stage3-20261026/structure-browser-verification.json",
+      "sha256": "d437970e678c3b4adef4a164df139d4a9ac5e1c17fce5f8983acbc1b7ff5a8e4"
+    },
+    "deployment": {
+      "path": "D:\\LFEN_project\\dev_project\\LFEN的第二大脑-知识库\\.local-data\\stage3-20261026/structure-client-fixed-deployment.json",
+      "sha256": "ea7b9cbbf4ff1d9b0928105a189e74455a4032b05a258ac394e4c1cbed555269"
+    },
+    "screenshot": ".local-data/stage3-20261026/browser/structure-r1-final.png",
+    "historical_reports_preserved": true
+  },
+  "publication": {
+    "authorized": true,
+    "scope": "Normal-hook commit, merge feature into main, push origin/main; actual verified commit in stage3r1-main-integration.json",
+    "main_receipt": "docs/stage3r1-main-integration.json"
+  },
+  "acceptance": {
+    "outcome": "Pending",
+    "scope": "Only R1 synthetic structure delivery, not whole stage3/real-source exit or prior independent R4",
+    "request_after_saved_and_published": true,
+    "R6": "Approved",
+    "R7_synthetic": "Approved",
+    "R7_real_exit": "NotRun"
+  },
+  "collaboration": {
+    "single_tracked_writer": "A",
+    "client_window": "A49fe2d4 -> peerca74ff8 clean -> A70eebed and final integration",
+    "peer_current": "Read-only next rich-document contract-shape draft; no tracked or runtime permission",
+    "continuous_goal": "Active"
+  },
+  "model_calls": 0,
+  "local_inference": 0,
+  "real_site_or_rsshub_requests": 0,
+  "adversarial_review": false
+}

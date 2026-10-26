@@ -1,5 +1,7 @@
 # 阶段2剩余任务与本机会话协作
 
+**v0.60当前**：R6和R7纯合成已获真人验收；Structure 0.1.0的ddc5630已获具体批准，现已完成[Go／Web同版合成闭环](stage3r1-structure-verification.json)。A49fe2d4交清洁写窗，客户端ca74ff8清洁回交，A收回源码／Git／部署并完成70eebed局部修复、实际故障／浏览器／性能。A当前唯一写入；协作会话仅在忽略目录准备下一富文档具体接口形状，不改tracked／运行。41保护文件不改，模型／本地推理0；原六服务保留，构建助手停止。R1人的决定Pending，真实资料退出及阶段3整体未完成；下一批共享接口仍须具体候选获人确认，禁止将持续推进当隐式冻结。下文保持各历史时点安排，当前接续见[阶段3-R1说明](stage3r1-structure-handoff.md)。
+
 **v0.57准备进展**：A完成[Go本地文档库验证](stage3-document-readiness-verification.json)，15一级场景／36含嵌套通过事件、模型分析器创建／Go HTTP尝试0；[页面复用准备](stage3-document-readiness.md)区分固定下载、视觉重排与派生定位，尚无正式阅读集成。消费会话只读回传，不授写权或启动审查。A持全部写权；ddc5630具体冻结Pending，旧35件及三件候选不改，应用／main不变。
 
 **v0.56下一批**：A在codex/stage3-structure-candidate保存[Structure 0.1.0具体候选](knowledge-structure-v0.1.candidate.md)与[接续](stage3r1-structure-handoff.md)，未冻结／接业务。协作会话一次只读消费核对初版，A核实并修订固定接收拒绝、三类恢复槽与取消目标身份，不继续多轮检查。A仍持全部源码／Git／运行写权；具体批准后先Go生产与真实服务验证，清洁固定提交再交唯一Web写窗。R7纯合成报告与真实资料／整阶段退出边界不变，模型0。

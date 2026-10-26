@@ -42,3 +42,7 @@
 - 正常hooks提交到A开启窗口时指定的同一分支；不换分支、不rebase／reset、不合main、不部署。回交清洁HEAD、结果、已知缺口和保护摘要核对。没有真人验收则Pending；不询问或启动多轮审查。
 
 A收回写权后补完整合成HTTP／浏览器／故障恢复／五次性能和实际RSS证据，定向修复，再按既有授权推main。后续富文档／Wiki及C4—C6保持各自候选和阶段边界。
+
+## v0.60 写窗已交回
+
+接方已在ca74ff8清洁回交，A持全部写权并完成70eebed局部修复、同版浏览器／真实后端／性能联调。[统一报告](stage3r1-structure-verification.json)与[当前接续](stage3r1-structure-handoff.md)覆盖本文件旧“前端尚未完成”时点；本文件不再授予任何新写窗。原client-verification及ui-fix-verification保留各提交时证据，最终浏览器复验见统一报告，不把其历史Pending改写成从未存在。客户端会话只在忽略目录整理富文档契约形状，等待A集中收敛及必要真人冻结，不改源码或运行。
