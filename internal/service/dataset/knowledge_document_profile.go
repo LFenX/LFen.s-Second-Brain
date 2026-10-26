@@ -50,11 +50,11 @@ func ParseKnowledgeDocumentChild(ctx context.Context, control parser.DocumentChi
 	if err != nil || !profile.RuntimeReady || profile.Format != control.Format || profile.ProducerSHA256 != control.ProducerSHA256 {
 		return nil, &parser.DocumentStructureError{Code: "producer_changed"}
 	}
-	result, err := parser.BuildDocumentStructure(ctx, control.Format, input)
+	_, encoded, err := parser.BuildDocumentStructure(ctx, control.Format, input)
 	if err != nil {
 		return nil, err
 	}
-	return json.Marshal(result)
+	return encoded, nil
 }
 
 func documentProfile(id string) (*entity.KnowledgeDocumentProfile, error) {

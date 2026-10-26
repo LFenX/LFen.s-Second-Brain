@@ -40,7 +40,8 @@ func documentBind(owner, domain string, fixed *documentInputs, result parser.Doc
 	unsupported := int64(0)
 	pages, slides := int64(0), int64(0)
 	for i, payload := range result.Payloads {
-		if _, err := json.Marshal(payload); err != nil {
+		sha, err := entity.KnowledgeDocumentPayloadDigest(payload)
+		if err != nil {
 			return fail()
 		}
 		if !documentRangeValid(payload.ReadingRange, result.ReadingText) {
@@ -115,10 +116,6 @@ func documentBind(owner, domain string, fixed *documentInputs, result parser.Doc
 			if payload.OriginalPosition.Kind != "pptx_slide" || payload.OriginalPosition.SlideNumber != slides || parentIndexes[i] != 0 {
 				return fail()
 			}
-		}
-		sha, err := entity.KnowledgeDocumentPayloadDigest(payload)
-		if err != nil {
-			return fail()
 		}
 		manifest.Nodes = append(manifest.Nodes, entity.KnowledgeDocumentManifestEntry{NaturalRef: ref, NodePayloadSHA256: sha})
 		natural[key] = i

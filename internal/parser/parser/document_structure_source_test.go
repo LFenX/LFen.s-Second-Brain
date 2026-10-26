@@ -71,9 +71,13 @@ func documentSourceFixture(t *testing.T, relative, expected string) []byte {
 
 func buildSourceResult(t *testing.T, format string, data []byte) DocumentStructureResult {
 	t.Helper()
-	result, err := BuildDocumentStructure(t.Context(), format, data)
+	result, encoded, err := BuildDocumentStructure(t.Context(), format, data)
 	if err != nil {
 		t.Fatal(err)
+	}
+	want, err := json.Marshal(result)
+	if err != nil || !bytes.Equal(encoded, want) || len(encoded) > 16<<20 {
+		t.Fatal("checked encoding must match the complete bounded result")
 	}
 	if dir := os.Getenv("LFEN_R2_PROJECTION_EVIDENCE"); dir != "" {
 		if !filepath.IsAbs(dir) {
@@ -472,7 +476,7 @@ func TestDocumentStructureSourceFacts(t *testing.T) {
 			main := documentSourceFixture(t, base+"source-fixtures-v2/negative-style-"+name+".document.xml", hashes[0])
 			styles := documentSourceFixture(t, base+"source-fixtures-v2/negative-style-"+name+".styles.xml", hashes[1])
 			data := replaceDocumentParts(t, v2docBytes, map[string][]byte{"word/document.xml": main, "word/styles.xml": styles})
-			result, err := BuildDocumentStructure(t.Context(), "docx", data)
+			result, _, err := BuildDocumentStructure(t.Context(), "docx", data)
 			var controlled *DocumentStructureError
 			if !errors.As(err, &controlled) || controlled.FailureCode() != "invalid_source_structure" || result.ReadingText != "" || len(result.Payloads) != 0 {
 				t.Fatal("invalid style graph did not fail atomically")
@@ -558,7 +562,7 @@ func TestDocumentStructureControlledFailures(t *testing.T) {
 		data   []byte
 		code   string
 	}{{"html", []byte("x"), "unsupported_document"}, {"docx", nil, "invalid_source_structure"}, {"docx", make([]byte, (8<<20)+1), "budget_exceeded"}, {"pptx", []byte("broken"), "invalid_source_structure"}} {
-		result, err := BuildDocumentStructure(t.Context(), test.format, test.data)
+		result, _, err := BuildDocumentStructure(t.Context(), test.format, test.data)
 		var failure *DocumentStructureError
 		if !errors.As(err, &failure) || failure.Code != test.code || len(result.Payloads) != 0 {
 			t.Fatal("controlled atomic failure mismatch")
@@ -566,7 +570,7 @@ func TestDocumentStructureControlledFailures(t *testing.T) {
 	}
 	ctx, cancel := context.WithCancel(t.Context())
 	cancel()
-	if _, err := BuildDocumentStructure(ctx, "docx", []byte("broken")); !errors.Is(err, context.Canceled) {
+	if _, _, err := BuildDocumentStructure(ctx, "docx", []byte("broken")); !errors.Is(err, context.Canceled) {
 		t.Fatal("cancellation not preserved")
 	}
 }

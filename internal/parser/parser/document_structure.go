@@ -55,17 +55,17 @@ func DocumentStructureRuntimeReady(format string) bool {
 	}
 }
 
-// BuildDocumentStructure produces one bounded deterministic representation.
-// It does not perform network, model, application or storage operations.
-func BuildDocumentStructure(ctx context.Context, format string, data []byte) (DocumentStructureResult, error) {
+// BuildDocumentStructure produces one bounded deterministic representation and
+// its checked encoding. It does not perform network, model or storage operations.
+func BuildDocumentStructure(ctx context.Context, format string, data []byte) (DocumentStructureResult, json.RawMessage, error) {
 	if err := ctx.Err(); err != nil {
-		return DocumentStructureResult{}, err
+		return DocumentStructureResult{}, nil, err
 	}
 	if len(data) == 0 {
-		return DocumentStructureResult{}, documentFailure("invalid_source_structure")
+		return DocumentStructureResult{}, nil, documentFailure("invalid_source_structure")
 	}
 	if len(data) > 8<<20 {
-		return DocumentStructureResult{}, documentFailure("budget_exceeded")
+		return DocumentStructureResult{}, nil, documentFailure("budget_exceeded")
 	}
 	builder := newDocumentStructureBuilder(ctx)
 	var err error
@@ -79,29 +79,29 @@ func BuildDocumentStructure(ctx context.Context, format string, data []byte) (Do
 	}
 	if err != nil {
 		if ctx.Err() != nil {
-			return DocumentStructureResult{}, ctx.Err()
+			return DocumentStructureResult{}, nil, ctx.Err()
 		}
 		if errors.Is(err, ErrOfficePackageBudget) {
-			return DocumentStructureResult{}, documentFailure("budget_exceeded")
+			return DocumentStructureResult{}, nil, documentFailure("budget_exceeded")
 		}
 		var controlled *DocumentStructureError
 		if errors.As(err, &controlled) {
-			return DocumentStructureResult{}, controlled
+			return DocumentStructureResult{}, nil, controlled
 		}
 		if errors.Is(err, ErrOfficePackageBudget) {
-			return DocumentStructureResult{}, documentFailure("budget_exceeded")
+			return DocumentStructureResult{}, nil, documentFailure("budget_exceeded")
 		}
-		return DocumentStructureResult{}, documentFailure("invalid_source_structure")
+		return DocumentStructureResult{}, nil, documentFailure("invalid_source_structure")
 	}
 	result, err := builder.finish()
 	if err != nil {
-		return DocumentStructureResult{}, err
+		return DocumentStructureResult{}, nil, err
 	}
 	encoded, err := json.Marshal(result)
 	if err != nil || len(encoded) > 16<<20 {
-		return DocumentStructureResult{}, documentFailure("budget_exceeded")
+		return DocumentStructureResult{}, nil, documentFailure("budget_exceeded")
 	}
-	return result, nil
+	return result, encoded, nil
 }
 
 func documentMediaType(format string) string {

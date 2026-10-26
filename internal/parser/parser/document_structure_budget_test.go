@@ -29,9 +29,9 @@ func TestDocumentStructureExpandedPackageBudgetIsControlled(t *testing.T) {
 	if buf.Len() > 8<<20 {
 		t.Fatal("fixture must fit original input budget")
 	}
-	result, err := BuildDocumentStructure(context.Background(), "docx", buf.Bytes())
+	result, encoded, err := BuildDocumentStructure(context.Background(), "docx", buf.Bytes())
 	var controlled *DocumentStructureError
-	if !errors.As(err, &controlled) || controlled.Code != "budget_exceeded" || len(result.Payloads) != 0 {
+	if !errors.As(err, &controlled) || controlled.Code != "budget_exceeded" || len(result.Payloads) != 0 || encoded != nil {
 		t.Fatalf("expanded package must fail without a partial result: %v", err)
 	}
 }
