@@ -4,7 +4,7 @@
 
 **本仓库是后续唯一开发入口，包含当前应用源码、品牌资产、方案和验证记录。** v0.45已完成冻结[C2 0.5.0](docs/knowledge-original-import-v1.freeze.json)的文档原件／大文件闭环：登记、单件≤64MiB上传暂存、明确确认、原键／回执恢复、同一分组树中的原件卡片与固定授权下载。[统一报告](docs/stage2r4-original-verification.json)区分172项Go定向结果、前端506项及实际身份修复后9项、真实MySQL／对象存储／浏览器／崩溃／SQL回滚与三档各3次容量证据。23保护文件原字节保持、模型0；新二进制与前端已在本机加载，代码已合本地main并随本批正常推送，发布以远端main与提交回执核对。原件不自动解析／建结构／全文或向量索引，阶段2整体尚未退出，R5网页／RSS候选继续推进。[当前接续](docs/stage2r4-original-handoff.md)第11节。
 当前交付 **v0.51／S2-R5 网页与 Feed**：[C2 0.6.0](docs/knowledge-web-import-v1.freeze.json)的34操作后端、正式客户端、四段导入、原键恢复及固定安全阅读已完成合成真实联调。本机加载后端1ac4e4f＋前端40ed01f；[统一报告](docs/stage2r5-web-verification.json)记录327项Go含子例、客户端交付717项和修复后164项定向复验（有重叠，不相加）、实际MySQL／S3／HTTP与TLS合成装配、浏览器及容量／故障证据。29份契约保护文件原字节保持；模型0，真实网站／RSSHub未访问。main发布单独见[发布回执](docs/stage2r5-main-integration.json)，工程用户验收Pending，不代表阶段2整体退出。
-下一项是[R6生命周期](docs/stage2r6-lifecycle-design-input.md)具体候选：重分类、受限逻辑移动、归档／恢复及旧生产者世代栅栏；确认前不接业务。v0.49／v0.50[后端报告](docs/stage2r5-backend-verification.json)保留当时范围，当前以统一报告为准。
+下一项[R6生命周期具体C2 0.7候选](docs/knowledge-source-lifecycle-v0.7.candidate.md)已保存到候选分支：10接口／20schema，重分类、受限逻辑移动、归档／恢复及旧生产者世代栅栏；[接续](docs/stage2r6-lifecycle-handoff.md)与[文档核验](docs/stage2r6-lifecycle-contract-verification.json)明确未冻结、未接业务。确认范围包含旧无栅栏未消费准备失效，成功回执保留。v0.49／v0.50[后端报告](docs/stage2r5-backend-verification.json)保留当时范围。
 
 v0.38已完成S2-R3多文件任务／项目固定版本：用户批准81b81de后冻结[C2 0.4.0](docs/knowledge-batch-import-v1.freeze.json)，源码交付7309daf。Go持久任务、逐项认可、原键恢复、取消、清单基版合并与CAS、正式Web及合成真实联调已完成；[统一报告](docs/stage2r3-batch-verification.json)记录证据和发布状态。工程用户决定Pending；阶段2整体未退出。
 

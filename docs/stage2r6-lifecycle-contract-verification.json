@@ -1,0 +1,1329 @@
+{
+  "document_version": "v0.52",
+  "recorded_at": "2026-10-26T02:18:44.893Z",
+  "objective": "完成S2-R6具体共享契约候选，收敛四动作、身份、权限、增量世代、旧准备过渡、恢复及验收后再由真人确认。",
+  "request_basis": "持续推进全项目；新共享接口候选确认前不接入业务；单写入协调；合成、模型0、不启动多轮审查。",
+  "task_profile": {
+    "work": "Shared-contract candidate documentation",
+    "carriers": "既有docs、中文方案／接续、Node文档核验器，不改变项目布局",
+    "runtime_change": false,
+    "explicit_human_freeze_required": true
+  },
+  "baseline": "81f3a8c8bb176155e70e4150906555af0d3cac88",
+  "branch": "codex/stage2r6-lifecycle-candidate",
+  "candidate_status": "ReviewCandidate",
+  "authority": {
+    "candidate_preparation": "Authorised by continuing project instruction",
+    "freeze_and_implementation": "Pending_SpecificHumanConfirmation",
+    "no_repeat_R5_freeze": true
+  },
+  "acceptance": {
+    "candidate_user_decision": "Pending",
+    "implementation": "NotStarted",
+    "engineering_verification": "NotRun",
+    "r5_user_decision": "Pending_Independent",
+    "stage2_exit": false,
+    "whole_project_complete": false
+  },
+  "artifact_manifest": [
+    "docs/knowledge-source-lifecycle-v0.7.candidate.md",
+    "docs/knowledge-source-lifecycle-v0.7.candidate.openapi.json",
+    "docs/knowledge-source-lifecycle-v0.7.candidate.examples.json",
+    "docs/stage2r6-lifecycle-contract-verification.json",
+    "docs/stage2r6-lifecycle-handoff.md",
+    "tools/scripts/verify_knowledge_source_lifecycle_contract.cjs"
+  ],
+  "plan": [
+    "一次集中消费者输入及当前拥有路径事实收敛",
+    "形成具体10操作／20schema、原键与世代／过渡规则",
+    "结构与独立参考规则／摘要验证，保护29冻结文件",
+    "正常提交推候选分支、真人具体确认；批准后A底座→四动作→清洁Web写窗→合成同版联调"
+  ],
+  "execution": {
+    "source_and_git_writer": "A only",
+    "consumer_thread": "01a1746b-2de2-7413-906b-d2a4544017e3",
+    "consumer_title": "R4 原件导入客户端与界面",
+    "consumer_input_rounds": 1,
+    "consumer_write_rights": false,
+    "consumer_decisions": [
+      {
+        "id": 1,
+        "input": "独立当前详情、C1 nullable登记、逐动作能力与安全整数世代",
+        "decision": "采纳；使用current完整快照，kind/registration在无登记C1同时null，不新增虚构source_kind。"
+      },
+      {
+        "id": 2,
+        "input": "四动作明确差异／默认未认可，旧详情不能替代当前状态",
+        "decision": "采纳；增加明确expected_policy_version，双CAS与策略核验。"
+      },
+      {
+        "id": 3,
+        "input": "目录/Web/C1禁移动，.2/.5精确目标、GET不预约、占位与Unicode",
+        "decision": "采纳；保留现有utf8mb4_bin当前Binding，退役位置私有摘要及原路径复验，原件沿用媒体族检查。"
+      },
+      {
+        "id": 4,
+        "input": "固定回执before/after、实际变化含历史头复用推进，no-op先CAS",
+        "decision": "采纳；原件元信息引用不复制正文；状态归档／恢复头不变而世代变化，回放不重施动作。"
+      },
+      {
+        "id": 5,
+        "input": "完整原请求恢复槽，按主体隔离、原键查验，不存正文/令牌",
+        "decision": "采纳；每主体域一个未决槽≤8KiB、最多8个未决域，不驱逐未知；原键持久。"
+      },
+      {
+        "id": 6,
+        "input": "机器错误、outcome_known、未知先GET、明确同元组重发",
+        "decision": "采纳；新0.7独立错误映射，不改旧DTO；404不能证明此前未执行。"
+      },
+      {
+        "id": 7,
+        "input": "归档列表SQL先过滤、历史保留，archived仅restore的操作限制",
+        "decision": "重分类／移动禁止；UI只突出restore。API另保留archive已archived／restore已active合法no-op，仍先CAS，候选明确此取舍。"
+      },
+      {
+        "id": 8,
+        "input": "旧无世代准备拒绝，.6明确Preview钉选而非Observation",
+        "decision": "采纳；成功结果保留，仍有效旧Capture/Observation可新明确Preview；C1调用前客户端ABA能力上限单列。"
+      }
+    ],
+    "current_code_facts": [
+      "三个写头核心publishKnowledgeSource/publishOriginalSource/publishWebSources，C1/.2 unchanged分支在新栅栏前不得早返。",
+      "原生RecordSourceSnapshotObject(s)只记已验对象元信息；新元信息修订不需要对象正文GET/PUT。",
+      "C1可以无Registration；目录IncludePaths实际ScopeDirectories，不应按精确文件表解释。",
+      "0.6冻结允许同Capture刷新Target新建Preview，故世代钉选点为明确Preview。",
+      "本机information_schema.columns只读查询确认knowledge_source_binding.relative_path为utf8mb4_bin；没有执行DDL或业务写入。"
+    ],
+    "implementation_not_added": true
+  },
+  "verification": {
+    "scope": "Candidate documentation/reference validation only; no Go, API, migration, browser, model or site execution",
+    "passed": true,
+    "counts": {
+      "schemas": 20,
+      "structure": 110,
+      "digests": 14,
+      "decisions": 33,
+      "fences": 24,
+      "projects": 7,
+      "paths": 9,
+      "queries": 7,
+      "errors": 15,
+      "endpoints": 11,
+      "protection": 30
+    },
+    "groups": {
+      "schemas": [
+        {
+          "name": "ID",
+          "passed": true
+        },
+        {
+          "name": "SHA256",
+          "passed": true
+        },
+        {
+          "name": "Version",
+          "passed": true
+        },
+        {
+          "name": "Classification",
+          "passed": true
+        },
+        {
+          "name": "Snapshot",
+          "passed": true
+        },
+        {
+          "name": "ActionCapability",
+          "passed": true
+        },
+        {
+          "name": "Detail",
+          "passed": true
+        },
+        {
+          "name": "Page",
+          "passed": true
+        },
+        {
+          "name": "StateCommand",
+          "passed": true
+        },
+        {
+          "name": "ReclassifyCommand",
+          "passed": true
+        },
+        {
+          "name": "MoveCommand",
+          "passed": true
+        },
+        {
+          "name": "Receipt",
+          "passed": true
+        },
+        {
+          "name": "TargetCheck",
+          "passed": true
+        },
+        {
+          "name": "Capabilities",
+          "passed": true
+        },
+        {
+          "name": "CapabilitiesResponse",
+          "passed": true
+        },
+        {
+          "name": "DetailResponse",
+          "passed": true
+        },
+        {
+          "name": "PageResponse",
+          "passed": true
+        },
+        {
+          "name": "TargetCheckResponse",
+          "passed": true
+        },
+        {
+          "name": "ReceiptResponse",
+          "passed": true
+        },
+        {
+          "name": "Error",
+          "passed": true
+        }
+      ],
+      "structure": [
+        {
+          "name": "candidate_runtime_not_ready",
+          "passed": true
+        },
+        {
+          "name": "runtime_ready_is_dynamic",
+          "passed": true
+        },
+        {
+          "name": "owner_only_cannot_false",
+          "passed": true
+        },
+        {
+          "name": "fixed_history_preserved_cannot_false",
+          "passed": true
+        },
+        {
+          "name": "automatic_ingestion_cannot_true",
+          "passed": true
+        },
+        {
+          "name": "physical_gc_cannot_true",
+          "passed": true
+        },
+        {
+          "name": "models_not_called",
+          "passed": true
+        },
+        {
+          "name": "manual_text_detail",
+          "passed": true
+        },
+        {
+          "name": "direct_C1_nullable_registration",
+          "passed": true
+        },
+        {
+          "name": "original_detail",
+          "passed": true
+        },
+        {
+          "name": "controlled_directory_no_move",
+          "passed": true
+        },
+        {
+          "name": "web_page_no_move",
+          "passed": true
+        },
+        {
+          "name": "web_feed_no_move",
+          "passed": true
+        },
+        {
+          "name": "reclassify_request",
+          "passed": true
+        },
+        {
+          "name": "move_request",
+          "passed": true
+        },
+        {
+          "name": "archive_request",
+          "passed": true
+        },
+        {
+          "name": "restore_request",
+          "passed": true
+        },
+        {
+          "name": "StateCommand_requires_idempotency_key",
+          "passed": true
+        },
+        {
+          "name": "StateCommand_requires_expected_source_revision_id",
+          "passed": true
+        },
+        {
+          "name": "StateCommand_requires_expected_lifecycle_version",
+          "passed": true
+        },
+        {
+          "name": "StateCommand_requires_expected_policy_version",
+          "passed": true
+        },
+        {
+          "name": "StateCommand_requires_confirmed",
+          "passed": true
+        },
+        {
+          "name": "StateCommand_rejects_unknown",
+          "passed": true
+        },
+        {
+          "name": "StateCommand_requires_confirmed",
+          "passed": true
+        },
+        {
+          "name": "StateCommand_expected_lifecycle_version_0",
+          "passed": true
+        },
+        {
+          "name": "StateCommand_expected_lifecycle_version_1.5",
+          "passed": true
+        },
+        {
+          "name": "StateCommand_expected_lifecycle_version_9007199254740992",
+          "passed": true
+        },
+        {
+          "name": "StateCommand_expected_lifecycle_version_5",
+          "passed": true
+        },
+        {
+          "name": "StateCommand_expected_lifecycle_version_null",
+          "passed": true
+        },
+        {
+          "name": "StateCommand_expected_policy_version_0",
+          "passed": true
+        },
+        {
+          "name": "StateCommand_expected_policy_version_1.5",
+          "passed": true
+        },
+        {
+          "name": "StateCommand_expected_policy_version_9007199254740992",
+          "passed": true
+        },
+        {
+          "name": "StateCommand_expected_policy_version_5",
+          "passed": true
+        },
+        {
+          "name": "StateCommand_expected_policy_version_null",
+          "passed": true
+        },
+        {
+          "name": "ReclassifyCommand_requires_idempotency_key",
+          "passed": true
+        },
+        {
+          "name": "ReclassifyCommand_requires_expected_source_revision_id",
+          "passed": true
+        },
+        {
+          "name": "ReclassifyCommand_requires_expected_lifecycle_version",
+          "passed": true
+        },
+        {
+          "name": "ReclassifyCommand_requires_expected_policy_version",
+          "passed": true
+        },
+        {
+          "name": "ReclassifyCommand_requires_confirmed",
+          "passed": true
+        },
+        {
+          "name": "ReclassifyCommand_requires_classification",
+          "passed": true
+        },
+        {
+          "name": "ReclassifyCommand_rejects_unknown",
+          "passed": true
+        },
+        {
+          "name": "ReclassifyCommand_requires_confirmed",
+          "passed": true
+        },
+        {
+          "name": "ReclassifyCommand_expected_lifecycle_version_0",
+          "passed": true
+        },
+        {
+          "name": "ReclassifyCommand_expected_lifecycle_version_1.5",
+          "passed": true
+        },
+        {
+          "name": "ReclassifyCommand_expected_lifecycle_version_9007199254740992",
+          "passed": true
+        },
+        {
+          "name": "ReclassifyCommand_expected_lifecycle_version_5",
+          "passed": true
+        },
+        {
+          "name": "ReclassifyCommand_expected_lifecycle_version_null",
+          "passed": true
+        },
+        {
+          "name": "ReclassifyCommand_expected_policy_version_0",
+          "passed": true
+        },
+        {
+          "name": "ReclassifyCommand_expected_policy_version_1.5",
+          "passed": true
+        },
+        {
+          "name": "ReclassifyCommand_expected_policy_version_9007199254740992",
+          "passed": true
+        },
+        {
+          "name": "ReclassifyCommand_expected_policy_version_5",
+          "passed": true
+        },
+        {
+          "name": "ReclassifyCommand_expected_policy_version_null",
+          "passed": true
+        },
+        {
+          "name": "MoveCommand_requires_idempotency_key",
+          "passed": true
+        },
+        {
+          "name": "MoveCommand_requires_expected_source_revision_id",
+          "passed": true
+        },
+        {
+          "name": "MoveCommand_requires_expected_lifecycle_version",
+          "passed": true
+        },
+        {
+          "name": "MoveCommand_requires_expected_policy_version",
+          "passed": true
+        },
+        {
+          "name": "MoveCommand_requires_confirmed",
+          "passed": true
+        },
+        {
+          "name": "MoveCommand_requires_relative_path",
+          "passed": true
+        },
+        {
+          "name": "MoveCommand_rejects_unknown",
+          "passed": true
+        },
+        {
+          "name": "MoveCommand_requires_confirmed",
+          "passed": true
+        },
+        {
+          "name": "MoveCommand_expected_lifecycle_version_0",
+          "passed": true
+        },
+        {
+          "name": "MoveCommand_expected_lifecycle_version_1.5",
+          "passed": true
+        },
+        {
+          "name": "MoveCommand_expected_lifecycle_version_9007199254740992",
+          "passed": true
+        },
+        {
+          "name": "MoveCommand_expected_lifecycle_version_5",
+          "passed": true
+        },
+        {
+          "name": "MoveCommand_expected_lifecycle_version_null",
+          "passed": true
+        },
+        {
+          "name": "MoveCommand_expected_policy_version_0",
+          "passed": true
+        },
+        {
+          "name": "MoveCommand_expected_policy_version_1.5",
+          "passed": true
+        },
+        {
+          "name": "MoveCommand_expected_policy_version_9007199254740992",
+          "passed": true
+        },
+        {
+          "name": "MoveCommand_expected_policy_version_5",
+          "passed": true
+        },
+        {
+          "name": "MoveCommand_expected_policy_version_null",
+          "passed": true
+        },
+        {
+          "name": "partial_classification_rejected",
+          "passed": true
+        },
+        {
+          "name": "null_language_not_empty",
+          "passed": true
+        },
+        {
+          "name": "side_separate_label",
+          "passed": true
+        },
+        {
+          "name": "language_over_32",
+          "passed": true
+        },
+        {
+          "name": "safe_max_generation",
+          "passed": true
+        },
+        {
+          "name": "unsafe_generation_rejected",
+          "passed": true
+        },
+        {
+          "name": "fixed_receipt",
+          "passed": true
+        },
+        {
+          "name": "noop_receipt",
+          "passed": true
+        },
+        {
+          "name": "receipt_action_request_mismatch",
+          "passed": true
+        },
+        {
+          "name": "receipt_zero_models",
+          "passed": true
+        },
+        {
+          "name": "empty_active_page",
+          "passed": true
+        },
+        {
+          "name": "twenty_item_budget_ceiling",
+          "passed": true
+        },
+        {
+          "name": "page_twenty_one_rejected",
+          "passed": true
+        },
+        {
+          "name": "allowed_move_target_not_reserved",
+          "passed": true
+        },
+        {
+          "name": "unsupported_cannot_allowed",
+          "passed": true
+        },
+        {
+          "name": "blocked_requires_reason",
+          "passed": true
+        },
+        {
+          "name": "error_400_knowledge_invalid_request",
+          "passed": true
+        },
+        {
+          "name": "error_401_knowledge_unauthorized",
+          "passed": true
+        },
+        {
+          "name": "error_404_knowledge_not_found",
+          "passed": true
+        },
+        {
+          "name": "error_409_knowledge_contract_version",
+          "passed": true
+        },
+        {
+          "name": "error_409_knowledge_source_contract_version",
+          "passed": true
+        },
+        {
+          "name": "error_409_policy_changed",
+          "passed": true
+        },
+        {
+          "name": "error_409_revision_changed",
+          "passed": true
+        },
+        {
+          "name": "error_409_idempotency_conflict",
+          "passed": true
+        },
+        {
+          "name": "error_409_lifecycle_source_archived",
+          "passed": true
+        },
+        {
+          "name": "error_409_lifecycle_action_unsupported",
+          "passed": true
+        },
+        {
+          "name": "error_409_lifecycle_position_occupied",
+          "passed": true
+        },
+        {
+          "name": "error_409_lifecycle_version_exhausted",
+          "passed": true
+        },
+        {
+          "name": "error_409_lifecycle_integrity",
+          "passed": true
+        },
+        {
+          "name": "error_413_lifecycle_budget_exceeded",
+          "passed": true
+        },
+        {
+          "name": "error_503_lifecycle_result_unknown",
+          "passed": true
+        },
+        {
+          "name": "Capabilities_envelope",
+          "passed": true
+        },
+        {
+          "name": "Detail_envelope",
+          "passed": true
+        },
+        {
+          "name": "Page_envelope",
+          "passed": true
+        },
+        {
+          "name": "TargetCheck_envelope",
+          "passed": true
+        },
+        {
+          "name": "Receipt_envelope",
+          "passed": true
+        },
+        {
+          "name": "registered_kind_cannot_hide_registration",
+          "passed": true
+        },
+        {
+          "name": "web_kind_cannot_claim_text",
+          "passed": true
+        },
+        {
+          "name": "C1_does_not_manufacture_registration",
+          "passed": true
+        },
+        {
+          "name": "archived_detail_no_metadata_edits",
+          "passed": true
+        }
+      ],
+      "digests": [
+        {
+          "name": "reclassify_request",
+          "passed": true
+        },
+        {
+          "name": "move_request",
+          "passed": true
+        },
+        {
+          "name": "archive_request",
+          "passed": true
+        },
+        {
+          "name": "restore_request",
+          "passed": true
+        },
+        {
+          "name": "position_src/A.tsx",
+          "passed": true
+        },
+        {
+          "name": "position_src/a.tsx",
+          "passed": true
+        },
+        {
+          "name": "position_src/é.tsx",
+          "passed": true
+        },
+        {
+          "name": "position_src/é.tsx",
+          "passed": true
+        },
+        {
+          "name": "position_组件/🧠.tsx",
+          "passed": true
+        },
+        {
+          "name": "null_group",
+          "passed": true
+        },
+        {
+          "name": "fixed_group",
+          "passed": true
+        },
+        {
+          "name": "empty_language",
+          "passed": true
+        },
+        {
+          "name": "other_source",
+          "passed": true
+        },
+        {
+          "name": "next_generation",
+          "passed": true
+        }
+      ],
+      "decisions": [
+        {
+          "name": "archive_active",
+          "passed": true
+        },
+        {
+          "name": "archive_noop",
+          "passed": true
+        },
+        {
+          "name": "restore_archived",
+          "passed": true
+        },
+        {
+          "name": "restore_noop",
+          "passed": true
+        },
+        {
+          "name": "new_key_stale_generation_noop",
+          "passed": true
+        },
+        {
+          "name": "ABA_same_revision_new_generation",
+          "passed": true
+        },
+        {
+          "name": "head_changed",
+          "passed": true
+        },
+        {
+          "name": "policy_changed",
+          "passed": true
+        },
+        {
+          "name": "unauthorised_first",
+          "passed": true
+        },
+        {
+          "name": "fixed_receipt_replay_does_not_reapply",
+          "passed": true
+        },
+        {
+          "name": "replay_checks_original_tuple",
+          "passed": true
+        },
+        {
+          "name": "reclassify_active",
+          "passed": true
+        },
+        {
+          "name": "reclassify_noop",
+          "passed": true
+        },
+        {
+          "name": "archived_reclassify_denied",
+          "passed": true
+        },
+        {
+          "name": "move_exact_target",
+          "passed": true
+        },
+        {
+          "name": "move_noop",
+          "passed": true
+        },
+        {
+          "name": "move_unsupported_controlled_directory",
+          "passed": true
+        },
+        {
+          "name": "move_unsupported_web_page",
+          "passed": true
+        },
+        {
+          "name": "move_unsupported_web_feed",
+          "passed": true
+        },
+        {
+          "name": "move_unsupported_null",
+          "passed": true
+        },
+        {
+          "name": "target_active_occupied",
+          "passed": true
+        },
+        {
+          "name": "target_archived_occupied",
+          "passed": true
+        },
+        {
+          "name": "target_retired_occupied",
+          "passed": true
+        },
+        {
+          "name": "own_retired_position_explicitly_reclaimed",
+          "passed": true
+        },
+        {
+          "name": "unregistered_target",
+          "passed": true
+        },
+        {
+          "name": "original_media_family_retained",
+          "passed": true
+        },
+        {
+          "name": "max_generation_change_rejected",
+          "passed": true
+        },
+        {
+          "name": "max_generation_noop_allowed",
+          "passed": true
+        },
+        {
+          "name": "fixed_replay_after_policy_change",
+          "passed": true
+        },
+        {
+          "name": "target_group_foreign_domain",
+          "passed": true
+        },
+        {
+          "name": "classification_null_not_missing",
+          "passed": true
+        },
+        {
+          "name": "classification_leading_space",
+          "passed": true
+        },
+        {
+          "name": "archive_at_exhausted_generation_noop",
+          "passed": true
+        }
+      ],
+      "fences": [
+        {
+          "name": "0.2-preview_unchanged",
+          "passed": true
+        },
+        {
+          "name": "0.2-preview_ABA_stale",
+          "passed": true
+        },
+        {
+          "name": "0.2-preview_archived",
+          "passed": true
+        },
+        {
+          "name": "0.2-preview_missing_private_fence",
+          "passed": true
+        },
+        {
+          "name": "0.3-observation_unchanged",
+          "passed": true
+        },
+        {
+          "name": "0.3-observation_ABA_stale",
+          "passed": true
+        },
+        {
+          "name": "0.3-observation_archived",
+          "passed": true
+        },
+        {
+          "name": "0.3-observation_missing_private_fence",
+          "passed": true
+        },
+        {
+          "name": "0.4-worker_unchanged",
+          "passed": true
+        },
+        {
+          "name": "0.4-worker_ABA_stale",
+          "passed": true
+        },
+        {
+          "name": "0.4-worker_archived",
+          "passed": true
+        },
+        {
+          "name": "0.4-worker_missing_private_fence",
+          "passed": true
+        },
+        {
+          "name": "0.5-create-upload_unchanged",
+          "passed": true
+        },
+        {
+          "name": "0.5-create-upload_ABA_stale",
+          "passed": true
+        },
+        {
+          "name": "0.5-create-upload_archived",
+          "passed": true
+        },
+        {
+          "name": "0.5-create-upload_missing_private_fence",
+          "passed": true
+        },
+        {
+          "name": "0.6-preview_unchanged",
+          "passed": true
+        },
+        {
+          "name": "0.6-preview_ABA_stale",
+          "passed": true
+        },
+        {
+          "name": "0.6-preview_archived",
+          "passed": true
+        },
+        {
+          "name": "0.6-preview_missing_private_fence",
+          "passed": true
+        },
+        {
+          "name": "observed_absent_remains_absent",
+          "passed": true
+        },
+        {
+          "name": "observed_absent_source_appears",
+          "passed": true
+        },
+        {
+          "name": "success_receipt_preserved",
+          "passed": true
+        },
+        {
+          "name": "success_still_requires_authorisation",
+          "passed": true
+        }
+      ],
+      "projects": [
+        {
+          "name": "explicit_historical_body_same_current_organisation",
+          "passed": true
+        },
+        {
+          "name": "archived_carry_rejected",
+          "passed": true
+        },
+        {
+          "name": "prepare_generation_stale",
+          "passed": true
+        },
+        {
+          "name": "historical_metadata_not_current",
+          "passed": true
+        },
+        {
+          "name": "old_project_preparation_unfenced",
+          "passed": true
+        },
+        {
+          "name": "fixed_manifest_authorised_after_archive",
+          "passed": true
+        },
+        {
+          "name": "fixed_manifest_reauth",
+          "passed": true
+        }
+      ],
+      "paths": [
+        {
+          "name": "case_is_distinct",
+          "passed": true
+        },
+        {
+          "name": "NFC_NFD_distinct",
+          "passed": true
+        },
+        {
+          "name": "identical_position",
+          "passed": true
+        },
+        {
+          "name": "unicode_scalar",
+          "passed": true
+        },
+        {
+          "name": "unpaired_surrogate",
+          "passed": true
+        },
+        {
+          "name": "parent_path",
+          "passed": true
+        },
+        {
+          "name": "absolute_path",
+          "passed": true
+        },
+        {
+          "name": "backslash",
+          "passed": true
+        },
+        {
+          "name": "control",
+          "passed": true
+        }
+      ],
+      "queries": [
+        {
+          "name": "default_all",
+          "passed": true
+        },
+        {
+          "name": "archived_exact_group",
+          "passed": true
+        },
+        {
+          "name": "exact_group_missing",
+          "passed": true
+        },
+        {
+          "name": "all_group_extraneous",
+          "passed": true
+        },
+        {
+          "name": "ungrouped_has_group",
+          "passed": true
+        },
+        {
+          "name": "query_over_page_limit",
+          "passed": true
+        },
+        {
+          "name": "query_unknown_field",
+          "passed": true
+        }
+      ],
+      "errors": [
+        {
+          "name": "error_400_knowledge_invalid_request",
+          "passed": true
+        },
+        {
+          "name": "error_401_knowledge_unauthorized",
+          "passed": true
+        },
+        {
+          "name": "error_404_knowledge_not_found",
+          "passed": true
+        },
+        {
+          "name": "error_409_knowledge_contract_version",
+          "passed": true
+        },
+        {
+          "name": "error_409_knowledge_source_contract_version",
+          "passed": true
+        },
+        {
+          "name": "error_409_policy_changed",
+          "passed": true
+        },
+        {
+          "name": "error_409_revision_changed",
+          "passed": true
+        },
+        {
+          "name": "error_409_idempotency_conflict",
+          "passed": true
+        },
+        {
+          "name": "error_409_lifecycle_source_archived",
+          "passed": true
+        },
+        {
+          "name": "error_409_lifecycle_action_unsupported",
+          "passed": true
+        },
+        {
+          "name": "error_409_lifecycle_position_occupied",
+          "passed": true
+        },
+        {
+          "name": "error_409_lifecycle_version_exhausted",
+          "passed": true
+        },
+        {
+          "name": "error_409_lifecycle_integrity",
+          "passed": true
+        },
+        {
+          "name": "error_413_lifecycle_budget_exceeded",
+          "passed": true
+        },
+        {
+          "name": "error_503_lifecycle_result_unknown",
+          "passed": true
+        }
+      ],
+      "endpoints": [
+        {
+          "name": "getKnowledgeSourceLifecycleContract",
+          "passed": true
+        },
+        {
+          "name": "listKnowledgeSourceLifecycles",
+          "passed": true
+        },
+        {
+          "name": "getKnowledgeSourceLifecycle",
+          "passed": true
+        },
+        {
+          "name": "checkKnowledgeSourceMoveTarget",
+          "passed": true
+        },
+        {
+          "name": "commandKnowledgeSourceReclassify",
+          "passed": true
+        },
+        {
+          "name": "commandKnowledgeSourceMove",
+          "passed": true
+        },
+        {
+          "name": "commandKnowledgeSourceArchive",
+          "passed": true
+        },
+        {
+          "name": "commandKnowledgeSourceRestore",
+          "passed": true
+        },
+        {
+          "name": "getKnowledgeLifecycleCommandByKey",
+          "passed": true
+        },
+        {
+          "name": "getKnowledgeLifecycleCommand",
+          "passed": true
+        },
+        {
+          "name": "exactly_ten_operations",
+          "passed": true
+        }
+      ],
+      "protection": [
+        {
+          "name": "docs/knowledge-sources-v1.openapi.json",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-sources-v1.example.json",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-sources-v1.freeze.json",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-foundation-v1.openapi.json",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-foundation-v1.example.json",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-directory-import-v1.openapi.json",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-directory-import-v1.examples.json",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-directory-import-v1.freeze.json",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-directory-import-v0.3.candidate.md",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-directory-import-v0.3.candidate.openapi.json",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-directory-import-v0.3.candidate.examples.json",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-batch-import-v0.4.candidate.md",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-batch-import-v0.4.candidate.openapi.json",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-batch-import-v0.4.candidate.examples.json",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-batch-import-v1.openapi.json",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-batch-import-v1.examples.json",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-batch-import-v1.freeze.json",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-original-import-v0.5.candidate.md",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-original-import-v0.5.candidate.openapi.json",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-original-import-v0.5.candidate.examples.json",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-original-import-v1.openapi.json",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-original-import-v1.examples.json",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-original-import-v1.freeze.json",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-web-import-v0.6.candidate.md",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-web-import-v0.6.candidate.openapi.json",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-web-import-v0.6.candidate.examples.json",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-web-import-v1.openapi.json",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-web-import-v1.examples.json",
+          "passed": true
+        },
+        {
+          "name": "docs/knowledge-web-import-v1.freeze.json",
+          "passed": true
+        },
+        {
+          "name": "twenty_nine_frozen_resources",
+          "passed": true
+        }
+      ]
+    },
+    "candidate_sha256": {
+      "markdown": "53b78e36a127c6c0f35048bf0ac511417639aba7cca90a418c007caa1b7f39f9",
+      "openapi": "47d159cfee61708a79475879f5371cb97a38b41eb768e759ff802e1ebd0cdd0d",
+      "examples": "a20bf10a7ac93ce36a8d3cd04cd95b035d8e6f2a1f3301accfdd711d86eb2f41"
+    },
+    "checker_sha256": "5298513fdd89b4224ef419d5c313f1b5ad785684d7ca9495023310603559b9d3",
+    "raw_record": {
+      "path": ".local-data/stage2r6-20261026/contract-check-1792981027739.json",
+      "sha256": "43158ca7008b64a8c47d94a7ad73725b18f362926e2c12a47a702396cf8d3539"
+    },
+    "format": true,
+    "lint": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "application_paths_changed_since_base": [],
+    "main_still_at_baseline": true,
+    "protected_resources": 29
+  },
+  "scope": {
+    "synthetic_examples_only": true,
+    "application_or_database_migration": 0,
+    "model_api_calls": 0,
+    "local_model_inference": 0,
+    "real_site_fetches": 0,
+    "rsshub_execution": false,
+    "adversarial_review": false,
+    "credentials_or_volumes_changed": false,
+    "physical_gc": false
+  },
+  "candidate_decisions": {
+    "actions": [
+      "reclassify",
+      "move",
+      "archive",
+      "restore"
+    ],
+    "source_identity": "Document.ID / File.ID / FileCommitItem.ID retained",
+    "generation_max": 9007199254740991,
+    "move_supported": [
+      "C2 0.2 text_file exact pre-registered target",
+      "C2 0.5 original_document exact pre-registered target and same media family"
+    ],
+    "move_unsupported": [
+      "C1 unregistered source",
+      "C2 0.3/0.4 controlled directory",
+      "C2 0.6 page/feed"
+    ],
+    "old_pending": "Unfenced unconsumed preparations rejected on consumption after rollout; successful items/receipts/manifests retained",
+    "web_fence": "Explicit new Preview pins current generation, not Observation; no forced network recapture",
+    "c1_boundary": "Only call-start generation guard; no claim of detecting earlier client ABA without a public client generation",
+    "archive": "Keeps current head, valid Document and protected fixed history; not revocation",
+    "publication": "Specific freeze reply must authorise implementation/publication scope; current candidate not merged to main"
+  },
+  "initial_tool_note": "文档核验器首次lint提示控制字符正则；改为明确Go空白码点集合后0警告，规则／全部候选检查仍通过。未因此改产品代码或扩大审查。",
+  "remaining": [
+    "真人具体确认C2 0.7冻结及旧未消费准备影响；批准前不接业务。",
+    "Go迁移／四动作／旧生产者竞争／客户端／浏览器／性能均NotRun。",
+    "真实AICS／文档／网站、RSSHub和模型不因候选开放。",
+    "R7阶段2退出及阶段3—6仍须按完整链路推进。"
+  ],
+  "governance_note": "本报告保留需求、计划、执行、验证、验收和证据六类事实，未伪报运行或正式机器门禁；不启动用户禁止的多轮审查，持续目标active。",
+  "public_scan": {
+    "passed": true,
+    "public_files": 98,
+    "credential_matches": 0,
+    "protected_files": 29,
+    "evidence_sha256": "9205f8d381b24d11b82f39c4210fa612b1b488459606161642830a845287862a",
+    "values_not_printed": true
+  }
+}

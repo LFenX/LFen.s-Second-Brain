@@ -1,0 +1,2374 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "LFen Second Brain source lifecycle candidate",
+    "version": "0.7.0",
+    "description": "ReviewCandidate. Documentation only; not frozen, implemented or deployed."
+  },
+  "servers": [
+    {
+      "url": "/api/v1"
+    }
+  ],
+  "x-lifecycle": "ReviewCandidate",
+  "x-base-commit": "81f3a8c8bb176155e70e4150906555af0d3cac88",
+  "x-error-mapping": {
+    "knowledge_invalid_request": [
+      400,
+      true
+    ],
+    "knowledge_unauthorized": [
+      401,
+      false
+    ],
+    "knowledge_not_found": [
+      404,
+      false
+    ],
+    "knowledge_contract_version": [
+      409,
+      true
+    ],
+    "knowledge_source_contract_version": [
+      409,
+      true
+    ],
+    "policy_changed": [
+      409,
+      true
+    ],
+    "revision_changed": [
+      409,
+      true
+    ],
+    "idempotency_conflict": [
+      409,
+      true
+    ],
+    "lifecycle_source_archived": [
+      409,
+      true
+    ],
+    "lifecycle_action_unsupported": [
+      409,
+      true
+    ],
+    "lifecycle_position_occupied": [
+      409,
+      true
+    ],
+    "lifecycle_version_exhausted": [
+      409,
+      true
+    ],
+    "lifecycle_integrity": [
+      409,
+      false
+    ],
+    "lifecycle_budget_exceeded": [
+      413,
+      true
+    ],
+    "lifecycle_result_unknown": [
+      503,
+      false
+    ]
+  },
+  "x-command-digest": {
+    "tag": "knowledge-lifecycle-command/0.7.0",
+    "encoding": "typed-LP as defined in candidate section5; SHA-256; no trimming or Unicode normalization",
+    "fields": [
+      "owner_id",
+      "domain_id",
+      "source_id",
+      "action",
+      "expected_source_revision_id",
+      "expected_lifecycle_version",
+      "expected_policy_version",
+      "confirmed",
+      "target"
+    ],
+    "idempotency_key_in_digest": false,
+    "idempotency_scope": [
+      "owner_id",
+      "domain_id",
+      "action",
+      "idempotency_key"
+    ]
+  },
+  "x-position-digest": {
+    "tag": "knowledge-lifecycle-position/0.7.0",
+    "fields": [
+      "registration_id",
+      "relative_path"
+    ]
+  },
+  "paths": {
+    "/knowledge/source-lifecycle-contract": {
+      "get": {
+        "operationId": "getKnowledgeSourceLifecycleContract",
+        "security": [
+          {
+            "NativeToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "0.7.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current read or fixed replay",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "X-Knowledge-Source-Contract-Version": {
+                "schema": {
+                  "const": "0.7.0"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CapabilitiesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "413": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/datasets/{id}/knowledge/source-lifecycles": {
+      "get": {
+        "operationId": "listKnowledgeSourceLifecycles",
+        "security": [
+          {
+            "NativeToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "0.7.0"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "active",
+                "archived"
+              ],
+              "default": "active"
+            }
+          },
+          {
+            "name": "group_scope",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "all",
+                "ungrouped",
+                "exact"
+              ],
+              "default": "all"
+            }
+          },
+          {
+            "name": "group_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "component_side",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "frontend",
+                "backend",
+                "shared",
+                "cli",
+                "non_code"
+              ]
+            }
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 32
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 20,
+              "default": 20
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current read or fixed replay",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "X-Knowledge-Source-Contract-Version": {
+                "schema": {
+                  "const": "0.7.0"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "413": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/datasets/{id}/knowledge/source-lifecycles/{source_id}": {
+      "get": {
+        "operationId": "getKnowledgeSourceLifecycle",
+        "security": [
+          {
+            "NativeToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "0.7.0"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "source_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current read or fixed replay",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "X-Knowledge-Source-Contract-Version": {
+                "schema": {
+                  "const": "0.7.0"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "413": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/datasets/{id}/knowledge/source-lifecycles/{source_id}/move-target": {
+      "get": {
+        "operationId": "checkKnowledgeSourceMoveTarget",
+        "security": [
+          {
+            "NativeToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "0.7.0"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "source_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "relative_path",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            }
+          },
+          {
+            "name": "expected_source_revision_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "expected_lifecycle_version",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Version"
+            }
+          },
+          {
+            "name": "expected_policy_version",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Version"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current read or fixed replay",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "X-Knowledge-Source-Contract-Version": {
+                "schema": {
+                  "const": "0.7.0"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TargetCheckResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "413": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/datasets/{id}/knowledge/source-lifecycles/{source_id}/reclassifications": {
+      "post": {
+        "operationId": "commandKnowledgeSourceReclassify",
+        "security": [
+          {
+            "NativeToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "0.7.0"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "source_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current read or fixed replay",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "X-Knowledge-Source-Contract-Version": {
+                "schema": {
+                  "const": "0.7.0"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptResponse"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "New fixed receipt, including unchanged",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "X-Knowledge-Source-Contract-Version": {
+                "schema": {
+                  "const": "0.7.0"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "413": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReclassifyCommand"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{id}/knowledge/source-lifecycles/{source_id}/moves": {
+      "post": {
+        "operationId": "commandKnowledgeSourceMove",
+        "security": [
+          {
+            "NativeToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "0.7.0"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "source_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current read or fixed replay",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "X-Knowledge-Source-Contract-Version": {
+                "schema": {
+                  "const": "0.7.0"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptResponse"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "New fixed receipt, including unchanged",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "X-Knowledge-Source-Contract-Version": {
+                "schema": {
+                  "const": "0.7.0"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "413": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MoveCommand"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{id}/knowledge/source-lifecycles/{source_id}/archives": {
+      "post": {
+        "operationId": "commandKnowledgeSourceArchive",
+        "security": [
+          {
+            "NativeToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "0.7.0"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "source_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current read or fixed replay",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "X-Knowledge-Source-Contract-Version": {
+                "schema": {
+                  "const": "0.7.0"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptResponse"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "New fixed receipt, including unchanged",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "X-Knowledge-Source-Contract-Version": {
+                "schema": {
+                  "const": "0.7.0"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "413": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StateCommand"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{id}/knowledge/source-lifecycles/{source_id}/restores": {
+      "post": {
+        "operationId": "commandKnowledgeSourceRestore",
+        "security": [
+          {
+            "NativeToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "0.7.0"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "source_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current read or fixed replay",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "X-Knowledge-Source-Contract-Version": {
+                "schema": {
+                  "const": "0.7.0"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptResponse"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "New fixed receipt, including unchanged",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "X-Knowledge-Source-Contract-Version": {
+                "schema": {
+                  "const": "0.7.0"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "413": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StateCommand"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{id}/knowledge/lifecycle-commands/by-key": {
+      "get": {
+        "operationId": "getKnowledgeLifecycleCommandByKey",
+        "security": [
+          {
+            "NativeToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "0.7.0"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "action",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "enum": [
+                "reclassify",
+                "move",
+                "archive",
+                "restore"
+              ]
+            }
+          },
+          {
+            "name": "idempotency_key",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{1,128}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current read or fixed replay",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "X-Knowledge-Source-Contract-Version": {
+                "schema": {
+                  "const": "0.7.0"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "413": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/datasets/{id}/knowledge/lifecycle-commands/{command_id}": {
+      "get": {
+        "operationId": "getKnowledgeLifecycleCommand",
+        "security": [
+          {
+            "NativeToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Source-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "0.7.0"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "command_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current read or fixed replay",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "X-Knowledge-Source-Contract-Version": {
+                "schema": {
+                  "const": "0.7.0"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "413": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ID": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{32}$"
+      },
+      "SHA256": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+      },
+      "Version": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "Classification": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "group_id",
+          "component_side",
+          "language"
+        ],
+        "properties": {
+          "group_id": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ID"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "component_side": {
+            "enum": [
+              "frontend",
+              "backend",
+              "shared",
+              "cli",
+              "non_code"
+            ]
+          },
+          "language": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 32
+          }
+        }
+      },
+      "Snapshot": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_revision_id",
+          "source_input_sha256",
+          "lifecycle_version",
+          "state",
+          "relative_path",
+          "classification",
+          "sha256",
+          "byte_length"
+        ],
+        "properties": {
+          "source_revision_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "source_input_sha256": {
+            "$ref": "#/components/schemas/SHA256"
+          },
+          "lifecycle_version": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "state": {
+            "enum": [
+              "active",
+              "archived"
+            ]
+          },
+          "relative_path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "classification": {
+            "$ref": "#/components/schemas/Classification"
+          },
+          "sha256": {
+            "$ref": "#/components/schemas/SHA256"
+          },
+          "byte_length": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 67108864
+          }
+        }
+      },
+      "ActionCapability": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "supported",
+          "allowed",
+          "reason"
+        ],
+        "properties": {
+          "supported": {
+            "type": "boolean"
+          },
+          "allowed": {
+            "type": "boolean"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "enum": [
+                  "source_archived",
+                  "action_unsupported",
+                  "target_not_registered",
+                  "target_occupied",
+                  "target_media_mismatch",
+                  "invalid_target"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "allowed": {
+                  "const": true
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "supported": {
+                  "const": true
+                },
+                "reason": {
+                  "const": null
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "allowed": {
+                  "const": false
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "reason": {
+                  "enum": [
+                    "source_archived",
+                    "action_unsupported",
+                    "target_not_registered",
+                    "target_occupied",
+                    "target_media_mismatch",
+                    "invalid_target"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "supported": {
+                  "const": false
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "allowed": {
+                  "const": false
+                },
+                "reason": {
+                  "const": "action_unsupported"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Detail": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "owner_id",
+          "domain_id",
+          "source_id",
+          "native_file_id",
+          "registration_id",
+          "source_kind",
+          "representation_kind",
+          "policy_version",
+          "current",
+          "actions"
+        ],
+        "properties": {
+          "owner_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "domain_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "source_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "native_file_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "registration_id": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ID"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "source_kind": {
+            "anyOf": [
+              {
+                "enum": [
+                  "text_file",
+                  "controlled_directory",
+                  "original_document",
+                  "web_page",
+                  "web_feed"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "representation_kind": {
+            "enum": [
+              "text",
+              "original_only",
+              "web_capture"
+            ]
+          },
+          "policy_version": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "current": {
+            "$ref": "#/components/schemas/Snapshot"
+          },
+          "actions": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "reclassify",
+              "move",
+              "archive",
+              "restore"
+            ],
+            "properties": {
+              "reclassify": {
+                "$ref": "#/components/schemas/ActionCapability"
+              },
+              "move": {
+                "$ref": "#/components/schemas/ActionCapability"
+              },
+              "archive": {
+                "$ref": "#/components/schemas/ActionCapability"
+              },
+              "restore": {
+                "$ref": "#/components/schemas/ActionCapability"
+              }
+            }
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "source_kind": {
+                  "enum": [
+                    null
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "registration_id": {
+                  "const": null
+                },
+                "representation_kind": {
+                  "const": "text"
+                },
+                "actions": {
+                  "properties": {
+                    "move": {
+                      "properties": {
+                        "supported": {
+                          "const": false
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "source_kind": {
+                  "enum": [
+                    "text_file"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "registration_id": {
+                  "$ref": "#/components/schemas/ID"
+                },
+                "representation_kind": {
+                  "const": "text"
+                },
+                "actions": {
+                  "properties": {
+                    "move": {
+                      "properties": {
+                        "supported": {
+                          "const": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "source_kind": {
+                  "enum": [
+                    "controlled_directory"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "registration_id": {
+                  "$ref": "#/components/schemas/ID"
+                },
+                "representation_kind": {
+                  "const": "text"
+                },
+                "actions": {
+                  "properties": {
+                    "move": {
+                      "properties": {
+                        "supported": {
+                          "const": false
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "source_kind": {
+                  "enum": [
+                    "original_document"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "registration_id": {
+                  "$ref": "#/components/schemas/ID"
+                },
+                "representation_kind": {
+                  "const": "original_only"
+                },
+                "actions": {
+                  "properties": {
+                    "move": {
+                      "properties": {
+                        "supported": {
+                          "const": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "source_kind": {
+                  "enum": [
+                    "web_page",
+                    "web_feed"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "registration_id": {
+                  "$ref": "#/components/schemas/ID"
+                },
+                "representation_kind": {
+                  "const": "web_capture"
+                },
+                "actions": {
+                  "properties": {
+                    "move": {
+                      "properties": {
+                        "supported": {
+                          "const": false
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Page": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "$ref": "#/components/schemas/Detail"
+            }
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ID"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "StateCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "idempotency_key",
+          "expected_source_revision_id",
+          "expected_lifecycle_version",
+          "expected_policy_version",
+          "confirmed"
+        ],
+        "properties": {
+          "idempotency_key": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{1,128}$"
+          },
+          "expected_source_revision_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "expected_lifecycle_version": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "expected_policy_version": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "confirmed": {
+            "const": true
+          }
+        }
+      },
+      "ReclassifyCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "idempotency_key",
+          "expected_source_revision_id",
+          "expected_lifecycle_version",
+          "expected_policy_version",
+          "confirmed",
+          "classification"
+        ],
+        "properties": {
+          "idempotency_key": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{1,128}$"
+          },
+          "expected_source_revision_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "expected_lifecycle_version": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "expected_policy_version": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "confirmed": {
+            "const": true
+          },
+          "classification": {
+            "$ref": "#/components/schemas/Classification"
+          }
+        }
+      },
+      "MoveCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "idempotency_key",
+          "expected_source_revision_id",
+          "expected_lifecycle_version",
+          "expected_policy_version",
+          "confirmed",
+          "relative_path"
+        ],
+        "properties": {
+          "idempotency_key": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{1,128}$"
+          },
+          "expected_source_revision_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "expected_lifecycle_version": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "expected_policy_version": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "confirmed": {
+            "const": true
+          },
+          "relative_path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        }
+      },
+      "Receipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "command_id",
+          "owner_id",
+          "domain_id",
+          "source_id",
+          "action",
+          "idempotency_key",
+          "request_sha256",
+          "request",
+          "result",
+          "before",
+          "after",
+          "policy_version",
+          "created_at",
+          "model_calls"
+        ],
+        "properties": {
+          "command_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "owner_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "domain_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "source_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "action": {
+            "enum": [
+              "reclassify",
+              "move",
+              "archive",
+              "restore"
+            ]
+          },
+          "idempotency_key": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{1,128}$"
+          },
+          "request_sha256": {
+            "$ref": "#/components/schemas/SHA256"
+          },
+          "request": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/StateCommand"
+              },
+              {
+                "$ref": "#/components/schemas/ReclassifyCommand"
+              },
+              {
+                "$ref": "#/components/schemas/MoveCommand"
+              }
+            ]
+          },
+          "result": {
+            "enum": [
+              "applied",
+              "unchanged"
+            ]
+          },
+          "before": {
+            "$ref": "#/components/schemas/Snapshot"
+          },
+          "after": {
+            "$ref": "#/components/schemas/Snapshot"
+          },
+          "policy_version": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "Z$"
+          },
+          "model_calls": {
+            "const": 0
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "action": {
+                  "const": "reclassify"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "request": {
+                  "$ref": "#/components/schemas/ReclassifyCommand"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "action": {
+                  "const": "move"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "request": {
+                  "$ref": "#/components/schemas/MoveCommand"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "action": {
+                  "const": "archive"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "request": {
+                  "$ref": "#/components/schemas/StateCommand"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "action": {
+                  "const": "restore"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "request": {
+                  "$ref": "#/components/schemas/StateCommand"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "TargetCheck": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "domain_id",
+          "source_id",
+          "registration_id",
+          "current_source_revision_id",
+          "lifecycle_version",
+          "policy_version",
+          "relative_path",
+          "allowed",
+          "reason",
+          "reserved"
+        ],
+        "properties": {
+          "domain_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "source_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "registration_id": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ID"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "current_source_revision_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "lifecycle_version": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "policy_version": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "relative_path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "allowed": {
+            "type": "boolean"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "enum": [
+                  "source_archived",
+                  "action_unsupported",
+                  "target_not_registered",
+                  "target_occupied",
+                  "target_media_mismatch",
+                  "invalid_target"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reserved": {
+            "const": false
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "allowed": {
+                  "const": true
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "reason": {
+                  "const": null
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "allowed": {
+                  "const": false
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "reason": {
+                  "enum": [
+                    "source_archived",
+                    "action_unsupported",
+                    "target_not_registered",
+                    "target_occupied",
+                    "target_media_mismatch",
+                    "invalid_target"
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Capabilities": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_contract_version",
+          "runtime_ready",
+          "owner_only",
+          "actions",
+          "max_lifecycle_version",
+          "max_json_bytes",
+          "max_page_items",
+          "cursor_ttl_seconds",
+          "server_command_timeout_seconds",
+          "client_wait_seconds",
+          "max_recovery_slot_bytes",
+          "max_local_recovery_slots",
+          "pending_preparations",
+          "web_fence_start",
+          "archive_is_revocation",
+          "fixed_history_preserved",
+          "automatic_ingestion",
+          "physical_gc",
+          "model_calls"
+        ],
+        "properties": {
+          "source_contract_version": {
+            "const": "0.7.0"
+          },
+          "runtime_ready": {
+            "type": "boolean"
+          },
+          "owner_only": {
+            "const": true
+          },
+          "actions": {
+            "const": [
+              "reclassify",
+              "move",
+              "archive",
+              "restore"
+            ]
+          },
+          "max_lifecycle_version": {
+            "const": 9007199254740991
+          },
+          "max_json_bytes": {
+            "const": 32768
+          },
+          "max_page_items": {
+            "const": 20
+          },
+          "cursor_ttl_seconds": {
+            "const": 600
+          },
+          "server_command_timeout_seconds": {
+            "const": 10
+          },
+          "client_wait_seconds": {
+            "const": 25
+          },
+          "max_recovery_slot_bytes": {
+            "const": 8192
+          },
+          "max_local_recovery_slots": {
+            "const": 8
+          },
+          "pending_preparations": {
+            "const": "unfenced_rejected_on_consume"
+          },
+          "web_fence_start": {
+            "const": "explicit_preview"
+          },
+          "archive_is_revocation": {
+            "const": false
+          },
+          "fixed_history_preserved": {
+            "const": true
+          },
+          "automatic_ingestion": {
+            "const": false
+          },
+          "physical_gc": {
+            "const": false
+          },
+          "model_calls": {
+            "const": 0
+          }
+        }
+      },
+      "CapabilitiesResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "contract_version",
+          "source_contract_version",
+          "request_id",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 512
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "source_contract_version": {
+            "const": "0.7.0"
+          },
+          "request_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Capabilities"
+          }
+        }
+      },
+      "DetailResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "contract_version",
+          "source_contract_version",
+          "request_id",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 512
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "source_contract_version": {
+            "const": "0.7.0"
+          },
+          "request_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Detail"
+          }
+        }
+      },
+      "PageResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "contract_version",
+          "source_contract_version",
+          "request_id",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 512
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "source_contract_version": {
+            "const": "0.7.0"
+          },
+          "request_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Page"
+          }
+        }
+      },
+      "TargetCheckResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "contract_version",
+          "source_contract_version",
+          "request_id",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 512
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "source_contract_version": {
+            "const": "0.7.0"
+          },
+          "request_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "data": {
+            "$ref": "#/components/schemas/TargetCheck"
+          }
+        }
+      },
+      "ReceiptResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "contract_version",
+          "source_contract_version",
+          "request_id",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 512
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "source_contract_version": {
+            "const": "0.7.0"
+          },
+          "request_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Receipt"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "contract_version",
+          "source_contract_version",
+          "request_id",
+          "data",
+          "outcome_known"
+        ],
+        "properties": {
+          "code": {
+            "enum": [
+              "knowledge_invalid_request",
+              "knowledge_unauthorized",
+              "knowledge_not_found",
+              "knowledge_contract_version",
+              "knowledge_source_contract_version",
+              "policy_changed",
+              "revision_changed",
+              "idempotency_conflict",
+              "lifecycle_source_archived",
+              "lifecycle_action_unsupported",
+              "lifecycle_position_occupied",
+              "lifecycle_version_exhausted",
+              "lifecycle_integrity",
+              "lifecycle_budget_exceeded",
+              "lifecycle_result_unknown"
+            ]
+          },
+          "message": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 512
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "source_contract_version": {
+            "const": "0.7.0"
+          },
+          "request_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "data": {
+            "const": null
+          },
+          "outcome_known": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "NativeToken": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization"
+      }
+    },
+    "responses": {
+      "Error": {
+        "description": "Bounded error; outcome_known describes the attempted request, not existence of an earlier receipt",
+        "headers": {
+          "Cache-Control": {
+            "schema": {
+              "const": "no-store"
+            }
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  }
+}

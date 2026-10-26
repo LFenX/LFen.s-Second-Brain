@@ -27,7 +27,7 @@
 
 ## 下一批与边界
 
-下一项R6先形成具体C2 0.7候选，明确身份、双CAS／单调世代、四动作、退役占位、旧pending失效、固定历史与原键恢复。当前只有[设计输入](stage2r6-lifecycle-design-input.md)，没有获批接口或业务接线。0.6以明确创建预览钉私有世代的规则须在新候选定死，不能为了生命周期强迫同Capture重新抓站。
+下一项[具体C2 0.7候选](knowledge-source-lifecycle-v0.7.candidate.md)已保存，明确身份、双CAS／单调世代、四动作、退役占位、旧pending失效、固定历史与原键恢复；当前未获冻结批准／未接业务。[R6接续](stage2r6-lifecycle-handoff.md)为下一批入口。0.6以明确创建预览钉私有世代，同Capture／Observation可重新明确预览，不强迫重新抓站。
 
 随后R7阶段2退出→阶段3结构／代码关系与文档阅读→阶段4可选索引／检索／引用复用包→阶段5MCP模块临时授权→阶段6人格／记忆，持续目标active。R4工程人的决定独立Pending，R5不能代替它。
 

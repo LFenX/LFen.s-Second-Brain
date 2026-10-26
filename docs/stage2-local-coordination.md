@@ -1,5 +1,7 @@
 # 阶段2剩余任务与本机会话协作
 
+**v0.52下一批**：R5已发布main81f3a8c，A在codex/stage2r6-lifecycle-candidate整理了[具体0.7候选](knowledge-source-lifecycle-v0.7.candidate.md)与[接续](stage2r6-lifecycle-handoff.md)；当前未冻结／接业务，main和应用仍R5。新Web会话一次集中8项设计输入已处理，不再重复审查。A唯一源码／Git写入，消费会话无新写权；具体批准后才按清洁固定提交交替。
+
 日期：2026-10-26；版本v0.51。R5正式后端、客户端及同版合成真实联调已通过，[统一报告](stage2r5-web-verification.json)与[发布回执](stage2r5-main-integration.json)为当前事实。本机后端1ac4e4f＋前端40ed01f，客户端已清洁交回7ed1789；A现持全部源码／Git写权。新Web会话仅做下一C2 0.7的一次集中只读设计输入，未授实施写权；旧消费会话真人只读限制保持。R5人的工程决定Pending，不是阶段2整体退出；继续合成、模型0、无多轮审查。
 
 ## 1. 当前事实
