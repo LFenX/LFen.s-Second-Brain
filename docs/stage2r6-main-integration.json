@@ -1,0 +1,39 @@
+{
+  "document_version": "v0.54",
+  "recorded_at": "2026-10-26T04:34:03.203Z",
+  "outcome": "Published_Verified",
+  "remote": "https://github.com/LFenX/LFen.s-Second-Brain.git",
+  "target_branch": "main",
+  "previous_main": "8cbc36b62306d115599896f7d5409b707161884c",
+  "integrated_commit": "0199253c00491e7f802de36535a0806915d3ffb6",
+  "verified_remote_main": "0199253c00491e7f802de36535a0806915d3ffb6",
+  "source_branch": "codex/stage2r6-lifecycle",
+  "branch_remote_also_at_integrated_commit": true,
+  "method": "Fast-forward; original commit authors/history retained; normal hooks passed",
+  "source": {
+    "backend_commit": "2bfa0d9990e7c42c4927a47af747f12da4e3712e",
+    "frontend_commit": "c759990b62f44704b9370c19bcbf402668764899",
+    "binary_sha256": "af6e939567afe2edb176d110096fd4626d2e1b8d92a59a31643f6ac9583c915e",
+    "web_index_sha256": "1c96548dcbd9e5f6d798ee32582640a1e197e790da9816eb2d2510a0faee6859"
+  },
+  "verification_report": "docs/stage2r6-lifecycle-verification.json",
+  "verification_sha256": "5a8959dd95753fb214366b29480041e70cd90c0fc0c4a3aab7a9ff5fbd661a0d",
+  "engineering_report_at_integrated_commit_sha256": "2669e36058567d89b968b0fb6abb445fb4593cba6954ef1b5d822ef953923219",
+  "protected_files_unchanged": 35,
+  "model_calls": 0,
+  "local_model_inference": 0,
+  "real_sites": 0,
+  "credentials_in_git": false,
+  "adversarial_review": "NotRun_UserProhibited",
+  "acceptance": {
+    "user_decision": {
+      "outcome": "Pending",
+      "scope": "仅R6工程交付；具体0.7冻结不替代人的工程验收"
+    },
+    "r5_user_decision": "Approved_Independent",
+    "r4_user_decision": "Pending_Independent",
+    "stage2_exit": false,
+    "whole_project_complete": false
+  },
+  "note": "记录主体工程及文档0199253的实际远端；本回执与发布状态补记随后正常提交推送，不虚构自身提交SHA。"
+}

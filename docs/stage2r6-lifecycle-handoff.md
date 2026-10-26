@@ -1,5 +1,7 @@
 # S2-R6 来源生命周期接续
 
+发布补记：R6主体 `0199253`已推main及功能分支，[发布回执](stage2r6-main-integration.json)保存远端核对与统一报告摘要；本回执补记随后正常提交。后续从main接R7，R6人的工程决定仍Pending。
+
 2026-10-26；v0.54；**C2 0.7.0工程与本机合成真实联调完成，R6工程用户决定Pending。** [冻结回执](knowledge-source-lifecycle-v1.freeze.json)保存真人对19db38d的批准；R5/main81f3a8c既有验收保持。Go `2bfa0d9`＋Web `c759990`已在现有六服务环境加载，35份保护文件原字节保持，模型／本地推理／真实站点0。按已获授权推main，实际远端事实另留发布回执；阶段2整体仍未退出。
 
 [统一报告](stage2r6-lifecycle-verification.json)已纳入七项真实浏览器、双API／SQL／进程故障、1005来源五次容量、64MiB原件元信息正文GET／PUT=0及C1调用期间ABA装配。客户端[33套929项](stage2r6-lifecycle-client-verification.json)和生产构建通过，全量类型仍207项、新增0；各层结果不重复相加，不声称生产p95。A已从消费会话清洁提交c759990明确收回全部源码／Git写权，接方只读准备R7编排。不得启动无世代旧二进制写入现有数据库。

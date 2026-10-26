@@ -1,5 +1,7 @@
 # LFen's Second Brain
 
+发布补记：R6主体工程与文档已快进推送main `0199253`，[远端核对回执](docs/stage2r6-main-integration.json)绑定实际Go／Web与统一报告；本回执补记随正常提交同步。R6工程验收仍Pending，R7继续。
+
 **当前 v0.54／S2-R6**：[C2 0.7.0](docs/knowledge-source-lifecycle-v1.freeze.json)已按真人批准完成四动作、单调世代及旧准备栅栏。Go `2bfa0d9`＋Web `c759990`已在本机加载，七项合成浏览器、真实MySQL／S3、双API竞争、SQL／进程故障及容量验证通过。[统一报告](docs/stage2r6-lifecycle-verification.json)、[当前接续](docs/stage2r6-lifecycle-handoff.md)区分工程结果与人的决定；R6工程验收Pending，R5已验收，阶段2整体尚未退出。按已获授权推main，远端版本另留发布回执。下文既有交付段落保留各时点事实。
 
 客户端33套929项通过，生产构建通过；全量类型仍207项既有错误、新增0。1005来源库上四动作及20项列表各5次，最慢118.05ms；64MiB原件元信息动作的真实存储装配正文GET／PUT均0。这些是本机合成暖态结果，不是生产p95或百万库结论。35份保护文件原字节保持，模型／本地推理／真实网站调用0；A已收回全部源码与Git写权，继续R7最终同版编排。

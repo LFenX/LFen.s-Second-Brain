@@ -631,7 +631,13 @@
       "model_calls": 0,
       "real_sites": 0
     },
-    "final_publication": "待本报告正常提交后，按已授权范围推功能分支并合main；实际远端事实另存stage2r6-main-integration.json。",
+    "final_publication": {
+      "outcome": "Published_Verified",
+      "integrated_commit": "0199253c00491e7f802de36535a0806915d3ffb6",
+      "verified_remote_main": "0199253c00491e7f802de36535a0806915d3ffb6",
+      "method": "Fast-forward; original authors/history retained; normal hooks passed",
+      "receipt": "docs/stage2r6-main-integration.json"
+    },
     "final_checks": {
       "recorded_at": "2026-10-26T04:32:02.134Z",
       "passed": true,
@@ -896,9 +902,9 @@
     {
       "quote": "重分类、受限逻辑移动、归档／恢复、单调世代及原键回执；目录／Web／无登记C1首版不移动；上线后旧无世代未消费准备拒绝，成功回执保留；有效Web Capture可新明确预览无需重新联网；单写入后端→客户端→合成联调后推main，模型0，无多轮审查。",
       "interpretation": "验证后推main并留发布证据；工程人的决定独立",
-      "status": "待发布回执补记",
+      "status": "已实现",
       "evidence": [
-        "docs/stage2r6-main-integration.json（实际发布后生成）"
+        "docs/stage2r6-main-integration.json"
       ]
     }
   ]
