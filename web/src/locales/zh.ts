@@ -32,11 +32,12 @@ export default {
       localProvenance:
         '本地快照的网址与采集时间是用户声明，不是服务器 HTTP 取得证明。',
       serverProvenance:
-        '此快照由服务器在固定范围内匿名取得；HTTP 信息属于本次取得证明。',
+        '本快照使用服务器匿名取得方式；只有取得成功后才形成 HTTP 取得证明。',
       fetchPreparation:
         '此步只创建 Capture。下一步单独确认后才执行一次匿名网络取得。',
       prepareCapture: '创建快照准备',
       captureState: '快照状态',
+      captureExpires: '快照有效期至',
       recheck: '重新核查状态',
       cancelCapture: '取消未消费准备',
       pollingStopped: '连续状态读取失败，自动轮询已停止。请手动核查。',

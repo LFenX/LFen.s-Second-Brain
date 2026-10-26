@@ -77,7 +77,7 @@ export default function WebCapturePanel({ flow }: { flow: WebFlow }) {
       </h2>
       <p className="break-all text-xs">{capture.capture_id}</p>
       <p className="text-sm">
-        {t('knowledgeImport.expires')}:{' '}
+        {t('knowledgeWeb.captureExpires')}:{' '}
         {dayjs(capture.expires_at).format('YYYY-MM-DD HH:mm:ss')}
       </p>
       <p className="text-sm">

@@ -34,11 +34,12 @@ export default {
       localProvenance:
         'A local snapshot’s URL and capture time are user claims, not evidence of a server HTTP acquisition.',
       serverProvenance:
-        'The server acquired this snapshot anonymously within the fixed scope. HTTP information describes this acquisition.',
+        'Server acquisition is anonymous and scoped. HTTP evidence exists only after a successful acquisition.',
       fetchPreparation:
         'This step only creates a capture. A separate confirmation starts one anonymous network acquisition.',
       prepareCapture: 'Create snapshot preparation',
       captureState: 'Snapshot state',
+      captureExpires: 'Snapshot expires at',
       recheck: 'Recheck status',
       cancelCapture: 'Cancel unconsumed preparation',
       pollingStopped:
