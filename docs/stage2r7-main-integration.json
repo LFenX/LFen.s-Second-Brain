@@ -1,0 +1,36 @@
+{
+  "document_version": "v0.55",
+  "recorded_at": "2026-10-26T05:05:22.873Z",
+  "outcome": "Published_Verified",
+  "remote": "https://github.com/LFenX/LFen.s-Second-Brain.git",
+  "previous_main": "4254dcf6ec1712da0a57bfc2e790de0134a76618",
+  "integrated_commit": "5f574c92f4456f6cbb49fc8d9f0895c1566762ae",
+  "verified_remote_main": "5f574c92f4456f6cbb49fc8d9f0895c1566762ae",
+  "source_branch": "codex/stage2r7-exit",
+  "method": "Fast-forward; normal hooks passed; no application source changes",
+  "source": {
+    "backend_commit": "2bfa0d9990e7c42c4927a47af747f12da4e3712e",
+    "frontend_commit": "c759990b62f44704b9370c19bcbf402668764899",
+    "binary_sha256": "af6e939567afe2edb176d110096fd4626d2e1b8d92a59a31643f6ac9583c915e",
+    "web_index_sha256": "1c96548dcbd9e5f6d798ee32582640a1e197e790da9816eb2d2510a0faee6859"
+  },
+  "verification_report": "docs/stage2r7-synthetic-exit-verification.json",
+  "verification_sha256": "3f9c07c0578653e7bd647564a3c4c137ff5afb4dae06fcd00c2b08e983e9a716",
+  "protected_files_unchanged": 35,
+  "credential_matches": 0,
+  "secret_scan_sha256": "0e455bd20515b42f9fe95c85e28d4d198374942fac6bcc6e4fba61747d272593",
+  "model_calls": 0,
+  "local_inference": 0,
+  "real_sites": 0,
+  "acceptance": {
+    "user_decision": {
+      "outcome": "Pending",
+      "scope": "仅R7纯合成同版工程验证"
+    },
+    "real_source_exit": "NotRun_ScopeNotApproved",
+    "stage2_exit": false,
+    "whole_project_complete": false
+  },
+  "adversarial_review": "NotRun_UserProhibited",
+  "note": "绑定主体报告5f574c9的实际远端；本回执随后正常提交推送，不虚构回执自身SHA。"
+}
