@@ -1,5 +1,7 @@
 # LFen's Second Brain
 
+**v0.59／阶段3-R1后端接续**：[A后端报告](docs/stage3r1-structure-backend-verification.json)已保存。Go固定二进制已加载，8份合成输入生成48节点/80关系，50事实、字节覆盖和身份/证据核验通过；旧导入等111顶层/354通过事件，前端仍c759990。正式客户端、浏览器、实际故障与性能退出尚未完成；下一步按[客户端单写窗](docs/stage3r1-structure-client-handoff.md)交替实施。冻结41件保持，模型/本地推理0，不启动多轮审查，main暂未推进。
+
 **v0.58／阶段3-R1开始实施**：真人已验收R6与R7纯合成工程，并批准冻结ddc5630的Structure 0.1.0。[正式冻结件](docs/knowledge-structure-v1.freeze.json)绑定三件原候选摘要。A先实现Go后端，清洁固定提交后交客户端唯一Web写窗，再同版合成联调；当前尚未实现或部署。基础C1/C3及C2 0.2—0.7保持，模型／本地推理0，不启动多轮审查。真实资料退出、富文档、Wiki和阶段3整体仍未完成；下文较早Pending为当时记录。
 
 **本分支v0.57／文档库准备**：[Go本地解析验证](docs/stage3-document-readiness-verification.json)与[阅读适配准备](docs/stage3-document-readiness.md)已保存：15个一级场景、36个含根／嵌套的通过事件；新PDF空白／仅图页保持真实页号，Office顺序／字符／图片模板通过。模型分析器创建与Go HTTP尝试0，仅隔离库验证，未入库／部署／改接口。Structure 0.1仍等待ddc5630的具体冻结；旧35件及三件候选保持，main仍e6452d4，阶段2真实退出和阶段3整体未完成。

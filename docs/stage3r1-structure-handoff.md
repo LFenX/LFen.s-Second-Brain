@@ -29,3 +29,7 @@ A仍持全部源码／Git／运行写权，协作会话只读。具体冻结后�
 ## v0.58 当前授权覆盖
 
 真人已对ddc5630回答“确认冻结并继续实施”；正式冻结见knowledge-structure-v1.freeze.json。上述未冻结／等待文字保留候选时点事实，由本节覆盖当前状态。R6和R7纯合成工程各自Approved。A持源码／Git／运行唯一写窗，先Go后端；客户端会话仅只读准备，等待A清洁固定提交及明确Web写窗。当前未实施／部署，模型0；真实资料退出与阶段3整体不由本次批准代替。
+
+## v0.59 A后端实际交接
+
+A后端与同版MySQL/S3最小闭环已验证，见stage3r1-structure-backend-verification.json和stage3r1-structure-client-handoff.md。当前实际binary SHA 0efd5563a48a87d0cc41c2661a2ee58dcbc2a1ec88b2bc952b53e152acdcc061；前端仍c759990。8合成固定来源、48节点、80关系、50事实及100%passage原字节覆盖通过；正式Web与实际进程故障/性能待完成。冻结41件不变；不扩大为阶段3整体完成。A正常提交取得清洁HEAD后才明确交Web唯一tracked写窗，之后A只在忽略目录推进独立验证。

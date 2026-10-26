@@ -1,0 +1,581 @@
+{
+  "document_version": "v0.59",
+  "recorded_at": "2026-10-26T11:06:40.858Z",
+  "status": "BackendImplemented_RuntimeCoreVerified_ClientAndExitPending",
+  "objective": "Structure 0.1.0首个合成代码／Markdown纵向切片；这是A后端固定交接，不是整切片或阶段3验收",
+  "request_snapshot": {
+    "approved_reply": "确认冻结并继续实施",
+    "question_ref": "request_user_input_async/call_209b5c0e88ed4206aec601e3a8f55fdb/0",
+    "subject_commit": "ddc5630c947ded113917e4dd2bc19521128ac073",
+    "subject_hashes": {
+      "docs/knowledge-structure-v0.1.candidate.md": "5c61af1a3a6be72337895b665d26cef29a711518f184bdb77a822800df0256d1",
+      "docs/knowledge-structure-v0.1.candidate.openapi.json": "0db14cc46e86e42e6ca5a6ffff3050968644372a76f5091bb380f50dff1c4630",
+      "docs/knowledge-structure-v0.1.candidate.examples.json": "195f83957c6b06ff2fb67b5dc61353c82abee92870b551f9ff14bb02217c9bea"
+    },
+    "boundaries": [
+      "合成TS/TSX/Go/Markdown",
+      "模型及本地推理0",
+      "不启动多轮审查",
+      "不改旧C1/C3/C2冻结件",
+      "后端固定后客户端唯一写窗；完整联调/性能后main"
+    ]
+  },
+  "clarification": {
+    "state": "Settled",
+    "notice": "沿用已批准的具体冻结方案，本轮不重复询问同一授权",
+    "additional_authority_inferred": false
+  },
+  "source": {
+    "base_commit": "bc623bd",
+    "binary_sha256": "0efd5563a48a87d0cc41c2661a2ee58dcbc2a1ec88b2bc952b53e152acdcc061",
+    "source_hashes": {
+      "go.mod": "bb482360a1ce462caa287568b327ad5db8b915d2bb4dbcebd8650b07ce8822c3",
+      "go.sum": "5aedbe31fd521e839a3e62fd12cf970d06d7cf4af9b5a18936ffaadd356a3516",
+      "internal/dao/knowledge_migration.go": "7da12fcc7f0c8cdb0a886be5869a662a24626f31976e9d0764bb815e3f045660",
+      "internal/router/router.go": "21e8f6f3015638c7b9475629dd2befbd2de70ef38eb372e6066c28fb8d737187",
+      "internal/server/api/server.go": "523335f587eb9d92585664375dfa59425efdd1494af8caeb4cb7ce4168a81b08",
+      "internal/dao/knowledge_structure.go": "47fda42aaf381c1521c0f698d64b014f5f11b5c2d69c28f75ffb54a4dcfa5852",
+      "internal/dao/knowledge_structure_test.go": "f7b7612008dd9c08810cb25a71350e77594b4caa332c4f27462c75bfa9f7308d",
+      "internal/entity/knowledge_structure.go": "20d6dec373d021057f336911dc455c5aa5403e4a90c82aa44de58ea573839c5c",
+      "internal/entity/knowledge_structure_capabilities.json": "2a2b17d1e883e5f3290c5b473a6387a90f52e7e6706ecd75bbb140387cf7e89f",
+      "internal/entity/knowledge_structure_metadata.go": "aee45f36af992a2e743690a7b2b1d7dfbd302bfc9dfaf3bf15fbcae880758f0a",
+      "internal/entity/knowledge_structure_producer.json": "e14b7ad51d132991c097a8cc0a83e84c8e3d488e11d15d41b6d43b4c8e5c4c7a",
+      "internal/entity/knowledge_structure_store.go": "dacc64465246bfe7834e5244cc62ae683b580cd082b4c9b05921bbd522640307",
+      "internal/entity/knowledge_structure_test.go": "21ca77df3458f3bdaeee081b1420ddeba7b01cee92f1cb7d9f51095db37bb259",
+      "internal/handler/knowledge_structure.go": "f7306da3c22669baf054f9006936fdba209d698b7af87dcef3a6f663fa5853cf",
+      "internal/handler/knowledge_structure_test.go": "67860aed11854aca3c13695977c322e2c897ec8211dcdbd6c7bb3330c30574a1",
+      "internal/parser/structure/benchmark_test.go": "45565535c4fe0d729fce6ce5b96909da34cc86a1c178c3796834e1d35ca8ab40",
+      "internal/parser/structure/build.go": "15105062f0d718f8a4cfc198df6112e1f2d39e93686fc680ac8996bee9454874",
+      "internal/parser/structure/fixtures_test.go": "658f9177b218bf4bec4d1eb48af083cda901cd0778411020a43d7f839e5868a7",
+      "internal/parser/structure/go.go": "c0e8d103673550f8083c00b7957acc78139f43c13294d7a66084fc7eda1a246d",
+      "internal/parser/structure/markdown.go": "e42f1a2a55ec2cd2e89ade22cea1661df857047fe24a6d57961e38a88316f753",
+      "internal/parser/structure/structure_test.go": "cf117109382ac29d2f3742f17631d14e0a11420b50b8db82567b483f4642c9e0",
+      "internal/parser/structure/types.go": "febcbb4ab140545e8bd34843c406a5646ab05dc8b0447b4df09014b3b1c4a2e1",
+      "internal/parser/structure/typescript.go": "cbccf76490be3252316ad02294194c4788880a978449b392846f3b85e04c7fef",
+      "internal/parser/structure/typescript_resolve.go": "a0527e8785a2025efb0dfb2ffcf55caddb3213de09580d7c87cafd72fef27b4b",
+      "internal/router/knowledge_structure.go": "dd6385172b00c1bd91364e619f15c53bfc8686d467c7bda2ae297088c1e8157e",
+      "internal/router/knowledge_structure_test.go": "9a40dc90bda97f35824332bb9edd00c2a4a958bac88a418850918b3fed115708",
+      "internal/service/dataset/knowledge_structure.go": "487313bb46a5bc3b530f06ea35bb41181d82bcb7f6e98ccce9e14cff58de7ab9",
+      "internal/service/dataset/knowledge_structure_bind.go": "ce98eed2c0e2b8e2965188bee4703ccea40e0879368bdccecb1d1242eb0aeaf5",
+      "internal/service/dataset/knowledge_structure_read.go": "1e4f37d14c5672384a2ebc26bacd631b6288fd843a3b07c774ca09097d85a1a6",
+      "internal/service/dataset/knowledge_structure_read_test.go": "363dbfdcf60aa1f5e00fa97bb71466e4872df61befb09d052d99f0e1e18e7fcb",
+      "internal/service/dataset/knowledge_structure_test.go": "e3caba62a6f4db0a936909b005a255f69c2b5b7d14f7d7de13fcf3b2a3e12cf5",
+      "internal/service/dataset/knowledge_structure_worker.go": "bb453760104052b11f090c03c8a86bc415c1e8dcd9393429134e518ca24893cd",
+      "docs/knowledge-structure-v1.openapi.json": "a3de720c493e3c1189dc1dde58dfdf04c8e694de09ae0b5470c30b4b84a4b134",
+      "docs/knowledge-structure-v1.examples.json": "3515b728dca1e75c65d463c54729539cd35ff9e341c7a424c0126a00bd4c2a65"
+    },
+    "go": "1.27.3",
+    "linker": "/usr/local/bin/ld.lld\nUbuntu LLD 22.1.8 (compatible with GNU linkers)",
+    "help": [
+      {
+        "mode": "api",
+        "exit_code": 1,
+        "usage_seen": true,
+        "sha256": "0d52096964d86019c120bbe4de5493b8a6f2ae6379c02e5bce7a11cecad4c817"
+      },
+      {
+        "mode": "admin",
+        "exit_code": 1,
+        "usage_seen": true,
+        "sha256": "f075fe3044c24b77a18888307627eeabe34618143840693b95969b80a642b332"
+      },
+      {
+        "mode": "ingestor",
+        "exit_code": 1,
+        "usage_seen": true,
+        "sha256": "0aaffc695a90abebf38581f1453fe8d887e0648d8997301240dd887b26b4b368"
+      },
+      {
+        "mode": "syncer",
+        "exit_code": 1,
+        "usage_seen": true,
+        "sha256": "771b61da3c1e4ac8d5034c48f81bee41ee815b38c92052db2d091812bfbbdf36"
+      }
+    ]
+  },
+  "contracts": {
+    "name": "C1/C3-Structure",
+    "version": "0.1.0",
+    "operations": 15,
+    "protected_files": {
+      "docs/knowledge-sources-v1.openapi.json": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091",
+      "docs/knowledge-sources-v1.example.json": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a",
+      "docs/knowledge-sources-v1.freeze.json": "114bbfa2b4dd51eafc426716032486f666ace8a1a1284f4c1f4c9baf1f1b35c6",
+      "docs/knowledge-foundation-v1.openapi.json": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4",
+      "docs/knowledge-foundation-v1.example.json": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343",
+      "docs/knowledge-directory-import-v1.openapi.json": "6144c08d4cfe7ac98374dc51829c98290e2c88e3441dd38d250a3cd9cb4492e6",
+      "docs/knowledge-directory-import-v1.examples.json": "73618dd78419bb9027520b3dd8b3ef83b1794d3ad1c4d17d904ce7637c54ea72",
+      "docs/knowledge-directory-import-v1.freeze.json": "2af7575cfbc24510550a0b495e18aa30f94decf5f102c23d259d4f3135dbf5f1",
+      "docs/knowledge-directory-import-v0.3.candidate.md": "80eb846a81b6ade430012b585739fe6405ef8a7de5855f27941fe66a31e2cbfa",
+      "docs/knowledge-directory-import-v0.3.candidate.openapi.json": "da2c320b3c3fd8f6af2b566b40507a5b09c55791236b49b224347c8b9a457f3d",
+      "docs/knowledge-directory-import-v0.3.candidate.examples.json": "2680f9786a19cc49a0330ecfcda84249ef36aac20293341a18e17cbdfd132d4e",
+      "docs/knowledge-batch-import-v0.4.candidate.md": "3a3beec92e8bc0baae1c820a18e078717163988277aa9d304d762ff97d027b1f",
+      "docs/knowledge-batch-import-v0.4.candidate.openapi.json": "d57ca240df19a985341c25d60ce18590dacdcf221b5599b8223f558a7c379fc5",
+      "docs/knowledge-batch-import-v0.4.candidate.examples.json": "fe8bde9d99b8aaa7250a40a1adc86c6bee9ecf474cbf01af55253274f2e2e304",
+      "docs/knowledge-batch-import-v1.openapi.json": "bd13fc400fc2a84f490b92ee865db75f76d89bf79a176658312ac3bea17d0fb8",
+      "docs/knowledge-batch-import-v1.examples.json": "5249cdf57da0313346b7b30db0743079a175aaa8480604120b1bf92e4bdfdc53",
+      "docs/knowledge-batch-import-v1.freeze.json": "1d589290db4b1fe4ab4005dae0ebf1918efdeac9cd57d7c810305087c180f631",
+      "docs/knowledge-original-import-v0.5.candidate.md": "8a1079fe4745b84d178f50939ac25e1ac1fa51bc3f61ed2340ef1f6d9e1638d6",
+      "docs/knowledge-original-import-v0.5.candidate.openapi.json": "b4905ab840c64f26a25a6017dc7454393fd3b974b0e2199edffe2cc5e725a0aa",
+      "docs/knowledge-original-import-v0.5.candidate.examples.json": "16aa77d948f857f93dcc96e0c812d4bee2a8f3ad91205e54b9c0457f78ea8815",
+      "docs/knowledge-original-import-v1.openapi.json": "3c48ebe0a2bfc8b3078262ce6c1a8258b312f6111bd9ed2b07b7b4fb433a5efd",
+      "docs/knowledge-original-import-v1.examples.json": "550f7be69c506a02cc2798d2196e17ca06c73b06f08d934ea3cbf823551d5cb1",
+      "docs/knowledge-original-import-v1.freeze.json": "116ddc4161001c0fdb440b45b227952978ca3d291197d712830a92d5aaaca3b9",
+      "docs/knowledge-web-import-v0.6.candidate.md": "577a76624d8b43e26dde890df49140f0b5a2c458dc493dbecd7f5467e13175fb",
+      "docs/knowledge-web-import-v0.6.candidate.openapi.json": "a167a1977f1f0a313061b093d21f035631dd5fafaea95cd8545601e17af35a88",
+      "docs/knowledge-web-import-v0.6.candidate.examples.json": "81372c6270c3e2b3989b4e088bd029883326f75fe6e254d651b93f951e0b7573",
+      "docs/knowledge-web-import-v1.freeze.json": "bba4e9f0c2341658ac69741d57f5a4a9032ac74b6ec848f13a195e4ab96c66c2",
+      "docs/knowledge-web-import-v1.openapi.json": "673092ab81263bdf7b79e85e06206bb02f8eb8996b476c8643dbafed17e259ed",
+      "docs/knowledge-web-import-v1.examples.json": "71019ae8645ad0fd4527565c42f6f80f93924c26266ffe08696de5e9b1c5671d",
+      "docs/knowledge-source-lifecycle-v0.7.candidate.md": "53b78e36a127c6c0f35048bf0ac511417639aba7cca90a418c007caa1b7f39f9",
+      "docs/knowledge-source-lifecycle-v0.7.candidate.openapi.json": "47d159cfee61708a79475879f5371cb97a38b41eb768e759ff802e1ebd0cdd0d",
+      "docs/knowledge-source-lifecycle-v0.7.candidate.examples.json": "a20bf10a7ac93ce36a8d3cd04cd95b035d8e6f2a1f3301accfdd711d86eb2f41",
+      "docs/knowledge-source-lifecycle-v1.freeze.json": "f6545f908a802d0d326fe73dfb3f8e5b2860abf67306b8a1e022c572bbd984c3",
+      "docs/knowledge-source-lifecycle-v1.openapi.json": "526685f1ab09e07f87f3f9c8cee3cf44347d6bdcf9efed94c356ef32b22725db",
+      "docs/knowledge-source-lifecycle-v1.examples.json": "cfe6c24c3f3a24907220c4e2ead993867c33053c6b2d197b70d93c03f168fb3c",
+      "docs/knowledge-structure-v0.1.candidate.md": "5c61af1a3a6be72337895b665d26cef29a711518f184bdb77a822800df0256d1",
+      "docs/knowledge-structure-v0.1.candidate.openapi.json": "0db14cc46e86e42e6ca5a6ffff3050968644372a76f5091bb380f50dff1c4630",
+      "docs/knowledge-structure-v0.1.candidate.examples.json": "195f83957c6b06ff2fb67b5dc61353c82abee92870b551f9ff14bb02217c9bea",
+      "docs/knowledge-structure-v1.freeze.json": "921c33ca5093cda8194bef3bfeaa1521ac3515a3a073aae927dcac49580f8a84",
+      "docs/knowledge-structure-v1.openapi.json": "a3de720c493e3c1189dc1dde58dfdf04c8e694de09ae0b5470c30b4b84a4b134",
+      "docs/knowledge-structure-v1.examples.json": "3515b728dca1e75c65d463c54729539cd35ff9e341c7a424c0126a00bd4c2a65"
+    },
+    "count": 41,
+    "changed_frozen_semantics": false
+  },
+  "implementation": {
+    "producer": "Go AST + Tree-sitter Go 0.24.0 / TypeScript 0.23.2 + goldmark 1.7.1; ParseCtx禁用，原生5s超时与软检查点",
+    "storage": "独立结构策略／任务／原键固定结果／租约／原子view／派生节点／一跳事实／不含源码的事实缓存／有界游标；沿用原C1原文及当前权限",
+    "old_paths": "旧手工节点、原件、网页、C2历史和模型/ingestion拒绝保持；contains由parent投影",
+    "concurrency": "域锁；同域1执行+1等待；30s租约/10s续约/3次尝试/创建起120s；旧epoch不可提交",
+    "publication": "selected固定输入的清单/修订/世代/分类/位置/双策略与view头CAS；一事务全view发布",
+    "api": "双版本头、no-store、15冻结操作、32KiB请求/256KiB元信息/512KiB内容包及64KiB原字节窗口"
+  },
+  "verification": {
+    "go_runs": [
+      {
+        "path": ".local-data/stage3-20261026/structure-go-1793010482778.json",
+        "exit_code": 0,
+        "source_unchanged": true,
+        "top_level": 7,
+        "pass_events": 95,
+        "log": ".local-data/stage3-20261026/structure-go-1793010482778.log",
+        "scope": [
+          "-json",
+          "-run",
+          "^Test(SyntheticFacts|DeterministicSelectionAndAliases|ConservativeTypeScriptResolution|PassagePartitionAndBoundaries|ControlledFailures|DuplicateAndScopeIdentity|OutputBudgets|FrozenSyntheticBenchmark)$",
+          "./internal/parser/structure"
+        ]
+      },
+      {
+        "path": ".local-data/stage3-20261026/structure-go-1793010632681.json",
+        "exit_code": 0,
+        "source_unchanged": true,
+        "top_level": 1,
+        "pass_events": 51,
+        "log": ".local-data/stage3-20261026/structure-go-1793010632681.log",
+        "scope": [
+          "-json",
+          "-run",
+          "^TestSyntheticFacts$",
+          "./internal/parser/structure"
+        ]
+      },
+      {
+        "path": ".local-data/stage3-20261026/structure-go-1793010920168.json",
+        "exit_code": 0,
+        "source_unchanged": true,
+        "top_level": 25,
+        "pass_events": 108,
+        "log": ".local-data/stage3-20261026/structure-go-1793010920168.log",
+        "scope": [
+          "-json",
+          "-run",
+          "^TestKnowledgeStructure|^TestSyntheticFacts|^TestMarkdownContainer",
+          "./internal/entity",
+          "./internal/dao",
+          "./internal/service/dataset",
+          "./internal/handler",
+          "./internal/router",
+          "./internal/parser/structure"
+        ]
+      },
+      {
+        "path": ".local-data/stage3-20261026/structure-go-1793011539073.json",
+        "exit_code": 0,
+        "source_unchanged": true,
+        "top_level": 111,
+        "pass_events": 354,
+        "log": ".local-data/stage3-20261026/structure-go-1793011539073.log",
+        "scope": [
+          "-json",
+          "-run",
+          "^TestKnowledge(Snapshot|SourceFence|Foundation|Lifecycle|Import|Directory|Batch|Original|Web)",
+          "./internal/entity",
+          "./internal/dao",
+          "./internal/service/dataset",
+          "./internal/handler",
+          "./internal/router"
+        ]
+      },
+      {
+        "path": ".local-data/stage3-20261026/structure-go-1793011860294.json",
+        "exit_code": 0,
+        "source_unchanged": true,
+        "top_level": 1,
+        "pass_events": 1,
+        "log": ".local-data/stage3-20261026/structure-go-1793011860294.log",
+        "scope": [
+          "-json",
+          "-run",
+          "^TestKnowledgeStructureCapabilityRoundTrip$",
+          "./internal/entity"
+        ]
+      }
+    ],
+    "counting_note": "各运行范围有重叠，不相加为独立用例数；25/108联合测试在能力DTO修复前，修复后新增完整JSON往返1/1及四mode二进制启动，最终运行以实际HTTP补证",
+    "runtime": {
+      "passed": true,
+      "binary_sha256": "0efd5563a48a87d0cc41c2661a2ee58dcbc2a1ec88b2bc952b53e152acdcc061",
+      "existing_volumes_preserved": true,
+      "credentials_unchanged": true,
+      "frontend_unchanged": true,
+      "frontend_commit": "c759990b62f44704b9370c19bcbf402668764899",
+      "frontend_index_sha256": "1c96548dcbd9e5f6d798ee32582640a1e197e790da9816eb2d2510a0faee6859",
+      "model_fingerprint_unchanged": true
+    },
+    "real_mysql_and_s3_core": {
+      "recorded_at": "2026-10-26T11:00:36.147Z",
+      "passed": true,
+      "domain_id": "2d19760e54d04eeaa6b4789f641bb06d",
+      "project_id": "900ce3d55d7c442ca404ef3558eb4e8b",
+      "view_id": "56f601e4bf812c6f395b064163cf2739f735455ac25fe1f93be0a9bb79e3395c",
+      "sources": 8,
+      "source_bytes": 2313,
+      "nodes": 48,
+      "relations": 80,
+      "facts": [
+        {
+          "id": "F001",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F002",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F003",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F004",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F005",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F006",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F007",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F008",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F009",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F010",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F011",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F012",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F013",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F014",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F015",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F016",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F017",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F018",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F019",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F020",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F021",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F022",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F023",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F024",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F025",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F026",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F027",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F028",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F029",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F030",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F031",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F032",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F033",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F034",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F035",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F036",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F037",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F038",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F039",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F040",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F041",
+          "passed": true,
+          "scope": "URL kept as inert source text; producer no-fetch evidence is unit test"
+        },
+        {
+          "id": "F042",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F043",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F044",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F045",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F046",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F047",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F048",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        },
+        {
+          "id": "F049",
+          "passed": true,
+          "scope": "API returns original HTML as JSON text; browser rendering remains separate"
+        },
+        {
+          "id": "F050",
+          "passed": true,
+          "scope": "API fixed-source/node/relation fact"
+        }
+      ],
+      "raw_byte_coverage": 1,
+      "identity_projections_independently_checked": true,
+      "physical_line_coordinates": true,
+      "policy_only_structure": true,
+      "fixed_rejection_replayed_after_policy_enable": true,
+      "reordered_original_request_retained": true,
+      "scope_bound_cursors": true,
+      "visitor_paths_hidden": 10,
+      "models_fingerprint_unchanged": true,
+      "model_calls": 0,
+      "local_inference": 0,
+      "browser_safe_rendering": "NotRun",
+      "evidence": ".local-data/stage3-20261026/structure-core-verification.json"
+    },
+    "old_poc_and_models": "既有POC6文件/42块及模型指纹由原n.fingerprint实测保持；不含真实新资料"
+  },
+  "failure_and_correction": [
+    {
+      "kind": "fixture_source",
+      "observation": "Go测试字符串直接包含两个BOM，gofmt拒绝",
+      "correction": "用Go Unicode escape表达；运行原字节和固定SHA不变"
+    },
+    {
+      "kind": "validation_strength",
+      "observation": "原章节测试允许祖先覆盖，嵌套标题原实现未限制document父级",
+      "correction": "对冻结标题精确起点断言，并新增嵌套容器不得提升为全局section的定向测试",
+      "result": "50项事实和新增容器场景通过"
+    },
+    {
+      "kind": "admission_limit",
+      "observation": "初稿只限制两个非终态，不能确保最多一个queued",
+      "correction": "域锁下同时检查queued数量；新增1执行+1等待和固定容量拒绝测试"
+    },
+    {
+      "kind": "capability_dto",
+      "observation": "第一次实际启动HTTP503；const parser_ids数组被生成器映射成int",
+      "correction": "修正生成器，加完整能力JSON往返测试，以新不可变二进制路径重建部署",
+      "first_binary_sha256": "b866c4825db53f9540d0f6d1fd35b50458f5d98c6f2e60ee605abc2bd82560d9",
+      "final_binary_sha256": "0efd5563a48a87d0cc41c2661a2ee58dcbc2a1ec88b2bc952b53e152acdcc061",
+      "result": "ready=true；未在失败版本接收结构任务"
+    },
+    {
+      "kind": "synthetic_source_harness",
+      "observation": "准备脚本曾对旧基础接口强加no-store、未排序.4选择及把.4首次受理误设201",
+      "correction": "按旧冻结协议修正为有序选择及202，并用原键恢复原8项任务，无新键重复导入；旧业务代码不改"
+    }
+  ],
+  "incomplete_items": [
+    "正式客户端/目录内结构界面未实施",
+    "真实双API/进程中断/故障及容量最终验证待执行；Go unit不冒充进程证据",
+    "固定8文件五次端到端及局部API各20次、RSS门槛待执行",
+    "浏览器HTML/图片惰性阅读、恢复槽及前台2秒轮询待执行",
+    "R7真实资料退出、阶段2整体、富文档/Wiki、阶段3整体和后续C4-C6不属于已完成范围"
+  ],
+  "acceptance": {
+    "backend_intermediate_delivery": "Implemented_CoreVerified",
+    "r1_user_decision": {
+      "outcome": "Pending"
+    },
+    "r1_whole_exit": false,
+    "stage3_whole_exit": false,
+    "whole_project_complete": false
+  },
+  "collaboration": {
+    "source_writer": "A until explicit clean Web handoff",
+    "draft_agents": "仅忽略目录生产器/任务草稿，由A统一接收、运行和修复",
+    "peer": "R4 原件导入客户端与界面；明确窗口前只读"
+  },
+  "governance_note": "沿用本项目公开报告+忽略目录证据载体；未声称执行新的skill机器Gate，不回填旧历史为当前门禁",
+  "model_calls": 0,
+  "local_inference": 0,
+  "adversarial_review": "NotRequested_DoNotStart"
+}

@@ -112,6 +112,7 @@ func startServer(ctx context.Context, serverName string, arguments *bootstrap.Se
 	datasetsService := dataset.NewDatasetService()
 	dataset.StartKnowledgeDirectoryCleanup(ctx)
 	dataset.StartKnowledgeBatchRuntime(ctx)
+	dataset.StartKnowledgeStructureRuntime(ctx)
 	metadataService := service.NewMetadataService()
 	chunkService := chunk.NewChunkService()
 	tenantService := service.NewTenantService()
