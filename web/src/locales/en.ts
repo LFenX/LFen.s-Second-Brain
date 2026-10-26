@@ -542,7 +542,7 @@ export default {
       confirm: 'Confirm saving original',
       saved: 'Original saved',
       savedOnly:
-        'Original saved only; not parsed, structured, full-text indexed or vector indexed.',
+        'This view shows the saved original; see the knowledge catalogue for derived structure and index status.',
       readyHint:
         'The original is staged and has not been imported. Explicit confirmation saves the original without parsing or indexing.',
       receipt: 'Fixed save receipt',

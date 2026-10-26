@@ -28,6 +28,16 @@ export function DocumentTree({
     [open, setOpen] = useState(false),
     choose = () => onSelect(node.document_node_id),
     toggle = () => setOpen((value) => !value);
+  const position = node.payload.original_position;
+  const positionLabel =
+    node.payload.kind === 'page' && position.kind === 'pdf_page'
+      ? t('knowledgeDocument.page', { number: position.page_number })
+      : node.payload.kind === 'slide' && position.kind === 'pptx_slide'
+        ? t('knowledgeDocument.slide', { number: position.slide_number })
+        : null;
+  const title = positionLabel
+    ? [positionLabel, node.payload.name].filter(Boolean).join(' · ')
+    : `${t('knowledgeDocument.kind_' + node.payload.kind)} · ${node.payload.name || t('knowledgeDocument.unnamed')}`;
   if (depth > 16)
     return <DocumentFailure error={Error('document_depth_exceeded')} />;
   return (
@@ -38,8 +48,7 @@ export function DocumentTree({
           variant={selected === node.document_node_id ? 'default' : 'outline'}
           onClick={choose}
         >
-          {t('knowledgeDocument.kind_' + node.payload.kind)} ·{' '}
-          {node.payload.name || t('knowledgeDocument.unnamed')}
+          {title}
         </Button>
         {!['media', 'unsupported_block', 'passage'].includes(
           node.payload.kind,
