@@ -16,7 +16,15 @@
   "engineering_status": "Implemented_SyntheticRuntimeVerified",
   "acceptance": {
     "user_decision": {
-      "outcome": "Pending"
+      "outcome": "Approved",
+      "answer": "验收通过",
+      "decided_by": "human_user",
+      "decision_time": "NotSuppliedByMessage",
+      "recorded_at": "2026-10-26T02:38:52.862Z",
+      "evidence_ref": "request_user_input_async/call_645dadf5622d48c3832154bc5827df5a/0",
+      "subject_commit": "81f3a8c8bb176155e70e4150906555af0d3cac88",
+      "subject_sha256": "8d05c5e9ba7e34db7acb6eb67e38606d8593831ac68baaa18d28e5bbac998ae2",
+      "scope": "仅R5/C2 0.6.0已发布工程交付；不包含R4、阶段2整体、真实来源或后续R6工程验收。"
     },
     "r4_user_decision": "Pending_Independent",
     "stage2_exit": false,
@@ -557,7 +565,7 @@
     "credentials_in_git": false
   },
   "remaining": [
-    "R5工程用户验收Pending；R4决定独立Pending，阶段2整体未退出。",
+    "R5工程已由用户明确验收通过；R4决定独立Pending，阶段2整体未退出。",
     "真实AIHOT／RSSHub路由、JS渲染、登录态抓取、非UTF-8、304缓存增量、持续订阅及生产负载未验证／未开放。",
     "R6生命周期须具体C2 0.7候选确认后实施；R7真实资料退出仍须新范围授权。",
     "阶段3结构／代码关系与文档阅读、阶段4可选索引检索引用、阶段5MCP模块临时授权、阶段6人格记忆未完成。"
