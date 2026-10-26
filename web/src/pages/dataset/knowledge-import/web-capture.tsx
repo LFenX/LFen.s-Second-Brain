@@ -2,7 +2,6 @@ import { useEffect, useRef, useState, type ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import service from '@/services/knowledge-web-service';
 import { useWebResource } from '@/hooks/use-knowledge-web';
 import { WebFailure } from './web-fields';
@@ -129,7 +128,11 @@ export default function WebCapturePanel({ flow }: { flow: WebFlow }) {
         <div className="space-y-2">
           <label className="block">
             {t('knowledgeWeb.reselectFile')}
-            <Input type="file" onChange={changeFile} />
+            <input
+              type="file"
+              className="block w-full rounded-md border border-border-button bg-bg-input px-3 py-2 text-sm text-text-primary"
+              onChange={changeFile}
+            />
           </label>
           <Button onClick={upload} disabled={flow.busy}>
             {t('knowledgeWeb.upload')}

@@ -299,9 +299,10 @@ export function WebCaptureForm({ flow }: { flow: WebFlow }) {
         <>
           <label className="block">
             {t('knowledgeWeb.snapshotFile')}
-            <Input
+            <input
               type="file"
               required
+              className="block w-full rounded-md border border-border-button bg-bg-input px-3 py-2 text-sm text-text-primary"
               accept=".html,.htm,.xml,.rss,.atom,text/html,application/rss+xml,application/atom+xml,application/xml,text/xml"
               onChange={changeFile}
             />
