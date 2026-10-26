@@ -1,0 +1,224 @@
+{
+  "document_version": 1,
+  "recorded_at": "2026-10-26T00:46:25.978Z",
+  "objective": "交付C2 0.6 Web客户端四段流程、原键恢复、安全阅读和目录入口",
+  "request_snapshot": "按 docs/stage2r5-web-client-handoff.md 的20个生产文件及对应__tests__写窗完成service→Hooks/恢复→四段页面/目录→测试构建；模型0，仅合成；正常提交并交回清洁HEAD。",
+  "authority": {
+    "source": "正式冻结真人批准及主会话固定HEAD单写入交接；范围见交接文档",
+    "freeze": "docs/knowledge-web-import-v1.freeze.json",
+    "handoff": "docs/stage2r5-web-client-handoff.md",
+    "wait_correction": "主会话明确要求局部HTTP等待25000ms，上传服务端尝试上界仍30秒"
+  },
+  "baseline": "be10950ab2b955d2462975c0af52c9d99d8a93db",
+  "branch": "codex/stage2r5-web-import",
+  "engineering_status": "Implemented_ClientSyntheticVerified",
+  "acceptance": {
+    "outcome": "Pending"
+  },
+  "scope": {
+    "production_files": 20,
+    "test_and_fixture_files": 7,
+    "files": [
+      "web/src/hooks/__tests__/use-knowledge-web.test.tsx",
+      "web/src/hooks/use-knowledge-web.ts",
+      "web/src/interfaces/database/knowledge-web.ts",
+      "web/src/interfaces/request/knowledge-web.ts",
+      "web/src/locales/en.ts",
+      "web/src/locales/zh.ts",
+      "web/src/pages/dataset/knowledge-catalogue/__tests__/web.test.tsx",
+      "web/src/pages/dataset/knowledge-catalogue/index.tsx",
+      "web/src/pages/dataset/knowledge-import/__tests__/web-fixture.ts",
+      "web/src/pages/dataset/knowledge-import/__tests__/web.test.tsx",
+      "web/src/pages/dataset/knowledge-import/index.tsx",
+      "web/src/pages/dataset/knowledge-import/use-web-flow.ts",
+      "web/src/pages/dataset/knowledge-import/web-capture.tsx",
+      "web/src/pages/dataset/knowledge-import/web-fields.tsx",
+      "web/src/pages/dataset/knowledge-import/web-observation.tsx",
+      "web/src/pages/dataset/knowledge-import/web-preview.tsx",
+      "web/src/pages/dataset/knowledge-import/web-reading.tsx",
+      "web/src/pages/dataset/knowledge-import/web-receipt.tsx",
+      "web/src/pages/dataset/knowledge-import/web-revisions.tsx",
+      "web/src/pages/dataset/knowledge-import/web.tsx",
+      "web/src/services/__tests__/knowledge-web-service.test.ts",
+      "web/src/services/__tests__/knowledge-web-wire.test.ts",
+      "web/src/services/knowledge-web-service.ts",
+      "web/src/utils/__tests__/knowledge-web.test.ts",
+      "web/src/utils/knowledge-web-reading.ts",
+      "web/src/utils/knowledge-web-schema.ts",
+      "web/src/utils/knowledge-web.ts"
+    ],
+    "file_sha256": {
+      "web/src/hooks/__tests__/use-knowledge-web.test.tsx": "cbfb016f3b70919cb99099d135874910e5df3aa2de10d8cd94b5f25c2571a49b",
+      "web/src/hooks/use-knowledge-web.ts": "e54ed60053c05b75abbdd1835438fb4c1ea84a02f9d457c9f4ba8569f65eec48",
+      "web/src/interfaces/database/knowledge-web.ts": "4082462dc85dc431c01d2948f648a02aa6d9043f2fa8f07e2771861d2ef1664f",
+      "web/src/interfaces/request/knowledge-web.ts": "0ebf064c0eb8617de9c84b33433b8d3d8b90bb79112b9b3583cb170ccc638ae9",
+      "web/src/locales/en.ts": "2422da9dd72c73af77a92af293acdb90105d37347c27b2627fa3f2d136115a48",
+      "web/src/locales/zh.ts": "7e883bb92182f918519463f55d0cc429e15cb26d18b4d76442cf541d49a4eac5",
+      "web/src/pages/dataset/knowledge-catalogue/__tests__/web.test.tsx": "948bd9252a05881dfc3105567be1ab88959329d952b4559befac6c85f782b371",
+      "web/src/pages/dataset/knowledge-catalogue/index.tsx": "f6af62e425ebd4a2d2e5b10256f08dd7d1e9b6596923937ff00ee6e48e0902ee",
+      "web/src/pages/dataset/knowledge-import/__tests__/web-fixture.ts": "7824393dc55a005511b0a7bf15f30a54efbc02902e230eb6c19f9b428aab1faa",
+      "web/src/pages/dataset/knowledge-import/__tests__/web.test.tsx": "f5b66457d87957d125dd1bdd4d7d9798c7aece39b6899c3c01f2d73ac7ed021b",
+      "web/src/pages/dataset/knowledge-import/index.tsx": "9179bb17eab2757ff1c87bc64a48c8081c1adcadc7e8008fa9bd7bf54602da72",
+      "web/src/pages/dataset/knowledge-import/use-web-flow.ts": "603c81918151e1121d0cab5eeaa302dcd53ddddf2751499306ce460f2fd24712",
+      "web/src/pages/dataset/knowledge-import/web-capture.tsx": "b0eeca194f1d855797f97f637792aa94d12d650edfe6de0d877455abdd79f4d6",
+      "web/src/pages/dataset/knowledge-import/web-fields.tsx": "3ee17c591ff0eb29f20fcc3e8128e72baa2e3824a515bad3d579b412fd6ba310",
+      "web/src/pages/dataset/knowledge-import/web-observation.tsx": "9bb2b6aae2f42d600fd2f98198bd7cfb063a1d573eb0fa2c5123958429abcfc7",
+      "web/src/pages/dataset/knowledge-import/web-preview.tsx": "a20d983f8e7b609fbdebc6381f0670eaa3c30b5bd9935e9971e3ff0183408bef",
+      "web/src/pages/dataset/knowledge-import/web-reading.tsx": "66ec168ea318cb334186d01d4d3e63c32bb2ceec64a5397d88e95c9f60eac82e",
+      "web/src/pages/dataset/knowledge-import/web-receipt.tsx": "213fe1f35c940cbc5cf5988af7c42961674e0542dce89e664d32c4ce02a66d6b",
+      "web/src/pages/dataset/knowledge-import/web-revisions.tsx": "0fb86013741dd81f1fe6db15ec55ef22e1efc4798be0e22953a2b1b950590aae",
+      "web/src/pages/dataset/knowledge-import/web.tsx": "04b92d44344f51fa1e5196413357d0295fe86dfe6da3f569f12a706284a8af63",
+      "web/src/services/__tests__/knowledge-web-service.test.ts": "466ba986821a540c5273e98c0c6e50b18427c0f8e7efe74c8c9b404602139bb3",
+      "web/src/services/__tests__/knowledge-web-wire.test.ts": "526580b9b841537b00fc73fadaf886adfe835f975b07c8b8bc6996399494f446",
+      "web/src/services/knowledge-web-service.ts": "2f2d7517713553fd09d0023dc8595415df38fd59c6003d7cb07e75e6369cd4bd",
+      "web/src/utils/__tests__/knowledge-web.test.ts": "64c27f30cd1eaee0998948c34b1de0eb16585d41f38da11479131cceef8d3243",
+      "web/src/utils/knowledge-web-reading.ts": "7642d0773ea1af5f52aeb3c494df450823c15cc40bae3a535819f3c9824126fe",
+      "web/src/utils/knowledge-web-schema.ts": "de194e6f592bb4a90dfa5e6da93c0cf0596001011d27f4c463a4a0b2f22759a7",
+      "web/src/utils/knowledge-web.ts": "a4cfb75f9ce08aeffc1460a71432a3b24fe7779ba32c0fa05510bb8e451905cb"
+    }
+  },
+  "verification": {
+    "format": {
+      "command": "web/node_modules/.bin/oxfmt.cmd --check <27 changed files>",
+      "passed": true
+    },
+    "lint": {
+      "command": "web/node_modules/.bin/oxlint.cmd <27 changed files>",
+      "errors": 0,
+      "warnings": 0
+    },
+    "jest": {
+      "command": "cd web; ./node_modules/.bin/jest.cmd --runInBand --no-coverage --runTestsByPath <27 related suites>",
+      "suites": 27,
+      "passed": 717,
+      "new_suites": 6,
+      "new_passed": 211,
+      "old_passed": 506,
+      "failed": 0,
+      "seconds": 31.218,
+      "new_suite_counts": [
+        {
+          "file": "web/src/pages/dataset/knowledge-import/__tests__/web.test.tsx",
+          "passed": 16
+        },
+        {
+          "file": "web/src/hooks/__tests__/use-knowledge-web.test.tsx",
+          "passed": 5
+        },
+        {
+          "file": "web/src/pages/dataset/knowledge-catalogue/__tests__/web.test.tsx",
+          "passed": 2
+        },
+        {
+          "file": "web/src/services/__tests__/knowledge-web-service.test.ts",
+          "passed": 39
+        },
+        {
+          "file": "web/src/services/__tests__/knowledge-web-wire.test.ts",
+          "passed": 2
+        },
+        {
+          "file": "web/src/utils/__tests__/knowledge-web.test.ts",
+          "passed": 147
+        }
+      ]
+    },
+    "frozen_vectors": {
+      "structure": 82,
+      "typed_encoding": 12,
+      "digest": 13,
+      "fingerprint": 10,
+      "client_semantic": 22,
+      "note": "53项语义向量中的客户端Capture动作12、origin6、UTF8窗口4；其余服务端取得/解析/确认规则由A的后端报告覆盖，本报告不重复冒认"
+    },
+    "types": {
+      "command": "web/node_modules/.bin/tsc.cmd --noEmit --pretty false --project web/tsconfig.json",
+      "exit_code": 2,
+      "before": 207,
+      "after": 207,
+      "added": 0,
+      "removed": 0,
+      "identical": true
+    },
+    "build": {
+      "command": "cd web; ./node_modules/.bin/vite.cmd build --mode production --outDir <ignored evidence>/dist --emptyOutDir",
+      "passed": true,
+      "seconds": 52.07,
+      "files": 1058,
+      "warnings": "已有大型chunk及bundler提示；不扩展为拆包任务"
+    },
+    "http_wait_ms": 25000,
+    "real_source_fetches": 0,
+    "real_model_calls": 0
+  },
+  "contracts": {
+    "version": "0.6.0",
+    "protected_files": 29,
+    "all_hashes_unchanged": true,
+    "hashes": {
+      "docs/knowledge-sources-v1.openapi.json": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091",
+      "docs/knowledge-sources-v1.example.json": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a",
+      "docs/knowledge-sources-v1.freeze.json": "114bbfa2b4dd51eafc426716032486f666ace8a1a1284f4c1f4c9baf1f1b35c6",
+      "docs/knowledge-foundation-v1.openapi.json": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4",
+      "docs/knowledge-foundation-v1.example.json": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343",
+      "docs/knowledge-directory-import-v1.openapi.json": "6144c08d4cfe7ac98374dc51829c98290e2c88e3441dd38d250a3cd9cb4492e6",
+      "docs/knowledge-directory-import-v1.examples.json": "73618dd78419bb9027520b3dd8b3ef83b1794d3ad1c4d17d904ce7637c54ea72",
+      "docs/knowledge-directory-import-v1.freeze.json": "2af7575cfbc24510550a0b495e18aa30f94decf5f102c23d259d4f3135dbf5f1",
+      "docs/knowledge-directory-import-v0.3.candidate.md": "80eb846a81b6ade430012b585739fe6405ef8a7de5855f27941fe66a31e2cbfa",
+      "docs/knowledge-directory-import-v0.3.candidate.openapi.json": "da2c320b3c3fd8f6af2b566b40507a5b09c55791236b49b224347c8b9a457f3d",
+      "docs/knowledge-directory-import-v0.3.candidate.examples.json": "2680f9786a19cc49a0330ecfcda84249ef36aac20293341a18e17cbdfd132d4e",
+      "docs/knowledge-batch-import-v0.4.candidate.md": "3a3beec92e8bc0baae1c820a18e078717163988277aa9d304d762ff97d027b1f",
+      "docs/knowledge-batch-import-v0.4.candidate.openapi.json": "d57ca240df19a985341c25d60ce18590dacdcf221b5599b8223f558a7c379fc5",
+      "docs/knowledge-batch-import-v0.4.candidate.examples.json": "fe8bde9d99b8aaa7250a40a1adc86c6bee9ecf474cbf01af55253274f2e2e304",
+      "docs/knowledge-batch-import-v1.openapi.json": "bd13fc400fc2a84f490b92ee865db75f76d89bf79a176658312ac3bea17d0fb8",
+      "docs/knowledge-batch-import-v1.examples.json": "5249cdf57da0313346b7b30db0743079a175aaa8480604120b1bf92e4bdfdc53",
+      "docs/knowledge-batch-import-v1.freeze.json": "1d589290db4b1fe4ab4005dae0ebf1918efdeac9cd57d7c810305087c180f631",
+      "docs/knowledge-original-import-v0.5.candidate.md": "8a1079fe4745b84d178f50939ac25e1ac1fa51bc3f61ed2340ef1f6d9e1638d6",
+      "docs/knowledge-original-import-v0.5.candidate.openapi.json": "b4905ab840c64f26a25a6017dc7454393fd3b974b0e2199edffe2cc5e725a0aa",
+      "docs/knowledge-original-import-v0.5.candidate.examples.json": "16aa77d948f857f93dcc96e0c812d4bee2a8f3ad91205e54b9c0457f78ea8815",
+      "docs/knowledge-original-import-v1.openapi.json": "3c48ebe0a2bfc8b3078262ce6c1a8258b312f6111bd9ed2b07b7b4fb433a5efd",
+      "docs/knowledge-original-import-v1.examples.json": "550f7be69c506a02cc2798d2196e17ca06c73b06f08d934ea3cbf823551d5cb1",
+      "docs/knowledge-original-import-v1.freeze.json": "116ddc4161001c0fdb440b45b227952978ca3d291197d712830a92d5aaaca3b9",
+      "docs/knowledge-web-import-v0.6.candidate.md": "577a76624d8b43e26dde890df49140f0b5a2c458dc493dbecd7f5467e13175fb",
+      "docs/knowledge-web-import-v0.6.candidate.openapi.json": "a167a1977f1f0a313061b093d21f035631dd5fafaea95cd8545601e17af35a88",
+      "docs/knowledge-web-import-v0.6.candidate.examples.json": "81372c6270c3e2b3989b4e088bd029883326f75fe6e254d651b93f951e0b7573",
+      "docs/knowledge-web-import-v1.openapi.json": "673092ab81263bdf7b79e85e06206bb02f8eb8996b476c8643dbafed17e259ed",
+      "docs/knowledge-web-import-v1.examples.json": "71019ae8645ad0fd4527565c42f6f80f93924c26266ffe08696de5e9b1c5671d",
+      "docs/knowledge-web-import-v1.freeze.json": "bba4e9f0c2341658ac69741d57f5a4a9032ac74b6ec848f13a195e4ab96c66c2"
+    }
+  },
+  "coverage": [
+    {
+      "requirement": "34操作及54schema、局部双版本头、原Blob、25秒等待",
+      "evidence": "knowledge-web-service.test.ts：34操作逐项；knowledge-web-wire.test.ts：真实Axios拦截器与原JSON/File、502与401分离"
+    },
+    {
+      "requirement": "typed-LP精确投影、分类覆盖重新计算、不可变预览和回执",
+      "evidence": "knowledge-web.test.ts：117个结构/摘要/编码/指纹冻结向量、分类重投影和预算、旧Capture unchanged修订绑定"
+    },
+    {
+      "requirement": "三组原请求先落槽、先GET恢复、未知不换键、单次Acquire",
+      "evidence": "web.test.tsx：登记与Capture/Preview/Confirm丢响应跨挂载恢复；上传/观察丢响应只GET；unknown404明确原请求重发；Acquire超时只GET；确定拒绝后明确返修"
+    },
+    {
+      "requirement": "Session/owner/domain/registration隔离、单调revision和三次状态失败停轮询",
+      "evidence": "use-knowledge-web.test.tsx：身份切换、倒序/同修订矛盾、前台轮询与手动恢复、分页/过滤范围"
+    },
+    {
+      "requirement": "四段界面、精确选择、逐项初始未认可与总确认、固定链接",
+      "evidence": "web.test.tsx：四段完整页面、重新挂载重置认可；web catalogue.test.tsx：懒加载并保留group；原C1/C2回归506项"
+    },
+    {
+      "requirement": "整件/空正文/UTF8窗口、安全阅读、资源不自加载、独立引用和原下载",
+      "evidence": "knowledge-web.test.ts和web.test.tsx：整件SHA、空正文、连续窗口、转义正文；sandbox空+CSP、恶意标签剥离、引用显式打开；34操作包含固定和暂存内容读取"
+    }
+  ],
+  "remaining": [
+    "主会话部署后执行真实浏览器文件选择、网络取得、确认/恢复、固定修订阅读与下载联调。",
+    "本轮未访问真实网站/RSSHub，未调用模型，未部署或合并main。",
+    "本轮使用合成HTTP响应与jsdom；A独立运行证据另见其统一报告。",
+    "原有207项全仓类型诊断仍存在；本轮新增0。",
+    "未启动多轮对抗性审查；人的验收决定仍Pending。"
+  ],
+  "governance_note": "按已确认单写窗保留忽略目录before/after和本交付验证；不新增治理目录，不声称skill机器门禁或人的验收已通过。"
+}

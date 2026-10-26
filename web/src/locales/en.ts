@@ -1,5 +1,132 @@
 export default {
   translation: {
+    knowledgeWeb: {
+      title: 'Web pages and feeds',
+      scope:
+        'Register a fixed page or feed → explicitly acquire or upload a snapshot → observe and select → acknowledge each item → save atomically. Model calls: 0. Subscriptions and indexes remain disabled.',
+      failure:
+        'The operation did not complete. Check the original result and retain its request key while the outcome is unknown.',
+      registration: 'Register a page or feed',
+      registrationId: 'Registration ID',
+      registrationKey: 'Original registration key (case sensitive)',
+      originUrl: 'Fixed starting URL',
+      sourceKind: 'Source type',
+      webPage: 'Single web page',
+      webFeed: 'RSS 2.0 / Atom feed',
+      producer: 'Source producer',
+      direct: 'Provided by the website',
+      otherFeed: 'Other feed',
+      browserExport: 'Browser export',
+      enableNetwork:
+        'Enable anonymous HTTP(S) access within this registration’s scope; each acquisition still requires separate confirmation',
+      origins:
+        'Exact allowed origins, one per line, up to 4 (scheme, host and port must match)',
+      createRegistration: 'Create registration',
+      openRegistration: 'Open registration',
+      capture: 'Prepare one snapshot',
+      acquisitionMode: 'Snapshot acquisition mode',
+      localSnapshot: 'Upload a local UTF-8 HTML / RSS / Atom snapshot',
+      explicitFetch: 'Explicitly acquire the registered URL once',
+      snapshotFile: 'Local snapshot file (1 B–2 MiB)',
+      mediaType: 'Declared media type',
+      declaredUrl: 'Declared final URL (optional)',
+      claimedAt: 'Claimed capture time (optional, ISO 8601)',
+      localProvenance:
+        'A local snapshot’s URL and capture time are user claims, not evidence of a server HTTP acquisition.',
+      serverProvenance:
+        'The server acquired this snapshot anonymously within the fixed scope. HTTP information describes this acquisition.',
+      fetchPreparation:
+        'This step only creates a capture. A separate confirmation starts one anonymous network acquisition.',
+      prepareCapture: 'Create snapshot preparation',
+      captureState: 'Snapshot state',
+      recheck: 'Recheck status',
+      cancelCapture: 'Cancel unconsumed preparation',
+      pollingStopped:
+        'Consecutive status reads failed. Automatic polling stopped; check manually.',
+      reselectFile:
+        'After a refresh, select the original snapshot with the same name, length and digest',
+      upload: 'Upload original snapshot',
+      uploadHint:
+        'An interrupted upload can explicitly resend the entire original. Received bytes do not mean it has been saved.',
+      acquireConsent:
+        'I confirm anonymous access now to the registered URL and allowed origins, once per capture, without cookies or other login information.',
+      acquire: 'Explicitly acquire once',
+      observe: 'Normalize this snapshot',
+      observation: 'Fixed observation and selection',
+      observationCounts:
+        'Input items {{input}} · Unique {{entries}} · Eligible {{eligible}} · Duplicates {{duplicates}}',
+      selectionHint:
+        'Save only the explicitly selected 1–32 items, within 8 MiB. This does not import the whole feed. Unselected and missing items retain their history.',
+      selectedCount: 'Selected {{count}} / 32 items',
+      inspectEntry: 'Inspect body and references',
+      refreshTargets: 'Refresh revision heads for selected items',
+      createPreview: 'Create fixed selection preview',
+      preview: 'Fixed preview and acknowledgements',
+      previewHint:
+        'Check completeness, classification, expected revision heads and save actions. Any conflict rejects the whole selection. Changing the selection requires a new preview and acknowledgements.',
+      finalConsent:
+        'I acknowledged every item and confirm saving this fixed preview atomically, without building indexes.',
+      confirm: 'Confirm and save selected items',
+      changeSelection: 'Cancel preview and select again',
+      receipt: 'Fixed save receipt',
+      receiptCounts:
+        'Created or updated {{saved}} · Unchanged content and classification {{unchanged}}',
+      unchangedHint:
+        'Unchanged items reuse an existing fixed revision. Its capture can predate this receipt; downloads still use that revision’s original snapshot.',
+      newCapture: 'Prepare another snapshot',
+      notIndexed: 'Structure, full-text and vector indexes are not built',
+      recovery: 'Recover by original key',
+      recoveryHint:
+        'An original request needs checking. GET its original result first. If absent, only an explicit resend of the same request and key is allowed.',
+      checkOriginal: 'Check original result',
+      resendOriginal: 'Explicitly resend original request and key',
+      reviseRejected: 'Verify rejection and prepare again',
+      corruptRecovery:
+        'The recovery record is invalid or belongs to another scope. Writes stopped; retain the local record for investigation.',
+      notReady: 'Web import runtime resources are not ready.',
+      reading: 'Fixed web reading',
+      representation: 'Representation',
+      safeReading: 'Verified safe reading',
+      decodedContent: 'Decoded body (escaped)',
+      readFull: 'Verify and read full representation',
+      readWindow: 'Read next UTF-8 window',
+      references: 'Separate references',
+      downloadRaw: 'Download original snapshot',
+      readingPolicy:
+        'Full safe reading appears after length and SHA-256 verification. Images, attachments, scripts and external resources do not load automatically. Open references explicitly from the parent page.',
+      windowText: 'Windows display escaped text and never execute partial HTML',
+      emptyBody: 'Empty body',
+      revisions: 'Web / feed revisions',
+      registrationFilter: 'Filter by registration ID (optional)',
+      filter: 'Apply filter',
+      current: 'Current revision',
+      historical: 'Historical revision',
+      fixedRevision: 'Fixed web revision',
+      completeness: {
+        summary: 'Summary only; not a complete article',
+        unknown: 'Body completeness is unknown',
+        external_reference:
+          'External content reference only; no automatic article acquisition',
+      },
+      ack: {
+        summary_only: 'I acknowledge that this item saves only a summary',
+        unknown_completeness: 'I acknowledge that body completeness is unknown',
+        external_reference_only:
+          'I acknowledge that this item only references external content',
+      },
+      state: {
+        awaiting_bytes: 'Awaiting bytes',
+        awaiting_fetch: 'Awaiting explicit acquisition',
+        receiving: 'Receiving',
+        fetching: 'Acquiring',
+        ready: 'Ready',
+        interrupted: 'Interrupted',
+        rejected: 'Rejected',
+        cancelled: 'Cancelled',
+        expired: 'Expired',
+        parsing: 'Normalizing',
+      },
+    },
     knowledgeOriginal: {
       title: 'Document originals',
       textSources: 'Text sources',

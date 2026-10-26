@@ -30,6 +30,7 @@ import { useImportFlow } from './use-import-flow';
 import DirectoryImport from './directory';
 import BatchImport from './batch';
 import OriginalImport from './original';
+import WebImport from './web';
 
 export function ImportFailure({
   error,
@@ -83,11 +84,13 @@ function DomainPicker({
   directory,
   batch = false,
   original = false,
+  web = false,
 }: {
   onSelect: () => void;
   directory: boolean;
   batch?: boolean;
   original?: boolean;
+  web?: boolean;
 }) {
   const { t } = useTranslation();
   const query = useKnowledgeDomains();
@@ -108,7 +111,7 @@ function DomainPicker({
           <Link
             key={domain.domain_id}
             className="block rounded-lg border border-border-button p-3"
-            to={`/dataset/knowledge-import/${domain.domain_id}${original ? '?mode=original' : batch ? '?mode=batch' : directory ? '?mode=directory' : ''}`}
+            to={`/dataset/knowledge-import/${domain.domain_id}${web ? '?mode=web' : original ? '?mode=original' : batch ? '?mode=batch' : directory ? '?mode=directory' : ''}`}
             onClick={onSelect}
           >
             {domain.name}
@@ -487,6 +490,7 @@ export default function KnowledgeImport() {
   const directory = params.get('mode') === 'directory';
   const batch = params.get('mode') === 'batch';
   const original = params.get('mode') === 'original';
+  const web = params.get('mode') === 'web';
   const { t } = useTranslation();
   const [chooseDomain, setChooseDomain] = useState(false);
   const handleChooseDomain = () => setChooseDomain(!chooseDomain);
@@ -507,6 +511,7 @@ export default function KnowledgeImport() {
     setParams(next);
   };
   const handleOriginal = () => setParams({ mode: 'original' });
+  const handleWeb = () => setParams({ mode: 'web' });
   return (
     <section className="min-w-0 space-y-4 overflow-auto p-6 text-text-primary">
       <div className="flex flex-wrap gap-4">
@@ -525,8 +530,10 @@ export default function KnowledgeImport() {
         className="flex flex-wrap gap-2"
       >
         <Button
-          variant={directory || batch || original ? 'outline' : 'default'}
-          aria-pressed={!directory && !batch && !original}
+          variant={
+            directory || batch || original || web ? 'outline' : 'default'
+          }
+          aria-pressed={!directory && !batch && !original && !web}
           onClick={handleManual}
         >
           {t('knowledgeDirectory.manual')}
@@ -552,6 +559,13 @@ export default function KnowledgeImport() {
         >
           {t('knowledgeOriginal.title')}
         </Button>
+        <Button
+          variant={web ? 'default' : 'outline'}
+          aria-pressed={web}
+          onClick={handleWeb}
+        >
+          {t('knowledgeWeb.title')}
+        </Button>
       </nav>
       {chooseDomain ? (
         <DomainPicker
@@ -559,7 +573,10 @@ export default function KnowledgeImport() {
           directory={directory}
           batch={batch}
           original={original}
+          web={web}
         />
+      ) : web ? (
+        <WebImport key={`${id}:${getKnowledgeSessionScope()}`} domain={id} />
       ) : original ? (
         <OriginalImport
           key={`${id}:${getKnowledgeSessionScope()}`}

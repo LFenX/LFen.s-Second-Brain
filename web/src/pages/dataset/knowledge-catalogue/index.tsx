@@ -23,6 +23,7 @@ import {
 } from '@/utils/knowledge-source-link';
 import SourceContent from './content';
 import OriginalRevisions from '../knowledge-import/original-revisions';
+import WebRevisions from '../knowledge-import/web-revisions';
 import {
   CatalogueEmpty,
   CatalogueFailure,
@@ -376,9 +377,12 @@ function DomainCatalogue({
   const domain = useKnowledgeDomain(domainId);
   const [path, setPath] = useState<KnowledgeGroup[]>([]);
   const [source, setSource] = useState<KnowledgeSource | null>(null);
-  const [originals, setOriginals] = useState(false);
-  const showText = () => setOriginals(false);
-  const showOriginals = () => setOriginals(true);
+  const [sourceView, setSourceView] = useState<'text' | 'original' | 'web'>(
+    'text',
+  );
+  const showText = () => setSourceView('text');
+  const showOriginals = () => setSourceView('original');
+  const showWeb = () => setSourceView('web');
   const [generation, setGeneration] = useState(0);
   const [scopeFailure, setScopeFailure] =
     useState<KnowledgeRequestError | null>(null);
@@ -492,21 +496,34 @@ function DomainCatalogue({
           <h2 className="font-semibold">{t('knowledgeCatalogue.sources')}</h2>
           <div className="flex flex-wrap gap-2">
             <Button
-              variant={originals ? 'outline' : 'default'}
-              aria-pressed={!originals}
+              variant={sourceView === 'text' ? 'default' : 'outline'}
+              aria-pressed={sourceView === 'text'}
               onClick={showText}
             >
               {t('knowledgeOriginal.textSources')}
             </Button>
             <Button
-              variant={originals ? 'default' : 'outline'}
-              aria-pressed={originals}
+              variant={sourceView === 'original' ? 'default' : 'outline'}
+              aria-pressed={sourceView === 'original'}
               onClick={showOriginals}
             >
               {t('knowledgeOriginal.originals')}
             </Button>
+            <Button
+              variant={sourceView === 'web' ? 'default' : 'outline'}
+              aria-pressed={sourceView === 'web'}
+              onClick={showWeb}
+            >
+              {t('knowledgeWeb.revisions')}
+            </Button>
           </div>
-          {originals ? (
+          {sourceView === 'web' ? (
+            <WebRevisions
+              domain={domainId}
+              owner={domain.data.owner_id}
+              group={path.at(-1)?.id}
+            />
+          ) : sourceView === 'original' ? (
             <OriginalRevisions domain={domainId} group={path.at(-1)?.id} />
           ) : (
             <Sources
