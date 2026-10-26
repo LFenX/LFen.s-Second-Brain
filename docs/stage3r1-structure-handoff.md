@@ -46,3 +46,7 @@ A后端与同版MySQL/S3最小闭环已验证，见stage3r1-structure-backend-ve
 - 未实施：富文档／Wiki、检索与向量索引、回答引用复用、临时MCP共享及人格记忆。R1实际SQL／对象网络中断和浏览器丢包注入未执行；远程图片通过代码渲染／DOM无img及生产器无取图验证，不冒充网络抓包。
 
 下一顺序：A收敛富文档首片具体候选（单一固定原件，PDF物理页／PPT幻灯片／DOCX IR块，独立默认关闭许可、任务恢复、原件SHA与派生坐标分开）；消费会话一次集中输入确切接口形状与阅读边界。旧Structure0.1/C2.5不改，候选经真人确认后才实施后端→清洁Web写窗→同版合成联调。准备不调用模型／OCR／真实资料，不启动多轮审查，不将已有原生预览组件当成正式入库或定位通过。
+
+## v0.61 下一批具体候选
+
+上述v0.60的DOCX IR方向已被新合成二进制源顺序反例修订。当前[R2具体候选](knowledge-document-structure-v0.1.candidate.md)对Office采用有界OOXML源顺序与定位、PDF保留物理页文字；[接续](stage3r2-document-handoff.md)与[准备报告](stage3r2-document-candidate-verification.json)为后续入口。12操作／101schema、140合法／148拒绝例及摘要／字串向量完成候选核验；未冻结或接业务，不能把原生6保留／3部分保留写成新生产器通过。R1报告及人的Pending决定不由本候选改写，41保护件／实际应用保持。

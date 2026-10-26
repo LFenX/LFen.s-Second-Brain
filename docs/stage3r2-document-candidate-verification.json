@@ -1,0 +1,1051 @@
+{
+  "document_version": "v0.61",
+  "recorded_at": "2026-10-26T13:55:18.429Z",
+  "status": "CandidatePrepared_NotFrozen_NotBusinessImplemented",
+  "objective": "形成可核对的富文档固定结构/阅读具体候选，验证源顺序风险，未获新契约确认前不接业务。",
+  "request_snapshot": {
+    "continuous_original": "请注意后续的步骤，请你持续不断地进行下去，跟另外一个会话，甚至你可以开其他的会话去协调。但一个讯息是你必须要传达的，就是一定一定不能够停下来。一定一定就是至少说有一个会话不能停下来，要主会话不能停下来，你就是主会话，要牵动其他废话，持续不断地推进咱们这个工作，直到最后完成。",
+    "authority_boundary": "新共享候选具体确认后才实施；合成资料、模型/本地推理0、不启动多轮审查，源码/Git/运行单写入。",
+    "R1_subject": "ddc5630的确认只批准Structure0.1，不延伸为本Document Structure候选的批准。"
+  },
+  "clarification": {
+    "state": "Settled",
+    "notice": "本轮准备范围已明确，不重复提问。共享接口的确认会放在具体候选、示例和验证结果齐备之后，一次完成。",
+    "scope": "仅设计及隔离合成库验证；不是业务实施的Proceed。"
+  },
+  "first_principles_analysis": {
+    "result": "保存的文档能按可信页/slide/块位置阅读和整理，原件与派生文字清楚区分。",
+    "facts": [
+      {
+        "fact": "C2.5固定原件与0.7世代、R1任务/原键/域锁/固定读取已存在。",
+        "evidence_refs": [
+          "docs/knowledge-original-import-v1.openapi.json",
+          "docs/knowledge-source-lifecycle-v1.openapi.json",
+          "docs/stage3r1-structure-verification.json"
+        ]
+      },
+      {
+        "fact": "2份新Office原生提取成功，但9项源事实6保留3部分；IR与源顺序存在差异。",
+        "evidence_refs": [
+          {
+            "path": "D:\\LFEN_project\\dev_project\\LFEN的第二大脑-知识库\\.local-data\\stage3-20261026\\rich-document-candidate-draft/r2-native/native-assessment.json",
+            "sha256": "2b96810240ace0e233001b945b1622852f471c1fd14b4d83a6edfafb35dd6563"
+          },
+          {
+            "path": "D:\\LFEN_project\\dev_project\\LFEN的第二大脑-知识库\\.local-data\\stage3-20261026\\rich-document-candidate-draft/native-evidence-check.json",
+            "sha256": "9a24f2454eb0c4a8721883b13552e0d0d800d984e40d150439fcf1f38cd21000"
+          }
+        ]
+      },
+      {
+        "fact": "现有ExtractRawBlocks仍使用office_oxide IR，不是直接源XML。",
+        "evidence_refs": [
+          "internal/deepdoc/parser/office/reader.go"
+        ]
+      },
+      {
+        "fact": "现有.5有界ZIP/XML原语可作为源读取预算校验基础，但尚无本片源结构投影。",
+        "evidence_refs": [
+          "internal/service/dataset/knowledge_original_office.go"
+        ]
+      }
+    ],
+    "constraints": [
+      {
+        "constraint": "旧41保护文件不变，新契约不提前接入。",
+        "source_refs": [
+          "AGENTS.md",
+          "docs/knowledge-structure-v1.freeze.json"
+        ]
+      },
+      {
+        "constraint": "无模型/真实资料/多轮审查，无新增服务或第二套worker。",
+        "source_refs": [
+          "会话接续说明.md",
+          "本地第二大脑知识库技术方案.md#40"
+        ]
+      },
+      {
+        "constraint": "保留现有目录/命名；single tracked writer A。",
+        "source_refs": [
+          "AGENTS.md",
+          "docs/stage2-local-coordination.md"
+        ]
+      }
+    ],
+    "assumptions": [
+      {
+        "assumption": "Go有界OOXML源投影能够保留本批源顺序及内联位置。",
+        "validation": "冻结后用预标真值验证source→projection→stored representation；当前未实现，不标通过。"
+      },
+      {
+        "assumption": "同二进制一次性子模式可提供可核对的拥有/停止/退出与资源回收。",
+        "validation": "冻结后普通及合成挂起进程、取消/失租约/父异常/恢复专项验证，不拿原生短样本代替。"
+      },
+      {
+        "assumption": "预算8MiB/128页或slide及合计RSS256MiB可满足首片目标。",
+        "validation": "冻结合成三格式基准各5次和父子RSS采样；当前没有此性能结果。"
+      }
+    ],
+    "unknowns": [
+      {
+        "item": "源投影与子模式实际正确性/性能",
+        "owner": "A",
+        "blocks": "工程验收",
+        "release": "仅在具体候选批准后实施并完成真实合成联调"
+      }
+    ],
+    "fundamentals": [
+      "固定来源修订",
+      "可信源顺序/位置",
+      "派生表示身份",
+      "当前授权/用途许可",
+      "有界处理和持久恢复",
+      "可读结构与原字节分离"
+    ],
+    "causal_chain": [
+      "IR顺序已证明有损→源XML顺序/属性作为Office权威→保留IR反例而不是放宽断言。",
+      "原件没有C1根→独立DocumentNode/Representation→保留原件root=null并分离derived_utf8。",
+      "已存在持久执行/世代核心→共用typed target/lease/fence→不复制worker。",
+      "原生不能中途ctx停止→明确父拥有子模式与退出证据→不把超时等同进程结束。"
+    ],
+    "alternatives": [
+      {
+        "choice": "保持仅下载",
+        "effect": "无法满足结构阅读。"
+      },
+      {
+        "choice": "仅native IR",
+        "effect": "已被源顺序/inline反例否定为本片权威顺序。"
+      },
+      {
+        "choice": "Go有界OOXML源结构+本地PDF页提取",
+        "effect": "选定候选，需自研源投影并验证。"
+      },
+      {
+        "choice": "另建文档服务/视觉引擎",
+        "effect": "增加基础设施和重复授权/恢复，当前不选。"
+      }
+    ],
+    "decision_criteria": [
+      "来源与顺序真实",
+      "原件历史不变",
+      "权限/用途不扩大",
+      "原子表示且可恢复",
+      "性能首先且独立计量",
+      "人/Agent共用固定节点",
+      "不新建重复基础栈"
+    ],
+    "derived_plan": [
+      "原件/源真值/IR缺口绑定→修订Office权威与locator",
+      "MD+OpenAPI+examples/摘要向量→具体冻结",
+      "获批准后先拥有层生产+共享任务核心→清洁交Web窗",
+      "同版合成HTTP/浏览器/性能→独立人的工程验收"
+    ],
+    "verification": "本轮只证明库提取与证据链及候选机器件；不把它写成未实现生产器或应用质量通过。",
+    "resolved_in_this_delivery": [
+      {
+        "item": "共享OpenAPI、精确字段/摘要/字串向量及例的完整一致性",
+        "resolution": "Concrete machine artifacts completed, schema/examples/reference vectors checked; does not resolve application implementation or performance.",
+        "checks": {
+          "schemas_compiled": 101,
+          "positive_passed": 140,
+          "negative_rejected": 148,
+          "digest_vectors_cross_checked": 28,
+          "reading_vectors_checked": 10,
+          "raw_json_cases_checked": 7,
+          "query_cases_checked": 11,
+          "routes_checked": 12,
+          "success_status_cases_checked": 15,
+          "trees_checked": 3,
+          "nodes_checked": 49,
+          "own_ranges_checked": 19,
+          "internal_refs_checked": 492,
+          "strict_object_schemas_checked": 91
+        }
+      }
+    ]
+  },
+  "task_profile": {
+    "delivery": "Concrete shared contract candidate and isolated synthetic library evidence",
+    "carrier": "This report, existing handoff/planning documents and ignored local evidence",
+    "scope": "Document Structure 0.1.0, one fixed .5 original per task, PDF/PPTX/DOCX",
+    "review": "No multi-round or adversarial review",
+    "governance": "Preserve existing project directories and Chinese planning files."
+  },
+  "source": {
+    "base_main": "abdb141ae17b80a7f980f042220f07e349b868c0",
+    "branch": "codex/stage3r2-document-candidate",
+    "tracked_scope": [
+      "README.md",
+      "docs/stage2-local-coordination.md",
+      "docs/stage3r1-structure-handoff.md",
+      "会话接续说明.md",
+      "本地第二大脑知识库技术方案.md",
+      "docs/knowledge-document-structure-v0.1.candidate.examples.json",
+      "docs/knowledge-document-structure-v0.1.candidate.md",
+      "docs/knowledge-document-structure-v0.1.candidate.openapi.json",
+      "docs/stage3r2-document-candidate-verification.json",
+      "docs/stage3r2-document-handoff.md"
+    ],
+    "tracked_business_changes": 0,
+    "dependency_changes": 0,
+    "runtime_changes": 0
+  },
+  "candidate": {
+    "contract_version": "1.0.0",
+    "document_structure_contract_version": "0.1.0",
+    "frozen": false,
+    "same_commit_confirmation_required": true,
+    "artifacts": [
+      {
+        "path": "docs/knowledge-document-structure-v0.1.candidate.md",
+        "sha256": "0ea3c83a7cf8a33a1c65c0ecff8535f37fe6c080fdf4965503f8252ef5e5829f"
+      },
+      {
+        "path": "docs/knowledge-document-structure-v0.1.candidate.openapi.json",
+        "sha256": "57f87a1331c588ad9601d51313ea7ae0811a297ecd117bc47ac7e7332e7d4d53"
+      },
+      {
+        "path": "docs/knowledge-document-structure-v0.1.candidate.examples.json",
+        "sha256": "ae15b5f1a85de61aea885c0a758390629f78b82ad82b3c8c26cfd666f4ebbeb7"
+      }
+    ],
+    "operations": 12,
+    "schemas": 101,
+    "validation": {
+      "path": ".local-data/stage3-20261026/rich-document-candidate-draft/contract-draft/validation-results.json",
+      "sha256": "c6df7bd6b9e04d84ee96ab06996acd46c410d675de5382fb465ada9dad2cb906",
+      "result": {
+        "status": "Passed",
+        "execution_scope": "Local JSON Schema + explicit reference predicates + synthetic vectors only",
+        "executed_at": "2026-10-26T13:52:32.885Z",
+        "node_version": "v22.22.3",
+        "ajv_version": "8.17.1",
+        "ajv_formats_version": "3.0.1",
+        "checks": {
+          "schemas_compiled": 101,
+          "positive_passed": 140,
+          "negative_rejected": 148,
+          "digest_vectors_cross_checked": 28,
+          "reading_vectors_checked": 10,
+          "raw_json_cases_checked": 7,
+          "query_cases_checked": 11,
+          "routes_checked": 12,
+          "success_status_cases_checked": 15,
+          "trees_checked": 3,
+          "nodes_checked": 49,
+          "own_ranges_checked": 19,
+          "internal_refs_checked": 492,
+          "strict_object_schemas_checked": 91
+        },
+        "expected": {
+          "positive": 140,
+          "negative": 148,
+          "vectors": 28,
+          "routes": 12
+        },
+        "failures": [],
+        "source_hashes": {
+          "docs/knowledge-document-structure-v0.1.candidate.md": {
+            "sha256": "0ea3c83a7cf8a33a1c65c0ecff8535f37fe6c080fdf4965503f8252ef5e5829f",
+            "byte_length": 26810
+          },
+          ".local-data/stage3-20261026/rich-document-candidate-draft/client-contract-shape.md": {
+            "sha256": "d8b3aaeaefdf7e44cf3251d91ea32cfcfca679d1aa442f3d20220b02725c2c37",
+            "byte_length": 50008
+          },
+          "AGENTS.md": {
+            "sha256": "a73b86a7264eb1a5c31c7f47660373b545a9d9213d4bb460a284dbf0d36d9f05",
+            "byte_length": 18176
+          }
+        },
+        "artifact_hashes": {
+          "knowledge-document-structure-v0.1.candidate.openapi.json": {
+            "sha256": "57f87a1331c588ad9601d51313ea7ae0811a297ecd117bc47ac7e7332e7d4d53",
+            "byte_length": 277819
+          },
+          "knowledge-document-structure-v0.1.candidate.examples.json": {
+            "sha256": "ae15b5f1a85de61aea885c0a758390629f78b82ad82b3c8c26cfd666f4ebbeb7",
+            "byte_length": 1110483
+          },
+          "generate-contract.cjs": {
+            "sha256": "14126926c2337294fec045df149d2fa8e1ba7062ae6f0c1de65102151cc42df0",
+            "byte_length": 98263
+          },
+          "validate-contract.cjs": {
+            "sha256": "8b78c459c73ba0c9d4fc5e60f3b9068d334ae1db1bdde00c38f96202bc824a72",
+            "byte_length": 35959
+          }
+        },
+        "application_calls": 0,
+        "model_calls": 0,
+        "local_inference": 0,
+        "external_fetches": 0,
+        "user_decision": {
+          "outcome": "Pending"
+        },
+        "unexecuted": [
+          "Go OOXML source parser/PDF adapter",
+          "native binary source truth",
+          "HTTP/native login and headers",
+          "authorization/SQL/S3 transactions",
+          "single worker/lease/fence/cancellation/cleanup/recovery",
+          "browser/session/recovery storage",
+          "RSS/performance/process sandbox/network behavior",
+          "business/API acceptance"
+        ],
+        "limitation": "Passing this file does not establish parser source fidelity, API behavior, authorization, transactions, task execution/cleanup, browser functionality, process/network isolation or performance."
+      },
+      "native_unexecuted_interpretation": "The machine-artifact check does not execute any native library; its unexecuted native source truth entry refers to the proposed new profile. The distinct current-library extraction is recorded below."
+    },
+    "examples_scope": "Synthetic normative DTO/text/identity vectors only. They are not outputs from a newly implemented Go OOXML source producer, live routes or browser."
+  },
+  "source_truth": {
+    "path": ".local-data/stage3-20261026/rich-document-candidate-draft/fixtures-v1/source-truth.json",
+    "sha256": "2d9c5d051cc8427e46839782241dd227eb83b43969dd1c500a378ea70ec662c5",
+    "preannotated_before_extraction": true,
+    "files": [
+      {
+        "name": "synthetic-outline-table-list-image.docx",
+        "byte_length": 6423,
+        "sha256": "e78dcf5e61c432d100711a182fc67fcd79850cc185bbc097a688ec720790f6e5",
+        "entries": [
+          {
+            "path": "[Content_Types].xml",
+            "sha256": "c232dc08cbc18595b39f9dd7b7c8a3294f52d78297b4eba67529ac368eb3fb84"
+          },
+          {
+            "path": "_rels/.rels",
+            "sha256": "ee31a24f1fec57e9ff9c20837ba5ad76e37ee368a06b4bd577f69604d6e20418"
+          },
+          {
+            "path": "word/document.xml",
+            "sha256": "284e9f03a7dcac039649246e6aa1fc081e7c6bf0bb025ac528c781aa2550f830"
+          },
+          {
+            "path": "word/_rels/document.xml.rels",
+            "sha256": "9a37c3b294094a50cec64e221f8a39d53686642b96bb1f00e908ff81bd545caf"
+          },
+          {
+            "path": "word/styles.xml",
+            "sha256": "5a5044f9bc6077237a6014352dcf084baa1a5c0c8fb0806120218c7aef4b0466"
+          },
+          {
+            "path": "word/numbering.xml",
+            "sha256": "3ce85f2089c342ceee65440aa3881964f4cdf4c3d38afe5f60515de58a133ece"
+          },
+          {
+            "path": "word/media/square.png",
+            "sha256": "696e00c9a23f1b6cd71df368532f75d90e84af37d41916f9c3d9a14bcccb5c08"
+          }
+        ]
+      },
+      {
+        "name": "synthetic-slides-table-image.pptx",
+        "byte_length": 7248,
+        "sha256": "8b1ded9d9d0a588f99a5160dfab1ab9299b7eb1c5a9bd04f24dba3a81fa2519f",
+        "entries": [
+          {
+            "path": "[Content_Types].xml",
+            "sha256": "ab7aa201b25ed723fa00506389ad8d233a7d0a27798a0c3f22f7505391377061"
+          },
+          {
+            "path": "_rels/.rels",
+            "sha256": "86317d23fc06e9001fd3e02d657717d2886ff69e72b5e2720c174b4e5580b340"
+          },
+          {
+            "path": "ppt/presentation.xml",
+            "sha256": "2e1967327b9fcc4598c601cbcf1eaa5f385813a0bf93c8261aea4a5bb7e2a39f"
+          },
+          {
+            "path": "ppt/_rels/presentation.xml.rels",
+            "sha256": "7e97f7fe340b4a0fbded92640534f90a5b15d6a328b2b7886f0604cacec75658"
+          },
+          {
+            "path": "ppt/slides/_rels/slide1.xml.rels",
+            "sha256": "76766e075262a280d5b1435e0a610e23f6954d359e2a689b6566d7db5c277ceb"
+          },
+          {
+            "path": "ppt/media/square.png",
+            "sha256": "696e00c9a23f1b6cd71df368532f75d90e84af37d41916f9c3d9a14bcccb5c08"
+          },
+          {
+            "path": "ppt/slides/slide1.xml",
+            "sha256": "84e5ba96507fc85564ea3e1fa44644edd98e98b0a6f73233a1d8d352c96855f8"
+          },
+          {
+            "path": "ppt/slides/slide2.xml",
+            "sha256": "a312617d6a6a4b66c16ca5362692e8e344ba55e0eb3c7d198c04af822356d36b"
+          },
+          {
+            "path": "ppt/slides/slide3.xml",
+            "sha256": "4ca71676911f242d88f551dd453bc75e5471d29a58914ef9f48698a633d2149f"
+          }
+        ]
+      }
+    ],
+    "facts": [
+      {
+        "id": "RD10",
+        "source": {
+          "id": "RD10",
+          "source": "synthetic-slides-table-image.pptx",
+          "part": "ppt/slides/slide1.xml",
+          "assertion": "Table has2rows/2cells; row2cell2=b; row1cell2 empty. No merged/header semantics asserted."
+        },
+        "native_status": "Passed",
+        "current_adapter_status": "Partial",
+        "observed": "原生IR有2行×2格，row1cell2为content:[]，row2cell2为b；源真值完整保留。",
+        "gap": "现有PPTX items把表格扁平成slide text，空格坐标与表格类型消失；其中出现b不能证明适配结果保留表格。未验证合并格或表头语义。",
+        "limitation": null,
+        "source_refs": [
+          {
+            "source_name": "synthetic-slides-table-image.pptx",
+            "source_sha256": "8b1ded9d9d0a588f99a5160dfab1ab9299b7eb1c5a9bd04f24dba3a81fa2519f",
+            "part": "ppt/slides/slide1.xml",
+            "part_sha256": "84e5ba96507fc85564ea3e1fa44644edd98e98b0a6f73233a1d8d352c96855f8",
+            "xpath": "/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl",
+            "byte_start": 1145,
+            "byte_end_exclusive": 1724,
+            "fragment_sha256": "2cef5ff657b9c7a55b46d1622a780b12fafa30cc0aa6987df6655e85d9eacc57",
+            "fragment": "<a:tbl><a:tblPr firstRow=\"0\" bandRow=\"0\"/><a:tblGrid><a:gridCol w=\"3000000\"/><a:gridCol w=\"3000000\"/></a:tblGrid><a:tr h=\"1000000\"><a:tc><a:txBody><a:bodyPr/><a:lstStyle/><a:p><a:r><a:t>header</a:t></a:r></a:p></a:txBody><a:tcPr/></a:tc><a:tc><a:txBody><a:bodyPr/><a:lstStyle/><a:p><a:r><a:t></a:t></a:r></a:p></a:txBody><a:tcPr/></a:tc></a:tr><a:tr h=\"1000000\"><a:tc><a:txBody><a:bodyPr/><a:lstStyle/><a:p><a:r><a:t>a</a:t></a:r></a:p></a:txBody><a:tcPr/></a:tc><a:tc><a:txBody><a:bodyPr/><a:lstStyle/><a:p><a:r><a:t>b</a:t></a:r></a:p></a:txBody><a:tcPr/></a:tc></a:tr></a:tbl>"
+          }
+        ],
+        "native_refs": [
+          {
+            "evidence_file": "attempt-01/evidence/pptx.native-ir.json",
+            "evidence_file_sha256": "82d5c01d532eb278ad0de1011c58b1d42a0e93cbe6a4ba1e9f2adfad6d9b7c90",
+            "json_pointer": "/sections/0/elements/1/content/0",
+            "fragment_sha256": "4e13eb61604d9a75b69810534c5aa4df5cc21618fdc6a2aa1e14ffb39be0a3a2"
+          },
+          {
+            "evidence_file": "attempt-01/evidence/pptx.native-ir.json",
+            "evidence_file_sha256": "82d5c01d532eb278ad0de1011c58b1d42a0e93cbe6a4ba1e9f2adfad6d9b7c90",
+            "json_pointer": "/sections/0/elements/1/content/0/rows/0/cells/1",
+            "fragment_sha256": "21c76e8b39f3be9e81ae0740c2246f4030af0d4c3dd4602bc296b9a46e516585"
+          },
+          {
+            "evidence_file": "attempt-01/evidence/pptx.native-ir.json",
+            "evidence_file_sha256": "82d5c01d532eb278ad0de1011c58b1d42a0e93cbe6a4ba1e9f2adfad6d9b7c90",
+            "json_pointer": "/sections/0/elements/1/content/0/rows/1/cells/1/content/0/content/0/text",
+            "fragment_sha256": "c100f95c1913f9c72fc1f4ef0847e1e723ffe0bde0b36e5f36c13f81fe8c26ed"
+          }
+        ],
+        "reader_non_execution_status": "NotTestedInApplication"
+      },
+      {
+        "id": "RD11",
+        "source": {
+          "id": "RD11",
+          "source": "synthetic-slides-table-image.pptx",
+          "part": "ppt/slides/slide1.xml",
+          "assertion": "One PNG reference rImage1 in slide1 after title/body/table; no OCR text in source."
+        },
+        "native_status": "Partial",
+        "current_adapter_status": "Partial",
+        "observed": "slide1中的唯一PNG解码后与源媒体逐字节同SHA；图片在slide1保留。",
+        "gap": "原生IR已重排正文与媒体/表格，不能证明源形状顺序；adapter仅有slide_number=1/media_order=1，不能表示原OOXML全形状顺序。源rImage1关系ID未保留。",
+        "limitation": null,
+        "source_refs": [
+          {
+            "source_name": "synthetic-slides-table-image.pptx",
+            "source_sha256": "8b1ded9d9d0a588f99a5160dfab1ab9299b7eb1c5a9bd04f24dba3a81fa2519f",
+            "part": "ppt/slides/slide1.xml",
+            "part_sha256": "84e5ba96507fc85564ea3e1fa44644edd98e98b0a6f73233a1d8d352c96855f8",
+            "xpath": "/p:sld/p:cSld/p:spTree/p:sp[1]",
+            "byte_start": 379,
+            "byte_end_exclusive": 632,
+            "fragment_sha256": "9929ed647c67fb292afa85dc2f0281e71cbe1c26756eb541edcac7afde19a9b7",
+            "fragment": "<p:sp><p:nvSpPr><p:cNvPr id=\"2\" name=\"Title 1\"/><p:cNvSpPr/><p:nvPr><p:ph type=\"title\"/></p:nvPr></p:nvSpPr><p:spPr/><p:txBody><a:bodyPr/><a:lstStyle/><a:p><a:r><a:rPr lang=\"en-US\"/><a:t>Slide One Title</a:t></a:r><a:endParaRPr/></a:p></p:txBody></p:sp>"
+          },
+          {
+            "source_name": "synthetic-slides-table-image.pptx",
+            "source_sha256": "8b1ded9d9d0a588f99a5160dfab1ab9299b7eb1c5a9bd04f24dba3a81fa2519f",
+            "part": "ppt/slides/slide1.xml",
+            "part_sha256": "84e5ba96507fc85564ea3e1fa44644edd98e98b0a6f73233a1d8d352c96855f8",
+            "xpath": "/p:sld/p:cSld/p:spTree/p:sp[2]",
+            "byte_start": 632,
+            "byte_end_exclusive": 859,
+            "fragment_sha256": "d158d306563ad9245a43070e9357bc5b62041ef06151f5a4a6f30ef4f462ff0f",
+            "fragment": "<p:sp><p:nvSpPr><p:cNvPr id=\"3\" name=\"Body 1\"/><p:cNvSpPr/><p:nvPr></p:nvPr></p:nvSpPr><p:spPr/><p:txBody><a:bodyPr/><a:lstStyle/><a:p><a:r><a:rPr lang=\"en-US\"/><a:t>Alpha body</a:t></a:r><a:endParaRPr/></a:p></p:txBody></p:sp>"
+          },
+          {
+            "source_name": "synthetic-slides-table-image.pptx",
+            "source_sha256": "8b1ded9d9d0a588f99a5160dfab1ab9299b7eb1c5a9bd04f24dba3a81fa2519f",
+            "part": "ppt/slides/slide1.xml",
+            "part_sha256": "84e5ba96507fc85564ea3e1fa44644edd98e98b0a6f73233a1d8d352c96855f8",
+            "xpath": "/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl",
+            "byte_start": 1145,
+            "byte_end_exclusive": 1724,
+            "fragment_sha256": "2cef5ff657b9c7a55b46d1622a780b12fafa30cc0aa6987df6655e85d9eacc57",
+            "fragment": "<a:tbl><a:tblPr firstRow=\"0\" bandRow=\"0\"/><a:tblGrid><a:gridCol w=\"3000000\"/><a:gridCol w=\"3000000\"/></a:tblGrid><a:tr h=\"1000000\"><a:tc><a:txBody><a:bodyPr/><a:lstStyle/><a:p><a:r><a:t>header</a:t></a:r></a:p></a:txBody><a:tcPr/></a:tc><a:tc><a:txBody><a:bodyPr/><a:lstStyle/><a:p><a:r><a:t></a:t></a:r></a:p></a:txBody><a:tcPr/></a:tc></a:tr><a:tr h=\"1000000\"><a:tc><a:txBody><a:bodyPr/><a:lstStyle/><a:p><a:r><a:t>a</a:t></a:r></a:p></a:txBody><a:tcPr/></a:tc><a:tc><a:txBody><a:bodyPr/><a:lstStyle/><a:p><a:r><a:t>b</a:t></a:r></a:p></a:txBody><a:tcPr/></a:tc></a:tr></a:tbl>"
+          },
+          {
+            "source_name": "synthetic-slides-table-image.pptx",
+            "source_sha256": "8b1ded9d9d0a588f99a5160dfab1ab9299b7eb1c5a9bd04f24dba3a81fa2519f",
+            "part": "ppt/slides/slide1.xml",
+            "part_sha256": "84e5ba96507fc85564ea3e1fa44644edd98e98b0a6f73233a1d8d352c96855f8",
+            "xpath": "/p:sld/p:cSld/p:spTree/p:pic",
+            "byte_start": 1769,
+            "byte_end_exclusive": 2083,
+            "fragment_sha256": "ea6490cc046a402daaa4a4dbeb6da4b1717a6066b5dfc861ad01b9cdeb308590",
+            "fragment": "<p:pic><p:nvPicPr><p:cNvPr id=\"5\" name=\"square.png\"/><p:cNvPicPr/><p:nvPr/></p:nvPicPr><p:blipFill><a:blip r:embed=\"rImage1\"/><a:stretch><a:fillRect/></a:stretch></p:blipFill><p:spPr><a:xfrm><a:off x=\"0\" y=\"0\"/><a:ext cx=\"19050\" cy=\"19050\"/></a:xfrm><a:prstGeom prst=\"rect\"><a:avLst/></a:prstGeom></p:spPr></p:pic>"
+          }
+        ],
+        "native_refs": [
+          {
+            "evidence_file": "attempt-01/evidence/pptx.native-ir.json",
+            "evidence_file_sha256": "82d5c01d532eb278ad0de1011c58b1d42a0e93cbe6a4ba1e9f2adfad6d9b7c90",
+            "json_pointer": "/sections/0/elements",
+            "fragment_sha256": "3667ae95304f508ead1b03ad09871d44604b83cd24cc2d8cf8be0f3697126a49"
+          }
+        ],
+        "reader_non_execution_status": "NotTestedInApplication"
+      },
+      {
+        "id": "RD13",
+        "source": {
+          "id": "RD13",
+          "source": "synthetic-outline-table-list-image.docx",
+          "part": "word/document.xml",
+          "assertion": "第一章 概述 has outlineLvl0/Heading1; 1.1 背景 has outlineLvl1/Heading2. Native preservation not yet checked."
+        },
+        "native_status": "Passed",
+        "current_adapter_status": "Partial",
+        "observed": "原生heading的level分别为1/2；独立现有outline helper产生0/1。",
+        "gap": "现有items仅有ck_type=heading，未携带level；两个标题仍是IR同级elements，未声称原生提供章节父子树。Word物理页及bbox不在本验证范围。",
+        "limitation": null,
+        "source_refs": [
+          {
+            "source_name": "synthetic-outline-table-list-image.docx",
+            "source_sha256": "e78dcf5e61c432d100711a182fc67fcd79850cc185bbc097a688ec720790f6e5",
+            "part": "word/document.xml",
+            "part_sha256": "284e9f03a7dcac039649246e6aa1fc081e7c6bf0bb025ac528c781aa2550f830",
+            "xpath": "/w:document/w:body/w:p[1]",
+            "byte_start": 439,
+            "byte_end_exclusive": 577,
+            "fragment_sha256": "f5a2b61ac9db4220afbdd81372795e65db3b14b0d2ad51cbc80b3c81e6586fb0",
+            "fragment": "<w:p><w:pPr><w:pStyle w:val=\"Heading1\"/><w:outlineLvl w:val=\"0\"/></w:pPr><w:r><w:t xml:space=\"preserve\">第一章 概述</w:t></w:r></w:p>"
+          },
+          {
+            "source_name": "synthetic-outline-table-list-image.docx",
+            "source_sha256": "e78dcf5e61c432d100711a182fc67fcd79850cc185bbc097a688ec720790f6e5",
+            "part": "word/document.xml",
+            "part_sha256": "284e9f03a7dcac039649246e6aa1fc081e7c6bf0bb025ac528c781aa2550f830",
+            "xpath": "/w:document/w:body/w:p[2]",
+            "byte_start": 577,
+            "byte_end_exclusive": 709,
+            "fragment_sha256": "ceaf3d3328d491516b2ac2d8cedf5177a68c0e084023e68baf3b33365488d6a6",
+            "fragment": "<w:p><w:pPr><w:pStyle w:val=\"Heading2\"/><w:outlineLvl w:val=\"1\"/></w:pPr><w:r><w:t xml:space=\"preserve\">1.1 背景</w:t></w:r></w:p>"
+          }
+        ],
+        "native_refs": [
+          {
+            "evidence_file": "attempt-01/evidence/docx.native-ir.json",
+            "evidence_file_sha256": "ca64a152da246317063a7ea0021e8bb0ebdfb06776035e9ee102db20d57bedd9",
+            "json_pointer": "/sections/0/elements/0",
+            "fragment_sha256": "dd766990500296ca51d5ade7a3d044a620732000ca9cc465839d88481764d5fb"
+          },
+          {
+            "evidence_file": "attempt-01/evidence/docx.native-ir.json",
+            "evidence_file_sha256": "ca64a152da246317063a7ea0021e8bb0ebdfb06776035e9ee102db20d57bedd9",
+            "json_pointer": "/sections/0/elements/1",
+            "fragment_sha256": "1a7ef08a6f7b0413fca5c806ea60a866742e68292eabc335b2a0be21fed5f32c"
+          }
+        ],
+        "reader_non_execution_status": "NotTestedInApplication"
+      },
+      {
+        "id": "RD14",
+        "source": {
+          "id": "RD14",
+          "source": "synthetic-outline-table-list-image.docx",
+          "part": "word/document.xml",
+          "assertion": "Title paragraph precedes separate Hello paragraph."
+        },
+        "native_status": "Passed",
+        "current_adapter_status": "Passed",
+        "observed": "Title heading先于独立Hello paragraph，原生IR及当前items均保持两项。",
+        "gap": null,
+        "limitation": null,
+        "source_refs": [
+          {
+            "source_name": "synthetic-outline-table-list-image.docx",
+            "source_sha256": "e78dcf5e61c432d100711a182fc67fcd79850cc185bbc097a688ec720790f6e5",
+            "part": "word/document.xml",
+            "part_sha256": "284e9f03a7dcac039649246e6aa1fc081e7c6bf0bb025ac528c781aa2550f830",
+            "xpath": "/w:document/w:body/w:p[4]",
+            "byte_start": 778,
+            "byte_end_exclusive": 905,
+            "fragment_sha256": "593054f4896393b11633b776424d535dae18ed5c41b313f13529665628fb440d",
+            "fragment": "<w:p><w:pPr><w:pStyle w:val=\"Heading1\"/><w:outlineLvl w:val=\"0\"/></w:pPr><w:r><w:t xml:space=\"preserve\">Title</w:t></w:r></w:p>"
+          },
+          {
+            "source_name": "synthetic-outline-table-list-image.docx",
+            "source_sha256": "e78dcf5e61c432d100711a182fc67fcd79850cc185bbc097a688ec720790f6e5",
+            "part": "word/document.xml",
+            "part_sha256": "284e9f03a7dcac039649246e6aa1fc081e7c6bf0bb025ac528c781aa2550f830",
+            "xpath": "/w:document/w:body/w:p[5]",
+            "byte_start": 905,
+            "byte_end_exclusive": 964,
+            "fragment_sha256": "9c4eabc83b846539490de7a1809258a707153687a726f01453e3bffec644e823",
+            "fragment": "<w:p><w:r><w:t xml:space=\"preserve\">Hello</w:t></w:r></w:p>"
+          }
+        ],
+        "native_refs": [
+          {
+            "evidence_file": "attempt-01/evidence/docx.native-ir.json",
+            "evidence_file_sha256": "ca64a152da246317063a7ea0021e8bb0ebdfb06776035e9ee102db20d57bedd9",
+            "json_pointer": "/sections/0/elements/3",
+            "fragment_sha256": "28068d2080ded8a322f069d24e12768b4f853121bb5034f0e6a40244b3d1b074"
+          },
+          {
+            "evidence_file": "attempt-01/evidence/docx.native-ir.json",
+            "evidence_file_sha256": "ca64a152da246317063a7ea0021e8bb0ebdfb06776035e9ee102db20d57bedd9",
+            "json_pointer": "/sections/0/elements/4",
+            "fragment_sha256": "66efa1ad1518b29f83f324e33ed6dfc61e54fab70ddf2221cd5258c62ec11569"
+          }
+        ],
+        "reader_non_execution_status": "NotTestedInApplication"
+      },
+      {
+        "id": "RD15",
+        "source": {
+          "id": "RD15",
+          "source": "synthetic-outline-table-list-image.docx",
+          "part": "word/document.xml",
+          "assertion": "Table row1cell1=cell; row1cell2 empty; row2=[a,b]."
+        },
+        "native_status": "Passed",
+        "current_adapter_status": "Passed",
+        "observed": "原生IR与当前items grid均为[[cell,空串],[a,b]]，空单元格和行列位置保留。",
+        "gap": null,
+        "limitation": "adapter的table.header_rows=1是现有投影结果，源XML未标注表头；该字段不能视为源表头证据。未声称合并或表头语义通过。",
+        "source_refs": [
+          {
+            "source_name": "synthetic-outline-table-list-image.docx",
+            "source_sha256": "e78dcf5e61c432d100711a182fc67fcd79850cc185bbc097a688ec720790f6e5",
+            "part": "word/document.xml",
+            "part_sha256": "284e9f03a7dcac039649246e6aa1fc081e7c6bf0bb025ac528c781aa2550f830",
+            "xpath": "/w:document/w:body/w:tbl",
+            "byte_start": 964,
+            "byte_end_exclusive": 1596,
+            "fragment_sha256": "7e9ec4857a8522be165ccd7d6e3fb9df5aa66030d5728d9df62471bc943658b1",
+            "fragment": "<w:tbl><w:tblPr><w:tblW w:w=\"6000\" w:type=\"dxa\"/></w:tblPr><w:tblGrid><w:gridCol w:w=\"3000\"/><w:gridCol w:w=\"3000\"/></w:tblGrid><w:tr><w:tc><w:tcPr><w:tcW w:w=\"3000\" w:type=\"dxa\"/></w:tcPr><w:p><w:r><w:t xml:space=\"preserve\">cell</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w=\"3000\" w:type=\"dxa\"/></w:tcPr><w:p><w:r><w:t xml:space=\"preserve\"></w:t></w:r></w:p></w:tc></w:tr><w:tr><w:tc><w:tcPr><w:tcW w:w=\"3000\" w:type=\"dxa\"/></w:tcPr><w:p><w:r><w:t xml:space=\"preserve\">a</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w=\"3000\" w:type=\"dxa\"/></w:tcPr><w:p><w:r><w:t xml:space=\"preserve\">b</w:t></w:r></w:p></w:tc></w:tr></w:tbl>"
+          }
+        ],
+        "native_refs": [
+          {
+            "evidence_file": "attempt-01/evidence/docx.native-ir.json",
+            "evidence_file_sha256": "ca64a152da246317063a7ea0021e8bb0ebdfb06776035e9ee102db20d57bedd9",
+            "json_pointer": "/sections/0/elements/5",
+            "fragment_sha256": "340e20bd6fbd37a962a14605d91f9f262c87ebb411c5668e8c5cd3b06788db77"
+          }
+        ],
+        "reader_non_execution_status": "NotTestedInApplication"
+      },
+      {
+        "id": "RD16",
+        "source": {
+          "id": "RD16",
+          "source": "synthetic-outline-table-list-image.docx",
+          "part": "word/document.xml",
+          "assertion": "item1 has numId1/ilvl0; nested-item has numId1/ilvl1; numbering definition is bullet."
+        },
+        "native_status": "Partial",
+        "current_adapter_status": "Partial",
+        "observed": "原生type=list/style=bullet，item1与items[0].nested.items[0]中的nested-item形成实际父子嵌套。",
+        "gap": "源numId=1未携带；源ilvl分别0/1，但原生根list.level及nested.level实际均为0，不能把原生level直接等同源ilvl。当前items合并为item1\\nnested-item，列表类型、item身份及嵌套丢失。",
+        "limitation": null,
+        "source_refs": [
+          {
+            "source_name": "synthetic-outline-table-list-image.docx",
+            "source_sha256": "e78dcf5e61c432d100711a182fc67fcd79850cc185bbc097a688ec720790f6e5",
+            "part": "word/document.xml",
+            "part_sha256": "284e9f03a7dcac039649246e6aa1fc081e7c6bf0bb025ac528c781aa2550f830",
+            "xpath": "/w:document/w:body/w:p[w:pPr/w:numPr/w:ilvl/@w:val=0]",
+            "byte_start": 1596,
+            "byte_end_exclusive": 1728,
+            "fragment_sha256": "b48984356a611f1ce487ff9ffbcc1c724ed828b1acfe52d3df6948ac9e0073d3",
+            "fragment": "<w:p><w:pPr><w:numPr><w:ilvl w:val=\"0\"/><w:numId w:val=\"1\"/></w:numPr></w:pPr><w:r><w:t xml:space=\"preserve\">item1</w:t></w:r></w:p>"
+          },
+          {
+            "source_name": "synthetic-outline-table-list-image.docx",
+            "source_sha256": "e78dcf5e61c432d100711a182fc67fcd79850cc185bbc097a688ec720790f6e5",
+            "part": "word/document.xml",
+            "part_sha256": "284e9f03a7dcac039649246e6aa1fc081e7c6bf0bb025ac528c781aa2550f830",
+            "xpath": "/w:document/w:body/w:p[w:pPr/w:numPr/w:ilvl/@w:val=1]",
+            "byte_start": 1728,
+            "byte_end_exclusive": 1866,
+            "fragment_sha256": "380829b1fe7a517c6dfdb46bb67a914fddbd2989e93b761d7f719dd5eec5c633",
+            "fragment": "<w:p><w:pPr><w:numPr><w:ilvl w:val=\"1\"/><w:numId w:val=\"1\"/></w:numPr></w:pPr><w:r><w:t xml:space=\"preserve\">nested-item</w:t></w:r></w:p>"
+          },
+          {
+            "source_name": "synthetic-outline-table-list-image.docx",
+            "source_sha256": "e78dcf5e61c432d100711a182fc67fcd79850cc185bbc097a688ec720790f6e5",
+            "part": "word/numbering.xml",
+            "part_sha256": "3ce85f2089c342ceee65440aa3881964f4cdf4c3d38afe5f60515de58a133ece",
+            "xpath": "/w:numbering",
+            "byte_start": 0,
+            "byte_end_exclusive": 535,
+            "fragment_sha256": "3ce85f2089c342ceee65440aa3881964f4cdf4c3d38afe5f60515de58a133ece",
+            "fragment": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><w:numbering xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\"><w:abstractNum w:abstractNumId=\"0\"><w:multiLevelType w:val=\"multilevel\"/><w:lvl w:ilvl=\"0\"><w:start w:val=\"1\"/><w:numFmt w:val=\"bullet\"/><w:lvlText w:val=\"•\"/><w:lvlJc w:val=\"left\"/></w:lvl><w:lvl w:ilvl=\"1\"><w:start w:val=\"1\"/><w:numFmt w:val=\"bullet\"/><w:lvlText w:val=\"•\"/><w:lvlJc w:val=\"left\"/></w:lvl></w:abstractNum><w:num w:numId=\"1\"><w:abstractNumId w:val=\"0\"/></w:num></w:numbering>"
+          }
+        ],
+        "native_refs": [
+          {
+            "evidence_file": "attempt-01/evidence/docx.native-ir.json",
+            "evidence_file_sha256": "ca64a152da246317063a7ea0021e8bb0ebdfb06776035e9ee102db20d57bedd9",
+            "json_pointer": "/sections/0/elements/6",
+            "fragment_sha256": "86bbdeb887f866570f37daffe2f7fd9a5ba213c746dbee78d27216f841dba953"
+          }
+        ],
+        "reader_non_execution_status": "NotTestedInApplication"
+      },
+      {
+        "id": "RD17",
+        "source": {
+          "id": "RD17",
+          "source": "synthetic-outline-table-list-image.docx",
+          "part": "word/document.xml",
+          "assertion": "One paragraph has run(before), inline image rImage1, run(after), in that source order."
+        },
+        "native_status": "Partial",
+        "current_adapter_status": "Partial",
+        "observed": "before与after两段文字、PNG原字节都保留；PNG的positioning字段为inline。",
+        "gap": "实际IR把两段文字合在paragraph.content后，图片另列为下一顶层element。原生IR不提供原来的before→image→after交错位置，当前adapter输出beforeafter后接image，无法恢复该源顺序。",
+        "limitation": null,
+        "source_refs": [
+          {
+            "source_name": "synthetic-outline-table-list-image.docx",
+            "source_sha256": "e78dcf5e61c432d100711a182fc67fcd79850cc185bbc097a688ec720790f6e5",
+            "part": "word/document.xml",
+            "part_sha256": "284e9f03a7dcac039649246e6aa1fc081e7c6bf0bb025ac528c781aa2550f830",
+            "xpath": "/w:document/w:body/w:p[w:r/w:drawing/wp:inline]",
+            "byte_start": 1866,
+            "byte_end_exclusive": 2589,
+            "fragment_sha256": "04dfa1c17a4ec5006a5733d4b8543da2736ef2036068d419769478b1f75ae182",
+            "fragment": "<w:p><w:r><w:t xml:space=\"preserve\">before</w:t></w:r><w:r><w:drawing><wp:inline distT=\"0\" distB=\"0\" distL=\"0\" distR=\"0\"><wp:extent cx=\"19050\" cy=\"19050\"/><wp:docPr id=\"1\" name=\"Synthetic square\"/><a:graphic><a:graphicData uri=\"http://schemas.openxmlformats.org/drawingml/2006/picture\"><pic:pic><pic:nvPicPr><pic:cNvPr id=\"1\" name=\"square.png\"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed=\"rImage1\"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x=\"0\" y=\"0\"/><a:ext cx=\"19050\" cy=\"19050\"/></a:xfrm><a:prstGeom prst=\"rect\"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r><w:r><w:t xml:space=\"preserve\">after</w:t></w:r></w:p>"
+          }
+        ],
+        "native_refs": [
+          {
+            "evidence_file": "attempt-01/evidence/docx.native-ir.json",
+            "evidence_file_sha256": "ca64a152da246317063a7ea0021e8bb0ebdfb06776035e9ee102db20d57bedd9",
+            "json_pointer": "/sections/0/elements/7",
+            "fragment_sha256": "20479b4c5f32f44d0ecdb97aff23ea2994fc23a68ce4a8f23b40113b85b918bf"
+          },
+          {
+            "evidence_file": "attempt-01/evidence/docx.native-ir.json",
+            "evidence_file_sha256": "ca64a152da246317063a7ea0021e8bb0ebdfb06776035e9ee102db20d57bedd9",
+            "json_pointer": "/sections/0/elements/8",
+            "fragment_sha256": "0abd371ee293cb73182f020c01a0fd59beb3c8488fc16f4f59f7d1b40c617bcc"
+          }
+        ],
+        "reader_non_execution_status": "NotTestedInApplication"
+      },
+      {
+        "id": "RD19",
+        "source": {
+          "id": "RD19",
+          "source": "synthetic-outline-table-list-image.docx",
+          "part": "word/document.xml",
+          "assertion": "XML &lt;SEP&gt; represents literal <SEP>; raw reader must not execute HTML."
+        },
+        "native_status": "Passed",
+        "current_adapter_status": "Passed",
+        "observed": "XML &lt;SEP&gt;在真实IR与当前items中均是字面字符串<SEP>；JSON序列化的\\u003c/\\u003e是编码转义。",
+        "gap": null,
+        "limitation": "本任务未运行应用/浏览器，不把字面文本保留解释为阅读器不会执行HTML的已验证结论。",
+        "source_refs": [
+          {
+            "source_name": "synthetic-outline-table-list-image.docx",
+            "source_sha256": "e78dcf5e61c432d100711a182fc67fcd79850cc185bbc097a688ec720790f6e5",
+            "part": "word/document.xml",
+            "part_sha256": "284e9f03a7dcac039649246e6aa1fc081e7c6bf0bb025ac528c781aa2550f830",
+            "xpath": "/w:document/w:body/w:p[w:r/w:t=\"<SEP>\"]",
+            "byte_start": 2589,
+            "byte_end_exclusive": 2654,
+            "fragment_sha256": "6e49455424d632fe2dc4ac9ef698c5c1cf6788e4ebd259dfa3a73719c2c13b6f",
+            "fragment": "<w:p><w:r><w:t xml:space=\"preserve\">&lt;SEP&gt;</w:t></w:r></w:p>"
+          }
+        ],
+        "native_refs": [
+          {
+            "evidence_file": "attempt-01/evidence/docx.native-ir.json",
+            "evidence_file_sha256": "ca64a152da246317063a7ea0021e8bb0ebdfb06776035e9ee102db20d57bedd9",
+            "json_pointer": "/sections/0/elements/9/content/0/text",
+            "fragment_sha256": "7a2f80b54c230e488a10c3aae24ef3120b63d4d620a472c28b15bbb1d0da219c"
+          }
+        ],
+        "reader_non_execution_status": "NotRun"
+      },
+      {
+        "id": "RD20",
+        "source": {
+          "id": "RD20",
+          "source": "synthetic-outline-table-list-image.docx",
+          "part": "word/document.xml",
+          "assertion": "a—b is 5 UTF8 bytes, 3 Unicode scalar values."
+        },
+        "native_status": "Passed",
+        "current_adapter_status": "Passed",
+        "observed": "真实IR及当前items均为a—b；UTF-8为5字节、3个Unicode scalar values。",
+        "gap": null,
+        "limitation": null,
+        "source_refs": [
+          {
+            "source_name": "synthetic-outline-table-list-image.docx",
+            "source_sha256": "e78dcf5e61c432d100711a182fc67fcd79850cc185bbc097a688ec720790f6e5",
+            "part": "word/document.xml",
+            "part_sha256": "284e9f03a7dcac039649246e6aa1fc081e7c6bf0bb025ac528c781aa2550f830",
+            "xpath": "/w:document/w:body/w:p[w:r/w:t=\"a—b\"]",
+            "byte_start": 2654,
+            "byte_end_exclusive": 2713,
+            "fragment_sha256": "883d30b5704538fcc5006125718e74363ad58e441a311b1a11b7268a07935006",
+            "fragment": "<w:p><w:r><w:t xml:space=\"preserve\">a—b</w:t></w:r></w:p>"
+          }
+        ],
+        "native_refs": [
+          {
+            "evidence_file": "attempt-01/evidence/docx.native-ir.json",
+            "evidence_file_sha256": "ca64a152da246317063a7ea0021e8bb0ebdfb06776035e9ee102db20d57bedd9",
+            "json_pointer": "/sections/0/elements/10/content/0/text",
+            "fragment_sha256": "a2b657fcd833cc4fdc90249bf958714f56e176e54db5127f0e40c680b9e9a4ef"
+          }
+        ],
+        "reader_non_execution_status": "NotTestedInApplication"
+      }
+    ],
+    "source_truth_unchanged": true
+  },
+  "native_preparation": {
+    "status": "NativeExtractionPassed_SemanticPreservationPartial",
+    "extraction_succeeded": 2,
+    "files": 2,
+    "preannotated_fact_count": 9,
+    "native_status_counts": {
+      "Passed": 6,
+      "Partial": 3
+    },
+    "current_adapter_status_counts": {
+      "Partial": 5,
+      "Passed": 4
+    },
+    "statement": "提取测试通过不等于9项结构保留全通过。原生IR存在PPTX形状重排、DOCX内联图位置丢失及list数值层级不等同源ilvl；当前扁平items另有层级/表格结构缺口。",
+    "source_files_compared": 138,
+    "run": {
+      "path": "attempt-01/run.json",
+      "sha256": "3017e75f1997e15aa70feeb1b1fb58cd3367c8cdd5c2808e66ba5a5d1326cd95",
+      "source_files_compared": 138,
+      "office_native_version": "0.1.12",
+      "office_archive": "aa7b66ebe275adb74c43579caa035fd7473910c40bc9da321c675198ab9b7978  /root/ragflow-native-libs/office_oxide/lib/liboffice_oxide.a",
+      "linker": "Ubuntu LLD 22.1.8 (compatible with GNU linkers)",
+      "go_version": "go version go1.27.3 linux/amd64",
+      "networks_during_test": [],
+      "final_state": {
+        "status": "exited",
+        "running": false,
+        "networks": [
+          "bridge"
+        ]
+      },
+      "cleanup": [
+        {
+          "action": "remove_exact_private_test_from_build_copy",
+          "status": 0,
+          "stderr": ""
+        },
+        {
+          "action": "verify_exact_private_test_absent",
+          "status": 0,
+          "stderr": ""
+        },
+        {
+          "action": "remove_only_owned_private_fixture_directory",
+          "status": 0,
+          "stderr": ""
+        },
+        {
+          "action": "verify_owned_private_fixture_directory_absent",
+          "status": 0,
+          "stderr": ""
+        },
+        {
+          "action": "restore_original_bridge",
+          "status": 0,
+          "stderr": ""
+        },
+        {
+          "action": "stop_existing_helper",
+          "status": 0,
+          "stderr": ""
+        }
+      ]
+    },
+    "evidence": {
+      "path": ".local-data/stage3-20261026/rich-document-candidate-draft/r2-native/native-assessment.json",
+      "sha256": "2b96810240ace0e233001b945b1622852f471c1fd14b4d83a6edfafb35dd6563"
+    },
+    "manifest": {
+      "path": ".local-data/stage3-20261026/rich-document-candidate-draft/r2-native/evidence-manifest.json",
+      "sha256": "2aa45d47b975146102ee3a7295a4ca4393be9c308a46c3e5556cc25fa6233b38"
+    },
+    "independent_binding": {
+      "path": ".local-data/stage3-20261026/rich-document-candidate-draft/native-evidence-check.json",
+      "sha256": "9a24f2454eb0c4a8721883b13552e0d0d800d984e40d150439fcf1f38cd21000",
+      "result": {
+        "recorded_at": "2026-10-26T13:34:52.276Z",
+        "passed": true,
+        "scope": "Independent evidence byte/hash/pointer binding only; no producer or application implementation",
+        "manifest_files": 20,
+        "source_xml_fragments": 16,
+        "json_pointers": 28,
+        "facts": 9,
+        "native_status_counts": {
+          "Passed": 6,
+          "Partial": 3
+        },
+        "current_adapter_status_counts": {
+          "Partial": 5,
+          "Passed": 4
+        },
+        "source_truth_unchanged": true,
+        "application_calls": 0,
+        "model_calls": 0,
+        "local_inference": 0
+      }
+    },
+    "earlier_library_evidence": {
+      "path": "docs/stage3-document-readiness-verification.json",
+      "sha256": "7cdcd4e3148d2cb5dbfb6ca9c146f3ff3f1b4e5fec33478d10b44cc72eb1f576",
+      "scope": "Earlier isolated PDF/native/constructed-IR evidence; not current new source-projection or application acceptance."
+    }
+  },
+  "design_decisions": [
+    "Office source XML, not lossy native IR, defines this slice source order, paths and supported text.",
+    "PDF physical page text only; no OCR/bbox or claimed multi-column layout reconstruction.",
+    "Fixed original, Document Representation/Node and derived_utf8 text are distinct; old .5/C1 objects are unchanged.",
+    "own_reading_range prevents heading aggregate contents being rendered twice; media/unknown content do not invent text.",
+    "One shared structure task/lease/fence/capacity core; independently default-off document permission; no second worker.",
+    "Owned same-binary child exit and cleanup must be proved before terminal cancellation or quota release.",
+    "Strict 12 operations and three original-key recovery families; no project/C1 placeholders, silent fallback or automatic target replacement."
+  ],
+  "implementation_plan": {
+    "R2_0": "Concrete candidate then same-commit human freeze; business integration prohibited before confirmation.",
+    "R2_1": "A: source projection/PDF adaptation, deterministic reading text/ranges/passages/manifest and at least20 preannotated facts.",
+    "R2_2": "A: shared durable task core, independent policy, owned child/recovery, atomic publication, bounded authenticated reads and focused real-service tests.",
+    "R2_3": "Clean fixed backend commit then explicit sole Web writer handoff; service/hook/UI within current knowledge catalogue.",
+    "R2_4": "A receives clean commit, synthetic real HTTP/browser/fault/performance, necessary targeted fixes and authorized main publication, then independent human decision."
+  },
+  "contracts": {
+    "protected_count": 41,
+    "protected_hash_source": "docs/stage3r1-structure-backend-verification.json#/contracts/protected_files",
+    "unchanged": true
+  },
+  "delivery_guard": {
+    "path": ".local-data/stage3-20261026/rich-document-candidate-draft/candidate-delivery-guard.json",
+    "sha256": "ff3130258af70cfd078c89b3bac5668736c791d828d4d406670eee07c7549022",
+    "result": {
+      "recorded_at": "2026-10-26T13:55:17.921Z",
+      "passed": true,
+      "scope": "Read-only final artifact/source/runtime guard; not application execution or review.",
+      "base_main": "abdb141ae17b80a7f980f042220f07e349b868c0",
+      "changed_files": [
+        "README.md",
+        "docs/stage2-local-coordination.md",
+        "docs/stage3r1-structure-handoff.md",
+        "会话接续说明.md",
+        "本地第二大脑知识库技术方案.md",
+        "docs/knowledge-document-structure-v0.1.candidate.examples.json",
+        "docs/knowledge-document-structure-v0.1.candidate.md",
+        "docs/knowledge-document-structure-v0.1.candidate.openapi.json",
+        "docs/stage3r2-document-candidate-verification.json",
+        "docs/stage3r2-document-handoff.md"
+      ],
+      "tracked_business_changes": 0,
+      "protected_count": 41,
+      "all_protected_unchanged": true,
+      "R1_report_unchanged": true,
+      "public_machine_artifacts_byte_equal": true,
+      "services": [
+        {
+          "name": "lfen-ragflow-poc-ragflow-cpu-1",
+          "status": "Up About an hour (healthy)"
+        },
+        {
+          "name": "lfen-ragflow-poc-mysql-1",
+          "status": "Up 3 days (healthy)"
+        },
+        {
+          "name": "lfen-ragflow-poc-kvrocks-1",
+          "status": "Up 3 days (healthy)"
+        },
+        {
+          "name": "lfen-ragflow-poc-es01-1",
+          "status": "Up 3 days (healthy)"
+        },
+        {
+          "name": "lfen-ragflow-poc-minio-1",
+          "status": "Up 3 days (healthy)"
+        },
+        {
+          "name": "lfen-ragflow-poc-nats-1",
+          "status": "Up 3 days (healthy)"
+        }
+      ],
+      "helper": {
+        "running": false,
+        "networks": [
+          "bridge"
+        ]
+      },
+      "secret_scan": {
+        "path": ".local-data/stage3-20261026/branch-secret-check.json",
+        "sha256": "522ead69169c7c09ec2121c5d7c0c9766299b11efb7a826f0b6a2e5c6e3cf19c",
+        "recorded_at": "2026-10-26T13:53:54.041Z",
+        "passed": true,
+        "base": "e6452d41afd159ba73e908f7ee20c43850a01f48",
+        "files": 87,
+        "credential_literals": 18,
+        "matches": 0
+      },
+      "application_calls": 0,
+      "model_calls": 0,
+      "local_inference": 0
+    }
+  },
+  "verification_boundaries": {
+    "completed": [
+      "Isolated actual synthetic Office native extraction",
+      "Independent evidence bytes/hash/XML fragment/JSON pointer binding",
+      "Concrete candidate schema/examples/hash/text static validation"
+    ],
+    "not_run": [
+      "New Go OOXML source producer",
+      "New PDF application adapter",
+      "Document policy/routes/database migration",
+      "Owned child cancellation/network/cleanup/parent-crash recovery",
+      "Synthetic real HTTP/browser integration of new document surface",
+      "Three-format task/read/RSS/first-screen performance",
+      "Real AICS/doc/site exit",
+      "Stage3 overall acceptance"
+    ],
+    "performance": "All candidate thresholds are future acceptance targets, not measurements."
+  },
+  "acceptance": {
+    "outcome": "NotApplicableToUnimplementedBusiness",
+    "scope": "This delivery prepares a concrete candidate; it is not completed document application engineering."
+  },
+  "user_decision": {
+    "outcome": "Pending",
+    "scope": "Freeze this exact Document Structure candidate. R1 engineering acceptance remains independently Pending."
+  },
+  "model_calls": 0,
+  "local_inference": 0,
+  "real_data_transmission": 0,
+  "application_calls": 0,
+  "adversarial_review": false,
+  "handoff": "docs/stage3r2-document-handoff.md"
+}

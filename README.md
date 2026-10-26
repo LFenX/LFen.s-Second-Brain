@@ -1,5 +1,7 @@
 # LFen's Second Brain
 
+**v0.61／阶段3-R2具体候选**：[文档结构方案](docs/knowledge-document-structure-v0.1.candidate.md)、[OpenAPI](docs/knowledge-document-structure-v0.1.candidate.openapi.json)及[合成示例／向量](docs/knowledge-document-structure-v0.1.candidate.examples.json)已整理到`codex/stage3r2-document-candidate`，**未冻结、未接业务、未合main**。[准备报告](docs/stage3r2-document-candidate-verification.json)记录12操作／101schema、140合法／148拒绝例、28双编码器摘要和10字串向量通过。两份实际合成Office的9项源事实为6保留／3部分，暴露PPTX重排和DOCX内联位置损失，因此新方案采用有界OOXML源顺序；PDF保留物理页文字。[接续顺序](docs/stage3r2-document-handoff.md)明确独立默认关闭许可、共享任务核心、受控子进程与固定派生阅读，具体确认后才实施。旧41件、运行与依赖不变，模型／本地推理0、无多轮审查；R1工程验收及真实资料退出保持独立。
+
 **v0.60／阶段3-R1合成结构闭环**：冻结的Structure 0.1.0已完成Go、正式Web与同版联调。[统一报告](docs/stage3r1-structure-verification.json)记录8文件／48节点／80关系、50事实、100%原字节覆盖、10组后端真实验证和11项浏览器检查。DataTable符号、父子树、跨文件类型关系、固定修订回链及64KiB窗口已可使用；本机Web为70eebed，Go二进制SHA为0efd5563…dcc061。固定约0.94MiB基准5次任务最长4.316秒，局部读取三类各20次最长109.061ms；RSS采样增长59.43MiB。41保护件不变，模型／本地推理0；工程人的决定Pending，main实际提交以[发布回执](docs/stage3r1-main-integration.json)为准。[当前接续](docs/stage3r1-structure-handoff.md)明确富文档／Wiki和阶段4—6仍待推进。
 
 **v0.59／阶段3-R1后端接续**：[A后端报告](docs/stage3r1-structure-backend-verification.json)已保存。Go固定二进制已加载，8份合成输入生成48节点/80关系，50事实、字节覆盖和身份/证据核验通过；旧导入等111顶层/354通过事件，前端仍c759990。正式客户端、浏览器、实际故障与性能退出尚未完成；下一步按[客户端单写窗](docs/stage3r1-structure-client-handoff.md)交替实施。冻结41件保持，模型/本地推理0，不启动多轮审查，main暂未推进。
@@ -43,7 +45,7 @@ v0.17的[知识域与可选Embedding决定](本地第二大脑知识库技术方
 B独立交付`8d62cc7`的68项Mock测试保留历史范围；本次集成增加真实HTTP拦截器回归，**6套69项测试、21文件格式／lint与生产构建通过**。原生Go／MySQL／MinIO真实链路通过，正式18080入口已加载；全量类型检查仍207项，本轮修改4文件0项，不称全仓绿色。[B说明第6节](docs/stage2b-import-ui-handoff.md)指向最新接续。
 
 1. 阅读 [会话接续说明](会话接续说明.md)，了解已确认决定、待确认事项和下一步边界。
-2. 阅读 [完整技术方案 v0.60](本地第二大脑知识库技术方案.md)：第40.32节为Structure 0.1同版交付；40.26—40.31及更早章节保留各批历史验证。第35章全链路及历史POC／七项问题／对照实验保持原范围。
+2. 阅读 [完整技术方案 v0.61](本地第二大脑知识库技术方案.md)：第40.33节为文档结构具体候选，第40.32节为Structure 0.1同版交付；更早章节保留各批历史验证。第35章全链路及历史POC／七项问题／对照实验保持原范围。
 3. 需要讨论背景时，查阅 [会话副本](会话副本.md)。副本保存用户消息和助手回复，不含工具日志、内部推理和密钥。
 4. 当前API实测结果见 [百炼验证记录](阶段0-百炼API接入验证.json)；[Moark验证记录](阶段0-API接入验证.json) 及 [旧额度截图](moark-stage0-trial-quota-94.png) 保留历史事实。
 
