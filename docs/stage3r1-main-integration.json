@@ -1,0 +1,66 @@
+{
+  "document_version": "stage3r1-main-integration/1",
+  "recorded_at": "2026-10-26T12:56:58.515Z",
+  "status": "MainRemoteVerified",
+  "repository": "https://github.com/LFenX/LFen.s-Second-Brain",
+  "previous_main": "e6452d41afd159ba73e908f7ee20c43850a01f48",
+  "source_branch": "codex/stage3r1-structure",
+  "integrated_main_commit": "bc933e57612c9d97cb7de54f53e74480b7a4b3ab",
+  "remote_main_at_verification": "bc933e57612c9d97cb7de54f53e74480b7a4b3ab",
+  "integration_method": "Fast-forward; no rewritten authors/history",
+  "normal_commit_hooks": {
+    "status": "Pass",
+    "checks": 8,
+    "bypassed": false,
+    "commit": "bc933e57612c9d97cb7de54f53e74480b7a4b3ab"
+  },
+  "report": {
+    "path": "docs/stage3r1-structure-verification.json",
+    "sha256": "ee9934df3a227d30669bbe3ed907f2980484749a31b81136da1ef1ffa5bae854"
+  },
+  "runtime": {
+    "binary_sha256": "0efd5563a48a87d0cc41c2661a2ee58dcbc2a1ec88b2bc952b53e152acdcc061",
+    "web_source_commit": "70eebed9283141c96b6f54876fe6c7e4cd771537",
+    "web_index_sha256": "6c52067bf88e73e8fc78a85733505e2727e97a08b27d56598d0687995b49821b",
+    "hosted_web_index_verified": true,
+    "services": [
+      {
+        "name": "lfen-ragflow-poc-ragflow-cpu-1",
+        "status": "Up 27 minutes (healthy)"
+      },
+      {
+        "name": "lfen-ragflow-poc-mysql-1",
+        "status": "Up 3 days (healthy)"
+      },
+      {
+        "name": "lfen-ragflow-poc-kvrocks-1",
+        "status": "Up 3 days (healthy)"
+      },
+      {
+        "name": "lfen-ragflow-poc-es01-1",
+        "status": "Up 3 days (healthy)"
+      },
+      {
+        "name": "lfen-ragflow-poc-minio-1",
+        "status": "Up 3 days (healthy)"
+      },
+      {
+        "name": "lfen-ragflow-poc-nats-1",
+        "status": "Up 3 days (healthy)"
+      }
+    ],
+    "same_volumes_credentials": true,
+    "build_helper": "Stopped; cache and volumes retained"
+  },
+  "protected_files": 41,
+  "protected_unchanged": true,
+  "backend_inputs_unchanged": true,
+  "model_calls": 0,
+  "local_inference": 0,
+  "adversarial_review": false,
+  "acceptance": {
+    "outcome": "Pending",
+    "scope": "Only stage3-R1 synthetic structure delivery; R6/R7 synthetic Approved independently, real exit and whole stage3 excluded"
+  },
+  "receipt_publication": "This receipt is committed and pushed after the verified integration; the receipt commit is not self-predicted."
+}
