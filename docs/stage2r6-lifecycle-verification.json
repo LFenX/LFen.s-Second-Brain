@@ -1,5 +1,5 @@
 {
-  "document_version": "v0.53",
+  "document_version": "v0.54",
   "objective": "落实已批准C2 0.7.0来源生命周期：统一世代和旧准备栅栏、四动作、当前与归档列表、固定回执及客户端恢复，合成真实联调后推main。",
   "request_snapshot": {
     "r5_acceptance": "验收通过",
@@ -32,14 +32,17 @@
   "execution": {
     "source_git_writer": "A",
     "peer_write_authorized": false,
-    "backend": "Implemented_MinimumRuntimePassed",
-    "frontend": "NotStarted",
-    "runtime": "R6 backend / R5 frontend",
+    "backend": "Implemented_RuntimePassed",
+    "frontend": "Implemented_BrowserPassed",
+    "runtime": "R6 Go2bfa0d9 / Webc759990",
     "binary_sha256": "af6e939567afe2edb176d110096fd4626d2e1b8d92a59a31643f6ac9583c915e",
-    "single_write_handoff": "A sends clean fixed commit and docs/stage2r6-lifecycle-client-handoff.md before any peer write"
+    "single_write_handoff": "A清洁2bfa0d9交唯一25Web文件及2报告写窗→客户端正常提交c759990且clean→A明确收回全部写权；A期间只写忽略运行证据。",
+    "backend_commit": "2bfa0d9990e7c42c4927a47af747f12da4e3712e",
+    "frontend_commit": "c759990b62f44704b9370c19bcbf402668764899",
+    "peer_handback_commit": "c759990b62f44704b9370c19bcbf402668764899"
   },
   "verification": {
-    "engineering": "BackendAndMinimumRuntimePassed_FullIntegrationPending",
+    "engineering": "Implemented",
     "protected_files": 35,
     "protected_hashes": {
       "docs/knowledge-sources-v1.openapi.json": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091",
@@ -153,7 +156,514 @@
     },
     "model_calls": 0,
     "local_inference": 0,
-    "real_sources": 0
+    "real_sources": 0,
+    "frontend": {
+      "report": "docs/stage2r6-lifecycle-client-verification.json",
+      "commit": "c759990b62f44704b9370c19bcbf402668764899",
+      "suites": 33,
+      "tests": 929,
+      "new_suites": 6,
+      "new_tests": 211,
+      "related_old_tests": 718,
+      "formatting_files": 25,
+      "lint_passed": true,
+      "types": {
+        "command": "web/node_modules/.bin/tsc.cmd --noEmit --pretty false --project web/tsconfig.json",
+        "exit_code": 2,
+        "overall_passed": false,
+        "before": 207,
+        "after": 207,
+        "new": 0,
+        "removed": 0,
+        "exact_diagnostic_lines_equal": true,
+        "note": "全量类型检查仍失败于既有207项；仅新增0，未扩大范围修复旧错误。",
+        "before_log": ".local-data/stage2r6-client-20261026/types-before.log",
+        "after_log": ".local-data/stage2r6-client-20261026/types-final.log"
+      },
+      "build": {
+        "cwd": "web",
+        "command": "./node_modules/.bin/vite.cmd build --mode production --outDir <绝对路径到.local-data/stage2r6-client-20261026/dist> --emptyOutDir",
+        "environment": {
+          "NODE_OPTIONS": "--max-old-space-size=8192",
+          "VITE_BUILD_SOURCEMAP": "false",
+          "VITE_MINIFY": "esbuild"
+        },
+        "passed": true,
+        "seconds": 42.33,
+        "warnings": [
+          "产物存在超过1000kB的chunk提示"
+        ],
+        "log": ".local-data/stage2r6-client-20261026/build-final.log",
+        "output": ".local-data/stage2r6-client-20261026/dist"
+      },
+      "normal_commit_hooks_passed": 8
+    },
+    "runtime_series": {
+      "smoke": {
+        "recorded_at": "2026-10-26T03:13:19.783Z",
+        "passed": true,
+        "domain_id": "2b6afed96f3e469c9b0bc25176641310",
+        "source_id": "32eaea2d57b54547abb09496025004a6",
+        "old_pending_rejected": [
+          "0.2",
+          "0.5",
+          "0.6"
+        ],
+        "old_success_receipts_preserved": true,
+        "same_web_capture_explicit_fresh_preview": true,
+        "actions": [
+          "reclassify",
+          "move",
+          "archive",
+          "restore"
+        ],
+        "fixed_old_text_preserved": true,
+        "original_name_and_sha_preserved": true,
+        "web_capture_and_safe_reading_preserved": true,
+        "original_web_c1_roots": 0,
+        "legacy_and_models_unchanged": true,
+        "model_calls": 0
+      },
+      "capacity": {
+        "recorded_at": "2026-10-26T03:27:15.454Z",
+        "passed": true,
+        "domain_id": "2b6afed96f3e469c9b0bc25176641310",
+        "population": 1005,
+        "population_added_via_real_directory_batch_chain": 96,
+        "population_added_via_real_exact_inline_chain": 904,
+        "batches": 3,
+        "fixture_preparation_limit": "0.3 live observation quota reached after three completed batches plus earlier bounded preparations; kept frozen quota unchanged and used existing exact inline scopes for remaining samples; not ingestion throughput evidence",
+        "concurrent_requests": 1,
+        "summary": {
+          "reclassify": {
+            "samples": [
+              72.92,
+              57.77,
+              37.28,
+              47,
+              46.39
+            ],
+            "median_ms": 47,
+            "max_ms": 72.92
+          },
+          "move": {
+            "samples": [
+              50.2,
+              60.13,
+              41.81,
+              47.12,
+              43.58
+            ],
+            "median_ms": 47.12,
+            "max_ms": 60.13
+          },
+          "archive": {
+            "samples": [
+              51.66,
+              42.9,
+              34.85,
+              55.88,
+              41.83
+            ],
+            "median_ms": 42.9,
+            "max_ms": 55.88
+          },
+          "restore": {
+            "samples": [
+              38.43,
+              49.87,
+              39.74,
+              41.94,
+              43.62
+            ],
+            "median_ms": 41.94,
+            "max_ms": 49.87
+          },
+          "list20": {
+            "samples": [
+              87.42,
+              74.04,
+              83.97,
+              118.05,
+              80.85
+            ],
+            "median_ms": 83.97,
+            "max_ms": 118.05
+          }
+        },
+        "threshold_max_ms": 2000,
+        "warm_backend": true,
+        "scope": "five sequential synthetic samples per operation; not production p95 or million-source evidence",
+        "legacy_and_models_unchanged": true,
+        "model_calls": 0,
+        "new_service_or_volume": false
+      },
+      "large_assembly": {
+        "domain_id": "04dad080f181996f2f31026a0c9ccddd",
+        "metadata_actions": [
+          {
+            "action": "reclassify",
+            "elapsed_ms": 29.955,
+            "source_revision_id": "bc97bff7b0854c1eb93eef4ca62c3b88"
+          },
+          {
+            "action": "move",
+            "elapsed_ms": 22.15,
+            "source_revision_id": "0ccd54bf5fbd40aab0d659518be59d95"
+          },
+          {
+            "action": "reclassify",
+            "elapsed_ms": 27.951,
+            "source_revision_id": "57d0d1a025b549b7b193abecc14f3643"
+          },
+          {
+            "action": "move",
+            "elapsed_ms": 22.45,
+            "source_revision_id": "b46507dcf69e4eb7ad9ff255b81a22fe"
+          },
+          {
+            "action": "reclassify",
+            "elapsed_ms": 19.292,
+            "source_revision_id": "bc97bff7b0854c1eb93eef4ca62c3b88"
+          },
+          {
+            "action": "move",
+            "elapsed_ms": 19.875,
+            "source_revision_id": "0ccd54bf5fbd40aab0d659518be59d95"
+          },
+          {
+            "action": "reclassify",
+            "elapsed_ms": 18.048,
+            "source_revision_id": "57d0d1a025b549b7b193abecc14f3643"
+          },
+          {
+            "action": "move",
+            "elapsed_ms": 22.387,
+            "source_revision_id": "b46507dcf69e4eb7ad9ff255b81a22fe"
+          },
+          {
+            "action": "reclassify",
+            "elapsed_ms": 14.061,
+            "source_revision_id": "bc97bff7b0854c1eb93eef4ca62c3b88"
+          },
+          {
+            "action": "move",
+            "elapsed_ms": 20.678,
+            "source_revision_id": "0ccd54bf5fbd40aab0d659518be59d95"
+          }
+        ],
+        "metadata_body_get_calls": 0,
+        "metadata_body_put_calls": 0,
+        "metadata_body_read_bytes": 0,
+        "metadata_body_write_bytes": 0,
+        "model_calls": 0,
+        "original_bytes": 67108864,
+        "original_c1_roots": 0,
+        "original_name_and_fixed_revision_preserved": true,
+        "passed": true,
+        "production_binary_changed": false,
+        "real_mysql": true,
+        "real_s3_compatible_storage": true,
+        "retained_database": "lfen_c2_test_c79f4bbd8e8c94d8",
+        "sha256": "0aa82c7ef20ec15eb6cdebe9629244243111660cd0c0fbaafcf3322e7272acd9",
+        "test_assembly_only_counter_wrapper": true
+      },
+      "concurrency": {
+        "recorded_at": "2026-10-26T03:30:33.056Z",
+        "passed": true,
+        "domain_id": "2b6afed96f3e469c9b0bc25176641310",
+        "secondary_api_pid": 627,
+        "secondary_port": 19486,
+        "two_process_target_race": [
+          201,
+          409
+        ],
+        "same_sha_sources_remain_distinct": true,
+        "two_process_same_key": [
+          201,
+          200
+        ],
+        "same_key_receipt_identical": true,
+        "two_process_generation_race": [
+          201,
+          409
+        ],
+        "fixed_original_key_read_across_processes": true,
+        "legacy_and_models_unchanged": true,
+        "model_calls": 0
+      },
+      "faults": {
+        "recorded_at": "2026-10-26T03:32:25.116Z",
+        "passed": true,
+        "domain_id": "2b6afed96f3e469c9b0bc25176641310",
+        "source_id": "32eaea2d57b54547abb09496025004a6",
+        "results": [
+          {
+            "mode": "sql_connection",
+            "victim": {
+              "connection_id": 221949,
+              "uncommitted_rows_modified": 3
+            },
+            "failed_http": null,
+            "transport_error": null,
+            "old_api_pid": null,
+            "new_api_pid": null,
+            "complete_sql_rollback": true,
+            "original_key_initially_404": true,
+            "explicit_same_request_retry": true,
+            "fixed_receipt_equal": true
+          },
+          {
+            "mode": "api_process",
+            "victim": {
+              "connection_id": 221775,
+              "uncommitted_rows_modified": 3
+            },
+            "failed_http": 502,
+            "transport_error": null,
+            "old_api_pid": 57,
+            "new_api_pid": 851,
+            "complete_sql_rollback": true,
+            "original_key_initially_404": true,
+            "explicit_same_request_retry": true,
+            "fixed_receipt_equal": true
+          }
+        ],
+        "actual_partial_native_position_writes": true,
+        "legacy_and_models_unchanged": true,
+        "model_calls": 0,
+        "physical_gc": false,
+        "scope": "Only identified synthetic folder transaction/API process interrupted; exact old request/key retried after state and original result checks; no credentials/volume changes."
+      },
+      "producers": {
+        "recorded_at": "2026-10-26T03:35:39.233Z",
+        "passed": true,
+        "domain_id": "2b6afed96f3e469c9b0bc25176641310",
+        "old_lifecycle_after_text_publish_rejected": true,
+        "directory_observation_and_preview_generation_rejected": true,
+        "batch_acceptance_generation_rejected": true,
+        "new_explicit_batch_succeeded": true,
+        "project_preview_generation_rejected": true,
+        "fixed_project_manifest_readable_while_archived": true,
+        "source_ids": {
+          "text": "32eaea2d57b54547abb09496025004a6",
+          "directory": "2cc30a17bceb4b4b8c63685fc6195619"
+        },
+        "project_id": "ed77f784693643baae69bb8b0c913a77",
+        "manifest_id": "b8d57711fe6f493e94f4f9c7c7da7d55",
+        "model_calls": 0,
+        "legacy_and_models_unchanged": true
+      },
+      "permissions_filters": {
+        "recorded_at": "2026-10-26T03:37:42.862Z",
+        "passed": true,
+        "list_cursor_bound_filters_and_limit": true,
+        "no_cursor_page_overlap": true,
+        "empty_language_explicit": true,
+        "invalid_filter_cases": 7,
+        "synthetic_other_subject_domain": "fd6a8316deb44727aafa160a12b05ca1",
+        "revoked_membership_list_detail_receipt_by_id_by_key_and_fixed_text_denied": true,
+        "membership_restored_exactly": true,
+        "old_fixed_receipt_read_after_restore": true,
+        "legacy_and_models_unchanged": true,
+        "model_calls": 0
+      },
+      "c1_assembly": {
+        "aba_triggered_during_native_get": true,
+        "after_version": 3,
+        "client_pre_call_aba_protection_claimed": false,
+        "initial_revision_reused": true,
+        "initial_version": 1,
+        "model_calls": 0,
+        "passed": true,
+        "production_binary_changed": false,
+        "real_mysql": true,
+        "real_s3_compatible_storage": true,
+        "retained_database": "lfen_c2_test_7498b0c629bb022d",
+        "snapshot_code": "knowledge_conflict",
+        "snapshot_status": 409,
+        "source_revisions": 2
+      }
+    },
+    "browser": {
+      "recorded_at": "2026-10-26T04:28:13.859Z",
+      "passed": true,
+      "frontend_commit": "c759990b62f44704b9370c19bcbf402668764899",
+      "backend_commit": "2bfa0d9990e7c42c4927a47af747f12da4e3712e",
+      "surface": "本机18080正式Go后端与已构建Web；两个真实浏览器标签页，原生账号登录；未注入localStorage、认证或前端隐藏状态。",
+      "synthetic_domain_id": "a76e5e808bed47c6aec7326a6f1c75fd",
+      "source_count": 6,
+      "scenarios": [
+        {
+          "id": "B1",
+          "input": "合成owner原生登录；知识目录切来源状态；组件侧frontend筛选",
+          "expected": "只出现3个前端文本来源，保留项目、组件侧和语言",
+          "actual": "通过；切换前6来源，frontend后3来源，当前来源世代均为1",
+          "result": "Passed"
+        },
+        {
+          "id": "B2",
+          "input": "UI0代码由frontend改shared；精确移动web/ui-card.tsx到web/ui-moved.tsx",
+          "expected": "认可默认false，预览差异；位置检查不预约；稳定来源不变，正文SHA不变",
+          "actual": "通过；世代1→2→3，固定回执分别保存原状态，正文56B及SHA保持",
+          "result": "Passed"
+        },
+        {
+          "id": "B3",
+          "input": "归档UI0，归档列表可见；第二页恢复；第一页面查询旧归档回执",
+          "expected": "归档不删除；旧回执不重新施加动作；固定历史可读",
+          "actual": "通过；归档世代4，恢复当前世代5；旧archive回执仍3→4，当前保持active5；旧ui-card.tsx初始修订仍按UTF-8原文读取",
+          "result": "Passed",
+          "old_archive_command_id": "e0b8e7f3233d46adbc2a1b1edf0767f7"
+        },
+        {
+          "id": "B4",
+          "input": "目录和Web来源选择move；Web固定修订安全阅读和原快照下载；原件固定下载",
+          "expected": "两类move禁用且给出原因；解码正文SHA与Feed输入SHA分开；下载固定字节",
+          "actual": "通过；禁用原因“此来源首版不支持逻辑移动”；安全内容“合成版本1内容1”；Web原快照44842bcf…，PDF原件592B、f8a356fe…校验一致",
+          "result": "Passed",
+          "web_capture_sha256": "44842bcf30392bc9282d853227d637005a1e33c36720b1c87c467a99906833ad",
+          "original_sha256": "f8a356fe976458855dc64bf559296a759c7b0c005171adc9aeb042c36809fa91"
+        },
+        {
+          "id": "B5",
+          "input": "PDF旧ready592/592B；第二页归档恢复同一来源，修订不变、世代1→3；第一页明确确认",
+          "expected": "拒绝旧准备；原键核查和当前权限重读后允许明确新准备，取消旧Upload、重新选择并完整上传",
+          "actual": "通过；revision_changed；旧Upload d3dffac8…为cancelled，新Upload4f01ade4…完整592B并committed；新固定回执acc8a18e…、修订6f096fb2…；旧synthetic.pdf修订d9b779c2…仍可读且is_current=false",
+          "result": "Passed"
+        },
+        {
+          "id": "B6",
+          "input": "原件成功后刷新，明确核查原结果；生命周期页面刷新，查询上次restore回执",
+          "expected": "恢复同一成功结果，不新增保存操作；固定回执与当前详情分离",
+          "actual": "通过；原件同一acc8a18e回执恢复；SQL前后3Upload/2原件回执及全部6来源世代完全相同；生命周期旧restore回执2→3、当前原件已世代4和新修订",
+          "result": "Passed",
+          "http_post_audit_claimed": false,
+          "note": "未在浏览器注入网络拦截；不把SQL未增行单独当成零POST审计。刷新不自动POST另由正式客户端Mock与代码路径证明。"
+        },
+        {
+          "id": "B7",
+          "input": "owner退出→合成visitor登录→访问owner目录/原件入口→owner重新登录",
+          "expected": "无权主体不可见来源、正文和旧回执；原主体恢复槽仍在",
+          "actual": "通过；visitor目录404通用拒绝、无项目名/来源/正文，原件knowledge_not_found且无回执；owner返回后恢复同一acc8a18e固定回执",
+          "result": "Passed"
+        }
+      ],
+      "limitations": [
+        "未在浏览器人为丢弃HTTP响应；未知结果和404分支由客户端定向Mock、实际SQL/进程故障各自留证，不混成同一种测试。",
+        "跨页验证为顺序归档/恢复及旧回执读取，不声称已跑浏览器同时抢本地槽；相关竞争由客户端Mock及双API真实事务测试证明。",
+        "浏览器测试是6份合成小样本，不是百万代码库或生产p95。"
+      ],
+      "harness_corrections": [
+        "文件选择按钮的自动定位首次未打开选择器，等待超时导致工具会话重置；保留页面后改点可见上传区，原生filechooser成功；未改业务源码。",
+        "只读SQL探针最初误用外部字段lifecycle_version作为表列；按实体改为version后通过；未改数据库。"
+      ],
+      "model_calls": 0,
+      "local_inference": 0,
+      "real_sources": 0,
+      "evidence": [
+        {
+          "path": ".local-data/stage2r6-20261026/browser-fixed-history.png",
+          "sha256": "da54411dbe31b2514e65d4a5b29d3fc28c5b875a1aaba030bdc40c71294963fe"
+        },
+        {
+          "path": ".local-data/stage2r6-20261026/browser-archive-replay.txt",
+          "sha256": "bf40f758d426336aa6fe4954af2ea7daddb08018a5929ec2635ccaeb2e406b37"
+        },
+        {
+          "path": ".local-data/stage2r6-20261026/browser-original-rejected.txt",
+          "sha256": "374ed85b02ed8661c7faaffb31ac57b01554d2d26ca6123ae578b25f313037ba"
+        },
+        {
+          "path": ".local-data/stage2r6-20261026/browser-original-recovery.png",
+          "sha256": "a8a2762c6963bed271c4ebe125904c686a2c7a1881399af6336d839be1364aca"
+        },
+        {
+          "path": ".local-data/stage2r6-20261026/browser-original-final.txt",
+          "sha256": "4a9cc97ee90470f8ef2f1c0cae9e025af573eceb1b8cd8f77def0999a9867848"
+        },
+        {
+          "path": ".local-data/stage2r6-20261026/browser-original-final.png",
+          "sha256": "f9f909b394adc2413805459ed9a7d014a156592dcbf37bbb68988a076d0bb3b9"
+        },
+        {
+          "path": ".local-data/stage2r6-20261026/browser-scope-denied.txt",
+          "sha256": "c89b42d5e9da40a16c17ca544735984d21bd410407b42cc02bc554a55a996343"
+        },
+        {
+          "path": ".local-data/stage2r6-20261026/browser-scope-restored.txt",
+          "sha256": "3c15ef6632b512e8c4d4dffd622a61d1f9460a7109803b700e8df44068e991f1"
+        },
+        {
+          "path": ".local-data/stage2r6-20261026/browser-lifecycle-refreshed.txt",
+          "sha256": "f0cd04a0bcf81620341ae43dc4280a6573845946455da3edea015711c644a3bf"
+        },
+        {
+          "path": ".local-data/stage2r6-20261026/browser-original-old-fixed.txt",
+          "sha256": "2280a4cb3e47646107a7a78e169410c3c95a0cb086ad29efe5e90c5faf054a7c"
+        },
+        {
+          "path": ".local-data/stage2r6-20261026/browser-refresh-before.private.json",
+          "sha256": "f3625a4bd025ebcb6962594c7c714f493acc4062556eed68c751ddf3582c5069"
+        },
+        {
+          "path": ".local-data/stage2r6-20261026/browser-refresh-after.private.json",
+          "sha256": "cf1331432bf2a964024dbfba30db5c3dca616f40d7ebedf50e83544b8f0b3548"
+        }
+      ]
+    },
+    "deployment": {
+      "recorded_at": "2026-10-26T04:15:08.682Z",
+      "passed": true,
+      "frontend_commit": "c759990b62f44704b9370c19bcbf402668764899",
+      "backend_commit": "2bfa0d9990e7c42c4927a47af747f12da4e3712e",
+      "backend_binary_sha256": "af6e939567afe2edb176d110096fd4626d2e1b8d92a59a31643f6ac9583c915e",
+      "frontend_index_sha256": "1c96548dcbd9e5f6d798ee32582640a1e197e790da9816eb2d2510a0faee6859",
+      "frontend_artifact_count": 1058,
+      "frontend_manifest_sha256": "be977b3a02c2abe73cf3e15a6fb8dc2190f79cac1651257cb674f22915e98a4a",
+      "previous_frontend_retained": true,
+      "only_web_mount_source_changed": true,
+      "same_services_and_volumes": true,
+      "credentials_regenerated": false,
+      "volumes_deleted": false,
+      "app_healthy": true,
+      "legacy_and_models_fingerprint_unchanged": true,
+      "model_calls": 0,
+      "real_sites": 0
+    },
+    "final_publication": "待本报告正常提交后，按已授权范围推功能分支并合main；实际远端事实另存stage2r6-main-integration.json。",
+    "final_checks": {
+      "recorded_at": "2026-10-26T04:32:02.134Z",
+      "passed": true,
+      "source_commit": "c759990b62f44704b9370c19bcbf402668764899",
+      "proposed_files_scanned": 79,
+      "credential_literals_checked": 14,
+      "credential_matches": 0,
+      "protected_files": 35,
+      "protected_changed": 0,
+      "backend_source_hashes_unchanged": true,
+      "frontend_source_hashes_unchanged": true,
+      "frontend_artifacts_unchanged": 1058,
+      "json_parsed": true,
+      "diff_check": true,
+      "actual_index_matches": true,
+      "backend_binary_matches": true,
+      "app_healthy": true,
+      "runtime_services": [
+        "lfen-ragflow-poc-es01-1",
+        "lfen-ragflow-poc-kvrocks-1",
+        "lfen-ragflow-poc-minio-1",
+        "lfen-ragflow-poc-mysql-1",
+        "lfen-ragflow-poc-nats-1",
+        "lfen-ragflow-poc-ragflow-cpu-1"
+      ],
+      "builder_stopped": true,
+      "legacy_and_models_fingerprint_unchanged": true,
+      "model_calls": 0,
+      "local_inference": 0,
+      "real_sources": 0,
+      "secrets_printed": false
+    }
   },
   "acceptance": {
     "freeze_decision": "Approved",
@@ -164,10 +674,10 @@
     "whole_project_complete": false
   },
   "incomplete_items": [
-    "正式客户端／界面尚未实现，真实浏览器尚未运行。",
-    "双进程抢位／原键、SQL与进程故障、1000合成源五次容量和64MiB原件对象IO计数待补。",
-    "旧目录／批次／项目真实运行补证待完成，当前有定向Go证据。",
-    "R6工程验收Pending；R7及阶段3—6未完成。"
+    "R6工程用户决定Pending；本次接口冻结不替代工程验收。",
+    "R7最终同版跨入口编排及阶段2整体退出未完成；具体真实AICS/文档/网站样本仍需独立授权。",
+    "阶段3 AST/文档结构、阶段4检索/引用、阶段5 MCP、阶段6人格记忆未完成。",
+    "浏览器未人为丢响应/同时抢槽，全量类型仍207项既有错误；精确证据边界见对应验证。"
   ],
   "adversarial_review": "NotRun_UserProhibited",
   "governance_note": "沿用既有docs与中文计划载体，不重排项目目录；没有运行正式治理机器Gate，不将本报告声称为机器Gate通过。",
@@ -226,10 +736,6 @@
       "sha256": "dcf1b16d25c02529527a9c6db796af1898f9cf7631f90312afe806c531f1f029"
     },
     {
-      "path": ".local-data/stage2r6-20261026/latest-go.json",
-      "sha256": "dcf1b16d25c02529527a9c6db796af1898f9cf7631f90312afe806c531f1f029"
-    },
-    {
       "path": ".local-data/stage2r6-20261026/mysql-integration.json",
       "sha256": "ab011a38304ed7f2d18835c29981727ef49c80d749a9c57500570cc5f16bff7f"
     },
@@ -244,6 +750,50 @@
     {
       "path": ".local-data/stage2r6-20261026/runtime-smoke.json",
       "sha256": "00c4611c49f4dabe8a00a6744d4b37d3741dc3631e9f67e02bfdc017afbc82f4"
+    },
+    {
+      "path": ".local-data/stage2r6-20261026/runtime-evidence-manifest.json",
+      "sha256": "5e7f57e6de512b3a739e4367f831c2d08838d77d01f6362b18f196ebbcfd4d1f"
+    },
+    {
+      "path": ".local-data/stage2r6-20261026/runtime-capacity.json",
+      "sha256": "8f7bf937d6f543ee64e4dcb5baa4b2d9c6209fd2c54b137b8c21acc17bb4342d"
+    },
+    {
+      "path": ".local-data/stage2r6-20261026/runtime-large-assembly.json",
+      "sha256": "01765a90cd74af1dbd35dbad3ae65f6da5d79186e28f167e2da6f276de59d1c1"
+    },
+    {
+      "path": ".local-data/stage2r6-20261026/runtime-concurrency.json",
+      "sha256": "768ebb167652c64042de2a8da6a31fdd4f224a163cb6c6de9ab9e4e91e79c0f3"
+    },
+    {
+      "path": ".local-data/stage2r6-20261026/runtime-faults.json",
+      "sha256": "d42b0b382db98967d8cbba9f1407ae991c124a5f82d99924c61e7ce859efc301"
+    },
+    {
+      "path": ".local-data/stage2r6-20261026/runtime-producers.json",
+      "sha256": "c857b79a8eef5d55bb59d224e34ee489a23d7e5d0cecafbb395d55d545537685"
+    },
+    {
+      "path": ".local-data/stage2r6-20261026/runtime-permissions-filters.json",
+      "sha256": "55d5b80a2691d71379cb8ba15eb9bd45641efabff5cd0e9a3a6bce8ed86422f6"
+    },
+    {
+      "path": ".local-data/stage2r6-20261026/runtime-c1-assembly.json",
+      "sha256": "6c99850cf703117d4becde136439ad94c3dedc17e309f32e7cf6db8cb33f4ea0"
+    },
+    {
+      "path": ".local-data/stage2r6-20261026/browser-verification.json",
+      "sha256": "d1ec0530aa0e8ce76d7f309a5c83deeb67383ff3bfa6dbe3208decc307fadfb0"
+    },
+    {
+      "path": ".local-data/stage2r6-20261026/web-runtime-switch.json",
+      "sha256": "a22b338c4106973e329c1bd1fb3d20944939280c473e606e9126e2681e5aafed"
+    },
+    {
+      "path": ".local-data/stage2r6-20261026/web-artifacts.json",
+      "sha256": "be977b3a02c2abe73cf3e15a6fb8dc2190f79cac1651257cb674f22915e98a4a"
     }
   ],
   "failures_and_corrections": [
@@ -264,6 +814,92 @@
       "finding": "旧断言允许无CAS unchanged，已批准0.7要求CAS先于no-op",
       "correction": "保留缺CAS的409断言，明确当前expected后验证unchanged；旧契约字节不改",
       "evidence": "go-1792983509378.log"
+    },
+    {
+      "scope": "synthetic_browser_harness",
+      "summary": "文件选择按钮的自动定位首次未打开选择器，等待超时导致工具会话重置；保留页面后改点可见上传区，原生filechooser成功；未改业务源码。",
+      "application_source_changed": false
+    },
+    {
+      "scope": "synthetic_browser_harness",
+      "summary": "只读SQL探针最初误用外部字段lifecycle_version作为表列；按实体改为version后通过；未改数据库。",
+      "application_source_changed": false
+    }
+  ],
+  "recorded_at": "2026-10-26T04:28:13.859Z",
+  "requirement_coverage": [
+    {
+      "quote": "确认冻结并继续实施",
+      "reference": "request_user_input_async/call_d40a6340e30f4cfab963ec2d26085eaa/0",
+      "interpretation": "具体候选19db38d正式冻结，旧C1/C3/C2 .2—.6及获批候选原字节不变",
+      "status": "已实现",
+      "evidence": [
+        "docs/knowledge-source-lifecycle-v1.freeze.json",
+        "verification.protected_hashes"
+      ]
+    },
+    {
+      "quote": "重分类、受限逻辑移动、归档／恢复、单调世代及原键回执；目录／Web／无登记C1首版不移动；上线后旧无世代未消费准备拒绝，成功回执保留；有效Web Capture可新明确预览无需重新联网；单写入后端→客户端→合成联调后推main，模型0，无多轮审查。",
+      "interpretation": "四动作、原生身份、双CAS、单调世代、精确路径和退役占位；目录/Web/无登记C1禁移动，归档保留固定历史",
+      "status": "已实现",
+      "evidence": [
+        "verification.broad_go",
+        "verification.latest_r6",
+        "verification.runtime_series.smoke",
+        "verification.runtime_series.concurrency",
+        "verification.browser.B2-B4"
+      ]
+    },
+    {
+      "quote": "重分类、受限逻辑移动、归档／恢复、单调世代及原键回执；目录／Web／无登记C1首版不移动；上线后旧无世代未消费准备拒绝，成功回执保留；有效Web Capture可新明确预览无需重新联网；单写入后端→客户端→合成联调后推main，模型0，无多轮审查。",
+      "interpretation": "旧无栅栏未消费准备拒绝，成功回执/manifest保持；有效Web Capture可明确新预览无需新取得",
+      "status": "已实现",
+      "evidence": [
+        "verification.runtime_series.smoke",
+        "verification.runtime_series.producers",
+        "verification.browser.B5"
+      ]
+    },
+    {
+      "quote": "重分类、受限逻辑移动、归档／恢复、单调世代及原键回执；目录／Web／无登记C1首版不移动；上线后旧无世代未消费准备拒绝，成功回执保留；有效Web Capture可新明确预览无需重新联网；单写入后端→客户端→合成联调后推main，模型0，无多轮审查。",
+      "interpretation": "元信息动作复用对象；64MiB原件不读写正文；五次2秒容量、故障原键恢复、权限/游标/策略及C1调用中ABA",
+      "status": "已实现",
+      "evidence": [
+        "verification.runtime_series.large_assembly",
+        "verification.runtime_series.capacity",
+        "verification.runtime_series.faults",
+        "verification.runtime_series.permissions_filters",
+        "verification.runtime_series.c1_assembly"
+      ]
+    },
+    {
+      "quote": "重分类、受限逻辑移动、归档／恢复、单调世代及原键回执；目录／Web／无登记C1首版不移动；上线后旧无世代未消费准备拒绝，成功回执保留；有效Web Capture可新明确预览无需重新联网；单写入后端→客户端→合成联调后推main，模型0，无多轮审查。",
+      "interpretation": "单写入后端→客户端→合成真实联调；默认认可false，固定回执/当前状态分开，刷新与主体隔离恢复",
+      "status": "已实现",
+      "evidence": [
+        "execution.single_write_handoff",
+        "docs/stage2r6-lifecycle-client-verification.json",
+        "verification.browser.B1-B7"
+      ]
+    },
+    {
+      "quote": "重分类、受限逻辑移动、归档／恢复、单调世代及原键回执；目录／Web／无登记C1首版不移动；上线后旧无世代未消费准备拒绝，成功回执保留；有效Web Capture可新明确预览无需重新联网；单写入后端→客户端→合成联调后推main，模型0，无多轮审查。",
+      "interpretation": "只用合成、模型/本地推理0、无真实网站/RSSHub、不启动多轮审查；沿用服务/卷/凭据，不物理GC",
+      "status": "已实现",
+      "evidence": [
+        "verification.runtime_series",
+        "verification.deployment",
+        "verification.browser",
+        "adversarial_review"
+      ]
+    },
+    {
+      "quote": "重分类、受限逻辑移动、归档／恢复、单调世代及原键回执；目录／Web／无登记C1首版不移动；上线后旧无世代未消费准备拒绝，成功回执保留；有效Web Capture可新明确预览无需重新联网；单写入后端→客户端→合成联调后推main，模型0，无多轮审查。",
+      "interpretation": "验证后推main并留发布证据；工程人的决定独立",
+      "status": "待发布回执补记",
+      "evidence": [
+        "docs/stage2r6-main-integration.json（实际发布后生成）"
+      ]
     }
   ]
 }
