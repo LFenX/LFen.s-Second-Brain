@@ -2029,12 +2029,26 @@
   "acceptance": {
     "synthetic_engineering": "Implemented_Verified",
     "user_decision": {
-      "outcome": "Pending",
-      "scope": "仅R7纯合成同版工程验证"
+      "outcome": "Approved",
+      "response": "验收纯合成工程通过",
+      "source": "本会话真人异步回复",
+      "question_ref": "request_user_input_async/call_a89c320ead2d4c558d8f4bef6c604469/0",
+      "subject_commit": "e6452d41afd159ba73e908f7ee20c43850a01f48",
+      "subject_sha256": "3f9c07c0578653e7bd647564a3c4c137ff5afb4dae06fcd00c2b08e983e9a716",
+      "recorded_at": "2026-10-26T10:03:57.705Z",
+      "scope": "仅R7纯合成工程；不包含真实资料退出和阶段2整体"
     },
     "real_source_exit": "NotRun_ScopeNotApproved",
     "stage2_whole_exit": false,
-    "whole_project_complete": false
+    "whole_project_complete": false,
+    "decision_history": [
+      {
+        "outcome": "Pending",
+        "scope": "仅R7纯合成同版工程验证",
+        "subject_commit": "e6452d41afd159ba73e908f7ee20c43850a01f48",
+        "subject_sha256": "3f9c07c0578653e7bd647564a3c4c137ff5afb4dae06fcd00c2b08e983e9a716"
+      }
+    ]
   },
   "governance": {
     "carrier": "沿用既有公开计划／验证／接续及忽略运行证据，不创建第二套治理流程。",

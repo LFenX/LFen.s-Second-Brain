@@ -658,12 +658,45 @@
   },
   "authority": {
     "candidate_freeze": {
-      "outcome": "Pending"
+      "outcome": "Approved",
+      "response": "确认冻结并继续实施",
+      "source": "本会话真人异步回复",
+      "question_ref": "request_user_input_async/call_209b5c0e88ed4206aec601e3a8f55fdb/0",
+      "subject_commit": "ddc5630c947ded113917e4dd2bc19521128ac073",
+      "subject_sha256": {
+        "docs/knowledge-structure-v0.1.candidate.md": "5c61af1a3a6be72337895b665d26cef29a711518f184bdb77a822800df0256d1",
+        "docs/knowledge-structure-v0.1.candidate.openapi.json": "0db14cc46e86e42e6ca5a6ffff3050968644372a76f5091bb380f50dff1c4630",
+        "docs/knowledge-structure-v0.1.candidate.examples.json": "195f83957c6b06ff2fb67b5dc61353c82abee92870b551f9ff14bb02217c9bea"
+      },
+      "recorded_at": "2026-10-26T10:04:06.920Z",
+      "scope": "冻结Structure 0.1.0；A后端→清洁固定版本→客户端唯一写窗→合成真实联调及性能→main；只用合成TS/TSX/Go/Markdown，模型及本地推理0，不启动多轮审查；不代替PDF/PPTX/Wiki或真实资料退出。"
     },
     "implementation": {
-      "outcome": "Pending"
+      "outcome": "Approved",
+      "response": "确认冻结并继续实施",
+      "source": "本会话真人异步回复",
+      "question_ref": "request_user_input_async/call_209b5c0e88ed4206aec601e3a8f55fdb/0",
+      "subject_commit": "ddc5630c947ded113917e4dd2bc19521128ac073",
+      "subject_sha256": {
+        "docs/knowledge-structure-v0.1.candidate.md": "5c61af1a3a6be72337895b665d26cef29a711518f184bdb77a822800df0256d1",
+        "docs/knowledge-structure-v0.1.candidate.openapi.json": "0db14cc46e86e42e6ca5a6ffff3050968644372a76f5091bb380f50dff1c4630",
+        "docs/knowledge-structure-v0.1.candidate.examples.json": "195f83957c6b06ff2fb67b5dc61353c82abee92870b551f9ff14bb02217c9bea"
+      },
+      "recorded_at": "2026-10-26T10:04:06.920Z",
+      "scope": "冻结Structure 0.1.0；A后端→清洁固定版本→客户端唯一写窗→合成真实联调及性能→main；只用合成TS/TSX/Go/Markdown，模型及本地推理0，不启动多轮审查；不代替PDF/PPTX/Wiki或真实资料退出。"
     },
-    "continuous_preparation": "本会话真人持续推进指令；不是本候选新增接口批准"
+    "continuous_preparation": "本会话真人持续推进指令；不是本候选新增接口批准",
+    "history": [
+      {
+        "candidate_freeze": {
+          "outcome": "Pending"
+        },
+        "implementation": {
+          "outcome": "Pending"
+        },
+        "continuous_preparation": "本会话真人持续推进指令；不是本候选新增接口批准"
+      }
+    ]
   },
   "acceptance": {
     "candidate_preparation": "EngineeringSaved",

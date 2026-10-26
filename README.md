@@ -1,5 +1,7 @@
 # LFen's Second Brain
 
+**v0.58／阶段3-R1开始实施**：真人已验收R6与R7纯合成工程，并批准冻结ddc5630的Structure 0.1.0。[正式冻结件](docs/knowledge-structure-v1.freeze.json)绑定三件原候选摘要。A先实现Go后端，清洁固定提交后交客户端唯一Web写窗，再同版合成联调；当前尚未实现或部署。基础C1/C3及C2 0.2—0.7保持，模型／本地推理0，不启动多轮审查。真实资料退出、富文档、Wiki和阶段3整体仍未完成；下文较早Pending为当时记录。
+
 **本分支v0.57／文档库准备**：[Go本地解析验证](docs/stage3-document-readiness-verification.json)与[阅读适配准备](docs/stage3-document-readiness.md)已保存：15个一级场景、36个含根／嵌套的通过事件；新PDF空白／仅图页保持真实页号，Office顺序／字符／图片模板通过。模型分析器创建与Go HTTP尝试0，仅隔离库验证，未入库／部署／改接口。Structure 0.1仍等待ddc5630的具体冻结；旧35件及三件候选保持，main仍e6452d4，阶段2真实退出和阶段3整体未完成。
 
 **本分支v0.56／阶段3-R1候选**：[确定性结构方案](docs/knowledge-structure-v0.1.candidate.md)及[准备验证](docs/stage3r1-structure-candidate-verification.json)已保存：合成TS／TSX／Go／Markdown，文件／符号／章节／原文片段及有证据静态关系；独立structure-only许可，三类操作的原键与固定接收拒绝恢复。15操作／57schema，39合法／37拒绝例与8摘要向量通过，35旧保护件不变；仅隔离解析依赖试跑，业务／项目依赖／运行版本未改，模型0。**尚未冻结或实施**，具体确认后按[单写入顺序](docs/stage3r1-structure-handoff.md)继续。main基线e6452d4；下文保留早期交付事实，R6／R7验收及真实资料退出范围独立。

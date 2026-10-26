@@ -674,10 +674,24 @@
   "acceptance": {
     "freeze_decision": "Approved",
     "engineering_user_decision": {
-      "outcome": "Pending"
+      "outcome": "Approved",
+      "response": "验收通过",
+      "source": "本会话真人异步回复",
+      "question_ref": "request_user_input_async/call_385d47cfc84743348d9a51c294a89f3b/0",
+      "subject_commit": "4254dcf6ec1712da0a57bfc2e790de0134a76618",
+      "subject_sha256": "5a8959dd95753fb214366b29480041e70cd90c0fc0c4a3aab7a9ff5fbd661a0d",
+      "recorded_at": "2026-10-26T10:03:57.705Z",
+      "scope": "仅R6工程；R4、R7及阶段2整体独立"
     },
     "stage2_exit": false,
-    "whole_project_complete": false
+    "whole_project_complete": false,
+    "decision_history": [
+      {
+        "outcome": "Pending",
+        "subject_commit": "4254dcf6ec1712da0a57bfc2e790de0134a76618",
+        "subject_sha256": "5a8959dd95753fb214366b29480041e70cd90c0fc0c4a3aab7a9ff5fbd661a0d"
+      }
+    ]
   },
   "incomplete_items": [
     "R6工程用户决定Pending；本次接口冻结不替代工程验收。",
