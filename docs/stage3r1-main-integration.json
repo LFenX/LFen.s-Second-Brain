@@ -15,6 +15,7 @@
     "commit": "bc933e57612c9d97cb7de54f53e74480b7a4b3ab"
   },
   "report": {
+    "at_commit": "bc933e57612c9d97cb7de54f53e74480b7a4b3ab",
     "path": "docs/stage3r1-structure-verification.json",
     "sha256": "ee9934df3a227d30669bbe3ed907f2980484749a31b81136da1ef1ffa5bae854"
   },
@@ -62,5 +63,10 @@
     "outcome": "Pending",
     "scope": "Only stage3-R1 synthetic structure delivery; R6/R7 synthetic Approved independently, real exit and whole stage3 excluded"
   },
-  "receipt_publication": "This receipt is committed and pushed after the verified integration; the receipt commit is not self-predicted."
+  "receipt_publication": "This receipt is committed and pushed after the verified integration; the receipt commit is not self-predicted.",
+  "current_report": {
+    "path": "docs/stage3r1-structure-verification.json",
+    "sha256": "8acb0458cc5bf55c7df57b0140b7c0e59cd1a52f129519001dca0dfa94c35a87",
+    "change": "Explicit Pending user_decision carrier; engineering evidence and runtime unchanged"
+  }
 }

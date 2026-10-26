@@ -643,6 +643,12 @@
     "R7_synthetic": "Approved",
     "R7_real_exit": "NotRun"
   },
+  "user_decision": {
+    "outcome": "Pending",
+    "scope": "Stage3-R1 synthetic structure delivery only",
+    "engineering_saved": true,
+    "source": null
+  },
   "collaboration": {
     "single_tracked_writer": "A",
     "client_window": "A49fe2d4 -> peerca74ff8 clean -> A70eebed and final integration",
