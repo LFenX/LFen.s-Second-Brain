@@ -1,0 +1,407 @@
+{
+  "document_version": "0.62",
+  "recorded_date": "2026-10-27",
+  "status": "ClientImplementedMockVerified",
+  "objective": "完成Document Structure 0.1.0正式客户端、恢复与受控结构阅读，保存合成隔离验证证据并清洁回交A。",
+  "request_snapshot": "现在正式交付唯一 Web tracked/Git 写窗。固定干净 HEAD 2a2b6c0df650d98ebb87c20c27ab57dce16bd020，当前分支 codex/stage3r2-document，已推 origin 同名分支，工作区清洁。请不要切分支／pull／rebase／reset。按 docs/stage3r2-document-client-handoff.md 的明确白名单、全部消费语义和验证要求，完成正式 12 操作 service→hook→知识目录局部页面；47 件保护哈希见 docs/stage3r2-document-backend-verification.json.contracts.protected_files，正式3件／候选3件／旧41件都保持。Go 二进制 b563a51dad95594fb448896f762a82eba82c3774f9167e078f8405246ef4a2f7 已部署，三格式716次实际HTTP核心通过；界面暂不触达运行后端、不登录、不部署，只做合成 Mock／隔离验证和构建。已有 document-structure-service.ts 属旧图功能，不能覆盖，用 knowledge-document* 命名。A 从本消息起停止所有 tracked/Git/部署写入，仅在 ignored 目录准备／执行独立合成 HTTP 性能验证（不登录、不中断后端），故障重启和最终浏览器等你回交后串行执行。你可以正常 hooks 提交、推同名功能分支，不能合或推 main。最后回交 clean full HEAD、白名单、47核对、测试／格式lint／生产构建及实测类型新增量、报告及本机产物路径摘要。只合成、模型0、无审查，不把 Mock 当实际联调或工程人的验收。请持续推进到完整交付，有具体跨边界需求先消息我；不因执行中消息而停工。",
+  "clarification": {
+    "state": "Settled",
+    "notice": "范围和语义已明确，本轮不重复提问；按白名单实施，先保存保护件与类型基线，再复用现有校验、摘要和下载原语。",
+    "new_scope_questions": 0,
+    "authority_source": "A明确交付唯一Web写窗；真人具体冻结见正式freeze记录；不代替人的工程验收"
+  },
+  "source": {
+    "branch": "codex/stage3r2-document",
+    "baseline_head": "2a2b6c0df650d98ebb87c20c27ab57dce16bd020",
+    "handoff": "docs/stage3r2-document-client-handoff.md",
+    "handoff_sha256": "68c505ec11d68fc503e0bf618928d932c1e821fc9c5d046ee92cc94cd9413e26",
+    "commit_binding": "最终完整HEAD见同轮交接消息和ignored after.json；Web输入摘要绑定构建",
+    "formal_contracts": [
+      "docs/knowledge-document-structure-v1.freeze.json",
+      "docs/knowledge-document-structure-v1.openapi.json",
+      "docs/knowledge-document-structure-v1.examples.json"
+    ]
+  },
+  "first_principles": {
+    "needed": "人明确选择单份固定原件后，能够按来源结构阅读并在未知写结果时恢复原操作。",
+    "owning_path": "现有Go契约+service→hook→目录局部React页面；复用typed-LP/SHA、.5下载、.7世代及共享UI。",
+    "constraints": "独立document许可；不进C1、不覆盖旧图功能、不改冻结或后端、不执行原文、不调模型。"
+  },
+  "plan": [
+    "直接消费正式DTO/schema及固定向量",
+    "实现12操作、精确准备和三类恢复",
+    "加入懒入口及安全块阅读/固定链接/下载",
+    "定向与旧功能回归、格式lint/类型增量/构建",
+    "正常hooks提交并推当前功能分支，清洁回交"
+  ],
+  "changed_files": [
+    "web/src/locales/en.ts",
+    "web/src/locales/zh.ts",
+    "web/src/pages/dataset/knowledge-catalogue/index.tsx",
+    "web/src/hooks/__tests__/use-knowledge-document.test.tsx",
+    "web/src/hooks/use-knowledge-document.ts",
+    "web/src/interfaces/database/knowledge-document.ts",
+    "web/src/interfaces/request/knowledge-document.ts",
+    "web/src/pages/dataset/knowledge-catalogue/__tests__/document-fixture.ts",
+    "web/src/pages/dataset/knowledge-catalogue/__tests__/document-preparation.test.tsx",
+    "web/src/pages/dataset/knowledge-catalogue/__tests__/document-reading.test.tsx",
+    "web/src/pages/dataset/knowledge-catalogue/__tests__/document-recovery.test.tsx",
+    "web/src/pages/dataset/knowledge-catalogue/document-blocks.tsx",
+    "web/src/pages/dataset/knowledge-catalogue/document-browser.tsx",
+    "web/src/pages/dataset/knowledge-catalogue/document-content.tsx",
+    "web/src/pages/dataset/knowledge-catalogue/document-policy.tsx",
+    "web/src/pages/dataset/knowledge-catalogue/document-prepare.tsx",
+    "web/src/pages/dataset/knowledge-catalogue/document-state.tsx",
+    "web/src/pages/dataset/knowledge-catalogue/document-tasks.tsx",
+    "web/src/pages/dataset/knowledge-catalogue/document-tree.tsx",
+    "web/src/pages/dataset/knowledge-catalogue/document-view.tsx",
+    "web/src/pages/dataset/knowledge-catalogue/use-document-flow.ts",
+    "web/src/services/__tests__/knowledge-document-prepare.test.ts",
+    "web/src/services/__tests__/knowledge-document-wire.test.ts",
+    "web/src/services/knowledge-document-service.ts",
+    "web/src/utils/__tests__/knowledge-document-contract.test.ts",
+    "web/src/utils/__tests__/knowledge-document-recovery.test.ts",
+    "web/src/utils/knowledge-document-schema.ts",
+    "web/src/utils/knowledge-document.ts",
+    "docs/stage3r2-document-client-verification.json",
+    "docs/stage3r2-document-client-notes.md"
+  ],
+  "web_files": 28,
+  "requirements": [
+    {
+      "id": "DC-01",
+      "requirement": "12操作、双版本头、201/200、完整错误信封、hint不是结案证明",
+      "implementation": [
+        "web/src/services/knowledge-document-service.ts",
+        "web/src/utils/knowledge-document-schema.ts"
+      ],
+      "evidence": [
+        "knowledge-document-wire.test.ts",
+        "knowledge-document-contract.test.ts"
+      ],
+      "status": "MockVerified"
+    },
+    {
+      "id": "DC-02",
+      "requirement": "精确.5固定原件+.7 active世代+基础/文档策略+实际profile/producer+head；8MiB处理预算，变化停止重认",
+      "implementation": [
+        "web/src/services/knowledge-document-service.ts",
+        "web/src/pages/dataset/knowledge-catalogue/document-prepare.tsx"
+      ],
+      "evidence": [
+        "knowledge-document-prepare.test.ts",
+        "document-preparation.test.tsx"
+      ],
+      "status": "MockVerified"
+    },
+    {
+      "id": "DC-03",
+      "requirement": "独立默认关闭许可；不启用代码结构/模型；有权历史、全部stale原因、归档不等同撤权",
+      "implementation": [
+        "web/src/pages/dataset/knowledge-catalogue/document-policy.tsx",
+        "web/src/pages/dataset/knowledge-catalogue/document-view.tsx"
+      ],
+      "evidence": [
+        "document-preparation.test.tsx",
+        "knowledge-document-prepare.test.ts"
+      ],
+      "status": "MockVerified"
+    },
+    {
+      "id": "DC-04",
+      "requirement": "三类POST先存完整首次body/key/digest/owner/domain/target；8槽16KiB、坏/满/失败阻写；未知保留、GET完整拒绝后明确放弃",
+      "implementation": [
+        "web/src/utils/knowledge-document.ts",
+        "web/src/pages/dataset/knowledge-catalogue/use-document-flow.ts",
+        "web/src/pages/dataset/knowledge-catalogue/document-tasks.tsx"
+      ],
+      "evidence": [
+        "knowledge-document-recovery.test.ts",
+        "document-recovery.test.tsx"
+      ],
+      "status": "MockVerified"
+    },
+    {
+      "id": "DC-05",
+      "requirement": "真实状态/phase/null进度；取消回执不当终态；revision CAS、task跟踪、2秒轮询、25秒恢复、hidden/unmount/terminal停止",
+      "implementation": [
+        "web/src/hooks/use-knowledge-document.ts",
+        "web/src/pages/dataset/knowledge-catalogue/document-tasks.tsx"
+      ],
+      "evidence": [
+        "use-knowledge-document.test.tsx",
+        "knowledge-document-recovery.test.ts"
+      ],
+      "status": "MockVerified"
+    },
+    {
+      "id": "DC-06",
+      "requirement": "固定表示与head独立缓存；直接子页<=20；cursor；不预取全树；新根不进C1；.5同身份/长度/MIME完整SHA下载",
+      "implementation": [
+        "web/src/services/knowledge-document-service.ts",
+        "web/src/hooks/use-knowledge-document.ts",
+        "web/src/pages/dataset/knowledge-catalogue/document-tree.tsx",
+        "web/src/pages/dataset/knowledge-catalogue/document-view.tsx"
+      ],
+      "evidence": [
+        "knowledge-document-wire.test.ts",
+        "use-knowledge-document.test.tsx",
+        "既有knowledge-original下载/校验回归"
+      ],
+      "status": "MockVerified"
+    },
+    {
+      "id": "DC-07",
+      "requirement": "安全文本、物理页/slide/源结构、DOCX无页码、派生UTF8、表格空cell、列表item、内联媒体anchor、空/未知/OCR状态、不重复父聚合",
+      "implementation": [
+        "web/src/pages/dataset/knowledge-catalogue/document-blocks.tsx",
+        "web/src/pages/dataset/knowledge-catalogue/document-content.tsx"
+      ],
+      "evidence": [
+        "document-reading.test.tsx",
+        "knowledge-document-contract.test.ts"
+      ],
+      "status": "MockVerified"
+    },
+    {
+      "id": "DC-08",
+      "requirement": "heading own范围；aggregate显式读；complete相对节点；own_end停止、零长不请求；64KiB/UTF8/片段与整体SHA分别核",
+      "implementation": [
+        "web/src/utils/knowledge-document.ts",
+        "web/src/pages/dataset/knowledge-catalogue/document-content.tsx"
+      ],
+      "evidence": [
+        "document-reading.test.tsx",
+        "knowledge-document-recovery.test.ts",
+        "knowledge-document-wire.test.ts"
+      ],
+      "status": "MockVerified"
+    },
+    {
+      "id": "DC-09",
+      "requirement": "固定五参数+可选node；缺失/冲突/重复报错不回当前；刷新和节点导航身份保持",
+      "implementation": [
+        "web/src/pages/dataset/knowledge-catalogue/document-browser.tsx",
+        "web/src/pages/dataset/knowledge-catalogue/document-view.tsx",
+        "web/src/pages/dataset/knowledge-catalogue/index.tsx"
+      ],
+      "evidence": [
+        "document-reading.test.tsx",
+        "use-knowledge-document.test.tsx"
+      ],
+      "status": "MockVerified"
+    },
+    {
+      "id": "DC-10",
+      "requirement": "内容不执行HTML/远程媒体；失权/session先隐藏/abort/丢迟到，原owner槽隔离保留",
+      "implementation": [
+        "web/src/hooks/use-knowledge-document.ts",
+        "web/src/pages/dataset/knowledge-catalogue/document-browser.tsx",
+        "web/src/pages/dataset/knowledge-catalogue/document-state.tsx"
+      ],
+      "evidence": [
+        "document-reading.test.tsx",
+        "use-knowledge-document.test.tsx",
+        "knowledge-document-recovery.test.ts"
+      ],
+      "status": "MockVerified"
+    },
+    {
+      "id": "V-01",
+      "requirement": "正式140正/148反/28身份/10字串/raw/query/semantic消费；Mock不当后端或人验收",
+      "status": "VerifiedWithinScope",
+      "evidence": [
+        "tests-final.json",
+        "knowledge-document-contract.test.ts"
+      ]
+    },
+    {
+      "id": "V-02",
+      "requirement": "局部格式lint、定向与旧契约回归、生产构建、当前类型基线新增量、正常hooks/功能分支交付、保护47",
+      "status": "ChecksCompleteCommitBindingInHandoff",
+      "evidence": [
+        "format-check.log",
+        "lint-final.log",
+        "types-before.log",
+        "types-after.log",
+        "tests-final.json",
+        "build.log",
+        "protected-after.json"
+      ]
+    }
+  ],
+  "contracts": {
+    "count": 47,
+    "all_unchanged": true,
+    "protected_files": {
+      "docs/knowledge-sources-v1.openapi.json": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091",
+      "docs/knowledge-sources-v1.example.json": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a",
+      "docs/knowledge-sources-v1.freeze.json": "114bbfa2b4dd51eafc426716032486f666ace8a1a1284f4c1f4c9baf1f1b35c6",
+      "docs/knowledge-foundation-v1.openapi.json": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4",
+      "docs/knowledge-foundation-v1.example.json": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343",
+      "docs/knowledge-directory-import-v1.openapi.json": "6144c08d4cfe7ac98374dc51829c98290e2c88e3441dd38d250a3cd9cb4492e6",
+      "docs/knowledge-directory-import-v1.examples.json": "73618dd78419bb9027520b3dd8b3ef83b1794d3ad1c4d17d904ce7637c54ea72",
+      "docs/knowledge-directory-import-v1.freeze.json": "2af7575cfbc24510550a0b495e18aa30f94decf5f102c23d259d4f3135dbf5f1",
+      "docs/knowledge-directory-import-v0.3.candidate.md": "80eb846a81b6ade430012b585739fe6405ef8a7de5855f27941fe66a31e2cbfa",
+      "docs/knowledge-directory-import-v0.3.candidate.openapi.json": "da2c320b3c3fd8f6af2b566b40507a5b09c55791236b49b224347c8b9a457f3d",
+      "docs/knowledge-directory-import-v0.3.candidate.examples.json": "2680f9786a19cc49a0330ecfcda84249ef36aac20293341a18e17cbdfd132d4e",
+      "docs/knowledge-batch-import-v0.4.candidate.md": "3a3beec92e8bc0baae1c820a18e078717163988277aa9d304d762ff97d027b1f",
+      "docs/knowledge-batch-import-v0.4.candidate.openapi.json": "d57ca240df19a985341c25d60ce18590dacdcf221b5599b8223f558a7c379fc5",
+      "docs/knowledge-batch-import-v0.4.candidate.examples.json": "fe8bde9d99b8aaa7250a40a1adc86c6bee9ecf474cbf01af55253274f2e2e304",
+      "docs/knowledge-batch-import-v1.openapi.json": "bd13fc400fc2a84f490b92ee865db75f76d89bf79a176658312ac3bea17d0fb8",
+      "docs/knowledge-batch-import-v1.examples.json": "5249cdf57da0313346b7b30db0743079a175aaa8480604120b1bf92e4bdfdc53",
+      "docs/knowledge-batch-import-v1.freeze.json": "1d589290db4b1fe4ab4005dae0ebf1918efdeac9cd57d7c810305087c180f631",
+      "docs/knowledge-original-import-v0.5.candidate.md": "8a1079fe4745b84d178f50939ac25e1ac1fa51bc3f61ed2340ef1f6d9e1638d6",
+      "docs/knowledge-original-import-v0.5.candidate.openapi.json": "b4905ab840c64f26a25a6017dc7454393fd3b974b0e2199edffe2cc5e725a0aa",
+      "docs/knowledge-original-import-v0.5.candidate.examples.json": "16aa77d948f857f93dcc96e0c812d4bee2a8f3ad91205e54b9c0457f78ea8815",
+      "docs/knowledge-original-import-v1.openapi.json": "3c48ebe0a2bfc8b3078262ce6c1a8258b312f6111bd9ed2b07b7b4fb433a5efd",
+      "docs/knowledge-original-import-v1.examples.json": "550f7be69c506a02cc2798d2196e17ca06c73b06f08d934ea3cbf823551d5cb1",
+      "docs/knowledge-original-import-v1.freeze.json": "116ddc4161001c0fdb440b45b227952978ca3d291197d712830a92d5aaaca3b9",
+      "docs/knowledge-web-import-v0.6.candidate.md": "577a76624d8b43e26dde890df49140f0b5a2c458dc493dbecd7f5467e13175fb",
+      "docs/knowledge-web-import-v0.6.candidate.openapi.json": "a167a1977f1f0a313061b093d21f035631dd5fafaea95cd8545601e17af35a88",
+      "docs/knowledge-web-import-v0.6.candidate.examples.json": "81372c6270c3e2b3989b4e088bd029883326f75fe6e254d651b93f951e0b7573",
+      "docs/knowledge-web-import-v1.freeze.json": "bba4e9f0c2341658ac69741d57f5a4a9032ac74b6ec848f13a195e4ab96c66c2",
+      "docs/knowledge-web-import-v1.openapi.json": "673092ab81263bdf7b79e85e06206bb02f8eb8996b476c8643dbafed17e259ed",
+      "docs/knowledge-web-import-v1.examples.json": "71019ae8645ad0fd4527565c42f6f80f93924c26266ffe08696de5e9b1c5671d",
+      "docs/knowledge-source-lifecycle-v0.7.candidate.md": "53b78e36a127c6c0f35048bf0ac511417639aba7cca90a418c007caa1b7f39f9",
+      "docs/knowledge-source-lifecycle-v0.7.candidate.openapi.json": "47d159cfee61708a79475879f5371cb97a38b41eb768e759ff802e1ebd0cdd0d",
+      "docs/knowledge-source-lifecycle-v0.7.candidate.examples.json": "a20bf10a7ac93ce36a8d3cd04cd95b035d8e6f2a1f3301accfdd711d86eb2f41",
+      "docs/knowledge-source-lifecycle-v1.freeze.json": "f6545f908a802d0d326fe73dfb3f8e5b2860abf67306b8a1e022c572bbd984c3",
+      "docs/knowledge-source-lifecycle-v1.openapi.json": "526685f1ab09e07f87f3f9c8cee3cf44347d6bdcf9efed94c356ef32b22725db",
+      "docs/knowledge-source-lifecycle-v1.examples.json": "cfe6c24c3f3a24907220c4e2ead993867c33053c6b2d197b70d93c03f168fb3c",
+      "docs/knowledge-structure-v0.1.candidate.md": "5c61af1a3a6be72337895b665d26cef29a711518f184bdb77a822800df0256d1",
+      "docs/knowledge-structure-v0.1.candidate.openapi.json": "0db14cc46e86e42e6ca5a6ffff3050968644372a76f5091bb380f50dff1c4630",
+      "docs/knowledge-structure-v0.1.candidate.examples.json": "195f83957c6b06ff2fb67b5dc61353c82abee92870b551f9ff14bb02217c9bea",
+      "docs/knowledge-structure-v1.freeze.json": "921c33ca5093cda8194bef3bfeaa1521ac3515a3a073aae927dcac49580f8a84",
+      "docs/knowledge-structure-v1.openapi.json": "a3de720c493e3c1189dc1dde58dfdf04c8e694de09ae0b5470c30b4b84a4b134",
+      "docs/knowledge-structure-v1.examples.json": "3515b728dca1e75c65d463c54729539cd35ff9e341c7a424c0126a00bd4c2a65",
+      "docs/knowledge-document-structure-v0.1.candidate.md": "0ea3c83a7cf8a33a1c65c0ecff8535f37fe6c080fdf4965503f8252ef5e5829f",
+      "docs/knowledge-document-structure-v0.1.candidate.openapi.json": "57f87a1331c588ad9601d51313ea7ae0811a297ecd117bc47ac7e7332e7d4d53",
+      "docs/knowledge-document-structure-v0.1.candidate.examples.json": "ae15b5f1a85de61aea885c0a758390629f78b82ad82b3c8c26cfd666f4ebbeb7",
+      "docs/knowledge-document-structure-v1.openapi.json": "a471b376d64c0736216cfe1184bbd31d19c03af1d41dd823e883a86603c4133f",
+      "docs/knowledge-document-structure-v1.examples.json": "b28d1b4f2ddee9626bd38596488db86a41926a4a8988b2691360eb259c8eb072",
+      "docs/knowledge-document-structure-v1.freeze.json": "b40448106735d90299d19300abd1e643cc6ad5b79bad11e55404be9a34001b2e"
+    },
+    "before_snapshot": {
+      "path": ".local-data/stage3r2-client-20261027/protected-before.json",
+      "sha256": "7319cdf00647fbb5469facf23ed98c66d1d16c83fbf8c3af8aa309019b313ce5"
+    },
+    "after_snapshot": {
+      "path": ".local-data/stage3r2-client-20261027/protected-after.json",
+      "sha256": "7319cdf00647fbb5469facf23ed98c66d1d16c83fbf8c3af8aa309019b313ce5"
+    }
+  },
+  "verification": {
+    "scope": "SyntheticMockAndIsolatedBuildOnly",
+    "tests": {
+      "exit_code": 0,
+      "passed_suites": 49,
+      "passed_tests": 1543,
+      "failed_tests": 0,
+      "new_suites": 8,
+      "new_tests": 446,
+      "existing_suites": 41,
+      "existing_tests": 1097,
+      "summary_path": ".local-data/stage3r2-client-20261027/tests-final.json",
+      "summary_sha256": "10fc6adf452eaa4a18d172c5fda97ae0cc361bbd0c7284eb6ec1a73823c79a9e",
+      "file_list": ".local-data/stage3r2-client-20261027/test-files.json"
+    },
+    "contract_examples": {
+      "schemas": 101,
+      "operations": 12,
+      "positive": 140,
+      "negative": 148,
+      "digest_vectors": 28,
+      "reading_vectors": 10,
+      "raw_json_cases": 7,
+      "query_cases": 11,
+      "semantic_cases": 8,
+      "passed": true,
+      "boundary": "文件向量和Mock消费；不是生产器、实际后端竞态或原生行为证明"
+    },
+    "format": {
+      "files": 28,
+      "exit_code": 0,
+      "log": ".local-data/stage3r2-client-20261027/format-check.log"
+    },
+    "lint": {
+      "files": 28,
+      "exit_code": 0,
+      "warnings": 0,
+      "errors": 0,
+      "log": ".local-data/stage3r2-client-20261027/lint-final.log"
+    },
+    "types": {
+      "command": "node web/node_modules/typescript/bin/tsc --noEmit --project web/tsconfig.json",
+      "exit_code": 2,
+      "before": 207,
+      "after": 207,
+      "added": 0,
+      "removed": 0,
+      "status": "UnchangedBaselineNoNewErrors",
+      "baseline_log": ".local-data/stage3r2-client-20261027/types-before.log",
+      "current_log": ".local-data/stage3r2-client-20261027/types-after.log"
+    },
+    "production_build": {
+      "elapsed_seconds": 40.6097999,
+      "exit_code": 0,
+      "target": "D:\\LFEN_project\\dev_project\\LFEN的第二大脑-知识库\\.local-data\\stage3r2-client-20261027\\dist",
+      "vite_seconds": 39.69,
+      "command": "VITE_BUILD_SOURCEMAP=false VITE_MINIFY=esbuild NODE_OPTIONS=--max-old-space-size=8192 node node_modules/vite/bin/vite.js build --mode production --outDir ../.local-data/stage3r2-client-20261027/dist --minify esbuild",
+      "dist_files": 1062,
+      "index_html_sha256": "3cbf636d456252e23712b25af01092470074ef25478e46d2e338794b8e6d02ca",
+      "dist_manifest_sha256": "9e8a26408288cfa975237b747d388affcd2b9ef2a62bf85288f24fe32490ee1d",
+      "web_input_files": 1989,
+      "web_input_manifest_sha256": "15b41b1147aadd5cbc9c11105a1ba9d142e07a5d79205075ded986ac8c780d1a",
+      "web_unchanged_during_build": true,
+      "log": ".local-data/stage3r2-client-20261027/build.log"
+    }
+  },
+  "retry_evidence": [
+    {
+      "log": "contract-first.log",
+      "fact": "首轮jsdom缺少WebCrypto，随后仅合成夹具接入Node WebCrypto；修正Office local-name拒绝前缀的消费校验。"
+    },
+    {
+      "log": "tests-third.log",
+      "fact": "从根目录执行引发已有Babel依赖解析失败；改从web执行。"
+    },
+    {
+      "source": "本会话首次全范围测试工具输出；该轮日志后被最终重跑覆盖，不伪称保留原始失败文件",
+      "final_log": "tests-final.log",
+      "fact": "广匹配曾误选9个无测试的fixture；最终按49个实际*.test.ts/tsx文件清单重跑全部通过，没有跳过真实测试。"
+    },
+    {
+      "log": "tests-sixth.log",
+      "fact": "错误状态组件的隔离测试补QueryClientProvider；副作用依赖/离页取消均定向修正并复验。"
+    }
+  ],
+  "guard": {
+    "backend_changes": 0,
+    "shared_ui_changes": 0,
+    "dependency_changes": 0,
+    "application_requests": 0,
+    "browser_logins": 0,
+    "deployments": 0,
+    "model_calls": 0,
+    "local_inference": 0,
+    "real_data_transmission": 0,
+    "adversarial_review": "NotRequestedNotRun",
+    "branch_switches": 0,
+    "main_updates": 0
+  },
+  "incomplete_items": [
+    "A收回写权后完成真实同版服务与浏览器联调、退出/清理故障和三格式容量/性能/RSS/首屏证据。",
+    "A已报告实际PPTX容量任务native_timeout；客户端未放宽预算，后端最小修复及实际复验由A继续。",
+    "全量类型检查原有207错误未扩修；本片新增0。",
+    "R2人的工程决定、R1人的验收、真实资料退出和阶段3整体保持各自Pending。"
+  ],
+  "user_decision": {
+    "outcome": "Pending"
+  },
+  "local_artifacts": {
+    "directory": "D:/LFEN_project/dev_project/LFEN的第二大脑-知识库/.local-data/stage3r2-client-20261027/",
+    "dist": "D:/LFEN_project/dev_project/LFEN的第二大脑-知识库/.local-data/stage3r2-client-20261027/dist",
+    "after": "D:/LFEN_project/dev_project/LFEN的第二大脑-知识库/.local-data/stage3r2-client-20261027/after.json"
+  }
+}

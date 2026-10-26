@@ -34,6 +34,7 @@ import {
 } from './state';
 
 const StructureBrowser = lazy(() => import('./structure'));
+const DocumentBrowser = lazy(() => import('./document-browser'));
 
 function GroupRow({
   group,
@@ -382,13 +383,16 @@ function DomainCatalogue({
   const [path, setPath] = useState<KnowledgeGroup[]>([]);
   const [source, setSource] = useState<KnowledgeSource | null>(null);
   const [sourceView, setSourceView] = useState<
-    'text' | 'original' | 'web' | 'lifecycle' | 'structure'
+    'text' | 'original' | 'web' | 'lifecycle' | 'structure' | 'document'
   >(
-    params.get('structure') === '1'
-      ? 'structure'
-      : params.has('lifecycle_source') || params.get('lifecycle_view') === '1'
-        ? 'lifecycle'
-        : 'text',
+    params.has('document_structure') ||
+      [...params.keys()].some((key) => key.startsWith('document_'))
+      ? 'document'
+      : params.get('structure') === '1'
+        ? 'structure'
+        : params.has('lifecycle_source') || params.get('lifecycle_view') === '1'
+          ? 'lifecycle'
+          : 'text',
   );
   const showText = () => setSourceView('text');
   const showOriginals = () => setSourceView('original');
@@ -401,12 +405,21 @@ function DomainCatalogue({
     setSourceView('structure');
     setParams({ structure: '1' });
   };
+  const showDocument = () => {
+    setSourceView('document');
+    setParams({ document_structure: '1' });
+  };
   const lifecycleSource = params.get('lifecycle_source');
   useEffect(() => {
     if (lifecycleSource) setSourceView('lifecycle');
   }, [lifecycleSource]);
   useEffect(() => {
-    if (params.get('structure') === '1') setSourceView('structure');
+    if (
+      params.has('document_structure') ||
+      [...params.keys()].some((key) => key.startsWith('document_'))
+    )
+      setSourceView('document');
+    else if (params.get('structure') === '1') setSourceView('structure');
   }, [params]);
   const [generation, setGeneration] = useState(0);
   const [scopeFailure, setScopeFailure] =
@@ -555,8 +568,19 @@ function DomainCatalogue({
             >
               {t('knowledgeStructure.title')}
             </Button>
+            <Button
+              variant={sourceView === 'document' ? 'default' : 'outline'}
+              aria-pressed={sourceView === 'document'}
+              onClick={showDocument}
+            >
+              {t('knowledgeDocument.title')}
+            </Button>
           </div>
-          {sourceView === 'structure' ? (
+          {sourceView === 'document' ? (
+            <p className="text-sm text-text-secondary">
+              {t('knowledgeDocument.chooseOriginal')}
+            </p>
+          ) : sourceView === 'structure' ? (
             <p className="text-sm text-text-secondary">
               {t('knowledgeStructure.chooseProject')}
             </p>
@@ -585,7 +609,11 @@ function DomainCatalogue({
           aria-label={t('knowledgeCatalogue.original')}
           className="min-w-0 overflow-auto"
         >
-          {sourceView === 'structure' ? (
+          {sourceView === 'document' ? (
+            <Suspense fallback={<CatalogueLoading />}>
+              <DocumentBrowser domain={domainId} owner={domain.data.owner_id} />
+            </Suspense>
+          ) : sourceView === 'structure' ? (
             <Suspense fallback={<CatalogueLoading />}>
               <StructureBrowser
                 domain={domainId}
@@ -616,6 +644,7 @@ function DomainCatalogue({
           )}
           {sourceView !== 'lifecycle' &&
             sourceView !== 'structure' &&
+            sourceView !== 'document' &&
             (target || source) && (
               <LifecycleSourceLink
                 domain={domainId}
