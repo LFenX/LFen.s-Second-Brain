@@ -51,7 +51,7 @@ function ProjectChoice({
     </li>
   );
 }
-function ProjectPicker({
+export function ProjectPicker({
   domain,
   onChoose,
 }: {

@@ -1,0 +1,893 @@
+{
+  "document_version": "stage3r1-structure-client/1",
+  "recorded_at": "2026-10-26T12:01:48.266Z",
+  "status": "ClientImplementationVerified_PendingAIntegration",
+  "objective": "完成冻结Structure 0.1.0的客户端白名单实施，以合成Mock、构建和正常提交清洁交还唯一写窗。",
+  "request_snapshot": "按 docs/stage3r1-structure-client-handoff.md 白名单实施 Structure 0.1.0 独立 service/hooks、三类恢复槽、策略、精确准备、任务、固定视图、树、原文、一跳关系及定向测试；不调用实际后端，不改41件保护文件。正常 hooks 提交并清洁回交唯一写权。",
+  "clarification": {
+    "state": "Settled",
+    "notice": "范围与现状明确，本次跳过重复提问",
+    "authority": "docs/stage3r1-structure-client-handoff.md及A明确写窗消息；沿用现有人类协作授权",
+    "scope_changes": []
+  },
+  "task_profile": {
+    "work": "client_contract_consumption",
+    "delivery": "LocalBranchCommit",
+    "runtime_calls": "MockOnly",
+    "review": "NoAdditionalReviewRounds",
+    "skill": "run-governed-product-workflow",
+    "governance_carrier": "仅本JSON、配套client-notes.md及忽略目录证据，无新增治理目录或机器门禁声明"
+  },
+  "source": {
+    "branch": "codex/stage3r1-structure",
+    "baseline": "49fe2d47a340706331d34fb2f28c1d827f487f02",
+    "backend_loaded_sha_reported_by_A": "0efd5563a48a87d0cc41c2661a2ee58dcbc2a1ec88b2bc952b53e152acdcc061",
+    "protected_count": 41,
+    "protected_hashes": {
+      "docs/knowledge-sources-v1.openapi.json": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091",
+      "docs/knowledge-sources-v1.example.json": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a",
+      "docs/knowledge-sources-v1.freeze.json": "114bbfa2b4dd51eafc426716032486f666ace8a1a1284f4c1f4c9baf1f1b35c6",
+      "docs/knowledge-foundation-v1.openapi.json": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4",
+      "docs/knowledge-foundation-v1.example.json": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343",
+      "docs/knowledge-directory-import-v1.openapi.json": "6144c08d4cfe7ac98374dc51829c98290e2c88e3441dd38d250a3cd9cb4492e6",
+      "docs/knowledge-directory-import-v1.examples.json": "73618dd78419bb9027520b3dd8b3ef83b1794d3ad1c4d17d904ce7637c54ea72",
+      "docs/knowledge-directory-import-v1.freeze.json": "2af7575cfbc24510550a0b495e18aa30f94decf5f102c23d259d4f3135dbf5f1",
+      "docs/knowledge-directory-import-v0.3.candidate.md": "80eb846a81b6ade430012b585739fe6405ef8a7de5855f27941fe66a31e2cbfa",
+      "docs/knowledge-directory-import-v0.3.candidate.openapi.json": "da2c320b3c3fd8f6af2b566b40507a5b09c55791236b49b224347c8b9a457f3d",
+      "docs/knowledge-directory-import-v0.3.candidate.examples.json": "2680f9786a19cc49a0330ecfcda84249ef36aac20293341a18e17cbdfd132d4e",
+      "docs/knowledge-batch-import-v0.4.candidate.md": "3a3beec92e8bc0baae1c820a18e078717163988277aa9d304d762ff97d027b1f",
+      "docs/knowledge-batch-import-v0.4.candidate.openapi.json": "d57ca240df19a985341c25d60ce18590dacdcf221b5599b8223f558a7c379fc5",
+      "docs/knowledge-batch-import-v0.4.candidate.examples.json": "fe8bde9d99b8aaa7250a40a1adc86c6bee9ecf474cbf01af55253274f2e2e304",
+      "docs/knowledge-batch-import-v1.openapi.json": "bd13fc400fc2a84f490b92ee865db75f76d89bf79a176658312ac3bea17d0fb8",
+      "docs/knowledge-batch-import-v1.examples.json": "5249cdf57da0313346b7b30db0743079a175aaa8480604120b1bf92e4bdfdc53",
+      "docs/knowledge-batch-import-v1.freeze.json": "1d589290db4b1fe4ab4005dae0ebf1918efdeac9cd57d7c810305087c180f631",
+      "docs/knowledge-original-import-v0.5.candidate.md": "8a1079fe4745b84d178f50939ac25e1ac1fa51bc3f61ed2340ef1f6d9e1638d6",
+      "docs/knowledge-original-import-v0.5.candidate.openapi.json": "b4905ab840c64f26a25a6017dc7454393fd3b974b0e2199edffe2cc5e725a0aa",
+      "docs/knowledge-original-import-v0.5.candidate.examples.json": "16aa77d948f857f93dcc96e0c812d4bee2a8f3ad91205e54b9c0457f78ea8815",
+      "docs/knowledge-original-import-v1.openapi.json": "3c48ebe0a2bfc8b3078262ce6c1a8258b312f6111bd9ed2b07b7b4fb433a5efd",
+      "docs/knowledge-original-import-v1.examples.json": "550f7be69c506a02cc2798d2196e17ca06c73b06f08d934ea3cbf823551d5cb1",
+      "docs/knowledge-original-import-v1.freeze.json": "116ddc4161001c0fdb440b45b227952978ca3d291197d712830a92d5aaaca3b9",
+      "docs/knowledge-web-import-v0.6.candidate.md": "577a76624d8b43e26dde890df49140f0b5a2c458dc493dbecd7f5467e13175fb",
+      "docs/knowledge-web-import-v0.6.candidate.openapi.json": "a167a1977f1f0a313061b093d21f035631dd5fafaea95cd8545601e17af35a88",
+      "docs/knowledge-web-import-v0.6.candidate.examples.json": "81372c6270c3e2b3989b4e088bd029883326f75fe6e254d651b93f951e0b7573",
+      "docs/knowledge-web-import-v1.freeze.json": "bba4e9f0c2341658ac69741d57f5a4a9032ac74b6ec848f13a195e4ab96c66c2",
+      "docs/knowledge-web-import-v1.openapi.json": "673092ab81263bdf7b79e85e06206bb02f8eb8996b476c8643dbafed17e259ed",
+      "docs/knowledge-web-import-v1.examples.json": "71019ae8645ad0fd4527565c42f6f80f93924c26266ffe08696de5e9b1c5671d",
+      "docs/knowledge-source-lifecycle-v0.7.candidate.md": "53b78e36a127c6c0f35048bf0ac511417639aba7cca90a418c007caa1b7f39f9",
+      "docs/knowledge-source-lifecycle-v0.7.candidate.openapi.json": "47d159cfee61708a79475879f5371cb97a38b41eb768e759ff802e1ebd0cdd0d",
+      "docs/knowledge-source-lifecycle-v0.7.candidate.examples.json": "a20bf10a7ac93ce36a8d3cd04cd95b035d8e6f2a1f3301accfdd711d86eb2f41",
+      "docs/knowledge-source-lifecycle-v1.freeze.json": "f6545f908a802d0d326fe73dfb3f8e5b2860abf67306b8a1e022c572bbd984c3",
+      "docs/knowledge-source-lifecycle-v1.openapi.json": "526685f1ab09e07f87f3f9c8cee3cf44347d6bdcf9efed94c356ef32b22725db",
+      "docs/knowledge-source-lifecycle-v1.examples.json": "cfe6c24c3f3a24907220c4e2ead993867c33053c6b2d197b70d93c03f168fb3c",
+      "docs/knowledge-structure-v0.1.candidate.md": "5c61af1a3a6be72337895b665d26cef29a711518f184bdb77a822800df0256d1",
+      "docs/knowledge-structure-v0.1.candidate.openapi.json": "0db14cc46e86e42e6ca5a6ffff3050968644372a76f5091bb380f50dff1c4630",
+      "docs/knowledge-structure-v0.1.candidate.examples.json": "195f83957c6b06ff2fb67b5dc61353c82abee92870b551f9ff14bb02217c9bea",
+      "docs/knowledge-structure-v1.freeze.json": "921c33ca5093cda8194bef3bfeaa1521ac3515a3a073aae927dcac49580f8a84",
+      "docs/knowledge-structure-v1.openapi.json": "a3de720c493e3c1189dc1dde58dfdf04c8e694de09ae0b5470c30b4b84a4b134",
+      "docs/knowledge-structure-v1.examples.json": "3515b728dca1e75c65d463c54729539cd35ff9e341c7a424c0126a00bd4c2a65"
+    },
+    "protected_unchanged": true,
+    "backend_source_modified": false,
+    "configuration_or_lock_modified": false
+  },
+  "plan": [
+    {
+      "step": 1,
+      "work": "核对白名单、正式契约与保护摘要，重新取得类型基线",
+      "status": "Done"
+    },
+    {
+      "step": 2,
+      "work": "完成service/hooks、三类恢复、策略/精确准备/任务/固定读取局部UI",
+      "status": "Done"
+    },
+    {
+      "step": 3,
+      "work": "定向及原来源回归、局部格式/lint、类型差量、生产构建和源码绑定",
+      "status": "Done"
+    },
+    {
+      "step": 4,
+      "work": "正常hooks提交，清洁回交唯一写窗",
+      "status": "PostCommitProofInIgnoredAfterJson"
+    }
+  ],
+  "implementation": {
+    "files": [
+      "web/src/hooks/__tests__/use-knowledge-structure.test.tsx",
+      "web/src/hooks/use-knowledge-structure.ts",
+      "web/src/interfaces/database/knowledge-structure.ts",
+      "web/src/interfaces/request/knowledge-structure.ts",
+      "web/src/locales/en.ts",
+      "web/src/locales/zh.ts",
+      "web/src/pages/dataset/knowledge-catalogue/__tests__/structure-fixture.ts",
+      "web/src/pages/dataset/knowledge-catalogue/__tests__/structure-recovery.test.tsx",
+      "web/src/pages/dataset/knowledge-catalogue/__tests__/structure.test.tsx",
+      "web/src/pages/dataset/knowledge-catalogue/index.tsx",
+      "web/src/pages/dataset/knowledge-catalogue/structure-content.tsx",
+      "web/src/pages/dataset/knowledge-catalogue/structure-policy.tsx",
+      "web/src/pages/dataset/knowledge-catalogue/structure-prepare.tsx",
+      "web/src/pages/dataset/knowledge-catalogue/structure-relations.tsx",
+      "web/src/pages/dataset/knowledge-catalogue/structure-state.tsx",
+      "web/src/pages/dataset/knowledge-catalogue/structure-tasks.tsx",
+      "web/src/pages/dataset/knowledge-catalogue/structure-tree.tsx",
+      "web/src/pages/dataset/knowledge-catalogue/structure-view.tsx",
+      "web/src/pages/dataset/knowledge-catalogue/structure.tsx",
+      "web/src/pages/dataset/knowledge-catalogue/use-structure-flow.ts",
+      "web/src/pages/dataset/knowledge-import/batch-manifest.tsx",
+      "web/src/services/__tests__/knowledge-structure-service.test.ts",
+      "web/src/services/__tests__/knowledge-structure-wire.test.ts",
+      "web/src/services/knowledge-structure-service.ts",
+      "web/src/utils/__tests__/knowledge-structure.test.ts",
+      "web/src/utils/knowledge-structure-schema.ts",
+      "web/src/utils/knowledge-structure.ts",
+      "docs/stage3r1-structure-client-verification.json",
+      "docs/stage3r1-structure-client-notes.md"
+    ],
+    "web_files": 27,
+    "new_web_files": 23,
+    "existing_web_files": 4,
+    "schema_types": 57,
+    "operations": 15,
+    "request_response_split": true,
+    "service_hook_component_layers": true,
+    "query_key_factory": "KnowledgeStructureKeys",
+    "formal_contract": "docs/knowledge-structure-v1.openapi.json",
+    "entry": "既有knowledge-catalogue结构入口，React.lazy按选择加载；ProjectPicker仅局部export",
+    "requirements": [
+      {
+        "id": "R1-01",
+        "requirement": "正式协议独立消费：57类型、15操作、双版本头、201/200、严格信封/范围/预算/身份摘要",
+        "client_status": "ImplementedAndMockVerified",
+        "tests": [
+          "web/src/utils/__tests__/knowledge-structure.test.ts",
+          "web/src/services/__tests__/knowledge-structure-service.test.ts",
+          "web/src/services/__tests__/knowledge-structure-wire.test.ts"
+        ],
+        "real_backend_browser_status": "A交回写权后验证，不由Mock替代"
+      },
+      {
+        "id": "R1-02",
+        "requirement": "固定.4 manifest选择，再读.7 active精确tuple和公开世代、C1根/SHA/字节；suffix、32/2MiB/16MiB和aliases约束",
+        "client_status": "ImplementedAndMockVerified",
+        "tests": [
+          "web/src/utils/__tests__/knowledge-structure.test.ts",
+          "web/src/services/__tests__/knowledge-structure-service.test.ts",
+          "web/src/pages/dataset/knowledge-catalogue/__tests__/structure.test.tsx"
+        ],
+        "real_backend_browser_status": "A交回写权后验证，不由Mock替代"
+      },
+      {
+        "id": "R1-03",
+        "requirement": "基础catalogue与structure-only策略并列；显式确认，固定命令回执后另读当前策略",
+        "client_status": "ImplementedAndMockVerified",
+        "tests": [
+          "web/src/services/__tests__/knowledge-structure-service.test.ts",
+          "web/src/services/__tests__/knowledge-structure-wire.test.ts",
+          "web/src/pages/dataset/knowledge-catalogue/__tests__/structure.test.tsx"
+        ],
+        "real_backend_browser_status": "A交回写权后验证，不由Mock替代"
+      },
+      {
+        "id": "R1-04",
+        "requirement": "task/policy/cancel POST前保存完整原body/key/digest及owner/domain/目标；8槽/16KiB、损坏/满额/失败禁POST",
+        "client_status": "ImplementedAndMockVerified",
+        "tests": [
+          "web/src/utils/__tests__/knowledge-structure.test.ts",
+          "web/src/pages/dataset/knowledge-catalogue/__tests__/structure-recovery.test.tsx"
+        ],
+        "real_backend_browser_status": "A交回写权后验证，不由Mock替代"
+      },
+      {
+        "id": "R1-05",
+        "requirement": "响应丢失后原键GET；固定Task/Command拒绝union；仅核对完整GET拒绝可显式放弃；未知结果保留原槽，不换新键",
+        "client_status": "ImplementedAndMockVerified",
+        "tests": [
+          "web/src/services/__tests__/knowledge-structure-service.test.ts",
+          "web/src/pages/dataset/knowledge-catalogue/__tests__/structure-recovery.test.tsx",
+          "web/src/pages/dataset/knowledge-catalogue/__tests__/structure.test.tsx"
+        ],
+        "real_backend_browser_status": "A交回写权后验证，不由Mock替代"
+      },
+      {
+        "id": "R1-06",
+        "requirement": "取消绑定路径task_id与revision CAS；取消槽与原任务分离；staged/reused不当作已发布",
+        "client_status": "ImplementedAndMockVerified",
+        "tests": [
+          "web/src/utils/__tests__/knowledge-structure.test.ts",
+          "web/src/services/__tests__/knowledge-structure-wire.test.ts",
+          "web/src/pages/dataset/knowledge-catalogue/__tests__/structure-recovery.test.tsx",
+          "web/src/pages/dataset/knowledge-catalogue/__tests__/structure.test.tsx"
+        ],
+        "real_backend_browser_status": "A交回写权后验证，不由Mock替代"
+      },
+      {
+        "id": "R1-07",
+        "requirement": "可见前台自动轮询间隔2秒，隐藏/卸载/终态停止；25秒等待停止后显式继续，无自动POST",
+        "client_status": "ImplementedAndMockVerified",
+        "tests": [
+          "web/src/hooks/__tests__/use-knowledge-structure.test.tsx",
+          "web/src/pages/dataset/knowledge-catalogue/__tests__/structure.test.tsx"
+        ],
+        "real_backend_browser_status": "A交回写权后验证，不由Mock替代"
+      },
+      {
+        "id": "R1-08",
+        "requirement": "固定view与当前head独立，stale全局reasons在affected_sources空时仍显示；历史不自动跟头",
+        "client_status": "ImplementedAndMockVerified",
+        "tests": [
+          "web/src/hooks/__tests__/use-knowledge-structure.test.tsx",
+          "web/src/pages/dataset/knowledge-catalogue/__tests__/structure.test.tsx"
+        ],
+        "real_backend_browser_status": "A交回写权后验证，不由Mock替代"
+      },
+      {
+        "id": "R1-09",
+        "requirement": "复用树/分栏/只读Monaco/列表；来源成员、组织分组与派生树分别浏览；节点/一跳关系按完整scope、filter和opaque cursor懒读",
+        "client_status": "ImplementedAndMockVerified",
+        "tests": [
+          "web/src/hooks/__tests__/use-knowledge-structure.test.tsx",
+          "web/src/pages/dataset/knowledge-catalogue/__tests__/structure.test.tsx",
+          "web/src/services/__tests__/knowledge-structure-wire.test.ts"
+        ],
+        "real_backend_browser_status": "A交回写权后验证，不由Mock替代"
+      },
+      {
+        "id": "R1-10",
+        "requirement": "单窗64KiB、绝对UTF8范围/fragment SHA/next/complete核对；不缩窗重试；BOM/CRLF/emoji与UTF16位置分开",
+        "client_status": "ImplementedAndMockVerified",
+        "tests": [
+          "web/src/utils/__tests__/knowledge-structure.test.ts",
+          "web/src/services/__tests__/knowledge-structure-service.test.ts",
+          "web/src/pages/dataset/knowledge-catalogue/__tests__/structure.test.tsx"
+        ],
+        "real_backend_browser_status": "A交回写权后验证，不由Mock替代"
+      },
+      {
+        "id": "R1-11",
+        "requirement": "session前后守卫；实际401隐藏当前私有数据和可见查询，保留物理owner恢复槽；迟到响应隔离",
+        "client_status": "ImplementedAndMockVerified",
+        "tests": [
+          "web/src/hooks/__tests__/use-knowledge-structure.test.tsx",
+          "web/src/pages/dataset/knowledge-catalogue/__tests__/structure-recovery.test.tsx",
+          "web/src/services/__tests__/knowledge-structure-service.test.ts"
+        ],
+        "real_backend_browser_status": "A交回写权后验证，不由Mock替代"
+      },
+      {
+        "id": "R1-12",
+        "requirement": "确认默认false，输入/刷新/冲突复位；不接受迟到旧准备；HTML/Markdown/外部图片仅代码文本",
+        "client_status": "ImplementedAndMockVerified",
+        "tests": [
+          "web/src/pages/dataset/knowledge-catalogue/__tests__/structure.test.tsx",
+          "web/src/pages/dataset/knowledge-catalogue/__tests__/structure-recovery.test.tsx"
+        ],
+        "real_backend_browser_status": "A交回写权后验证，不由Mock替代"
+      }
+    ]
+  },
+  "verification": {
+    "jest": {
+      "status": "Pass",
+      "command": "web/node_modules/.bin/jest.cmd --runInBand --no-coverage --runTestsByPath <39 paths in test-files.json> --json --outputFile ../.local-data/stage3r1-client-20261026/jest-final.json",
+      "suites": 39,
+      "passed_tests": 1082,
+      "failed_tests": 0,
+      "new_suites": 6,
+      "new_tests": 153,
+      "unchanged_related_suites": 33,
+      "unchanged_related_tests": 929,
+      "static_examples": {
+        "positive": 39,
+        "negative": 37,
+        "digest_vectors": 8,
+        "note": "84静态例/向量计入新增153测试，不算后端运行事实"
+      },
+      "results": [
+        {
+          "file": "src/pages/dataset/knowledge-catalogue/__tests__/structure-recovery.test.tsx",
+          "status": "passed",
+          "tests": 18
+        },
+        {
+          "file": "src/pages/dataset/knowledge-import/__tests__/batch.test.tsx",
+          "status": "passed",
+          "tests": 7
+        },
+        {
+          "file": "src/hooks/__tests__/use-knowledge-structure.test.tsx",
+          "status": "passed",
+          "tests": 6
+        },
+        {
+          "file": "src/pages/dataset/knowledge-catalogue/__tests__/structure.test.tsx",
+          "status": "passed",
+          "tests": 10
+        },
+        {
+          "file": "src/pages/dataset/knowledge-import/__tests__/batch-manifest.test.tsx",
+          "status": "passed",
+          "tests": 4
+        },
+        {
+          "file": "src/pages/dataset/knowledge-import/__tests__/original.test.tsx",
+          "status": "passed",
+          "tests": 6
+        },
+        {
+          "file": "src/pages/dataset/knowledge-import/__tests__/web.test.tsx",
+          "status": "passed",
+          "tests": 16
+        },
+        {
+          "file": "src/hooks/__tests__/use-knowledge-original.test.tsx",
+          "status": "passed",
+          "tests": 7
+        },
+        {
+          "file": "src/hooks/__tests__/use-knowledge-web.test.tsx",
+          "status": "passed",
+          "tests": 5
+        },
+        {
+          "file": "src/hooks/__tests__/use-knowledge-lifecycle.test.tsx",
+          "status": "passed",
+          "tests": 4
+        },
+        {
+          "file": "src/pages/dataset/knowledge-catalogue/__tests__/lifecycle-recovery.test.tsx",
+          "status": "passed",
+          "tests": 22
+        },
+        {
+          "file": "src/services/__tests__/knowledge-structure-wire.test.ts",
+          "status": "passed",
+          "tests": 18
+        },
+        {
+          "file": "src/services/__tests__/knowledge-structure-service.test.ts",
+          "status": "passed",
+          "tests": 7
+        },
+        {
+          "file": "src/services/__tests__/knowledge-lifecycle-service.test.ts",
+          "status": "passed",
+          "tests": 16
+        },
+        {
+          "file": "src/services/__tests__/knowledge-lifecycle-wire.test.ts",
+          "status": "passed",
+          "tests": 2
+        },
+        {
+          "file": "src/services/__tests__/knowledge-web-service.test.ts",
+          "status": "passed",
+          "tests": 39
+        },
+        {
+          "file": "src/utils/knowledge-batch.test.ts",
+          "status": "passed",
+          "tests": 150
+        },
+        {
+          "file": "src/utils/__tests__/knowledge-structure.test.ts",
+          "status": "passed",
+          "tests": 94
+        },
+        {
+          "file": "src/utils/knowledge-import.test.ts",
+          "status": "passed",
+          "tests": 6
+        },
+        {
+          "file": "src/services/__tests__/knowledge-web-wire.test.ts",
+          "status": "passed",
+          "tests": 2
+        },
+        {
+          "file": "src/utils/__tests__/knowledge-lifecycle.test.ts",
+          "status": "passed",
+          "tests": 156
+        },
+        {
+          "file": "src/services/knowledge-batch-service.test.ts",
+          "status": "passed",
+          "tests": 18
+        },
+        {
+          "file": "src/utils/__tests__/knowledge-web.test.ts",
+          "status": "passed",
+          "tests": 148
+        },
+        {
+          "file": "src/utils/knowledge-directory.test.ts",
+          "status": "passed",
+          "tests": 116
+        },
+        {
+          "file": "src/services/knowledge-batch-wire.test.ts",
+          "status": "passed",
+          "tests": 1
+        },
+        {
+          "file": "src/services/knowledge-original-service.test.ts",
+          "status": "passed",
+          "tests": 14
+        },
+        {
+          "file": "src/services/knowledge-original-wire.test.ts",
+          "status": "passed",
+          "tests": 3
+        },
+        {
+          "file": "src/services/knowledge-directory-service.test.ts",
+          "status": "passed",
+          "tests": 27
+        },
+        {
+          "file": "src/services/knowledge-directory-wire.test.ts",
+          "status": "passed",
+          "tests": 1
+        },
+        {
+          "file": "src/utils/knowledge-original.test.ts",
+          "status": "passed",
+          "tests": 55
+        },
+        {
+          "file": "src/services/knowledge-sources-service.test.ts",
+          "status": "passed",
+          "tests": 20
+        },
+        {
+          "file": "src/services/knowledge-sources-wire.test.ts",
+          "status": "passed",
+          "tests": 1
+        },
+        {
+          "file": "src/services/knowledge-foundation-service.test.ts",
+          "status": "passed",
+          "tests": 12
+        },
+        {
+          "file": "src/pages/dataset/knowledge-import/__tests__/import.test.tsx",
+          "status": "passed",
+          "tests": 13
+        },
+        {
+          "file": "src/pages/dataset/knowledge-import/__tests__/directory.test.tsx",
+          "status": "passed",
+          "tests": 25
+        },
+        {
+          "file": "src/pages/dataset/knowledge-catalogue/__tests__/web.test.tsx",
+          "status": "passed",
+          "tests": 2
+        },
+        {
+          "file": "src/pages/dataset/knowledge-catalogue/__tests__/original.test.tsx",
+          "status": "passed",
+          "tests": 3
+        },
+        {
+          "file": "src/pages/dataset/knowledge-catalogue/__tests__/lifecycle.test.tsx",
+          "status": "passed",
+          "tests": 11
+        },
+        {
+          "file": "src/pages/dataset/knowledge-catalogue/__tests__/catalogue.test.tsx",
+          "status": "passed",
+          "tests": 17
+        }
+      ]
+    },
+    "formatting": {
+      "status": "Pass",
+      "command": "oxfmt --write <27 files>; oxfmt --check <27 files>",
+      "files": 27
+    },
+    "lint": {
+      "status": "Pass",
+      "command": "oxlint <27 files>",
+      "errors": 0,
+      "warnings": 0
+    },
+    "types": {
+      "status": "NoNewDiagnostics",
+      "command": "tsc --noEmit --pretty false --project web/tsconfig.json",
+      "baseline": 207,
+      "current": 207,
+      "new": 0,
+      "resolved": 0,
+      "exit_code": 2,
+      "note": "完整类型检查仍因207条既有诊断退出2；未声明全项目类型检查通过，也未修复无关错误。"
+    },
+    "build": {
+      "status": "Pass",
+      "command": "vite build --mode production --outDir <isolated absolute dist> --emptyOutDir",
+      "elapsed_seconds": 43.496,
+      "vite_seconds": 41.75,
+      "flags": {
+        "NODE_OPTIONS": "--max-old-space-size=8192",
+        "VITE_BUILD_SOURCEMAP": "false",
+        "VITE_MINIFY": "esbuild"
+      },
+      "dist_absolute": "D:\\LFEN_project\\dev_project\\LFEN的第二大脑-知识库\\.local-data\\stage3r1-client-20261026\\dist",
+      "index_html_sha256": "f80e55041291b9d7c7b2e8618a33118dfbec24d47303ecd4c7f333e45596cc66",
+      "web_input_files": 1961,
+      "web_input_manifest_sha256": "a4b803ff56d964efa878547f05bf9ade1c9bbeb7751e66137aaf6e1cbc7ec97c",
+      "source_binding": "All 27 changed Web inputs equal the pre-verification snapshot; all other tracked Web inputs equal fixed baseline 49fe2d4. Final commit adds the same source plus two reports only.",
+      "input_manifest": ".local-data/stage3r1-client-20261026/build-inputs.json",
+      "note": "未覆盖现有web/dist，未部署；既有大chunk提示不作为构建失败。"
+    },
+    "source_snapshot": {
+      "files": 27,
+      "hashes": {
+        "web/src/interfaces/request/knowledge-structure.ts": "3a67c9acf7ce6ac3ea98f84557bd79240de2fce0dcbfff5b5fe5ed26960360c4",
+        "web/src/pages/dataset/knowledge-catalogue/structure-content.tsx": "8d6e488947a633e30961dd28f862bf9c815bbee4691f6b3c8c19078f663a95fd",
+        "web/src/pages/dataset/knowledge-catalogue/__tests__/structure.test.tsx": "dddb933e12a46e3014fc4523f5812258114f3e39fd78900e8daf38d55a147b6d",
+        "web/src/locales/en.ts": "7be50f4bf330b674353375861ef1e963eb0064bd2009b9eb417d9a3429edcd0f",
+        "web/src/interfaces/database/knowledge-structure.ts": "30e9b0f13b514a6d8b0131aeee45dfc07668048253b8e1ff925b24cbe9fff83f",
+        "web/src/pages/dataset/knowledge-catalogue/structure-tree.tsx": "9d340900354fece6f52beadb44083a645f20a740c1154466c299e1f43c389b57",
+        "web/src/services/knowledge-structure-service.ts": "c967a2d9fe7fc3e58d2f88568aeafedf3b0de5bc40ef12824a063dd96727ce55",
+        "web/src/pages/dataset/knowledge-catalogue/structure-relations.tsx": "265b10afd6b4013508bc64ba98a14d7038cd4ab0f2f32b930fda6a33739be33c",
+        "web/src/pages/dataset/knowledge-catalogue/use-structure-flow.ts": "f182a5d7a09b4b1f93ac2ad0b187d7406685b6a6dbef6322ab1671d4bd982b77",
+        "web/src/pages/dataset/knowledge-catalogue/__tests__/structure-fixture.ts": "9deaa2e2e64124d785a32f662f89bcb143479134148330b1106d6a8d73873e1f",
+        "web/src/utils/knowledge-structure-schema.ts": "1636f671c64344f1a5a49d4a5ba2d1ec898df867656100cd90d3457512debd36",
+        "web/src/pages/dataset/knowledge-catalogue/structure.tsx": "c3904359a1a8f498bf71457ef365399276e99408852d0029f25c86e60c6ea276",
+        "web/src/services/__tests__/knowledge-structure-wire.test.ts": "011f872e992efd67f2bed3bd3192fd242c1123ec318de971b8f6530b79949c69",
+        "web/src/pages/dataset/knowledge-import/batch-manifest.tsx": "f365b8976ed9ee1d58ceccef0debc159204ff39ec1c10bf18ef77b8533ab22ad",
+        "web/src/locales/zh.ts": "d4798b18e45eeb6db9bd0acb8b19a98a1b97f17547500b62b47ee7bf20aaa525",
+        "web/src/pages/dataset/knowledge-catalogue/structure-tasks.tsx": "b6ee54f9178f128f741e4fa74e8f5998ce87410905219f231d4a594237e241ba",
+        "web/src/pages/dataset/knowledge-catalogue/structure-state.tsx": "87933a7ba35bb4d0e7a7e8c1fe0c308739b23ac4fd13e57d39d5f85646493c68",
+        "web/src/pages/dataset/knowledge-catalogue/structure-view.tsx": "8e217f76052d26e894c1966609d1758e357c4fce3749da8e476edda4c4e94868",
+        "web/src/utils/knowledge-structure.ts": "66ba4048dfe3281a1485ed979a12c9947bed30a46eb1630b8e0578801c2d16ee",
+        "web/src/hooks/__tests__/use-knowledge-structure.test.tsx": "d26afcf8883becb1f6bb763f6ebbf08b54d20bb1bfe7f6cac34ad3a035bb726d",
+        "web/src/pages/dataset/knowledge-catalogue/index.tsx": "620688e8c74abc56f724adc665ee48a2a0f6ae417f69d831c7a7af55e4df9568",
+        "web/src/pages/dataset/knowledge-catalogue/structure-prepare.tsx": "9a95fa975bba3db52707dab3047c7db1af5963fe4b34d18ffd1a2e14e1dcdbae",
+        "web/src/pages/dataset/knowledge-catalogue/__tests__/structure-recovery.test.tsx": "88f573f3348584c61eb2170fff03bc05f0ca86cc29578d3889f24bcc850fe944",
+        "web/src/services/__tests__/knowledge-structure-service.test.ts": "ac7eeb0a81c7571977ea1983baee387187f3b2045a57cef78a484ff675388706",
+        "web/src/hooks/use-knowledge-structure.ts": "5c6e6f1d3d9a50471748d67ba33e72480f4328796860e62e9016bbfb680bc113",
+        "web/src/pages/dataset/knowledge-catalogue/structure-policy.tsx": "2b8a0cf95c4c5f804273e1de0465ef3abc678758c42421bf96e222fd4e41ef20",
+        "web/src/utils/__tests__/knowledge-structure.test.ts": "65a764e93f0ba735e67a02d19aa74c16258fd3adf0ef5df815ccff434e3adb80"
+      },
+      "all_equal_after_tests_and_build": true,
+      "unmodified_web_inputs_equal_baseline": true,
+      "protected_files_unchanged": 41
+    },
+    "semantic_cases": [
+      {
+        "id": "selection-order-invariant",
+        "client_responsibility": "所列测试覆盖相关客户端消费边界，未执行此完整后端场景",
+        "client_tests": [
+          "web/src/utils/__tests__/knowledge-structure.test.ts"
+        ],
+        "backend_expectation": "Canonical members order yields the same task request hash; body aliases are sorted by prefix.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "duplicate-source-rejected",
+        "client_responsibility": "所列测试覆盖相关客户端消费边界，未执行此完整后端场景",
+        "client_tests": [
+          "web/src/utils/__tests__/knowledge-structure.test.ts",
+          "web/src/services/__tests__/knowledge-structure-service.test.ts"
+        ],
+        "backend_expectation": "Two identical source_id members fail before any task or reads.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "overlap-alias-rejected",
+        "client_responsibility": "所列测试覆盖相关客户端消费边界，未执行此完整后端场景",
+        "client_tests": [
+          "web/src/utils/__tests__/knowledge-structure.test.ts",
+          "web/src/pages/dataset/knowledge-catalogue/__tests__/structure.test.tsx"
+        ],
+        "backend_expectation": "@/ plus @/lib/ fails; longest-prefix guessing is not used.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "same-key-changed-original",
+        "client_responsibility": "所列测试覆盖相关客户端消费边界，未执行此完整后端场景",
+        "client_tests": [
+          "web/src/utils/__tests__/knowledge-structure.test.ts",
+          "web/src/pages/dataset/knowledge-catalogue/__tests__/structure-recovery.test.tsx"
+        ],
+        "backend_expectation": "Original expected manifest/source/generation or alias change with same key gives 409, not a new task.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "source-ABA",
+        "client_responsibility": "完整场景由Go拥有，本会话无新增运行证明",
+        "client_tests": [],
+        "backend_expectation": "Archive then restore the same revision advances generation; an old task cannot activate.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "policy-ABA",
+        "client_responsibility": "完整场景由Go拥有，本会话无新增运行证明",
+        "client_tests": [],
+        "backend_expectation": "Disable then enable advances structure policy version; old staged work cannot activate.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "manifest-cas",
+        "client_responsibility": "完整场景由Go拥有，本会话无新增运行证明",
+        "client_tests": [],
+        "backend_expectation": "A changed current project manifest blocks old activation and retains the old active view.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "view-cas",
+        "client_responsibility": "完整场景由Go拥有，本会话无新增运行证明",
+        "client_tests": [],
+        "backend_expectation": "Two tasks expecting the same old active view can only publish one new head.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "fixed-history-policy-disabled",
+        "client_responsibility": "完整场景由Go拥有，本会话无新增运行证明",
+        "client_tests": [],
+        "backend_expectation": "Disable local processing; old authorized view/body remains readable, new task is denied.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "scope-no-count-leak",
+        "client_responsibility": "所列测试覆盖相关客户端消费边界，未执行此完整后端场景",
+        "client_tests": [
+          "web/src/services/__tests__/knowledge-structure-service.test.ts",
+          "web/src/hooks/__tests__/use-knowledge-structure.test.tsx",
+          "web/src/pages/dataset/knowledge-catalogue/__tests__/structure-recovery.test.tsx"
+        ],
+        "backend_expectation": "Another native user sees 404 before view/node/edge/task/count/cursor data.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "boundary-BOM",
+        "client_responsibility": "所列测试覆盖相关客户端消费边界，未执行此完整后端场景",
+        "client_tests": [
+          "web/src/utils/__tests__/knowledge-structure.test.ts"
+        ],
+        "backend_expectation": "File root includes byte0 BOM, while the parser root may start at3.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "boundary-emoji",
+        "client_responsibility": "所列测试覆盖相关客户端消费边界，未执行此完整后端场景",
+        "client_tests": [
+          "web/src/utils/__tests__/knowledge-structure.test.ts",
+          "web/src/services/__tests__/knowledge-structure-service.test.ts"
+        ],
+        "backend_expectation": "UTF-16 indices and byte offsets differ; a split UTF-8 content request fails.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "Go-line-directive",
+        "client_responsibility": "完整场景由Go拥有，本会话无新增运行证明",
+        "client_tests": [],
+        "backend_expectation": "//line must not change persisted physical source byte/line coordinates.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "raw-coverage",
+        "client_responsibility": "完整场景由Go拥有，本会话无新增运行证明",
+        "client_tests": [],
+        "backend_expectation": "Ordered passage byte concatenation equals the complete source including CRLF, BOM and whitespace.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "same-text-distinct-position",
+        "client_responsibility": "完整场景由Go拥有，本会话无新增运行证明",
+        "client_tests": [],
+        "backend_expectation": "Two identical declarations/statements at different positions keep distinct node/relation IDs.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "symbol-continuity-limited",
+        "client_responsibility": "完整场景由Go拥有，本会话无新增运行证明",
+        "client_tests": [],
+        "backend_expectation": "Renaming or inserting a same-name declaration does not claim guaranteed logical continuity.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "markdown-fence",
+        "client_responsibility": "完整场景由Go拥有，本会话无新增运行证明",
+        "client_tests": [],
+        "backend_expectation": "Pseudo headings inside fences do not create sections; fence bytes are retained.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "markdown-image-no-fetch",
+        "client_responsibility": "所列测试覆盖相关客户端消费边界，未执行此完整后端场景",
+        "client_tests": [
+          "web/src/pages/dataset/knowledge-catalogue/__tests__/structure.test.tsx"
+        ],
+        "backend_expectation": "Raw remote image reference is retained but parser and reader make no image request.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "static-not-comment",
+        "client_responsibility": "完整场景由Go拥有，本会话无新增运行证明",
+        "client_tests": [],
+        "backend_expectation": "A fake import in a string/comment emits no static dependency.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "unresolved-dynamic",
+        "client_responsibility": "所列测试覆盖相关客户端消费边界，未执行此完整后端场景",
+        "client_tests": [
+          "web/src/pages/dataset/knowledge-catalogue/__tests__/structure.test.tsx",
+          "web/src/services/__tests__/knowledge-structure-service.test.ts"
+        ],
+        "backend_expectation": "import(path), member/reflective call and external Go packages have no guessed target.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "relative-resolution-ambiguity",
+        "client_responsibility": "完整场景由Go拥有，本会话无新增运行证明",
+        "client_tests": [],
+        "backend_expectation": "Both x.ts and x.tsx are candidates; no arbitrary target chosen.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "aliases-no-filesystem",
+        "client_responsibility": "完整场景由Go拥有，本会话无新增运行证明",
+        "client_tests": [],
+        "backend_expectation": "Resolution uses only the fixed selected source map, never host files or package scripts.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "task-crash-recovery",
+        "client_responsibility": "完整场景由Go拥有，本会话无新增运行证明",
+        "client_tests": [],
+        "backend_expectation": "Same durable task/key and bounded lease takeover; expired attempt cannot activate.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "cancel-before-publication",
+        "client_responsibility": "完整场景由Go拥有，本会话无新增运行证明",
+        "client_tests": [],
+        "backend_expectation": "Cancel requested state is durable; observation before commit prevents a partial visible view.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "success-original-receipt",
+        "client_responsibility": "完整场景由Go拥有，本会话无新增运行证明",
+        "client_tests": [],
+        "backend_expectation": "Recover completed work after current generations change; return original successful task, never reapply.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "limits-no-truncation",
+        "client_responsibility": "完整场景由Go拥有，本会话无新增运行证明",
+        "client_tests": [],
+        "backend_expectation": "Node/edge/depth/input/response budget failure never publishes an apparently complete truncated view.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "empty-file",
+        "client_responsibility": "完整场景由Go拥有，本会话无新增运行证明",
+        "client_tests": [],
+        "backend_expectation": "Markdown empty file root[0,0), no forced paragraph; invalid empty Go reports syntax error.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "partial-not-published",
+        "client_responsibility": "完整场景由Go拥有，本会话无新增运行证明",
+        "client_tests": [],
+        "backend_expectation": "Any member failure leaves all staged nodes private and old view active.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "durable-admission-rejection",
+        "client_responsibility": "所列测试覆盖相关客户端消费边界，未执行此完整后端场景",
+        "client_tests": [
+          "web/src/services/__tests__/knowledge-structure-service.test.ts",
+          "web/src/pages/dataset/knowledge-catalogue/__tests__/structure-recovery.test.tsx"
+        ],
+        "backend_expectation": "A canonical semantic rejection is committed before response; original-key GET returns the original rejection after conditions change.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "unknown-not-abandon",
+        "client_responsibility": "所列测试覆盖相关客户端消费边界，未执行此完整后端场景",
+        "client_tests": [
+          "web/src/pages/dataset/knowledge-catalogue/__tests__/structure-recovery.test.tsx"
+        ],
+        "backend_expectation": "404 or timeout/503/401 does not authorize clearing the original slot; only a matching fixed rejection enables explicit abandonment.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "three-operation-slots",
+        "client_responsibility": "所列测试覆盖相关客户端消费边界，未执行此完整后端场景",
+        "client_tests": [
+          "web/src/utils/__tests__/knowledge-structure.test.ts",
+          "web/src/pages/dataset/knowledge-catalogue/__tests__/structure-recovery.test.tsx"
+        ],
+        "backend_expectation": "Task/policy/cancel each persist original request before POST and use independent owner/domain/kind/target scope.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "cancel-cross-task-key",
+        "client_responsibility": "完整场景由Go拥有，本会话无新增运行证明",
+        "client_tests": [],
+        "backend_expectation": "A fixed cancel key used for a different task gives 409; task_id participates in digest and receipt.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "cancel-slot-not-task-slot",
+        "client_responsibility": "所列测试覆盖相关客户端消费边界，未执行此完整后端场景",
+        "client_tests": [
+          "web/src/utils/__tests__/knowledge-structure.test.ts",
+          "web/src/pages/dataset/knowledge-catalogue/__tests__/structure-recovery.test.tsx",
+          "web/src/pages/dataset/knowledge-catalogue/__tests__/structure.test.tsx"
+        ],
+        "backend_expectation": "Abandoning a rejected cancel operation does not lose the original running task recovery slot.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      },
+      {
+        "id": "generation-preparation",
+        "client_responsibility": "所列测试覆盖相关客户端消费边界，未执行此完整后端场景",
+        "client_tests": [
+          "web/src/services/__tests__/knowledge-structure-service.test.ts",
+          "web/src/pages/dataset/knowledge-catalogue/__tests__/structure.test.tsx"
+        ],
+        "backend_expectation": "Read .4 manifest then .7 current tuple; mismatch blocks preparation, no schema change or silent tuple replacement.",
+        "backend_evidence": "本会话未执行；由A独立真实后端验证，客户端Mock不替代"
+      }
+    ],
+    "evidence": {
+      "directory": ".local-data/stage3r1-client-20261026",
+      "hashes": {
+        "before.json": "f80ff8a4736954c4c2dacf311ee4c7dd954f853097464faf5284b8519e6f9b75",
+        "types-before.log": "ff7c463090fe6d1e3418c7e9981d6e4a7ed70d06c2c22c5bc9832bea6c5cd449",
+        "types-final.log": "ff7c463090fe6d1e3418c7e9981d6e4a7ed70d06c2c22c5bc9832bea6c5cd449",
+        "type-delta.json": "2295c65f241a901743005aa2dfabc6943e83d4cc3c69c3c1fb9e860f112c99bb",
+        "source-files.json": "707f7c19e7566f3e89bb7e61bb9d8ed86776058c94d65008cd9f8e0a30c0f520",
+        "test-files.json": "b45dba26a36495e17ddf11934f669dd04dde8c4f424dade55bb87dc23eec6771",
+        "verified-source-hashes.json": "dc8eeb56241846aa16400b068c1c7c4c347c31ace265cd443090f9242984841b",
+        "build-inputs.json": "f723e7ac8736535c52a22654f02b3bf8d73bd6f7fe5a6ff8e4262436413434a6",
+        "build-final.log": "572b55e6407c6bc67d676d70a5936c908e7449ed23b3a324963587f2a6562b9f",
+        "build-result.json": "9b4be0749df7c6719b84d26cdd47a452cb8175e9e8c0a016ec9db84971b72cce",
+        "jest-final.log": "11df40068ba10e0b4dfaf93f66020d73cdb58ed608e6e330f02dc22c1135dd72",
+        "jest-final.json": "2177347ba866277bda296fbfd6ac4a065dad9f0011232bdcd6a1bb82504092e3",
+        "format-final.log": "f5e096e99d21dd0117619a607a81ca50d6644b12700182903a721f0a001ceb86",
+        "lint-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "commit_and_clean_proof": ".local-data/stage3r1-client-20261026/after.json"
+    }
+  },
+  "failure_and_correction": [
+    {
+      "observed": "初次定向测试触发仓库esbuild-jest的Babel类型绑定/泛型TSX解析限制。",
+      "correction": "测试不复用值导入作为类型绑定；泛型改为具名函数，未改Jest配置或绕过断言。"
+    },
+    {
+      "observed": "分页测试在异步观察者更新前读取旧快照。",
+      "correction": "等待观察者完成更新，保持产品排序/分页断言。"
+    },
+    {
+      "observed": "第一次39套回归中6套因默认目录入口预加载分栏ESM依赖而未运行。",
+      "correction": "入口改为React.lazy/Suspense，默认C1不加载结构模块；最终39套1082项通过。"
+    }
+  ],
+  "acceptance": {
+    "client": "ImplementationAndMockChecksComplete",
+    "Structure_R1": "Pending",
+    "phase3": "Pending",
+    "R6": "ApprovedByHumanEarlier",
+    "R7_synthetic": "ApprovedByHumanEarlier",
+    "real_AICS_or_document_exit": "NotAuthorizedInThisWindow",
+    "required_next": "A收回写权后用本dist执行真实同版浏览器闭环，汇合已独立取得的后端/故障/性能证据，再按既有授权发布和验收。"
+  },
+  "handoff": {
+    "coordinator": "01a158c6-4366-7792-8768-4aed0b80a6a4",
+    "commit": "正常提交；最终HEAD和8项默认hooks及清洁状态记录于after.json和回交消息，避免报告自引用",
+    "tracked_git_window": "回交消息发送后归还A，客户端停止源码/Git修改",
+    "deployment_performed": false,
+    "actual_backend_calls_performed": false
+  },
+  "model_calls": 0,
+  "local_inference": 0,
+  "external_fetches": 0,
+  "adversarial_review": false
+}

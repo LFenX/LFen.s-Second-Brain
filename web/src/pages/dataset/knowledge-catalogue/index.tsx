@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams, useSearchParams } from 'react-router';
 import { Button } from '@/components/ui/button';
@@ -32,6 +32,8 @@ import {
   CatalogueScopeFailure,
   LoadMore,
 } from './state';
+
+const StructureBrowser = lazy(() => import('./structure'));
 
 function GroupRow({
   group,
@@ -380,11 +382,13 @@ function DomainCatalogue({
   const [path, setPath] = useState<KnowledgeGroup[]>([]);
   const [source, setSource] = useState<KnowledgeSource | null>(null);
   const [sourceView, setSourceView] = useState<
-    'text' | 'original' | 'web' | 'lifecycle'
+    'text' | 'original' | 'web' | 'lifecycle' | 'structure'
   >(
-    params.has('lifecycle_source') || params.get('lifecycle_view') === '1'
-      ? 'lifecycle'
-      : 'text',
+    params.get('structure') === '1'
+      ? 'structure'
+      : params.has('lifecycle_source') || params.get('lifecycle_view') === '1'
+        ? 'lifecycle'
+        : 'text',
   );
   const showText = () => setSourceView('text');
   const showOriginals = () => setSourceView('original');
@@ -393,10 +397,17 @@ function DomainCatalogue({
     setSourceView('lifecycle');
     setParams({ lifecycle_view: '1' });
   };
+  const showStructure = () => {
+    setSourceView('structure');
+    setParams({ structure: '1' });
+  };
   const lifecycleSource = params.get('lifecycle_source');
   useEffect(() => {
     if (lifecycleSource) setSourceView('lifecycle');
   }, [lifecycleSource]);
+  useEffect(() => {
+    if (params.get('structure') === '1') setSourceView('structure');
+  }, [params]);
   const [generation, setGeneration] = useState(0);
   const [scopeFailure, setScopeFailure] =
     useState<KnowledgeRequestError | null>(null);
@@ -537,8 +548,19 @@ function DomainCatalogue({
             >
               {t('knowledgeLifecycle.title')}
             </Button>
+            <Button
+              variant={sourceView === 'structure' ? 'default' : 'outline'}
+              aria-pressed={sourceView === 'structure'}
+              onClick={showStructure}
+            >
+              {t('knowledgeStructure.title')}
+            </Button>
           </div>
-          {sourceView === 'lifecycle' ? (
+          {sourceView === 'structure' ? (
+            <p className="text-sm text-text-secondary">
+              {t('knowledgeStructure.chooseProject')}
+            </p>
+          ) : sourceView === 'lifecycle' ? (
             <p className="text-sm text-text-secondary">
               {t('knowledgeLifecycle.selectSource')}
             </p>
@@ -563,7 +585,14 @@ function DomainCatalogue({
           aria-label={t('knowledgeCatalogue.original')}
           className="min-w-0 overflow-auto"
         >
-          {sourceView === 'lifecycle' ? (
+          {sourceView === 'structure' ? (
+            <Suspense fallback={<CatalogueLoading />}>
+              <StructureBrowser
+                domain={domainId}
+                owner={domain.data.owner_id}
+              />
+            </Suspense>
+          ) : sourceView === 'lifecycle' ? (
             <LifecycleBrowser
               domain={domainId}
               owner={domain.data.owner_id}
@@ -585,12 +614,14 @@ function DomainCatalogue({
           ) : (
             <CatalogueEmpty label="selectSource" />
           )}
-          {sourceView !== 'lifecycle' && (target || source) && (
-            <LifecycleSourceLink
-              domain={domainId}
-              source={target?.sourceId || source!.source_id}
-            />
-          )}
+          {sourceView !== 'lifecycle' &&
+            sourceView !== 'structure' &&
+            (target || source) && (
+              <LifecycleSourceLink
+                domain={domainId}
+                source={target?.sourceId || source!.source_id}
+              />
+            )}
         </main>
       </div>
     </CatalogueScopeFailure.Provider>

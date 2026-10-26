@@ -1,5 +1,136 @@
 export default {
   translation: {
+    knowledgeStructure: {
+      runtimeNotReady:
+        'The structure runtime is not ready. New writes are blocked; authorized history remains readable.',
+      title: 'Code and document structure',
+      intro:
+        'Build structure from explicitly selected fixed sources. Read original text and one-hop relations on demand. Model calls: 0.',
+      policy: 'Structure policy',
+      policyRules:
+        'The foundation policy stays in catalogue mode with all six model uses forbidden. Structure policy allows local syntax parsing only, with no lexical or vector index. Authorized history stays readable after disabling.',
+      enabled: 'Enabled',
+      disabled: 'Disabled',
+      versions:
+        'Foundation policy {{foundation}} / structure policy {{structure}}',
+      confirmDisable:
+        'Confirm disabling structure parsing and keeping authorized history readable',
+      confirmEnable:
+        'Confirm enabling structure parsing without models or indexes',
+      disable: 'Disable structure parsing',
+      enable: 'Enable structure parsing',
+      failed:
+        'The operation did not complete. Check writes using the original key; recovery records are retained.',
+      fixedManifest: 'Fixed source manifest',
+      selectionLimits:
+        'Supports .ts / .tsx / .go / .md / .markdown. Select 1–32 text files, up to 2 MiB each and 16 MiB total.',
+      unsupported: 'Unsupported suffix',
+      selected: 'Selected {{count}} files, {{bytes}} bytes',
+      aliases: 'Path aliases (prefix=target per line)',
+      aliasRules:
+        'Up to 8 nonoverlapping prefixes ending in /. Target is empty or a relative directory ending in /, for example @/=frontend/. Values are submitted unchanged.',
+      prepare: 'Prepare an exact parse request',
+      refreshPreparation: 'Refresh and select again',
+      preparedHint:
+        'Fixed manifest, current revision, path, classification, active state and source generation have been checked. The server rechecks atomically on submit. Changes require fresh preparation and confirmation.',
+      expectedView: 'Expected structure head',
+      generation: 'Generation',
+      confirmTask: 'Confirm parsing only the listed revisions and generations',
+      createTask: 'Submit parse task',
+      noManifest: 'This project has no published source manifest.',
+      recovery: 'Recovery by original key',
+      storageRules:
+        'Up to 8 unresolved slots per owner, 16 KiB each. Corrupt, failed or full storage blocks new writes. Unknown outcomes are retained.',
+      storageBlocked: 'Recovery storage is not ready. New writes are blocked.',
+      recoveryKind: 'Unresolved operation: {{kind}}',
+      task: 'Parse task',
+      policyLabel: 'Policy change',
+      cancelLabel: 'Cancel command',
+      unknownHint:
+        'A 404, version error, authorization failure, timeout or error-envelope hint does not prove the original write did not execute.',
+      fixedRejection: 'Verified fixed rejection receipt',
+      recover: 'Look up the original key',
+      abandon: 'Abandon this rejected operation and prepare again',
+      confirmResend:
+        'Confirm resending the saved original request with its original key',
+      resend: 'Resend original request',
+      fixedReceipt: 'Fixed command receipt. Query current state separately.',
+      tasks: 'Project tasks',
+      atomicHint:
+        'Staged or reused members are not published until the whole task succeeds. A cancellation request is not a completed cancellation.',
+      openResult: 'Open the fixed result view',
+      confirmCancel:
+        'Confirm requesting cancellation at task revision {{revision}}',
+      cancel: 'Request cancellation',
+      waitExpired:
+        'The 25-second wait has ended. Automatic polling stopped; the original task is retained.',
+      continueTracking: 'Continue tracking the original task',
+      derivedTree: 'Derived structure tree',
+      original: 'Fixed original-text window',
+      byteRange: 'Absolute UTF-8 bytes [{{start}}, {{end}})',
+      localCoordinates: 'Window end: line {{lines}}, UTF-16 column {{column}}',
+      coordinateHint:
+        'Editor coordinates belong to this window. Absolute UTF-8 bytes identify file positions. HTML, Markdown and URLs are shown as code without loading images.',
+      previousWindow: 'Previous window',
+      nextWindow: 'Next window',
+      oneHop: 'One-hop relations',
+      relationsHint:
+        'Read pages by direction and relation kind. Unresolved targets retain their reason, reference and evidence without guesses or external fetches.',
+      resolved: 'Resolved',
+      unresolved: 'Unresolved',
+      referenceTruncated:
+        'Reference truncated; the evidence digest binds the complete identity.',
+      evidence: 'Evidence',
+      openFrom: 'Open source node',
+      openTarget: 'Open target node',
+      direction: 'Direction',
+      relationKind: 'Relation kind',
+      allKinds: 'All kinds',
+      direction_both: 'Both',
+      direction_in: 'Incoming',
+      direction_out: 'Outgoing',
+      currentHead: 'Current project structure head',
+      currentness_none: 'No structure view',
+      currentness_current: 'Current',
+      currentness_stale: 'Stale structure head',
+      fixedDifferent:
+        'Reading a different fixed historical view. Refreshing the head does not replace it.',
+      staleReasons: 'Staleness reasons',
+      openHead: 'Open the current head',
+      sourceBacklink: 'Open the fixed C1 source',
+      fixedView: 'Fixed structure view',
+      fixedViewHint:
+        'Structure IDs use the structure API. C1 roots link to fixed sources. Archiving a source or disabling the policy does not revoke authorized historical reads.',
+      members: 'Source file members',
+      project: 'Selected project',
+      chooseProject:
+        'Choose a project on the right. Browse organization groups, source files and derived structure separately.',
+      state_queued: 'Queued',
+      state_running: 'Running',
+      state_cancel_requested: 'Cancellation requested',
+      state_succeeded: 'Succeeded',
+      state_failed: 'Failed',
+      state_cancelled: 'Cancelled',
+      member_pending: 'Pending',
+      member_processing: 'Processing',
+      member_staged: 'Staged, unpublished',
+      member_published: 'Published',
+      member_reused: 'Reused',
+      member_failed: 'Failed',
+      member_cancelled: 'Cancelled',
+      node_file: 'File',
+      node_symbol: 'Symbol',
+      node_section: 'Section',
+      node_passage: 'Passage',
+      reason_manifest_changed: 'Manifest changed',
+      reason_source_changed: 'Source changed',
+      reason_lifecycle_changed: 'Generation changed',
+      reason_classification_changed: 'Classification changed',
+      reason_position_changed: 'Position changed',
+      reason_policy_changed: 'Policy changed',
+      reason_source_archived: 'Source archived',
+    },
+
     knowledgeLifecycle: {
       title: 'Source lifecycle',
       openSource: 'View current source state',
