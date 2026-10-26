@@ -21,6 +21,8 @@ import (
 //go:embed knowledge_document_schemas.json
 var knowledgeDocumentSchemasJSON []byte
 
+var knowledgeDocumentXMLLocalName = regexp.MustCompile("^[_\\p{L}][_\\p{L}\\p{N}\\p{M}.\\-\\x{00b7}]*$")
+
 var knowledgeDocumentSchemas = func() map[string]map[string]any {
 	decoder := json.NewDecoder(bytes.NewReader(knowledgeDocumentSchemasJSON))
 	decoder.UseNumber()
@@ -397,7 +399,7 @@ func knowledgeDocumentValidateSchema(schema map[string]any, value any, depth int
 			}
 		}
 		if schema["x-xml-local-name"] == true {
-			if matched, _ := regexp.MatchString("^[_\\p{L}][_\\p{L}\\p{N}\\p{M}.\\-\\x{00b7}]*$", text); !matched {
+			if !knowledgeDocumentXMLLocalName.MatchString(text) {
 				return fail()
 			}
 		}
