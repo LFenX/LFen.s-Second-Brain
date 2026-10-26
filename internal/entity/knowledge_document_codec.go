@@ -277,6 +277,22 @@ func knowledgeDocumentNumber(value any) float64 {
 }
 
 func knowledgeDocumentEqual(a, b any) bool {
+	// These exact Go scalar types already have canonical typed-LP values.
+	// Other representations retain the digest normalization path below.
+	switch left := a.(type) {
+	case string:
+		if right, ok := b.(string); ok && utf8.ValidString(left) && utf8.ValidString(right) {
+			return left == right
+		}
+	case bool:
+		if right, ok := b.(bool); ok {
+			return left == right
+		}
+	case nil:
+		if b == nil {
+			return true
+		}
+	}
 	left, err := KnowledgeLifecycleDigest(a)
 	if err != nil {
 		return false
@@ -411,6 +427,18 @@ func knowledgeDocumentValidateSchema(schema map[string]any, value any, depth int
 				if _, exists := object[key.(string)]; !exists {
 					return fail()
 				}
+			}
+		}
+		// Reject an existing string const before unrelated nested properties.
+		// Successful branches keep full validation; oneOf still counts every branch.
+		for key, raw := range properties {
+			property := knowledgeDocumentSchemaMap(raw)
+			constant, ok := property["const"].(string)
+			if !ok {
+				continue
+			}
+			if child, exists := object[key]; exists && !knowledgeDocumentEqual(child, constant) {
+				return fail()
 			}
 		}
 		for key, child := range object {
