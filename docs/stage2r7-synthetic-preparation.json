@@ -1,0 +1,548 @@
+{
+  "document_version": "v0.52",
+  "recorded_at": "2026-10-26T02:26:20.784Z",
+  "status": "Prepared_Offline_NotExecuted",
+  "objective": "在C2 0.7具体确认待回复期间独立准备R7纯合成退出编排，不接候选接口或迁移。",
+  "source_baseline": "81f3a8c8bb176155e70e4150906555af0d3cac88",
+  "lifecycle_candidate": "19db38d0b2d08c27dd93598e2208bd3a5127a6dc",
+  "authority": "持续推进授权范围内的合成夹具／文档准备；不是R6冻结、真实资料授权或阶段2验收。",
+  "verification": {
+    "recorded_at": "2026-10-26T02:24:06.079Z",
+    "passed": true,
+    "fixture_count": 30,
+    "generated_text_count": 10,
+    "reused_original_count": 8,
+    "reused_web_count": 12,
+    "large_bytes": [
+      67108864,
+      67108864
+    ],
+    "contracts": 5,
+    "all_files_exist_and_hashed": true,
+    "runtime_executed": false,
+    "api_calls": 0,
+    "model_calls": 0
+  },
+  "fixtures": [
+    {
+      "path": ".local-data/stage2r7-20261026/fixtures/v1/notes/one-liner.md",
+      "logical_path": "v1/notes/one-liner.md",
+      "component_side": "non_code",
+      "language": "",
+      "fixture_role": "manual_small",
+      "byte_length": 83,
+      "sha256": "950287902dee9e95ab6f998cf4b06f14279e717d8a87a8a659862ccbdd81bb82"
+    },
+    {
+      "path": ".local-data/stage2r7-20261026/fixtures/v1/frontend/columns.ts",
+      "logical_path": "v1/frontend/columns.ts",
+      "component_side": "frontend",
+      "language": "typescript",
+      "fixture_role": "directory_and_batch",
+      "byte_length": 55,
+      "sha256": "9e0c9f40b8ec12115adccb0ae9d5e3dde69ad0dd5d331f6cba2427b7962c8064"
+    },
+    {
+      "path": ".local-data/stage2r7-20261026/fixtures/v1/frontend/table.ts",
+      "logical_path": "v1/frontend/table.ts",
+      "component_side": "frontend",
+      "language": "typescript",
+      "fixture_role": "directory_and_batch",
+      "byte_length": 281,
+      "sha256": "643321306806b885b109f26c801cf3d44db0695f4f57a8b99987219a89701353"
+    },
+    {
+      "path": ".local-data/stage2r7-20261026/fixtures/v1/backend/normalize.go",
+      "logical_path": "v1/backend/normalize.go",
+      "component_side": "backend",
+      "language": "go",
+      "fixture_role": "directory_and_batch",
+      "byte_length": 214,
+      "sha256": "eea4e0cc7b1cfb7f0542695c705c3209d386189c0d8c0746aa8438193cfc7065"
+    },
+    {
+      "path": ".local-data/stage2r7-20261026/fixtures/v1/README.md",
+      "logical_path": "v1/README.md",
+      "component_side": "shared",
+      "language": "markdown",
+      "fixture_role": "project_manifest",
+      "byte_length": 380,
+      "sha256": "5ce27d37660a8e62c39bf44cc3073a328991c0660c33feb20067d02bd708464f"
+    },
+    {
+      "path": ".local-data/stage2r7-20261026/fixtures/v2/notes/one-liner.md",
+      "logical_path": "v2/notes/one-liner.md",
+      "component_side": "non_code",
+      "language": "",
+      "fixture_role": "manual_small",
+      "byte_length": 83,
+      "sha256": "3e321f61bfbdef133c8ed0d9f02756ca662ac6465fd5b99bb13e9d3e7fbcd100"
+    },
+    {
+      "path": ".local-data/stage2r7-20261026/fixtures/v2/frontend/columns.ts",
+      "logical_path": "v2/frontend/columns.ts",
+      "component_side": "frontend",
+      "language": "typescript",
+      "fixture_role": "directory_and_batch",
+      "byte_length": 55,
+      "sha256": "e4c20a871ca17c92c7445ec14d1b6690192e1fdc9f9d9513eee894e2f6f4bfe7"
+    },
+    {
+      "path": ".local-data/stage2r7-20261026/fixtures/v2/frontend/table.ts",
+      "logical_path": "v2/frontend/table.ts",
+      "component_side": "frontend",
+      "language": "typescript",
+      "fixture_role": "directory_and_batch",
+      "byte_length": 281,
+      "sha256": "4b6028dccce65cc7337420b3505e6e107673f146c38693a9dd2e8f0569a3c02d"
+    },
+    {
+      "path": ".local-data/stage2r7-20261026/fixtures/v2/backend/normalize.go",
+      "logical_path": "v2/backend/normalize.go",
+      "component_side": "backend",
+      "language": "go",
+      "fixture_role": "directory_and_batch",
+      "byte_length": 214,
+      "sha256": "0a1bc486a6c45de18c7d68938e029f5756230b0a217c0190661e8014d1fa2a33"
+    },
+    {
+      "path": ".local-data/stage2r7-20261026/fixtures/v2/README.md",
+      "logical_path": "v2/README.md",
+      "component_side": "shared",
+      "language": "markdown",
+      "fixture_role": "project_manifest",
+      "byte_length": 380,
+      "sha256": "67a65e604613d3428e40212cf5d2a8a8055563c785f677fb28264f0d7d408558"
+    },
+    {
+      "path": ".local-data/stage2r4-20261026/fixtures/valid/pdf/v1.pdf",
+      "logical_path": "original/pdf/v1.pdf",
+      "component_side": "non_code",
+      "language": "",
+      "fixture_role": "original_upload",
+      "reused_from": ".local-data/stage2r4-20261026/fixtures/valid/pdf/v1.pdf",
+      "byte_length": 592,
+      "sha256": "f8a356fe976458855dc64bf559296a759c7b0c005171adc9aeb042c36809fa91"
+    },
+    {
+      "path": ".local-data/stage2r4-20261026/fixtures/valid/pdf/v2.pdf",
+      "logical_path": "original/pdf/v2.pdf",
+      "component_side": "non_code",
+      "language": "",
+      "fixture_role": "original_upload",
+      "reused_from": ".local-data/stage2r4-20261026/fixtures/valid/pdf/v2.pdf",
+      "byte_length": 592,
+      "sha256": "a5dba76036921343ffd9628e1c9f0051e42511a0bda215e4d536a47dba41a367"
+    },
+    {
+      "path": ".local-data/stage2r4-20261026/fixtures/valid/pptx/v1.pptx",
+      "logical_path": "original/pptx/v1.pptx",
+      "component_side": "non_code",
+      "language": "",
+      "fixture_role": "original_upload",
+      "reused_from": ".local-data/stage2r4-20261026/fixtures/valid/pptx/v1.pptx",
+      "byte_length": 1715,
+      "sha256": "35a6a1895b9598cf8ddb3b1e4bcaf4ec003e7bc858fcffea7dd222ccd3ea0f5a"
+    },
+    {
+      "path": ".local-data/stage2r4-20261026/fixtures/valid/pptx/v2.pptx",
+      "logical_path": "original/pptx/v2.pptx",
+      "component_side": "non_code",
+      "language": "",
+      "fixture_role": "original_upload",
+      "reused_from": ".local-data/stage2r4-20261026/fixtures/valid/pptx/v2.pptx",
+      "byte_length": 1715,
+      "sha256": "9360211192f7f1cfd36a0bc9f0672366fceacab00378f25211842a5fe04eefb2"
+    },
+    {
+      "path": ".local-data/stage2r4-20261026/fixtures/valid/docx/v1.docx",
+      "logical_path": "original/docx/v1.docx",
+      "component_side": "non_code",
+      "language": "",
+      "fixture_role": "original_upload",
+      "reused_from": ".local-data/stage2r4-20261026/fixtures/valid/docx/v1.docx",
+      "byte_length": 1014,
+      "sha256": "7735ff48d065e21f2d2f93a48eb772356d4df833e87021442af1c9435ff45ae4"
+    },
+    {
+      "path": ".local-data/stage2r4-20261026/fixtures/valid/docx/v2.docx",
+      "logical_path": "original/docx/v2.docx",
+      "component_side": "non_code",
+      "language": "",
+      "fixture_role": "original_upload",
+      "reused_from": ".local-data/stage2r4-20261026/fixtures/valid/docx/v2.docx",
+      "byte_length": 1014,
+      "sha256": "c3e9a9e1ccb9bb56c7bbc599997c45adc092e3e9fcea3f5297ea2c392ac3eb31"
+    },
+    {
+      "path": ".local-data/stage2r4-20261026/fixtures/valid/text/64MiB-v1.tsx",
+      "logical_path": "original/large/v1.tsx",
+      "component_side": "frontend",
+      "language": "typescript",
+      "fixture_role": "large_original_only",
+      "reused_from": ".local-data/stage2r4-20261026/fixtures/valid/text/64MiB-v1.tsx",
+      "byte_length": 67108864,
+      "sha256": "3f2b6a6078caad2d45a425561f226108e3a5764b2e506ca24dae01b3863eb666"
+    },
+    {
+      "path": ".local-data/stage2r4-20261026/fixtures/valid/text/64MiB-v2.tsx",
+      "logical_path": "original/large/v2.tsx",
+      "component_side": "frontend",
+      "language": "typescript",
+      "fixture_role": "large_original_only",
+      "reused_from": ".local-data/stage2r4-20261026/fixtures/valid/text/64MiB-v2.tsx",
+      "byte_length": 67108864,
+      "sha256": "94ef8bb8fcb1ca59136103b73990e1e359b47a9d5f5a6e4042d5843b2b84da68"
+    },
+    {
+      "path": ".local-data/stage2r5-20261026/fixtures/page/v1.html",
+      "logical_path": "web/page/v1.html",
+      "component_side": "non_code",
+      "language": "",
+      "fixture_role": "local_web_snapshot",
+      "reused_from": ".local-data/stage2r5-20261026/fixtures/page/v1.html",
+      "byte_length": 671,
+      "sha256": "e67b85cde106900fe727e6022bd26e5790e0f1431224ae965aa09d87037ae507"
+    },
+    {
+      "path": ".local-data/stage2r5-20261026/fixtures/page/v2.html",
+      "logical_path": "web/page/v2.html",
+      "component_side": "non_code",
+      "language": "",
+      "fixture_role": "local_web_snapshot",
+      "reused_from": ".local-data/stage2r5-20261026/fixtures/page/v2.html",
+      "byte_length": 671,
+      "sha256": "1c8bfba1f2590d0e1d712abd0cf533ae1c1e53aa538d07a45d2e32ec9eaed113"
+    },
+    {
+      "path": ".local-data/stage2r5-20261026/fixtures/feed/ab.xml",
+      "logical_path": "web/feed/ab.xml",
+      "component_side": "non_code",
+      "language": "",
+      "fixture_role": "local_web_snapshot",
+      "reused_from": ".local-data/stage2r5-20261026/fixtures/feed/ab.xml",
+      "byte_length": 1185,
+      "sha256": "d48e5cc06bf840194c22782c990f42c4178fa01893ced1d651aae2a745531572"
+    },
+    {
+      "path": ".local-data/stage2r5-20261026/fixtures/feed/ba.xml",
+      "logical_path": "web/feed/ba.xml",
+      "component_side": "non_code",
+      "language": "",
+      "fixture_role": "local_web_snapshot",
+      "reused_from": ".local-data/stage2r5-20261026/fixtures/feed/ba.xml",
+      "byte_length": 1185,
+      "sha256": "11846f3eabde40c77bf9f8c6c5d4a2501ed9324f69cd9755923f59a8cf86cf98"
+    },
+    {
+      "path": ".local-data/stage2r5-20261026/fixtures/feed/changed-same-date.xml",
+      "logical_path": "web/feed/changed-same-date.xml",
+      "component_side": "non_code",
+      "language": "",
+      "fixture_role": "local_web_snapshot",
+      "reused_from": ".local-data/stage2r5-20261026/fixtures/feed/changed-same-date.xml",
+      "byte_length": 1185,
+      "sha256": "140ceeef7d661a7402d570de86fbf76025a4c00d78d630543fc314ad001d0608"
+    },
+    {
+      "path": ".local-data/stage2r5-20261026/fixtures/feed/empty.xml",
+      "logical_path": "web/feed/empty.xml",
+      "component_side": "non_code",
+      "language": "",
+      "fixture_role": "local_web_snapshot",
+      "reused_from": ".local-data/stage2r5-20261026/fixtures/feed/empty.xml",
+      "byte_length": 247,
+      "sha256": "7e5db37ec7ec38af4fd10d85d02d490703a7f437be8aa5845d4fec828cde7585"
+    },
+    {
+      "path": ".local-data/stage2r5-20261026/fixtures/feed/duplicate-same.xml",
+      "logical_path": "web/feed/duplicate-same.xml",
+      "component_side": "non_code",
+      "language": "",
+      "fixture_role": "local_web_snapshot",
+      "reused_from": ".local-data/stage2r5-20261026/fixtures/feed/duplicate-same.xml",
+      "byte_length": 1185,
+      "sha256": "549c076de44a57734912ce29711384d221b8bdcdd168cdee0a862abe8ea63690"
+    },
+    {
+      "path": ".local-data/stage2r5-20261026/fixtures/feed/duplicate-conflict.xml",
+      "logical_path": "web/feed/duplicate-conflict.xml",
+      "component_side": "non_code",
+      "language": "",
+      "fixture_role": "local_web_snapshot",
+      "reused_from": ".local-data/stage2r5-20261026/fixtures/feed/duplicate-conflict.xml",
+      "byte_length": 1185,
+      "sha256": "4715a97d62a33e7f00c039c2e36317e240e795da34783e38ef70e50eee47b21f"
+    },
+    {
+      "path": ".local-data/stage2r5-20261026/fixtures/atom/text.xml",
+      "logical_path": "web/atom/text.xml",
+      "component_side": "non_code",
+      "language": "",
+      "fixture_role": "local_web_snapshot",
+      "reused_from": ".local-data/stage2r5-20261026/fixtures/atom/text.xml",
+      "byte_length": 436,
+      "sha256": "47ea33b9fe4fdb0e06a18ca02b54386df56c4d75bac8ad708035d98f5af21aa0"
+    },
+    {
+      "path": ".local-data/stage2r5-20261026/fixtures/atom/html.xml",
+      "logical_path": "web/atom/html.xml",
+      "component_side": "non_code",
+      "language": "",
+      "fixture_role": "local_web_snapshot",
+      "reused_from": ".local-data/stage2r5-20261026/fixtures/atom/html.xml",
+      "byte_length": 469,
+      "sha256": "23edb5fdd372c46b56c1167e788e8e6ed15a0424a85a42f7258f18c71d110a67"
+    },
+    {
+      "path": ".local-data/stage2r5-20261026/fixtures/atom/xhtml.xml",
+      "logical_path": "web/atom/xhtml.xml",
+      "component_side": "non_code",
+      "language": "",
+      "fixture_role": "local_web_snapshot",
+      "reused_from": ".local-data/stage2r5-20261026/fixtures/atom/xhtml.xml",
+      "byte_length": 494,
+      "sha256": "e2c29b54189b3c25e115f82a97312abca9b9ec22a2d752718ab5d7628d934df1"
+    },
+    {
+      "path": ".local-data/stage2r5-20261026/fixtures/atom/external.xml",
+      "logical_path": "web/atom/external.xml",
+      "component_side": "non_code",
+      "language": "",
+      "fixture_role": "local_web_snapshot",
+      "reused_from": ".local-data/stage2r5-20261026/fixtures/atom/external.xml",
+      "byte_length": 447,
+      "sha256": "ff0fd8c011420798f3a8e3653efa51a3a95f02b8d8011c3e238fdd3a83248a29"
+    }
+  ],
+  "contracts": [
+    {
+      "path": "docs/knowledge-sources-v1.openapi.json",
+      "sha256": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091",
+      "operation_count": 7
+    },
+    {
+      "path": "docs/knowledge-directory-import-v1.openapi.json",
+      "sha256": "6144c08d4cfe7ac98374dc51829c98290e2c88e3441dd38d250a3cd9cb4492e6",
+      "operation_count": 14
+    },
+    {
+      "path": "docs/knowledge-batch-import-v1.openapi.json",
+      "sha256": "bd13fc400fc2a84f490b92ee865db75f76d89bf79a176658312ac3bea17d0fb8",
+      "operation_count": 17
+    },
+    {
+      "path": "docs/knowledge-original-import-v1.openapi.json",
+      "sha256": "3c48ebe0a2bfc8b3078262ce6c1a8258b312f6111bd9ed2b07b7b4fb433a5efd",
+      "operation_count": 16
+    },
+    {
+      "path": "docs/knowledge-web-import-v1.openapi.json",
+      "sha256": "673092ab81263bdf7b79e85e06206bb02f8eb8996b476c8643dbafed17e259ed",
+      "operation_count": 34
+    }
+  ],
+  "execution_order": [
+    {
+      "id": "R7-S1",
+      "task": "同版原生合成账号／私有项目域／前后端独立分组／模型禁用策略",
+      "state": "NotRun"
+    },
+    {
+      "id": "R7-S2",
+      "task": "手动一句话两版、原键回执与C1固定修订；相同内容不增版",
+      "state": "NotRun"
+    },
+    {
+      "id": "R7-S3",
+      "task": "受控目录精确选择前后端文件，分别分类、单件预览／确认／固定读",
+      "state": "NotRun",
+      "dependency": "仅现有Linux合成只读根；不把Windows工作区开放为根"
+    },
+    {
+      "id": "R7-S4",
+      "task": "批次任务／取消恢复／项目两版固定清单；保留历史正文引用",
+      "state": "NotRun"
+    },
+    {
+      "id": "R7-S5",
+      "task": "PDF/PPTX/DOCX和64MiB文本原件两版，固定下载；不解析不索引",
+      "state": "NotRun"
+    },
+    {
+      "id": "R7-S6",
+      "task": "本地HTML/RSS/Atom两版、精确选择、摘要／未知／外部引用、旧固定阅读",
+      "state": "NotRun",
+      "dependency": "不联网，不执行RSSHub"
+    },
+    {
+      "id": "R7-S7",
+      "task": "按已批准生命周期实施验证重分类／受限移动／归档／恢复，与旧来源生产者竞争及固定历史",
+      "state": "Blocked_NotAuthorisedOrImplemented",
+      "dependency": "C2 0.7具体批准、实施、迁移及同版部署"
+    },
+    {
+      "id": "R7-S8",
+      "task": "同版浏览器跨入口／权限、SQL／进程失败、模型／旧POC指纹和回退",
+      "state": "NotRun",
+      "dependency": "R6工程完成"
+    },
+    {
+      "id": "R7-REAL",
+      "task": "用户具体选定真实AICS／文档／网站的退出样本",
+      "state": "Blocked_ScopeNotApproved"
+    }
+  ],
+  "limitations": [
+    "该manifest只是离线夹具和固定契约定位，不是导入脚本或运行验收。",
+    "源码关联仅是合成文件中的实际import，不宣称AST、父子切块或关系图已建立。",
+    "R6未冻结前不调用候选接口、不消费旧pending或写业务状态。",
+    "不复制真实资料，不创建或外发凭据，不启动后台模型／服务。",
+    "夹具保存在本机忽略目录，源R4/R5生成器亦为当次忽略执行记录；本报告的相对路径／SHA是证据索引，不宣称新机器仅克隆即可取得这些字节。",
+    "PDF/PPTX/DOCX仅验证原件保存目标；解析／OCR／页节点／代码AST与关系属于阶段3，不由夹具准备验收。"
+  ],
+  "candidate_files_unchanged": true,
+  "model_calls": 0,
+  "real_sites": 0,
+  "api_calls": 0,
+  "sql_writes": 0,
+  "runtime_executed": false,
+  "private_manifest": {
+    "path": ".local-data/stage2r7-20261026/synthetic-exit-corpus.json",
+    "sha256": "30b91dfe973a04ce46c4359116d70dd646751cbeb96bae472a65d82dfcf12a1b"
+  },
+  "acceptance": {
+    "stage2_exit": false,
+    "r7_engineering": "NotRun",
+    "r6_freeze": "Pending",
+    "whole_project_complete": false
+  },
+  "checked_template_sources": [
+    {
+      "path": "web/src/pages/dataset/knowledge-catalogue/__tests__/fixture.ts",
+      "sha256": "1eb8c5fd89c7fe0250207fe87a7bdcc391168a6b653f53098b7af5c7f1b495c2"
+    },
+    {
+      "path": "web/src/pages/dataset/knowledge-import/__tests__/fixture.ts",
+      "sha256": "07daafd31c6ddbe9b7126f8ba9c9cfbbaa1f0fcab78f9a9573471cc027412fe6"
+    },
+    {
+      "path": "web/src/pages/dataset/knowledge-import/__tests__/directory-fixture.ts",
+      "sha256": "9256fd679e88fcfab682702d5f154a38eb8cb76ff5d289c50e01766a8dc3003c"
+    },
+    {
+      "path": "web/src/pages/dataset/knowledge-import/__tests__/batch-fixture.ts",
+      "sha256": "8d3ed64952f85a013192cd43967ec06cc09610fe36ded721211d14b98c73245c"
+    },
+    {
+      "path": "web/src/pages/dataset/knowledge-import/__tests__/original-fixture.ts",
+      "sha256": "5fdb74c01f61b9d6bd0c415ae2e37849efe6870fcbf8dea1a8aecb4db3087364"
+    },
+    {
+      "path": "web/src/pages/dataset/knowledge-import/__tests__/web-fixture.ts",
+      "sha256": "7824393dc55a005511b0a7bf15f30a54efbc02902e230eb6c19f9b428aab1faa"
+    },
+    {
+      "path": "internal/service/dataset/knowledge_original_prepare_test.go",
+      "sha256": "b53093f6e8e33f1e4a084c6d5b50ca39c7dd924c386bbe7dc1534aa6d97ce2ff"
+    },
+    {
+      "path": "internal/service/dataset/knowledge_original_flow_test.go",
+      "sha256": "0104b10a96e9cabf86d7e59fda28aff4d0865004fea7eed5aff62e734adcbc40"
+    },
+    {
+      "path": "internal/service/dataset/knowledge_batch_test.go",
+      "sha256": "3446ff53a0f7772bc9f85e487ed3819999c6d5c2602d4a78ecef7fd3b9749127"
+    },
+    {
+      "path": "internal/syncer/connector/knowledge_web_test.go",
+      "sha256": "deed954afbb50720de81e0092481c3d3ca42cd067f16468d5a33713557b3c9ba"
+    },
+    {
+      "path": "internal/syncer/connector/knowledge_reading_test.go",
+      "sha256": "946a0739c1e96a093878daad88d09eb4f0bcc0159d9a39cea99a4de3b1178d8d"
+    }
+  ],
+  "consumer_sequence_input": {
+    "thread_id": "01a1746b-2de2-7413-906b-d2a4544017e3",
+    "title": "R4 原件导入客户端与界面",
+    "rounds": 1,
+    "scope": "只读R7编排设计，不是应用审查；接方未运行文件生成／测试／API／SQL／模型／网站",
+    "matrix": [
+      {
+        "id": 1,
+        "task": "同版登录／私有域／分组／C1/C3策略与输入SHA",
+        "available": true,
+        "wait_for_r6": "最终退出绑定包含R6的统一二进制／Web，不沿用旧版本作为新运行证据"
+      },
+      {
+        "id": 2,
+        "task": "0.2手动文本两版／原键／固定C1节点",
+        "available": true,
+        "wait_for_r6": "与生命周期竞争及归档读取"
+      },
+      {
+        "id": 3,
+        "task": "0.3 Linux精确选择／观察／确认，中文路径／BOM／CRLF／missing／symlink／越界",
+        "available": true,
+        "wait_for_r6": "旧观察私有世代和归档后发布拒绝"
+      },
+      {
+        "id": 4,
+        "task": "0.4批次任务／逐项状态／取消／原键恢复",
+        "available": true,
+        "wait_for_r6": "worker跨世代恢复且已成功项保留"
+      },
+      {
+        "id": 5,
+        "task": "0.4两个固定项目清单／独立发布／head CAS",
+        "available": true,
+        "wait_for_r6": "新发布与移动／归档／重分类后的旧基版沿用"
+      },
+      {
+        "id": 6,
+        "task": "0.5真实合成PDF／PPTX／DOCX／UTF8原件，原名／SHA／Range",
+        "available": true,
+        "wait_for_r6": "ready与生命周期竞争；不使用仅运输桩Bytes冒充有效PDF"
+      },
+      {
+        "id": 7,
+        "task": "0.5 64MiB、超限拒绝、首／跨缓冲／尾Range及中断原键恢复",
+        "available": true,
+        "wait_for_r6": "最终同版范围；R4历史容量与R7新执行分开"
+      },
+      {
+        "id": 8,
+        "task": "0.6 HTML代码／表格／base／canonical／CSP／原字节／UTF8窗口",
+        "available": true,
+        "wait_for_r6": "旧Preview栅栏；0.6整件校验不混用0.5 Range"
+      },
+      {
+        "id": 9,
+        "task": "0.6 RSS GUID／弱身份／重复／冲突／元信息变化／A选B不发布／缺项不删",
+        "available": true,
+        "wait_for_r6": "归档恢复与同Capture重新明确Preview"
+      },
+      {
+        "id": 10,
+        "task": "0.6 Atom text／html／xhtml／嵌套base／仅外部引用",
+        "available": true,
+        "wait_for_r6": "生命周期竞争；不自动抓图片／全文"
+      },
+      {
+        "id": 11,
+        "task": "同合成组内文本／原件／网页三视图与前后端独立分类",
+        "available": true,
+        "wait_for_r6": "保存后的重分类；原件／Web不造C1根"
+      },
+      {
+        "id": 12,
+        "task": "全类型固定历史／项目／回执／撤权与四动作ABA",
+        "available": false,
+        "wait_for_r6": "0.7具体批准与工程完成；新写入口不做候选假调用"
+      }
+    ],
+    "verified_correction": "消费者输入中R4五次容量未采纳：统一报告实际为三档各3次、共9次暖运行；R5另有Feed5次及HTML5次。均不冒称R7已重跑。",
+    "not_executable_server_records": "Mock中的固定ID／时间／响应只作模板；真实API运行必须按当次登记和原键生成身份。"
+  }
+}
