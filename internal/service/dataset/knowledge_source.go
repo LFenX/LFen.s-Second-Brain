@@ -60,11 +60,11 @@ func (d *DatasetService) SnapshotKnowledgeSource(ctx context.Context, userID, do
 		return nil, err
 	}
 	var originalCount int64
-	if err := dao.DB.WithContext(ctx).Model(&entity.KnowledgeSourceRevision{}).Where("domain_id = ? AND document_id = ? AND representation_kind = ?", kb.ID, document.ID, "original_only").Count(&originalCount).Error; err != nil {
+	if err := dao.DB.WithContext(ctx).Model(&entity.KnowledgeSourceRevision{}).Where("domain_id = ? AND document_id = ? AND representation_kind IN ?", kb.ID, document.ID, []string{"original_only", "web_capture"}).Count(&originalCount).Error; err != nil {
 		return nil, err
 	}
 	if originalCount > 0 {
-		return nil, knowledgeError(415, "knowledge_source_unsupported", "Original-only sources have no C1 text representation")
+		return nil, knowledgeError(415, "knowledge_source_unsupported", "This source has no C1 text representation")
 	}
 	if document.Location == nil || document.Name == nil || document.Size < 0 || document.Size > knowledgeMaxSourceBytes {
 		return nil, knowledgeInvalid("Source must have readable content of at most 2 MiB")
@@ -155,7 +155,7 @@ func publishKnowledgeSource(ctx context.Context, tx *gorm.DB, kb *entity.Knowled
 	if currentErr != nil && !errors.Is(currentErr, gorm.ErrRecordNotFound) {
 		return currentErr
 	}
-	if currentErr == nil && current.RepresentationKind == "original_only" {
+	if currentErr == nil && (current.RepresentationKind == "original_only" || current.RepresentationKind == "web_capture") {
 		return knowledgeError(415, "knowledge_source_unsupported", "Original-only sources have no C1 text representation")
 	}
 	if currentErr == nil && current.InputHash == inputHash {
@@ -211,8 +211,8 @@ func (d *DatasetService) knowledgeSource(ctx context.Context, domainID, revision
 	if err != nil {
 		return nil, knowledgeDBError(err, "source lookup")
 	}
-	if source.RepresentationKind == "original_only" {
-		return nil, knowledgeError(415, "knowledge_source_unsupported", "Original-only sources have no C1 text representation")
+	if source.RepresentationKind == "original_only" || source.RepresentationKind == "web_capture" {
+		return nil, knowledgeError(415, "knowledge_source_unsupported", "This source has no C1 text representation")
 	}
 	source.RootNodeID = knowledgeRoot(&source).ID
 	return &source, nil
@@ -280,8 +280,8 @@ func (d *DatasetService) knowledgeNode(ctx context.Context, domainID, nodeID str
 }
 
 func knowledgeSourceBytes(ctx context.Context, source *entity.KnowledgeSourceRevision) ([]byte, error) {
-	if source.RepresentationKind == "original_only" {
-		return nil, knowledgeError(415, "knowledge_source_unsupported", "Original-only sources have no C1 text representation")
+	if source.RepresentationKind == "original_only" || source.RepresentationKind == "web_capture" {
+		return nil, knowledgeError(415, "knowledge_source_unsupported", "This source has no C1 text representation")
 	}
 	content, err := file.NewFileCommitService().GetCommitFileContent(ctx, source.FolderID, source.CommitID, source.FileID)
 	if err != nil {

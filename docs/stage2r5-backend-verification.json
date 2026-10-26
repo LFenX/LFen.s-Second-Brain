@@ -1,0 +1,268 @@
+{
+  "document_version": "v0.49",
+  "recorded_at": "2026-10-25T23:53:28.460Z",
+  "objective": "实施已批准C2 0.6.0的Go后端，先保存可核对单元／回归与二进制结果，再继续真实合成联调和Web交替。",
+  "request_snapshot": [
+    "确认冻结并继续实施"
+  ],
+  "authority": {
+    "outcome": "Approved",
+    "response": "确认冻结并继续实施",
+    "source": "本会话真人异步回答",
+    "question_ref": "call_abccb90207ed413d9385cc66105f3857",
+    "scope": "冻结d798893候选；按单写入完成后端、客户端及合成联调后推main；模型0、不启动多轮审查、真实网站及RSSHub仍不访问",
+    "subject_commit": "d798893dee370e95b4133aff637e10a4ca722f89",
+    "formal_freeze": "9c5cc1f",
+    "not_engineering_acceptance": true
+  },
+  "engineering_status": "BackendUnitVerified_RuntimeAndFrontendPending",
+  "acceptance": {
+    "user_decision": {
+      "outcome": "Pending"
+    },
+    "r4_user_decision": "Pending_Independent",
+    "stage2_exit": false,
+    "whole_project_complete": false,
+    "adversarial_review": "NotRun_UserProhibited"
+  },
+  "branch": "codex/stage2r5-web-import",
+  "baseline": "9c5cc1f",
+  "scope": {
+    "synthetic_only": true,
+    "external_model_calls": 0,
+    "local_model_inference": 0,
+    "real_website_fetches": 0,
+    "rsshub_execution": false,
+    "new_dependencies": 0,
+    "frontend_changed": false,
+    "physical_history_or_object_gc": false,
+    "credentials_regenerated": false,
+    "volumes_deleted": false
+  },
+  "implementation": {
+    "operations": 34,
+    "source_hashes": {
+      "internal/entity/knowledge_web.go": "39954b218695d9a18676f0ff73a9b36920b77fb458a52d62926fd196f7c1d4a9",
+      "internal/entity/knowledge_web_capabilities.json": "d246276cf2039ea0e124cf4e35db9fd00601241d76b0f46d169a767026051edd",
+      "internal/entity/knowledge_web_digest.go": "9fe1924fd7d787db6e1b4ccfdcfdecc99c2aca95080fac92024dff55e3d84c8a",
+      "internal/entity/knowledge_web_digests.json": "43212857e24322ab1bd7b59c29ebcff4f2a5f9b1aef337adae69acaa7e3040be",
+      "internal/entity/knowledge_web_digest_test.go": "c14e9fdb75772c12f60077c1a6ba70032bde9de5f0a0bc33276913f335f8e301",
+      "internal/entity/knowledge_web_store.go": "de46bf2fab1e4ed43fb2aba66e17b8c567b884984869e42cfc5c1d07b7ba48e1",
+      "internal/syncer/connector/knowledge_web.go": "0eb1316600abfd5c227589b6722fc27db8a27145590ee962a5f5496e1a06d556",
+      "internal/syncer/connector/knowledge_web_fetch.go": "c290886057554f10cd6652c0e5760c30ecadb77423936f28a179ed65dc532468",
+      "internal/syncer/connector/knowledge_web_fetch_test.go": "76434e748cdbfaee9596f99b073f28ddd3868d909773f8eb94fa7294e72e677f",
+      "internal/syncer/connector/knowledge_web_test.go": "deed954afbb50720de81e0092481c3d3ca42cd067f16468d5a33713557b3c9ba",
+      "internal/syncer/connector/knowledge_web_xml.go": "bf5beb3628564e5b291192faac844f8f74c557ea3f1bdd5b0032014d1c897331",
+      "internal/service/dataset/knowledge_web.go": "7eac743d7eccc25e5def2faf80d44209cb64193edd4198dc980ca93637770e46",
+      "internal/service/dataset/knowledge_web_observation.go": "bb2e145bf3dd468088bfffbb0c311a3b85d4dfd40f526e87f134e5f489c95428",
+      "internal/service/dataset/knowledge_web_observation_test.go": "30e7ccd162f903ba38bd34a48062ea2b7f57f2dcc262ab563e54b7bd2e21b85b",
+      "internal/service/dataset/knowledge_web_preview.go": "175abbc91ab5beaa4aa5fd2e0cb23dfe331b375d83ced6ca3dcdfda2010455ed",
+      "internal/service/dataset/knowledge_web_publish.go": "085c845804e937619967d5dde0a19f225eb248f077320ce524613e65ed2dc2ab",
+      "internal/service/dataset/knowledge_web_publish_test.go": "12a4fb8e82a28f36740d7b0f6d1106a34eaec1ebf0b0afbab7e37e97cef318f2",
+      "internal/service/dataset/knowledge_web_read.go": "45adb7b80c7c594bcd73089b8b772fabe2ccee679c06a4067a34769365d031b0",
+      "internal/service/dataset/knowledge_web_read_test.go": "1b908572a6b5553b209a030c92923a30057a399dc3d21b1ee4a8d6e274797480",
+      "internal/service/dataset/knowledge_web_revision.go": "11fed1e8851f180481557d726dd5ea53914e1fc9b6373c79e1dfbac62b7ec01d",
+      "internal/service/dataset/knowledge_web_revision_test.go": "7bafc7a8661d5cc95cfffa1757cc3e97a56c712d80eaa4dc7f0f5f2863c969ce",
+      "internal/service/dataset/knowledge_web_test.go": "e979fcf1f056b1b5483d9dab5d2819d0b344559b65253d1549b1c95ba277ea47",
+      "internal/service/dataset/knowledge_web_transfer.go": "ed7aa481038e1576919e8472dd2b28aaeea8bedbbf4a1052f83a96c0bc7a2418",
+      "internal/service/dataset/knowledge_web_transfer_test.go": "c74c1ccacb3c61eaf3a4bc966e4a353483eb8628ad91ffeeaff5900b84df61f8",
+      "internal/handler/knowledge_web.go": "0c53ad0314b45bd1c370602fa43713d7d46b2a47e0025e9cf8f3eb81c06489b2",
+      "internal/handler/knowledge_web_test.go": "ee199baf322f7d39f5ac84e7efc4e54a4c95c32a8c60a069a1f0a3c251c18ac8",
+      "internal/router/knowledge_web.go": "b37568d23243f81dcdf223842c03b1e1ee028e2667d0bb516608df291e7ac659",
+      "internal/router/knowledge_web_test.go": "f8d48470ebaa9d2f83b8d736ab244260970aaba020d1c8a2d378338a33bdc41c",
+      "internal/router/router.go": "72068d575ebee345c4bd5acbf4f25424c6598e65231e50b41169ac17cbac4738",
+      "internal/common/http.go": "d9df82aa3516180fc2a34d3f51ddda59c0dbb499ea8cdaea10596a1723b45169",
+      "internal/dao/knowledge_migration.go": "eb5660922eff72b0b0acdf9c56a039728f7d801fcf7b8dc54aa261d1dbe15788",
+      "internal/entity/knowledge_import.go": "0e5a8126a5a992f5e7ba62b54c5ad5f0ea8bf21498d98c02bfe67b5754768afd",
+      "internal/service/dataset/service.go": "3b14463e71fc644fe4a374c1084148e522a21fafea1060c2cf6d8bc7b67fd792",
+      "internal/service/dataset/knowledge_source.go": "0ec00fc1703832b76e56d807b6d4f9e086939d894e61c78314662053780d3b0a",
+      "internal/syncer/connector/knowledge_reading.go": "c4d80608b9a27a6d9b0dfb82ff0c585e64391c9b761704dfaa776b5b4aa8c7d1",
+      "internal/syncer/connector/knowledge_reading_test.go": "946a0739c1e96a093878daad88d09eb4f0bcc0159d9a39cea99a4de3b1178d8d",
+      "internal/service/file/source_snapshot.go": "f1634aeeb0205b0a6df204f0f20dc5ff9c31a5cee0cf11d2c81c748984f9437f",
+      "internal/service/file/source_snapshot_batch_test.go": "d5beb00f1103ceeff0530f0efd26443979de38c365734557b5a28e6338f92b27",
+      "docs/knowledge-web-import-v1.examples.json": "71019ae8645ad0fd4527565c42f6f80f93924c26266ffe08696de5e9b1c5671d",
+      "docs/knowledge-web-import-v1.openapi.json": "673092ab81263bdf7b79e85e06206bb02f8eb8996b476c8643dbafed17e259ed",
+      "internal/syncer/connector/knowledge_source.go": "667716e21048063614f9eceda13f1d07e0c318739bfee0fbf7bf3871e06f794a",
+      "internal/syncer/connector/knowledge_source_test.go": "1a8f69f8c38845fd7a006efca8995225e888a3024f981d58c6dd3941e9564084"
+    },
+    "nginx_sha256": "c03bf6dca5f10bfb6c0583011746c828254997218bc073f1f2711b5dbe135c94",
+    "native_identity": "复用私有域／分组、原生来源登记／绑定、Document／File／FileCommitItem；web_capture独立表示，无C1根／伪行号。",
+    "parse": "有界HTML／RSS2／Atom；不透明ID／弱URL／缺失不可选，XML实体／DTD拒绝，code／合并表格／嵌套base，元信息／引用／版本入typed-LP摘要，默认分类可在预览重新投影。",
+    "capture": "本地快照与明确一次匿名取得共用保存；原键恢复、单调revision、固定TTL、2部署租约／1主体域活动、30秒lease／5秒续租，在线Attempted永不重置。",
+    "fetch": "固定URL／最多4origin和3跳；15秒统一Context，逐跳授权／全部DNS检查／钉选拨号／正确TLS主机，无Cookie／Auth／Referer／环境代理／重试，拒压缩／非200／超界；测试注入仅包私有依赖，生产无绕过配置。",
+    "observation": "Capture唯一观察；崩溃租约后明确POST同ID重试；有界产物打包一次保存、100条批量写入元信息，避免每条分别写对象；原Capture与解码正文／安全阅读各有独立摘要和读取范围。",
+    "publication": "精确1—32项／≤8MiB／逐项全部认可；先在SQL外核验对象，一笔短事务检查全部头并发布，全批一个原生文件夹版本树；同输入不增版，回到历史输入复用原修订，新回执保留本次Capture且不改旧修订证明。",
+    "reading": "观察／固定修订、原件下载／独立正文和安全阅读／≤4096原字节窗口／预算分页；每次及对象IO后重验授权，raw始终octet-stream＋attachment，白名单HTML禁外连CSP，父页空sandbox待客户端实现。",
+    "prototype_convergence": "准备阶段未接入的Markdown／prep身份原型已从原拥有文件移除；保留路径及原字节摘要原语，正式0.6为单一受控链路，原生通用RSS入口保持。"
+  },
+  "contracts": {
+    "version": "0.6.0",
+    "protected_files": 29,
+    "all_hashes_unchanged": true,
+    "hashes": {
+      "docs/knowledge-sources-v1.openapi.json": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091",
+      "docs/knowledge-sources-v1.example.json": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a",
+      "docs/knowledge-sources-v1.freeze.json": "114bbfa2b4dd51eafc426716032486f666ace8a1a1284f4c1f4c9baf1f1b35c6",
+      "docs/knowledge-foundation-v1.openapi.json": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4",
+      "docs/knowledge-foundation-v1.example.json": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343",
+      "docs/knowledge-directory-import-v1.openapi.json": "6144c08d4cfe7ac98374dc51829c98290e2c88e3441dd38d250a3cd9cb4492e6",
+      "docs/knowledge-directory-import-v1.examples.json": "73618dd78419bb9027520b3dd8b3ef83b1794d3ad1c4d17d904ce7637c54ea72",
+      "docs/knowledge-directory-import-v1.freeze.json": "2af7575cfbc24510550a0b495e18aa30f94decf5f102c23d259d4f3135dbf5f1",
+      "docs/knowledge-directory-import-v0.3.candidate.md": "80eb846a81b6ade430012b585739fe6405ef8a7de5855f27941fe66a31e2cbfa",
+      "docs/knowledge-directory-import-v0.3.candidate.openapi.json": "da2c320b3c3fd8f6af2b566b40507a5b09c55791236b49b224347c8b9a457f3d",
+      "docs/knowledge-directory-import-v0.3.candidate.examples.json": "2680f9786a19cc49a0330ecfcda84249ef36aac20293341a18e17cbdfd132d4e",
+      "docs/knowledge-batch-import-v0.4.candidate.md": "3a3beec92e8bc0baae1c820a18e078717163988277aa9d304d762ff97d027b1f",
+      "docs/knowledge-batch-import-v0.4.candidate.openapi.json": "d57ca240df19a985341c25d60ce18590dacdcf221b5599b8223f558a7c379fc5",
+      "docs/knowledge-batch-import-v0.4.candidate.examples.json": "fe8bde9d99b8aaa7250a40a1adc86c6bee9ecf474cbf01af55253274f2e2e304",
+      "docs/knowledge-batch-import-v1.openapi.json": "bd13fc400fc2a84f490b92ee865db75f76d89bf79a176658312ac3bea17d0fb8",
+      "docs/knowledge-batch-import-v1.examples.json": "5249cdf57da0313346b7b30db0743079a175aaa8480604120b1bf92e4bdfdc53",
+      "docs/knowledge-batch-import-v1.freeze.json": "1d589290db4b1fe4ab4005dae0ebf1918efdeac9cd57d7c810305087c180f631",
+      "docs/knowledge-original-import-v0.5.candidate.md": "8a1079fe4745b84d178f50939ac25e1ac1fa51bc3f61ed2340ef1f6d9e1638d6",
+      "docs/knowledge-original-import-v0.5.candidate.openapi.json": "b4905ab840c64f26a25a6017dc7454393fd3b974b0e2199edffe2cc5e725a0aa",
+      "docs/knowledge-original-import-v0.5.candidate.examples.json": "16aa77d948f857f93dcc96e0c812d4bee2a8f3ad91205e54b9c0457f78ea8815",
+      "docs/knowledge-original-import-v1.openapi.json": "3c48ebe0a2bfc8b3078262ce6c1a8258b312f6111bd9ed2b07b7b4fb433a5efd",
+      "docs/knowledge-original-import-v1.examples.json": "550f7be69c506a02cc2798d2196e17ca06c73b06f08d934ea3cbf823551d5cb1",
+      "docs/knowledge-original-import-v1.freeze.json": "116ddc4161001c0fdb440b45b227952978ca3d291197d712830a92d5aaaca3b9",
+      "docs/knowledge-web-import-v0.6.candidate.md": "577a76624d8b43e26dde890df49140f0b5a2c458dc493dbecd7f5467e13175fb",
+      "docs/knowledge-web-import-v0.6.candidate.openapi.json": "a167a1977f1f0a313061b093d21f035631dd5fafaea95cd8545601e17af35a88",
+      "docs/knowledge-web-import-v0.6.candidate.examples.json": "81372c6270c3e2b3989b4e088bd029883326f75fe6e254d651b93f951e0b7573",
+      "docs/knowledge-web-import-v1.openapi.json": "673092ab81263bdf7b79e85e06206bb02f8eb8996b476c8643dbafed17e259ed",
+      "docs/knowledge-web-import-v1.examples.json": "71019ae8645ad0fd4527565c42f6f80f93924c26266ffe08696de5e9b1c5671d",
+      "docs/knowledge-web-import-v1.freeze.json": "bba4e9f0c2341658ac69741d57f5a4a9032ac74b6ec848f13a195e4ab96c66c2"
+    }
+  },
+  "verification": {
+    "unit": {
+      "command": "bash build.sh --test -json -run ^TestKnowledge(Web|Snapshot|Reading|Original|Migration) ./internal/entity ./internal/service/file ./internal/syncer/connector ./internal/service/dataset ./internal/dao ./internal/handler ./internal/router",
+      "packages": {
+        "ragflow/internal/entity": {
+          "top_level": 4,
+          "including_subtests": 50
+        },
+        "ragflow/internal/service/file": {
+          "top_level": 6,
+          "including_subtests": 18
+        },
+        "ragflow/internal/syncer/connector": {
+          "top_level": 22,
+          "including_subtests": 92
+        },
+        "ragflow/internal/dao": {
+          "top_level": 3,
+          "including_subtests": 3
+        },
+        "ragflow/internal/service/dataset": {
+          "top_level": 46,
+          "including_subtests": 132
+        },
+        "ragflow/internal/handler": {
+          "top_level": 6,
+          "including_subtests": 30
+        },
+        "ragflow/internal/router": {
+          "top_level": 2,
+          "including_subtests": 2
+        }
+      },
+      "top_level": 89,
+      "including_subtests": 327,
+      "log_sha256": "9ebd8ca5d6da4ce66b1bde48090e32d85edddb67f11b19c680b8b68ee231c538",
+      "source_equals_build": true,
+      "native_wrapper_units_passed": true
+    },
+    "old_chain_regression": {
+      "recorded_at": "2026-10-25T23:43:14.498Z",
+      "status": 0,
+      "command": "bash build.sh --test -json -run ^TestKnowledge(Import|Directory|Batch|Project|SourcePreparation|Ancestor) ./internal/service/dataset ./internal/service/file ./internal/handler ./internal/router",
+      "log": "backend-regression.log",
+      "source_unchanged_since": "web-primitives-1792971457342.log",
+      "packages": {
+        "ragflow/internal/service/file": {
+          "top_level": 1,
+          "including_subtests": 5
+        },
+        "ragflow/internal/service/dataset": {
+          "top_level": 31,
+          "including_subtests": 53
+        },
+        "ragflow/internal/router": {
+          "top_level": 2,
+          "including_subtests": 2
+        },
+        "ragflow/internal/handler": {
+          "top_level": 11,
+          "including_subtests": 42
+        }
+      },
+      "top_level": 45,
+      "including_subtests": 102,
+      "log_sha256": "dc8b85c72843f938a80762dd095a708e7caa2393f076522c472cef4d9c3ed284",
+      "meaning": "既有0.2／0.3／0.4导入、来源原字节及历史权限路径定向回归；不是全仓测试。"
+    },
+    "build": {
+      "binary_sha256": "2a7de569de80c9f27ed549ab10dc9de60519ecce0a52ad519c615919e8a37502",
+      "linker": "/usr/local/bin/ld.lld\nUbuntu LLD 22.1.8 (compatible with GNU linkers)",
+      "help_modes": [
+        {
+          "mode": "api",
+          "status": 1,
+          "usage_seen": true,
+          "output_sha256": "0d52096964d86019c120bbe4de5493b8a6f2ae6379c02e5bce7a11cecad4c817"
+        },
+        {
+          "mode": "admin",
+          "status": 1,
+          "usage_seen": true,
+          "output_sha256": "f075fe3044c24b77a18888307627eeabe34618143840693b95969b80a642b332"
+        },
+        {
+          "mode": "ingestor",
+          "status": 1,
+          "usage_seen": true,
+          "output_sha256": "0aaffc695a90abebf38581f1453fe8d887e0648d8997301240dd887b26b4b368"
+        },
+        {
+          "mode": "syncer",
+          "status": 1,
+          "usage_seen": true,
+          "output_sha256": "771b61da3c1e4ac8d5034c48f81bee41ee815b38c92052db2d091812bfbbdf36"
+        }
+      ],
+      "source_input_sha256": "c0ae4e2bc5ab26f2d09c9452d85dd861c34c53fe5dc6b8566a268046e7a5aa55",
+      "source_matches_unit_and_build": true,
+      "probe_correction": "首次help误按0判断；源码及R4证据定义help退出1，实际Usage已输出。只复验四mode启动，不重做已通过编译。"
+    },
+    "covered": [
+      "54schema对应的Go投影及21个正式样本往返、13摘要／12typed向量",
+      "HTML／RSS／Atom、1000项、嵌套base、总节点预算和身份／元信息变化",
+      "公网地址／混合DNS／钉选接口／逐跳／超时／gzip／304／源站401分层；此处为合成IO单元",
+      "登记／Capture／配额／原键／取消／到期、上传原字节与超时、在线唯一一次",
+      "唯一观察／pack／崩溃epoch后明确恢复／冲突整体拒绝",
+      "预算分页／UTF-8窗口含空区间边界／完整SHA／IO后撤权拒绝",
+      "32项一个原生commit、SQL第二项失败全回滚、原键恢复、增量与历史修订复用",
+      "到期后固定阅读／原Capture／引用、C1隔离与34路由认证"
+    ],
+    "initial_failures_and_corrections": [
+      "生成器首次把纯数字enum状态生成string，编译即失败；修正类型推断并增加21样本完整往返核对。",
+      "首次服务编译暴露未使用import及私有folder owner需指针；修正拥有路径后复验。",
+      "能力比对首次把候选runtime_ready=false当常量；依schema保留动态boolean并独立验证当前true，所有固定限制／版本仍逐项相等。",
+      "相对HTML base被应用两次；修正一次求值与canonical解析基址，新增定向反例通过。",
+      "help探针首次错按exit0判断；原生help实际exit1且打印Usage，只按真实行为验证，不更改server模式。"
+    ]
+  },
+  "runtime": {
+    "deployed": false,
+    "running_main": "7c564a738597e924e411f3b191aaa02d14ae42d8",
+    "nginx_syntax_test_passed": true,
+    "private_rollback_snapshot_prepared": true,
+    "compose_applied": false
+  },
+  "remaining": [
+    "真实MySQL迁移／精确键／同版S3与API最小闭环；此报告不声称已通过",
+    "清洁固定后端提交交客户端唯一Web写权，完成34操作客户端／恢复／安全阅读／目录入口",
+    "同版真实浏览器、合成在线测试装配、进程中断／并发／撤权与旧链路实际回归",
+    "2MiB／1000条／32选择各5次容量及RSS／延迟门槛；不能外推生产p95",
+    "完整联调通过后按授权合并推main；R6／R7及阶段3—6仍未完成"
+  ],
+  "governance_note": "沿用既有docs／中文技术方案／忽略执行证据载体，保持用户指定布局；未伪报正式机器门禁。批准是本版实施授权，验收独立Pending，持续目标active。"
+}

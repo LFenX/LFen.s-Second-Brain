@@ -41,6 +41,16 @@ func migrateKnowledgeFoundation(ctx context.Context, db *gorm.DB) error {
 			return fmt.Errorf("initialize original receive slots: %w", err)
 		}
 	}
+	for _, model := range []any{&entity.KnowledgeWebRegistrationRecord{}, &entity.KnowledgeWebCaptureRecord{}, &entity.KnowledgeWebSlot{}, &entity.KnowledgeWebObservationRecord{}, &entity.KnowledgeWebEntryRecord{}, &entity.KnowledgeWebPreviewRecord{}, &entity.KnowledgeWebReceiptRecord{}, &entity.KnowledgeWebRevisionRecord{}, &entity.KnowledgeWebBinding{}} {
+		if err := autoMigrateSafely(ctx, db, model); err != nil {
+			return fmt.Errorf("migrate knowledge web: %w", err)
+		}
+	}
+	for _, id := range []int{1, 2} {
+		if err := db.WithContext(ctx).Clauses(clause.OnConflict{DoNothing: true}).Create(&entity.KnowledgeWebSlot{ID: id}).Error; err != nil {
+			return fmt.Errorf("initialize web slots: %w", err)
+		}
+	}
 	if err := migrateKnowledgeOriginalExactKeys(ctx, db); err != nil {
 		return err
 	}
@@ -76,10 +86,13 @@ func migrateKnowledgeOriginalExactKeys(ctx context.Context, db *gorm.DB) error {
 		table, name string
 		size        int
 	}{
-		{"knowledge_source_registration", "registration_key", 64},
+		{"knowledge_source_registration", "registration_key", 128},
 		{"knowledge_source_binding", "relative_path", 512},
 		{"knowledge_original_upload", "idempotency_key", 128},
 		{"knowledge_original_import", "idempotency_key", 128},
+		{"knowledge_web_capture", "idempotency_key", 128},
+		{"knowledge_web_preview", "idempotency_key", 128},
+		{"knowledge_web_receipt", "idempotency_key", 128},
 	} {
 		var collation string
 		if err := db.WithContext(ctx).Raw("SELECT COLLATION_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?", column.table, column.name).Scan(&collation).Error; err != nil {

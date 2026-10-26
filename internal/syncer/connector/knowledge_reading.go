@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/url"
+	"slices"
 	"strconv"
 	"strings"
 	"unicode/utf8"
@@ -13,8 +14,8 @@ import (
 	"golang.org/x/net/html"
 )
 
-// This offline primitive is package-private. It has no connector registration,
-// HTTP, persistence, C2 DTO, ingestion or model execution path.
+// Rendering is package-private and performs no HTTP, persistence, ingestion or
+// model execution. The web capture normalizer owns its typed metadata products.
 type knowledgeReadingLimits struct {
 	InputBytes  int
 	OutputBytes int
@@ -38,6 +39,8 @@ type knowledgeReading struct {
 	SHA256       string
 	BaseURL      string
 	References   []knowledgeReadingReference
+	Warnings     []string
+	ParseNodes   int
 	referenceIDs map[knowledgeReadingReference]int
 }
 
@@ -80,6 +83,7 @@ func renderKnowledgeReading(ctx context.Context, original []byte, baseURL, media
 	writer := &knowledgeReadingWriter{ctx: ctx, limit: limits.OutputBytes}
 	writer.write(knowledgeReadingPrefix)
 	if mediaType == "text/plain" {
+		result.ParseNodes = 1
 		writer.write("<pre><code>")
 		writer.text(string(original))
 		writer.write("</code></pre>")
@@ -91,11 +95,13 @@ func renderKnowledgeReading(ctx context.Context, original []byte, baseURL, media
 		if err != nil {
 			return nil, err
 		}
-		if err := checkKnowledgeReadingTree(ctx, doc, limits); err != nil {
+		count, err := checkKnowledgeReadingTree(ctx, doc, limits)
+		if err != nil {
 			return nil, err
 		}
-		result.BaseURL = findKnowledgeReadingBase(doc, base)
-		if err := writeKnowledgeReadingNode(writer, doc, result, limits); err != nil {
+		result.ParseNodes = count
+		result.BaseURL, result.Warnings = findKnowledgeReadingBase(doc, base)
+		if err := writeKnowledgeReadingNode(writer, doc, result, limits, result.BaseURL, mediaType == "application/xhtml+xml"); err != nil {
 			return nil, err
 		}
 	} else {
@@ -153,7 +159,7 @@ func preflightKnowledgeReading(ctx context.Context, original []byte, limits know
 	}
 }
 
-func checkKnowledgeReadingTree(ctx context.Context, root *html.Node, limits knowledgeReadingLimits) error {
+func checkKnowledgeReadingTree(ctx context.Context, root *html.Node, limits knowledgeReadingLimits) (int, error) {
 	type entry struct {
 		node  *html.Node
 		depth int
@@ -162,30 +168,37 @@ func checkKnowledgeReadingTree(ctx context.Context, root *html.Node, limits know
 	count := 0
 	for len(stack) > 0 {
 		if err := ctx.Err(); err != nil {
-			return err
+			return 0, err
 		}
 		current := stack[len(stack)-1]
 		stack = stack[:len(stack)-1]
 		count++
 		if count > limits.Nodes || current.depth > limits.Depth {
-			return fmt.Errorf("offline reading tree budget exceeded")
+			return 0, fmt.Errorf("offline reading tree budget exceeded")
 		}
 		for child := current.node.LastChild; child != nil; child = child.PrevSibling {
 			stack = append(stack, entry{node: child, depth: current.depth + 1})
 		}
 	}
-	return nil
+	return count, nil
 }
 
-func findKnowledgeReadingBase(root *html.Node, fallback string) string {
+func findKnowledgeReadingBase(root *html.Node, fallback string) (string, []string) {
 	stack := []*html.Node{root}
+	result, found, count := fallback, false, 0
+	warnings := []string{}
 	for len(stack) > 0 {
 		current := stack[len(stack)-1]
 		stack = stack[:len(stack)-1]
 		if current.Type == html.ElementNode && current.Namespace == "" && current.Data == "base" {
 			if href, ok := knowledgeReadingAttr(current, "href"); ok {
+				count++
 				if resolved, err := resolveKnowledgeReadingURL(fallback, href); err == nil {
-					return resolved
+					if !found {
+						result, found = resolved, true
+					}
+				} else if !slices.Contains(warnings, "invalid_base_ignored") {
+					warnings = append(warnings, "invalid_base_ignored")
 				}
 			}
 		}
@@ -196,10 +209,13 @@ func findKnowledgeReadingBase(root *html.Node, fallback string) string {
 			stack = append(stack, child)
 		}
 	}
-	return fallback
+	if count > 1 {
+		warnings = append(warnings, "multiple_html_bases")
+	}
+	return result, warnings
 }
 
-func writeKnowledgeReadingNode(writer *knowledgeReadingWriter, node *html.Node, result *knowledgeReading, limits knowledgeReadingLimits) error {
+func writeKnowledgeReadingNode(writer *knowledgeReadingWriter, node *html.Node, result *knowledgeReading, limits knowledgeReadingLimits, baseURL string, xmlBase bool) error {
 	if err := writer.ctx.Err(); err != nil {
 		return err
 	}
@@ -216,13 +232,22 @@ func writeKnowledgeReadingNode(writer *knowledgeReadingWriter, node *html.Node, 
 	if node.Namespace != "" || knowledgeReadingDropped[node.Data] {
 		return nil
 	}
+	if xmlBase {
+		if declared, ok := knowledgeReadingAttr(node, "xml:base"); ok {
+			if resolved, err := resolveKnowledgeReadingURL(baseURL, declared); err == nil {
+				baseURL = resolved
+			} else if !slices.Contains(result.Warnings, "invalid_base_ignored") {
+				result.Warnings = append(result.Warnings, "invalid_base_ignored")
+			}
+		}
+	}
 	if node.Data == "a" || node.Data == "img" {
 		attribute, relation := "href", "link"
 		if node.Data == "img" {
 			attribute, relation = "src", "image"
 		}
 		if raw, ok := knowledgeReadingAttr(node, attribute); ok {
-			resolved, _ := resolveKnowledgeReadingURL(result.BaseURL, raw)
+			resolved, _ := resolveKnowledgeReadingURL(baseURL, raw)
 			fragment := ""
 			if parsed, err := url.Parse(resolved); err == nil {
 				fragment = parsed.Fragment
@@ -234,7 +259,7 @@ func writeKnowledgeReadingNode(writer *knowledgeReadingWriter, node *html.Node, 
 				label = knowledgeReadingLabel(node)
 			}
 			media, _ := knowledgeReadingAttr(node, "type")
-			reference := knowledgeReadingReference{Relation: relation, RawHref: raw, BaseURL: result.BaseURL, ResolvedURL: resolved, Fragment: fragment, Label: label, MediaType: media}
+			reference := knowledgeReadingReference{Relation: relation, RawHref: raw, BaseURL: baseURL, ResolvedURL: resolved, Fragment: fragment, Label: label, MediaType: media}
 			index, exists := result.referenceIDs[reference]
 			if !exists {
 				if len(result.References) >= limits.References {
@@ -252,7 +277,7 @@ func writeKnowledgeReadingNode(writer *knowledgeReadingWriter, node *html.Node, 
 				writer.text(label)
 			}
 			for child := node.FirstChild; child != nil; child = child.NextSibling {
-				if err := writeKnowledgeReadingNode(writer, child, result, limits); err != nil {
+				if err := writeKnowledgeReadingNode(writer, child, result, limits, baseURL, xmlBase); err != nil {
 					return err
 				}
 			}
@@ -293,7 +318,7 @@ func writeKnowledgeReadingNode(writer *knowledgeReadingWriter, node *html.Node, 
 		writer.write(">")
 	}
 	for child := node.FirstChild; child != nil; child = child.NextSibling {
-		if err := writeKnowledgeReadingNode(writer, child, result, limits); err != nil {
+		if err := writeKnowledgeReadingNode(writer, child, result, limits, baseURL, xmlBase); err != nil {
 			return err
 		}
 	}

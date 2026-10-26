@@ -23,6 +23,7 @@ type DatasetService struct {
 	docEngine        engine.DocEngine
 	embeddingCache   *utility.EmbeddingLRU
 	checkpointLoader syncCheckpointLoader
+	webFetch         knowledgeWebFetchFunc
 	// tagVocabularyLoader resolves the selectable-tag vocabulary for a tag
 	// source file (parser_config.tags.tag_file_id). It is a field so tests can
 	// inject a fake; in production it defaults to

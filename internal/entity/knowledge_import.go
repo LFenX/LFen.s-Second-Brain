@@ -10,7 +10,7 @@ const KnowledgeImportRequestBytes int64 = 16 * 1024 * 1024
 type KnowledgeSourceRegistration struct {
 	ID              string    `gorm:"primaryKey;size:32" json:"registration_id"`
 	DomainID        string    `gorm:"size:32;not null;uniqueIndex:idx_knowledge_registration_key" json:"domain_id"`
-	RegistrationKey string    `gorm:"size:64;not null;uniqueIndex:idx_knowledge_registration_key" json:"registration_key"`
+	RegistrationKey string    `gorm:"size:128;not null;uniqueIndex:idx_knowledge_registration_key" json:"registration_key"`
 	Name            string    `gorm:"size:128;not null" json:"name"`
 	SourceKind      string    `gorm:"size:32;not null" json:"source_kind"`
 	InputMode       string    `gorm:"size:32;not null" json:"input_mode"`

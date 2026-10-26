@@ -566,6 +566,12 @@ func effectiveIP(ip net.IP) net.IP {
 	return ip
 }
 
+// IsPublicNetworkAddress checks a resolved address without configuration or
+// environment overrides. Callers still bind the checked IP to their connection.
+func IsPublicNetworkAddress(address string) bool {
+	return isGlobalIP(effectiveIP(net.ParseIP(address)))
+}
+
 // isGlobalIP mirrors Python's ipaddress.IPv*Address.is_global: an address is
 // global if it is none of {unspecified, loopback, multicast, link-local,
 // private (including CGNAT and IPv6 ULA), benchmarking, documentation,

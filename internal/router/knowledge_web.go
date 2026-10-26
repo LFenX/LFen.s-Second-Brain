@@ -1,0 +1,45 @@
+package router
+
+import (
+	"github.com/gin-gonic/gin"
+	"ragflow/internal/handler"
+)
+
+func (r *Router) setupKnowledgeWebRoutes(engine *gin.Engine) {
+	group := engine.Group("/api/v1")
+	group.Use(handler.KnowledgeWebAuth(r.authHandler.AuthMiddleware()))
+	group.GET("/knowledge/web-import-contract", r.datasetsHandler.KnowledgeWeb("getKnowledgeWebImportContract"))
+	group.POST("/datasets/:dataset_id/knowledge/web-registrations", r.datasetsHandler.KnowledgeWeb("createKnowledgeWebRegistration"))
+	group.GET("/datasets/:dataset_id/knowledge/web-registrations/by-key", r.datasetsHandler.KnowledgeWeb("getKnowledgeWebRegistrationByKey"))
+	group.GET("/datasets/:dataset_id/knowledge/web-registrations/:registration_id", r.datasetsHandler.KnowledgeWeb("getKnowledgeWebRegistration"))
+	group.GET("/datasets/:dataset_id/knowledge/web-registrations/:registration_id/target", r.datasetsHandler.KnowledgeWeb("getKnowledgeWebTarget"))
+	group.POST("/datasets/:dataset_id/knowledge/web-registrations/:registration_id/captures", r.datasetsHandler.KnowledgeWeb("createKnowledgeWebCapture"))
+	group.GET("/datasets/:dataset_id/knowledge/web-registrations/:registration_id/captures/by-key", r.datasetsHandler.KnowledgeWeb("getKnowledgeWebCaptureByKey"))
+	group.GET("/datasets/:dataset_id/knowledge/web-registrations/:registration_id/captures/:capture_id", r.datasetsHandler.KnowledgeWeb("getKnowledgeWebCapture"))
+	group.DELETE("/datasets/:dataset_id/knowledge/web-registrations/:registration_id/captures/:capture_id", r.datasetsHandler.KnowledgeWeb("cancelKnowledgeWebCapture"))
+	group.PUT("/datasets/:dataset_id/knowledge/web-registrations/:registration_id/captures/:capture_id/content", r.datasetsHandler.KnowledgeWeb("uploadKnowledgeWebCapture"))
+	group.GET("/datasets/:dataset_id/knowledge/web-registrations/:registration_id/captures/:capture_id/content", r.datasetsHandler.KnowledgeWeb("downloadKnowledgeWebCapture"))
+	group.POST("/datasets/:dataset_id/knowledge/web-registrations/:registration_id/captures/:capture_id/acquire", r.datasetsHandler.KnowledgeWeb("acquireKnowledgeWebCapture"))
+	group.POST("/datasets/:dataset_id/knowledge/web-registrations/:registration_id/captures/:capture_id/observation", r.datasetsHandler.KnowledgeWeb("observeKnowledgeWebCapture"))
+	group.GET("/datasets/:dataset_id/knowledge/web-registrations/:registration_id/captures/:capture_id/observation", r.datasetsHandler.KnowledgeWeb("getKnowledgeWebObservation"))
+	group.GET("/datasets/:dataset_id/knowledge/web-registrations/:registration_id/captures/:capture_id/observation/entries", r.datasetsHandler.KnowledgeWeb("listKnowledgeWebEntries"))
+	group.GET("/datasets/:dataset_id/knowledge/web-registrations/:registration_id/captures/:capture_id/observation/entries/:entry_key", r.datasetsHandler.KnowledgeWeb("getKnowledgeWebEntry"))
+	group.GET("/datasets/:dataset_id/knowledge/web-registrations/:registration_id/captures/:capture_id/observation/entries/:entry_key/references", r.datasetsHandler.KnowledgeWeb("listKnowledgeWebEntryReferences"))
+	group.GET("/datasets/:dataset_id/knowledge/web-registrations/:registration_id/captures/:capture_id/observation/entries/:entry_key/representations/:representation_kind/content", r.datasetsHandler.KnowledgeWeb("readKnowledgeWebEntryContent"))
+	group.GET("/datasets/:dataset_id/knowledge/web-registrations/:registration_id/captures/:capture_id/observation/entries/:entry_key/representations/:representation_kind/window", r.datasetsHandler.KnowledgeWeb("readKnowledgeWebEntryWindow"))
+	group.POST("/datasets/:dataset_id/knowledge/web-registrations/:registration_id/previews", r.datasetsHandler.KnowledgeWeb("createKnowledgeWebPreview"))
+	group.GET("/datasets/:dataset_id/knowledge/web-registrations/:registration_id/previews/by-key", r.datasetsHandler.KnowledgeWeb("getKnowledgeWebPreviewByKey"))
+	group.GET("/datasets/:dataset_id/knowledge/web-registrations/:registration_id/previews/:preview_id", r.datasetsHandler.KnowledgeWeb("getKnowledgeWebPreview"))
+	group.DELETE("/datasets/:dataset_id/knowledge/web-registrations/:registration_id/previews/:preview_id", r.datasetsHandler.KnowledgeWeb("cancelKnowledgeWebPreview"))
+	group.GET("/datasets/:dataset_id/knowledge/web-registrations/:registration_id/previews/:preview_id/items", r.datasetsHandler.KnowledgeWeb("listKnowledgeWebPreviewItems"))
+	group.POST("/datasets/:dataset_id/knowledge/web-registrations/:registration_id/imports", r.datasetsHandler.KnowledgeWeb("confirmKnowledgeWebImport"))
+	group.GET("/datasets/:dataset_id/knowledge/web-registrations/:registration_id/imports/by-key", r.datasetsHandler.KnowledgeWeb("getKnowledgeWebReceiptByKey"))
+	group.GET("/datasets/:dataset_id/knowledge/web-registrations/:registration_id/imports/:import_task_id", r.datasetsHandler.KnowledgeWeb("getKnowledgeWebReceipt"))
+	group.GET("/datasets/:dataset_id/knowledge/web-registrations/:registration_id/imports/:import_task_id/items", r.datasetsHandler.KnowledgeWeb("listKnowledgeWebReceiptItems"))
+	group.GET("/datasets/:dataset_id/knowledge/web-revisions", r.datasetsHandler.KnowledgeWeb("listKnowledgeWebRevisions"))
+	group.GET("/datasets/:dataset_id/knowledge/web-revisions/:source_revision_id", r.datasetsHandler.KnowledgeWeb("getKnowledgeWebRevision"))
+	group.GET("/datasets/:dataset_id/knowledge/web-revisions/:source_revision_id/references", r.datasetsHandler.KnowledgeWeb("listKnowledgeWebRevisionReferences"))
+	group.GET("/datasets/:dataset_id/knowledge/web-revisions/:source_revision_id/representations/:representation_kind/content", r.datasetsHandler.KnowledgeWeb("readKnowledgeWebRevisionContent"))
+	group.GET("/datasets/:dataset_id/knowledge/web-revisions/:source_revision_id/representations/:representation_kind/window", r.datasetsHandler.KnowledgeWeb("readKnowledgeWebRevisionWindow"))
+	group.GET("/datasets/:dataset_id/knowledge/web-revisions/:source_revision_id/capture/content", r.datasetsHandler.KnowledgeWeb("downloadKnowledgeWebRevisionCapture"))
+}

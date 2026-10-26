@@ -4,6 +4,8 @@
 
 ## 当前实施增量
 
+- v0.49已完成34操作的Go接线及[后端定向报告](stage2r5-backend-verification.json)：7包89顶层／327含子例，旧0.2—0.4等定向回归45／102，二进制构建与四mode help通过。真实MySQL／S3／API、前端和容量／故障联调仍待执行；运行仍R4，不能把能力端点代码的ready=true当已部署或验收。
+- 观察产物采用≤12MiB的内部有界pack，一次对象保存并批量保存条目元信息；每条正文／阅读仍有独立SHA、长度及读取范围，确认前再准备所选原生解码快照。未改公开字段或预算。准备阶段未接入的Markdown／prep身份原型已收敛到正式0.6实现，原文件路径保留，原生通用RSS入口保持。
 - 正式[OpenAPI](knowledge-web-import-v1.openapi.json)与[向量](knowledge-web-import-v1.examples.json)保留获批候选全部路径、schema、摘要、限制和规则；候选三件套及先前23份保护文件未改。冻结不表示工程验收。
 - `e194924`已保存包内安全阅读组件及[24项单元／实际浏览器验证](stage2r5-reading-preparation-verification.json)，[截图](stage2r5-reading-component.png)明确是未接入应用的组件。它不证明RSS标准化、网络防护、SQL发布或完整R5已通过。
 - A在`codex/stage2r5-web-import`持有唯一源码／Git写权，实施正式后端。Web会话只读准备接线清单，取得清洁固定提交和明确交权后才写客户端／页面。候选分支d798893保持，不能继续按未获批准等待。

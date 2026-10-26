@@ -1,0 +1,61 @@
+{
+  "contract_version": "1.0.0",
+  "source_contract_version": "0.6.0",
+  "runtime_ready": true,
+  "acquisition_modes": [
+    "local_snapshot",
+    "explicit_fetch"
+  ],
+  "formats": [
+    "html",
+    "rss2",
+    "atom_feed"
+  ],
+  "producer_versions": {
+    "normalizer_version": "web-normalizer/0.6.0",
+    "converter_version": "web-reading/0.6.0",
+    "sanitizer_version": "web-sanitizer/0.6.0",
+    "resource_policy_version": "web-resources/0.6.0"
+  },
+  "limits": {
+    "max_raw_bytes": 2097152,
+    "max_capture_entries": 1000,
+    "max_parse_depth": 64,
+    "max_parse_nodes": 50000,
+    "max_selected": 32,
+    "max_selection_bytes": 8388608,
+    "max_entry_decoded_bytes": 2097152,
+    "max_entry_reading_bytes": 2097152,
+    "max_entry_metadata_bytes": 8192,
+    "max_entry_references": 256,
+    "max_entry_reference_bytes": 524288,
+    "max_reference_json_bytes": 16384,
+    "max_capture_decoded_bytes": 4194304,
+    "max_capture_reading_bytes": 8388608,
+    "max_capture_metadata_bytes": 1048576,
+    "max_capture_references": 4096,
+    "max_capture_reference_bytes": 2097152,
+    "max_json_bytes": 32768,
+    "max_page_items": 20,
+    "max_window_bytes": 4096,
+    "capture_ttl_seconds": 1800,
+    "preview_ttl_seconds": 600,
+    "upload_timeout_seconds": 30,
+    "fetch_timeout_seconds": 15,
+    "parse_timeout_seconds": 10,
+    "lease_seconds": 30,
+    "renew_seconds": 5,
+    "max_origins": 4,
+    "max_redirects": 3,
+    "max_header_bytes": 16384,
+    "max_open_captures": 2,
+    "max_reserved_raw_bytes": 4194304,
+    "max_active_per_owner_domain": 1,
+    "max_active_deployment": 2
+  },
+  "network_confirmation_required": true,
+  "network_retries_per_capture": 0,
+  "automatic_ingestion": false,
+  "automatic_prune": false,
+  "model_calls": 0
+}

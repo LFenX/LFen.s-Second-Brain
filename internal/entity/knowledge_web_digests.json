@@ -1,0 +1,137 @@
+{
+  "network_scope": {
+    "prefix": "knowledge-web-network-scope/0.6",
+    "fields": [
+      "enabled",
+      "allowed_origins"
+    ]
+  },
+  "registration": {
+    "prefix": "knowledge-web-registration/0.6",
+    "fields": [
+      "name",
+      "source_kind",
+      "origin_url",
+      "producer",
+      "default_classification",
+      "network_scope"
+    ]
+  },
+  "capture_request": {
+    "prefix": "knowledge-web-capture-request/0.6",
+    "fields": [
+      "registration_id",
+      "registration_config_sha256",
+      "acquisition_mode",
+      "local_declaration"
+    ]
+  },
+  "entry_key": {
+    "prefix": "knowledge-web-entry/0.6",
+    "fields": [
+      "identity_basis",
+      "identity_value"
+    ]
+  },
+  "metadata": {
+    "prefix": "knowledge-web-metadata/0.6",
+    "fields": [
+      "title",
+      "authors",
+      "categories",
+      "published",
+      "updated",
+      "canonical_declared",
+      "canonical_resolved",
+      "effective_base",
+      "body_completeness"
+    ]
+  },
+  "reference": {
+    "prefix": "knowledge-web-reference/0.6",
+    "fields": [
+      "relation",
+      "raw_href",
+      "base_url",
+      "resolved_url",
+      "fragment",
+      "label",
+      "declared_media_type",
+      "open_allowed"
+    ]
+  },
+  "references": {
+    "prefix": "knowledge-web-references/0.6",
+    "fields": [
+      "references"
+    ]
+  },
+  "source_input": {
+    "prefix": "knowledge-web-source-input/0.6",
+    "fields": [
+      "entry_key",
+      "decoded_sha256",
+      "decoded_byte_length",
+      "decoded_media_type",
+      "reading_sha256",
+      "reading_byte_length",
+      "producer_versions",
+      "metadata_sha256",
+      "references_sha256",
+      "classification"
+    ]
+  },
+  "observation": {
+    "prefix": "knowledge-web-observation/0.6",
+    "fields": [
+      "capture_sha256",
+      "producer_versions",
+      "entries"
+    ]
+  },
+  "selection_request": {
+    "prefix": "knowledge-web-selection-request/0.6",
+    "fields": [
+      "capture_id",
+      "observation_id",
+      "observation_sha256",
+      "selection"
+    ]
+  },
+  "selection": {
+    "prefix": "knowledge-web-selection/0.6",
+    "fields": [
+      "selection"
+    ]
+  },
+  "preview_manifest": {
+    "prefix": "knowledge-web-preview/0.6",
+    "fields": [
+      "owner_id",
+      "domain_id",
+      "registration_id",
+      "registration_config_sha256",
+      "scope_sha256",
+      "capture_id",
+      "capture_sha256",
+      "observation_id",
+      "observation_sha256",
+      "preview_id",
+      "policy_version",
+      "producer_versions",
+      "selection_sha256",
+      "items",
+      "selected_byte_length",
+      "expires_at"
+    ]
+  },
+  "confirmation": {
+    "prefix": "knowledge-web-confirm/0.6",
+    "fields": [
+      "preview_id",
+      "manifest_sha256",
+      "confirmed",
+      "acknowledged_entry_keys"
+    ]
+  }
+}
