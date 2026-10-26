@@ -1,0 +1,35 @@
+{
+  "document_version": "v0.53",
+  "objective": "落实已批准C2 0.7.0来源生命周期：统一世代和旧准备栅栏、四动作、当前与归档列表、固定回执及客户端恢复，合成真实联调后推main。",
+  "request_snapshot": {
+    "r5_acceptance": "验收通过",
+    "r6_proceed": "确认冻结并继续实施",
+    "question_ref": "request_user_input_async/call_d40a6340e30f4cfab963ec2d26085eaa/0",
+    "candidate_commit": "19db38d0b2d08c27dd93598e2208bd3a5127a6dc",
+    "presented_scope": "重分类、受限逻辑移动、归档／恢复、单调世代及原键回执；目录／Web／无登记C1首版不移动；上线后旧无世代未消费准备拒绝，成功回执保留；有效Web Capture可新明确预览无需重新联网；单写入后端→客户端→合成联调后推main，模型0，无多轮审查。"
+  },
+  "clarification": {
+    "state": "Settled",
+    "mode": "SpecificCandidateApproved",
+    "notice": "两项决定已与当前仓库版本核对，本次不再追加确认。",
+    "survey_refs": ["docs/knowledge-source-lifecycle-v0.7.candidate.md", "docs/stage2r6-lifecycle-contract-verification.json"],
+    "authority": "仅采用真人当前具体回答，不以持续推进指令替代共享契约确认。"
+  },
+  "baseline": "ef66c700f43924df8e93d7aa2e6d65ea92cf951f",
+  "branch": "codex/stage2r6-lifecycle",
+  "freeze": "docs/knowledge-source-lifecycle-v1.freeze.json",
+  "plan": [
+    "保存R5人的决定并冻结C2 0.7三件套，保护32份既有文件",
+    "Go私有状态／迁移／单调世代／三个写头核心和所有旧准备、任务与项目栅栏",
+    "四动作、退役位置、固定回执、权限、当前列表与归档分页",
+    "清洁固定提交后将唯一Web写权交消费会话，实现正式客户端、界面与恢复",
+    "清洁回交后同版真实Go／MySQL／既有S3／浏览器合成联调及故障容量验证",
+    "正常检查、密钥隔离扫描、推main，保存版本和证据并请求独立工程验收"
+  ],
+  "execution": {"source_git_writer": "A", "peer_write_authorized": false, "backend": "NotStarted", "frontend": "NotStarted", "runtime": "StillR5"},
+  "verification": {"engineering": "NotRun", "model_calls": 0, "local_inference": 0, "real_sources": 0},
+  "acceptance": {"freeze_decision": "Approved", "engineering_user_decision": {"outcome": "Pending"}, "stage2_exit": false, "whole_project_complete": false},
+  "incomplete_items": ["R6应用实现与工程验证尚未完成；冻结不是工程验收。", "R4决定独立，R7与阶段3—6继续推进。"],
+  "adversarial_review": "NotRun_UserProhibited",
+  "governance_note": "沿用既有docs与中文计划载体，不重排项目目录；没有运行正式治理机器Gate，不将本报告声称为机器Gate通过。"
+}

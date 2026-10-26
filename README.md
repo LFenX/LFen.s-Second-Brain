@@ -1,5 +1,7 @@
 # LFen's Second Brain
 
+**当前 v0.53**：R5已验收，决定记录已推main `8cbc36b`；真人已批准19db38d，[C2 0.7.0正式冻结](docs/knowledge-source-lifecycle-v1.freeze.json)。A在`codex/stage2r6-lifecycle`唯一写入，按世代栅栏→四动作→客户端→合成联调推进；[当前接续](docs/stage2r6-lifecycle-handoff.md)、[实施记录](docs/stage2r6-lifecycle-verification.json)。本机仍运行R5，R6尚未部署。下文候选与既有交付段落保留各时点事实。
+
 本地文本、文档与项目代码知识库：结构化整理、可选词法／结构／向量检索、带来源的回答与代码复用；后续通过 Web 和 MCP 共用后端服务。当前POC仍为原生混合检索，可选策略待实施。
 
 **本仓库是后续唯一开发入口，包含当前应用源码、品牌资产、方案和验证记录。** v0.45已完成冻结[C2 0.5.0](docs/knowledge-original-import-v1.freeze.json)的文档原件／大文件闭环：登记、单件≤64MiB上传暂存、明确确认、原键／回执恢复、同一分组树中的原件卡片与固定授权下载。[统一报告](docs/stage2r4-original-verification.json)区分172项Go定向结果、前端506项及实际身份修复后9项、真实MySQL／对象存储／浏览器／崩溃／SQL回滚与三档各3次容量证据。23保护文件原字节保持、模型0；新二进制与前端已在本机加载，代码已合本地main并随本批正常推送，发布以远端main与提交回执核对。原件不自动解析／建结构／全文或向量索引，阶段2整体尚未退出，R5网页／RSS候选继续推进。[当前接续](docs/stage2r4-original-handoff.md)第11节。
