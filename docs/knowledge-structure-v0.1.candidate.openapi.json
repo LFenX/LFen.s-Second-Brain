@@ -1,0 +1,4522 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "LFen's Second Brain — C1/C3 Structure extension candidate",
+    "version": "0.1.0",
+    "description": "ReviewCandidate only. Foundation 1.0.0 and frozen C2 interfaces are unchanged. Synthetic-first explicit structure-only tasks; no models, native ingestion, search index, full GraphRAG, rich-document derivatives, or Wiki. See candidate Markdown for canonical digest, source-generation CAS, atomic publication, parser restrictions, authorization and recovery."
+  },
+  "servers": [
+    {
+      "url": "/api/v1"
+    }
+  ],
+  "security": [
+    {
+      "NativeSession": []
+    }
+  ],
+  "paths": {
+    "/knowledge/structure-contract": {
+      "get": {
+        "operationId": "getKnowledgeStructureContract",
+        "tags": [
+          "knowledge-structure"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Structure-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "0.1.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; each request is currently authorized and no-store.",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Knowledge-Structure-Contract-Version": {
+                "schema": {
+                  "const": "0.1.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "$ref": "#/components/schemas/ID"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CapabilitiesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Invalid"
+          },
+          "401": {
+            "description": "Native unauthenticated response; no credential is returned."
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "412": {
+            "$ref": "#/components/responses/VersionMismatch"
+          },
+          "429": {
+            "$ref": "#/components/responses/Capacity"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      }
+    },
+    "/datasets/{id}/knowledge/structure-policy": {
+      "get": {
+        "operationId": "getKnowledgeStructurePolicy",
+        "tags": [
+          "knowledge-structure"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Structure-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "0.1.0"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; each request is currently authorized and no-store.",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Knowledge-Structure-Contract-Version": {
+                "schema": {
+                  "const": "0.1.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "$ref": "#/components/schemas/ID"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Invalid"
+          },
+          "401": {
+            "description": "Native unauthenticated response; no credential is returned."
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "412": {
+            "$ref": "#/components/responses/VersionMismatch"
+          },
+          "429": {
+            "$ref": "#/components/responses/Capacity"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      }
+    },
+    "/datasets/{id}/knowledge/structure-policy/changes": {
+      "post": {
+        "operationId": "changeKnowledgeStructurePolicy",
+        "tags": [
+          "knowledge-structure"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Structure-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "0.1.0"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; each request is currently authorized and no-store.",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Knowledge-Structure-Contract-Version": {
+                "schema": {
+                  "const": "0.1.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "$ref": "#/components/schemas/ID"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyReceiptResponse"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "First accepted task or fixed command receipt; 200 is a same-key replay.",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Knowledge-Structure-Contract-Version": {
+                "schema": {
+                  "const": "0.1.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "$ref": "#/components/schemas/ID"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyReceiptResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Invalid"
+          },
+          "401": {
+            "description": "Native unauthenticated response; no credential is returned."
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "412": {
+            "$ref": "#/components/responses/VersionMismatch"
+          },
+          "429": {
+            "$ref": "#/components/responses/Capacity"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PolicyChangeRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{id}/knowledge/structure-commands/by-key": {
+      "get": {
+        "operationId": "getKnowledgeStructureCommandByKey",
+        "tags": [
+          "knowledge-structure"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Structure-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "0.1.0"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "kind",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "policy",
+                "cancel"
+              ]
+            }
+          },
+          {
+            "name": "idempotency_key",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; each request is currently authorized and no-store.",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Knowledge-Structure-Contract-Version": {
+                "schema": {
+                  "const": "0.1.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "$ref": "#/components/schemas/ID"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommandReceiptResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Invalid"
+          },
+          "401": {
+            "description": "Native unauthenticated response; no credential is returned."
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "412": {
+            "$ref": "#/components/responses/VersionMismatch"
+          },
+          "429": {
+            "$ref": "#/components/responses/Capacity"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      }
+    },
+    "/datasets/{id}/knowledge/structure-tasks": {
+      "post": {
+        "operationId": "createKnowledgeStructureTask",
+        "tags": [
+          "knowledge-structure"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Structure-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "0.1.0"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; each request is currently authorized and no-store.",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Knowledge-Structure-Contract-Version": {
+                "schema": {
+                  "const": "0.1.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "$ref": "#/components/schemas/ID"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskResponse"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "First accepted task or fixed command receipt; 200 is a same-key replay.",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Knowledge-Structure-Contract-Version": {
+                "schema": {
+                  "const": "0.1.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "$ref": "#/components/schemas/ID"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Invalid"
+          },
+          "401": {
+            "description": "Native unauthenticated response; no credential is returned."
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "412": {
+            "$ref": "#/components/responses/VersionMismatch"
+          },
+          "429": {
+            "$ref": "#/components/responses/Capacity"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaskRequest"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "listKnowledgeStructureTasks",
+        "tags": [
+          "knowledge-structure"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Structure-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "0.1.0"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 20
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; each request is currently authorized and no-store.",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Knowledge-Structure-Contract-Version": {
+                "schema": {
+                  "const": "0.1.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "$ref": "#/components/schemas/ID"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskPageResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Invalid"
+          },
+          "401": {
+            "description": "Native unauthenticated response; no credential is returned."
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "412": {
+            "$ref": "#/components/responses/VersionMismatch"
+          },
+          "429": {
+            "$ref": "#/components/responses/Capacity"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      }
+    },
+    "/datasets/{id}/knowledge/structure-tasks/by-key": {
+      "get": {
+        "operationId": "getKnowledgeStructureTaskByKey",
+        "tags": [
+          "knowledge-structure"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Structure-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "0.1.0"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "idempotency_key",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; each request is currently authorized and no-store.",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Knowledge-Structure-Contract-Version": {
+                "schema": {
+                  "const": "0.1.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "$ref": "#/components/schemas/ID"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskOutcomeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Invalid"
+          },
+          "401": {
+            "description": "Native unauthenticated response; no credential is returned."
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "412": {
+            "$ref": "#/components/responses/VersionMismatch"
+          },
+          "429": {
+            "$ref": "#/components/responses/Capacity"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      }
+    },
+    "/datasets/{id}/knowledge/structure-tasks/{task_id}": {
+      "get": {
+        "operationId": "getKnowledgeStructureTask",
+        "tags": [
+          "knowledge-structure"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Structure-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "0.1.0"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; each request is currently authorized and no-store.",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Knowledge-Structure-Contract-Version": {
+                "schema": {
+                  "const": "0.1.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "$ref": "#/components/schemas/ID"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Invalid"
+          },
+          "401": {
+            "description": "Native unauthenticated response; no credential is returned."
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "412": {
+            "$ref": "#/components/responses/VersionMismatch"
+          },
+          "429": {
+            "$ref": "#/components/responses/Capacity"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      }
+    },
+    "/datasets/{id}/knowledge/structure-tasks/{task_id}/cancel": {
+      "post": {
+        "operationId": "cancelKnowledgeStructureTask",
+        "tags": [
+          "knowledge-structure"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Structure-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "0.1.0"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; each request is currently authorized and no-store.",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Knowledge-Structure-Contract-Version": {
+                "schema": {
+                  "const": "0.1.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "$ref": "#/components/schemas/ID"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CancelReceiptResponse"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "First accepted task or fixed command receipt; 200 is a same-key replay.",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Knowledge-Structure-Contract-Version": {
+                "schema": {
+                  "const": "0.1.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "$ref": "#/components/schemas/ID"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CancelReceiptResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Invalid"
+          },
+          "401": {
+            "description": "Native unauthenticated response; no credential is returned."
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "412": {
+            "$ref": "#/components/responses/VersionMismatch"
+          },
+          "429": {
+            "$ref": "#/components/responses/Capacity"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancelRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasets/{id}/knowledge/projects/{project_id}/structure-head": {
+      "get": {
+        "operationId": "getKnowledgeProjectStructureHead",
+        "tags": [
+          "knowledge-structure"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Structure-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "0.1.0"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; each request is currently authorized and no-store.",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Knowledge-Structure-Contract-Version": {
+                "schema": {
+                  "const": "0.1.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "$ref": "#/components/schemas/ID"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HeadResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Invalid"
+          },
+          "401": {
+            "description": "Native unauthenticated response; no credential is returned."
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "412": {
+            "$ref": "#/components/responses/VersionMismatch"
+          },
+          "429": {
+            "$ref": "#/components/responses/Capacity"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      }
+    },
+    "/datasets/{id}/knowledge/structure-views/{view_id}": {
+      "get": {
+        "operationId": "getKnowledgeStructureView",
+        "tags": [
+          "knowledge-structure"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Structure-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "0.1.0"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "view_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Hash"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; each request is currently authorized and no-store.",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Knowledge-Structure-Contract-Version": {
+                "schema": {
+                  "const": "0.1.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "$ref": "#/components/schemas/ID"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViewResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Invalid"
+          },
+          "401": {
+            "description": "Native unauthenticated response; no credential is returned."
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "412": {
+            "$ref": "#/components/responses/VersionMismatch"
+          },
+          "429": {
+            "$ref": "#/components/responses/Capacity"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      }
+    },
+    "/datasets/{id}/knowledge/structure-views/{view_id}/nodes": {
+      "get": {
+        "operationId": "listKnowledgeStructureNodes",
+        "tags": [
+          "knowledge-structure"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Structure-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "0.1.0"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "view_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Hash"
+            }
+          },
+          {
+            "name": "source_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "parent_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/Hash"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 20
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; each request is currently authorized and no-store.",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Knowledge-Structure-Contract-Version": {
+                "schema": {
+                  "const": "0.1.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "$ref": "#/components/schemas/ID"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NodePageResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Invalid"
+          },
+          "401": {
+            "description": "Native unauthenticated response; no credential is returned."
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "412": {
+            "$ref": "#/components/responses/VersionMismatch"
+          },
+          "429": {
+            "$ref": "#/components/responses/Capacity"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      }
+    },
+    "/datasets/{id}/knowledge/structure-views/{view_id}/nodes/{structure_node_id}": {
+      "get": {
+        "operationId": "getKnowledgeStructureNode",
+        "tags": [
+          "knowledge-structure"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Structure-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "0.1.0"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "view_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Hash"
+            }
+          },
+          {
+            "name": "structure_node_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Hash"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; each request is currently authorized and no-store.",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Knowledge-Structure-Contract-Version": {
+                "schema": {
+                  "const": "0.1.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "$ref": "#/components/schemas/ID"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NodeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Invalid"
+          },
+          "401": {
+            "description": "Native unauthenticated response; no credential is returned."
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "412": {
+            "$ref": "#/components/responses/VersionMismatch"
+          },
+          "429": {
+            "$ref": "#/components/responses/Capacity"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      }
+    },
+    "/datasets/{id}/knowledge/structure-views/{view_id}/nodes/{structure_node_id}/content": {
+      "get": {
+        "operationId": "readKnowledgeStructureNode",
+        "tags": [
+          "knowledge-structure"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Structure-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "0.1.0"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "view_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Hash"
+            }
+          },
+          {
+            "name": "structure_node_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Hash"
+            }
+          },
+          {
+            "name": "start_byte",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2097152
+            }
+          },
+          {
+            "name": "end_byte",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2097152
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; each request is currently authorized and no-store.",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Knowledge-Structure-Contract-Version": {
+                "schema": {
+                  "const": "0.1.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "$ref": "#/components/schemas/ID"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Invalid"
+          },
+          "401": {
+            "description": "Native unauthenticated response; no credential is returned."
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "412": {
+            "$ref": "#/components/responses/VersionMismatch"
+          },
+          "429": {
+            "$ref": "#/components/responses/Capacity"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      }
+    },
+    "/datasets/{id}/knowledge/structure-views/{view_id}/relations": {
+      "get": {
+        "operationId": "listKnowledgeStructureRelations",
+        "tags": [
+          "knowledge-structure"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "X-Knowledge-Structure-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "0.1.0"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          },
+          {
+            "name": "view_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Hash"
+            }
+          },
+          {
+            "name": "node_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Hash"
+            }
+          },
+          {
+            "name": "direction",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "in",
+                "out",
+                "both"
+              ]
+            }
+          },
+          {
+            "name": "kind",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/RelationKind"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 20
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; each request is currently authorized and no-store.",
+            "headers": {
+              "X-Knowledge-Contract-Version": {
+                "schema": {
+                  "const": "1.0.0"
+                }
+              },
+              "X-Knowledge-Structure-Contract-Version": {
+                "schema": {
+                  "const": "0.1.0"
+                }
+              },
+              "X-Request-ID": {
+                "schema": {
+                  "$ref": "#/components/schemas/ID"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RelationPageResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Invalid"
+          },
+          "401": {
+            "description": "Native unauthenticated response; no credential is returned."
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "412": {
+            "$ref": "#/components/responses/VersionMismatch"
+          },
+          "429": {
+            "$ref": "#/components/responses/Capacity"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "NativeSession": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Existing native session; not a model key or temporary MCP credential."
+      }
+    },
+    "schemas": {
+      "ID": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{32}$"
+      },
+      "Hash": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+      },
+      "Key": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9_-]{1,128}$"
+      },
+      "Version": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "Timestamp": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "Cursor": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/ID"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "Parser": {
+        "type": "string",
+        "enum": [
+          "typescript",
+          "tsx",
+          "go",
+          "markdown"
+        ]
+      },
+      "Classification": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "group_id",
+          "component_side",
+          "language"
+        ],
+        "properties": {
+          "group_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{32}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "component_side": {
+            "type": "string",
+            "enum": [
+              "frontend",
+              "backend",
+              "shared",
+              "cli",
+              "non_code"
+            ]
+          },
+          "language": {
+            "type": "string",
+            "maxLength": 32
+          }
+        }
+      },
+      "Alias": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "prefix",
+          "target"
+        ],
+        "properties": {
+          "prefix": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 64,
+            "x-max-utf8-bytes": 64,
+            "pattern": "^[A-Za-z@~_][A-Za-z0-9@~_./-]{0,62}/$"
+          },
+          "target": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 512,
+            "x-max-utf8-bytes": 512,
+            "format": "knowledge-structure-alias-target"
+          }
+        }
+      },
+      "Member": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_id",
+          "source_revision_id",
+          "lifecycle_version",
+          "parser"
+        ],
+        "properties": {
+          "source_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "source_revision_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "lifecycle_version": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "parser": {
+            "$ref": "#/components/schemas/Parser"
+          }
+        }
+      },
+      "Policy": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "domain_id",
+          "foundation_policy_version",
+          "structure_policy_version",
+          "enabled",
+          "mode",
+          "automatic_ingestion",
+          "allowed_model_uses",
+          "external_models",
+          "local_inference",
+          "lexical_index",
+          "vector_index"
+        ],
+        "properties": {
+          "domain_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "foundation_policy_version": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "structure_policy_version": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "mode": {
+            "const": "structure_only"
+          },
+          "automatic_ingestion": {
+            "const": false
+          },
+          "allowed_model_uses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0,
+            "maxItems": 0
+          },
+          "external_models": {
+            "const": false
+          },
+          "local_inference": {
+            "const": false
+          },
+          "lexical_index": {
+            "const": "not_created"
+          },
+          "vector_index": {
+            "const": "not_created"
+          }
+        }
+      },
+      "PolicyChangeRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "expected_policy_version",
+          "expected_structure_policy_version",
+          "enabled",
+          "confirmed",
+          "idempotency_key"
+        ],
+        "properties": {
+          "expected_policy_version": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "expected_structure_policy_version": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "confirmed": {
+            "const": true
+          },
+          "idempotency_key": {
+            "$ref": "#/components/schemas/Key"
+          }
+        }
+      },
+      "PolicySnapshot": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "structure_policy_version",
+          "enabled"
+        ],
+        "properties": {
+          "structure_policy_version": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "enabled": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PolicyReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "command_id",
+          "kind",
+          "domain_id",
+          "owner_id",
+          "idempotency_key",
+          "original_request",
+          "request_sha256",
+          "before",
+          "after",
+          "outcome",
+          "completed_at",
+          "model_calls"
+        ],
+        "properties": {
+          "command_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "kind": {
+            "const": "policy"
+          },
+          "domain_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "owner_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "idempotency_key": {
+            "$ref": "#/components/schemas/Key"
+          },
+          "original_request": {
+            "$ref": "#/components/schemas/PolicyChangeRequest"
+          },
+          "request_sha256": {
+            "$ref": "#/components/schemas/Hash"
+          },
+          "before": {
+            "$ref": "#/components/schemas/PolicySnapshot"
+          },
+          "after": {
+            "$ref": "#/components/schemas/PolicySnapshot"
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "applied",
+              "unchanged"
+            ]
+          },
+          "completed_at": {
+            "$ref": "#/components/schemas/Timestamp"
+          },
+          "model_calls": {
+            "const": 0
+          }
+        }
+      },
+      "TaskRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "project_id",
+          "manifest_id",
+          "expected_active_view_id",
+          "expected_policy_version",
+          "expected_structure_policy_version",
+          "members",
+          "aliases",
+          "confirmed",
+          "idempotency_key"
+        ],
+        "properties": {
+          "project_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "manifest_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "expected_active_view_id": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Hash"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "expected_policy_version": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "expected_structure_policy_version": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Member"
+            },
+            "minItems": 1,
+            "maxItems": 32
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Alias"
+            },
+            "minItems": 0,
+            "maxItems": 8
+          },
+          "confirmed": {
+            "const": true
+          },
+          "idempotency_key": {
+            "$ref": "#/components/schemas/Key"
+          }
+        }
+      },
+      "CancelRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "expected_task_revision",
+          "confirmed",
+          "idempotency_key"
+        ],
+        "properties": {
+          "expected_task_revision": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "confirmed": {
+            "const": true
+          },
+          "idempotency_key": {
+            "$ref": "#/components/schemas/Key"
+          }
+        }
+      },
+      "TaskState": {
+        "type": "string",
+        "enum": [
+          "queued",
+          "running",
+          "cancel_requested",
+          "succeeded",
+          "failed",
+          "cancelled"
+        ]
+      },
+      "MemberState": {
+        "type": "string",
+        "enum": [
+          "pending",
+          "processing",
+          "staged",
+          "published",
+          "reused",
+          "failed",
+          "cancelled"
+        ]
+      },
+      "Diagnostic": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "start_byte",
+          "end_byte"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "x-max-utf8-bytes": 64
+          },
+          "message": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 128,
+            "x-max-utf8-bytes": 128
+          },
+          "start_byte": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2097152
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "end_byte": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2097152
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "TaskMember": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_id",
+          "source_revision_id",
+          "lifecycle_version",
+          "parser",
+          "state",
+          "diagnostics",
+          "node_count",
+          "relation_count"
+        ],
+        "properties": {
+          "source_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "source_revision_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "lifecycle_version": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "parser": {
+            "$ref": "#/components/schemas/Parser"
+          },
+          "state": {
+            "$ref": "#/components/schemas/MemberState"
+          },
+          "diagnostics": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Diagnostic"
+            },
+            "minItems": 0,
+            "maxItems": 8
+          },
+          "node_count": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 8192
+          },
+          "relation_count": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 65536
+          }
+        }
+      },
+      "Task": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "task_id",
+          "owner_id",
+          "domain_id",
+          "project_id",
+          "original_request",
+          "request_sha256",
+          "producer_sha256",
+          "revision",
+          "attempt_count",
+          "state",
+          "created_at",
+          "updated_at",
+          "deadline_at",
+          "total_members",
+          "finished_members",
+          "members",
+          "result_view_id",
+          "failure_code",
+          "model_calls",
+          "local_inference",
+          "external_fetches",
+          "completed_at"
+        ],
+        "properties": {
+          "task_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "owner_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "domain_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "project_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "original_request": {
+            "$ref": "#/components/schemas/TaskRequest"
+          },
+          "request_sha256": {
+            "$ref": "#/components/schemas/Hash"
+          },
+          "producer_sha256": {
+            "$ref": "#/components/schemas/Hash"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "attempt_count": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 3
+          },
+          "state": {
+            "$ref": "#/components/schemas/TaskState"
+          },
+          "created_at": {
+            "$ref": "#/components/schemas/Timestamp"
+          },
+          "updated_at": {
+            "$ref": "#/components/schemas/Timestamp"
+          },
+          "deadline_at": {
+            "$ref": "#/components/schemas/Timestamp"
+          },
+          "total_members": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 32
+          },
+          "finished_members": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 32
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskMember"
+            },
+            "minItems": 1,
+            "maxItems": 32
+          },
+          "result_view_id": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Hash"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "failure_code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "x-max-utf8-bytes": 64
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "model_calls": {
+            "const": 0
+          },
+          "local_inference": {
+            "const": 0
+          },
+          "external_fetches": {
+            "const": 0
+          },
+          "completed_at": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Timestamp"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "state": {
+                  "const": "succeeded"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "result_view_id": {
+                  "$ref": "#/components/schemas/Hash"
+                },
+                "failure_code": {
+                  "const": null
+                },
+                "members": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskMember",
+                    "properties": {
+                      "state": {
+                        "type": "string",
+                        "enum": [
+                          "published",
+                          "reused"
+                        ]
+                      }
+                    }
+                  },
+                  "minItems": 1,
+                  "maxItems": 32
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "result_view_id": {
+                  "const": null
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "state": {
+                  "const": "failed"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "failure_code": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 64,
+                  "x-max-utf8-bytes": 64
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "failure_code": {
+                  "const": null
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "succeeded",
+                    "failed",
+                    "cancelled"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "completed_at": {
+                  "$ref": "#/components/schemas/Timestamp"
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "completed_at": {
+                  "const": null
+                }
+              }
+            }
+          }
+        ]
+      },
+      "CancelReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "command_id",
+          "kind",
+          "domain_id",
+          "owner_id",
+          "task_id",
+          "idempotency_key",
+          "original_request",
+          "request_sha256",
+          "before_state",
+          "after_state",
+          "task_revision",
+          "outcome",
+          "completed_at",
+          "model_calls"
+        ],
+        "properties": {
+          "command_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "kind": {
+            "const": "cancel"
+          },
+          "domain_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "owner_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "task_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "idempotency_key": {
+            "$ref": "#/components/schemas/Key"
+          },
+          "original_request": {
+            "$ref": "#/components/schemas/CancelRequest"
+          },
+          "request_sha256": {
+            "$ref": "#/components/schemas/Hash"
+          },
+          "before_state": {
+            "$ref": "#/components/schemas/TaskState"
+          },
+          "after_state": {
+            "$ref": "#/components/schemas/TaskState"
+          },
+          "task_revision": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "requested",
+              "unchanged"
+            ]
+          },
+          "completed_at": {
+            "$ref": "#/components/schemas/Timestamp"
+          },
+          "model_calls": {
+            "const": 0
+          }
+        }
+      },
+      "CommandReceipt": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/PolicyReceipt"
+          },
+          {
+            "$ref": "#/components/schemas/CancelReceipt"
+          },
+          {
+            "$ref": "#/components/schemas/CommandRejection"
+          }
+        ]
+      },
+      "ViewMember": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_id",
+          "source_revision_id",
+          "source_node_id",
+          "root_structure_node_id",
+          "lifecycle_version",
+          "parser",
+          "sha256",
+          "byte_length",
+          "relative_path",
+          "classification"
+        ],
+        "properties": {
+          "source_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "source_revision_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "source_node_id": {
+            "$ref": "#/components/schemas/Hash"
+          },
+          "root_structure_node_id": {
+            "$ref": "#/components/schemas/Hash"
+          },
+          "lifecycle_version": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "parser": {
+            "$ref": "#/components/schemas/Parser"
+          },
+          "sha256": {
+            "$ref": "#/components/schemas/Hash"
+          },
+          "byte_length": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2097152
+          },
+          "relative_path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "x-max-utf8-bytes": 512,
+            "format": "knowledge-structure-relative-file"
+          },
+          "classification": {
+            "$ref": "#/components/schemas/Classification"
+          }
+        }
+      },
+      "View": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "view_id",
+          "domain_id",
+          "owner_id",
+          "project_id",
+          "manifest_id",
+          "manifest_sha256",
+          "foundation_policy_version",
+          "structure_policy_version",
+          "producer_sha256",
+          "producer_format",
+          "aliases",
+          "members",
+          "source_count",
+          "node_count",
+          "relation_count",
+          "source_bytes",
+          "published_at",
+          "model_calls",
+          "local_inference",
+          "lexical_index",
+          "vector_index"
+        ],
+        "properties": {
+          "view_id": {
+            "$ref": "#/components/schemas/Hash"
+          },
+          "domain_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "owner_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "project_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "manifest_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "manifest_sha256": {
+            "$ref": "#/components/schemas/Hash"
+          },
+          "foundation_policy_version": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "structure_policy_version": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "producer_sha256": {
+            "$ref": "#/components/schemas/Hash"
+          },
+          "producer_format": {
+            "const": "code-structure-v1"
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Alias"
+            },
+            "minItems": 0,
+            "maxItems": 8
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ViewMember"
+            },
+            "minItems": 1,
+            "maxItems": 32
+          },
+          "source_count": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 32
+          },
+          "node_count": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 32768
+          },
+          "relation_count": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 65536
+          },
+          "source_bytes": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 16777216
+          },
+          "published_at": {
+            "$ref": "#/components/schemas/Timestamp"
+          },
+          "model_calls": {
+            "const": 0
+          },
+          "local_inference": {
+            "const": 0
+          },
+          "lexical_index": {
+            "const": "not_created"
+          },
+          "vector_index": {
+            "const": "not_created"
+          }
+        }
+      },
+      "Head": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "domain_id",
+          "project_id",
+          "view_id",
+          "current_manifest_id",
+          "currentness",
+          "reasons",
+          "checked_at",
+          "affected_sources"
+        ],
+        "properties": {
+          "domain_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "project_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "view_id": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Hash"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "current_manifest_id": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ID"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "currentness": {
+            "type": "string",
+            "enum": [
+              "none",
+              "current",
+              "stale"
+            ]
+          },
+          "reasons": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "manifest_changed",
+                "source_changed",
+                "lifecycle_changed",
+                "classification_changed",
+                "position_changed",
+                "policy_changed",
+                "source_archived"
+              ]
+            },
+            "minItems": 0,
+            "maxItems": 7
+          },
+          "checked_at": {
+            "$ref": "#/components/schemas/Timestamp"
+          },
+          "affected_sources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HeadIssue"
+            },
+            "minItems": 0,
+            "maxItems": 32
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "currentness": {
+                  "const": "none"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "view_id": {
+                  "const": null
+                },
+                "reasons": {
+                  "maxItems": 0
+                },
+                "affected_sources": {
+                  "maxItems": 0
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "view_id": {
+                  "$ref": "#/components/schemas/Hash"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "currentness": {
+                  "const": "current"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "reasons": {
+                  "maxItems": 0
+                },
+                "affected_sources": {
+                  "maxItems": 0
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "currentness": {
+                  "const": "stale"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "reasons": {
+                  "minItems": 1
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Node": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "structure_node_id",
+          "logical_node_id",
+          "view_id",
+          "source_id",
+          "source_revision_id",
+          "source_node_id",
+          "parent_id",
+          "kind",
+          "name",
+          "logical_key",
+          "identity_stability",
+          "start_byte",
+          "end_byte",
+          "start_line",
+          "end_line",
+          "parser",
+          "classification",
+          "coordinate_space",
+          "producer_sha256"
+        ],
+        "properties": {
+          "structure_node_id": {
+            "$ref": "#/components/schemas/Hash"
+          },
+          "logical_node_id": {
+            "$ref": "#/components/schemas/Hash"
+          },
+          "view_id": {
+            "$ref": "#/components/schemas/Hash"
+          },
+          "source_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "source_revision_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "source_node_id": {
+            "$ref": "#/components/schemas/Hash"
+          },
+          "parent_id": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Hash"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "file",
+              "symbol",
+              "section",
+              "passage"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 256,
+            "x-max-utf8-bytes": 256
+          },
+          "logical_key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "x-max-utf8-bytes": 512
+          },
+          "identity_stability": {
+            "type": "string",
+            "enum": [
+              "file",
+              "name_scope",
+              "position_based",
+              "range_based"
+            ]
+          },
+          "start_byte": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2097152
+          },
+          "end_byte": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2097152
+          },
+          "start_line": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2097153
+          },
+          "end_line": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2097153
+          },
+          "parser": {
+            "$ref": "#/components/schemas/Parser"
+          },
+          "classification": {
+            "$ref": "#/components/schemas/Classification"
+          },
+          "coordinate_space": {
+            "const": "source_utf8"
+          },
+          "producer_sha256": {
+            "$ref": "#/components/schemas/Hash"
+          }
+        }
+      },
+      "Content": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "view_id",
+          "structure_node_id",
+          "source_node_id",
+          "source_id",
+          "source_revision_id",
+          "source_sha256",
+          "fragment_sha256",
+          "coordinate_space",
+          "start_byte",
+          "end_byte",
+          "text",
+          "complete",
+          "next_start_byte"
+        ],
+        "properties": {
+          "view_id": {
+            "$ref": "#/components/schemas/Hash"
+          },
+          "structure_node_id": {
+            "$ref": "#/components/schemas/Hash"
+          },
+          "source_node_id": {
+            "$ref": "#/components/schemas/Hash"
+          },
+          "source_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "source_revision_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "source_sha256": {
+            "$ref": "#/components/schemas/Hash"
+          },
+          "fragment_sha256": {
+            "$ref": "#/components/schemas/Hash"
+          },
+          "coordinate_space": {
+            "const": "source_utf8"
+          },
+          "start_byte": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2097152
+          },
+          "end_byte": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2097152
+          },
+          "text": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 65536,
+            "x-max-utf8-bytes": 65536
+          },
+          "complete": {
+            "type": "boolean"
+          },
+          "next_start_byte": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2097152
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "complete": {
+                  "const": true
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "next_start_byte": {
+                  "const": null
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "next_start_byte": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 2097152
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Evidence": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_id",
+          "source_revision_id",
+          "start_byte",
+          "end_byte",
+          "fragment_sha256"
+        ],
+        "properties": {
+          "source_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "source_revision_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "start_byte": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2097152
+          },
+          "end_byte": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2097152
+          },
+          "fragment_sha256": {
+            "$ref": "#/components/schemas/Hash"
+          }
+        }
+      },
+      "RelationKind": {
+        "type": "string",
+        "enum": [
+          "contains",
+          "imports_file",
+          "exports_symbol",
+          "references_type",
+          "calls_local"
+        ]
+      },
+      "Relation": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "relation_id",
+          "view_id",
+          "kind",
+          "from_node_id",
+          "to_node_id",
+          "resolution",
+          "reason",
+          "reference",
+          "reference_truncated",
+          "evidence"
+        ],
+        "properties": {
+          "relation_id": {
+            "$ref": "#/components/schemas/Hash"
+          },
+          "view_id": {
+            "$ref": "#/components/schemas/Hash"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/RelationKind"
+          },
+          "from_node_id": {
+            "$ref": "#/components/schemas/Hash"
+          },
+          "to_node_id": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Hash"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "resolved",
+              "unresolved"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "syntax_containment",
+              "explicit_relative",
+              "explicit_alias",
+              "named_export",
+              "lexical_binding",
+              "external_package",
+              "outside_selection",
+              "ambiguous",
+              "dynamic_import",
+              "dynamic_call",
+              "wildcard_export",
+              "cycle",
+              "unsupported_target",
+              "go_package_unresolved",
+              "reference_too_long"
+            ]
+          },
+          "reference": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 512,
+            "x-max-utf8-bytes": 512
+          },
+          "reference_truncated": {
+            "type": "boolean"
+          },
+          "evidence": {
+            "$ref": "#/components/schemas/Evidence"
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "resolution": {
+                  "const": "resolved"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "to_node_id": {
+                  "$ref": "#/components/schemas/Hash"
+                },
+                "reason": {
+                  "type": "string",
+                  "enum": [
+                    "syntax_containment",
+                    "explicit_relative",
+                    "explicit_alias",
+                    "named_export",
+                    "lexical_binding"
+                  ]
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "to_node_id": {
+                  "const": null
+                },
+                "reason": {
+                  "type": "string",
+                  "enum": [
+                    "external_package",
+                    "outside_selection",
+                    "ambiguous",
+                    "dynamic_import",
+                    "dynamic_call",
+                    "wildcard_export",
+                    "cycle",
+                    "unsupported_target",
+                    "go_package_unresolved",
+                    "reference_too_long"
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      },
+      "NodePage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "view_id",
+          "source_id",
+          "parent_id",
+          "items",
+          "next_cursor"
+        ],
+        "properties": {
+          "view_id": {
+            "$ref": "#/components/schemas/Hash"
+          },
+          "source_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "parent_id": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Hash"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Node"
+            },
+            "minItems": 0,
+            "maxItems": 20
+          },
+          "next_cursor": {
+            "$ref": "#/components/schemas/Cursor"
+          }
+        }
+      },
+      "RelationPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "view_id",
+          "node_id",
+          "direction",
+          "kind",
+          "items",
+          "next_cursor"
+        ],
+        "properties": {
+          "view_id": {
+            "$ref": "#/components/schemas/Hash"
+          },
+          "node_id": {
+            "$ref": "#/components/schemas/Hash"
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "in",
+              "out",
+              "both"
+            ]
+          },
+          "kind": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RelationKind"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Relation"
+            },
+            "minItems": 0,
+            "maxItems": 20
+          },
+          "next_cursor": {
+            "$ref": "#/components/schemas/Cursor"
+          }
+        }
+      },
+      "TaskPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "domain_id",
+          "project_id",
+          "captured_at",
+          "items",
+          "next_cursor"
+        ],
+        "properties": {
+          "domain_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "project_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "captured_at": {
+            "$ref": "#/components/schemas/Timestamp"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Task"
+            },
+            "minItems": 0,
+            "maxItems": 20
+          },
+          "next_cursor": {
+            "$ref": "#/components/schemas/Cursor"
+          }
+        }
+      },
+      "Limits": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "max_files",
+          "max_file_bytes",
+          "max_input_bytes",
+          "max_nodes_per_file",
+          "max_nodes",
+          "max_relations",
+          "max_depth",
+          "passage_target_bytes",
+          "passage_max_bytes",
+          "content_max_bytes",
+          "page_max_items",
+          "metadata_response_max_bytes",
+          "content_response_max_bytes",
+          "request_max_bytes",
+          "cursor_ttl_seconds",
+          "lease_seconds",
+          "lease_renew_seconds",
+          "max_attempts",
+          "task_deadline_seconds",
+          "attempt_soft_timeout_seconds",
+          "ts_parse_timeout_seconds",
+          "client_wait_seconds",
+          "recovery_slot_max_bytes",
+          "recovery_slots"
+        ],
+        "properties": {
+          "max_files": {
+            "const": 32
+          },
+          "max_file_bytes": {
+            "const": 2097152
+          },
+          "max_input_bytes": {
+            "const": 16777216
+          },
+          "max_nodes_per_file": {
+            "const": 8192
+          },
+          "max_nodes": {
+            "const": 32768
+          },
+          "max_relations": {
+            "const": 65536
+          },
+          "max_depth": {
+            "const": 16
+          },
+          "passage_target_bytes": {
+            "const": 4096
+          },
+          "passage_max_bytes": {
+            "const": 8192
+          },
+          "content_max_bytes": {
+            "const": 65536
+          },
+          "page_max_items": {
+            "const": 20
+          },
+          "metadata_response_max_bytes": {
+            "const": 262144
+          },
+          "content_response_max_bytes": {
+            "const": 524288
+          },
+          "request_max_bytes": {
+            "const": 32768
+          },
+          "cursor_ttl_seconds": {
+            "const": 600
+          },
+          "lease_seconds": {
+            "const": 30
+          },
+          "lease_renew_seconds": {
+            "const": 10
+          },
+          "max_attempts": {
+            "const": 3
+          },
+          "task_deadline_seconds": {
+            "const": 120
+          },
+          "attempt_soft_timeout_seconds": {
+            "const": 30
+          },
+          "ts_parse_timeout_seconds": {
+            "const": 5
+          },
+          "client_wait_seconds": {
+            "const": 25
+          },
+          "recovery_slot_max_bytes": {
+            "const": 16384
+          },
+          "recovery_slots": {
+            "const": 8
+          }
+        }
+      },
+      "Producers": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "format",
+          "go",
+          "go_toolchain",
+          "tree_sitter_go",
+          "tree_sitter_typescript",
+          "goldmark",
+          "coordinate_space",
+          "parse_ctx",
+          "remote_images",
+          "overlap_bytes"
+        ],
+        "properties": {
+          "format": {
+            "const": "code-structure-v1"
+          },
+          "go": {
+            "const": "standard-go-parser"
+          },
+          "go_toolchain": {
+            "const": "go1.27.3"
+          },
+          "tree_sitter_go": {
+            "const": "v0.24.0"
+          },
+          "tree_sitter_typescript": {
+            "const": "v0.23.2"
+          },
+          "goldmark": {
+            "const": "v1.7.1"
+          },
+          "coordinate_space": {
+            "const": "source_utf8"
+          },
+          "parse_ctx": {
+            "const": false
+          },
+          "remote_images": {
+            "const": false
+          },
+          "overlap_bytes": {
+            "const": 0
+          }
+        }
+      },
+      "Capabilities": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "contract_version",
+          "structure_contract_version",
+          "runtime_ready",
+          "owner_only",
+          "mode",
+          "parser_ids",
+          "policy_default_enabled",
+          "model_calls",
+          "local_inference",
+          "external_fetches",
+          "automatic_ingestion",
+          "lexical_index",
+          "vector_index",
+          "partial_publication",
+          "producers",
+          "limits"
+        ],
+        "properties": {
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "structure_contract_version": {
+            "const": "0.1.0"
+          },
+          "runtime_ready": {
+            "type": "boolean"
+          },
+          "owner_only": {
+            "const": true
+          },
+          "mode": {
+            "const": "structure_only"
+          },
+          "parser_ids": {
+            "const": [
+              "typescript",
+              "tsx",
+              "go",
+              "markdown"
+            ]
+          },
+          "policy_default_enabled": {
+            "const": false
+          },
+          "model_calls": {
+            "const": 0
+          },
+          "local_inference": {
+            "const": 0
+          },
+          "external_fetches": {
+            "const": 0
+          },
+          "automatic_ingestion": {
+            "const": false
+          },
+          "lexical_index": {
+            "const": "not_created"
+          },
+          "vector_index": {
+            "const": "not_created"
+          },
+          "partial_publication": {
+            "const": false
+          },
+          "producers": {
+            "$ref": "#/components/schemas/Producers"
+          },
+          "limits": {
+            "$ref": "#/components/schemas/Limits"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "contract_version",
+          "structure_contract_version",
+          "request_id",
+          "data",
+          "outcome_known",
+          "rejection_id"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "invalid_request",
+              "not_found",
+              "contract_mismatch",
+              "policy_disabled",
+              "policy_changed",
+              "revision_changed",
+              "manifest_changed",
+              "view_changed",
+              "idempotency_conflict",
+              "task_revision_changed",
+              "capacity_exceeded",
+              "source_unavailable",
+              "lifecycle_integrity",
+              "structure_integrity",
+              "unavailable",
+              "unsupported_source"
+            ]
+          },
+          "message": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 512,
+            "x-max-utf8-bytes": 512
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "structure_contract_version": {
+            "const": "0.1.0"
+          },
+          "request_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "data": {
+            "const": null
+          },
+          "outcome_known": {
+            "type": "boolean"
+          },
+          "rejection_id": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ID"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "HeadIssue": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_id",
+          "reasons"
+        ],
+        "properties": {
+          "source_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "reasons": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "manifest_changed",
+                "source_changed",
+                "lifecycle_changed",
+                "classification_changed",
+                "position_changed",
+                "policy_changed",
+                "source_archived"
+              ]
+            },
+            "minItems": 1,
+            "maxItems": 7,
+            "uniqueItems": true
+          }
+        }
+      },
+      "RejectionReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "rejection_id",
+          "operation",
+          "owner_id",
+          "domain_id",
+          "task_id",
+          "idempotency_key",
+          "original_request",
+          "request_sha256",
+          "reason",
+          "recorded_at",
+          "accepted",
+          "model_calls"
+        ],
+        "properties": {
+          "rejection_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "operation": {
+            "type": "string",
+            "enum": [
+              "task",
+              "policy",
+              "cancel"
+            ]
+          },
+          "owner_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "domain_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "task_id": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ID"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "idempotency_key": {
+            "$ref": "#/components/schemas/Key"
+          },
+          "original_request": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TaskRequest"
+              },
+              {
+                "$ref": "#/components/schemas/PolicyChangeRequest"
+              },
+              {
+                "$ref": "#/components/schemas/CancelRequest"
+              }
+            ]
+          },
+          "request_sha256": {
+            "$ref": "#/components/schemas/Hash"
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "policy_disabled",
+              "policy_changed",
+              "revision_changed",
+              "manifest_changed",
+              "view_changed",
+              "task_revision_changed",
+              "capacity_exceeded",
+              "unsupported_source"
+            ]
+          },
+          "recorded_at": {
+            "$ref": "#/components/schemas/Timestamp"
+          },
+          "accepted": {
+            "const": false
+          },
+          "model_calls": {
+            "const": 0
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "operation": {
+                  "const": "task"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "task_id": {
+                  "const": null
+                },
+                "original_request": {
+                  "$ref": "#/components/schemas/TaskRequest"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "operation": {
+                  "const": "policy"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "task_id": {
+                  "const": null
+                },
+                "original_request": {
+                  "$ref": "#/components/schemas/PolicyChangeRequest"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "operation": {
+                  "const": "cancel"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "task_id": {
+                  "$ref": "#/components/schemas/ID"
+                },
+                "original_request": {
+                  "$ref": "#/components/schemas/CancelRequest"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "TaskRejection": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RejectionReceipt"
+          },
+          {
+            "properties": {
+              "operation": {
+                "const": "task"
+              }
+            }
+          }
+        ]
+      },
+      "CommandRejection": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RejectionReceipt"
+          },
+          {
+            "properties": {
+              "operation": {
+                "type": "string",
+                "enum": [
+                  "policy",
+                  "cancel"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "TaskOutcome": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/Task"
+          },
+          {
+            "$ref": "#/components/schemas/TaskRejection"
+          }
+        ]
+      },
+      "CapabilitiesResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "contract_version",
+          "structure_contract_version",
+          "request_id",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 512,
+            "x-max-utf8-bytes": 512
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "structure_contract_version": {
+            "const": "0.1.0"
+          },
+          "request_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Capabilities"
+          }
+        }
+      },
+      "PolicyResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "contract_version",
+          "structure_contract_version",
+          "request_id",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 512,
+            "x-max-utf8-bytes": 512
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "structure_contract_version": {
+            "const": "0.1.0"
+          },
+          "request_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Policy"
+          }
+        }
+      },
+      "PolicyReceiptResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "contract_version",
+          "structure_contract_version",
+          "request_id",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 512,
+            "x-max-utf8-bytes": 512
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "structure_contract_version": {
+            "const": "0.1.0"
+          },
+          "request_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PolicyReceipt"
+          }
+        }
+      },
+      "CommandReceiptResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "contract_version",
+          "structure_contract_version",
+          "request_id",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 512,
+            "x-max-utf8-bytes": 512
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "structure_contract_version": {
+            "const": "0.1.0"
+          },
+          "request_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "data": {
+            "$ref": "#/components/schemas/CommandReceipt"
+          }
+        }
+      },
+      "TaskResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "contract_version",
+          "structure_contract_version",
+          "request_id",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 512,
+            "x-max-utf8-bytes": 512
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "structure_contract_version": {
+            "const": "0.1.0"
+          },
+          "request_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Task"
+          }
+        }
+      },
+      "TaskOutcomeResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "contract_version",
+          "structure_contract_version",
+          "request_id",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 512,
+            "x-max-utf8-bytes": 512
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "structure_contract_version": {
+            "const": "0.1.0"
+          },
+          "request_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "data": {
+            "$ref": "#/components/schemas/TaskOutcome"
+          }
+        }
+      },
+      "TaskPageResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "contract_version",
+          "structure_contract_version",
+          "request_id",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 512,
+            "x-max-utf8-bytes": 512
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "structure_contract_version": {
+            "const": "0.1.0"
+          },
+          "request_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "data": {
+            "$ref": "#/components/schemas/TaskPage"
+          }
+        }
+      },
+      "CancelReceiptResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "contract_version",
+          "structure_contract_version",
+          "request_id",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 512,
+            "x-max-utf8-bytes": 512
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "structure_contract_version": {
+            "const": "0.1.0"
+          },
+          "request_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "data": {
+            "$ref": "#/components/schemas/CancelReceipt"
+          }
+        }
+      },
+      "ViewResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "contract_version",
+          "structure_contract_version",
+          "request_id",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 512,
+            "x-max-utf8-bytes": 512
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "structure_contract_version": {
+            "const": "0.1.0"
+          },
+          "request_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "data": {
+            "$ref": "#/components/schemas/View"
+          }
+        }
+      },
+      "HeadResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "contract_version",
+          "structure_contract_version",
+          "request_id",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 512,
+            "x-max-utf8-bytes": 512
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "structure_contract_version": {
+            "const": "0.1.0"
+          },
+          "request_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Head"
+          }
+        }
+      },
+      "NodePageResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "contract_version",
+          "structure_contract_version",
+          "request_id",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 512,
+            "x-max-utf8-bytes": 512
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "structure_contract_version": {
+            "const": "0.1.0"
+          },
+          "request_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "data": {
+            "$ref": "#/components/schemas/NodePage"
+          }
+        }
+      },
+      "NodeResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "contract_version",
+          "structure_contract_version",
+          "request_id",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 512,
+            "x-max-utf8-bytes": 512
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "structure_contract_version": {
+            "const": "0.1.0"
+          },
+          "request_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Node"
+          }
+        }
+      },
+      "ContentResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "contract_version",
+          "structure_contract_version",
+          "request_id",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 512,
+            "x-max-utf8-bytes": 512
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "structure_contract_version": {
+            "const": "0.1.0"
+          },
+          "request_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Content"
+          }
+        }
+      },
+      "RelationPageResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "contract_version",
+          "structure_contract_version",
+          "request_id",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "const": 0
+          },
+          "message": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 512,
+            "x-max-utf8-bytes": 512
+          },
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "structure_contract_version": {
+            "const": "0.1.0"
+          },
+          "request_id": {
+            "$ref": "#/components/schemas/ID"
+          },
+          "data": {
+            "$ref": "#/components/schemas/RelationPage"
+          }
+        }
+      }
+    },
+    "responses": {
+      "Invalid": {
+        "description": "400 invalid_request; malformed or unknown/repeated fields, ranges, cursor scope or unsupported parser.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "404 not_found; current authorization precedes details, totals and cursor diagnostics.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Conflict": {
+        "description": "409 policy/source/manifest/view/task revision or idempotency conflict; never substitute current expectations automatically.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "VersionMismatch": {
+        "description": "412 contract_mismatch.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Capacity": {
+        "description": "429 capacity_exceeded; no silent queue expansion or retry.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Unavailable": {
+        "description": "503 unavailable or integrity/storage failure; check the original key, do not assume no execution.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "x-lifecycle": {
+    "status": "ReviewCandidate",
+    "authority": "Pending",
+    "implemented": false,
+    "baseline_main": "e6452d41afd159ba73e908f7ee20c43850a01f48",
+    "contract_owners": [
+      "C1",
+      "C3"
+    ],
+    "foundation_contract_version": "1.0.0",
+    "c4_defined": false
+  },
+  "x-rules": {
+    "limits": {
+      "max_files": 32,
+      "max_file_bytes": 2097152,
+      "max_input_bytes": 16777216,
+      "max_nodes_per_file": 8192,
+      "max_nodes": 32768,
+      "max_relations": 65536,
+      "max_depth": 16,
+      "passage_target_bytes": 4096,
+      "passage_max_bytes": 8192,
+      "content_max_bytes": 65536,
+      "page_max_items": 20,
+      "metadata_response_max_bytes": 262144,
+      "content_response_max_bytes": 524288,
+      "request_max_bytes": 32768,
+      "cursor_ttl_seconds": 600,
+      "lease_seconds": 30,
+      "lease_renew_seconds": 10,
+      "max_attempts": 3,
+      "task_deadline_seconds": 120,
+      "attempt_soft_timeout_seconds": 30,
+      "ts_parse_timeout_seconds": 5,
+      "client_wait_seconds": 25,
+      "recovery_slot_max_bytes": 16384,
+      "recovery_slots": 8
+    },
+    "producers": {
+      "format": "code-structure-v1",
+      "go": "standard-go-parser",
+      "go_toolchain": "go1.27.3",
+      "tree_sitter_go": "v0.24.0",
+      "tree_sitter_typescript": "v0.23.2",
+      "goldmark": "v1.7.1",
+      "coordinate_space": "source_utf8",
+      "parse_ctx": false,
+      "remote_images": false,
+      "overlap_bytes": 0
+    },
+    "producer_projection": {
+      "kind": "knowledge-structure-producer/0.1.0",
+      "producers": {
+        "format": "code-structure-v1",
+        "go": "standard-go-parser",
+        "go_toolchain": "go1.27.3",
+        "tree_sitter_go": "v0.24.0",
+        "tree_sitter_typescript": "v0.23.2",
+        "goldmark": "v1.7.1",
+        "coordinate_space": "source_utf8",
+        "parse_ctx": false,
+        "remote_images": false,
+        "overlap_bytes": 0
+      },
+      "limits": {
+        "max_files": 32,
+        "max_file_bytes": 2097152,
+        "max_input_bytes": 16777216,
+        "max_nodes_per_file": 8192,
+        "max_nodes": 32768,
+        "max_relations": 65536,
+        "max_depth": 16,
+        "passage_target_bytes": 4096,
+        "passage_max_bytes": 8192,
+        "content_max_bytes": 65536,
+        "page_max_items": 20,
+        "metadata_response_max_bytes": 262144,
+        "content_response_max_bytes": 524288,
+        "request_max_bytes": 32768,
+        "cursor_ttl_seconds": 600,
+        "lease_seconds": 30,
+        "lease_renew_seconds": 10,
+        "max_attempts": 3,
+        "task_deadline_seconds": 120,
+        "attempt_soft_timeout_seconds": 30,
+        "ts_parse_timeout_seconds": 5,
+        "client_wait_seconds": 25,
+        "recovery_slot_max_bytes": 16384,
+        "recovery_slots": 8
+      },
+      "aliases": "Canonical per-task aliases array; substitute actual aliases, not this explanatory string."
+    },
+    "digest": "C2 0.7 typed-LP + SHA-256; exact projections and normalization rules in candidate Markdown",
+    "members_order": "source_id ascending byte order; duplicates rejected",
+    "aliases_order": "prefix ascending byte order; duplicate or overlapping prefixes rejected",
+    "result_atomic": true,
+    "original_utf8_preserved": true,
+    "go_cancel": "checked before/after standard parser and during traversal; no hard in-call cancellation promise",
+    "historical_reads_when_policy_disabled": true,
+    "archive_is_revocation": false
+  }
+}

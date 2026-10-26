@@ -1,0 +1,746 @@
+{
+  "document_version": "v0.56",
+  "recorded_at": "2026-10-26T05:51:15.936Z",
+  "status": "CandidatePrepared_NotAuthorized",
+  "request_snapshot": [
+    "请注意后续的步骤，请你持续不断地进行下去，跟另外一个会话，甚至你可以开其他的会话去协调。但一个讯息是你必须要传达的，就是一定一定不能够停下来。一定一定就是至少说有一个会话不能停下来，要主会话不能停下来，你就是主会话，要牵动其他废话，持续不断地推进咱们这个工作，直到最后完成。",
+    "那就开始整理“受控目录＋精确选择清单”的下一版契约候选，由你和新会话直接核对，明确接口、身份、权限、增量与恢复语义及验收标准。保持C2 0.2.0冻结契约不变，候选确认前不接入业务代码；继续只用合成资料、不调用模型、不启动多轮审查，完成后保存并推送远端。"
+  ],
+  "objective": "准备阶段3第一个合成代码／Markdown确定性结构候选，核实依赖可行性，明确节点／关系／权限／原键及增量发布后交真人冻结。",
+  "clarification": {
+    "mode": "Skipped",
+    "state": "Settled_PreparationOnly",
+    "notice": "候选整理范围已经明确，本次跳过向你提问的阶段；新接口实施仍等待具体候选确认。",
+    "survey_refs": [
+      "docs/knowledge-structure-v0.1.candidate.md#2-已核实事实与选择",
+      "docs/stage3-structure-preparation.md",
+      ".local-data/stage3-20261026/parser-probe/result.json"
+    ],
+    "basis": "持续推进及单写入的准备范围明确；具体共享契约新增授权保留Pending，不用旧R6批准替代。",
+    "rounds": []
+  },
+  "baseline": {
+    "main": "e6452d41afd159ba73e908f7ee20c43850a01f48",
+    "backend": "2bfa0d9990e7c42c4927a47af747f12da4e3712e",
+    "frontend": "c759990b62f44704b9370c19bcbf402668764899"
+  },
+  "scope": {
+    "business_implementation": false,
+    "project_dependency_changes": false,
+    "old_contract_changes": false,
+    "new_runtime_deployment": false,
+    "synthetic_only": true,
+    "model_calls": 0,
+    "local_inference": 0,
+    "real_source_web_requests": 0,
+    "developer_library_research": true,
+    "adversarial_review": "NotRun_UserProhibited"
+  },
+  "contract": {
+    "name": "C1/C3-Structure",
+    "version": "0.1.0",
+    "status": "ReviewCandidate",
+    "c4_defined": false,
+    "operations": 15,
+    "paths": 14,
+    "schemas": 57,
+    "artifacts": {
+      "docs/knowledge-structure-v0.1.candidate.md": "5c61af1a3a6be72337895b665d26cef29a711518f184bdb77a822800df0256d1",
+      "docs/knowledge-structure-v0.1.candidate.openapi.json": "0db14cc46e86e42e6ca5a6ffff3050968644372a76f5091bb380f50dff1c4630",
+      "docs/knowledge-structure-v0.1.candidate.examples.json": "195f83957c6b06ff2fb67b5dc61353c82abee92870b551f9ff14bb02217c9bea"
+    }
+  },
+  "collaboration": {
+    "source_thread_id": "01a1746b-2de2-7413-906b-d2a4544017e3",
+    "source_title": "R4 原件导入客户端与界面",
+    "mode": "一次有界消费核对",
+    "source_access": "ReadOnly",
+    "a_access": "SingleWriter",
+    "reviewed_md_sha256": "e1f3de7539256b718e2e321d4643f9ea6871ac81098c393381456da7e5a5e3fd",
+    "reviewed_scope": "只读初版Markdown及必要旧客户端；未读随后OpenAPI/示例，不把此输入称为最终三件联合通过。",
+    "findings": [
+      {
+        "id": "B1",
+        "observation": "初版只描述原键缺失后同body重发，语义过期且无task时没有明确退出。",
+        "a_verification": "已在初版接收/恢复描述确认缺失。",
+        "resolution": "有效主体/严格格式请求的语义接收拒绝持久化；原键恢复固定拒绝，显式放弃后才重新准备；未知或任意404不清槽。",
+        "status": "ResolvedInCandidate_NotImplemented"
+      },
+      {
+        "id": "B2",
+        "observation": "初版只明确任务预存槽，策略/取消及跨task取消身份未完整落定。",
+        "a_verification": "已确认槽范围不完整；随后摘要已含task_id，进一步明确同键跨task冲突与回执校验。",
+        "resolution": "三种操作各有完整原请求槽；cancel的路径task_id进摘要/回执，同键跨task409；放弃取消槽不丢原任务。",
+        "status": "ResolvedInCandidate_NotImplemented"
+      }
+    ],
+    "additional_fields": "明确.4清单+.7 current.lifecycle_version准备、Task.revision/完成时间、head受影响source、固定拒绝联合响应。",
+    "repeated_adversarial_review": false
+  },
+  "verification": {
+    "scope": "仅候选结构／摘要一致性与隔离依赖可行性，不是业务接口或运行语义验收",
+    "schema_accept": 39,
+    "schema_reject": 37,
+    "schema_failures": 0,
+    "digest_vectors": 8,
+    "typed_LP_primitive_vectors": 4,
+    "route_integrity": "Passed",
+    "protected_hashes": {
+      "docs/knowledge-sources-v1.openapi.json": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091",
+      "docs/knowledge-sources-v1.example.json": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a",
+      "docs/knowledge-sources-v1.freeze.json": "114bbfa2b4dd51eafc426716032486f666ace8a1a1284f4c1f4c9baf1f1b35c6",
+      "docs/knowledge-foundation-v1.openapi.json": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4",
+      "docs/knowledge-foundation-v1.example.json": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343",
+      "docs/knowledge-directory-import-v1.openapi.json": "6144c08d4cfe7ac98374dc51829c98290e2c88e3441dd38d250a3cd9cb4492e6",
+      "docs/knowledge-directory-import-v1.examples.json": "73618dd78419bb9027520b3dd8b3ef83b1794d3ad1c4d17d904ce7637c54ea72",
+      "docs/knowledge-directory-import-v1.freeze.json": "2af7575cfbc24510550a0b495e18aa30f94decf5f102c23d259d4f3135dbf5f1",
+      "docs/knowledge-directory-import-v0.3.candidate.md": "80eb846a81b6ade430012b585739fe6405ef8a7de5855f27941fe66a31e2cbfa",
+      "docs/knowledge-directory-import-v0.3.candidate.openapi.json": "da2c320b3c3fd8f6af2b566b40507a5b09c55791236b49b224347c8b9a457f3d",
+      "docs/knowledge-directory-import-v0.3.candidate.examples.json": "2680f9786a19cc49a0330ecfcda84249ef36aac20293341a18e17cbdfd132d4e",
+      "docs/knowledge-batch-import-v0.4.candidate.md": "3a3beec92e8bc0baae1c820a18e078717163988277aa9d304d762ff97d027b1f",
+      "docs/knowledge-batch-import-v0.4.candidate.openapi.json": "d57ca240df19a985341c25d60ce18590dacdcf221b5599b8223f558a7c379fc5",
+      "docs/knowledge-batch-import-v0.4.candidate.examples.json": "fe8bde9d99b8aaa7250a40a1adc86c6bee9ecf474cbf01af55253274f2e2e304",
+      "docs/knowledge-batch-import-v1.openapi.json": "bd13fc400fc2a84f490b92ee865db75f76d89bf79a176658312ac3bea17d0fb8",
+      "docs/knowledge-batch-import-v1.examples.json": "5249cdf57da0313346b7b30db0743079a175aaa8480604120b1bf92e4bdfdc53",
+      "docs/knowledge-batch-import-v1.freeze.json": "1d589290db4b1fe4ab4005dae0ebf1918efdeac9cd57d7c810305087c180f631",
+      "docs/knowledge-original-import-v0.5.candidate.md": "8a1079fe4745b84d178f50939ac25e1ac1fa51bc3f61ed2340ef1f6d9e1638d6",
+      "docs/knowledge-original-import-v0.5.candidate.openapi.json": "b4905ab840c64f26a25a6017dc7454393fd3b974b0e2199edffe2cc5e725a0aa",
+      "docs/knowledge-original-import-v0.5.candidate.examples.json": "16aa77d948f857f93dcc96e0c812d4bee2a8f3ad91205e54b9c0457f78ea8815",
+      "docs/knowledge-original-import-v1.openapi.json": "3c48ebe0a2bfc8b3078262ce6c1a8258b312f6111bd9ed2b07b7b4fb433a5efd",
+      "docs/knowledge-original-import-v1.examples.json": "550f7be69c506a02cc2798d2196e17ca06c73b06f08d934ea3cbf823551d5cb1",
+      "docs/knowledge-original-import-v1.freeze.json": "116ddc4161001c0fdb440b45b227952978ca3d291197d712830a92d5aaaca3b9",
+      "docs/knowledge-web-import-v0.6.candidate.md": "577a76624d8b43e26dde890df49140f0b5a2c458dc493dbecd7f5467e13175fb",
+      "docs/knowledge-web-import-v0.6.candidate.openapi.json": "a167a1977f1f0a313061b093d21f035631dd5fafaea95cd8545601e17af35a88",
+      "docs/knowledge-web-import-v0.6.candidate.examples.json": "81372c6270c3e2b3989b4e088bd029883326f75fe6e254d651b93f951e0b7573",
+      "docs/knowledge-web-import-v1.freeze.json": "bba4e9f0c2341658ac69741d57f5a4a9032ac74b6ec848f13a195e4ab96c66c2",
+      "docs/knowledge-web-import-v1.openapi.json": "673092ab81263bdf7b79e85e06206bb02f8eb8996b476c8643dbafed17e259ed",
+      "docs/knowledge-web-import-v1.examples.json": "71019ae8645ad0fd4527565c42f6f80f93924c26266ffe08696de5e9b1c5671d",
+      "docs/knowledge-source-lifecycle-v0.7.candidate.md": "53b78e36a127c6c0f35048bf0ac511417639aba7cca90a418c007caa1b7f39f9",
+      "docs/knowledge-source-lifecycle-v0.7.candidate.openapi.json": "47d159cfee61708a79475879f5371cb97a38b41eb768e759ff802e1ebd0cdd0d",
+      "docs/knowledge-source-lifecycle-v0.7.candidate.examples.json": "a20bf10a7ac93ce36a8d3cd04cd95b035d8e6f2a1f3301accfdd711d86eb2f41",
+      "docs/knowledge-source-lifecycle-v1.freeze.json": "f6545f908a802d0d326fe73dfb3f8e5b2860abf67306b8a1e022c572bbd984c3",
+      "docs/knowledge-source-lifecycle-v1.openapi.json": "526685f1ab09e07f87f3f9c8cee3cf44347d6bdcf9efed94c356ef32b22725db",
+      "docs/knowledge-source-lifecycle-v1.examples.json": "cfe6c24c3f3a24907220c4e2ead993867c33053c6b2d197b70d93c03f168fb3c"
+    },
+    "protected_files_unchanged": 35,
+    "implementation_semantic_cases": 34,
+    "implementation_semantic_status": "NotRun",
+    "checks": [
+      {
+        "name": "policy",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "policy-response",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "policychangerequest",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "policyreceipt",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "policyreceipt-response",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "taskrequest",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "task",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "task-response",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "cancelrequest",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "cancelreceipt",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "cancelreceipt-response",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "view",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "view-response",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "head",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "head-response",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "node",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "node-response",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "content",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "content-response",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "relation",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "nodepage",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "nodepage-response",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "relationpage",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "relationpage-response",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "capabilities",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "capabilities-response",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "taskpage",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "taskpage-response",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "policy-command-union",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "cancel-command-union",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "command-response",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "empty-task-page",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "head-none",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "head-stale",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "unresolved-dynamic",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "rejected-task-receipt",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "rejected-task-by-key",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "accepted-task-by-key",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "rejected-cancel-command",
+        "kind": "schema_accept",
+        "passed": true
+      },
+      {
+        "name": "task-unknown-embedding-switch",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "task-not-confirmed",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "task-empty-selection",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "task-33-members",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "task-unsafe-generation",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "task-zero-generation",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "task-unsupported-parser",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "task-source-ID-64",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "task-head-ID-32",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "task-key-spaces",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "task-alias-outside",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "task-alias-absolute",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "task-alias-Windows-drive",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "policy-remote-opt-in",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "policy-not-confirmed",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "cancel-no-key",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "cancel-no-confirmation",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "node-wrong-coordinate",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "node-cross-kind",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "node-unsupported-side",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "content-unknown-URL",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "content-negative-byte",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "relation-unknown-kind",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "response-wrong-version",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "response-missing-request-ID",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "task-result-model-count",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "capability-remote-images",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "policy-native-ingestion",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "unresolved-relation-has-guessed-target",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "resolved-relation-without-target",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "success-task-without-view",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "success-task-has-unpublished-member",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "success-task-without-completion-time",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "complete-content-has-next-window",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "task-rejection-binds-cancel-body",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "task-rejection-pretends-accepted",
+        "kind": "schema_reject",
+        "passed": true
+      },
+      {
+        "name": "content-UTF8-byte-budget",
+        "kind": "schema_reject",
+        "passed": true
+      }
+    ]
+  },
+  "dependency_probe": {
+    "scope": "isolated dependency feasibility; not application, structure publication, edge extraction, or UI validation",
+    "go_version": "go1.27.3",
+    "binding": "v0.24.0",
+    "typescript_grammar": "v0.23.2",
+    "goldmark": "v1.7.1",
+    "cases": [
+      {
+        "name": "tsx-bom-crlf-chinese-emoji",
+        "bytes": 156,
+        "sha256": "03581ac33ab654e51fb1355a59416d5a9fe5d4bbd94a95720068a00929688898",
+        "duration_ms": [
+          0.056805,
+          0.018202,
+          0.014701,
+          0.013401,
+          0.012501
+        ],
+        "root_start": 3,
+        "root_end": 156,
+        "named_children": 3,
+        "has_error": false
+      },
+      {
+        "name": "tsx-near-2MiB",
+        "bytes": 2097087,
+        "sha256": "68656f09c1296a7870aaf63260519c2e7024501390ad76f382294c611ef2e22a",
+        "duration_ms": [
+          196.353263,
+          167.519607,
+          167.842933,
+          161.338523,
+          164.973808
+        ],
+        "root_start": 0,
+        "root_end": 2097087,
+        "named_children": 34183,
+        "has_error": false
+      },
+      {
+        "name": "tsx-invalid",
+        "bytes": 39,
+        "sha256": "eb0a1dbe45b5763c6f5e54c1b35a6194e7034828f1052e49b0e942b60afd36b5",
+        "duration_ms": [
+          0.051504,
+          0.012401,
+          0.010001,
+          0.008901,
+          0.087107
+        ],
+        "root_start": 0,
+        "root_end": 39,
+        "named_children": 1,
+        "has_error": true
+      }
+    ],
+    "go_parse_ms": 0.038103,
+    "markdown_parse_ms": 0.51124,
+    "native_timeout_returned_nil": true,
+    "linux_process_memory": [
+      "VmHWM:\t   85648 kB",
+      "VmRSS:\t   85648 kB"
+    ],
+    "native_memory_note": "VmHWM为本独立进程的Linux峰值驻留内存；不是API基线增量或生产压力结果。",
+    "probe_source_sha256": "2c3f2ba8392ff5bfb79e90e242396dcac272540e95aa527d19abe8a1131cd373",
+    "result_sha256": "4c1e60ad5b504f1230cbedbfc58fe0161c5227049caad44011a25a468743efaa",
+    "module_sha256": "685a237ae0e16e78ed1916d20383e54e113d4ae7d62d490590cb7ab162dc1160",
+    "sum_sha256": "4349ad58f6038cae7e591ed5ad678914569c715cf7cce71c07d046fd1ff303de",
+    "attempts": [
+      {
+        "attempt": 1,
+        "outcome": "ToolPreparationFailed",
+        "reason": "隔离容器没有/usr/bin/time；未安装工具，用程序时钟及/proc/self/status测量。"
+      },
+      {
+        "attempt": 2,
+        "outcome": "DependencyUsageFailed",
+        "reason": "v0.24.0 ParseCtx取消后Close触发parser.go:168空指针，完整stderr保留。"
+      },
+      {
+        "attempt": 3,
+        "outcome": "Passed",
+        "reason": "改用SetTimeoutMicros＋Parse，显式关闭，隔离语法样本通过。"
+      },
+      {
+        "attempt": 4,
+        "outcome": "Passed",
+        "reason": "增加实际原生超时nil和Linux VmHWM测量；报告绑定此最终版，不合并计数。"
+      }
+    ]
+  },
+  "first_principles_analysis": {
+    "result": "选择的固定原文能按文件／符号／章节／片段读取并展示有证据静态关系，仍无索引／模型。",
+    "facts": [
+      "固定修订与C1原字节读取已经过R6/R7合成验证。",
+      "原生GetParser无TS/TSX/Go AST生产分支。",
+      "原生结构编译调用Chat，Markdown格式改写／远程取图路径不符合本批原字节零外发边界。"
+    ],
+    "constraints": [
+      "35保护文件保持；候选批准前业务改动0。",
+      "合成、模型API0／本地推理0、无多轮审查、原六服务及历史保持。",
+      "原生身份唯一；组织／结构／关系分开，原文不复制为另一权威。"
+    ],
+    "assumptions": [
+      {
+        "claim": "8文件≤1MiB可满足候选端到端及RSS目标",
+        "verification": "正式实现后固定样本五次与真实同版API测量",
+        "status": "Unverified"
+      }
+    ],
+    "unknowns": [
+      {
+        "item": "本候选新增共享接口与structure-only处理许可是否冻结",
+        "owner": "真人用户",
+        "blocking": "BusinessImplementation",
+        "release_condition": "同一候选版本获得具体确认"
+      }
+    ],
+    "elements": [
+      "已授权固定字节",
+      "可证明范围",
+      "显式处理许可",
+      "稳定来源／世代",
+      "有界语法生产",
+      "原子发布",
+      "固定读取与恢复"
+    ],
+    "causal_chain": [
+      "原件保持唯一→节点只存范围与摘要。",
+      "无模型及原生ingestion关闭→独立显式structure-only入口。",
+      "源可更新／归档→原世代固定，提交CAS，旧view保留。",
+      "网络响应会丢失→三类操作预存原请求，成功及接收拒绝按原键固定恢复。"
+    ],
+    "alternatives": [
+      "保持现状：可读原文，没有自动结构。",
+      "选定：Go标准AST＋固定Tree-sitter＋已有goldmark，源位置和调用范围可控。",
+      "替代：TypeScript编译器API更深语义，但增加Node运行及UTF-16映射耦合。"
+    ],
+    "decision_criteria": [
+      "原字节不丢失",
+      "无模型／无外取",
+      "权限及旧冻结保持",
+      "稳定恢复／增量原子性",
+      "先实测性能"
+    ],
+    "plan_trace": "候选第10节S3-R1.0—1.4",
+    "validation": "候选离线验证与依赖试跑已执行；应用语义、端到端及预算待批准后实施。"
+  },
+  "authority": {
+    "candidate_freeze": {
+      "outcome": "Pending"
+    },
+    "implementation": {
+      "outcome": "Pending"
+    },
+    "continuous_preparation": "本会话真人持续推进指令；不是本候选新增接口批准"
+  },
+  "acceptance": {
+    "candidate_preparation": "EngineeringSaved",
+    "user_decision": {
+      "outcome": "Pending"
+    },
+    "stage2_real_source_exit": "NotRun_ScopeNotApproved",
+    "stage2_exit": false,
+    "stage3_slice_implemented": false,
+    "stage3_complete": false,
+    "whole_project_complete": false
+  },
+  "incomplete_items": [
+    "等待具体候选冻结。",
+    "批准后Go生产器／任务／许可／读接口／真实服务验证。",
+    "清洁固定后端交客户端唯一写窗，随后同版HTTP／浏览器与性能。",
+    "R7真实资料退出及富文档／人工Wiki、检索引用／MCP／人格记忆仍独立未完成。"
+  ],
+  "evidence_location": ".local-data/stage3-20261026/；忽略目录，源码／stderr／结果／校验均保留，不含入库真实资料。",
+  "publication_checks": {
+    "recorded_at": "2026-10-26T05:54:19.523Z",
+    "branch": "codex/stage3-structure-candidate",
+    "baseline_main": "e6452d41afd159ba73e908f7ee20c43850a01f48",
+    "changed_files": [
+      "README.md",
+      "docs/knowledge-structure-v0.1.candidate.examples.json",
+      "docs/knowledge-structure-v0.1.candidate.md",
+      "docs/knowledge-structure-v0.1.candidate.openapi.json",
+      "docs/stage2-local-coordination.md",
+      "docs/stage3r1-structure-candidate-verification.json",
+      "docs/stage3r1-structure-handoff.md",
+      "会话接续说明.md",
+      "本地第二大脑知识库技术方案.md"
+    ],
+    "changed_business_files": 0,
+    "protected_files_unchanged": 35,
+    "stable_build_inputs": {
+      "go.mod": "be436e9f362848b611c4df0ff8866191bad27993d60f9011d6fce70df49629a5",
+      "go.sum": "daeb317bfcfba03000d416253f685db1716b4155776bc49e0d8a08b412fb982f",
+      "web/package.json": "c483f146590f718242292f9084366e8432082b40eca7158cd2dcf0866f664df2",
+      "web/package-lock.json": "1137574d9f47db47ae5394936806f42f2b8269f3b5342eb59a652e322b784e66"
+    },
+    "live_credential_literals_checked": 11,
+    "credential_matches": 0,
+    "credential_scope": "ignored root/Docker env and Docker auth JSON only; values never printed or saved to public artifacts",
+    "local_markdown_links": "Passed",
+    "services": [
+      {
+        "name": "lfen-ragflow-poc-ragflow-cpu-1",
+        "status": "Up 2 hours (healthy)"
+      },
+      {
+        "name": "lfen-ragflow-poc-mysql-1",
+        "status": "Up 2 days (healthy)"
+      },
+      {
+        "name": "lfen-ragflow-poc-kvrocks-1",
+        "status": "Up 2 days (healthy)"
+      },
+      {
+        "name": "lfen-ragflow-poc-es01-1",
+        "status": "Up 2 days (healthy)"
+      },
+      {
+        "name": "lfen-ragflow-poc-minio-1",
+        "status": "Up 2 days (healthy)"
+      },
+      {
+        "name": "lfen-ragflow-poc-nats-1",
+        "status": "Up 2 days (healthy)"
+      }
+    ],
+    "builder_state": "exited",
+    "application_deployments": 0,
+    "model_calls": 0,
+    "local_inference": 0,
+    "previous_preparation_failure": "首次读取既有package-lock超过Node默认1MiB输出缓冲，ENOBUFS；只把该有限读取缓冲升至8MiB后重做此检查，未改锁文件或依赖。"
+  },
+  "governance_runtime": "本批沿用项目公开工程记录和忽略证据，不声称运行了新的正式机器Gate。"
+}
