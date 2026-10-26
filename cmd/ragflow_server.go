@@ -37,6 +37,7 @@ import (
 	"ragflow/internal/engine"
 	"ragflow/internal/engine/kvrocks"
 	_ "ragflow/internal/ingestion/wire"
+	parser "ragflow/internal/parser/parser"
 	"ragflow/internal/server"
 	"ragflow/internal/server/admin"
 	apipkg "ragflow/internal/server/api"
@@ -44,6 +45,7 @@ import (
 	deepdocpkg "ragflow/internal/server/deepdoc"
 	ingestorpkg "ragflow/internal/server/ingestor"
 	syncerpkg "ragflow/internal/server/syncer"
+	"ragflow/internal/service/dataset"
 	"ragflow/internal/storage"
 )
 
@@ -315,6 +317,9 @@ func printHelp(args *bootstrap.ServerArgs) {
 }
 
 func main() {
+	if parser.IsDocumentStructureChild(os.Args[1:]) {
+		os.Exit(parser.DocumentStructureChildMain(context.Background(), dataset.ParseKnowledgeDocumentChild))
+	}
 	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 	defer cancel()
 

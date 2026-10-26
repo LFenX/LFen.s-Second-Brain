@@ -1,0 +1,55 @@
+{
+  "version": "0.62",
+  "recorded_at": "2026-10-26T16:22:01.149Z",
+  "status": "InProgress",
+  "authority": "knowledge-document-structure-v1.freeze.json",
+  "branch": "codex/stage3r2-document",
+  "requirements": [
+    "exact approved contract freeze",
+    "bounded format-aware projection and deterministic text/manifest",
+    "one shared lease/quota/worker core and owned child cleanup",
+    "12 operations and independent policy/recovery",
+    "client fixed original selection and safe structural reading",
+    "synthetic real integration and performance then main"
+  ],
+  "plan": [
+    {
+      "id": "R2.0",
+      "state": "Completed",
+      "evidence": ".local-data/stage3-20261026/r2-freeze-binding.json"
+    },
+    {
+      "id": "R2.1",
+      "state": "Completed"
+    },
+    {
+      "id": "R2.2",
+      "state": "CoreVerified_FinalFaultsPending"
+    },
+    {
+      "id": "R2.3",
+      "state": "NotStarted",
+      "writer": "peer after clean fixed backend commit"
+    },
+    {
+      "id": "R2.4",
+      "state": "NotRun"
+    }
+  ],
+  "constraints": {
+    "synthetic_only": true,
+    "model_calls": 0,
+    "local_inference": 0,
+    "multi_round_review": false,
+    "sole_tracked_writer": "A"
+  },
+  "verification": {
+    "status": "CoreVerified",
+    "report": "stage3r2-document-backend-verification.json",
+    "final_exit": "Pending"
+  },
+  "acceptance": {
+    "outcome": "Pending",
+    "scope": "R2 engineering delivery only"
+  }
+}

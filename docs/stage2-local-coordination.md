@@ -79,3 +79,9 @@ A在8048ede后继续同分支完成原生快照私有元数据核心；现有字
 ## 6. R5候选期历史交替
 
 本段保留候选期安排，当前已按本文件开头的v0.51完成R5工程。A曾采用一次集中消费反馈并做候选规则验证，未派发多轮审查。候选先推codex/stage2r5-web-feed-candidate，真人批准后A冻结／后端验证，再交清洁固定提交给客户端唯一写窗，清洁回交后A完成合成同版联调。真实来源／RSSHub／模型未运行，原真人只读会话未重新授写权。持续目标active。
+
+
+Document Structure R2 当前执行（v0.62，2026-10-26）：真人已通过 request_user_input_async/call_d99b6d368f2c40338da342aa9059d54b/0 批准 02c1951 的具体方案。正式冻结件为 docs/knowledge-document-structure-v1.freeze.json（含同提交三件摘要）。已进入 A Go 后端实施，后端清洁固定提交后交客户端唯一 Web 写窗，再做合成真实联调及性能并推 main。旧 41 件及候选三件不改；仅合成 PDF/PPTX/DOCX，模型及本地推理 0，无多轮审查。R1 人的工程验收仍 Pending，不能由本次批准代替。
+
+
+R2 v0.62 后端中间结果：A 持全部写权；12操作／三格式实际HTTP核心通过。清洁后端提交后由 A 明确将唯一 tracked/Git Web 写窗交给“R4 原件导入客户端与界面”，接方只做正式客户端／Mock／构建，不改Go、契约、依赖、运行配置或共享UI。A期间只在ignored目录准备／执行已授权合成验证，不改变源码／部署。47保护件见stage3r2-document-backend-verification.json。R2最终故障／性能／浏览器待交回后统一完成。

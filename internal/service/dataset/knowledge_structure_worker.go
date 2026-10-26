@@ -18,6 +18,7 @@ var errStructureLeaseLost = errors.New("structure lease lost")
 var errStructureStopped = errors.New("structure task stopped")
 
 type structureClaim struct {
+	Protocol string
 	DomainID string
 	OwnerID  string
 	TaskID   string
@@ -39,25 +40,15 @@ func structureInternalTransaction(ctx context.Context, domain string, fn func(*g
 }
 
 func structureLoadLease(tx *gorm.DB, claim *structureClaim) (*entity.KnowledgeStructureLeaseRecord, *entity.KnowledgeStructureTaskRecord, *entity.KnowledgeStructureTask, time.Time, error) {
-	now, err := batchNow(tx)
+	lease, _, now, err := structureOwnedLease(tx, claim)
 	if err != nil {
 		return nil, nil, nil, now, err
-	}
-	var lease entity.KnowledgeStructureLeaseRecord
-	if err := tx.Where("domain_id = ?", claim.DomainID).Take(&lease).Error; err != nil {
-		return nil, nil, nil, now, err
-	}
-	if lease.TaskID != claim.TaskID || lease.RunnerID != claim.RunnerID || lease.Epoch != claim.Epoch || !now.Before(lease.ExpiresAt) {
-		return nil, nil, nil, now, errStructureLeaseLost
 	}
 	row, task, err := structureLoadTask(tx, claim.OwnerID, claim.DomainID, claim.TaskID)
 	if err != nil {
 		return nil, nil, nil, now, err
 	}
-	if structureTerminal(task.State) {
-		return nil, nil, nil, now, errStructureLeaseLost
-	}
-	return &lease, row, task, now, nil
+	return lease, row, task, now, nil
 }
 
 func structureReleaseLease(tx *gorm.DB, claim *structureClaim, now time.Time) error {
@@ -84,82 +75,6 @@ func structureFinish(tx *gorm.DB, row *entity.KnowledgeStructureTaskRecord, task
 		}
 	}
 	return structureSaveTask(tx, row, task, now)
-}
-
-func claimKnowledgeStructure(ctx context.Context, candidate entity.KnowledgeStructureTaskRecord, runner string) (*structureClaim, error) {
-	if !entity.KnowledgeStructureProducerCompatible() {
-		return nil, nil
-	}
-	var claim *structureClaim
-	err := structureInternalTransaction(ctx, candidate.DomainID, func(tx *gorm.DB) error {
-		row, task, err := structureLoadTask(tx, candidate.OwnerID, candidate.DomainID, candidate.ID)
-		if err != nil || structureTerminal(structureRowState(row)) {
-			return err
-		}
-		now, err := batchNow(tx)
-		if err != nil {
-			return err
-		}
-		var lease entity.KnowledgeStructureLeaseRecord
-		err = tx.Where("domain_id = ?", candidate.DomainID).Take(&lease).Error
-		if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-			return err
-		}
-		if task.State == "cancel_requested" && (errors.Is(err, gorm.ErrRecordNotFound) || lease.TaskID != candidate.ID || !now.Before(lease.ExpiresAt)) {
-			return structureFinish(tx, row, task, "cancelled", "", "", now)
-		}
-		if err == nil && now.Before(lease.ExpiresAt) {
-			return nil
-		}
-		if task.State == "queued" {
-			var prior int64
-			if err := tx.Model(&entity.KnowledgeStructureTaskRecord{}).Where("domain_id = ? AND id <> ? AND state IN ?", candidate.DomainID, candidate.ID, []string{"running", "cancel_requested"}).Count(&prior).Error; err != nil {
-				return err
-			}
-			if prior > 0 {
-				return nil
-			}
-		}
-		if !now.Before(row.DeadlineAt) || task.AttemptCount >= 3 {
-			return structureFinish(tx, row, task, "failed", "execution_expired", "", now)
-		}
-		if _, err := lockKnowledgeImportDomain(ctx, tx, row.OwnerID, row.DomainID); err != nil {
-			var public *KnowledgeError
-			if errors.As(err, &public) && public.Status == 404 || errors.Is(err, gorm.ErrRecordNotFound) {
-				return structureFinish(tx, row, task, "failed", "permission_revoked", "", now)
-			}
-			return err
-		}
-		if lease.Epoch >= entity.KnowledgeMaxLifecycleVersion {
-			return structureFinish(tx, row, task, "failed", "execution_expired", "", now)
-		}
-		lease.DomainID, lease.TaskID, lease.RunnerID = candidate.DomainID, candidate.ID, runner
-		lease.Epoch++
-		lease.ExpiresAt, lease.UpdatedAt = now.Add(30*time.Second), now
-		if err := tx.Save(&lease).Error; err != nil {
-			return err
-		}
-		task.AttemptCount++
-		task.State = "running"
-		for i := range task.Members {
-			if task.Members[i].State == "processing" {
-				task.Members[i].State = "pending"
-			}
-		}
-		if err := structureSaveTask(tx, row, task, now); err != nil {
-			return err
-		}
-		claim = &structureClaim{DomainID: row.DomainID, OwnerID: row.OwnerID, TaskID: row.ID, RunnerID: runner, Epoch: lease.Epoch, Deadline: row.DeadlineAt}
-		return nil
-	})
-	return claim, err
-}
-
-func structureRowState(row *entity.KnowledgeStructureTaskRecord) string {
-	if row == nil {
-		return ""
-	}
-	return row.State
 }
 
 func structureCapturedEqual(a, b *structureInputs) bool {
@@ -256,16 +171,8 @@ func (d *DatasetService) structureCheckpoint(ctx context.Context, claim *structu
 			return stop("failed", reason)
 		}
 		if renew {
-			until := now.Add(30 * time.Second)
-			if until.After(row.DeadlineAt) {
-				until = row.DeadlineAt
-			}
-			result := tx.Model(lease).Where("domain_id = ? AND epoch = ? AND runner_id = ? AND task_id = ?", claim.DomainID, claim.Epoch, claim.RunnerID, claim.TaskID).Updates(map[string]any{"expires_at": until, "updated_at": now})
-			if result.Error != nil {
-				return result.Error
-			}
-			if result.RowsAffected != 1 {
-				return errStructureLeaseLost
+			if err := structureRenewClaimLease(tx, claim, lease, now, row.DeadlineAt); err != nil {
+				return err
 			}
 		}
 		if edit != nil {
@@ -591,7 +498,7 @@ func (d *DatasetService) structurePublish(ctx context.Context, claim *structureC
 // StartKnowledgeStructureRuntime resumes only previously admitted explicit
 // tasks. It has no ingestion, model, index, directory or network-fetch dispatch.
 func StartKnowledgeStructureRuntime(ctx context.Context) {
-	if dao.DB == nil || !entity.KnowledgeStructureProducerCompatible() {
+	if dao.DB == nil {
 		return
 	}
 	d := NewDatasetService()
@@ -617,7 +524,11 @@ func StartKnowledgeStructureRuntime(ctx context.Context) {
 							claim, err := claimKnowledgeStructure(claimCtx, record, common.GenerateUUID())
 							cancel()
 							if err == nil && claim != nil {
-								d.runKnowledgeStructure(ctx, claim)
+								if claim.Protocol == documentTaskProtocol {
+									d.runKnowledgeDocument(ctx, claim)
+								} else {
+									d.runKnowledgeStructure(ctx, claim)
+								}
 							}
 						}(candidate)
 					default:

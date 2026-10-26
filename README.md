@@ -1,5 +1,8 @@
 # LFen's Second Brain
 
+**v0.62 当前执行（2026-10-27）**：真人已批准并正式冻结 Document Structure 0.1.0，A 的 Go 后端与三格式合成真实接口闭环已通过。[后端中间报告](docs/stage3r2-document-backend-verification.json)记录 12 操作、79 派生节点、27 预标源事实及固定阅读／原键／负权限。现有六服务与前端保留；正式客户端、实际故障及容量／RSS／首屏仍待完成。下一步清洁固定后端提交后交唯一 Web 写窗，再做同版最终验证并推 main。47 保护件不变，模型／本地推理 0，无多轮审查；R1 人的工程决定和阶段3整体仍独立 Pending。
+
+
 **v0.61准备补充**：[固定输入与计量协议](docs/stage3r2-input-readiness.md)和[证据报告](docs/stage3r2-input-readiness-verification.json)已保存：27源事实＋1身份要求、新profile全部NotRun；三份7.75MiB合成I/O基准及人工Wiki前后端拥有层盘点完成。仅独立准备，R2冻结对象仍为`02c1951`的三件原文，未接业务／合main／运行性能，模型0。
 
 **v0.61／阶段3-R2具体候选**：[文档结构方案](docs/knowledge-document-structure-v0.1.candidate.md)、[OpenAPI](docs/knowledge-document-structure-v0.1.candidate.openapi.json)及[合成示例／向量](docs/knowledge-document-structure-v0.1.candidate.examples.json)已整理到`codex/stage3r2-document-candidate`，**未冻结、未接业务、未合main**。[准备报告](docs/stage3r2-document-candidate-verification.json)记录12操作／101schema、140合法／148拒绝例、28双编码器摘要和10字串向量通过。两份实际合成Office的9项源事实为6保留／3部分，暴露PPTX重排和DOCX内联位置损失，因此新方案采用有界OOXML源顺序；PDF保留物理页文字。[接续顺序](docs/stage3r2-document-handoff.md)明确独立默认关闭许可、共享任务核心、受控子进程与固定派生阅读，具体确认后才实施。旧41件、运行与依赖不变，模型／本地推理0、无多轮审查；R1工程验收及真实资料退出保持独立。
@@ -138,3 +141,6 @@ POC 另需在本机追加 KB_GENERATION_API_KEY；DeepSeek Key 与百炼 Key 独
 - 同步原生源码、当前品牌、方案、验证记录及换机启动模板，保留原有会话副本、资料位置与Git历史。
 - 已启动隔离的本机 POC 环境，并按用户后续指令修改产品品牌。v0.14已在私有本地冻结选定代码、导入真实PDF／PPTX及网站摘要并调用三核心模型；未部署Qdrant。
 - 当前按第35章阶段0—6及双人计划接续：阶段0已验收，A的1A.1／1A.2底座已实现并验证；B先核对C1／C3共享基线，再完成结构浏览与原文页面，双方以真实服务完成纵向闭环。B接入及整体阶段1验收待完成，阶段2—6未启动。第33章S0—S7仅保留历史参考；完整评测仍沿用第26章，RSSHub单列，新预算不自动续用。UI、AST绑定、规模单位和记忆策略在对应阶段确认，历史验收及可选审查决定不扩展。
+
+
+Document Structure R2 当前执行（v0.62，2026-10-26）：真人已通过 request_user_input_async/call_d99b6d368f2c40338da342aa9059d54b/0 批准 02c1951 的具体方案。正式冻结件为 docs/knowledge-document-structure-v1.freeze.json（含同提交三件摘要）。已进入 A Go 后端实施，后端清洁固定提交后交客户端唯一 Web 写窗，再做合成真实联调及性能并推 main。旧 41 件及候选三件不改；仅合成 PDF/PPTX/DOCX，模型及本地推理 0，无多轮审查。R1 人的工程验收仍 Pending，不能由本次批准代替。

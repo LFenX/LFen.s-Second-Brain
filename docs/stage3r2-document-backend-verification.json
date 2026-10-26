@@ -1,0 +1,606 @@
+{
+  "version": "0.62",
+  "recorded_at": "2026-10-26T16:22:01.147Z",
+  "status": "Implemented_CoreVerified_ClientAndFinalExitPending",
+  "authority": "knowledge-document-structure-v1.freeze.json",
+  "scope": "Stage3-R2 Document Structure 0.1.0 A intermediate backend; synthetic originals only",
+  "contracts": {
+    "name": "Document Structure",
+    "version": "0.1.0",
+    "operations": 12,
+    "schemas": 101,
+    "protected_count": 47,
+    "protected_files": {
+      "docs/knowledge-sources-v1.openapi.json": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091",
+      "docs/knowledge-sources-v1.example.json": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a",
+      "docs/knowledge-sources-v1.freeze.json": "114bbfa2b4dd51eafc426716032486f666ace8a1a1284f4c1f4c9baf1f1b35c6",
+      "docs/knowledge-foundation-v1.openapi.json": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4",
+      "docs/knowledge-foundation-v1.example.json": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343",
+      "docs/knowledge-directory-import-v1.openapi.json": "6144c08d4cfe7ac98374dc51829c98290e2c88e3441dd38d250a3cd9cb4492e6",
+      "docs/knowledge-directory-import-v1.examples.json": "73618dd78419bb9027520b3dd8b3ef83b1794d3ad1c4d17d904ce7637c54ea72",
+      "docs/knowledge-directory-import-v1.freeze.json": "2af7575cfbc24510550a0b495e18aa30f94decf5f102c23d259d4f3135dbf5f1",
+      "docs/knowledge-directory-import-v0.3.candidate.md": "80eb846a81b6ade430012b585739fe6405ef8a7de5855f27941fe66a31e2cbfa",
+      "docs/knowledge-directory-import-v0.3.candidate.openapi.json": "da2c320b3c3fd8f6af2b566b40507a5b09c55791236b49b224347c8b9a457f3d",
+      "docs/knowledge-directory-import-v0.3.candidate.examples.json": "2680f9786a19cc49a0330ecfcda84249ef36aac20293341a18e17cbdfd132d4e",
+      "docs/knowledge-batch-import-v0.4.candidate.md": "3a3beec92e8bc0baae1c820a18e078717163988277aa9d304d762ff97d027b1f",
+      "docs/knowledge-batch-import-v0.4.candidate.openapi.json": "d57ca240df19a985341c25d60ce18590dacdcf221b5599b8223f558a7c379fc5",
+      "docs/knowledge-batch-import-v0.4.candidate.examples.json": "fe8bde9d99b8aaa7250a40a1adc86c6bee9ecf474cbf01af55253274f2e2e304",
+      "docs/knowledge-batch-import-v1.openapi.json": "bd13fc400fc2a84f490b92ee865db75f76d89bf79a176658312ac3bea17d0fb8",
+      "docs/knowledge-batch-import-v1.examples.json": "5249cdf57da0313346b7b30db0743079a175aaa8480604120b1bf92e4bdfdc53",
+      "docs/knowledge-batch-import-v1.freeze.json": "1d589290db4b1fe4ab4005dae0ebf1918efdeac9cd57d7c810305087c180f631",
+      "docs/knowledge-original-import-v0.5.candidate.md": "8a1079fe4745b84d178f50939ac25e1ac1fa51bc3f61ed2340ef1f6d9e1638d6",
+      "docs/knowledge-original-import-v0.5.candidate.openapi.json": "b4905ab840c64f26a25a6017dc7454393fd3b974b0e2199edffe2cc5e725a0aa",
+      "docs/knowledge-original-import-v0.5.candidate.examples.json": "16aa77d948f857f93dcc96e0c812d4bee2a8f3ad91205e54b9c0457f78ea8815",
+      "docs/knowledge-original-import-v1.openapi.json": "3c48ebe0a2bfc8b3078262ce6c1a8258b312f6111bd9ed2b07b7b4fb433a5efd",
+      "docs/knowledge-original-import-v1.examples.json": "550f7be69c506a02cc2798d2196e17ca06c73b06f08d934ea3cbf823551d5cb1",
+      "docs/knowledge-original-import-v1.freeze.json": "116ddc4161001c0fdb440b45b227952978ca3d291197d712830a92d5aaaca3b9",
+      "docs/knowledge-web-import-v0.6.candidate.md": "577a76624d8b43e26dde890df49140f0b5a2c458dc493dbecd7f5467e13175fb",
+      "docs/knowledge-web-import-v0.6.candidate.openapi.json": "a167a1977f1f0a313061b093d21f035631dd5fafaea95cd8545601e17af35a88",
+      "docs/knowledge-web-import-v0.6.candidate.examples.json": "81372c6270c3e2b3989b4e088bd029883326f75fe6e254d651b93f951e0b7573",
+      "docs/knowledge-web-import-v1.freeze.json": "bba4e9f0c2341658ac69741d57f5a4a9032ac74b6ec848f13a195e4ab96c66c2",
+      "docs/knowledge-web-import-v1.openapi.json": "673092ab81263bdf7b79e85e06206bb02f8eb8996b476c8643dbafed17e259ed",
+      "docs/knowledge-web-import-v1.examples.json": "71019ae8645ad0fd4527565c42f6f80f93924c26266ffe08696de5e9b1c5671d",
+      "docs/knowledge-source-lifecycle-v0.7.candidate.md": "53b78e36a127c6c0f35048bf0ac511417639aba7cca90a418c007caa1b7f39f9",
+      "docs/knowledge-source-lifecycle-v0.7.candidate.openapi.json": "47d159cfee61708a79475879f5371cb97a38b41eb768e759ff802e1ebd0cdd0d",
+      "docs/knowledge-source-lifecycle-v0.7.candidate.examples.json": "a20bf10a7ac93ce36a8d3cd04cd95b035d8e6f2a1f3301accfdd711d86eb2f41",
+      "docs/knowledge-source-lifecycle-v1.freeze.json": "f6545f908a802d0d326fe73dfb3f8e5b2860abf67306b8a1e022c572bbd984c3",
+      "docs/knowledge-source-lifecycle-v1.openapi.json": "526685f1ab09e07f87f3f9c8cee3cf44347d6bdcf9efed94c356ef32b22725db",
+      "docs/knowledge-source-lifecycle-v1.examples.json": "cfe6c24c3f3a24907220c4e2ead993867c33053c6b2d197b70d93c03f168fb3c",
+      "docs/knowledge-structure-v0.1.candidate.md": "5c61af1a3a6be72337895b665d26cef29a711518f184bdb77a822800df0256d1",
+      "docs/knowledge-structure-v0.1.candidate.openapi.json": "0db14cc46e86e42e6ca5a6ffff3050968644372a76f5091bb380f50dff1c4630",
+      "docs/knowledge-structure-v0.1.candidate.examples.json": "195f83957c6b06ff2fb67b5dc61353c82abee92870b551f9ff14bb02217c9bea",
+      "docs/knowledge-structure-v1.freeze.json": "921c33ca5093cda8194bef3bfeaa1521ac3515a3a073aae927dcac49580f8a84",
+      "docs/knowledge-structure-v1.openapi.json": "a3de720c493e3c1189dc1dde58dfdf04c8e694de09ae0b5470c30b4b84a4b134",
+      "docs/knowledge-structure-v1.examples.json": "3515b728dca1e75c65d463c54729539cd35ff9e341c7a424c0126a00bd4c2a65",
+      "docs/knowledge-document-structure-v0.1.candidate.md": "0ea3c83a7cf8a33a1c65c0ecff8535f37fe6c080fdf4965503f8252ef5e5829f",
+      "docs/knowledge-document-structure-v0.1.candidate.openapi.json": "57f87a1331c588ad9601d51313ea7ae0811a297ecd117bc47ac7e7332e7d4d53",
+      "docs/knowledge-document-structure-v0.1.candidate.examples.json": "ae15b5f1a85de61aea885c0a758390629f78b82ad82b3c8c26cfd666f4ebbeb7",
+      "docs/knowledge-document-structure-v1.openapi.json": "a471b376d64c0736216cfe1184bbd31d19c03af1d41dd823e883a86603c4133f",
+      "docs/knowledge-document-structure-v1.examples.json": "b28d1b4f2ddee9626bd38596488db86a41926a4a8988b2691360eb259c8eb072",
+      "docs/knowledge-document-structure-v1.freeze.json": "b40448106735d90299d19300abd1e643cc6ad5b79bad11e55404be9a34001b2e"
+    },
+    "changed_frozen_semantics": false
+  },
+  "implementation": {
+    "reuse": [
+      "Native owner login and foundation catalogue/C3 policy",
+      "C2 0.5 fixed original and C2 0.7 lifecycle/download",
+      "One shared structure task scanner, claim, lease, quota and epoch core",
+      "Owning bounded OOXML package validation with .5 original delegated to same primitive"
+    ],
+    "new": [
+      "Separate default-disabled document_structure_only policy and fixed task/policy/cancel operation union",
+      "Source-order OOXML DOCX/PPTX and PDF physical-page producer",
+      "Deterministic derived_utf8 own/aggregate ranges, parent nodes, passages, manifest and fixed representation/head",
+      "Owned child protocol, full identity proof before authorization, Linux pidfd cleanup/recovery",
+      "12 strict versioned authenticated Go operations and bounded fixed reading"
+    ]
+  },
+  "verification": {
+    "go": {
+      "package_scoped": true,
+      "via_build_sh": true,
+      "top_level": 85,
+      "pass_events": 733,
+      "failed": 0,
+      "overlap_note": "Child 14 groups and entity conformance also appear here; counts below are separate runs, never additive"
+    },
+    "source_facts": {
+      "top_level": 4,
+      "pass_events": 31,
+      "preannotated_office": 25,
+      "preannotated_pdf": 2,
+      "independent_identity_scopes": 4,
+      "projections": 6,
+      "native_http_transport_sentinel_requests": 0,
+      "default_analyzer_creations": 0,
+      "capacity_files_parsed": false
+    },
+    "owned_child": {
+      "groups": 14,
+      "repeats": 20,
+      "top_level": 280,
+      "pass_events": 740,
+      "failed": 0,
+      "correction": "Bounded startup waits at most 500ms for full identity; no owner callback or control before matching token/PID/ticks/group/executable. Wrong-token test never authorizes."
+    },
+    "actual_http": {
+      "status": "Passed_ActualHTTP_CoreOnly",
+      "domain_id": "87778c6ec71d4c4d8cb72a6c44741005",
+      "requests": 716,
+      "operations": {
+        "DC01": {
+          "200": 3,
+          "400": 1,
+          "401": 1,
+          "412": 4
+        },
+        "getKnowledgeDomain": {
+          "404": 1
+        },
+        "registerKnowledgeDomain": {
+          "200": 1
+        },
+        "getKnowledgeStructurePolicy": {
+          "200": 4
+        },
+        "getKnowledgeOriginalImportContract": {
+          "200": 2
+        },
+        "createKnowledgeOriginalRegistration": {
+          "201": 1
+        },
+        "findKnowledgeOriginalRegistrationByKey": {
+          "200": 1
+        },
+        "getKnowledgeOriginalTarget": {
+          "200": 3
+        },
+        "createKnowledgeOriginalUpload": {
+          "201": 3
+        },
+        "findKnowledgeOriginalUploadByKey": {
+          "200": 3
+        },
+        "getKnowledgeOriginalUpload": {
+          "200": 3
+        },
+        "putKnowledgeOriginalUploadBytes": {
+          "200": 3
+        },
+        "confirmKnowledgeOriginalImport": {
+          "201": 3
+        },
+        "findKnowledgeOriginalImportByKey": {
+          "200": 3
+        },
+        "getKnowledgeSourceLifecycle": {
+          "200": 7
+        },
+        "DC02": {
+          "200": 8,
+          "400": 1,
+          "401": 1,
+          "404": 1,
+          "412": 4
+        },
+        "DC08": {
+          "200": 11,
+          "400": 1,
+          "401": 1,
+          "404": 1,
+          "412": 4
+        },
+        "DC04": {
+          "200": 4,
+          "201": 3,
+          "401": 1,
+          "404": 1,
+          "409": 4,
+          "412": 4
+        },
+        "DC05": {
+          "200": 17,
+          "400": 4,
+          "401": 1,
+          "404": 1,
+          "412": 4
+        },
+        "DC03": {
+          "200": 2,
+          "201": 2,
+          "401": 1,
+          "404": 1,
+          "412": 4
+        },
+        "DC06": {
+          "200": 14,
+          "400": 1,
+          "401": 1,
+          "404": 2,
+          "412": 4
+        },
+        "DC09": {
+          "200": 10,
+          "400": 1,
+          "401": 1,
+          "404": 2,
+          "412": 4
+        },
+        "DC11": {
+          "200": 165,
+          "400": 1,
+          "401": 1,
+          "404": 2,
+          "412": 4
+        },
+        "DC10": {
+          "200": 159,
+          "400": 4,
+          "401": 1,
+          "404": 1,
+          "412": 4
+        },
+        "DC12": {
+          "200": 161,
+          "400": 5,
+          "401": 1,
+          "404": 1,
+          "412": 4
+        },
+        "getKnowledgeOriginalRevision": {
+          "200": 6
+        },
+        "DC07": {
+          "200": 1,
+          "201": 1,
+          "401": 1,
+          "404": 1,
+          "412": 4
+        }
+      },
+      "formats": [
+        {
+          "format": "pdf",
+          "task_id": "e8bdd4a1ffe2438c959d0d4be91111a3",
+          "representation_id": "0676905024769b104e1109d88c28922d5d7f7335ee64d4b2dc39f04af166fdd7",
+          "summary": {
+            "nodes": 7,
+            "manifest_entries": 7,
+            "payload_ids_recomputed": 7,
+            "node_ids_recomputed": 7,
+            "passages": 1,
+            "passage_covered_bytes": 20,
+            "reading_bytes": 20,
+            "reading_sha256": "25980001e03be4e893b39891491dfb09401d5fc11013cde969ea68ede87d72bb",
+            "own_ranges": 3,
+            "kinds": [
+              "document",
+              "page",
+              "passage",
+              "text_block"
+            ],
+            "depth": 3
+          },
+          "original_backlink": {
+            "source_id": "60bcf63e5fdf4b8d8096fcaa9730bcf3",
+            "source_revision_id": "6534d87695414763932a9011576ca2b9",
+            "original_sha256": "ca3522dab8464a7d1b186cce98f336a43a5ae5b10593ac6fa4f29d80a17c4094",
+            "bytes": 1884,
+            "head_checked": true
+          },
+          "historical_original_backlink": {
+            "source_id": "60bcf63e5fdf4b8d8096fcaa9730bcf3",
+            "source_revision_id": "6534d87695414763932a9011576ca2b9",
+            "original_sha256": "ca3522dab8464a7d1b186cce98f336a43a5ae5b10593ac6fa4f29d80a17c4094",
+            "bytes": 1884,
+            "head_checked": true
+          },
+          "history_fixed_after_policy_changed": true
+        },
+        {
+          "format": "docx",
+          "task_id": "4d53be8610e7480bb762a3f084318c3a",
+          "representation_id": "23ff6a469e02e4e784c0de3d4cd91667129f9fc7a915209be11beb78207496d2",
+          "summary": {
+            "nodes": 27,
+            "manifest_entries": 27,
+            "payload_ids_recomputed": 27,
+            "node_ids_recomputed": 27,
+            "passages": 1,
+            "passage_covered_bytes": 129,
+            "reading_bytes": 129,
+            "reading_sha256": "28032d0048edeb7d7160af2cf64f8c9fe5827b51dec2dbab076bd95d5fb43164",
+            "own_ranges": 10,
+            "kinds": [
+              "document",
+              "heading",
+              "list",
+              "list_item",
+              "media",
+              "paragraph",
+              "passage",
+              "section",
+              "unsupported_block"
+            ],
+            "depth": 8
+          },
+          "original_backlink": {
+            "source_id": "17b4263392474cb4895baa2b8670704f",
+            "source_revision_id": "20961d48f75b4376b735c2358125cc0f",
+            "original_sha256": "c07bd44fcb7475969bba31c3573d92333f032946dcd8e385d726e2bd08181b4e",
+            "bytes": 7620,
+            "head_checked": true
+          },
+          "historical_original_backlink": {
+            "source_id": "17b4263392474cb4895baa2b8670704f",
+            "source_revision_id": "20961d48f75b4376b735c2358125cc0f",
+            "original_sha256": "c07bd44fcb7475969bba31c3573d92333f032946dcd8e385d726e2bd08181b4e",
+            "bytes": 7620,
+            "head_checked": true
+          },
+          "history_fixed_after_policy_changed": true
+        },
+        {
+          "format": "pptx",
+          "task_id": "d7060c14d87f4577a99a9116842864fb",
+          "representation_id": "2071d0e52785e3fe3cedcda41ad8aeb12bf77d50c601a4d1a7db18f4a643127a",
+          "summary": {
+            "nodes": 45,
+            "manifest_entries": 45,
+            "payload_ids_recomputed": 45,
+            "node_ids_recomputed": 45,
+            "passages": 1,
+            "passage_covered_bytes": 184,
+            "reading_bytes": 184,
+            "reading_sha256": "36137b3d8bbd8da0506d7819c5e387bdef2173ae8dd5ba5ebcab4f7e57fc17b7",
+            "own_ranges": 17,
+            "kinds": [
+              "cell",
+              "document",
+              "heading",
+              "list",
+              "list_item",
+              "media",
+              "paragraph",
+              "passage",
+              "row",
+              "slide",
+              "table",
+              "text_box"
+            ],
+            "depth": 6
+          },
+          "original_backlink": {
+            "source_id": "b6f3ffb0f6a949b5bb08aacd545490d9",
+            "source_revision_id": "839770024c8c49c4bd0642cba9effb4a",
+            "original_sha256": "2bcaf2927b6394a9b6adb81e7e568eaa796a7e18166d0882ed879296b807b1a4",
+            "bytes": 9698,
+            "head_checked": true
+          },
+          "historical_original_backlink": {
+            "source_id": "b6f3ffb0f6a949b5bb08aacd545490d9",
+            "source_revision_id": "839770024c8c49c4bd0642cba9effb4a",
+            "original_sha256": "2bcaf2927b6394a9b6adb81e7e568eaa796a7e18166d0882ed879296b807b1a4",
+            "bytes": 9698,
+            "head_checked": true
+          },
+          "history_fixed_after_policy_changed": true
+        }
+      ],
+      "checks": {
+        "frozen_vectors": {
+          "digests": 28,
+          "reading": 10,
+          "provenance": "Synthetic normative vectors, not actual engine output."
+        },
+        "default_disabled": {
+          "domain_id": "87778c6ec71d4c4d8cb72a6c44741005",
+          "foundation_policy_version": 1,
+          "document_policy_version": 1,
+          "enabled": false,
+          "mode": "document_structure_only",
+          "code_structure_permission_required": false,
+          "allowed_model_uses": [],
+          "external_models": false,
+          "local_inference": false,
+          "automatic_processing": false,
+          "lexical_index": "not_created",
+          "vector_index": "not_created"
+        },
+        "disabled-task_original_key_replay": {
+          "status": 409,
+          "record_kind": "rejection"
+        },
+        "disabled_rejection": {
+          "rejection_id": "669203a36b314ca3a47d1f3d41e1e34e",
+          "reason": "document_policy_disabled"
+        },
+        "policy-enable_original_key_replay": {
+          "status": 200,
+          "record_kind": "policy_receipt"
+        },
+        "document_enabled": {
+          "domain_id": "87778c6ec71d4c4d8cb72a6c44741005",
+          "foundation_policy_version": 1,
+          "document_policy_version": 2,
+          "enabled": true,
+          "mode": "document_structure_only",
+          "code_structure_permission_required": false,
+          "allowed_model_uses": [],
+          "external_models": false,
+          "local_inference": false,
+          "automatic_processing": false,
+          "lexical_index": "not_created",
+          "vector_index": "not_created"
+        },
+        "pdf-task_original_key_replay": {
+          "status": 200,
+          "record_kind": "task"
+        },
+        "docx-task_original_key_replay": {
+          "status": 200,
+          "record_kind": "task"
+        },
+        "pptx-task_original_key_replay": {
+          "status": 200,
+          "record_kind": "task"
+        },
+        "terminal-cancel_original_key_replay": {
+          "status": 200,
+          "record_kind": "cancel_receipt"
+        },
+        "terminal_cancel": {
+          "record_kind": "cancel_receipt",
+          "command_id": "8a7b81aef5884575a9e785d1601893af",
+          "owner_id": "34ba3ce36027457e8614074ab2bb9c63",
+          "domain_id": "87778c6ec71d4c4d8cb72a6c44741005",
+          "target": {
+            "kind": "task",
+            "task_id": "e8bdd4a1ffe2438c959d0d4be91111a3"
+          },
+          "idempotency_key": "cc7a258c987d4d1d89991cb351572480",
+          "original_request": {
+            "expected_task_revision": 6,
+            "confirmed": true,
+            "idempotency_key": "cc7a258c987d4d1d89991cb351572480"
+          },
+          "request_sha256": "6fa790f8118cfd954da629968b4c97fc7d5441cb6e5d8ce3247d7d089bb46a47",
+          "before_state": "succeeded",
+          "after_state": "succeeded",
+          "task_revision": 6,
+          "outcome": "unchanged",
+          "completed_at": "2026-10-26T16:19:13.893469Z",
+          "model_calls": 0
+        },
+        "errors_and_permissions": {
+          "visitor_hidden": 11,
+          "unauthenticated": 12,
+          "version_errors": 48,
+          "strict_query_errors": 19,
+          "missing_fixed_objects": 3,
+          "uses_new_bounded_error_schema": true
+        },
+        "policy-disable-history_original_key_replay": {
+          "status": 200,
+          "record_kind": "policy_receipt"
+        },
+        "document_disabled_after_success": {
+          "record_kind": "policy_receipt",
+          "command_id": "3b3bf384ddca40319a630d7f4d45ffd8",
+          "owner_id": "34ba3ce36027457e8614074ab2bb9c63",
+          "domain_id": "87778c6ec71d4c4d8cb72a6c44741005",
+          "target": {
+            "kind": "domain",
+            "domain_id": "87778c6ec71d4c4d8cb72a6c44741005"
+          },
+          "idempotency_key": "af1e3f69f2ce4231bf97585996ab7604",
+          "original_request": {
+            "expected_policy_version": 1,
+            "expected_document_policy_version": 2,
+            "enabled": false,
+            "confirmed": true,
+            "idempotency_key": "af1e3f69f2ce4231bf97585996ab7604"
+          },
+          "request_sha256": "c9f2caaac79b08899dcf27cbca3e392ccdbbaf85dfce33a41395725cc5acaad0",
+          "before": {
+            "document_policy_version": 2,
+            "enabled": true
+          },
+          "after": {
+            "document_policy_version": 3,
+            "enabled": false
+          },
+          "outcome": "applied",
+          "completed_at": "2026-10-26T16:19:16.496414Z",
+          "model_calls": 0
+        }
+      },
+      "old_code_policy_unchanged_disabled": true,
+      "document_policy_final_enabled": false,
+      "model_permissions_empty": true
+    },
+    "build": {
+      "binary_sha256": "b563a51dad95594fb448896f762a82eba82c3774f9167e078f8405246ef4a2f7",
+      "four_mode_help": [
+        {
+          "mode": "api",
+          "exit_code": 1,
+          "usage_seen": true,
+          "sha256": "0d52096964d86019c120bbe4de5493b8a6f2ae6379c02e5bce7a11cecad4c817"
+        },
+        {
+          "mode": "admin",
+          "exit_code": 1,
+          "usage_seen": true,
+          "sha256": "f075fe3044c24b77a18888307627eeabe34618143840693b95969b80a642b332"
+        },
+        {
+          "mode": "ingestor",
+          "exit_code": 1,
+          "usage_seen": true,
+          "sha256": "0aaffc695a90abebf38581f1453fe8d887e0648d8997301240dd887b26b4b368"
+        },
+        {
+          "mode": "syncer",
+          "exit_code": 1,
+          "usage_seen": true,
+          "sha256": "771b61da3c1e4ac8d5034c48f81bee41ee815b38c92052db2d091812bfbbdf36"
+        }
+      ],
+      "linker": "/usr/local/bin/ld.lld\nUbuntu LLD 22.1.8 (compatible with GNU linkers)",
+      "actual_producer_build": "Loaded executable SHA-256, same binary child; synthetic vectors are not runtime provenance"
+    },
+    "deployment": {
+      "runtime_ready": true,
+      "frontend_unchanged": true,
+      "old_six_services_preserved": true,
+      "existing_volumes_preserved": true,
+      "credentials_files_untouched": true,
+      "model_fingerprint_unchanged": true
+    },
+    "evidence": {
+      ".local-data/stage3-20261026/document-r2-go-1793030426684.json": "4b2da71da6974d61820bc5be109d06e9d30feee04c765fcc0c17da56df7b7c4a",
+      ".local-data/stage3-20261026/document-r2-go-1793030426684.log": "debb8a3fb1ccf494ee908f104958932ce950b015ede1c07378a31f1959b34be8",
+      ".local-data/stage3-20261026/document-r2-go-1793031516258.json": "1b90062836247c02ff8fb0bfd106f68123424c890f969cd0e56173003a56343f",
+      ".local-data/stage3-20261026/document-r2-go-1793031516258.log": "a9d6917d85ba12c5680f9277227c3621cf56c0bf39c07e83ceb9cec8b95278f8",
+      ".local-data/stage3-20261026/document-r2-go-1793029881432.json": "5f95c2e5190f65bfca36ed317eb7cdbe821ad58cf1ca5c9dcde01cafe59ce6c6",
+      ".local-data/stage3-20261026/document-r2-go-1793029881432.log": "685aab32bb7efa7e58376ffa311fabb79f893492fb9d3387f540dc1aff0405a1",
+      ".local-data/stage3-20261026/document-r2-backend-build.json": "fee4c1e9352e3855c86bd331ea803491c93246e93684fedf59af26cb445284d2",
+      ".local-data/stage3-20261026/document-r2-deployment.json": "538c0d7ade99a989f1a8a8d8722729b723ed8cf2dc1124e3249315707af4c283",
+      ".local-data/stage3-20261026/r2-http-draft/core-report.json": "03ecd7dcf8f71d82532fcfb87e62b69132ec8b8040ff70fb3974cdc2a3fbc14a",
+      ".local-data/stage3-20261026/r2-http-draft/core.cjs": "a5985e5500f1a72d126408d443f93b66fa72e390318d3e833f01fe647496dc65",
+      ".local-data/stage3-20261026/r2-http-draft/runtime.cjs": "bb3009c304c4b708a01256d34af6961beb02d61364a48748eddb63d5ccda4b9f",
+      ".local-data/stage3-20261026/r2-http-draft/identity.cjs": "b34008fb17616877b79d86b5c8b98fcccc966b5e6eed9d1f55ee12aaa6610ac2",
+      ".local-data/stage3-20261026/document-r2-projection-final/docx-c07bd44fcb74.json": "c66a3bff7a8a523e93f55d53ce037753e5d3be511a7b2ab11bedc3ccb161f6d9",
+      ".local-data/stage3-20261026/document-r2-projection-final/docx-e78dcf5e61c4.json": "fdcaab2006e2a10f761b8fb8e8cdbd212e99c349e0114febd2cac0e117490a96",
+      ".local-data/stage3-20261026/document-r2-projection-final/pdf-59d9c33321ae.json": "478710d5a6c218056312052d3625da02b5413d50c8e7c5825d77fe9575d281b8",
+      ".local-data/stage3-20261026/document-r2-projection-final/pdf-ca3522dab846.json": "a199e5c81b81199cc4f500288df0dd702a7f90c2e30c992a612da90f4db408b3",
+      ".local-data/stage3-20261026/document-r2-projection-final/pptx-2bcaf2927b63.json": "fb508200a7f4484a5f5d4a548cc0aa4ac41719174b385fa733b90c795fa3482c",
+      ".local-data/stage3-20261026/document-r2-projection-final/pptx-8b1ded9d9d0a.json": "2d69790a03e2abab3c78de1254fe44609cb88603885c790ceb6adf73f8eb28d0"
+    }
+  },
+  "targeted_corrections": [
+    {
+      "kind": "runtime_startup",
+      "result": "owned child initial identity observation transient; bounded full-proof startup gate passes 14x20 after failure retained in private logs"
+    },
+    {
+      "kind": "bounded_office_error",
+      "result": "Expanded ZIP budget violation maps to budget_exceeded; no partial projection"
+    },
+    {
+      "kind": "handler_status",
+      "result": "Removed shadowed error status; durable 429 only and strict envelope tests pass"
+    },
+    {
+      "kind": "verification_harness",
+      "result": "Preserved old foundation no-cache semantics; added bounded Windows atomic rename retries. Original source/task keys and saved state reused; no duplicate imports."
+    }
+  ],
+  "incomplete_items": [
+    "Client and catalogue document UI not implemented or deployed yet",
+    "Actual running-child cancellation, app parent death, lease/head/source/policy faults and cross-protocol capacity still pending",
+    "Three 7.75MiB capacity inputs each five tasks, read latency/RSS and first screen gates pending",
+    "Browser safe reading/download, recovery and session/permission lifecycle pending",
+    "R1 engineering human acceptance, real materials exit, manual Wiki and whole Stage3 are independent"
+  ],
+  "collaboration": {
+    "sole_tracked_writer": "A until explicit clean fixed backend handoff",
+    "peer_thread": "01a1746b-2de2-7413-906b-d2a4544017e3",
+    "peer_title": "R4 原件导入客户端与界面",
+    "agents": "Ignored drafts only; A consumes and executes"
+  },
+  "acceptance": {
+    "r2_user_decision": {
+      "outcome": "Pending"
+    },
+    "r2_whole_exit": false,
+    "stage3_whole_exit": false,
+    "whole_project_complete": false
+  },
+  "model_calls": 0,
+  "local_inference": 0,
+  "real_materials_used": false,
+  "adversarial_review": "NotRequested_DoNotStart"
+}

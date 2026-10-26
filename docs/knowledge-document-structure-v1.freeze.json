@@ -1,0 +1,86 @@
+{
+  "contract": "Document Structure",
+  "version": "0.1.0",
+  "status": "Frozen",
+  "recorded_at": "2026-10-26T14:58:38.939Z",
+  "authority": {
+    "outcome": "Approved",
+    "response": "确认冻结并继续实施",
+    "source": "本会话真人异步回复",
+    "question_ref": "request_user_input_async/call_d99b6d368f2c40338da342aa9059d54b/0",
+    "subject_commit": "02c1951f8a84327ff2ed7257b694529cb79eef17",
+    "subject_sha256": {
+      "docs/knowledge-document-structure-v0.1.candidate.md": "0ea3c83a7cf8a33a1c65c0ecff8535f37fe6c080fdf4965503f8252ef5e5829f",
+      "docs/knowledge-document-structure-v0.1.candidate.openapi.json": "57f87a1331c588ad9601d51313ea7ae0811a297ecd117bc47ac7e7332e7d4d53",
+      "docs/knowledge-document-structure-v0.1.candidate.examples.json": "ae15b5f1a85de61aea885c0a758390629f78b82ad82b3c8c26cfd666f4ebbeb7"
+    },
+    "recorded_at": "2026-10-26T14:58:38.939Z",
+    "scope": "冻结Document Structure 0.1.0；A Go后端→清洁固定提交→客户端唯一写窗→合成真实联调及性能→main；仅已保存的合成PDF/PPTX/DOCX，模型及本地推理0，不启动多轮审查。R1人的工程验收、真实资料退出及其他阶段分别独立。"
+  },
+  "candidate_commit": "02c1951f8a84327ff2ed7257b694529cb79eef17",
+  "candidate_hashes": {
+    "docs/knowledge-document-structure-v0.1.candidate.md": "0ea3c83a7cf8a33a1c65c0ecff8535f37fe6c080fdf4965503f8252ef5e5829f",
+    "docs/knowledge-document-structure-v0.1.candidate.openapi.json": "57f87a1331c588ad9601d51313ea7ae0811a297ecd117bc47ac7e7332e7d4d53",
+    "docs/knowledge-document-structure-v0.1.candidate.examples.json": "ae15b5f1a85de61aea885c0a758390629f78b82ad82b3c8c26cfd666f4ebbeb7"
+  },
+  "artifacts": {
+    "openapi": "docs/knowledge-document-structure-v1.openapi.json",
+    "openapi_sha256": "a471b376d64c0736216cfe1184bbd31d19c03af1d41dd823e883a86603c4133f",
+    "examples": "docs/knowledge-document-structure-v1.examples.json",
+    "examples_sha256": "b28d1b4f2ddee9626bd38596488db86a41926a4a8988b2691360eb259c8eb072"
+  },
+  "protected_hashes": {
+    "docs/knowledge-sources-v1.openapi.json": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091",
+    "docs/knowledge-sources-v1.example.json": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a",
+    "docs/knowledge-sources-v1.freeze.json": "114bbfa2b4dd51eafc426716032486f666ace8a1a1284f4c1f4c9baf1f1b35c6",
+    "docs/knowledge-foundation-v1.openapi.json": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4",
+    "docs/knowledge-foundation-v1.example.json": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343",
+    "docs/knowledge-directory-import-v1.openapi.json": "6144c08d4cfe7ac98374dc51829c98290e2c88e3441dd38d250a3cd9cb4492e6",
+    "docs/knowledge-directory-import-v1.examples.json": "73618dd78419bb9027520b3dd8b3ef83b1794d3ad1c4d17d904ce7637c54ea72",
+    "docs/knowledge-directory-import-v1.freeze.json": "2af7575cfbc24510550a0b495e18aa30f94decf5f102c23d259d4f3135dbf5f1",
+    "docs/knowledge-directory-import-v0.3.candidate.md": "80eb846a81b6ade430012b585739fe6405ef8a7de5855f27941fe66a31e2cbfa",
+    "docs/knowledge-directory-import-v0.3.candidate.openapi.json": "da2c320b3c3fd8f6af2b566b40507a5b09c55791236b49b224347c8b9a457f3d",
+    "docs/knowledge-directory-import-v0.3.candidate.examples.json": "2680f9786a19cc49a0330ecfcda84249ef36aac20293341a18e17cbdfd132d4e",
+    "docs/knowledge-batch-import-v0.4.candidate.md": "3a3beec92e8bc0baae1c820a18e078717163988277aa9d304d762ff97d027b1f",
+    "docs/knowledge-batch-import-v0.4.candidate.openapi.json": "d57ca240df19a985341c25d60ce18590dacdcf221b5599b8223f558a7c379fc5",
+    "docs/knowledge-batch-import-v0.4.candidate.examples.json": "fe8bde9d99b8aaa7250a40a1adc86c6bee9ecf474cbf01af55253274f2e2e304",
+    "docs/knowledge-batch-import-v1.openapi.json": "bd13fc400fc2a84f490b92ee865db75f76d89bf79a176658312ac3bea17d0fb8",
+    "docs/knowledge-batch-import-v1.examples.json": "5249cdf57da0313346b7b30db0743079a175aaa8480604120b1bf92e4bdfdc53",
+    "docs/knowledge-batch-import-v1.freeze.json": "1d589290db4b1fe4ab4005dae0ebf1918efdeac9cd57d7c810305087c180f631",
+    "docs/knowledge-original-import-v0.5.candidate.md": "8a1079fe4745b84d178f50939ac25e1ac1fa51bc3f61ed2340ef1f6d9e1638d6",
+    "docs/knowledge-original-import-v0.5.candidate.openapi.json": "b4905ab840c64f26a25a6017dc7454393fd3b974b0e2199edffe2cc5e725a0aa",
+    "docs/knowledge-original-import-v0.5.candidate.examples.json": "16aa77d948f857f93dcc96e0c812d4bee2a8f3ad91205e54b9c0457f78ea8815",
+    "docs/knowledge-original-import-v1.openapi.json": "3c48ebe0a2bfc8b3078262ce6c1a8258b312f6111bd9ed2b07b7b4fb433a5efd",
+    "docs/knowledge-original-import-v1.examples.json": "550f7be69c506a02cc2798d2196e17ca06c73b06f08d934ea3cbf823551d5cb1",
+    "docs/knowledge-original-import-v1.freeze.json": "116ddc4161001c0fdb440b45b227952978ca3d291197d712830a92d5aaaca3b9",
+    "docs/knowledge-web-import-v0.6.candidate.md": "577a76624d8b43e26dde890df49140f0b5a2c458dc493dbecd7f5467e13175fb",
+    "docs/knowledge-web-import-v0.6.candidate.openapi.json": "a167a1977f1f0a313061b093d21f035631dd5fafaea95cd8545601e17af35a88",
+    "docs/knowledge-web-import-v0.6.candidate.examples.json": "81372c6270c3e2b3989b4e088bd029883326f75fe6e254d651b93f951e0b7573",
+    "docs/knowledge-web-import-v1.freeze.json": "bba4e9f0c2341658ac69741d57f5a4a9032ac74b6ec848f13a195e4ab96c66c2",
+    "docs/knowledge-web-import-v1.openapi.json": "673092ab81263bdf7b79e85e06206bb02f8eb8996b476c8643dbafed17e259ed",
+    "docs/knowledge-web-import-v1.examples.json": "71019ae8645ad0fd4527565c42f6f80f93924c26266ffe08696de5e9b1c5671d",
+    "docs/knowledge-source-lifecycle-v0.7.candidate.md": "53b78e36a127c6c0f35048bf0ac511417639aba7cca90a418c007caa1b7f39f9",
+    "docs/knowledge-source-lifecycle-v0.7.candidate.openapi.json": "47d159cfee61708a79475879f5371cb97a38b41eb768e759ff802e1ebd0cdd0d",
+    "docs/knowledge-source-lifecycle-v0.7.candidate.examples.json": "a20bf10a7ac93ce36a8d3cd04cd95b035d8e6f2a1f3301accfdd711d86eb2f41",
+    "docs/knowledge-source-lifecycle-v1.freeze.json": "f6545f908a802d0d326fe73dfb3f8e5b2860abf67306b8a1e022c572bbd984c3",
+    "docs/knowledge-source-lifecycle-v1.openapi.json": "526685f1ab09e07f87f3f9c8cee3cf44347d6bdcf9efed94c356ef32b22725db",
+    "docs/knowledge-source-lifecycle-v1.examples.json": "cfe6c24c3f3a24907220c4e2ead993867c33053c6b2d197b70d93c03f168fb3c",
+    "docs/knowledge-structure-v0.1.candidate.md": "5c61af1a3a6be72337895b665d26cef29a711518f184bdb77a822800df0256d1",
+    "docs/knowledge-structure-v0.1.candidate.openapi.json": "0db14cc46e86e42e6ca5a6ffff3050968644372a76f5091bb380f50dff1c4630",
+    "docs/knowledge-structure-v0.1.candidate.examples.json": "195f83957c6b06ff2fb67b5dc61353c82abee92870b551f9ff14bb02217c9bea",
+    "docs/knowledge-structure-v1.freeze.json": "921c33ca5093cda8194bef3bfeaa1521ac3515a3a073aae927dcac49580f8a84",
+    "docs/knowledge-structure-v1.openapi.json": "a3de720c493e3c1189dc1dde58dfdf04c8e694de09ae0b5470c30b4b84a4b134",
+    "docs/knowledge-structure-v1.examples.json": "3515b728dca1e75c65d463c54729539cd35ff9e341c7a424c0126a00bd4c2a65",
+    "docs/knowledge-document-structure-v0.1.candidate.md": "0ea3c83a7cf8a33a1c65c0ecff8535f37fe6c080fdf4965503f8252ef5e5829f",
+    "docs/knowledge-document-structure-v0.1.candidate.openapi.json": "57f87a1331c588ad9601d51313ea7ae0811a297ecd117bc47ac7e7332e7d4d53",
+    "docs/knowledge-document-structure-v0.1.candidate.examples.json": "ae15b5f1a85de61aea885c0a758390629f78b82ad82b3c8c26cfd666f4ebbeb7"
+  },
+  "lifecycle_only_changes": [
+    "OpenAPI仅info.title及x-lifecycle",
+    "examples仅status及candidate_authority；schema/paths/规则/限制/摘要向量不变"
+  ],
+  "implementation_status_at_freeze": "AuthorizedNotYetImplemented",
+  "user_delivery_decision": {
+    "outcome": "Pending"
+  }
+}

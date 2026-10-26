@@ -241,6 +241,7 @@ func (r *Router) Setup(engine *gin.Engine) {
 	r.setupKnowledgeWebRoutes(engine)
 	r.setupKnowledgeLifecycleRoutes(engine)
 	r.setupKnowledgeStructureRoutes(engine)
+	r.setupKnowledgeDocumentRoutes(engine)
 	authorized := engine.Group("")
 	authorized.Use(r.authHandler.AuthMiddleware())
 	{

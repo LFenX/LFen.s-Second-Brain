@@ -492,15 +492,11 @@ func (d *DatasetService) CreateKnowledgeStructureTask(ctx context.Context, owner
 			return err
 		}
 		if reason == "" {
-			var active int64
-			if err := tx.Model(&entity.KnowledgeStructureTaskRecord{}).Where("domain_id = ? AND state IN ?", domain, []string{"queued", "running", "cancel_requested"}).Count(&active).Error; err != nil {
+			full, err := structureTaskCapacity(tx, domain)
+			if err != nil {
 				return err
 			}
-			var waiting int64
-			if err := tx.Model(&entity.KnowledgeStructureTaskRecord{}).Where("domain_id = ? AND state = ?", domain, "queued").Count(&waiting).Error; err != nil {
-				return err
-			}
-			if active >= 2 || waiting >= 1 {
+			if full {
 				reason = "capacity_exceeded"
 			}
 		}
@@ -538,7 +534,7 @@ func (d *DatasetService) CreateKnowledgeStructureTask(ctx context.Context, owner
 
 func structureLoadTask(tx *gorm.DB, owner, domain, id string) (*entity.KnowledgeStructureTaskRecord, *entity.KnowledgeStructureTask, error) {
 	var row entity.KnowledgeStructureTaskRecord
-	if err := tx.Where("id = ? AND owner_id = ? AND domain_id = ?", id, owner, domain).Take(&row).Error; err != nil {
+	if err := tx.Where("id = ? AND owner_id = ? AND domain_id = ? AND protocol IN ?", id, owner, domain, []string{"", "code_structure/0.1.0"}).Take(&row).Error; err != nil {
 		return nil, nil, err
 	}
 	task, err := structureDecode[entity.KnowledgeStructureTask](row.Payload)

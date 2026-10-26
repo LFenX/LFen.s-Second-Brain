@@ -368,7 +368,7 @@ func (d *DatasetService) ListKnowledgeStructureTasks(ctx context.Context, user, 
 	if err != nil {
 		return nil, err
 	}
-	query := dao.DB.WithContext(ctx).Where("owner_id = ? AND domain_id = ? AND project_id = ?", user, domain, project)
+	query := dao.DB.WithContext(ctx).Where("owner_id = ? AND domain_id = ? AND project_id = ? AND protocol IN ?", user, domain, project, []string{"", "code_structure/0.1.0"})
 	if cursorID == "" {
 		var first entity.KnowledgeStructureTaskRecord
 		e := query.Order("created_at DESC, id DESC").Take(&first).Error

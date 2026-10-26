@@ -34,6 +34,10 @@ func (KnowledgeStructureOperationRecord) TableName() string { return "knowledge_
 
 type KnowledgeStructureTaskRecord struct {
 	ID             string    `gorm:"primaryKey;size:32"`
+	Protocol       string    `gorm:"size:40;not null;default:''"`
+	TargetKind     string    `gorm:"size:32;not null;default:''"`
+	TargetID       string    `gorm:"size:32;not null;default:''"`
+	Execution      string    `gorm:"type:longtext"`
 	OwnerID        string    `gorm:"size:32;not null;index:idx_structure_task_scope"`
 	DomainID       string    `gorm:"size:32;not null;index:idx_structure_task_scope"`
 	ProjectID      string    `gorm:"size:32;not null;index:idx_structure_task_scope"`
