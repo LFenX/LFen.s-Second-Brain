@@ -399,6 +399,13 @@ func (d *DatasetService) CreateKnowledgeOriginalUpload(ctx context.Context, user
 		if current != nil {
 			result.SourceID = directoryString(current.DocumentID)
 		}
+		fence, err := lifecycleObserveSource(tx, domain, registration, req.RelativePath, lifecycleSourceValue(result.SourceID))
+		if err != nil {
+			return originalError(409, "revision_changed")
+		}
+		if err := lifecycleSaveFence(tx, "original_upload", result.UploadID, req.RelativePath, fence); err != nil {
+			return err
+		}
 		row := entity.KnowledgeOriginalUploadRecord{ID: result.UploadID, DomainID: domain, OwnerID: user, RegistrationID: registration,
 			IdempotencyKey: req.IdempotencyKey, RequestSHA256: hash, Payload: directoryJSON(result), State: result.State,
 			DeclaredBytes: req.DeclaredByteLength, CreatedAt: now, UpdatedAt: now, ExpiresAt: now.Add(30 * time.Minute)}

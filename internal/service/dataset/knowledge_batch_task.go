@@ -182,6 +182,9 @@ func (d *DatasetService) AcceptKnowledgeBatchTask(ctx context.Context, user, dom
 		ids := make([]string, 0, len(p.Items))
 		for _, i := range p.Items {
 			ids = append(ids, i.ItemID)
+			if e := lifecycleCheckPreparation(tx, domain, "text_preview", i.ItemID, i.RelativePath, lifecycleSourceValue(i.SourceID)); e != nil {
+				return batchConflict("revision_changed")
+			}
 			if !scope.contains(i.RelativePath) {
 				return batchInvalid()
 			}

@@ -116,6 +116,7 @@ func (d *DatasetService) ListKnowledgeWebRevisions(ctx context.Context, user, do
 			return webError(400, "read", "knowledge_invalid_request")
 		}
 		query := tx.Model(&entity.KnowledgeSourceRevision{}).Select("knowledge_source_revision.id").Joins("JOIN document ON document.id = knowledge_source_revision.document_id AND document.kb_id = knowledge_source_revision.domain_id").Where("knowledge_source_revision.domain_id = ? AND knowledge_source_revision.representation_kind = ? AND knowledge_source_revision.is_current = ? AND document.status = ?", domain, "web_capture", true, "1")
+		query = lifecycleActiveQuery(query)
 		if registration != "" {
 			query = query.Where("knowledge_source_revision.original_registration_id = ?", registration)
 		}

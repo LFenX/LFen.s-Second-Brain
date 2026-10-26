@@ -192,6 +192,9 @@ func directoryCurrent(tx *gorm.DB, domain, registration, relative string) (*enti
 	if err != nil {
 		return nil, nil, err
 	}
+	if binding.RelativePath != relative {
+		return nil, nil, directoryConflict("revision_changed")
+	}
 	current, err := knowledgeImportCurrent(tx, domain, binding.DocumentID)
 	return &binding, current, err
 }
@@ -333,6 +336,15 @@ func (d *DatasetService) CreateKnowledgeDirectoryObservation(ctx context.Context
 				view.Complete = false
 			}
 			view.Items = append(view.Items, item)
+			if item.Eligible {
+				fence, err := lifecycleObserveSource(tx, domain, registration, p, lifecycleSourceValue(item.SourceID))
+				if err != nil {
+					return directoryConflict("revision_changed")
+				}
+				if err := lifecycleSaveFence(tx, "directory_observation", view.ObservationID, p, fence); err != nil {
+					return err
+				}
+			}
 		}
 		view.ObservationSHA256 = directoryObservationDigest(&view)
 		if err := directorySaveState(tx, user, domain, registration, "observation", view.ObservationID, expires, view, private); err != nil {

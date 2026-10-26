@@ -116,6 +116,34 @@ func (d *DatasetService) SnapshotKnowledgeSource(ctx context.Context, userID, do
 	if store == nil {
 		return nil, knowledgeError(503, "knowledge_storage_unavailable", "Source storage unavailable")
 	}
+	var callFence *entity.KnowledgeSourceFence
+	var callPolicy int64
+	err = dao.DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		locked, err := lockKnowledgeImportDomain(ctx, tx, userID, kb.ID)
+		if err != nil {
+			return err
+		}
+		callPolicy = locked.KnowledgePolicyVersion
+		current, err := lifecycleHead(tx, kb.ID, document.ID)
+		if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+			return err
+		}
+		source := ""
+		if current != nil {
+			source = document.ID
+		}
+		if err := lifecycleC1Organization(tx, kb.ID, document.ID, current, req); err != nil {
+			return err
+		}
+		callFence, err = lifecycleObserveSource(tx, kb.ID, "", req.RelativePath, source)
+		if err != nil {
+			return knowledgeConflict("Source state changed before snapshot")
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
 	content, err := store.Get(ctx, kb.ID, *document.Location)
 	if err != nil {
 		return nil, knowledgeError(503, "knowledge_storage_unavailable", "Source could not be read")
@@ -125,11 +153,28 @@ func (d *DatasetService) SnapshotKnowledgeSource(ctx context.Context, userID, do
 	}
 	var result entity.KnowledgeSnapshot
 	err = dao.DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		var locked entity.Knowledgebase
-		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).Where("id = ? AND knowledge_enabled = ? AND created_by = ? AND status = ?", kb.ID, true, userID, string(entity.StatusValid)).Take(&locked).Error; err != nil {
-			return knowledgeDBError(err, "domain lock")
+		locked, err := lockKnowledgeImportDomain(ctx, tx, userID, kb.ID)
+		if err != nil {
+			return err
 		}
-		return publishKnowledgeSource(ctx, tx, kb, &document, &nativeFile, folder.ID, userID, content, req, &result)
+		if callPolicy != locked.KnowledgePolicyVersion {
+			return knowledgeConflict("Policy changed during snapshot")
+		}
+		current, err := lifecycleHead(tx, kb.ID, document.ID)
+		if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+			return err
+		}
+		source := ""
+		if current != nil {
+			source = document.ID
+		}
+		if err := lifecycleVerifyFence(tx, callFence, source); err != nil {
+			return knowledgeConflict("Source changed during snapshot")
+		}
+		if err := lifecycleC1Organization(tx, kb.ID, document.ID, current, req); err != nil {
+			return err
+		}
+		return publishKnowledgeSource(ctx, tx, locked, &document, &nativeFile, folder.ID, userID, content, req, &result)
 	})
 	if err != nil {
 		return nil, err
@@ -158,13 +203,16 @@ func publishKnowledgeSource(ctx context.Context, tx *gorm.DB, kb *entity.Knowled
 	if currentErr == nil && (current.RepresentationKind == "original_only" || current.RepresentationKind == "web_capture") {
 		return knowledgeError(415, "knowledge_source_unsupported", "Original-only sources have no C1 text representation")
 	}
+	if current.ID != req.ExpectedRevisionID {
+		return knowledgeConflict("expected_revision_id does not match the current source revision")
+	}
+	if err := lifecyclePublishState(tx, kb.ID, document.ID, errors.Is(currentErr, gorm.ErrRecordNotFound), current.InputHash != inputHash); err != nil {
+		return knowledgeConflict("Source lifecycle does not permit this publication")
+	}
 	if currentErr == nil && current.InputHash == inputHash {
 		current.RootNodeID = knowledgeRoot(&current).ID
 		result.Source, result.Root = current, knowledgeRoot(&current)
 		return nil
-	}
-	if current.ID != req.ExpectedRevisionID {
-		return knowledgeConflict("expected_revision_id does not match the current source revision")
 	}
 	var source entity.KnowledgeSourceRevision
 	err := tx.Where("domain_id = ? AND document_id = ? AND input_hash = ?", kb.ID, document.ID, inputHash).Take(&source).Error
@@ -226,6 +274,7 @@ func (d *DatasetService) ListKnowledgeSources(ctx context.Context, userID, domai
 	// A subquery keeps cursor/order columns unambiguous in the outer query.
 	validDocuments := dao.DB.WithContext(ctx).Model(&entity.Document{}).Select("id").Where("kb_id = ? AND status = ?", kb.ID, string(entity.StatusValid))
 	query := dao.DB.WithContext(ctx).Model(&entity.KnowledgeSourceRevision{}).Where("domain_id = ? AND is_current = ? AND representation_kind = ? AND document_id IN (?)", kb.ID, true, "text", validDocuments)
+	query = lifecycleActiveQuery(query)
 	if groupID != "" {
 		if _, err := d.knowledgeGroup(ctx, kb.ID, groupID); err != nil {
 			return nil, err

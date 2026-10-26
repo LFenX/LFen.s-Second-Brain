@@ -109,6 +109,18 @@ func validateProjectEntries(tx *gorm.DB, domain, project string, entries []entit
 	sourceIDs := map[string]bool{}
 	paths := map[string]bool{}
 	for _, i := range entries {
+		current, err := lifecycleHead(tx, domain, i.SourceID)
+		if err != nil {
+			return batchConflict("project_membership_changed")
+		}
+		state, err := lifecycleState(tx, domain, i.SourceID)
+		if err != nil {
+			return err
+		}
+		currentClass := entity.KnowledgeDirectoryClassification{GroupID: current.GroupID, ComponentSide: current.ComponentSide, Language: current.Language}
+		if state.State != "active" || current.RelativePath != i.RelativePath || directoryJSON(currentClass) != directoryJSON(i.Classification) {
+			return batchConflict("project_membership_changed")
+		}
 		if sourceIDs[i.SourceID] || paths[i.RegistrationID+"/"+i.RelativePath] || !member(i.Classification.GroupID) {
 			return batchConflict("project_membership_changed")
 		}
@@ -253,6 +265,15 @@ func (d *DatasetService) PrepareKnowledgeProjectManifest(ctx context.Context, us
 			return e
 		}
 		p.ManifestSHA256 = projectManifestDigest(p)
+		for _, item := range p.Items {
+			fence, err := lifecycleObserveSource(tx, domain, item.RegistrationID, item.RelativePath, item.SourceID)
+			if err != nil {
+				return batchConflict("revision_changed")
+			}
+			if err := lifecycleSaveFence(tx, "project_preview", p.PreviewID, item.SourceID, fence); err != nil {
+				return err
+			}
+		}
 		view := entity.KnowledgeBatchViewRecord{ID: p.PreviewID, DomainID: domain, UserID: user, ScopeID: req.ProjectID, Kind: "manifest_preview", Payload: directoryJSON(p), CreatedAt: now, ExpiresAt: now.Add(10 * time.Minute)}
 		if e = tx.Create(&view).Error; e != nil {
 			return e
@@ -370,6 +391,11 @@ func (d *DatasetService) PublishKnowledgeProjectManifest(ctx context.Context, us
 		}
 		if e = validateProjectEntries(tx, domain, req.ProjectID, p.Items); e != nil {
 			return e
+		}
+		for _, item := range p.Items {
+			if err := lifecycleCheckPreparation(tx, domain, "project_preview", p.PreviewID, item.SourceID, item.SourceID); err != nil {
+				return batchConflict("revision_changed")
+			}
 		}
 		receipt := &entity.KnowledgeProjectManifestReceipt{DomainID: domain, ProjectID: p.ProjectID, ManifestID: common.GenerateUUID(), PreviewID: p.PreviewID, TaskID: p.TaskID, ManifestSHA256: p.ManifestSHA256, IdempotencyKey: req.IdempotencyKey, ExpectedManifestID: p.ExpectedManifestID, Coverage: p.Coverage, CapturedAtomically: false, TotalEntries: p.TotalEntries, PublishedAt: directoryTime(now)}
 		record := entity.KnowledgeProjectManifestRecord{ID: receipt.ManifestID, DomainID: domain, UserID: user, ProjectID: p.ProjectID, PreviewID: p.PreviewID, IdempotencyKey: req.IdempotencyKey, RequestJSON: directoryJSON(req), Payload: directoryJSON(p), Receipt: directoryJSON(receipt), CreatedAt: now}

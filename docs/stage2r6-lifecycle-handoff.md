@@ -2,6 +2,8 @@
 
 2026-10-26；v0.53；**真人已批准19db38d，C2 0.7.0正式冻结，开始实施；尚未迁移或部署。** [冻结回执](knowledge-source-lifecycle-v1.freeze.json)绑定具体回答与原候选字节。R5/main 81f3a8c已验收，决定记录已推main `8cbc36b`；本机仍运行R5后端1ac4e4f＋前端40ed01f。实施分支`codex/stage2r6-lifecycle`，A唯一源码／Git写入。
 
+**当前后端增量**：Go实现、真实MySQL迁移、四mode启动与实际API／S3最小闭环已通过，新后端已加载，Web仍R5。统一记录见[实施报告](stage2r6-lifecycle-verification.json)，正式客户端按[独立写窗说明](stage2r6-lifecycle-client-handoff.md)接续。上段“尚未部署”描述冻结时点；当前不得再启用无世代旧后端写入。35份保护文件不变，完整浏览器／故障／容量仍待验证，R6没有声称整体完成。
+
 ## 当前入口
 
 - [具体候选](knowledge-source-lifecycle-v0.7.candidate.md)、[10操作／20schema](knowledge-source-lifecycle-v0.7.candidate.openapi.json)、[合成规则向量](knowledge-source-lifecycle-v0.7.candidate.examples.json)、[文档核验](stage2r6-lifecycle-contract-verification.json)。只读重放：仓库根执行`node tools/scripts/verify_knowledge_source_lifecycle_contract.cjs`，依赖已安装的web/node_modules，输出只进忽略目录。

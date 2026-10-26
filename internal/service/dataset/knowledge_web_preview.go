@@ -214,6 +214,23 @@ func (d *DatasetService) CreateKnowledgeWebPreview(ctx context.Context, user, do
 		}
 		result.ManifestSHA256 = manifest
 		row := entity.KnowledgeWebPreviewRecord{ID: id, RegistrationID: registration, IdempotencyKey: request.IdempotencyKey, CaptureID: capture.CaptureID, RequestSHA256: requestHash, Request: directoryJSON(request), Payload: directoryJSON(result), Items: directoryJSON(items), CreatedAt: now, ExpiresAt: expires}
+		for _, item := range items {
+			relative := ""
+			if item.SourceID != nil {
+				head, err := lifecycleHead(tx, domain, *item.SourceID)
+				if err != nil {
+					return err
+				}
+				relative = head.RelativePath
+			}
+			fence, err := lifecycleObserveSource(tx, domain, registration, relative, lifecycleSourceValue(item.SourceID))
+			if err != nil {
+				return webError(409, "preview", "revision_changed")
+			}
+			if err := lifecycleSaveFence(tx, "web_preview", id, item.EntryKey, fence); err != nil {
+				return err
+			}
+		}
 		if err := tx.Create(&row).Error; err != nil {
 			return err
 		}

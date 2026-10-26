@@ -26,7 +26,7 @@ func setupKnowledgeTest(t *testing.T) (*DatasetService, storage.Storage) {
 	t.Helper()
 	db := setupServiceTestDB(t)
 	pushServiceDB(t, db)
-	if err := db.AutoMigrate(&entity.KnowledgeGroup{}, &entity.KnowledgeSourceRevision{}, &entity.KnowledgeNode{}, &entity.FileCommit{}, &entity.FileCommitItem{}); err != nil {
+	if err := db.AutoMigrate(&entity.KnowledgeGroup{}, &entity.KnowledgeSourceRevision{}, &entity.KnowledgeNode{}, &entity.FileCommit{}, &entity.FileCommitItem{}, &entity.KnowledgeSourceRegistration{}, &entity.KnowledgeSourceBinding{}, &entity.KnowledgeDirectoryState{}, &entity.KnowledgeSourceLifecycle{}, &entity.KnowledgeSourceFence{}, &entity.KnowledgeRetiredPosition{}, &entity.KnowledgeLifecycleCommandRecord{}); err != nil {
 		t.Fatal(err)
 	}
 	old := storage.GetStorageFactory().GetStorage()
@@ -189,7 +189,11 @@ func TestKnowledgeSnapshotRevisionCASAndNativeRead(t *testing.T) {
 	if err != nil || !first.Created || first.Root.EndLine != 2 || first.Source.ComponentSide != "frontend" {
 		t.Fatalf("snapshot=%+v err=%v", first, err)
 	}
-	repeat, err := s.SnapshotKnowledgeSource(ctx, knowledgeTestOwner, knowledgeTestDomain, req)
+	_, err = s.SnapshotKnowledgeSource(ctx, knowledgeTestOwner, knowledgeTestDomain, req)
+	assertKnowledgeStatus(t, err, 409)
+	repeatReq := req
+	repeatReq.ExpectedRevisionID = first.Source.ID
+	repeat, err := s.SnapshotKnowledgeSource(ctx, knowledgeTestOwner, knowledgeTestDomain, repeatReq)
 	if err != nil || repeat.Created || repeat.Source.ID != first.Source.ID {
 		t.Fatalf("idempotency=%+v err=%v", repeat, err)
 	}

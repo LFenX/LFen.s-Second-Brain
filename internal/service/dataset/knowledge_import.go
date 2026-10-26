@@ -186,6 +186,9 @@ func (d *DatasetService) PreviewKnowledgeImport(ctx context.Context, userID, dom
 		var binding entity.KnowledgeSourceBinding
 		err = tx.Where("registration_id = ? AND relative_path = ?", registrationID, req.RelativePath).Take(&binding).Error
 		if err == nil {
+			if binding.RelativePath != req.RelativePath {
+				return knowledgeConflict("Position collides with an existing exact binding")
+			}
 			current, err := knowledgeImportCurrent(tx, domainID, binding.DocumentID)
 			if err != nil {
 				return err
@@ -200,6 +203,13 @@ func (d *DatasetService) PreviewKnowledgeImport(ctx context.Context, userID, dom
 			return err
 		}
 		p.ManifestSHA256 = knowledgeImportManifest(&p)
+		fence, err := lifecycleObserveSource(tx, domainID, registrationID, p.RelativePath, lifecycleSourceValue(p.DocumentID))
+		if err != nil {
+			return knowledgeConflict("Source state or position changed")
+		}
+		if err := lifecycleSaveFence(tx, "text_preview", p.ID, p.RelativePath, fence); err != nil {
+			return err
+		}
 		return tx.Create(&p).Error
 	})
 	if err != nil {
@@ -299,6 +309,9 @@ func (d *DatasetService) CommitKnowledgeImport(ctx context.Context, userID, doma
 		if !slices.Contains(reg.IncludePaths, p.RelativePath) {
 			return knowledgeConflict("Selection changed")
 		}
+		if err := lifecycleCheckPreparation(tx, domainID, "text_preview", p.ID, p.RelativePath, lifecycleSourceValue(p.DocumentID)); err != nil {
+			return knowledgeConflict("Source revision changed after preview; explicitly prepare again")
+		}
 		if err := knowledgeImportClassification(tx, domainID, p.GroupID, p.ComponentSide, p.Language); err != nil {
 			return err
 		}
@@ -362,6 +375,9 @@ func (d *DatasetService) CommitKnowledgeImport(ctx context.Context, userID, doma
 
 // publishKnowledgeImport stages immutable bytes, then publishes native rows and the shared C1 snapshot.
 func publishKnowledgeImport(ctx context.Context, tx *gorm.DB, kb *entity.Knowledgebase, userID string, binding *entity.KnowledgeSourceBinding, p *entity.KnowledgeImportPreview) (*entity.KnowledgeSnapshot, error) {
+	if err := lifecycleCheckPreparation(tx, kb.ID, "text_preview", p.ID, p.RelativePath, lifecycleSourceValue(p.DocumentID)); err != nil {
+		return nil, err
+	}
 	store := storage.GetStorageFactory().GetStorage()
 	if store == nil {
 		return nil, errors.New("storage unavailable")

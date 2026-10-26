@@ -175,6 +175,9 @@ func (d *DatasetService) PrepareKnowledgeBatch(ctx context.Context, user, domain
 				return e
 			}
 			item := entity.KnowledgeBatchPreviewItem{ItemID: common.GenerateUUID(), Ordinal: int64(n), RelativePath: selection.RelativePath, Classification: c, SourceID: observed.SourceID, ExpectedRevisionID: observed.ExpectedRevisionID, SHA256: *observed.SHA256, ByteLength: *observed.ByteLength, Action: directoryAction(*observed.SHA256, selection.RelativePath, c, current)}
+			if e := lifecycleCopyFence(tx, domain, "directory_observation", obs.ObservationID, selection.RelativePath, "text_preview", item.ItemID, item.RelativePath, lifecycleSourceValue(item.SourceID)); e != nil {
+				return batchConflict("revision_changed")
+			}
 			p.Items = append(p.Items, item)
 			p.ByteLength += item.ByteLength
 			if p.ByteLength > 64<<20 {

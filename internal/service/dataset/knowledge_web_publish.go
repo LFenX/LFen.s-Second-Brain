@@ -202,6 +202,13 @@ func prepareWebNative(tx *gorm.DB, kb *entity.Knowledgebase, user, registration,
 	}
 	location := storage.KnowledgeOriginalObjectPrefix + item.DecodedSHA256
 	if binding == nil {
+		retired, err := lifecycleRetired(tx, registration, relative)
+		if err != nil {
+			return nil, err
+		}
+		if retired != nil {
+			return nil, webError(409, "confirm", "revision_changed")
+		}
 		publication.binding = &entity.KnowledgeSourceBinding{ID: common.GenerateUUID(), RegistrationID: registration, RelativePath: relative, DocumentID: common.GenerateUUID(), FileID: common.GenerateUUID()}
 		b := publication.binding
 		valid := "1"
@@ -226,10 +233,12 @@ func prepareWebNative(tx *gorm.DB, kb *entity.Knowledgebase, user, registration,
 			return nil, err
 		}
 		publication.file.Name = name
-		if err := tx.Model(binding).Update("relative_path", relative).Error; err != nil {
-			return nil, err
+		if binding.RelativePath != relative {
+			data := &lifecycleSourceData{head: current, binding: binding, registration: &entity.KnowledgeSourceRegistration{ID: registration}}
+			if err := lifecycleMoveBinding(tx, data, relative); err != nil {
+				return nil, webError(409, "confirm", "revision_changed")
+			}
 		}
-		binding.RelativePath = relative
 		var historical entity.KnowledgeSourceRevision
 		err := tx.Where("domain_id = ? AND document_id = ? AND input_hash = ?", kb.ID, binding.DocumentID, item.SourceInputSHA256).Take(&historical).Error
 		if err == nil {
@@ -262,6 +271,14 @@ func publishWebSources(tx *gorm.DB, kb *entity.Knowledgebase, user, registration
 		if item.ExpectedRevisionID == nil && current != nil || item.ExpectedRevisionID != nil && (current == nil || *item.ExpectedRevisionID != current.ID) {
 			return nil, 0, 0, webError(409, "confirm", "revision_changed")
 		}
+		if err := lifecycleCheckPreparation(tx, kb.ID, "web_preview", prepared.preview.PreviewID, item.EntryKey, lifecycleSourceValue(item.SourceID)); err != nil {
+			return nil, 0, 0, webError(409, "confirm", "revision_changed")
+		}
+		if current != nil {
+			if err := lifecyclePublishState(tx, kb.ID, current.DocumentID, false, item.Action != "unchanged"); err != nil {
+				return nil, 0, 0, webError(409, "confirm", "revision_changed")
+			}
+		}
 		publications[i] = &webPublication{binding: binding, current: current, item: item, entry: &prepared.entries[i]}
 	}
 	for i, publication := range publications {
@@ -277,6 +294,9 @@ func publishWebSources(tx *gorm.DB, kb *entity.Knowledgebase, user, registration
 		}
 		publications[i] = ready
 		if ready.isNew {
+			if err := lifecyclePublishState(tx, kb.ID, ready.binding.DocumentID, true, true); err != nil {
+				return nil, 0, 0, err
+			}
 			newDocuments++
 		}
 		snapshots = append(snapshots, file.SourceSnapshotObject{File: &ready.file, SHA256: ready.item.DecodedSHA256, Location: storage.KnowledgeOriginalObjectPrefix + ready.item.DecodedSHA256, ByteLength: int64(len(ready.entry.decoded))})

@@ -125,6 +125,7 @@ func (d *DatasetService) ListKnowledgeOriginalRevisions(ctx context.Context, use
 		}
 		validDocuments := tx.Model(&entity.Document{}).Select("id").Where("kb_id = ? AND status = ?", domain, "1")
 		query := tx.Model(&entity.KnowledgeSourceRevision{}).Where("domain_id = ? AND is_current = ? AND representation_kind = ? AND document_id IN (?)", domain, true, "original_only", validDocuments)
+		query = lifecycleActiveQuery(query)
 		if group != nil {
 			query = query.Where("group_id = ?", *group)
 		}
@@ -213,6 +214,11 @@ func publishOriginalSource(ctx context.Context, tx *gorm.DB, kb *entity.Knowledg
 		return nil, originalError(409, "original_integrity")
 	}
 	input := originalInputHash(*upload.SHA256, upload.OriginalFilename, *upload.MediaType, upload.RelativePath, upload.Classification)
+	if current != nil {
+		if err := lifecyclePublishState(tx, kb.ID, current.DocumentID, false, current.InputHash != input); err != nil {
+			return nil, originalError(409, "revision_changed")
+		}
+	}
 	if current != nil && current.InputHash == input {
 		return current, nil
 	}
@@ -229,6 +235,9 @@ func publishOriginalSource(ctx context.Context, tx *gorm.DB, kb *entity.Knowledg
 	var native entity.File
 	if binding == nil {
 		binding = &entity.KnowledgeSourceBinding{ID: common.GenerateUUID(), RegistrationID: upload.RegistrationID, RelativePath: upload.RelativePath, DocumentID: common.GenerateUUID(), FileID: common.GenerateUUID()}
+		if err := lifecyclePublishState(tx, kb.ID, binding.DocumentID, true, true); err != nil {
+			return nil, err
+		}
 		doc = entity.Document{ID: binding.DocumentID, KbID: kb.ID, CreatedBy: upload.OwnerID, Name: &name, Location: &location, Size: *upload.ByteLength, ContentHash: &row.NativeHash, Status: &valid, ParserID: "general", ParserConfig: entity.JSONMap{}, SourceType: "local", Type: kind, Suffix: strings.TrimPrefix(strings.ToLower(path.Ext(name)), ".")}
 		native = entity.File{ID: binding.FileID, ParentID: folder.ID, TenantID: kb.TenantID, CreatedBy: upload.OwnerID, Name: name, Location: &location, Size: *upload.ByteLength, Type: kind, SourceType: "knowledgebase"}
 		for _, record := range []any{&doc, &native, &entity.File2Document{ID: common.GenerateUUID(), FileID: &native.ID, DocumentID: &doc.ID}, binding} {
@@ -324,6 +333,9 @@ func (d *DatasetService) ConfirmKnowledgeOriginalImport(ctx context.Context, use
 			return err
 		}
 		if (view.ExpectedRevisionID == nil && current != nil) || (view.ExpectedRevisionID != nil && (current == nil || *view.ExpectedRevisionID != current.ID)) {
+			return originalError(409, "revision_changed")
+		}
+		if err := lifecycleCheckPreparation(tx, domain, "original_upload", view.UploadID, view.RelativePath, lifecycleSourceValue(view.SourceID)); err != nil {
 			return originalError(409, "revision_changed")
 		}
 		source, err := publishOriginalSource(tx.Statement.Context, tx, kb, row, view, binding, current)

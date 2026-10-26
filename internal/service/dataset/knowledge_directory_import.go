@@ -72,6 +72,9 @@ func (d *DatasetService) CreateKnowledgeDirectoryPreview(ctx context.Context, us
 		if !i.Eligible || i.State != "verified" || i.SHA256 == nil || i.ByteLength == nil {
 			return directoryConflict("ineligible")
 		}
+		if err := lifecycleCheckPreparation(tx, domain, "directory_observation", obs.ObservationID, i.RelativePath, lifecycleSourceValue(i.SourceID)); err != nil {
+			return directoryConflict("revision_changed")
+		}
 		if _, err := directoryVerifyHead(tx, domain, registration, i.RelativePath, i.SourceID, i.ExpectedRevisionID); err != nil {
 			return err
 		}
@@ -112,6 +115,9 @@ func (d *DatasetService) CreateKnowledgeDirectoryPreview(ctx context.Context, us
 		item := entity.KnowledgeDirectoryPreviewItem{RelativePath: i.RelativePath, Classification: c, Action: directoryAction(*i.SHA256, i.RelativePath, c, current), SourceID: i.SourceID, ExpectedRevisionID: i.ExpectedRevisionID, SHA256: *i.SHA256, ByteLength: *i.ByteLength}
 		view := entity.KnowledgeDirectoryPreview{PreviewID: common.GenerateUUID(), DomainID: domain, RegistrationID: registration, RootID: scope.Config.RootID, RootVersion: scope.Config.RootVersion, PolicyVersion: kb.KnowledgePolicyVersion, ObservationID: obs.ObservationID, ObservationSHA256: obs.ObservationSHA256, CapturedAt: directoryTime(now), ExpiresAt: directoryTime(expiry), Items: []entity.KnowledgeDirectoryPreviewItem{item}}
 		view.ManifestSHA256 = directoryPreviewDigest(&view)
+		if err := lifecycleCopyFence(tx, domain, "directory_observation", obs.ObservationID, i.RelativePath, "text_preview", view.PreviewID, i.RelativePath, lifecycleSourceValue(i.SourceID)); err != nil {
+			return directoryConflict("revision_changed")
+		}
 		if err := directorySaveState(tx, user, domain, registration, "preview", view.PreviewID, expiry, view, directoryPreviewPrivate{Identity: identity}); err != nil {
 			return err
 		}
@@ -300,6 +306,9 @@ func (d *DatasetService) CommitKnowledgeDirectoryImport(ctx context.Context, use
 		binding, err := directoryVerifyHead(tx, domain, registration, i.RelativePath, i.SourceID, i.ExpectedRevisionID)
 		if err != nil {
 			return err
+		}
+		if err := lifecycleCheckPreparation(tx, domain, "text_preview", native.ID, i.RelativePath, lifecycleSourceValue(i.SourceID)); err != nil {
+			return directoryConflict("revision_changed")
 		}
 		root, err := directoryOpenRoot(tx, scope.Config)
 		if err != nil {

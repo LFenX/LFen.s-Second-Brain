@@ -54,6 +54,9 @@ func migrateKnowledgeFoundation(ctx context.Context, db *gorm.DB) error {
 	if err := migrateKnowledgeOriginalExactKeys(ctx, db); err != nil {
 		return err
 	}
+	if err := migrateKnowledgeLifecycle(ctx, db); err != nil {
+		return err
+	}
 	if !m.HasColumn(&entity.File{}, "KnowledgePrivateOwnerID") {
 		if err := m.AddColumn(&entity.File{}, "KnowledgePrivateOwnerID"); err != nil {
 			return fmt.Errorf("add private folder ownership: %w", err)

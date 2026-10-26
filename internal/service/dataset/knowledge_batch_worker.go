@@ -219,6 +219,9 @@ func publishBatchItem(ctx context.Context, tx *gorm.DB, d *DatasetService, row *
 	if !scope.contains(i.RelativePath) {
 		return batchConflict("policy_changed")
 	}
+	if e := lifecycleCheckPreparation(tx, row.DomainID, "text_preview", i.ItemID, i.RelativePath, lifecycleSourceValue(i.SourceID)); e != nil {
+		return batchConflict("revision_changed")
+	}
 	if e = knowledgeImportClassification(tx, row.DomainID, i.Classification.GroupID, i.Classification.ComponentSide, i.Classification.Language); e != nil {
 		return batchConflict("policy_changed")
 	}

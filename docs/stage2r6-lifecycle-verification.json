@@ -12,7 +12,10 @@
     "state": "Settled",
     "mode": "SpecificCandidateApproved",
     "notice": "两项决定已与当前仓库版本核对，本次不再追加确认。",
-    "survey_refs": ["docs/knowledge-source-lifecycle-v0.7.candidate.md", "docs/stage2r6-lifecycle-contract-verification.json"],
+    "survey_refs": [
+      "docs/knowledge-source-lifecycle-v0.7.candidate.md",
+      "docs/stage2r6-lifecycle-contract-verification.json"
+    ],
     "authority": "仅采用真人当前具体回答，不以持续推进指令替代共享契约确认。"
   },
   "baseline": "ef66c700f43924df8e93d7aa2e6d65ea92cf951f",
@@ -26,10 +29,241 @@
     "清洁回交后同版真实Go／MySQL／既有S3／浏览器合成联调及故障容量验证",
     "正常检查、密钥隔离扫描、推main，保存版本和证据并请求独立工程验收"
   ],
-  "execution": {"source_git_writer": "A", "peer_write_authorized": false, "backend": "NotStarted", "frontend": "NotStarted", "runtime": "StillR5"},
-  "verification": {"engineering": "NotRun", "model_calls": 0, "local_inference": 0, "real_sources": 0},
-  "acceptance": {"freeze_decision": "Approved", "engineering_user_decision": {"outcome": "Pending"}, "stage2_exit": false, "whole_project_complete": false},
-  "incomplete_items": ["R6应用实现与工程验证尚未完成；冻结不是工程验收。", "R4决定独立，R7与阶段3—6继续推进。"],
+  "execution": {
+    "source_git_writer": "A",
+    "peer_write_authorized": false,
+    "backend": "Implemented_MinimumRuntimePassed",
+    "frontend": "NotStarted",
+    "runtime": "R6 backend / R5 frontend",
+    "binary_sha256": "af6e939567afe2edb176d110096fd4626d2e1b8d92a59a31643f6ac9583c915e",
+    "single_write_handoff": "A sends clean fixed commit and docs/stage2r6-lifecycle-client-handoff.md before any peer write"
+  },
+  "verification": {
+    "engineering": "BackendAndMinimumRuntimePassed_FullIntegrationPending",
+    "protected_files": 35,
+    "protected_hashes": {
+      "docs/knowledge-sources-v1.openapi.json": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091",
+      "docs/knowledge-sources-v1.example.json": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a",
+      "docs/knowledge-sources-v1.freeze.json": "114bbfa2b4dd51eafc426716032486f666ace8a1a1284f4c1f4c9baf1f1b35c6",
+      "docs/knowledge-foundation-v1.openapi.json": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4",
+      "docs/knowledge-foundation-v1.example.json": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343",
+      "docs/knowledge-directory-import-v1.openapi.json": "6144c08d4cfe7ac98374dc51829c98290e2c88e3441dd38d250a3cd9cb4492e6",
+      "docs/knowledge-directory-import-v1.examples.json": "73618dd78419bb9027520b3dd8b3ef83b1794d3ad1c4d17d904ce7637c54ea72",
+      "docs/knowledge-directory-import-v1.freeze.json": "2af7575cfbc24510550a0b495e18aa30f94decf5f102c23d259d4f3135dbf5f1",
+      "docs/knowledge-directory-import-v0.3.candidate.md": "80eb846a81b6ade430012b585739fe6405ef8a7de5855f27941fe66a31e2cbfa",
+      "docs/knowledge-directory-import-v0.3.candidate.openapi.json": "da2c320b3c3fd8f6af2b566b40507a5b09c55791236b49b224347c8b9a457f3d",
+      "docs/knowledge-directory-import-v0.3.candidate.examples.json": "2680f9786a19cc49a0330ecfcda84249ef36aac20293341a18e17cbdfd132d4e",
+      "docs/knowledge-batch-import-v0.4.candidate.md": "3a3beec92e8bc0baae1c820a18e078717163988277aa9d304d762ff97d027b1f",
+      "docs/knowledge-batch-import-v0.4.candidate.openapi.json": "d57ca240df19a985341c25d60ce18590dacdcf221b5599b8223f558a7c379fc5",
+      "docs/knowledge-batch-import-v0.4.candidate.examples.json": "fe8bde9d99b8aaa7250a40a1adc86c6bee9ecf474cbf01af55253274f2e2e304",
+      "docs/knowledge-batch-import-v1.openapi.json": "bd13fc400fc2a84f490b92ee865db75f76d89bf79a176658312ac3bea17d0fb8",
+      "docs/knowledge-batch-import-v1.examples.json": "5249cdf57da0313346b7b30db0743079a175aaa8480604120b1bf92e4bdfdc53",
+      "docs/knowledge-batch-import-v1.freeze.json": "1d589290db4b1fe4ab4005dae0ebf1918efdeac9cd57d7c810305087c180f631",
+      "docs/knowledge-original-import-v0.5.candidate.md": "8a1079fe4745b84d178f50939ac25e1ac1fa51bc3f61ed2340ef1f6d9e1638d6",
+      "docs/knowledge-original-import-v0.5.candidate.openapi.json": "b4905ab840c64f26a25a6017dc7454393fd3b974b0e2199edffe2cc5e725a0aa",
+      "docs/knowledge-original-import-v0.5.candidate.examples.json": "16aa77d948f857f93dcc96e0c812d4bee2a8f3ad91205e54b9c0457f78ea8815",
+      "docs/knowledge-original-import-v1.openapi.json": "3c48ebe0a2bfc8b3078262ce6c1a8258b312f6111bd9ed2b07b7b4fb433a5efd",
+      "docs/knowledge-original-import-v1.examples.json": "550f7be69c506a02cc2798d2196e17ca06c73b06f08d934ea3cbf823551d5cb1",
+      "docs/knowledge-original-import-v1.freeze.json": "116ddc4161001c0fdb440b45b227952978ca3d291197d712830a92d5aaaca3b9",
+      "docs/knowledge-web-import-v0.6.candidate.md": "577a76624d8b43e26dde890df49140f0b5a2c458dc493dbecd7f5467e13175fb",
+      "docs/knowledge-web-import-v0.6.candidate.openapi.json": "a167a1977f1f0a313061b093d21f035631dd5fafaea95cd8545601e17af35a88",
+      "docs/knowledge-web-import-v0.6.candidate.examples.json": "81372c6270c3e2b3989b4e088bd029883326f75fe6e254d651b93f951e0b7573",
+      "docs/knowledge-web-import-v1.freeze.json": "bba4e9f0c2341658ac69741d57f5a4a9032ac74b6ec848f13a195e4ab96c66c2",
+      "docs/knowledge-web-import-v1.openapi.json": "673092ab81263bdf7b79e85e06206bb02f8eb8996b476c8643dbafed17e259ed",
+      "docs/knowledge-web-import-v1.examples.json": "71019ae8645ad0fd4527565c42f6f80f93924c26266ffe08696de5e9b1c5671d",
+      "docs/knowledge-source-lifecycle-v0.7.candidate.md": "53b78e36a127c6c0f35048bf0ac511417639aba7cca90a418c007caa1b7f39f9",
+      "docs/knowledge-source-lifecycle-v0.7.candidate.openapi.json": "47d159cfee61708a79475879f5371cb97a38b41eb768e759ff802e1ebd0cdd0d",
+      "docs/knowledge-source-lifecycle-v0.7.candidate.examples.json": "a20bf10a7ac93ce36a8d3cd04cd95b035d8e6f2a1f3301accfdd711d86eb2f41",
+      "docs/knowledge-source-lifecycle-v1.freeze.json": "f6545f908a802d0d326fe73dfb3f8e5b2860abf67306b8a1e022c572bbd984c3",
+      "docs/knowledge-source-lifecycle-v1.openapi.json": "526685f1ab09e07f87f3f9c8cee3cf44347d6bdcf9efed94c356ef32b22725db",
+      "docs/knowledge-source-lifecycle-v1.examples.json": "cfe6c24c3f3a24907220c4e2ead993867c33053c6b2d197b70d93c03f168fb3c"
+    },
+    "broad_go": {
+      "status": 0,
+      "top": 114,
+      "including_subtests": 357,
+      "evidence": "go-1792983717845.json"
+    },
+    "latest_r6": {
+      "status": 0,
+      "top": 17,
+      "including_subtests": 63,
+      "evidence": "latest-go.json"
+    },
+    "count_note": "分批定向检查存在重叠，不相加；完整前端和最终同版联调尚未完成。",
+    "mysql": {
+      "passed": true,
+      "scope": "isolated retained synthetic MySQL schema only; no application migration",
+      "temporary_network_restored": true
+    },
+    "native_binary": {
+      "sha256": "af6e939567afe2edb176d110096fd4626d2e1b8d92a59a31643f6ac9583c915e",
+      "linker": "/usr/local/bin/ld.lld\nUbuntu LLD 22.1.8 (compatible with GNU linkers)",
+      "help_modes": [
+        {
+          "mode": "api",
+          "exit_code": 1,
+          "usage_seen": true,
+          "sha256": "0d52096964d86019c120bbe4de5493b8a6f2ae6379c02e5bce7a11cecad4c817"
+        },
+        {
+          "mode": "admin",
+          "exit_code": 1,
+          "usage_seen": true,
+          "sha256": "f075fe3044c24b77a18888307627eeabe34618143840693b95969b80a642b332"
+        },
+        {
+          "mode": "ingestor",
+          "exit_code": 1,
+          "usage_seen": true,
+          "sha256": "0aaffc695a90abebf38581f1453fe8d887e0648d8997301240dd887b26b4b368"
+        },
+        {
+          "mode": "syncer",
+          "exit_code": 1,
+          "usage_seen": true,
+          "sha256": "771b61da3c1e4ac8d5034c48f81bee41ee815b38c92052db2d091812bfbbdf36"
+        }
+      ]
+    },
+    "runtime": {
+      "recorded_at": "2026-10-26T03:13:19.783Z",
+      "passed": true,
+      "domain_id": "2b6afed96f3e469c9b0bc25176641310",
+      "source_id": "32eaea2d57b54547abb09496025004a6",
+      "old_pending_rejected": [
+        "0.2",
+        "0.5",
+        "0.6"
+      ],
+      "old_success_receipts_preserved": true,
+      "same_web_capture_explicit_fresh_preview": true,
+      "actions": [
+        "reclassify",
+        "move",
+        "archive",
+        "restore"
+      ],
+      "fixed_old_text_preserved": true,
+      "original_name_and_sha_preserved": true,
+      "web_capture_and_safe_reading_preserved": true,
+      "original_web_c1_roots": 0,
+      "legacy_and_models_unchanged": true,
+      "model_calls": 0
+    },
+    "model_calls": 0,
+    "local_inference": 0,
+    "real_sources": 0
+  },
+  "acceptance": {
+    "freeze_decision": "Approved",
+    "engineering_user_decision": {
+      "outcome": "Pending"
+    },
+    "stage2_exit": false,
+    "whole_project_complete": false
+  },
+  "incomplete_items": [
+    "正式客户端／界面尚未实现，真实浏览器尚未运行。",
+    "双进程抢位／原键、SQL与进程故障、1000合成源五次容量和64MiB原件对象IO计数待补。",
+    "旧目录／批次／项目真实运行补证待完成，当前有定向Go证据。",
+    "R6工程验收Pending；R7及阶段3—6未完成。"
+  ],
   "adversarial_review": "NotRun_UserProhibited",
-  "governance_note": "沿用既有docs与中文计划载体，不重排项目目录；没有运行正式治理机器Gate，不将本报告声称为机器Gate通过。"
+  "governance_note": "沿用既有docs与中文计划载体，不重排项目目录；没有运行正式治理机器Gate，不将本报告声称为机器Gate通过。",
+  "implementation": {
+    "source_hashes": {
+      "internal/dao/knowledge_migration.go": "9d6f24271f3cafa166c6060770184ca1d0e41133a8d2fcfeadc93341262afeb7",
+      "internal/router/router.go": "0f85935b91a71b57acae67b7717456b8674d1fa74eae97519b53770066262a17",
+      "internal/service/dataset/knowledge_batch.go": "eeca537c55b46bcafd563f8c49286d55fea272519a59bb5cc9e4b76ed6bcf40c",
+      "internal/service/dataset/knowledge_batch_task.go": "d7a3715ff0c1af8ed9351c1d378b211eb664812ea1c15f548d858e559074d929",
+      "internal/service/dataset/knowledge_batch_worker.go": "ab07bedf72889813236f8fc16e5fe684f1527463517d069396b56e5417969499",
+      "internal/service/dataset/knowledge_directory_import.go": "3ef2e63ff9f3062062d13f83ea6e61c14adfca7746b00a731d8e375c2b3c9844",
+      "internal/service/dataset/knowledge_directory_observation.go": "b2fdc051734efd3408c4664b012baea7c03a52d3771a6b4f58a3d14dabc4cf8e",
+      "internal/service/dataset/knowledge_import.go": "46b9b0a3f4c81c517c9e81568ce49908c3cb5bfbfdd944b2174ad822edf1b182",
+      "internal/service/dataset/knowledge_original.go": "69b96d284b20b93c096856f685c29e079c184f1446cba428f01df61eead32fbd",
+      "internal/service/dataset/knowledge_original_source.go": "36200a0b0327612976c26639ac1f6ac8c65facb9b94c9d8f722d13491ce9dce0",
+      "internal/service/dataset/knowledge_project_manifest.go": "96d09c82a7b5873c97050b7299f972a3b518bf670920a81b19031b7e8a37f68d",
+      "internal/service/dataset/knowledge_source.go": "74bfae71ce187a08c847580a6bc821a598291e5d03f2c7c2e985d24a7de14b5c",
+      "internal/service/dataset/knowledge_test.go": "fa7ec556ecefe0e19e3b926fd9302ba71c4a9d473198d45b5a82192fe62b8ef5",
+      "internal/service/dataset/knowledge_web_preview.go": "ce1813ce45877eb3098985b9f244f246705a3ae4bd3c1ba7a6ccbb9de86d166e",
+      "internal/service/dataset/knowledge_web_publish.go": "d1300519bcfb8eae306bdbcc588075ee1713b7b20fca36d575a6e4f71ecd762e",
+      "internal/service/dataset/knowledge_web_revision.go": "bed0c93727fbe13beee3d69e13de710c44a9d58df441d140bbdc9a42ecc94aac",
+      "internal/dao/knowledge_lifecycle.go": "f3ab24f9c9fdb86b27822e1877a1ba565e6239576c1ed7e1221fa08aae01355a",
+      "internal/dao/knowledge_lifecycle_test.go": "3fff597f2e41f976a2f3ed3edc28c5595821b2afab1b79971d07b11d944da3e1",
+      "internal/entity/knowledge_lifecycle.go": "c3ecb51eba297951f59636ad0791637df419f7b1714a1f8756082184c5c4105f",
+      "internal/entity/knowledge_lifecycle_capabilities.json": "047ebdb1ef6e4fef7f13ff0c637e317b8397c1b867d5899814fc6ea6f5ed408d",
+      "internal/entity/knowledge_lifecycle_store.go": "72f8990871a1ab65cd58d9e69ca926c0dca97b6a567370e449f2902f66fffd86",
+      "internal/entity/knowledge_lifecycle_test.go": "ca80fe252c7346e497f067e7ab5fd25b01aa594d423fb11aebe461bebd80b93c",
+      "internal/handler/knowledge_lifecycle.go": "e228875db368e0b9626015bfaf3933a929bd4e6a0202c0d6b05a5aa02c6ab33e",
+      "internal/handler/knowledge_lifecycle_test.go": "ea94207d9a33d783e23e1836e94ec330f8f34fd934cb1bf40d9c1000ef8b2828",
+      "internal/router/knowledge_lifecycle.go": "bffc3d6259dcc49d76a9bdc890b3442e1f9725d088d0bdf56555ecc1b75dd492",
+      "internal/router/knowledge_lifecycle_test.go": "ad6c101ee690a2b6ab20d83065ac355e67296e23bea175e891c1a0ad7f86cd8f",
+      "internal/service/dataset/knowledge_lifecycle.go": "ca5dc3d5e6e6d11123837d438a733181546a2a6265090aa3a0503b01d1594053",
+      "internal/service/dataset/knowledge_lifecycle_fence.go": "dd8bbba6150948975a7cf3d4878da3017b76de2105a67aa2ec9ed5d692946401",
+      "internal/service/dataset/knowledge_lifecycle_list.go": "4ad1ebb7ad35fc1ca07412bfa070c279db9e0cc1607dff197792a57fa03b9acb",
+      "internal/service/dataset/knowledge_lifecycle_metadata.go": "a1eadd295a38b1b24af2444c3ed2b1f23f955a0200829eb7dc4a791cf054122e",
+      "internal/service/dataset/knowledge_lifecycle_producers_test.go": "add146786c5c8cfa5ad7ac03e3fffd6e7834375f0aca342877234021ede25393",
+      "internal/service/dataset/knowledge_lifecycle_test.go": "af21ea5671d65d3a2a5f19659c2956a1492cf3f44d42ad659b78c17f478b3394",
+      "docs/knowledge-source-lifecycle-v1.openapi.json": "526685f1ab09e07f87f3f9c8cee3cf44347d6bdcf9efed94c356ef32b22725db",
+      "docs/knowledge-source-lifecycle-v1.examples.json": "cfe6c24c3f3a24907220c4e2ead993867c33053c6b2d197b70d93c03f168fb3c"
+    },
+    "areas": [
+      "私有生命周期与精确退役占位、准备栅栏和固定命令回执",
+      "旧C1及C2 0.2—0.6写头、准备、任务／项目保护；默认列表SQL过滤归档",
+      "四动作和10个0.7接口、独立错误与严格JSON、32KiB预算／分页",
+      "元信息修订复用已验原生对象记录核心；不读写原件正文"
+    ],
+    "client_handoff": "docs/stage2r6-lifecycle-client-handoff.md"
+  },
+  "evidence": [
+    {
+      "path": ".local-data/stage2r6-20261026/go-1792983717845.json",
+      "sha256": "5c4307dc18d1a53a177642df56b7e1c4d061a7a7d80616c7ac55fcf916b64de9"
+    },
+    {
+      "path": ".local-data/stage2r6-20261026/go-1792983862059.json",
+      "sha256": "dcf1b16d25c02529527a9c6db796af1898f9cf7631f90312afe806c531f1f029"
+    },
+    {
+      "path": ".local-data/stage2r6-20261026/latest-go.json",
+      "sha256": "dcf1b16d25c02529527a9c6db796af1898f9cf7631f90312afe806c531f1f029"
+    },
+    {
+      "path": ".local-data/stage2r6-20261026/mysql-integration.json",
+      "sha256": "ab011a38304ed7f2d18835c29981727ef49c80d749a9c57500570cc5f16bff7f"
+    },
+    {
+      "path": ".local-data/stage2r6-20261026/backend-build.json",
+      "sha256": "3c99ad2227ddc572bdaa3247366f22a11f9a87c0d981b19d7503cab50d91c16e"
+    },
+    {
+      "path": ".local-data/stage2r6-20261026/runtime-switch.json",
+      "sha256": "c6329a844d014b12853142cc7c40741f90ec7e999e6ce26c244c64eb1a8dd1dd"
+    },
+    {
+      "path": ".local-data/stage2r6-20261026/runtime-smoke.json",
+      "sha256": "00c4611c49f4dabe8a00a6744d4b37d3741dc3631e9f67e02bfdc017afbc82f4"
+    }
+  ],
+  "failures_and_corrections": [
+    {
+      "attempt": "initial compile",
+      "finding": "误用旧C1 string游标DTO，0.7要求nullable ID",
+      "correction": "新增0.7独立Page，旧DTO不改",
+      "evidence": "go-1792983215949.log"
+    },
+    {
+      "attempt": "first lifecycle tests",
+      "finding": "同一顶层用例重复建立同名SQLite夹具导致既有迁移索引错误",
+      "correction": "将第二个场景独立子例，生产代码不改",
+      "evidence": "go-1792983391424.log"
+    },
+    {
+      "attempt": "old snapshot test",
+      "finding": "旧断言允许无CAS unchanged，已批准0.7要求CAS先于no-op",
+      "correction": "保留缺CAS的409断言，明确当前expected后验证unchanged；旧契约字节不改",
+      "evidence": "go-1792983509378.log"
+    }
+  ]
 }
