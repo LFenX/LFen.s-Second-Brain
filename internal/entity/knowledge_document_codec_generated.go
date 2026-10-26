@@ -731,8 +731,15 @@ func (value *KnowledgeDocumentNode) UnmarshalJSON(raw []byte) error {
 }
 
 func (value KnowledgeDocumentNode) MarshalJSON() ([]byte, error) {
-	type plain KnowledgeDocumentNode
-	return knowledgeDocumentMarshal("DocumentNode", plain(value))
+	// The exported local embedding remains visible to the Go Unicode walk.
+	// DocumentNode validates the entire payload; nested locator codecs still run.
+	type PlainNode KnowledgeDocumentNode
+	type plainPayload KnowledgeDocumentNodePayload
+	wire := struct {
+		PlainNode
+		Payload plainPayload `json:"payload"`
+	}{PlainNode: PlainNode(value), Payload: plainPayload(value.Payload)}
+	return knowledgeDocumentMarshal("DocumentNode", wire)
 }
 
 func (value *KnowledgeDocumentRejectionReceipt) UnmarshalJSON(raw []byte) error {

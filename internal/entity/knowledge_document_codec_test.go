@@ -7,6 +7,52 @@ import (
 	"testing"
 )
 
+func TestKnowledgeDocumentNodeMergedPayloadGuards(t *testing.T) {
+	fixtures := knowledgeDocumentTestObject(t, knowledgeDocumentFrozenExamples(t)["fixtures"])
+	trees := knowledgeDocumentTestObject(t, fixtures["trees"])
+	var paragraph KnowledgeDocumentNode
+	for _, format := range []string{"pptx", "docx"} {
+		tree := knowledgeDocumentTestObject(t, trees[format])
+		for _, node := range knowledgeDocumentTestDecode[[]KnowledgeDocumentNode](t, tree["nodes"]) {
+			if node.Payload.Kind == "paragraph" && node.Payload.Locator.Scheme == "office_package_v1" {
+				paragraph = node
+				break
+			}
+		}
+		if paragraph.DocumentNodeID != "" {
+			break
+		}
+	}
+	if paragraph.DocumentNodeID == "" {
+		t.Fatal("frozen Office paragraph missing")
+	}
+	if _, err := json.Marshal(paragraph); err != nil {
+		t.Fatal(err)
+	}
+	cases := []struct {
+		name string
+		edit func(*KnowledgeDocumentNode)
+	}{
+		{"metadata_invalid_utf8", func(v *KnowledgeDocumentNode) { v.SourceID = string([]byte{0xff}) }},
+		{"payload_invalid_utf8", func(v *KnowledgeDocumentNode) { v.Payload.Name = string([]byte{0xff}) }},
+		{"non_branch_locator", func(v *KnowledgeDocumentNode) { v.Payload.Locator.PageNumber = 1 }},
+		{"unpaired_raw_surrogate", func(v *KnowledgeDocumentNode) { v.Payload.Attributes = json.RawMessage(`{"x":"\ud800"}`) }},
+		{"duplicate_raw_key", func(v *KnowledgeDocumentNode) { v.Payload.Attributes = json.RawMessage(`{"x":1,"x":2}`) }},
+		{"missing_own_range", func(v *KnowledgeDocumentNode) { v.Payload.OwnReadingRange = nil }},
+		{"wrong_payload_sha", func(v *KnowledgeDocumentNode) { v.NodePayloadSHA256 = strings.Repeat("0", 64) }},
+		{"wrong_node_identity", func(v *KnowledgeDocumentNode) { v.DocumentNodeID = strings.Repeat("f", 64) }},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			node := paragraph
+			tc.edit(&node)
+			if _, err := json.Marshal(node); err == nil {
+				t.Fatal("accepted invalid document node")
+			}
+		})
+	}
+}
+
 func TestKnowledgeDocumentCodecScalarAndUnionEquivalence(t *testing.T) {
 	t.Run("scalar_equal_keeps_digest_normalization", func(t *testing.T) {
 		type namedString string
