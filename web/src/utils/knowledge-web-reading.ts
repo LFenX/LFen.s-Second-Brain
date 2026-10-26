@@ -24,7 +24,7 @@ export async function verifiedWebText(
   );
 }
 export function webReadingDocument(text: string) {
-  const html = DOMPurify.sanitize(text, {
+  const fragment = DOMPurify.sanitize(text, {
     ALLOWED_TAGS: [
       'article',
       'section',
@@ -57,6 +57,7 @@ export function webReadingDocument(text: string) {
       'table',
       'thead',
       'tbody',
+      'tfoot',
       'tr',
       'th',
       'td',
@@ -64,15 +65,29 @@ export function webReadingDocument(text: string) {
       'span',
       'a',
     ],
-    ALLOWED_ATTR: [],
+    ALLOWED_ATTR: ['colspan', 'rowspan'],
     ALLOW_DATA_ATTR: false,
     ALLOW_ARIA_ATTR: false,
+    RETURN_DOM_FRAGMENT: true,
   });
+  for (const node of fragment.querySelectorAll('[colspan], [rowspan]')) {
+    for (const attribute of ['colspan', 'rowspan']) {
+      const value = node.getAttribute(attribute);
+      if (
+        value !== null &&
+        (!['TD', 'TH'].includes(node.tagName) ||
+          !/^(?:[1-9][0-9]?|100)$/.test(value))
+      )
+        node.removeAttribute(attribute);
+    }
+  }
+  const container = document.createElement('div');
+  container.appendChild(fragment);
   return (
     '<!doctype html><html><head><meta http-equiv="Content-Security-Policy" content="' +
     WebReadingCsp +
     '"><meta charset="utf-8"><style>body{font:16px/1.65 system-ui;margin:20px;overflow-wrap:anywhere}pre{white-space:pre-wrap}table{border-collapse:collapse;max-width:100%}td,th{border:1px solid;padding:6px}</style></head><body>' +
-    html +
+    container.innerHTML +
     '</body></html>'
   );
 }

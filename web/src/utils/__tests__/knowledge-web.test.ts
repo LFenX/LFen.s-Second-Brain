@@ -264,6 +264,26 @@ it('verifies complete representations including empty bodies before producing an
     }),
   ).toBeNull();
 });
+it('preserves bounded table cell spans and footer without allowing active attributes', () => {
+  const rendered = new DOMParser().parseFromString(
+    webReadingDocument(
+      '<table><thead><tr><th colspan="2" onclick="alert(1)">Header</th></tr></thead><tbody><tr><td rowspan="2">A</td><td>B</td></tr><tr><td>C</td></tr></tbody><tfoot><tr><td colspan="100">Footer</td></tr></tfoot></table><p colspan="2">Text</p><table><tr><td colspan="101" rowspan="0" style="background:url(https://bad.test)">Invalid</td><td colspan="-1" rowspan="two">Invalid</td></tr></table>',
+    ),
+    'text/html',
+  );
+  expect(rendered.querySelector('th')?.getAttribute('colspan')).toBe('2');
+  expect(rendered.querySelector('tbody td')?.getAttribute('rowspan')).toBe('2');
+  expect(rendered.querySelector('tfoot td')?.getAttribute('colspan')).toBe(
+    '100',
+  );
+  expect(rendered.querySelector('p')?.hasAttribute('colspan')).toBe(false);
+  expect(
+    rendered.querySelectorAll('table')[1].querySelector('[colspan], [rowspan]'),
+  ).toBeNull();
+  expect(
+    rendered.querySelector('[onclick], [style], [href], [src]'),
+  ).toBeNull();
+});
 it('keeps UTF-8 windows continuous, pinned and escaped; permits an empty representation', async () => {
   const f = await fixture(),
     text = '中'.repeat(2000),
