@@ -157,15 +157,17 @@ export function StructureRecovery({
         ))}
       </ul>
       {receipts.map((receipt) => (
-        <div
+        <details
           key={'command_id' in receipt ? receipt.command_id : ''}
           className="space-y-1 text-xs"
         >
-          <p>{t('knowledgeStructure.fixedReceipt')}</p>
+          <summary className="cursor-pointer text-text-secondary">
+            {t('knowledgeStructure.fixedReceipt')}
+          </summary>
           <pre className="overflow-auto whitespace-pre-wrap break-all">
             {JSON.stringify(receipt, null, 2)}
           </pre>
-        </div>
+        </details>
       ))}
     </section>
   );

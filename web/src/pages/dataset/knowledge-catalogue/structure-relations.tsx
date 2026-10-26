@@ -41,8 +41,8 @@ function RelationRow({
   return (
     <li className="space-y-2 rounded border border-border-button p-3">
       <p>
-        {relation.kind} · {t('knowledgeStructure.' + relation.resolution)} ·{' '}
-        {relation.reason}
+        {relation.kind} · {t('knowledgeStructure.' + relation.resolution)}
+        {relation.resolution === 'unresolved' && ` · ${relation.reason}`}
       </p>
       <pre className="whitespace-pre-wrap break-all text-xs">
         {relation.reference}
@@ -50,11 +50,19 @@ function RelationRow({
       {relation.reference_truncated && (
         <p>{t('knowledgeStructure.referenceTruncated')}</p>
       )}
-      <p className="break-all text-xs">
-        {t('knowledgeStructure.evidence')}: {relation.evidence.source_id} /{' '}
-        {relation.evidence.source_revision_id} [{relation.evidence.start_byte},
-        {relation.evidence.end_byte}) · {relation.evidence.fragment_sha256}
-      </p>
+      <details className="text-xs">
+        <summary className="cursor-pointer text-text-secondary">
+          {t('knowledgeStructure.evidence')}
+        </summary>
+        {relation.resolution === 'resolved' && (
+          <p className="break-all">{relation.reason}</p>
+        )}
+        <p className="break-all">
+          {relation.evidence.source_id} / {relation.evidence.source_revision_id}{' '}
+          [{relation.evidence.start_byte},{relation.evidence.end_byte}) ·{' '}
+          {relation.evidence.fragment_sha256}
+        </p>
+      </details>
       <div className="flex flex-wrap gap-2">
         <Button type="button" variant="outline" onClick={origin}>
           {t('knowledgeStructure.openFrom')}

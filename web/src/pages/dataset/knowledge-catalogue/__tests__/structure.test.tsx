@@ -12,7 +12,7 @@ import { useStructureFlow } from '../use-structure-flow';
 import StructureBrowser from '../structure';
 import { StructurePolicyPanel } from '../structure-policy';
 import { StructurePrepare, parseStructureAliases } from '../structure-prepare';
-import { StructureHeadPanel } from '../structure-view';
+import { StructureFixedView, StructureHeadPanel } from '../structure-view';
 import { StructureRelations } from '../structure-relations';
 import { StructureContent } from '../structure-content';
 import { StructureTaskTracker, StructureRecovery } from '../structure-tasks';
@@ -335,6 +335,85 @@ it('retains unresolved references, evidence and reasons without a guessed target
     direction: 'out',
     limit: 20,
   });
+});
+it('follows a resolved cross-file target with its member, tree and fixed origin', async () => {
+  const target = View.members.find(
+    (member) => member.source_id !== Entry.source_id,
+  )!;
+  const members = [Entry, target];
+  const roots = members.map((member) => ({
+    ...Node,
+    structure_node_id: member.root_structure_node_id,
+    source_id: member.source_id,
+    source_revision_id: member.source_revision_id,
+    source_node_id: member.source_node_id,
+    parser: member.parser,
+    classification: member.classification,
+    name: member.relative_path,
+    kind: 'file' as const,
+    identity_stability: 'file' as const,
+    parent_id: null,
+    start_byte: 0,
+    end_byte: member.byte_length,
+  }));
+  (hooks.useStructureView as jest.Mock).mockReturnValue(
+    result({ ...View, members, source_count: members.length }),
+  );
+  (hooks.useStructureNode as jest.Mock).mockImplementation((_, id) =>
+    result(roots.find((node) => node.structure_node_id === id)),
+  );
+  (hooks.useStructureRelations as jest.Mock).mockReturnValue(
+    result({
+      pages: [
+        {
+          items: [
+            {
+              ...Relation,
+              from_node_id: Entry.root_structure_node_id,
+              to_node_id: target.root_structure_node_id,
+              resolution: 'resolved',
+              evidence: {
+                ...Relation.evidence,
+                source_id: Entry.source_id,
+                source_revision_id: Entry.source_revision_id,
+                start_byte: 0,
+                end_byte: Math.min(8, Entry.byte_length),
+              },
+            },
+          ],
+        },
+      ],
+    }),
+  );
+  mount(<StructureFixedView scope={ViewScope} />);
+  const initialLabel = `${Entry.relative_path} · ${Entry.classification.component_side} / ${Entry.classification.language}`;
+  const targetLabel = `${target.relative_path} · ${target.classification.component_side} / ${target.classification.language}`;
+  expect(screen.getByRole('button', { name: initialLabel })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+  fireEvent.click(
+    screen.getByRole('button', { name: 'knowledgeStructure.openTarget' }),
+  );
+  await waitFor(() => {
+    expect(screen.getByRole('button', { name: targetLabel })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+  });
+  expect(screen.getByRole('button', { name: initialLabel })).toHaveAttribute(
+    'aria-pressed',
+    'false',
+  );
+  expect(hooks.useStructureNodes).toHaveBeenLastCalledWith(ViewScope, {
+    source_id: target.source_id,
+    limit: 20,
+  });
+  expect(
+    screen.getByRole('heading', {
+      name: `${target.relative_path} · knowledgeStructure.node_file`,
+    }),
+  ).toBeInTheDocument();
 });
 it('uses task revision for cancellation and keeps cancel_requested in the tracking view', async () => {
   (flow.submit as jest.Mock).mockResolvedValue({});

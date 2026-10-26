@@ -1,0 +1,98 @@
+{
+  "document_version": "stage3r1-structure-ui-fix/1",
+  "recorded_at": "2026-10-26T12:27:36.565Z",
+  "status": "TargetedFixVerified_PendingBrowserReplay",
+  "objective": "修正同版真实浏览器发现的跨文件上下文不同步和技术证据占据主流程两类展示问题。",
+  "request_snapshot": "真人已冻结Structure0.1并授权两会话实施、合成真实联调、针对性修复验证后推main；不调用模型、不启动多轮审查。",
+  "clarification": {
+    "state": "Settled",
+    "additional_permission_required": false,
+    "scope": "同R1局部界面，不变更共享接口/身份/权限/检索语义"
+  },
+  "plan": [
+    {
+      "work": "跨文件目标同步当前成员/树，原文明确文件路径",
+      "status": "Done"
+    },
+    {
+      "work": "固定回执/关系证据默认收起，未解析原因仍明确显示",
+      "status": "Done"
+    },
+    {
+      "work": "定向测试、局部lint/格式、类型差量及同版构建",
+      "status": "Done"
+    },
+    {
+      "work": "正常hooks提交后部署，实际浏览器复验",
+      "status": "Pending"
+    }
+  ],
+  "observations": [
+    {
+      "issue": "浏览器沿DataTable的Row类型引用跳转后，右侧已是Row/类型文件，左侧仍保留DataTable文件树。",
+      "fix": "仅在节点及成员身份核验通过后同步当前成员；保留目标节点，给当前成员aria-pressed并显示固定原文件路径。",
+      "proof": "新的用户行为回归通过实际关系目标按钮验证成员/树/原文出处同步，未增加接口读取。"
+    },
+    {
+      "issue": "固定命令JSON与每条关系的完整ID/SHA证据默认展开，遮蔽正常阅读。",
+      "fix": "使用局部原生details折叠技术证据，保留完整可展开回执/字节来源；未解析原因在主行显示一次。",
+      "proof": "已有未解析关系/恢复测试通过；真实呈现复验待部署。"
+    }
+  ],
+  "source": {
+    "baseline": "ca74ff8377590294727099dbf604d031ac5d83cc",
+    "files": {
+      "web/src/pages/dataset/knowledge-catalogue/structure-view.tsx": "1a87b2115c3b7f84d91a2c5b5bff9bba875b20e6dffc71c0dd3833b17fa7bf6a",
+      "web/src/pages/dataset/knowledge-catalogue/structure-relations.tsx": "43c43de70033d1f4e4c1e6288be3b81292ee562b361abfa2a56f25906142d7e7",
+      "web/src/pages/dataset/knowledge-catalogue/structure-tasks.tsx": "dc674949f6acdf8a3bc824187ccf8fbc9461e0e1c78382a068c840a12105ebb7",
+      "web/src/pages/dataset/knowledge-catalogue/__tests__/structure.test.tsx": "16b9a1cd865e7e520b374ca6cf77eed6e4625ba165d952793acbdf0175a15429"
+    },
+    "all_web_build_inputs": 1961,
+    "all_build_inputs_unchanged": true,
+    "protected_files": 41,
+    "protected_unchanged": true,
+    "backend_unchanged": true,
+    "shared_ui_unchanged": true,
+    "dependencies_unchanged": true
+  },
+  "verification": {
+    "focused_tests": {
+      "suites": 2,
+      "passed": 29,
+      "failed": 0,
+      "report": ".local-data/stage3-20261026/ui-fix/tests-verified.json"
+    },
+    "format": "Pass: oxfmt four changed files",
+    "lint": "Pass: oxlint four changed files, zero warnings",
+    "types": {
+      "baseline": 207,
+      "current": 207,
+      "new": 0,
+      "resolved": 0,
+      "complete_tsc_exit": 2,
+      "explanation": "仅既有诊断；统一移除报告路径web/前缀后逐条相同。"
+    },
+    "build": {
+      "status": "Pass",
+      "exit_code": 0,
+      "command": "vite build --mode production --outDir <new isolated ui-fix/dist> --emptyOutDir",
+      "source_files": 1961,
+      "dist": ".local-data/stage3-20261026/ui-fix/dist",
+      "index_html_sha256": "6c52067bf88e73e8fc78a85733505e2727e97a08b27d56598d0687995b49821b",
+      "vite_duration": "49.10s"
+    },
+    "overlapping_baseline": "ca74ff8的39套1082项（新增6套153项）保持原提交证据，不将本次29项与之累计成最终全量次数。",
+    "test_repairs": "新增用例的嵌套类型引用触发现有Jest转换限制，改用局部标签变量；发现未解析原因在展开证据里重复后去重。原失败记录保留，最终两套29项通过。"
+  },
+  "acceptance": {
+    "scope": "本报告不是整R1验收；待同版浏览器与工程发布后统一交付。",
+    "outcome": "Pending"
+  },
+  "evidence": {
+    "before_screenshot": ".local-data/stage3-20261026/browser/structure-before-targeted-ui-fix.png",
+    "private_directory": ".local-data/stage3-20261026/ui-fix"
+  },
+  "model_calls": 0,
+  "local_inference": 0,
+  "adversarial_review": false
+}

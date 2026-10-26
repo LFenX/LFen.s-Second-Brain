@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
@@ -94,9 +94,11 @@ export function StructureHeadPanel({
 function MemberRow({
   member,
   onChoose,
+  selected,
 }: {
   member: StructureViewMember;
   onChoose: (member: StructureViewMember) => void;
+  selected: boolean;
 }) {
   const choose = () => onChoose(member);
   return (
@@ -105,6 +107,7 @@ function MemberRow({
         type="button"
         variant="outline"
         className="h-auto w-full justify-start whitespace-normal text-left"
+        aria-pressed={selected}
         onClick={choose}
       >
         <span className="break-all">
@@ -120,36 +123,44 @@ function StructureNodeDetail({
   view,
   nodeId,
   onNode,
+  onMember,
 }: {
   scope: StructureViewScope;
   view: StructureView;
   nodeId: string;
   onNode: (node: string) => void;
+  onMember: (member: StructureViewMember) => void;
 }) {
   const { t } = useTranslation(),
     query = useStructureNode(scope, nodeId),
     reload = () => {
       void query.refetch();
-    };
+    },
+    node = query.data,
+    member = view.members.find((value) => value.source_id === node?.source_id),
+    valid =
+      !query.isError &&
+      node &&
+      member &&
+      node.source_revision_id === member.source_revision_id &&
+      node.source_node_id === member.source_node_id &&
+      node.parser === member.parser &&
+      node.producer_sha256 === view.producer_sha256 &&
+      node.end_byte <= member.byte_length &&
+      sameDirectoryClassification(node.classification, member.classification);
+  useEffect(() => {
+    if (valid && member) onMember(member);
+  }, [valid, member, onMember]);
   if (query.isError)
     return <StructureFailure error={query.error} onRetry={reload} />;
-  if (!query.data) return <CatalogueLoading />;
-  const node = query.data,
-    member = view.members.find((value) => value.source_id === node.source_id);
-  if (
-    !member ||
-    node.source_revision_id !== member.source_revision_id ||
-    node.source_node_id !== member.source_node_id ||
-    node.parser !== member.parser ||
-    node.producer_sha256 !== view.producer_sha256 ||
-    node.end_byte > member.byte_length ||
-    !sameDirectoryClassification(node.classification, member.classification)
-  )
+  if (!node) return <CatalogueLoading />;
+  if (!valid || !member)
     return (
       <StructureFailure error={Error('Structure member identity mismatch')} />
     );
   return (
     <div className="space-y-5">
+      <p className="break-all text-sm font-medium">{member.relative_path}</p>
       <h3 className="break-all font-semibold">
         {node.name} · {t('knowledgeStructure.node_' + node.kind)}
       </h3>
@@ -198,6 +209,11 @@ function FixedViewBody({
     setMember(value);
     setNode(value.root_structure_node_id);
   };
+  const followMember = useCallback((value: StructureViewMember) => {
+    setMember((current) =>
+      current.source_id === value.source_id ? current : value,
+    );
+  }, []);
   return (
     <>
       <p className="break-all text-xs">
@@ -220,6 +236,7 @@ function FixedViewBody({
                   key={value.source_id}
                   member={value}
                   onChoose={choose}
+                  selected={value.source_id === member.source_id}
                 />
               ))}
             </ul>
@@ -241,6 +258,7 @@ function FixedViewBody({
               view={view}
               nodeId={node}
               onNode={setNode}
+              onMember={followMember}
             />
           </div>
         </ResizablePanel>
