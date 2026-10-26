@@ -293,5 +293,7 @@
     "2MiB／1000条／32选择各5次容量及RSS／延迟门槛；不能外推生产p95",
     "完整联调通过后按授权合并推main；R6／R7及阶段3—6仍未完成"
   ],
-  "governance_note": "沿用既有docs／中文技术方案／忽略执行证据载体，保持用户指定布局；未伪报正式机器门禁。批准是本版实施授权，验收独立Pending，持续目标active。"
+  "governance_note": "沿用既有docs／中文技术方案／忽略执行证据载体，保持用户指定布局；未伪报正式机器门禁。批准是本版实施授权，验收独立Pending，持续目标active。",
+  "latest_integration_report": "docs/stage2r5-web-verification.json",
+  "snapshot_note": "本文件主体保留v0.50最小后端交付时状态；后续客户端、全部合成联调、容量和当前发布事实见latest_integration_report。"
 }

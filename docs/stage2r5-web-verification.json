@@ -1,0 +1,574 @@
+{
+  "document_version": "v0.51",
+  "recorded_at": "2026-10-26T01:42:28.320Z",
+  "objective": "完成已批准C2 0.6.0的后端、客户端、真实合成联调、容量与异常恢复，并按授权发布main。",
+  "request_snapshot": "确认冻结并继续实施；单写入完成后端、客户端和合成联调再推main；模型0、不启动多轮审查、真实网站／RSSHub仍不访问。",
+  "authority": {
+    "outcome": "Approved",
+    "response": "确认冻结并继续实施",
+    "source": "本会话真人异步回答",
+    "question_ref": "call_abccb90207ed413d9385cc66105f3857",
+    "scope": "冻结d798893候选；按单写入完成后端、客户端及合成联调后推main；模型0、不启动多轮审查、真实网站及RSSHub仍不访问",
+    "subject_commit": "d798893dee370e95b4133aff637e10a4ca722f89",
+    "formal_freeze": "9c5cc1f",
+    "not_engineering_acceptance": true
+  },
+  "engineering_status": "Implemented_SyntheticRuntimeVerified",
+  "acceptance": {
+    "user_decision": {
+      "outcome": "Pending"
+    },
+    "r4_user_decision": "Pending_Independent",
+    "stage2_exit": false,
+    "whole_project_complete": false,
+    "adversarial_review": "NotRun_UserProhibited"
+  },
+  "execution_plan": [
+    "A冻结并完成Go后端、最小实际闭环及定向验证",
+    "清洁be10950交客户端唯一写窗；A只写忽略运行证据",
+    "客户端7ed1789清洁交回，A收回唯一写权",
+    "A完成同版浏览器、容量、并发与故障联调，定向修复实际问题",
+    "正常提交与main快进发布，记录远端回执；继续R6具体候选"
+  ],
+  "source": {
+    "branch": "codex/stage2r5-web-import",
+    "previous_main": "7c564a738597e924e411f3b191aaa02d14ae42d8",
+    "backend_commit": "1ac4e4f3cd0ca74e79ba10e71593287c18bc98ac",
+    "client_delivery_commit": "7ed178957efe54f198a6a2f9c3f9dc50fbbc4d72",
+    "final_web_commit": "40ed01fcd5a9b55328e3d6afb68a60516cb3791a",
+    "backend_report": "docs/stage2r5-backend-verification.json",
+    "client_report": "docs/stage2r5-web-client-verification.json",
+    "final_web_source_sha256": {
+      "web/src/hooks/__tests__/use-knowledge-web.test.tsx": "cbfb016f3b70919cb99099d135874910e5df3aa2de10d8cd94b5f25c2571a49b",
+      "web/src/hooks/use-knowledge-web.ts": "e54ed60053c05b75abbdd1835438fb4c1ea84a02f9d457c9f4ba8569f65eec48",
+      "web/src/interfaces/database/knowledge-web.ts": "4082462dc85dc431c01d2948f648a02aa6d9043f2fa8f07e2771861d2ef1664f",
+      "web/src/interfaces/request/knowledge-web.ts": "0ebf064c0eb8617de9c84b33433b8d3d8b90bb79112b9b3583cb170ccc638ae9",
+      "web/src/locales/en.ts": "5c7a2c2191284e1545ef861ba87a5040502cb2edba655be25d0d0aa8bd15772b",
+      "web/src/locales/zh.ts": "d7c0bb07cdfa816716c63a088dfd4fe7e5894c878880987a4c9f37c1e9abb72e",
+      "web/src/pages/dataset/knowledge-catalogue/__tests__/web.test.tsx": "948bd9252a05881dfc3105567be1ab88959329d952b4559befac6c85f782b371",
+      "web/src/pages/dataset/knowledge-catalogue/index.tsx": "f6af62e425ebd4a2d2e5b10256f08dd7d1e9b6596923937ff00ee6e48e0902ee",
+      "web/src/pages/dataset/knowledge-import/__tests__/web-fixture.ts": "7824393dc55a005511b0a7bf15f30a54efbc02902e230eb6c19f9b428aab1faa",
+      "web/src/pages/dataset/knowledge-import/__tests__/web.test.tsx": "f5b66457d87957d125dd1bdd4d7d9798c7aece39b6899c3c01f2d73ac7ed021b",
+      "web/src/pages/dataset/knowledge-import/index.tsx": "9179bb17eab2757ff1c87bc64a48c8081c1adcadc7e8008fa9bd7bf54602da72",
+      "web/src/pages/dataset/knowledge-import/use-web-flow.ts": "603c81918151e1121d0cab5eeaa302dcd53ddddf2751499306ce460f2fd24712",
+      "web/src/pages/dataset/knowledge-import/web-capture.tsx": "68646609c9c33626cc83a496f394b10a353fe9a0593dec235d9567f53f370ee0",
+      "web/src/pages/dataset/knowledge-import/web-fields.tsx": "32a1dd0776f440deec84fd415232d314430a929c4fa4bc33dfd563950cbc927d",
+      "web/src/pages/dataset/knowledge-import/web-observation.tsx": "9bb2b6aae2f42d600fd2f98198bd7cfb063a1d573eb0fa2c5123958429abcfc7",
+      "web/src/pages/dataset/knowledge-import/web-preview.tsx": "7785d963a9412fd25a5089713a3e8a147d5792ad9fafa672e472574fa11d3656",
+      "web/src/pages/dataset/knowledge-import/web-reading.tsx": "66ec168ea318cb334186d01d4d3e63c32bb2ceec64a5397d88e95c9f60eac82e",
+      "web/src/pages/dataset/knowledge-import/web-receipt.tsx": "3db2475117bdd1812e34e1ead652e8782ed5d03b8265e5fc777cdeddb1ea7ce1",
+      "web/src/pages/dataset/knowledge-import/web-revisions.tsx": "0fb86013741dd81f1fe6db15ec55ef22e1efc4798be0e22953a2b1b950590aae",
+      "web/src/pages/dataset/knowledge-import/web.tsx": "04b92d44344f51fa1e5196413357d0295fe86dfe6da3f569f12a706284a8af63",
+      "web/src/services/__tests__/knowledge-web-service.test.ts": "466ba986821a540c5273e98c0c6e50b18427c0f8e7efe74c8c9b404602139bb3",
+      "web/src/services/__tests__/knowledge-web-wire.test.ts": "526580b9b841537b00fc73fadaf886adfe835f975b07c8b8bc6996399494f446",
+      "web/src/services/knowledge-web-service.ts": "2f2d7517713553fd09d0023dc8595415df38fd59c6003d7cb07e75e6369cd4bd",
+      "web/src/utils/__tests__/knowledge-web.test.ts": "8fbe39047d50463c663fa6b9d26d715dcbbf9e76815fc9f99e90f617768ea5c8",
+      "web/src/utils/knowledge-web-reading.ts": "962c95e47433853ef914cf8fec0e34f4b0d226d0d314ecc9d403ffbc728cb605",
+      "web/src/utils/knowledge-web-schema.ts": "de194e6f592bb4a90dfa5e6da93c0cf0596001011d27f4c463a4a0b2f22759a7",
+      "web/src/utils/knowledge-web.ts": "a4cfb75f9ce08aeffc1460a71432a3b24fe7779ba32c0fa05510bb8e451905cb"
+    }
+  },
+  "contracts": {
+    "version": "0.6.0",
+    "operations": 34,
+    "schemas": 54,
+    "protected_files": 29,
+    "all_hashes_unchanged": true,
+    "hashes": {
+      "docs/knowledge-sources-v1.openapi.json": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091",
+      "docs/knowledge-sources-v1.example.json": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a",
+      "docs/knowledge-sources-v1.freeze.json": "114bbfa2b4dd51eafc426716032486f666ace8a1a1284f4c1f4c9baf1f1b35c6",
+      "docs/knowledge-foundation-v1.openapi.json": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4",
+      "docs/knowledge-foundation-v1.example.json": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343",
+      "docs/knowledge-directory-import-v1.openapi.json": "6144c08d4cfe7ac98374dc51829c98290e2c88e3441dd38d250a3cd9cb4492e6",
+      "docs/knowledge-directory-import-v1.examples.json": "73618dd78419bb9027520b3dd8b3ef83b1794d3ad1c4d17d904ce7637c54ea72",
+      "docs/knowledge-directory-import-v1.freeze.json": "2af7575cfbc24510550a0b495e18aa30f94decf5f102c23d259d4f3135dbf5f1",
+      "docs/knowledge-directory-import-v0.3.candidate.md": "80eb846a81b6ade430012b585739fe6405ef8a7de5855f27941fe66a31e2cbfa",
+      "docs/knowledge-directory-import-v0.3.candidate.openapi.json": "da2c320b3c3fd8f6af2b566b40507a5b09c55791236b49b224347c8b9a457f3d",
+      "docs/knowledge-directory-import-v0.3.candidate.examples.json": "2680f9786a19cc49a0330ecfcda84249ef36aac20293341a18e17cbdfd132d4e",
+      "docs/knowledge-batch-import-v0.4.candidate.md": "3a3beec92e8bc0baae1c820a18e078717163988277aa9d304d762ff97d027b1f",
+      "docs/knowledge-batch-import-v0.4.candidate.openapi.json": "d57ca240df19a985341c25d60ce18590dacdcf221b5599b8223f558a7c379fc5",
+      "docs/knowledge-batch-import-v0.4.candidate.examples.json": "fe8bde9d99b8aaa7250a40a1adc86c6bee9ecf474cbf01af55253274f2e2e304",
+      "docs/knowledge-batch-import-v1.openapi.json": "bd13fc400fc2a84f490b92ee865db75f76d89bf79a176658312ac3bea17d0fb8",
+      "docs/knowledge-batch-import-v1.examples.json": "5249cdf57da0313346b7b30db0743079a175aaa8480604120b1bf92e4bdfdc53",
+      "docs/knowledge-batch-import-v1.freeze.json": "1d589290db4b1fe4ab4005dae0ebf1918efdeac9cd57d7c810305087c180f631",
+      "docs/knowledge-original-import-v0.5.candidate.md": "8a1079fe4745b84d178f50939ac25e1ac1fa51bc3f61ed2340ef1f6d9e1638d6",
+      "docs/knowledge-original-import-v0.5.candidate.openapi.json": "b4905ab840c64f26a25a6017dc7454393fd3b974b0e2199edffe2cc5e725a0aa",
+      "docs/knowledge-original-import-v0.5.candidate.examples.json": "16aa77d948f857f93dcc96e0c812d4bee2a8f3ad91205e54b9c0457f78ea8815",
+      "docs/knowledge-original-import-v1.openapi.json": "3c48ebe0a2bfc8b3078262ce6c1a8258b312f6111bd9ed2b07b7b4fb433a5efd",
+      "docs/knowledge-original-import-v1.examples.json": "550f7be69c506a02cc2798d2196e17ca06c73b06f08d934ea3cbf823551d5cb1",
+      "docs/knowledge-original-import-v1.freeze.json": "116ddc4161001c0fdb440b45b227952978ca3d291197d712830a92d5aaaca3b9",
+      "docs/knowledge-web-import-v0.6.candidate.md": "577a76624d8b43e26dde890df49140f0b5a2c458dc493dbecd7f5467e13175fb",
+      "docs/knowledge-web-import-v0.6.candidate.openapi.json": "a167a1977f1f0a313061b093d21f035631dd5fafaea95cd8545601e17af35a88",
+      "docs/knowledge-web-import-v0.6.candidate.examples.json": "81372c6270c3e2b3989b4e088bd029883326f75fe6e254d651b93f951e0b7573",
+      "docs/knowledge-web-import-v1.openapi.json": "673092ab81263bdf7b79e85e06206bb02f8eb8996b476c8643dbafed17e259ed",
+      "docs/knowledge-web-import-v1.examples.json": "71019ae8645ad0fd4527565c42f6f80f93924c26266ffe08696de5e9b1c5671d",
+      "docs/knowledge-web-import-v1.freeze.json": "bba4e9f0c2341658ac69741d57f5a4a9032ac74b6ec848f13a195e4ab96c66c2"
+    }
+  },
+  "scope": {
+    "synthetic_only": true,
+    "external_model_calls": 0,
+    "local_model_inference": 0,
+    "real_website_fetches": 0,
+    "rsshub_execution": false,
+    "new_dependencies": 0,
+    "credentials_regenerated": false,
+    "volumes_deleted": false,
+    "physical_history_or_object_gc": false
+  },
+  "verification": {
+    "backend": {
+      "packages": 7,
+      "top_level": 89,
+      "including_subtests": 327,
+      "previous_path_top_level": 45,
+      "previous_path_including_subtests": 102,
+      "old_path_coverage": "C2 0.2—0.5；327中含原件与安全阅读；45/102补手动、目录、批次、项目清单。不同运行存在重叠，不汇成唯一测试总数。",
+      "build_and_four_mode_help": true,
+      "help_exit": 1,
+      "linker": "LLD22.1.8",
+      "source_hashes_unchanged": true
+    },
+    "frontend": {
+      "client_delivery": {
+        "suites": 27,
+        "passed": 717,
+        "new_suites": 6,
+        "new_passed": 211,
+        "old_passed": 506,
+        "commit": "7ed1789",
+        "report": "docs/stage2r5-web-client-verification.json"
+      },
+      "final_targeted_rerun": {
+        "suites": 2,
+        "passed": 164,
+        "including_reading_regression": 1,
+        "result_sha256": "dbcbba1ab282bc34414a11e30f07edd7c0c5fab5bdbeda2f75343462ff0135e2",
+        "scope": "utils/knowledge-web 与 knowledge-import/web 页面；与717重叠，不相加，也不称全部27套已在最新提交重跑。"
+      },
+      "format_and_lint": "27文件在客户端交付时通过；本机实际改动文件分别格式／lint通过，0警告。",
+      "types": {
+        "baseline": 207,
+        "current": 207,
+        "new": 0,
+        "exit": 2,
+        "identical_diagnostics": true,
+        "whole_repository_passed": false,
+        "log_sha256": "ff7c463090fe6d1e3418c7e9981d6e4a7ed70d06c2c22c5bc9832bea6c5cd449"
+      },
+      "production_build": {
+        "passed": true,
+        "seconds": 56.41,
+        "artifacts": 1058,
+        "manifest_sha256": "f5fa124989dd98c0b489b80f53eceb46d15e16044d3d190c9a264cc1bd49aff0"
+      }
+    },
+    "requirements": [
+      {
+        "id": "R5.1-parse",
+        "outcome": "Pass_Synthetic",
+        "evidence": "Go HTML/RSS2/Atom、实际19格式／增量例；不透明ID、弱URL、跨登记、同日期正文和作者增版、空窗不删除、重复折叠与冲突、DTD/截断/1001项拒绝。"
+      },
+      {
+        "id": "R5.1-network",
+        "outcome": "Pass_SyntheticAssembly",
+        "evidence": "实际HTTP与校验证书TLS→正式fetch/normalize/service/native保存；真实隔离MySQL和既有S3；401/304/gzip/混合DNS/重绑定/15秒总超时。仅测试私有IO将合成公网IP映射到本地夹具；部署二进制没有私网绕过，未访问真实公网。"
+      },
+      {
+        "id": "R5.1-atomic-recovery",
+        "outcome": "Pass_Runtime",
+        "evidence": "真实SQL连接终止后全部发布表计数不变，原预览／原确认键恢复；实际API进程中断，29698ms自然租约恢复后完整重传；同键及竞争头、跨两个API进程的SQL槽／取消栅栏通过。"
+      },
+      {
+        "id": "R5.2-client",
+        "outcome": "Pass_SyntheticAndBrowser",
+        "evidence": "正式34操作客户端、25秒局部等待、独立恢复槽、三处丢响应、401/404清理、全部SHA／预算和明确确认由客户端测试；真实浏览器登记／文件选择／创建与预览刷新／逐项认可／保存／回执刷新／固定阅读通过。"
+      },
+      {
+        "id": "R5.2-reading",
+        "outcome": "Pass_SyntheticAndBrowser",
+        "evidence": "完整SHA后显示空sandbox srcdoc；外连禁用、代码缩进与有界合并表格保留；窗口／解码只转义显示；引用独立且noopener noreferrer；浏览器下载1185字节及SHA相符，旧固定修订继续可读。DOM隔离属性不是浏览器全部请求日志。"
+      },
+      {
+        "id": "R5.3-regression",
+        "outcome": "Pass_Scoped",
+        "evidence": "旧0.2—0.5定向Go／客户端覆盖；当前旧POC6份42块、配置／用量／活动任务指纹保持，真实资料和模型均未调用。"
+      },
+      {
+        "id": "R5.3-capacity",
+        "outcome": "Pass_LocalWarmGate",
+        "evidence": "同一后端代码／暖API：RSS 2MiB＋1000项＋32选择＋20分页各5次；HTML完整2MiB阅读5次；目标全部通过，非生产p95／百万库承诺。"
+      }
+    ],
+    "runtime_cases": {
+      "minimum_http_responses": 38,
+      "format_incremental_cases": 19,
+      "sql_rollback": {
+        "actual_connection_terminated": true,
+        "uncommitted_rows": 15,
+        "no_partial_publication": true,
+        "original_key_retry_saved": 3
+      },
+      "api_crash": {
+        "natural_lease_recovery_ms": 29698,
+        "full_original_reupload": true
+      },
+      "concurrency": {
+        "same_key_statuses": [
+          200,
+          201
+        ],
+        "same_key_receipt_equal": true,
+        "different_heads_statuses": [
+          201,
+          409
+        ],
+        "cross_process_global_slot_429": true
+      },
+      "network": {
+        "actual_http_tls": true,
+        "production_binary_modified": false,
+        "public_internet_accessed": false,
+        "test_only_dependency_assembly": true
+      },
+      "http_wait": {
+        "client_budget_ms": 25000,
+        "actual_abort_ms": 25003,
+        "original_capture_recovery": true,
+        "server_upload_attempt_budget_ms": 30000,
+        "universal_server_25s_response_claimed": false
+      },
+      "browser": {
+        "recorded_at": "2026-10-26T01:38:54.267Z",
+        "passed": true,
+        "tool": "CUA existing local browser tab11; real native login and file chooser",
+        "backend_commit": "1ac4e4f3cd0ca74e79ba10e71593287c18bc98ac",
+        "final_frontend_commit": "40ed01fcd5a9b55328e3d6afb68a60516cb3791a",
+        "domain_id": "9f16e7154f7841ffb061d73ac0d259f8",
+        "registration_id": "abdf74185fc8459099e7f8766ec58d3a",
+        "fixture": {
+          "bytes": 1185,
+          "sha256": "d48e5cc06bf840194c22782c990f42c4178fa01893ced1d651aae2a745531572"
+        },
+        "capture_id": "0c8beaf49e954f8abe01d940cb4b46f5",
+        "preview_id": "e9ac329e56aa49f7b3f9eef1a2cb9a77",
+        "manifest_sha256": "ef0d62b87fda4f9dcbb750b5ca6c4291062e14dfbc950b5b914da2eaa7fd1272",
+        "receipt": {
+          "items": 1,
+          "saved": 1,
+          "models": 0,
+          "unchanged": 0,
+          "preview_id": "e9ac329e56aa49f7b3f9eef1a2cb9a77",
+          "receipt_id": "aa90723efb45490cb1d061b5b2fe6d8e"
+        },
+        "source_id": "ac581d308f80474fb5927a3e3b8ebf73",
+        "source_revision_id": "a14183227332422a947a8d06e240be6b",
+        "source_input_sha256": "8d12d33b0418240cadadf5fa296026816d20fd3b748fdd3e3d5b3aa4b994cf99",
+        "checks": [
+          "Native file chooser and required form submission passed in both create and refresh-reselect panels",
+          "Refresh after Capture creation restores same Capture by original request; reselect original file explicitly before upload",
+          "Two eligible entries, default unselected; selected A only, B not published; native binding count exactly1",
+          "Preview refresh restores same manifest; per-item acknowledgement and final consent default unchecked; final save gated",
+          "Receipt refresh returns same saved1/unchanged0 receipt and fixed source link",
+          "Same fixed revision: complete safe reading verified; UTF-8 window and decoded HTML displayed as escaped text",
+          "Sandbox empty; referrerpolicy no-referrer; srcdoc code/table retained; colspan2 present; no img or script elements",
+          "Independent reference link target blank and rel noopener noreferrer; no remote link opened",
+          "Actual browser original download bytes1185 and exact fixture SHA match",
+          "Catalogue registration filter returns only saved A; source retains frontend/typescript and selected group",
+          "Explicit online Capture created without acquire; acquire disabled until unchecked consent explicitly checked",
+          "Loopback blocked; GET original result after failure and refresh returns same rejected Capture, no retry button or logout",
+          "Final frontend rereads pre-existing fixed revision3e35367c5fcd4063bc1960a4c351c62f; Chinese code/emoji/indent/merged table retained"
+        ],
+        "capture_database_check": [
+          {
+            "state": "rejected",
+            "revision": 3,
+            "attempted": 1,
+            "capture_id": "0a2cd6d56df14647b4951e5d43a2488a",
+            "raw_sha256": null
+          },
+          {
+            "state": "ready",
+            "revision": 4,
+            "attempted": 0,
+            "capture_id": "0c8beaf49e954f8abe01d940cb4b46f5",
+            "raw_sha256": "d48e5cc06bf840194c22782c990f42c4178fa01893ced1d651aae2a745531572"
+          }
+        ],
+        "screenshots": {
+          "safe_reading": {
+            "path": "docs/stage2r5-web-reading.png",
+            "source_commit": "40ed01fcd5a9b55328e3d6afb68a60516cb3791a",
+            "sha256": "99d275731f503afd4d809d87913f7d5af2050d995b566d5cc54e2b1417c5a302"
+          },
+          "receipt": {
+            "path": "docs/stage2r5-web-receipt.png",
+            "source_commit": "c447475d5e0d774d0283ec9836dff43fcda5401b",
+            "sha256": "5cd55487e743d117c73c7a5a763197f30eef2285297272e351eb03c0463895d2",
+            "final_receipt_component_identical": true
+          }
+        },
+        "boundaries": [
+          "Refresh recovery is browser evidence; actual transport-lost-response behavior separately covered by client wire and service tests",
+          "UI test never fetched real Internet or RSSHub; local synthetic network attempt rejected before dial",
+          "DOM srcdoc attributes are evidence for rendered restrictions, not a complete browser network log",
+          "Native browser FileList read-only serialization returned empty and was not used as the file-selection oracle"
+        ],
+        "model_calls": 0,
+        "local_model_inference": 0,
+        "real_sites": 0,
+        "legacy_and_models_fingerprint_unchanged": true
+      }
+    }
+  },
+  "performance": {
+    "environment": "本机暖API、Node→Nginx→Go→真实MySQL／既有pgsty/silo S3兼容服务",
+    "feed_runs": 5,
+    "html_runs": 5,
+    "feed_raw_bytes": 2097152,
+    "feed_entries": 1000,
+    "selected_per_feed": 32,
+    "page_limit": 20,
+    "html_reading_bytes": 2097152,
+    "statistics": {
+      "upload_ms": {
+        "n": 10,
+        "median": 99.445,
+        "max": 122.43
+      },
+      "observe_ms": {
+        "n": 10,
+        "median": 340.18,
+        "max": 738.4
+      },
+      "page_ms": {
+        "n": 10,
+        "median": 35.035,
+        "max": 45.07
+      },
+      "confirm_ms": {
+        "n": 10,
+        "median": 301.12,
+        "max": 566.98
+      },
+      "reading_and_sha_ms": {
+        "n": 5,
+        "median": 70.42,
+        "max": 85.25
+      },
+      "rss_increment_mib": {
+        "n": 10,
+        "median": 2.283203125,
+        "max": 41.4609375
+      },
+      "hwm_upper_bound_increment_mib": {
+        "n": 10,
+        "median": 35.810546875,
+        "max": 42.48828125
+      }
+    },
+    "gate": {
+      "observe_max_ms": 2000,
+      "confirm_32_max_ms": 2000,
+      "parse_increment_rss_max_mib": 128,
+      "passed": true
+    },
+    "measurement": "RSS按100ms采样；HWM为进程累计上界相对起始RSS，不当作精确逐次解析峰值。/tmp实际分配峰值增量0，正文暂存文件0。五次最大值不是生产p95。"
+  },
+  "targeted_fixes": [
+    {
+      "commit": "5665204",
+      "problem": "安全阅读前端清洗丢失有效colspan/rowspan和tfoot。",
+      "change": "只允许TD/TH上的1—100跨度，其他属性删除；新增一项表格与恶意属性回归。"
+    },
+    {
+      "commit": "9fd9c0b",
+      "problem": "共享Input将文件框变成受控空值，真实原生选择后被清空。",
+      "change": "仅网页创建／刷新重选的两处使用原生非受控input；保留required与摘要检查，共享Input未改。"
+    },
+    {
+      "commit": "c447475",
+      "problem": "预览／回执显示未翻译动作键。",
+      "change": "增加zh/en网页动作词条，两个使用点修正。"
+    },
+    {
+      "commit": "40ed01f",
+      "problem": "等待取得或拒绝的快照被描述为已取得，Capture截止被称预览截止。",
+      "change": "描述成功后才有HTTP证明；截止改为快照有效期。"
+    }
+  ],
+  "harness_corrections": [
+    {
+      "observation": "Initial capacity counter queried the domain root instead of the registration native folder.",
+      "action": "Changed only ignored test query; no product change."
+    },
+    {
+      "observation": "Initial cancellation helper used an unsupported POST route.",
+      "action": "Used frozen DELETE endpoint; retained original failed request log."
+    },
+    {
+      "observation": "Initial saved_count assertion omitted unchanged_count and varied only unselected positional entries.",
+      "action": "Assert saved plus unchanged equals selected; five measured Feed runs vary all entries and confirm32 changed items."
+    },
+    {
+      "observation": "Initial procfs sampler emitted HWM before RSS.",
+      "action": "Relabeled retained preliminary maxima with original evidence preserved; repeated exactly the capacity cases with named-field sampler and retained actual RSS/HWM/temp sample arrays."
+    },
+    {
+      "observation": "First cross-process slot probe sent JSON content type to the binary endpoint.",
+      "action": "Sent the valid full binary request through the existing frozen endpoint; cross-process slot denial then passed."
+    },
+    {
+      "observation": "CUA只读FileList序列化为空，不能判定文件未选择；独立原生HTML表单成功后确认产品受控Input问题。",
+      "action": "以真实原生表单提交和上传SHA为证据；修复两处产品文件输入，不移除required。"
+    },
+    {
+      "observation": "首次额外类型对照从web目录运行，路径前缀与客户端根目录不同。",
+      "action": "保留初次输出，在同一仓库根运行原类型命令，207项逐字相同；不把原构建成功误称类型成功。"
+    }
+  ],
+  "runtime": {
+    "recorded_at": "2026-10-26T01:36:38.547Z",
+    "passed": true,
+    "frontend_commit": "40ed01fcd5a9b55328e3d6afb68a60516cb3791a",
+    "client_baseline": "7ed178957efe54f198a6a2f9c3f9dc50fbbc4d72",
+    "frontend_index_sha256": "6c63b9d9c9fe323392de434fc61550f098c308b0eea6141c17381ccdd72e014d",
+    "frontend_manifest_sha256": "f5fa124989dd98c0b489b80f53eceb46d15e16044d3d190c9a264cc1bd49aff0",
+    "frontend_artifact_count": 1058,
+    "backend_code": "1ac4e4f3cd0ca74e79ba10e71593287c18bc98ac",
+    "backend_binary_sha256": "2a7de569de80c9f27ed549ab10dc9de60519ecce0a52ad519c615919e8a37502",
+    "only_web_mount_source_changed": true,
+    "legacy_and_models_fingerprint_unchanged": true,
+    "old_assets_retained": true,
+    "app_healthy": true,
+    "model_calls": 0,
+    "real_sites": 0,
+    "credentials_regenerated": false,
+    "volumes_deleted": false,
+    "object_service": "Existing pgsty/silo S3-compatible service via existing MinIO SDK",
+    "six_services_healthy": true,
+    "legacy_documents": 6,
+    "legacy_chunks": 42,
+    "temporary_second_api_stopped": true,
+    "test_only_network_assembly_removed": true,
+    "temporary_builder_network_restored": true,
+    "builder_stopped_after_validation": true,
+    "synthetic_histories_retained": true,
+    "private_compose_backups_retained": true
+  },
+  "evidence": [
+    {
+      "path": ".local-data/stage2r5-20261026/runtime-smoke.json",
+      "sha256": "ad612baf23dfb822fdad194ab755a5a535520b0b3a682a42456413b226cd6979",
+      "bytes": 598,
+      "passed": true
+    },
+    {
+      "path": ".local-data/stage2r5-20261026/runtime-checks.json",
+      "sha256": "65b589f8297bd4bf58ed84165fd3feb04355fe62de56968107057851dba03769",
+      "bytes": 347,
+      "passed": true
+    },
+    {
+      "path": ".local-data/stage2r5-20261026/capacity-web.json",
+      "sha256": "cf6aa1022200c9c3a1aeda10351e5df69618da5b59e0646a89204b9a73b11eb5",
+      "bytes": 41284,
+      "passed": true
+    },
+    {
+      "path": ".local-data/stage2r5-20261026/web-runtime-sql-rollback.json",
+      "sha256": "b716d65ae759d27960373edb0d638a93a5ca05d15745ac5262adcfde31a0ace6",
+      "bytes": 871,
+      "passed": true
+    },
+    {
+      "path": ".local-data/stage2r5-20261026/web-runtime-crash.json",
+      "sha256": "7c393c2d43a57d1cde7c4a35a82859b18565f920a2e8a9ec75d790a395ae8a77",
+      "bytes": 3177,
+      "passed": true
+    },
+    {
+      "path": ".local-data/stage2r5-20261026/web-runtime-concurrency.json",
+      "sha256": "a99d8603b15a7b91fa660f912029c5bf07b195d51366269bdf8abd1f26038ef2",
+      "bytes": 596,
+      "passed": true
+    },
+    {
+      "path": ".local-data/stage2r5-20261026/web-runtime-cross-process.json",
+      "sha256": "3b182f4d14557d145d1f0473109b9145aefa3cac81e2d2473e9b0accd54bb5fb",
+      "bytes": 538,
+      "passed": true
+    },
+    {
+      "path": ".local-data/stage2r5-20261026/web-runtime-format-incremental.json",
+      "sha256": "2e130b47a4561e801c4f50df672d087658ea25db2cc2d07b483c2902f6ad5d44",
+      "bytes": 8031,
+      "passed": true
+    },
+    {
+      "path": ".local-data/stage2r5-20261026/web-runtime-network-assembly.json",
+      "sha256": "f905820979df516fb7610abf28a612aad5a8f57382437deaaa91d327e5ae0536",
+      "bytes": 1902,
+      "passed": true
+    },
+    {
+      "path": ".local-data/stage2r5-20261026/network-integration-run.json",
+      "sha256": "a7cd3ed5acc8dafcc3bd0fc52792c385b07abed5f84f4444dc5e92e8f0e358eb",
+      "bytes": 577,
+      "passed": true
+    },
+    {
+      "path": ".local-data/stage2r5-20261026/web-runtime-http-wait.json",
+      "sha256": "803030b652ad6df1b87084081f7750a51a860625f4e5fe9c6798712adbfb1d87",
+      "bytes": 668,
+      "passed": true
+    },
+    {
+      "path": ".local-data/stage2r5-20261026/web-browser-runtime.json",
+      "sha256": "81176525620acb666743956cc35efe22e3bdde544072502fc49a7058f95b0d08",
+      "bytes": 4136,
+      "passed": true
+    },
+    {
+      "path": ".local-data/stage2r5-20261026/web-final-v4-build.json",
+      "sha256": "f5fa124989dd98c0b489b80f53eceb46d15e16044d3d190c9a264cc1bd49aff0",
+      "bytes": 183043,
+      "passed": true
+    },
+    {
+      "path": ".local-data/stage2r5-20261026/web-final-v4-tests.json",
+      "sha256": "dbcbba1ab282bc34414a11e30f07edd7c0c5fab5bdbeda2f75343462ff0135e2",
+      "bytes": 47866,
+      "passed": true
+    },
+    {
+      "path": ".local-data/stage2r5-20261026/final-v4-web-runtime-switch.json",
+      "sha256": "d9b5757686a6cf04ff0908e645cb226a1487164526186ed8c696fcfddd8a7bdf",
+      "bytes": 830,
+      "passed": true
+    }
+  ],
+  "publication": {
+    "authorized": true,
+    "target": "main",
+    "source_and_document_commits": "see docs/stage2r5-main-integration.json",
+    "mode": "Normal hooks, branch push, main fast-forward and remote-ref comparison",
+    "credentials_in_git": false
+  },
+  "remaining": [
+    "R5工程用户验收Pending；R4决定独立Pending，阶段2整体未退出。",
+    "真实AIHOT／RSSHub路由、JS渲染、登录态抓取、非UTF-8、304缓存增量、持续订阅及生产负载未验证／未开放。",
+    "R6生命周期须具体C2 0.7候选确认后实施；R7真实资料退出仍须新范围授权。",
+    "阶段3结构／代码关系与文档阅读、阶段4可选索引检索引用、阶段5MCP模块临时授权、阶段6人格记忆未完成。"
+  ],
+  "governance_note": "沿用现有docs和中文技术方案；技能要求的工程验收单独请求，未发起用户禁止的多轮审查。持续目标active，不以本轮完成代替项目完成。",
+  "publication_checks": {
+    "protected_files": 29,
+    "public_files_scanned": 91,
+    "credential_matches": 0,
+    "scan_sha256": "79f15ec64c837369167c4b4bcaf7372d8e14518aeff476ee02f2ace93460cfee",
+    "diff_check_passed": true,
+    "normal_commit_hooks_required": true
+  }
+}
