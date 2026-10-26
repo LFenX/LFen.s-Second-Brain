@@ -69,6 +69,11 @@ export default {
       confirm: 'Confirm and save selected items',
       changeSelection: 'Cancel preview and select again',
       receipt: 'Fixed save receipt',
+      action: {
+        created: 'Created',
+        updated: 'Updated',
+        unchanged: 'Unchanged; keep revision',
+      },
       receiptCounts:
         'Created or updated {{saved}} · Unchanged content and classification {{unchanged}}',
       unchangedHint:

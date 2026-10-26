@@ -33,7 +33,7 @@ export default function WebReceiptPanel({ flow }: { flow: WebFlow }) {
             className="space-y-2 rounded-lg border border-border-button p-3"
           >
             <p>
-              {t('knowledgeImport.' + item.action)} ·{' '}
+              {t('knowledgeWeb.action.' + item.action)} ·{' '}
               {item.classification.language ||
                 t('knowledgeCatalogue.unknownLanguage')}
             </p>

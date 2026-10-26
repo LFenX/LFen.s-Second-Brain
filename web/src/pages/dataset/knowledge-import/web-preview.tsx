@@ -22,7 +22,8 @@ function Acknowledgement({
   return (
     <li className="space-y-2 rounded-lg border border-border-button p-4">
       <h3>
-        {item.title || item.entry_key} · {t('knowledgeImport.' + item.action)}
+        {item.title || item.entry_key} ·{' '}
+        {t('knowledgeWeb.action.' + item.action)}
       </h3>
       <p className="text-sm text-text-secondary">
         {t('knowledgeWeb.completeness.' + item.body_completeness)}

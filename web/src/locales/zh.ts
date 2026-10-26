@@ -64,6 +64,11 @@ export default {
       confirm: '确认保存所选项',
       changeSelection: '取消预览并重新选择',
       receipt: '固定保存回执',
+      action: {
+        created: '新增',
+        updated: '更新',
+        unchanged: '未变，沿用修订',
+      },
       receiptCounts:
         '新增或更新 {{saved}} 项 · 内容及分类未变 {{unchanged}} 项',
       unchangedHint:
