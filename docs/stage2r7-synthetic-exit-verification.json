@@ -1,0 +1,2047 @@
+{
+  "document_version": "v0.55",
+  "recorded_at": "2026-10-26T05:01:49.021Z",
+  "objective": "在R6最终Go/Web和现有冻结契约上完成R7纯合成跨入口工程验证，保留真实样本及人的阶段退出决定边界。",
+  "request_snapshot": {
+    "stage2_requirement": "已授权AICS样本、现有文档及网页快照能保存和回读同版原文；重复导入不重复发布，失败逐项说明；保存与索引状态分开；范围外路径、凭据及未授权资料不能进入云模型。RSSHub接入仍按第27章单独验证，网页快照不冒充RSSHub",
+    "source": "本地第二大脑知识库技术方案.md 35.8，经阶段0方案验收及持续推进指令保持；R6具体批准request_user_input_async/call_d40a6340e30f4cfab963ec2d26085eaa/0",
+    "continuous_user_instruction": "请注意后续的步骤，请你持续不断地进行下去，跟另外一个会话，甚至你可以开其他的会话去协调。但一个讯息是你必须要传达的，就是一定一定不能够停下来。一定一定就是至少说有一个会话不能停下来，要主会话不能停下来，你就是主会话，要牵动其他废话，持续不断地推进咱们这个工作，直到最后完成。",
+    "current_boundary": "只用合成资料、不调用模型、不启动多轮审查；新增共享契约确认前不接业务代码。"
+  },
+  "clarification": {
+    "state": "Settled",
+    "notice": "本次纯合成编排与现有范围一致，跳过重复提问；真实样本及新共享接口仍须独立具体授权。"
+  },
+  "baseline": {
+    "main": "4254dcf6ec1712da0a57bfc2e790de0134a76618",
+    "backend_commit": "2bfa0d9990e7c42c4927a47af747f12da4e3712e",
+    "frontend_commit": "c759990b62f44704b9370c19bcbf402668764899",
+    "binary_sha256": "af6e939567afe2edb176d110096fd4626d2e1b8d92a59a31643f6ac9583c915e",
+    "web_index_sha256": "1c96548dcbd9e5f6d798ee32582640a1e197e790da9816eb2d2510a0faee6859",
+    "loaded_artifacts_match": true,
+    "application_source_changed": false,
+    "backend_or_frontend_rebuilt": false,
+    "shared_contracts_changed": false
+  },
+  "collaboration": {
+    "writer": "A唯一源码／Git／运行写入",
+    "peer": "01a1746b-2de2-7413-906b-d2a4544017e3一次只读10步编排输入和下一阶段C4设计输入；未写入、执行、复查或替代真人决定",
+    "adversarial_review": "NotRun_UserProhibited"
+  },
+  "engineering": {
+    "synthetic_outcome": "Implemented_Verified",
+    "unique_fixture_inputs_exercised": 30,
+    "stable_sources": 12,
+    "counts": {
+      "stable_sources": 12,
+      "fixed_source_revisions": 28,
+      "source_nodes": 12,
+      "task_statuses": "partial_failed\t1\nsucceeded\t4"
+    },
+    "application_defects_fixed": 0,
+    "new_business_interfaces": false
+  },
+  "requirement_coverage": [
+    {
+      "quote": "已授权AICS样本、现有文档及网页快照能保存和回读同版原文；重复导入不重复发布，失败逐项说明；保存与索引状态分开；范围外路径、凭据及未授权资料不能进入云模型。RSSHub接入仍按第27章单独验证，网页快照不冒充RSSHub",
+      "reading": "真实已授权AICS／现有文档／网页快照同版原文",
+      "status": "部分实现／真实样本未执行",
+      "expected": "具体获准真实资料能保存并回读同版原文",
+      "actual": "本轮30纯合成输入已按预期处理，形成12稳定来源；空Feed不发布、冲突原子拒绝。当前真实资料范围未放开。",
+      "evidence": [
+        "verification.manual",
+        "verification.directory",
+        "verification.original",
+        "verification.web"
+      ],
+      "incomplete": "具体真实路径、章节／页、隐私排除与网站网络范围仍需真人授权；不以合成测试代替。"
+    },
+    {
+      "quote": "已授权AICS样本、现有文档及网页快照能保存和回读同版原文；重复导入不重复发布，失败逐项说明；保存与索引状态分开；范围外路径、凭据及未授权资料不能进入云模型。RSSHub接入仍按第27章单独验证，网页快照不冒充RSSHub",
+      "reading": "重复导入不重复发布",
+      "status": "已验证（合成）",
+      "expected": "稳定来源同文不增版，重排不产生错误修订，原键恢复同一结果",
+      "actual": "手动v1→v2→同文、RSS重排／旧同文修订复用及原键回执一致，历史不跳当前",
+      "evidence": [
+        "verification.manual",
+        "verification.web"
+      ]
+    },
+    {
+      "quote": "已授权AICS样本、现有文档及网页快照能保存和回读同版原文；重复导入不重复发布，失败逐项说明；保存与索引状态分开；范围外路径、凭据及未授权资料不能进入云模型。RSSHub接入仍按第27章单独验证，网页快照不冒充RSSHub",
+      "reading": "失败逐项说明",
+      "status": "已验证（合成）",
+      "expected": "成功与失败分别可查，原键恢复后只重试失败项",
+      "actual": "实际源文件预览后变化：2项任务一成功一source_changed，原键恢复partial_failed；新观察明确只重试失败项成功，原成功项保持",
+      "evidence": [
+        "verification.partial_recovery",
+        "verification.browser.partial_failure_and_retry"
+      ]
+    },
+    {
+      "quote": "已授权AICS样本、现有文档及网页快照能保存和回读同版原文；重复导入不重复发布，失败逐项说明；保存与索引状态分开；范围外路径、凭据及未授权资料不能进入云模型。RSSHub接入仍按第27章单独验证，网页快照不冒充RSSHub",
+      "reading": "保存与索引状态分开",
+      "status": "已验证（合成）",
+      "expected": "未解析／未索引来源仍能按固定修订读取",
+      "actual": "三类文档及64MiB原件无伪C1根，8件实际保存和固定整件／Range校验；页面明确模型0／结构后置／全文向量关闭",
+      "evidence": [
+        "verification.original",
+        "verification.browser"
+      ]
+    },
+    {
+      "quote": "已授权AICS样本、现有文档及网页快照能保存和回读同版原文；重复导入不重复发布，失败逐项说明；保存与索引状态分开；范围外路径、凭据及未授权资料不能进入云模型。RSSHub接入仍按第27章单独验证，网页快照不冒充RSSHub",
+      "reading": "范围外路径、凭据、未授权资料不能进入云模型",
+      "status": "已验证本轮权限及零模型；真实资料未执行",
+      "expected": "当前主体权限逐入口重核，禁止模型用途和越界读取",
+      "actual": "新合成域10个列表／详情／回执／节点／原件／网页／任务／项目拒绝无权主体；冻结路径隔离与R6权限证据直接引用；本轮API路由无模型或Acquire调用，旧POC及配置／用量／任务指纹相同",
+      "evidence": [
+        "verification.permissions",
+        "verification.final_checks",
+        "reused_evidence"
+      ],
+      "incomplete": "未运行网络抓包或真实资料外发；不声称已验证未获授权的真实资料处理。"
+    },
+    {
+      "quote": "已授权AICS样本、现有文档及网页快照能保存和回读同版原文；重复导入不重复发布，失败逐项说明；保存与索引状态分开；范围外路径、凭据及未授权资料不能进入云模型。RSSHub接入仍按第27章单独验证，网页快照不冒充RSSHub",
+      "reading": "RSSHub单独验证，快照不冒充RSSHub",
+      "status": "边界已保持／RSSHub未执行",
+      "expected": "保留Feed生产端身份，不把本地RSS当真实路由接入",
+      "actual": "12本地HTML／RSS／Atom快照，online_fetch0、RSSHub0；未访问真实站点",
+      "evidence": [
+        "verification.web"
+      ]
+    },
+    {
+      "quote": "只用合成资料、不调用模型、不启动多轮审查；新增共享契约确认前不接业务代码。",
+      "reading": "约束与当前执行范围",
+      "status": "已保持",
+      "expected": "不改冻结契约／应用接口，不扩展资料／模型／服务／卷权限",
+      "actual": "Go/Web源码和35保护文件摘要相同；仅忽略夹具与合成域记录及报告新增，原六服务／卷／凭据保持；没有多轮审查",
+      "evidence": [
+        "verification.final_checks",
+        "collaboration"
+      ]
+    }
+  ],
+  "inputs": [
+    {
+      "input": ".local-data/stage2r7-20261026/fixtures/v1/notes/one-liner.md",
+      "bytes": 83,
+      "sha256": "950287902dee9e95ab6f998cf4b06f14279e717d8a87a8a659862ccbdd81bb82",
+      "role": "manual_small",
+      "status": "SavedAndFixedReadOrValidatedRepresentation"
+    },
+    {
+      "input": ".local-data/stage2r7-20261026/fixtures/v1/frontend/columns.ts",
+      "bytes": 55,
+      "sha256": "9e0c9f40b8ec12115adccb0ae9d5e3dde69ad0dd5d331f6cba2427b7962c8064",
+      "role": "directory_and_batch",
+      "status": "SavedAndFixedReadOrValidatedRepresentation"
+    },
+    {
+      "input": ".local-data/stage2r7-20261026/fixtures/v1/frontend/table.ts",
+      "bytes": 281,
+      "sha256": "643321306806b885b109f26c801cf3d44db0695f4f57a8b99987219a89701353",
+      "role": "directory_and_batch",
+      "status": "SavedAndFixedReadOrValidatedRepresentation"
+    },
+    {
+      "input": ".local-data/stage2r7-20261026/fixtures/v1/backend/normalize.go",
+      "bytes": 214,
+      "sha256": "eea4e0cc7b1cfb7f0542695c705c3209d386189c0d8c0746aa8438193cfc7065",
+      "role": "directory_and_batch",
+      "status": "SavedAndFixedReadOrValidatedRepresentation"
+    },
+    {
+      "input": ".local-data/stage2r7-20261026/fixtures/v1/README.md",
+      "bytes": 380,
+      "sha256": "5ce27d37660a8e62c39bf44cc3073a328991c0660c33feb20067d02bd708464f",
+      "role": "project_manifest",
+      "status": "SavedAndFixedReadOrValidatedRepresentation"
+    },
+    {
+      "input": ".local-data/stage2r7-20261026/fixtures/v2/notes/one-liner.md",
+      "bytes": 83,
+      "sha256": "3e321f61bfbdef133c8ed0d9f02756ca662ac6465fd5b99bb13e9d3e7fbcd100",
+      "role": "manual_small",
+      "status": "SavedAndFixedReadOrValidatedRepresentation"
+    },
+    {
+      "input": ".local-data/stage2r7-20261026/fixtures/v2/frontend/columns.ts",
+      "bytes": 55,
+      "sha256": "e4c20a871ca17c92c7445ec14d1b6690192e1fdc9f9d9513eee894e2f6f4bfe7",
+      "role": "directory_and_batch",
+      "status": "SavedAndFixedReadOrValidatedRepresentation"
+    },
+    {
+      "input": ".local-data/stage2r7-20261026/fixtures/v2/frontend/table.ts",
+      "bytes": 281,
+      "sha256": "4b6028dccce65cc7337420b3505e6e107673f146c38693a9dd2e8f0569a3c02d",
+      "role": "directory_and_batch",
+      "status": "SavedAndFixedReadOrValidatedRepresentation"
+    },
+    {
+      "input": ".local-data/stage2r7-20261026/fixtures/v2/backend/normalize.go",
+      "bytes": 214,
+      "sha256": "0a1bc486a6c45de18c7d68938e029f5756230b0a217c0190661e8014d1fa2a33",
+      "role": "directory_and_batch",
+      "status": "SavedAndFixedReadOrValidatedRepresentation"
+    },
+    {
+      "input": ".local-data/stage2r7-20261026/fixtures/v2/README.md",
+      "bytes": 380,
+      "sha256": "67a65e604613d3428e40212cf5d2a8a8055563c785f677fb28264f0d7d408558",
+      "role": "project_manifest",
+      "status": "SavedAndFixedReadOrValidatedRepresentation"
+    },
+    {
+      "input": ".local-data/stage2r4-20261026/fixtures/valid/pdf/v1.pdf",
+      "bytes": 592,
+      "sha256": "f8a356fe976458855dc64bf559296a759c7b0c005171adc9aeb042c36809fa91",
+      "role": "original_upload",
+      "status": "SavedAndFixedReadOrValidatedRepresentation"
+    },
+    {
+      "input": ".local-data/stage2r4-20261026/fixtures/valid/pdf/v2.pdf",
+      "bytes": 592,
+      "sha256": "a5dba76036921343ffd9628e1c9f0051e42511a0bda215e4d536a47dba41a367",
+      "role": "original_upload",
+      "status": "SavedAndFixedReadOrValidatedRepresentation"
+    },
+    {
+      "input": ".local-data/stage2r4-20261026/fixtures/valid/pptx/v1.pptx",
+      "bytes": 1715,
+      "sha256": "35a6a1895b9598cf8ddb3b1e4bcaf4ec003e7bc858fcffea7dd222ccd3ea0f5a",
+      "role": "original_upload",
+      "status": "SavedAndFixedReadOrValidatedRepresentation"
+    },
+    {
+      "input": ".local-data/stage2r4-20261026/fixtures/valid/pptx/v2.pptx",
+      "bytes": 1715,
+      "sha256": "9360211192f7f1cfd36a0bc9f0672366fceacab00378f25211842a5fe04eefb2",
+      "role": "original_upload",
+      "status": "SavedAndFixedReadOrValidatedRepresentation"
+    },
+    {
+      "input": ".local-data/stage2r4-20261026/fixtures/valid/docx/v1.docx",
+      "bytes": 1014,
+      "sha256": "7735ff48d065e21f2d2f93a48eb772356d4df833e87021442af1c9435ff45ae4",
+      "role": "original_upload",
+      "status": "SavedAndFixedReadOrValidatedRepresentation"
+    },
+    {
+      "input": ".local-data/stage2r4-20261026/fixtures/valid/docx/v2.docx",
+      "bytes": 1014,
+      "sha256": "c3e9a9e1ccb9bb56c7bbc599997c45adc092e3e9fcea3f5297ea2c392ac3eb31",
+      "role": "original_upload",
+      "status": "SavedAndFixedReadOrValidatedRepresentation"
+    },
+    {
+      "input": ".local-data/stage2r4-20261026/fixtures/valid/text/64MiB-v1.tsx",
+      "bytes": 67108864,
+      "sha256": "3f2b6a6078caad2d45a425561f226108e3a5764b2e506ca24dae01b3863eb666",
+      "role": "large_original_only",
+      "status": "SavedAndFixedReadOrValidatedRepresentation"
+    },
+    {
+      "input": ".local-data/stage2r4-20261026/fixtures/valid/text/64MiB-v2.tsx",
+      "bytes": 67108864,
+      "sha256": "94ef8bb8fcb1ca59136103b73990e1e359b47a9d5f5a6e4042d5843b2b84da68",
+      "role": "large_original_only",
+      "status": "SavedAndFixedReadOrValidatedRepresentation"
+    },
+    {
+      "input": ".local-data/stage2r5-20261026/fixtures/page/v1.html",
+      "bytes": 671,
+      "sha256": "e67b85cde106900fe727e6022bd26e5790e0f1431224ae965aa09d87037ae507",
+      "role": "local_web_snapshot",
+      "status": "SavedAndFixedReadOrValidatedRepresentation"
+    },
+    {
+      "input": ".local-data/stage2r5-20261026/fixtures/page/v2.html",
+      "bytes": 671,
+      "sha256": "1c8bfba1f2590d0e1d712abd0cf533ae1c1e53aa538d07a45d2e32ec9eaed113",
+      "role": "local_web_snapshot",
+      "status": "SavedAndFixedReadOrValidatedRepresentation"
+    },
+    {
+      "input": ".local-data/stage2r5-20261026/fixtures/feed/ab.xml",
+      "bytes": 1185,
+      "sha256": "d48e5cc06bf840194c22782c990f42c4178fa01893ced1d651aae2a745531572",
+      "role": "local_web_snapshot",
+      "status": "SavedAndFixedReadOrValidatedRepresentation"
+    },
+    {
+      "input": ".local-data/stage2r5-20261026/fixtures/feed/ba.xml",
+      "bytes": 1185,
+      "sha256": "11846f3eabde40c77bf9f8c6c5d4a2501ed9324f69cd9755923f59a8cf86cf98",
+      "role": "local_web_snapshot",
+      "status": "SavedAndFixedReadOrValidatedRepresentation"
+    },
+    {
+      "input": ".local-data/stage2r5-20261026/fixtures/feed/changed-same-date.xml",
+      "bytes": 1185,
+      "sha256": "140ceeef7d661a7402d570de86fbf76025a4c00d78d630543fc314ad001d0608",
+      "role": "local_web_snapshot",
+      "status": "SavedAndFixedReadOrValidatedRepresentation"
+    },
+    {
+      "input": ".local-data/stage2r5-20261026/fixtures/feed/empty.xml",
+      "bytes": 247,
+      "sha256": "7e5db37ec7ec38af4fd10d85d02d490703a7f437be8aa5845d4fec828cde7585",
+      "role": "local_web_snapshot",
+      "status": "Observed_Empty_NoPublication"
+    },
+    {
+      "input": ".local-data/stage2r5-20261026/fixtures/feed/duplicate-same.xml",
+      "bytes": 1185,
+      "sha256": "549c076de44a57734912ce29711384d221b8bdcdd168cdee0a862abe8ea63690",
+      "role": "local_web_snapshot",
+      "status": "SavedAndFixedReadOrValidatedRepresentation"
+    },
+    {
+      "input": ".local-data/stage2r5-20261026/fixtures/feed/duplicate-conflict.xml",
+      "bytes": 1185,
+      "sha256": "4715a97d62a33e7f00c039c2e36317e240e795da34783e38ef70e50eee47b21f",
+      "role": "local_web_snapshot",
+      "status": "Observed_Conflict_RejectedAtomically"
+    },
+    {
+      "input": ".local-data/stage2r5-20261026/fixtures/atom/text.xml",
+      "bytes": 436,
+      "sha256": "47ea33b9fe4fdb0e06a18ca02b54386df56c4d75bac8ad708035d98f5af21aa0",
+      "role": "local_web_snapshot",
+      "status": "SavedAndFixedReadOrValidatedRepresentation"
+    },
+    {
+      "input": ".local-data/stage2r5-20261026/fixtures/atom/html.xml",
+      "bytes": 469,
+      "sha256": "23edb5fdd372c46b56c1167e788e8e6ed15a0424a85a42f7258f18c71d110a67",
+      "role": "local_web_snapshot",
+      "status": "SavedAndFixedReadOrValidatedRepresentation"
+    },
+    {
+      "input": ".local-data/stage2r5-20261026/fixtures/atom/xhtml.xml",
+      "bytes": 494,
+      "sha256": "e2c29b54189b3c25e115f82a97312abca9b9ec22a2d752718ab5d7628d934df1",
+      "role": "local_web_snapshot",
+      "status": "SavedAndFixedReadOrValidatedRepresentation"
+    },
+    {
+      "input": ".local-data/stage2r5-20261026/fixtures/atom/external.xml",
+      "bytes": 447,
+      "sha256": "ff0fd8c011420798f3a8e3653efa51a3a95f02b8d8011c3e238fdd3a83248a29",
+      "role": "local_web_snapshot",
+      "status": "SavedAndFixedReadOrValidatedRepresentation"
+    }
+  ],
+  "verification": {
+    "manual": {
+      "recorded_at": "2026-10-26T04:41:26.194Z",
+      "passed": true,
+      "registration_id": "b5c55c04af5f44be8280a2158b4eb975",
+      "logical_path": "notes/one-liner.md",
+      "source_stable": true,
+      "v1": {
+        "source_id": "747c5be0199b491bb7a6ada7d27692cc",
+        "revision": "c915e1e6ca9044fa808bb942d4b99bb1",
+        "sha256": "950287902dee9e95ab6f998cf4b06f14279e717d8a87a8a659862ccbdd81bb82",
+        "bytes": 83,
+        "fixed": true
+      },
+      "v2": {
+        "source_id": "747c5be0199b491bb7a6ada7d27692cc",
+        "revision": "b42a5da985c6425385499feb497e88d8",
+        "sha256": "3e321f61bfbdef133c8ed0d9f02756ca662ac6465fd5b99bb13e9d3e7fbcd100",
+        "bytes": 83,
+        "fixed": true
+      },
+      "same_content_revision_unchanged": true,
+      "original_request_receipts_equal": true,
+      "old_revision_still_readable": {
+        "source_id": "747c5be0199b491bb7a6ada7d27692cc",
+        "revision": "c915e1e6ca9044fa808bb942d4b99bb1",
+        "sha256": "950287902dee9e95ab6f998cf4b06f14279e717d8a87a8a659862ccbdd81bb82",
+        "bytes": 83,
+        "fixed": true
+      },
+      "new_business_interfaces": false,
+      "model_calls": 0
+    },
+    "directory": {
+      "recorded_at": "2026-10-26T04:43:37.102Z",
+      "passed": true,
+      "root_id": "cb37a0713fdc43e899c8dbd7b845631c",
+      "domain_id": "61204a90482a4c898e07792251b9f064",
+      "registration_id": "4aee3335fcc94bf781b5a896390e817e",
+      "files_per_version": 4,
+      "frontend_backend_separate_modules": true,
+      "directory_single": {
+        "source_id": "5921b1ecc5aa4bb2b023093758cca8c0",
+        "revision": "06aef3951688414eb132e5af2cdf23fe",
+        "sha256": "643321306806b885b109f26c801cf3d44db0695f4f57a8b99987219a89701353",
+        "bytes": 281,
+        "fixed": true
+      },
+      "batches": [
+        {
+          "task_id": "bc86396d86804d38b9540c3d8b5c4b58",
+          "counts": {
+            "total": 4,
+            "pending": 0,
+            "running": 0,
+            "succeeded": 4,
+            "failed": 0,
+            "cancelled": 0
+          },
+          "manifest_id": "bcc296c12994486bb8520caeb1063685",
+          "replaced": 0,
+          "carried": 0,
+          "fixed": [
+            {
+              "source_id": "fabfcf8a187d4638adcd5b6d53d71819",
+              "revision": "eae524d142d34fdea5e43c66b1417941",
+              "sha256": "5ce27d37660a8e62c39bf44cc3073a328991c0660c33feb20067d02bd708464f",
+              "bytes": 380,
+              "fixed": true
+            },
+            {
+              "source_id": "d4a0bd6b224b4a4facecaf0ead1ee427",
+              "revision": "477b9e8543d44f50a9dc7938e32f3883",
+              "sha256": "eea4e0cc7b1cfb7f0542695c705c3209d386189c0d8c0746aa8438193cfc7065",
+              "bytes": 214,
+              "fixed": true
+            },
+            {
+              "source_id": "7b9a715865e7489dbe9f7a92f5b50989",
+              "revision": "de6a4a169db94904bc25b3704b48df52",
+              "sha256": "9e0c9f40b8ec12115adccb0ae9d5e3dde69ad0dd5d331f6cba2427b7962c8064",
+              "bytes": 55,
+              "fixed": true
+            },
+            {
+              "source_id": "5921b1ecc5aa4bb2b023093758cca8c0",
+              "revision": "06aef3951688414eb132e5af2cdf23fe",
+              "sha256": "643321306806b885b109f26c801cf3d44db0695f4f57a8b99987219a89701353",
+              "bytes": 281,
+              "fixed": true
+            }
+          ]
+        },
+        {
+          "task_id": "3a7d16282ec145ff8549180e4b0df365",
+          "counts": {
+            "total": 2,
+            "pending": 0,
+            "running": 0,
+            "succeeded": 2,
+            "failed": 0,
+            "cancelled": 0
+          },
+          "manifest_id": "84e610fc8e47447ea5f05a3aaafce516",
+          "replaced": 2,
+          "carried": 2,
+          "fixed": [
+            {
+              "source_id": "fabfcf8a187d4638adcd5b6d53d71819",
+              "revision": "67ee1cb77d954ea48121fbb526bf9420",
+              "sha256": "67a65e604613d3428e40212cf5d2a8a8055563c785f677fb28264f0d7d408558",
+              "bytes": 380,
+              "fixed": true
+            },
+            {
+              "source_id": "5921b1ecc5aa4bb2b023093758cca8c0",
+              "revision": "a62d8837eb2b4e7692576fc0a9aea0ed",
+              "sha256": "4b6028dccce65cc7337420b3505e6e107673f146c38693a9dd2e8f0569a3c02d",
+              "bytes": 281,
+              "fixed": true
+            }
+          ]
+        },
+        {
+          "task_id": "d25d203447284ccfae6c325a03e5a18d",
+          "counts": {
+            "total": 2,
+            "pending": 0,
+            "running": 0,
+            "succeeded": 2,
+            "failed": 0,
+            "cancelled": 0
+          },
+          "manifest_id": "c86a9c2fd6c944cb945a1903ea132aa5",
+          "replaced": 2,
+          "carried": 2,
+          "fixed": [
+            {
+              "source_id": "d4a0bd6b224b4a4facecaf0ead1ee427",
+              "revision": "20e92f6fd34e4f36b55da0f49f76650f",
+              "sha256": "0a1bc486a6c45de18c7d68938e029f5756230b0a217c0190661e8014d1fa2a33",
+              "bytes": 214,
+              "fixed": true
+            },
+            {
+              "source_id": "7b9a715865e7489dbe9f7a92f5b50989",
+              "revision": "9dac714806c3458786afb3360865ed6c",
+              "sha256": "e4c20a871ca17c92c7445ec14d1b6690192e1fdc9f9d9513eee894e2f6f4bfe7",
+              "bytes": 55,
+              "fixed": true
+            }
+          ]
+        }
+      ],
+      "old_manifest_v1_still_readable": "bcc296c12994486bb8520caeb1063685",
+      "terminal_cancellation_does_not_retract_success": true,
+      "pending_cancellation_test_claimed": false,
+      "synthetic_root_only": true,
+      "same_existing_volume": true,
+      "new_services_or_volumes": false,
+      "model_calls": 0
+    },
+    "original": {
+      "passed": true,
+      "input_count": 8,
+      "large_input_count": 2,
+      "large_input_bytes_each": 67108864,
+      "uploaded_unique_fixture_bytes": 134224370,
+      "files": [
+        {
+          "input": ".local-data/stage2r4-20261026/fixtures/valid/pdf/v1.pdf",
+          "input_sha256": "f8a356fe976458855dc64bf559296a759c7b0c005171adc9aeb042c36809fa91",
+          "bytes": 592,
+          "source": {
+            "domain_id": "61204a90482a4c898e07792251b9f064",
+            "registration_id": "6825c14c27b342e691be226b1bfb36ce",
+            "source_id": "62c85bf1f06d42ffb4ca2f48f02f90bd",
+            "source_revision_id": "7b27e7fb5f2643f29e6e7b62ffa7217e",
+            "original_filename": "v1.pdf",
+            "relative_path": "documents/sample.pdf",
+            "classification": {
+              "group_id": "db5cfecce82141fc941f6143ed311d01",
+              "component_side": "non_code",
+              "language": ""
+            },
+            "sha256": "f8a356fe976458855dc64bf559296a759c7b0c005171adc9aeb042c36809fa91",
+            "byte_length": 592,
+            "media_type": "application/pdf",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T04:45:17Z"
+          },
+          "import_task_id": "9598c23d100d4f6d82bb4d8707de2154",
+          "ranges": [
+            {
+              "range": "bytes=0-15",
+              "bytes": 16,
+              "sha256": "4334e5a5f8e94e59a9308a6a1dfe20c1bd0c7dbacbceef17f0eb41ee7acd0b87"
+            },
+            {
+              "range": "bytes=580-591",
+              "bytes": 12,
+              "sha256": "2f0c931e4789508b6607abf3a3725e8de2fcc379b64984589670ab806a792352"
+            }
+          ]
+        },
+        {
+          "input": ".local-data/stage2r4-20261026/fixtures/valid/pdf/v2.pdf",
+          "input_sha256": "a5dba76036921343ffd9628e1c9f0051e42511a0bda215e4d536a47dba41a367",
+          "bytes": 592,
+          "source": {
+            "domain_id": "61204a90482a4c898e07792251b9f064",
+            "registration_id": "6825c14c27b342e691be226b1bfb36ce",
+            "source_id": "62c85bf1f06d42ffb4ca2f48f02f90bd",
+            "source_revision_id": "2c09354b1a3d4aa5b4f802cfdfce963c",
+            "original_filename": "v2.pdf",
+            "relative_path": "documents/sample.pdf",
+            "classification": {
+              "group_id": "db5cfecce82141fc941f6143ed311d01",
+              "component_side": "non_code",
+              "language": ""
+            },
+            "sha256": "a5dba76036921343ffd9628e1c9f0051e42511a0bda215e4d536a47dba41a367",
+            "byte_length": 592,
+            "media_type": "application/pdf",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T04:46:13Z"
+          },
+          "import_task_id": "594954993ce04f8fb9e5343f6169f246",
+          "ranges": [
+            {
+              "range": "bytes=0-15",
+              "bytes": 16,
+              "sha256": "4334e5a5f8e94e59a9308a6a1dfe20c1bd0c7dbacbceef17f0eb41ee7acd0b87"
+            },
+            {
+              "range": "bytes=580-591",
+              "bytes": 12,
+              "sha256": "2f0c931e4789508b6607abf3a3725e8de2fcc379b64984589670ab806a792352"
+            }
+          ]
+        },
+        {
+          "input": ".local-data/stage2r4-20261026/fixtures/valid/pptx/v1.pptx",
+          "input_sha256": "35a6a1895b9598cf8ddb3b1e4bcaf4ec003e7bc858fcffea7dd222ccd3ea0f5a",
+          "bytes": 1715,
+          "source": {
+            "domain_id": "61204a90482a4c898e07792251b9f064",
+            "registration_id": "6825c14c27b342e691be226b1bfb36ce",
+            "source_id": "1449ebc7e9e34db1b722079ee27efd32",
+            "source_revision_id": "a316cce29d8f4d118391fba70e8ebdbf",
+            "original_filename": "v1.pptx",
+            "relative_path": "documents/sample.pptx",
+            "classification": {
+              "group_id": "db5cfecce82141fc941f6143ed311d01",
+              "component_side": "non_code",
+              "language": ""
+            },
+            "sha256": "35a6a1895b9598cf8ddb3b1e4bcaf4ec003e7bc858fcffea7dd222ccd3ea0f5a",
+            "byte_length": 1715,
+            "media_type": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T04:46:14Z"
+          },
+          "import_task_id": "6562a5ea4174480580f8ade807459636",
+          "ranges": [
+            {
+              "range": "bytes=0-15",
+              "bytes": 16,
+              "sha256": "0ffc0d8a017443ca1f47a3c7bdb58ddc58f7af7c1499bb6ebbcafe9c4dcffb27"
+            },
+            {
+              "range": "bytes=1703-1714",
+              "bytes": 12,
+              "sha256": "8c904420dff6416076ef98becee9b52550eedf28001396e4099f9cb73bc7cf3f"
+            }
+          ]
+        },
+        {
+          "input": ".local-data/stage2r4-20261026/fixtures/valid/pptx/v2.pptx",
+          "input_sha256": "9360211192f7f1cfd36a0bc9f0672366fceacab00378f25211842a5fe04eefb2",
+          "bytes": 1715,
+          "source": {
+            "domain_id": "61204a90482a4c898e07792251b9f064",
+            "registration_id": "6825c14c27b342e691be226b1bfb36ce",
+            "source_id": "1449ebc7e9e34db1b722079ee27efd32",
+            "source_revision_id": "1d1075bcff6946bf8951c7da0869cdcb",
+            "original_filename": "v2.pptx",
+            "relative_path": "documents/sample.pptx",
+            "classification": {
+              "group_id": "db5cfecce82141fc941f6143ed311d01",
+              "component_side": "non_code",
+              "language": ""
+            },
+            "sha256": "9360211192f7f1cfd36a0bc9f0672366fceacab00378f25211842a5fe04eefb2",
+            "byte_length": 1715,
+            "media_type": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T04:46:15Z"
+          },
+          "import_task_id": "ccbfcea0dde0415292fd2aad02f45c81",
+          "ranges": [
+            {
+              "range": "bytes=0-15",
+              "bytes": 16,
+              "sha256": "0ffc0d8a017443ca1f47a3c7bdb58ddc58f7af7c1499bb6ebbcafe9c4dcffb27"
+            },
+            {
+              "range": "bytes=1703-1714",
+              "bytes": 12,
+              "sha256": "8c904420dff6416076ef98becee9b52550eedf28001396e4099f9cb73bc7cf3f"
+            }
+          ]
+        },
+        {
+          "input": ".local-data/stage2r4-20261026/fixtures/valid/docx/v1.docx",
+          "input_sha256": "7735ff48d065e21f2d2f93a48eb772356d4df833e87021442af1c9435ff45ae4",
+          "bytes": 1014,
+          "source": {
+            "domain_id": "61204a90482a4c898e07792251b9f064",
+            "registration_id": "6825c14c27b342e691be226b1bfb36ce",
+            "source_id": "4bff4b86ea3e46a0b515114bf37b36ec",
+            "source_revision_id": "289c5f71dd8a481caa107966889fcd85",
+            "original_filename": "v1.docx",
+            "relative_path": "documents/sample.docx",
+            "classification": {
+              "group_id": "db5cfecce82141fc941f6143ed311d01",
+              "component_side": "non_code",
+              "language": ""
+            },
+            "sha256": "7735ff48d065e21f2d2f93a48eb772356d4df833e87021442af1c9435ff45ae4",
+            "byte_length": 1014,
+            "media_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T04:46:16Z"
+          },
+          "import_task_id": "cce6afa14edb436eb3eb9b609c003852",
+          "ranges": [
+            {
+              "range": "bytes=0-15",
+              "bytes": 16,
+              "sha256": "5206523da636697171833fdd174577f0a0ba6e7b8341746b6892c7c5f9029aa3"
+            },
+            {
+              "range": "bytes=1002-1013",
+              "bytes": 12,
+              "sha256": "b8ee1c2a7b753b6c11d36832491944c2d2454aa0cb3cb6e99832d5d1865b4e42"
+            }
+          ]
+        },
+        {
+          "input": ".local-data/stage2r4-20261026/fixtures/valid/docx/v2.docx",
+          "input_sha256": "c3e9a9e1ccb9bb56c7bbc599997c45adc092e3e9fcea3f5297ea2c392ac3eb31",
+          "bytes": 1014,
+          "source": {
+            "domain_id": "61204a90482a4c898e07792251b9f064",
+            "registration_id": "6825c14c27b342e691be226b1bfb36ce",
+            "source_id": "4bff4b86ea3e46a0b515114bf37b36ec",
+            "source_revision_id": "32adf3c43cd8494f961b9d60d2a4c351",
+            "original_filename": "v2.docx",
+            "relative_path": "documents/sample.docx",
+            "classification": {
+              "group_id": "db5cfecce82141fc941f6143ed311d01",
+              "component_side": "non_code",
+              "language": ""
+            },
+            "sha256": "c3e9a9e1ccb9bb56c7bbc599997c45adc092e3e9fcea3f5297ea2c392ac3eb31",
+            "byte_length": 1014,
+            "media_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T04:46:17Z"
+          },
+          "import_task_id": "042c84eda97e412a91bd52231b6f3167",
+          "ranges": [
+            {
+              "range": "bytes=0-15",
+              "bytes": 16,
+              "sha256": "5206523da636697171833fdd174577f0a0ba6e7b8341746b6892c7c5f9029aa3"
+            },
+            {
+              "range": "bytes=1002-1013",
+              "bytes": 12,
+              "sha256": "b8ee1c2a7b753b6c11d36832491944c2d2454aa0cb3cb6e99832d5d1865b4e42"
+            }
+          ]
+        },
+        {
+          "input": ".local-data/stage2r4-20261026/fixtures/valid/text/64MiB-v1.tsx",
+          "input_sha256": "3f2b6a6078caad2d45a425561f226108e3a5764b2e506ca24dae01b3863eb666",
+          "bytes": 67108864,
+          "source": {
+            "domain_id": "61204a90482a4c898e07792251b9f064",
+            "registration_id": "6825c14c27b342e691be226b1bfb36ce",
+            "source_id": "a15768d8d3074ff2bfaacae2300c4004",
+            "source_revision_id": "25f22a977ee6437c932edc8406c19b49",
+            "original_filename": "64MiB-v1.tsx",
+            "relative_path": "frontend/large.tsx",
+            "classification": {
+              "group_id": "e2618053a4104b0d8f5d5e83a4bb9b06",
+              "component_side": "frontend",
+              "language": "tsx"
+            },
+            "sha256": "3f2b6a6078caad2d45a425561f226108e3a5764b2e506ca24dae01b3863eb666",
+            "byte_length": 67108864,
+            "media_type": "text/plain",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T04:46:18Z"
+          },
+          "import_task_id": "7e3b13867347421eb10649f867f6ba3e",
+          "ranges": [
+            {
+              "range": "bytes=0-15",
+              "bytes": 16,
+              "sha256": "2057810f30765316b370d8a7e649dfe469849c9aae0b5b81aa5e04cff34e7707"
+            },
+            {
+              "range": "bytes=67108852-67108863",
+              "bytes": 12,
+              "sha256": "c7a63d76c07815fd1c71a1e5083e0330a41668ae5965df3bc1096f5dd82cc914"
+            },
+            {
+              "range": "bytes=65520-65551",
+              "bytes": 32,
+              "sha256": "e5e4b55ba9385b5d863e0a698fbed7d0cb1fb1012d3a749588a128a1cb6283c8"
+            }
+          ]
+        },
+        {
+          "input": ".local-data/stage2r4-20261026/fixtures/valid/text/64MiB-v2.tsx",
+          "input_sha256": "94ef8bb8fcb1ca59136103b73990e1e359b47a9d5f5a6e4042d5843b2b84da68",
+          "bytes": 67108864,
+          "source": {
+            "domain_id": "61204a90482a4c898e07792251b9f064",
+            "registration_id": "6825c14c27b342e691be226b1bfb36ce",
+            "source_id": "a15768d8d3074ff2bfaacae2300c4004",
+            "source_revision_id": "78abcebceb734a0a8537207625ff7617",
+            "original_filename": "64MiB-v2.tsx",
+            "relative_path": "frontend/large.tsx",
+            "classification": {
+              "group_id": "e2618053a4104b0d8f5d5e83a4bb9b06",
+              "component_side": "frontend",
+              "language": "tsx"
+            },
+            "sha256": "94ef8bb8fcb1ca59136103b73990e1e359b47a9d5f5a6e4042d5843b2b84da68",
+            "byte_length": 67108864,
+            "media_type": "text/plain",
+            "representation_kind": "original_only",
+            "root_node_id": null,
+            "text_available": false,
+            "parse_status": "not_parsed",
+            "structure_status": "not_built",
+            "full_text_status": "not_built",
+            "vector_status": "not_built",
+            "is_current": true,
+            "created_at": "2026-10-26T04:46:20Z"
+          },
+          "import_task_id": "10db0f6213aa48bfaae5d745a8fe7c98",
+          "ranges": [
+            {
+              "range": "bytes=0-15",
+              "bytes": 16,
+              "sha256": "2057810f30765316b370d8a7e649dfe469849c9aae0b5b81aa5e04cff34e7707"
+            },
+            {
+              "range": "bytes=67108852-67108863",
+              "bytes": 12,
+              "sha256": "35d3b756469fbf5f48be364037092aab1d5679d75288beaf8d9a8a5335346963"
+            },
+            {
+              "range": "bytes=65520-65551",
+              "bytes": 32,
+              "sha256": "e5e4b55ba9385b5d863e0a698fbed7d0cb1fb1012d3a749588a128a1cb6283c8"
+            }
+          ]
+        }
+      ],
+      "each_large_file_real_upload_full_download_and_cross_buffer_range": true,
+      "parsing_performed": false,
+      "indexes_built": false,
+      "old_versions_readable": true
+    },
+    "web": {
+      "recorded_at": "2026-10-26T04:49:35.402Z",
+      "passed": true,
+      "input_count": 12,
+      "cases": [
+        {
+          "input": ".local-data/stage2r5-20261026/fixtures/page/v1.html",
+          "input_sha256": "e67b85cde106900fe727e6022bd26e5790e0f1431224ae965aa09d87037ae507",
+          "input_bytes": 671,
+          "capture_id": "6a9b9b06efbd4a62802d1c442efbb1af",
+          "observation_id": "050806d913d149de97288c8632c550e1",
+          "observation_error": null,
+          "selected_count": 1,
+          "saved_count": 1,
+          "unchanged_count": 0,
+          "fixed": [
+            {
+              "source_id": "6b58f1bc769f4555a5b34204871ec593",
+              "source_revision_id": "fe02dbf2e61742b0a59fedab21403b07",
+              "metadata": {
+                "title": "合成代码资料 1",
+                "authors": [],
+                "categories": [],
+                "published": null,
+                "updated": null,
+                "canonical_declared": "https://synthetic.invalid/canonical/shared",
+                "canonical_resolved": "https://synthetic.invalid/canonical/shared",
+                "effective_base": "https://synthetic.invalid/base/",
+                "body_completeness": "unknown"
+              },
+              "capture_id": "6a9b9b06efbd4a62802d1c442efbb1af",
+              "capture_sha256": "e67b85cde106900fe727e6022bd26e5790e0f1431224ae965aa09d87037ae507",
+              "source_input_sha256": "31763a07345b5fe46d3aef764c6bd3521f5b24de1720cd41cc56903646bd6be9",
+              "representations": [
+                {
+                  "kind": "decoded_content",
+                  "media_type": "text/html",
+                  "encoding": "utf-8",
+                  "byte_length": 671,
+                  "sha256": "e67b85cde106900fe727e6022bd26e5790e0f1431224ae965aa09d87037ae507",
+                  "converter_version": "web-reading/0.6.0",
+                  "sanitizer_version": null,
+                  "resource_policy_version": null,
+                  "actual_sha256": "e67b85cde106900fe727e6022bd26e5790e0f1431224ae965aa09d87037ae507"
+                },
+                {
+                  "kind": "safe_reading",
+                  "media_type": "text/html",
+                  "encoding": "utf-8",
+                  "byte_length": 993,
+                  "sha256": "41c3d1c9f3dbdb40eb73f5478a76382bcc9217c497afe2cd73c0ddf3761d5bd4",
+                  "converter_version": "web-reading/0.6.0",
+                  "sanitizer_version": "web-sanitizer/0.6.0",
+                  "resource_policy_version": "web-resources/0.6.0",
+                  "actual_sha256": "41c3d1c9f3dbdb40eb73f5478a76382bcc9217c497afe2cd73c0ddf3761d5bd4"
+                }
+              ],
+              "reference_count": 2
+            }
+          ],
+          "original_request_recovered": true
+        },
+        {
+          "input": ".local-data/stage2r5-20261026/fixtures/page/v2.html",
+          "input_sha256": "1c8bfba1f2590d0e1d712abd0cf533ae1c1e53aa538d07a45d2e32ec9eaed113",
+          "input_bytes": 671,
+          "capture_id": "406173b0b6f94287b1f245e073e244df",
+          "observation_id": "01bd7e951b4c45fda1d32b818cbb6745",
+          "observation_error": null,
+          "selected_count": 1,
+          "saved_count": 1,
+          "unchanged_count": 0,
+          "fixed": [
+            {
+              "source_id": "6b58f1bc769f4555a5b34204871ec593",
+              "source_revision_id": "d8fe4531c30b4e3fbdd0e6c113c4a314",
+              "metadata": {
+                "title": "合成代码资料 2",
+                "authors": [],
+                "categories": [],
+                "published": null,
+                "updated": null,
+                "canonical_declared": "https://synthetic.invalid/canonical/shared",
+                "canonical_resolved": "https://synthetic.invalid/canonical/shared",
+                "effective_base": "https://synthetic.invalid/base/",
+                "body_completeness": "unknown"
+              },
+              "capture_id": "406173b0b6f94287b1f245e073e244df",
+              "capture_sha256": "1c8bfba1f2590d0e1d712abd0cf533ae1c1e53aa538d07a45d2e32ec9eaed113",
+              "source_input_sha256": "c1f5d98f1912be88110383a952a370c3db9610499c9afdb4e3f753774d3e92c5",
+              "representations": [
+                {
+                  "kind": "decoded_content",
+                  "media_type": "text/html",
+                  "encoding": "utf-8",
+                  "byte_length": 671,
+                  "sha256": "1c8bfba1f2590d0e1d712abd0cf533ae1c1e53aa538d07a45d2e32ec9eaed113",
+                  "converter_version": "web-reading/0.6.0",
+                  "sanitizer_version": null,
+                  "resource_policy_version": null,
+                  "actual_sha256": "1c8bfba1f2590d0e1d712abd0cf533ae1c1e53aa538d07a45d2e32ec9eaed113"
+                },
+                {
+                  "kind": "safe_reading",
+                  "media_type": "text/html",
+                  "encoding": "utf-8",
+                  "byte_length": 993,
+                  "sha256": "6cb336ac98cbf6049bc25b3cadb7293d69932b2d23ada8e0ad32ab502f439432",
+                  "converter_version": "web-reading/0.6.0",
+                  "sanitizer_version": "web-sanitizer/0.6.0",
+                  "resource_policy_version": "web-resources/0.6.0",
+                  "actual_sha256": "6cb336ac98cbf6049bc25b3cadb7293d69932b2d23ada8e0ad32ab502f439432"
+                }
+              ],
+              "reference_count": 2
+            }
+          ],
+          "original_request_recovered": true
+        },
+        {
+          "input": ".local-data/stage2r5-20261026/fixtures/feed/ab.xml",
+          "input_sha256": "d48e5cc06bf840194c22782c990f42c4178fa01893ced1d651aae2a745531572",
+          "input_bytes": 1185,
+          "capture_id": "10cad1ef56674de0af2cf74b2ae6f26e",
+          "observation_id": "cf76540b7966458da275bae69aed2cf7",
+          "observation_error": null,
+          "selected_count": 1,
+          "saved_count": 1,
+          "unchanged_count": 0,
+          "fixed": [
+            {
+              "source_id": "6c097d69443647398f7f6f788b5103fc",
+              "source_revision_id": "f4a4c29a8aa0443f9b2c6dd957e1b069",
+              "metadata": {
+                "title": "合成条目 A",
+                "authors": [
+                  {
+                    "name": "synthetic-author",
+                    "uri": null,
+                    "email": null
+                  }
+                ],
+                "categories": [
+                  "frontend"
+                ],
+                "published": "Sun, 25 Oct 2026 00:00:00 GMT",
+                "updated": null,
+                "canonical_declared": null,
+                "canonical_resolved": null,
+                "effective_base": "https://synthetic.invalid/r7/rss",
+                "body_completeness": "unknown"
+              },
+              "capture_id": "10cad1ef56674de0af2cf74b2ae6f26e",
+              "capture_sha256": "d48e5cc06bf840194c22782c990f42c4178fa01893ced1d651aae2a745531572",
+              "source_input_sha256": "2d7e9d56805a23201ce9a0fae15d86e4e888fe399d2127c64f85c10c2d50bfbf",
+              "representations": [
+                {
+                  "kind": "decoded_content",
+                  "media_type": "text/html",
+                  "encoding": "utf-8",
+                  "byte_length": 131,
+                  "sha256": "ed3d3afb5c129495fc1d04bc97e3ac761627df69c3823aabe81293dae1ed51c1",
+                  "converter_version": "web-reading/0.6.0",
+                  "sanitizer_version": null,
+                  "resource_policy_version": null,
+                  "actual_sha256": "ed3d3afb5c129495fc1d04bc97e3ac761627df69c3823aabe81293dae1ed51c1"
+                },
+                {
+                  "kind": "safe_reading",
+                  "media_type": "text/html",
+                  "encoding": "utf-8",
+                  "byte_length": 786,
+                  "sha256": "ff5459120dd0ce2bd9cb98d16416cece145d7c765fda39007182320897383252",
+                  "converter_version": "web-reading/0.6.0",
+                  "sanitizer_version": "web-sanitizer/0.6.0",
+                  "resource_policy_version": "web-resources/0.6.0",
+                  "actual_sha256": "ff5459120dd0ce2bd9cb98d16416cece145d7c765fda39007182320897383252"
+                }
+              ],
+              "reference_count": 1
+            }
+          ],
+          "original_request_recovered": true
+        },
+        {
+          "input": ".local-data/stage2r5-20261026/fixtures/feed/ba.xml",
+          "input_sha256": "11846f3eabde40c77bf9f8c6c5d4a2501ed9324f69cd9755923f59a8cf86cf98",
+          "input_bytes": 1185,
+          "capture_id": "2304eea669334ecc8115e738a22f09b1",
+          "observation_id": "66d4af620a1247899e9065b4ce30e545",
+          "observation_error": null,
+          "selected_count": 1,
+          "saved_count": 0,
+          "unchanged_count": 1,
+          "fixed": [
+            {
+              "source_id": "6c097d69443647398f7f6f788b5103fc",
+              "source_revision_id": "f4a4c29a8aa0443f9b2c6dd957e1b069",
+              "metadata": {
+                "title": "合成条目 A",
+                "authors": [
+                  {
+                    "name": "synthetic-author",
+                    "uri": null,
+                    "email": null
+                  }
+                ],
+                "categories": [
+                  "frontend"
+                ],
+                "published": "Sun, 25 Oct 2026 00:00:00 GMT",
+                "updated": null,
+                "canonical_declared": null,
+                "canonical_resolved": null,
+                "effective_base": "https://synthetic.invalid/r7/rss",
+                "body_completeness": "unknown"
+              },
+              "capture_id": "10cad1ef56674de0af2cf74b2ae6f26e",
+              "capture_sha256": "d48e5cc06bf840194c22782c990f42c4178fa01893ced1d651aae2a745531572",
+              "source_input_sha256": "2d7e9d56805a23201ce9a0fae15d86e4e888fe399d2127c64f85c10c2d50bfbf",
+              "representations": [
+                {
+                  "kind": "decoded_content",
+                  "media_type": "text/html",
+                  "encoding": "utf-8",
+                  "byte_length": 131,
+                  "sha256": "ed3d3afb5c129495fc1d04bc97e3ac761627df69c3823aabe81293dae1ed51c1",
+                  "converter_version": "web-reading/0.6.0",
+                  "sanitizer_version": null,
+                  "resource_policy_version": null,
+                  "actual_sha256": "ed3d3afb5c129495fc1d04bc97e3ac761627df69c3823aabe81293dae1ed51c1"
+                },
+                {
+                  "kind": "safe_reading",
+                  "media_type": "text/html",
+                  "encoding": "utf-8",
+                  "byte_length": 786,
+                  "sha256": "ff5459120dd0ce2bd9cb98d16416cece145d7c765fda39007182320897383252",
+                  "converter_version": "web-reading/0.6.0",
+                  "sanitizer_version": "web-sanitizer/0.6.0",
+                  "resource_policy_version": "web-resources/0.6.0",
+                  "actual_sha256": "ff5459120dd0ce2bd9cb98d16416cece145d7c765fda39007182320897383252"
+                }
+              ],
+              "reference_count": 1
+            }
+          ],
+          "original_request_recovered": true
+        },
+        {
+          "input": ".local-data/stage2r5-20261026/fixtures/feed/changed-same-date.xml",
+          "input_sha256": "140ceeef7d661a7402d570de86fbf76025a4c00d78d630543fc314ad001d0608",
+          "input_bytes": 1185,
+          "capture_id": "960fe748bbea4a588f5b84f564ed598a",
+          "observation_id": "f741394d467e4694830987b4f3e1b03b",
+          "observation_error": null,
+          "selected_count": 1,
+          "saved_count": 1,
+          "unchanged_count": 0,
+          "fixed": [
+            {
+              "source_id": "6c097d69443647398f7f6f788b5103fc",
+              "source_revision_id": "073d92016a5d4ad7b4e86882fa7ef573",
+              "metadata": {
+                "title": "合成条目 A",
+                "authors": [
+                  {
+                    "name": "synthetic-author",
+                    "uri": null,
+                    "email": null
+                  }
+                ],
+                "categories": [
+                  "frontend"
+                ],
+                "published": "Sun, 25 Oct 2026 00:00:00 GMT",
+                "updated": null,
+                "canonical_declared": null,
+                "canonical_resolved": null,
+                "effective_base": "https://synthetic.invalid/r7/rss",
+                "body_completeness": "unknown"
+              },
+              "capture_id": "960fe748bbea4a588f5b84f564ed598a",
+              "capture_sha256": "140ceeef7d661a7402d570de86fbf76025a4c00d78d630543fc314ad001d0608",
+              "source_input_sha256": "22b6b463bc8fe6adcb25a6f77af1eba57dd8d865bfcf83c6bc7cb85f59b55130",
+              "representations": [
+                {
+                  "kind": "decoded_content",
+                  "media_type": "text/html",
+                  "encoding": "utf-8",
+                  "byte_length": 131,
+                  "sha256": "d9d0446f50950da3254887863b71dee85ab145c9f7fde0e028d7b5fb97e49bb5",
+                  "converter_version": "web-reading/0.6.0",
+                  "sanitizer_version": null,
+                  "resource_policy_version": null,
+                  "actual_sha256": "d9d0446f50950da3254887863b71dee85ab145c9f7fde0e028d7b5fb97e49bb5"
+                },
+                {
+                  "kind": "safe_reading",
+                  "media_type": "text/html",
+                  "encoding": "utf-8",
+                  "byte_length": 786,
+                  "sha256": "c35aea4318f69b40262dfccf7a8a8fcf25d26f5b0f648c651e8ab7bb3535a67f",
+                  "converter_version": "web-reading/0.6.0",
+                  "sanitizer_version": "web-sanitizer/0.6.0",
+                  "resource_policy_version": "web-resources/0.6.0",
+                  "actual_sha256": "c35aea4318f69b40262dfccf7a8a8fcf25d26f5b0f648c651e8ab7bb3535a67f"
+                }
+              ],
+              "reference_count": 1
+            }
+          ],
+          "original_request_recovered": true
+        },
+        {
+          "input": ".local-data/stage2r5-20261026/fixtures/feed/empty.xml",
+          "input_sha256": "7e5db37ec7ec38af4fd10d85d02d490703a7f437be8aa5845d4fec828cde7585",
+          "input_bytes": 247,
+          "capture_id": "a6aeadd18ec7480cb715f5eef9bc7205",
+          "observation_id": "a3012aaafc984634bfd9b40282f593d1",
+          "observation_error": null,
+          "selected_count": 0,
+          "saved_count": 0,
+          "unchanged_count": 0,
+          "fixed": [],
+          "original_request_recovered": false
+        },
+        {
+          "input": ".local-data/stage2r5-20261026/fixtures/feed/duplicate-same.xml",
+          "input_sha256": "549c076de44a57734912ce29711384d221b8bdcdd168cdee0a862abe8ea63690",
+          "input_bytes": 1185,
+          "capture_id": "3f6bd1681c224f5b8ca3566a99a73716",
+          "observation_id": "6733af455905400082f93da88e9d6669",
+          "observation_error": null,
+          "selected_count": 1,
+          "saved_count": 1,
+          "unchanged_count": 0,
+          "fixed": [
+            {
+              "source_id": "6c097d69443647398f7f6f788b5103fc",
+              "source_revision_id": "f4a4c29a8aa0443f9b2c6dd957e1b069",
+              "metadata": {
+                "title": "合成条目 A",
+                "authors": [
+                  {
+                    "name": "synthetic-author",
+                    "uri": null,
+                    "email": null
+                  }
+                ],
+                "categories": [
+                  "frontend"
+                ],
+                "published": "Sun, 25 Oct 2026 00:00:00 GMT",
+                "updated": null,
+                "canonical_declared": null,
+                "canonical_resolved": null,
+                "effective_base": "https://synthetic.invalid/r7/rss",
+                "body_completeness": "unknown"
+              },
+              "capture_id": "10cad1ef56674de0af2cf74b2ae6f26e",
+              "capture_sha256": "d48e5cc06bf840194c22782c990f42c4178fa01893ced1d651aae2a745531572",
+              "source_input_sha256": "2d7e9d56805a23201ce9a0fae15d86e4e888fe399d2127c64f85c10c2d50bfbf",
+              "representations": [
+                {
+                  "kind": "decoded_content",
+                  "media_type": "text/html",
+                  "encoding": "utf-8",
+                  "byte_length": 131,
+                  "sha256": "ed3d3afb5c129495fc1d04bc97e3ac761627df69c3823aabe81293dae1ed51c1",
+                  "converter_version": "web-reading/0.6.0",
+                  "sanitizer_version": null,
+                  "resource_policy_version": null,
+                  "actual_sha256": "ed3d3afb5c129495fc1d04bc97e3ac761627df69c3823aabe81293dae1ed51c1"
+                },
+                {
+                  "kind": "safe_reading",
+                  "media_type": "text/html",
+                  "encoding": "utf-8",
+                  "byte_length": 786,
+                  "sha256": "ff5459120dd0ce2bd9cb98d16416cece145d7c765fda39007182320897383252",
+                  "converter_version": "web-reading/0.6.0",
+                  "sanitizer_version": "web-sanitizer/0.6.0",
+                  "resource_policy_version": "web-resources/0.6.0",
+                  "actual_sha256": "ff5459120dd0ce2bd9cb98d16416cece145d7c765fda39007182320897383252"
+                }
+              ],
+              "reference_count": 1
+            }
+          ],
+          "original_request_recovered": true
+        },
+        {
+          "input": ".local-data/stage2r5-20261026/fixtures/feed/duplicate-conflict.xml",
+          "input_sha256": "4715a97d62a33e7f00c039c2e36317e240e795da34783e38ef70e50eee47b21f",
+          "input_bytes": 1185,
+          "capture_id": "899c121aafe549bb99ea31639d44fa6e",
+          "observation_id": null,
+          "observation_error": "web_entry_conflict",
+          "selected_count": 0,
+          "saved_count": 0,
+          "unchanged_count": 0,
+          "fixed": [],
+          "original_request_recovered": false
+        },
+        {
+          "input": ".local-data/stage2r5-20261026/fixtures/atom/text.xml",
+          "input_sha256": "47ea33b9fe4fdb0e06a18ca02b54386df56c4d75bac8ad708035d98f5af21aa0",
+          "input_bytes": 436,
+          "capture_id": "a71b5bb982be496c8c5eb4813c9fe359",
+          "observation_id": "72af536eb4f9467da06b6f0d138ca554",
+          "observation_error": null,
+          "selected_count": 1,
+          "saved_count": 1,
+          "unchanged_count": 0,
+          "fixed": [
+            {
+              "source_id": "9364cc72002e426ba500b409123f81d7",
+              "source_revision_id": "3963c95e18324b56a4f5b487e0686caf",
+              "metadata": {
+                "title": "合成A",
+                "authors": [],
+                "categories": [],
+                "published": null,
+                "updated": "2026-10-25T00:00:00Z",
+                "canonical_declared": null,
+                "canonical_resolved": null,
+                "effective_base": "https://synthetic.invalid/articles/",
+                "body_completeness": "unknown"
+              },
+              "capture_id": "a71b5bb982be496c8c5eb4813c9fe359",
+              "capture_sha256": "47ea33b9fe4fdb0e06a18ca02b54386df56c4d75bac8ad708035d98f5af21aa0",
+              "source_input_sha256": "5af3893c5dea158def65615eaf12f7963bd93403321bf9091d53dd6461d287be",
+              "representations": [
+                {
+                  "kind": "decoded_content",
+                  "media_type": "text/plain",
+                  "encoding": "utf-8",
+                  "byte_length": 22,
+                  "sha256": "b55e50199e7a38bb31dc9cb4315087fb3fc7d30c0723985be51ac3a36a681878",
+                  "converter_version": "web-reading/0.6.0",
+                  "sanitizer_version": null,
+                  "resource_policy_version": null,
+                  "actual_sha256": "b55e50199e7a38bb31dc9cb4315087fb3fc7d30c0723985be51ac3a36a681878"
+                },
+                {
+                  "kind": "safe_reading",
+                  "media_type": "text/html",
+                  "encoding": "utf-8",
+                  "byte_length": 698,
+                  "sha256": "6cb72489d8706a5de5cd138b672a79763f0fdd25e5009343ef135d4cdf0292ed",
+                  "converter_version": "web-reading/0.6.0",
+                  "sanitizer_version": "web-sanitizer/0.6.0",
+                  "resource_policy_version": "web-resources/0.6.0",
+                  "actual_sha256": "6cb72489d8706a5de5cd138b672a79763f0fdd25e5009343ef135d4cdf0292ed"
+                }
+              ],
+              "reference_count": 1
+            }
+          ],
+          "original_request_recovered": true
+        },
+        {
+          "input": ".local-data/stage2r5-20261026/fixtures/atom/html.xml",
+          "input_sha256": "23edb5fdd372c46b56c1167e788e8e6ed15a0424a85a42f7258f18c71d110a67",
+          "input_bytes": 469,
+          "capture_id": "749aa8d6862d4143a5c2971183bdb787",
+          "observation_id": "44b2f902dea74a9692fe59078b41ceed",
+          "observation_error": null,
+          "selected_count": 1,
+          "saved_count": 1,
+          "unchanged_count": 0,
+          "fixed": [
+            {
+              "source_id": "9364cc72002e426ba500b409123f81d7",
+              "source_revision_id": "6e6cbb2cbe524513a9a7cec30073b45b",
+              "metadata": {
+                "title": "合成A",
+                "authors": [],
+                "categories": [],
+                "published": null,
+                "updated": "2026-10-25T00:00:00Z",
+                "canonical_declared": null,
+                "canonical_resolved": null,
+                "effective_base": "https://synthetic.invalid/articles/",
+                "body_completeness": "unknown"
+              },
+              "capture_id": "749aa8d6862d4143a5c2971183bdb787",
+              "capture_sha256": "23edb5fdd372c46b56c1167e788e8e6ed15a0424a85a42f7258f18c71d110a67",
+              "source_input_sha256": "1ae016522353a45aea354c081e31a7d9abbf05f39530624420aee45b22cc4f7f",
+              "representations": [
+                {
+                  "kind": "decoded_content",
+                  "media_type": "text/html",
+                  "encoding": "utf-8",
+                  "byte_length": 43,
+                  "sha256": "f6aeed0af73c9b3005e74afd5e71b3590fba254d81fe873c42554da068ad897a",
+                  "converter_version": "web-reading/0.6.0",
+                  "sanitizer_version": null,
+                  "resource_policy_version": null,
+                  "actual_sha256": "f6aeed0af73c9b3005e74afd5e71b3590fba254d81fe873c42554da068ad897a"
+                },
+                {
+                  "kind": "safe_reading",
+                  "media_type": "text/html",
+                  "encoding": "utf-8",
+                  "byte_length": 683,
+                  "sha256": "199d8b9cae7c15f0903471cda987d858fb2f73ceb6d3abe40c89e0369a5aeb8c",
+                  "converter_version": "web-reading/0.6.0",
+                  "sanitizer_version": "web-sanitizer/0.6.0",
+                  "resource_policy_version": "web-resources/0.6.0",
+                  "actual_sha256": "199d8b9cae7c15f0903471cda987d858fb2f73ceb6d3abe40c89e0369a5aeb8c"
+                }
+              ],
+              "reference_count": 1
+            }
+          ],
+          "original_request_recovered": true
+        },
+        {
+          "input": ".local-data/stage2r5-20261026/fixtures/atom/xhtml.xml",
+          "input_sha256": "e2c29b54189b3c25e115f82a97312abca9b9ec22a2d752718ab5d7628d934df1",
+          "input_bytes": 494,
+          "capture_id": "dad43d71b1cc4b2f81475f79965f3de9",
+          "observation_id": "d6e7efb5cb454af28bc886db93fb68a4",
+          "observation_error": null,
+          "selected_count": 1,
+          "saved_count": 1,
+          "unchanged_count": 0,
+          "fixed": [
+            {
+              "source_id": "9364cc72002e426ba500b409123f81d7",
+              "source_revision_id": "dc9ebba3bbfe439b92a38efe6041a5f7",
+              "metadata": {
+                "title": "合成A",
+                "authors": [],
+                "categories": [],
+                "published": null,
+                "updated": "2026-10-25T00:00:00Z",
+                "canonical_declared": null,
+                "canonical_resolved": null,
+                "effective_base": "https://synthetic.invalid/articles/",
+                "body_completeness": "unknown"
+              },
+              "capture_id": "dad43d71b1cc4b2f81475f79965f3de9",
+              "capture_sha256": "e2c29b54189b3c25e115f82a97312abca9b9ec22a2d752718ab5d7628d934df1",
+              "source_input_sha256": "2987ec7ed6d94ade70800ec22960073c0f6202a40265df40589698720174a6b4",
+              "representations": [
+                {
+                  "kind": "decoded_content",
+                  "media_type": "application/xhtml+xml",
+                  "encoding": "utf-8",
+                  "byte_length": 58,
+                  "sha256": "62ba2df47e900dca3e31a6fadcf50c52b86debf0482228db0c3f02bc08f6501b",
+                  "converter_version": "web-reading/0.6.0",
+                  "sanitizer_version": null,
+                  "resource_policy_version": null,
+                  "actual_sha256": "62ba2df47e900dca3e31a6fadcf50c52b86debf0482228db0c3f02bc08f6501b"
+                },
+                {
+                  "kind": "safe_reading",
+                  "media_type": "text/html",
+                  "encoding": "utf-8",
+                  "byte_length": 683,
+                  "sha256": "199d8b9cae7c15f0903471cda987d858fb2f73ceb6d3abe40c89e0369a5aeb8c",
+                  "converter_version": "web-reading/0.6.0",
+                  "sanitizer_version": "web-sanitizer/0.6.0",
+                  "resource_policy_version": "web-resources/0.6.0",
+                  "actual_sha256": "199d8b9cae7c15f0903471cda987d858fb2f73ceb6d3abe40c89e0369a5aeb8c"
+                }
+              ],
+              "reference_count": 1
+            }
+          ],
+          "original_request_recovered": true
+        },
+        {
+          "input": ".local-data/stage2r5-20261026/fixtures/atom/external.xml",
+          "input_sha256": "ff0fd8c011420798f3a8e3653efa51a3a95f02b8d8011c3e238fdd3a83248a29",
+          "input_bytes": 447,
+          "capture_id": "46e8dd7d6cfb4620b6208f20d320ba4f",
+          "observation_id": "0733818467674f4091b24f89160000e2",
+          "observation_error": null,
+          "selected_count": 1,
+          "saved_count": 1,
+          "unchanged_count": 0,
+          "fixed": [
+            {
+              "source_id": "9364cc72002e426ba500b409123f81d7",
+              "source_revision_id": "0014e02e9aa740caa3c6b3bfe287a6a3",
+              "metadata": {
+                "title": "合成A",
+                "authors": [],
+                "categories": [],
+                "published": null,
+                "updated": "2026-10-25T00:00:00Z",
+                "canonical_declared": null,
+                "canonical_resolved": null,
+                "effective_base": "https://synthetic.invalid/articles/",
+                "body_completeness": "external_reference"
+              },
+              "capture_id": "46e8dd7d6cfb4620b6208f20d320ba4f",
+              "capture_sha256": "ff0fd8c011420798f3a8e3653efa51a3a95f02b8d8011c3e238fdd3a83248a29",
+              "source_input_sha256": "10b75e852daba5fe3892e4a5853f41838e9d6f3740a710487f24ec850918b51c",
+              "representations": [
+                {
+                  "kind": "decoded_content",
+                  "media_type": "text/plain",
+                  "encoding": "utf-8",
+                  "byte_length": 9,
+                  "sha256": "4dbefc75813425f4100d8641289cb8b5f51d43cbac36fa264c2d6845665d5be4",
+                  "converter_version": "web-reading/0.6.0",
+                  "sanitizer_version": null,
+                  "resource_policy_version": null,
+                  "actual_sha256": "4dbefc75813425f4100d8641289cb8b5f51d43cbac36fa264c2d6845665d5be4"
+                },
+                {
+                  "kind": "safe_reading",
+                  "media_type": "text/html",
+                  "encoding": "utf-8",
+                  "byte_length": 673,
+                  "sha256": "2e93579475df5fa959343d4a6f2a73008e9210b24749932490b3fc6fc04f4f57",
+                  "converter_version": "web-reading/0.6.0",
+                  "sanitizer_version": "web-sanitizer/0.6.0",
+                  "resource_policy_version": "web-resources/0.6.0",
+                  "actual_sha256": "2e93579475df5fa959343d4a6f2a73008e9210b24749932490b3fc6fc04f4f57"
+                }
+              ],
+              "reference_count": 2
+            }
+          ],
+          "original_request_recovered": true
+        }
+      ],
+      "rss_selected_a_only_b_not_published": true,
+      "empty_feed_did_not_delete": true,
+      "duplicate_conflict_no_partial_publish": true,
+      "old_fixed_reading_preserved": true,
+      "online_fetch": 0,
+      "model_calls": 0,
+      "real_sites": 0,
+      "rsshub_executed": false
+    },
+    "lifecycle": {
+      "passed": true,
+      "manual_same_head_aba_rejected": true,
+      "directory_batch_project_aba_rejected": true,
+      "original_old_ready_rejected_cancelled_full_retransmit": true,
+      "web_same_valid_capture_new_explicit_preview": true,
+      "web_capture_id": "406173b0b6f94287b1f245e073e244df",
+      "acquire_calls": 0,
+      "fixed_project_read_while_archived": "bcc296c12994486bb8520caeb1063685"
+    },
+    "permissions": {
+      "recorded_at": "2026-10-26T04:52:56.658Z",
+      "passed": true,
+      "owner_fixed_move_receipt_recovered": "ec3b34d404b645ecbac478eb839c8d09",
+      "visitor_cases": [
+        {
+          "label": "lifecycle-list",
+          "version": "0.7.0",
+          "status": 404,
+          "code": "knowledge_not_found",
+          "no_data": true
+        },
+        {
+          "label": "lifecycle-detail",
+          "version": "0.7.0",
+          "status": 404,
+          "code": "knowledge_not_found",
+          "no_data": true
+        },
+        {
+          "label": "lifecycle-fixed-key",
+          "version": "0.7.0",
+          "status": 404,
+          "code": "knowledge_not_found",
+          "no_data": true
+        },
+        {
+          "label": "c1-fixed-node",
+          "version": "0.2.0",
+          "status": 404,
+          "code": "knowledge_not_found",
+          "no_data": true
+        },
+        {
+          "label": "original-fixed-metadata",
+          "version": "0.5.0",
+          "status": 404,
+          "code": "knowledge_not_found",
+          "no_data": true
+        },
+        {
+          "label": "web-fixed-metadata",
+          "version": "0.6.0",
+          "status": 404,
+          "code": "knowledge_not_found",
+          "no_data": true
+        },
+        {
+          "label": "batch-fixed-task",
+          "version": "0.4.0",
+          "status": 404,
+          "code": "knowledge_batch_not_found",
+          "no_data": true
+        },
+        {
+          "label": "project-fixed-manifest",
+          "version": "0.4.0",
+          "status": 404,
+          "code": "knowledge_batch_not_found",
+          "no_data": true
+        },
+        {
+          "label": "original-fixed-content",
+          "version": "0.5.0",
+          "status": 404,
+          "code": "knowledge_not_found",
+          "no_data": true
+        },
+        {
+          "label": "web-fixed-reading",
+          "version": "0.6.0",
+          "status": 404,
+          "code": "knowledge_not_found",
+          "no_data": true
+        }
+      ],
+      "original_owner_still_reads_old_revision": true,
+      "current_policy_rechecked": true,
+      "model_calls": 0,
+      "real_sites": 0
+    },
+    "partial_recovery": {
+      "recorded_at": "2026-10-26T04:58:08.548Z",
+      "passed": true,
+      "failed_task": {
+        "task_id": "1d9b10db402445c498e585a3c1129580",
+        "domain_id": "61204a90482a4c898e07792251b9f064",
+        "registration_id": "4aee3335fcc94bf781b5a896390e817e",
+        "preview_id": "c39282c37e19452da0675134509f5ded",
+        "manifest_sha256": "805737c6aaa323f9b396d271665d35f469b8df1cae0cf3bbfd85668484658da0",
+        "idempotency_key": "partial_4ab65dc7fe81",
+        "confirmed_item_ids": [
+          "6224a099973a4c6d9e13f63184f011f5",
+          "06108a4fa6ff4efcbda85bbe491093c3"
+        ],
+        "retry_of_task_id": null,
+        "status": "partial_failed",
+        "revision": 6,
+        "counts": {
+          "total": 2,
+          "pending": 0,
+          "running": 0,
+          "succeeded": 1,
+          "failed": 1,
+          "cancelled": 0
+        },
+        "cancel_requested": false,
+        "mode": "catalogue_only",
+        "created_at": "2026-10-26T04:58:03.544224Z",
+        "updated_at": "2026-10-26T04:58:05.036698Z",
+        "execution_deadline": "2026-10-26T05:28:03.544224Z",
+        "terminal_at": "2026-10-26T04:58:05.036698Z"
+      },
+      "failed_items": [
+        {
+          "item_id": "6224a099973a4c6d9e13f63184f011f5",
+          "ordinal": 0,
+          "relative_path": "backend/normalize.go",
+          "classification": {
+            "group_id": "6ade594874864e02bb9088931bf3b417",
+            "component_side": "backend",
+            "language": "go"
+          },
+          "sha256": "0a1bc486a6c45de18c7d68938e029f5756230b0a217c0190661e8014d1fa2a33",
+          "byte_length": 214,
+          "status": "failed",
+          "save_status": null,
+          "source_id": null,
+          "source_revision_id": null,
+          "root_node_id": null,
+          "catalogue_status": "failed",
+          "structure_status": "deferred",
+          "full_text_status": "disabled",
+          "vector_status": "disabled",
+          "code": "source_changed"
+        },
+        {
+          "item_id": "06108a4fa6ff4efcbda85bbe491093c3",
+          "ordinal": 1,
+          "relative_path": "frontend/table.ts",
+          "classification": {
+            "group_id": "e2618053a4104b0d8f5d5e83a4bb9b06",
+            "component_side": "frontend",
+            "language": "typescript"
+          },
+          "sha256": "4b6028dccce65cc7337420b3505e6e107673f146c38693a9dd2e8f0569a3c02d",
+          "byte_length": 281,
+          "status": "succeeded",
+          "save_status": "unchanged",
+          "source_id": "5921b1ecc5aa4bb2b023093758cca8c0",
+          "source_revision_id": "a62d8837eb2b4e7692576fc0a9aea0ed",
+          "root_node_id": "0dd1dcc401d49ebb2a10d45a6eba0df55132ede119c50d379644ec8eda206a64",
+          "catalogue_status": "registered",
+          "structure_status": "deferred",
+          "full_text_status": "disabled",
+          "vector_status": "disabled",
+          "code": "saved"
+        }
+      ],
+      "retry_task": {
+        "task_id": "c32cf75541574cc1ade327b4c3c21b13",
+        "domain_id": "61204a90482a4c898e07792251b9f064",
+        "registration_id": "4aee3335fcc94bf781b5a896390e817e",
+        "preview_id": "1350812e18054665b74db34d58a87654",
+        "manifest_sha256": "e62f7c12415c6f9653cb870da3ba25ab92ee1c2e5f6ba7384e3423d91c4bc1b3",
+        "idempotency_key": "partial_retry_4ab65dc7fe81",
+        "confirmed_item_ids": [
+          "1c20c31af43748a58329b481eaa6983f"
+        ],
+        "retry_of_task_id": "1d9b10db402445c498e585a3c1129580",
+        "status": "succeeded",
+        "revision": 4,
+        "counts": {
+          "total": 1,
+          "pending": 0,
+          "running": 0,
+          "succeeded": 1,
+          "failed": 0,
+          "cancelled": 0
+        },
+        "cancel_requested": false,
+        "mode": "catalogue_only",
+        "created_at": "2026-10-26T04:58:05.894163Z",
+        "updated_at": "2026-10-26T04:58:06.970748Z",
+        "execution_deadline": "2026-10-26T05:28:05.894163Z",
+        "terminal_at": "2026-10-26T04:58:06.970748Z"
+      },
+      "retry_items": [
+        {
+          "item_id": "1c20c31af43748a58329b481eaa6983f",
+          "ordinal": 0,
+          "relative_path": "backend/normalize.go",
+          "classification": {
+            "group_id": "6ade594874864e02bb9088931bf3b417",
+            "component_side": "backend",
+            "language": "go"
+          },
+          "sha256": "0a1bc486a6c45de18c7d68938e029f5756230b0a217c0190661e8014d1fa2a33",
+          "byte_length": 214,
+          "status": "succeeded",
+          "save_status": "unchanged",
+          "source_id": "d4a0bd6b224b4a4facecaf0ead1ee427",
+          "source_revision_id": "20e92f6fd34e4f36b55da0f49f76650f",
+          "root_node_id": "5f4fb9fc2bcaf566a6e5e17a896103d5ad95e1ca62573b078a19a8bdaa97ef16",
+          "catalogue_status": "registered",
+          "structure_status": "deferred",
+          "full_text_status": "disabled",
+          "vector_status": "disabled",
+          "code": "saved"
+        }
+      ],
+      "failure_was_synthetic_source_changed_after_preview": true,
+      "fixture_restored_to_v2": true,
+      "original_key_recovers_same_partial_result": true,
+      "successful_item_not_retracted": {
+        "source_id": "5921b1ecc5aa4bb2b023093758cca8c0",
+        "revision": "a62d8837eb2b4e7692576fc0a9aea0ed",
+        "sha256": "4b6028dccce65cc7337420b3505e6e107673f146c38693a9dd2e8f0569a3c02d",
+        "bytes": 281,
+        "fixed": true
+      },
+      "only_failed_item_explicitly_retried": {
+        "source_id": "d4a0bd6b224b4a4facecaf0ead1ee427",
+        "revision": "20e92f6fd34e4f36b55da0f49f76650f",
+        "sha256": "0a1bc486a6c45de18c7d68938e029f5756230b0a217c0190661e8014d1fa2a33",
+        "bytes": 214,
+        "fixed": true
+      },
+      "new_services_or_volumes": false,
+      "model_calls": 0
+    },
+    "browser": {
+      "passed": true,
+      "task_refresh": {
+        "id": "bc86396d86804d38b9540c3d8b5c4b58",
+        "result_revision": 10,
+        "items": 4
+      },
+      "fixed_project": {
+        "current_manifest": "c86a9c2fd6c944cb945a1903ea132aa5",
+        "fixed_manifest": "bcc296c12994486bb8520caeb1063685",
+        "entries": 4
+      },
+      "fixed_code": {
+        "source_revision_id": "06aef3951688414eb132e5af2cdf23fe",
+        "displayed": "synthetic-v1",
+        "current_revision_id": "a62d8837eb2b4e7692576fc0a9aea0ed"
+      },
+      "partial_failure_and_retry": {
+        "original_task": "1d9b10db402445c498e585a3c1129580",
+        "original_result": "1成功／1source_changed",
+        "retry_task": "c32cf75541574cc1ade327b4c3c21b13",
+        "retry_result": "只失败项1/1成功"
+      },
+      "note": "本轮原生登录与真实浏览器只补任务／项目／固定阅读及逐项失败恢复；R6同版完整四动作和主体切换等按原证据引用，不冒称本轮重跑。"
+    },
+    "final_checks": {
+      "protected_files": 35,
+      "protected_changed": 0,
+      "source_files_match_R6": true,
+      "actual_binary_and_web_index_match": true,
+      "original_30_fixtures_unchanged": true,
+      "only_one_synthetic_root_added": true,
+      "old_root_entries_unchanged": true,
+      "model_and_legacy_fingerprint_unchanged": true,
+      "legacy_documents": 6,
+      "legacy_chunks": 42,
+      "active_native_ingestion_tasks": 0,
+      "http_responses": 483,
+      "expected_and_harness_http_errors": [
+        {
+          "label": "manual-fixed-task-0",
+          "status": 404,
+          "code": "knowledge_not_found"
+        },
+        {
+          "label": "original-create-0",
+          "status": 400,
+          "code": "knowledge_invalid_request"
+        },
+        {
+          "label": "original-by-key-0",
+          "status": 404,
+          "code": 404
+        },
+        {
+          "label": "web-observation-7",
+          "status": 409,
+          "code": "web_entry_conflict"
+        },
+        {
+          "label": "life-manual-stale",
+          "status": 409,
+          "code": "knowledge_conflict"
+        },
+        {
+          "label": "life-directory-observation",
+          "status": 429,
+          "code": "knowledge_directory_capacity",
+          "reason": null
+        },
+        {
+          "label": "permissions-visitor-lifecycle-list",
+          "status": 404,
+          "code": "knowledge_not_found"
+        },
+        {
+          "label": "permissions-visitor-lifecycle-detail",
+          "status": 404,
+          "code": "knowledge_not_found"
+        },
+        {
+          "label": "permissions-visitor-lifecycle-fixed-key",
+          "status": 404,
+          "code": "knowledge_not_found"
+        },
+        {
+          "label": "permissions-visitor-c1-fixed-node",
+          "status": 404,
+          "code": "knowledge_not_found"
+        },
+        {
+          "label": "permissions-visitor-original-fixed-metadata",
+          "status": 404,
+          "code": "knowledge_not_found"
+        },
+        {
+          "label": "permissions-visitor-web-fixed-metadata",
+          "status": 404,
+          "code": "knowledge_not_found"
+        },
+        {
+          "label": "permissions-visitor-batch-fixed-task",
+          "status": 404,
+          "code": "knowledge_batch_not_found",
+          "reason": null
+        },
+        {
+          "label": "permissions-visitor-project-fixed-manifest",
+          "status": 404,
+          "code": "knowledge_batch_not_found",
+          "reason": null
+        },
+        {
+          "label": "permissions-visitor-original-fixed-content",
+          "status": 404
+        },
+        {
+          "label": "permissions-visitor-web-fixed-reading",
+          "status": 404
+        },
+        {
+          "label": "life-directory-observation",
+          "status": 429,
+          "code": "knowledge_directory_capacity",
+          "reason": null
+        },
+        {
+          "label": "life-directory-stale",
+          "status": 409,
+          "code": "knowledge_directory_conflict",
+          "reason": "revision_changed"
+        },
+        {
+          "label": "life-batch-stale",
+          "status": 409,
+          "code": "knowledge_batch_conflict",
+          "reason": "revision_changed"
+        },
+        {
+          "label": "life-project-stale",
+          "status": 409,
+          "code": "knowledge_batch_conflict",
+          "reason": "revision_changed"
+        },
+        {
+          "label": "life-original-stale",
+          "status": 409,
+          "code": "revision_changed"
+        },
+        {
+          "label": "life-original-stale-by-key",
+          "status": 404,
+          "code": "knowledge_not_found"
+        },
+        {
+          "label": "life-web-stale",
+          "status": 409,
+          "code": "revision_changed"
+        }
+      ],
+      "model_api_calls": 0,
+      "local_inference": 0,
+      "acquire_calls": 0,
+      "real_sites": 0,
+      "final_formal_response_revalidations": 348
+    },
+    "performance": {
+      "status": "NotBenchmarked_R7",
+      "note": "HTTP日志只用于诊断，本轮不新增性能门槛或伪称生产p95；R6相同产物的五次容量和真实对象IO证据按原运行引用。"
+    }
+  },
+  "reused_evidence": [
+    {
+      "report": "docs/stage2r6-lifecycle-verification.json",
+      "sha256": "5a8959dd95753fb214366b29480041e70cd90c0fc0c4a3aab7a9ff5fbd661a0d",
+      "input_backend": "2bfa0d9990e7c42c4927a47af747f12da4e3712e",
+      "input_frontend": "c759990b62f44704b9370c19bcbf402668764899",
+      "scope": "相同Go/Web：双API、SQL／进程回滚、权限撤销、C1调用期ABA、1005来源五次容量、64MiB元信息对象IO=0、七项浏览器。R7只补新域和跨入口链，不改其原次数。"
+    },
+    {
+      "report": "docs/stage2r6-lifecycle-client-verification.json",
+      "sha256": "e442e60d08fc95a8068fa85d6e9fd0bfd14a38c9cbdf8140a8ef7f6e80fde8b3",
+      "scope": "源码未改，沿用33套929项、局部lint／构建及类型207新增0；不称R7新测试次数或全量类型通过。"
+    }
+  ],
+  "evidence": [
+    {
+      "path": ".local-data/stage2r7-20261026/binding.json",
+      "sha256": "38487b4c970f74c63df07fac0b4e3dcf1a8d30a9b2fa086e62fa0f01bcea4650"
+    },
+    {
+      "path": ".local-data/stage2r7-20261026/manual.json",
+      "sha256": "071623497f10fb9afb2f0653a4e0e2aa6eeef152081d4fd8636668265b9760dc"
+    },
+    {
+      "path": ".local-data/stage2r7-20261026/directory.json",
+      "sha256": "15ddda319aba005b53171a9db42c96fea0ba58979408d10e605577968cd46bd1"
+    },
+    {
+      "path": ".local-data/stage2r7-20261026/original.json",
+      "sha256": "a878440a517986395b82860286ca7ea5073bd07bb8829af080fed5a5d3d987dc"
+    },
+    {
+      "path": ".local-data/stage2r7-20261026/web.json",
+      "sha256": "5bcc29841c510a8e0f37f0366d7ada8e3504290d0664766e8c8fd86e9f813794"
+    },
+    {
+      "path": ".local-data/stage2r7-20261026/lifecycle.json",
+      "sha256": "0cb4abb4245134817e0b0cead1d630f549ad8753d58da25239f4b4168d9b8237"
+    },
+    {
+      "path": ".local-data/stage2r7-20261026/permissions.json",
+      "sha256": "ed70c80c33e71585f1201d7dfa6edfab93e3d52024d9a851db2261d50b047dd2"
+    },
+    {
+      "path": ".local-data/stage2r7-20261026/partial-recovery.json",
+      "sha256": "9820394c124992bf9ae1e4d0363bcf51bcdce3fc76e3e7a6824231416c957c7b"
+    },
+    {
+      "path": ".local-data/stage2r7-20261026/browser-task.txt",
+      "sha256": "676e9fc3191458c5045b39c50be8c380ad4d916726f12f6dcdd478f9cd95d501"
+    },
+    {
+      "path": ".local-data/stage2r7-20261026/browser-project.txt",
+      "sha256": "3550adb34de8082a9efd7c4d0f509588392581335fd2e386552ed262d65ca9b1"
+    },
+    {
+      "path": ".local-data/stage2r7-20261026/browser-project.png",
+      "sha256": "a00a6ef0214c8f16513785218359852552b9bafd6d707425bafd91054bdd0f7d"
+    },
+    {
+      "path": ".local-data/stage2r7-20261026/browser-fixed-code.txt",
+      "sha256": "e7c6de037d799898277915833ebe17446fd4b7525fb7bbee5b7c751a789679b9"
+    },
+    {
+      "path": ".local-data/stage2r7-20261026/browser-fixed-code.png",
+      "sha256": "628e15b8008b06991670acc019e362d9a501e157498e07f3c571f200df99f082"
+    },
+    {
+      "path": ".local-data/stage2r7-20261026/browser-partial.txt",
+      "sha256": "166352fc6e8b355edd8b56a63aac058251defb7a5d433b1df654ca45259e57df"
+    },
+    {
+      "path": ".local-data/stage2r7-20261026/browser-partial.png",
+      "sha256": "da774426dd5f51a88539a3fecdac0b438b8cadf9abe2b01bf16083a32aba4e6c"
+    },
+    {
+      "path": ".local-data/stage2r7-20261026/browser-retry.txt",
+      "sha256": "4ab602a12d843ee85f63315d4f9d76e745d475a9670361113f9695b531c6fc75"
+    },
+    {
+      "path": ".local-data/stage2r7-20261026/browser-retry.png",
+      "sha256": "08d60fed547303bae80fbb2d35e1b57e7258a073d9cc94ffcb9d3cd97a7bfeba"
+    },
+    {
+      "path": ".local-data/stage2r7-20261026/http.jsonl",
+      "sha256": "9ab8950173efd7557940d7e7c913f0edef3216d3e910ab88ebb691bc56867143"
+    },
+    {
+      "path": ".local-data/stage2r7-20261026/requests.private.jsonl",
+      "sha256": "4d811bc0020ba3811d4abdb3dd9d41633c704c5b1d19e82cc73eb061c8f935fa"
+    }
+  ],
+  "harness_failures_and_corrections": [
+    "初始化AJV未登记旧目录两个自定义path格式，产生警告；后按已检入客户端规则补齐，保存响应在封口时重新校验，不声称最初校验覆盖该格式。",
+    "手动回执用错task_id而非import_task_id；改为正式字段，从已保存原请求／原键恢复已成功结果，未重复创建来源。",
+    "原件目标需target.source?.source_revision_id或显式null；恢复接口按0.5 query by-key而非0.4 path by-key；二者按冻结契约修正，既有成功原件保持。",
+    "0.5完整下载应验证sha256-ETag，不能套0.6的X-Content-Sha256；仅修验证断言。",
+    "验证工具返回bytes计数覆盖Buffer字段，改为raw；未改业务响应或放宽校验。",
+    "目录观察达到冻结4份／600秒上限，实际429被保留；没有改限额、删行或修改时钟，等自然到期期间完成独立权限验证后继续。"
+  ],
+  "incomplete_items": [
+    "第35.8节具体真实AICS／现有文档／网站退出样本未执行，当前仅合成授权；阶段2整体不得标完成。",
+    "R7纯合成工程用户决定Pending；R6、R4各自工程决定仍独立Pending，R5既有Approved不扩大。",
+    "未新增生产p95／百万库／冷态性能测试、网络抓包或真实RSSHub接入。",
+    "阶段3 AST／文档结构／人工Wiki保护、阶段4检索与引用、阶段5 MCP、阶段6人格记忆均未由本轮实现。"
+  ],
+  "acceptance": {
+    "synthetic_engineering": "Implemented_Verified",
+    "user_decision": {
+      "outcome": "Pending",
+      "scope": "仅R7纯合成同版工程验证"
+    },
+    "real_source_exit": "NotRun_ScopeNotApproved",
+    "stage2_whole_exit": false,
+    "whole_project_complete": false
+  },
+  "governance": {
+    "carrier": "沿用既有公开计划／验证／接续及忽略运行证据，不创建第二套治理流程。",
+    "machine_gate": "未运行正式governance机器门禁，不声称其通过。",
+    "adversarial_review": "NotRun_UserProhibited"
+  },
+  "model_calls": 0,
+  "local_inference": 0,
+  "real_sites": 0
+}

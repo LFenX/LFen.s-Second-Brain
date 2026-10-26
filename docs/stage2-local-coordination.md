@@ -1,5 +1,7 @@
 # 阶段2剩余任务与本机会话协作
 
+**v0.55最新**：R7最终同版纯合成工程已完成，见[统一报告](stage2r7-synthetic-exit-verification.json)和[接续](stage2r7-synthetic-handoff.md)。A持全部写权，协作会话一次只读回传R7编排及阶段3设计输入，未执行新审查。Go／Web／35契约保护不变、模型0；真实样本及阶段2整体退出未完成，下一项为阶段3具体共享契约候选，确认前不接业务。
+
 **v0.54当前**：R6／C2 0.7.0已冻结并完成Go `2bfa0d9`、Web `c759990`及本机合成真实联调。[统一报告](stage2r6-lifecycle-verification.json)包含七项浏览器、双API／SQL／进程故障、1005来源容量与64MiB元信息正文IO=0。A已在客户端清洁回交后明确收回全部源码／Git写权，接方只读准备R7同版编排；按已获授权推main并独立留发布回执。R5已验收，R6工程验收Pending，阶段2整体未退出。下文v0.52／v0.51段落保留历史时点。
 
 **v0.52下一批**：R5已发布main81f3a8c，A在codex/stage2r6-lifecycle-candidate整理了[具体0.7候选](knowledge-source-lifecycle-v0.7.candidate.md)与[接续](stage2r6-lifecycle-handoff.md)；当前未冻结／接业务，main和应用仍R5。新Web会话一次集中8项设计输入已处理，不再重复审查。A唯一源码／Git写入，消费会话无新写权；具体批准后才按清洁固定提交交替。

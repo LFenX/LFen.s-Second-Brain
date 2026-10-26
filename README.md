@@ -1,5 +1,7 @@
 # LFen's Second Brain
 
+**当前v0.55／R7纯合成工程**：[同版退出报告](docs/stage2r7-synthetic-exit-verification.json)已保存，30输入形成12稳定来源／28固定修订，逐项失败和只失败项重试、固定项目／原文／下载及跨入口世代检查通过。[下一步接续](docs/stage2r7-synthetic-handoff.md)。实际Go2bfa0d9／Webc759990未改，35保护文件保持，模型／本地推理0；真实样本退出未执行，阶段2整体尚未完成，阶段3仍先具体契约候选。下文R6及更早段落保留交付时事实。
+
 发布补记：R6主体工程与文档已快进推送main `0199253`，[远端核对回执](docs/stage2r6-main-integration.json)绑定实际Go／Web与统一报告；本回执补记随正常提交同步。R6工程验收仍Pending，R7继续。
 
 **当前 v0.54／S2-R6**：[C2 0.7.0](docs/knowledge-source-lifecycle-v1.freeze.json)已按真人批准完成四动作、单调世代及旧准备栅栏。Go `2bfa0d9`＋Web `c759990`已在本机加载，七项合成浏览器、真实MySQL／S3、双API竞争、SQL／进程故障及容量验证通过。[统一报告](docs/stage2r6-lifecycle-verification.json)、[当前接续](docs/stage2r6-lifecycle-handoff.md)区分工程结果与人的决定；R6工程验收Pending，R5已验收，阶段2整体尚未退出。按已获授权推main，远端版本另留发布回执。下文既有交付段落保留各时点事实。
