@@ -1,0 +1,34 @@
+{
+  "document_version": "v0.51",
+  "recorded_at": "2026-10-26T01:47:20.161Z",
+  "outcome": "Published_Verified",
+  "remote": "https://github.com/LFenX/LFen.s-Second-Brain.git",
+  "target_branch": "main",
+  "previous_main": "7c564a738597e924e411f3b191aaa02d14ae42d8",
+  "integrated_commit": "6e6dfb262b6f9c8400c3d2977398eb2e3f907fe3",
+  "verified_remote_main": "6e6dfb262b6f9c8400c3d2977398eb2e3f907fe3",
+  "method": "Fast-forward; original commit authors/history retained; normal hooks passed",
+  "source_branch": "codex/stage2r5-web-import",
+  "branch_remote_also_at_integrated_commit": true,
+  "source": {
+    "backend_commit": "1ac4e4f3cd0ca74e79ba10e71593287c18bc98ac",
+    "frontend_commit": "40ed01fcd5a9b55328e3d6afb68a60516cb3791a",
+    "binary_sha256": "2a7de569de80c9f27ed549ab10dc9de60519ecce0a52ad519c615919e8a37502",
+    "web_index_sha256": "6c63b9d9c9fe323392de434fc61550f098c308b0eea6141c17381ccdd72e014d"
+  },
+  "verification_report": "docs/stage2r5-web-verification.json",
+  "verification_sha256": "8d05c5e9ba7e34db7acb6eb67e38606d8593831ac68baaa18d28e5bbac998ae2",
+  "protected_files_unchanged": 29,
+  "model_calls": 0,
+  "local_model_inference": 0,
+  "real_sites": 0,
+  "credentials_in_git": false,
+  "adversarial_review": "NotRun_UserProhibited",
+  "acceptance": {
+    "user_decision": "Pending",
+    "r4_user_decision": "Pending_Independent",
+    "stage2_exit": false,
+    "whole_project_complete": false
+  },
+  "note": "本回执记录主体工程与文档6e6dfb2的实际远端验证；回执自身随后正常提交推送，不将工程批准当用户验收。"
+}
