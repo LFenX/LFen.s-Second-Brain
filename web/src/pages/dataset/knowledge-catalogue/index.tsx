@@ -35,6 +35,11 @@ import {
 
 const StructureBrowser = lazy(() => import('./structure'));
 const DocumentBrowser = lazy(() => import('./document-browser'));
+const LocalLexicalBrowser = lazy(() => import('./local-lexical'));
+const KnowledgeCapabilities = lazy(() => import('./knowledge-capabilities'));
+const KnowledgeRepresentation = lazy(
+  () => import('./knowledge-representation'),
+);
 
 function GroupRow({
   group,
@@ -382,21 +387,62 @@ function DomainCatalogue({
   const [params, setParams] = useSearchParams();
   const [path, setPath] = useState<KnowledgeGroup[]>([]);
   const [source, setSource] = useState<KnowledgeSource | null>(null);
+  const [explainContent, setExplainContent] = useState(false);
+  const toggleContentExplanation = () => setExplainContent((value) => !value);
   const [sourceView, setSourceView] = useState<
-    'text' | 'original' | 'web' | 'lifecycle' | 'structure' | 'document'
+    | 'text'
+    | 'original'
+    | 'web'
+    | 'lifecycle'
+    | 'structure'
+    | 'document'
+    | 'local-lexical'
+    | 'content'
   >(
-    params.has('document_structure') ||
-      [...params.keys()].some((key) => key.startsWith('document_'))
-      ? 'document'
-      : params.get('structure') === '1'
-        ? 'structure'
-        : params.has('lifecycle_source') || params.get('lifecycle_view') === '1'
-          ? 'lifecycle'
-          : 'text',
+    params.has('content') ||
+      [...params.keys()].some((key) => key.startsWith('content_'))
+      ? 'content'
+      : params.has('document_structure') ||
+          [...params.keys()].some((key) => key.startsWith('document_'))
+        ? 'document'
+        : params.get('structure') === '1'
+          ? 'structure'
+          : params.has('lifecycle_source') ||
+              params.get('lifecycle_view') === '1'
+            ? 'lifecycle'
+            : 'text',
   );
-  const showText = () => setSourceView('text');
-  const showOriginals = () => setSourceView('original');
-  const showWeb = () => setSourceView('web');
+  const showContent = () => {
+    setSourceView('content');
+    setParams({ content: '1' });
+  };
+  const handleContentSourceSelect = (item: KnowledgeSource) => {
+    setParams({ content: '1' });
+    setSource(item);
+  };
+  const clearContentLocation = () => {
+    if (
+      params.has('content') ||
+      [...params.keys()].some((key) => key.startsWith('content_'))
+    )
+      setParams({});
+  };
+  const showText = () => {
+    clearContentLocation();
+    setSourceView('text');
+  };
+  const showOriginals = () => {
+    clearContentLocation();
+    setSourceView('original');
+  };
+  const showWeb = () => {
+    clearContentLocation();
+    setSourceView('web');
+  };
+  const showLocalLexical = () => {
+    clearContentLocation();
+    setSourceView('local-lexical');
+  };
   const showLifecycle = () => {
     setSourceView('lifecycle');
     setParams({ lifecycle_view: '1' });
@@ -415,6 +461,11 @@ function DomainCatalogue({
   }, [lifecycleSource]);
   useEffect(() => {
     if (
+      params.has('content') ||
+      [...params.keys()].some((key) => key.startsWith('content_'))
+    )
+      setSourceView('content');
+    else if (
       params.has('document_structure') ||
       [...params.keys()].some((key) => key.startsWith('document_'))
     )
@@ -434,13 +485,16 @@ function DomainCatalogue({
   };
   const handleGroupSelect = (group: KnowledgeGroup) => {
     setPath([...path, group]);
+    if (sourceView === 'content') setParams({ content: '1' });
     setSource(null);
   };
   const handleGroupParent = () => {
     setPath(path.slice(0, -1));
+    if (sourceView === 'content') setParams({ content: '1' });
     setSource(null);
   };
   const handleDomainRoot = () => {
+    if (sourceView === 'content') setParams({ content: '1' });
     setPath([]);
     setSource(null);
   };
@@ -492,6 +546,26 @@ function DomainCatalogue({
           {domain.data.category}
         </p>
       </header>
+      <div className="flex min-h-0 flex-col gap-3 pt-3">
+        <Button
+          type="button"
+          variant="outline"
+          aria-expanded={explainContent}
+          className="shrink-0 self-start"
+          onClick={toggleContentExplanation}
+        >
+          {t('knowledgeConsumption.support')}
+        </Button>
+        {explainContent && (
+          <div className="min-h-0 overflow-y-auto">
+            <Suspense fallback={<CatalogueLoading />}>
+              <KnowledgeCapabilities
+                scope={{ owner: domain.data.owner_id, domain: domainId }}
+              />
+            </Suspense>
+          </div>
+        )}
+      </div>
       {target && (
         <p className="pt-3 text-sm text-text-secondary">
           {t('knowledgeImport.pinnedHint')}{' '}
@@ -534,6 +608,13 @@ function DomainCatalogue({
           <h2 className="font-semibold">{t('knowledgeCatalogue.sources')}</h2>
           <div className="flex flex-wrap gap-2">
             <Button
+              variant={sourceView === 'content' ? 'default' : 'outline'}
+              aria-pressed={sourceView === 'content'}
+              onClick={showContent}
+            >
+              {t('knowledgeConsumption.content')}
+            </Button>
+            <Button
               variant={sourceView === 'text' ? 'default' : 'outline'}
               aria-pressed={sourceView === 'text'}
               onClick={showText}
@@ -575,8 +656,31 @@ function DomainCatalogue({
             >
               {t('knowledgeDocument.title')}
             </Button>
+            <Button
+              variant={sourceView === 'local-lexical' ? 'default' : 'outline'}
+              aria-pressed={sourceView === 'local-lexical'}
+              onClick={showLocalLexical}
+            >
+              {t('knowledgeLocalLexical.title')}
+            </Button>
           </div>
-          {sourceView === 'document' ? (
+          {sourceView === 'content' ? (
+            <>
+              <p className="text-sm text-text-secondary">
+                {t('knowledgeConsumption.chooseSourceHint')}
+              </p>
+              <Sources
+                domainId={domainId}
+                groupId={path.at(-1)?.id}
+                onSelect={handleContentSourceSelect}
+                onRefresh={handleRefresh}
+              />
+            </>
+          ) : sourceView === 'local-lexical' ? (
+            <p className="text-sm text-text-secondary">
+              {t('knowledgeLocalLexical.fixedHint')}
+            </p>
+          ) : sourceView === 'document' ? (
             <p className="text-sm text-text-secondary">
               {t('knowledgeDocument.chooseOriginal')}
             </p>
@@ -609,7 +713,29 @@ function DomainCatalogue({
           aria-label={t('knowledgeCatalogue.original')}
           className="min-w-0 overflow-auto"
         >
-          {sourceView === 'document' ? (
+          {sourceView === 'content' ? (
+            <Suspense fallback={<CatalogueLoading />}>
+              <KnowledgeRepresentation
+                key={
+                  domainId +
+                  ':' +
+                  domain.data.owner_id +
+                  ':' +
+                  (path.at(-1)?.id ?? '')
+                }
+                scope={{ domain: domainId, owner: domain.data.owner_id }}
+                source={source}
+              />
+            </Suspense>
+          ) : sourceView === 'local-lexical' ? (
+            <Suspense fallback={<CatalogueLoading />}>
+              <LocalLexicalBrowser
+                domain={domainId}
+                owner={domain.data.owner_id}
+                group={path.at(-1)?.id}
+              />
+            </Suspense>
+          ) : sourceView === 'document' ? (
             <Suspense fallback={<CatalogueLoading />}>
               <DocumentBrowser domain={domainId} owner={domain.data.owner_id} />
             </Suspense>
@@ -642,7 +768,9 @@ function DomainCatalogue({
           ) : (
             <CatalogueEmpty label="selectSource" />
           )}
-          {sourceView !== 'lifecycle' &&
+          {sourceView !== 'content' &&
+            sourceView !== 'local-lexical' &&
+            sourceView !== 'lifecycle' &&
             sourceView !== 'structure' &&
             sourceView !== 'document' &&
             (target || source) && (

@@ -156,8 +156,7 @@ func (r *Router) Setup(engine *gin.Engine) {
 		apiNoAuth.GET("/system/config", r.systemHandler.GetConfig)
 		apiNoAuth.GET("/system/version", r.systemHandler.GetVersion)
 		apiNoAuth.GET("/system/healthz", r.systemHandler.Healthz)
-		// Backend runtime language detection. The front end calls this once
-		// to choose between Go and Python code paths.
+		// Reports the backend runtime language. The frontend uses Go API routes.
 		apiNoAuth.GET("/language", r.systemHandler.Language)
 
 		// Pipeline catalog. Public static data (shipped with the binary),
@@ -242,6 +241,10 @@ func (r *Router) Setup(engine *gin.Engine) {
 	r.setupKnowledgeLifecycleRoutes(engine)
 	r.setupKnowledgeStructureRoutes(engine)
 	r.setupKnowledgeDocumentRoutes(engine)
+	r.setupKnowledgeContentRoutes(engine)
+	r.setupKnowledgeLocalLexicalRoutes(engine)
+	engine.POST("/api/v1/knowledge/mcp", r.datasetsHandler.KnowledgeMCP)
+	engine.POST("/api/v1/knowledge/content/mcp", r.datasetsHandler.KnowledgeContentMCP)
 	authorized := engine.Group("")
 	authorized.Use(r.authHandler.AuthMiddleware())
 	{
@@ -428,7 +431,6 @@ func (r *Router) Setup(engine *gin.Engine) {
 				datasets.GET("/ingestion/tasks", r.documentHandler.ListIngestionTasks)
 				datasets.PUT("/ingestion/tasks", r.documentHandler.StopIngestionTasks)
 				datasets.DELETE("/ingestion/tasks", r.documentHandler.RemoveIngestionTasks)
-				//datasets.POST("/:dataset_id/documents/parse", r.documentHandler.ParseDocuments)
 				datasets.DELETE("/:dataset_id/chunks", r.chunkHandler.StopParsing)
 				datasets.DELETE("/:dataset_id/documents/:document_id/chunks", r.chunkHandler.RemoveChunks)
 				datasets.PUT("/:dataset_id/documents/:document_id/metadata/config", r.datasetsHandler.UpdateDocumentMetadataConfig)

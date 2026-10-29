@@ -10,10 +10,16 @@ import (
 	parser "ragflow/internal/parser/parser"
 )
 
-// Both explicitly admitted structure protocols use this claim, domain quota,
+// Explicitly admitted structure/content protocols use this claim, domain quota,
 // lease and fencing path. Public payloads remain protocol-specific.
 func claimKnowledgeStructure(ctx context.Context, candidate entity.KnowledgeStructureTaskRecord, runner string) (*structureClaim, error) {
-	if candidate.Protocol != documentTaskProtocol && !entity.KnowledgeStructureProducerCompatible() {
+	switch candidate.Protocol {
+	case "", "code_structure/0.1.0":
+		if !entity.KnowledgeStructureProducerCompatible() {
+			return nil, nil
+		}
+	case documentTaskProtocol, entity.KnowledgeParsedProtocol:
+	default:
 		return nil, nil
 	}
 	var claim *structureClaim
@@ -72,6 +78,32 @@ func claimKnowledgeStructure(ctx context.Context, candidate entity.KnowledgeStru
 				task.State, task.Phase = "running", "reading_original"
 				return documentSaveTask(tx, &row, task, now)
 			}
+		} else if row.Protocol == entity.KnowledgeParsedProtocol {
+			_, task, err := parsedLoadTask(tx, row.OwnerID, row.DomainID, row.ID)
+			if err != nil {
+				return err
+			}
+			if row.AttemptCount > 0 {
+				cleanup, cancel := context.WithTimeout(ctx, 2*time.Second)
+				err := recoverDocumentExecution(cleanup, &row)
+				cancel()
+				if err != nil {
+					return nil
+				}
+			}
+			finish = func(state, code string) error { return parsedFinish(tx, &row, task, state, code, now) }
+			start = func() error {
+				result := tx.Model(&entity.KnowledgeStructureTaskRecord{}).Where("id = ? AND protocol = ? AND revision = ?", row.ID, entity.KnowledgeParsedProtocol, row.Revision).Update("execution", "")
+				if result.Error != nil {
+					return result.Error
+				}
+				if result.RowsAffected != 1 {
+					return documentError(409, "content_integrity")
+				}
+				task.AttemptCount++
+				task.State, task.Phase = "running", "reading_original"
+				return parsedSaveTask(tx, &row, task, now)
+			}
 		} else {
 			if row.Protocol != "" && row.Protocol != "code_structure/0.1.0" {
 				return nil
@@ -106,7 +138,7 @@ func claimKnowledgeStructure(ctx context.Context, candidate entity.KnowledgeStru
 		}
 		if !now.Before(row.DeadlineAt) || row.AttemptCount >= 3 {
 			code := "execution_expired"
-			if row.Protocol == documentTaskProtocol {
+			if row.Protocol == documentTaskProtocol || row.Protocol == entity.KnowledgeParsedProtocol {
 				code = "native_timeout"
 			}
 			return retire("failed", code)
@@ -124,7 +156,7 @@ func claimKnowledgeStructure(ctx context.Context, candidate entity.KnowledgeStru
 		}
 		if lease.Epoch >= entity.KnowledgeMaxLifecycleVersion {
 			code := "execution_expired"
-			if row.Protocol == documentTaskProtocol {
+			if row.Protocol == documentTaskProtocol || row.Protocol == entity.KnowledgeParsedProtocol {
 				code = "native_timeout"
 			}
 			return retire("failed", code)

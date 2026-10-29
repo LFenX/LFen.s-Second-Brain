@@ -35,6 +35,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"strings"
 )
 
@@ -100,7 +101,7 @@ func parseJSONContent(text string) []map[string]any {
 		// Python's json.loads(txt) whole-document test). Only fall
 		// back to JSONL when that fails and the content still looks
 		// line-delimited.
-		if err := json.Unmarshal([]byte(trimmed), &map[string]any{}); err == nil {
+		if err := decodeJSONParserValue(trimmed, &map[string]any{}); err == nil {
 			return parseSingleJSONObject(trimmed)
 		}
 		if isJSONL(trimmed) {
@@ -136,7 +137,7 @@ func isJSONL(text string) bool {
 // parseJSONArray unmarshals a JSON array and emits one item per element.
 func parseJSONArray(text string) []map[string]any {
 	var arr []any
-	if err := json.Unmarshal([]byte(text), &arr); err != nil {
+	if err := decodeJSONParserValue(text, &arr); err != nil {
 		// Fallback: emit as plain text.
 		return []map[string]any{{"text": text, "doc_type_kwd": "text"}}
 	}
@@ -172,7 +173,7 @@ func parseJSONArray(text string) []map[string]any {
 // parseSingleJSONObject unmarshals a single JSON object and emits one item.
 func parseSingleJSONObject(text string) []map[string]any {
 	var obj map[string]any
-	if err := json.Unmarshal([]byte(text), &obj); err != nil {
+	if err := decodeJSONParserValue(text, &obj); err != nil {
 		return []map[string]any{{"text": text, "doc_type_kwd": "text"}}
 	}
 	b, err := json.Marshal(obj)
@@ -195,10 +196,10 @@ func parseJSONLines(text string) []map[string]any {
 		}
 		// Each line should be a JSON object.
 		var obj map[string]any
-		if err := json.Unmarshal([]byte(line), &obj); err != nil {
+		if err := decodeJSONParserValue(line, &obj); err != nil {
 			// Also try as a string or other standalone value.
 			var val any
-			if err2 := json.Unmarshal([]byte(line), &val); err2 != nil {
+			if err2 := decodeJSONParserValue(line, &val); err2 != nil {
 				// Unparseable line — skip, matching Python behaviour.
 				continue
 			} else {
@@ -227,4 +228,17 @@ func parseJSONLines(text string) []map[string]any {
 		})
 	}
 	return items
+}
+
+// Preserve numeric tokens before rendering records as searchable text.
+func decodeJSONParserValue(input string, target any) error {
+	decoder := json.NewDecoder(strings.NewReader(input))
+	decoder.UseNumber()
+	if err := decoder.Decode(target); err != nil {
+		return err
+	}
+	if decoder.Decode(new(any)) != io.EOF {
+		return fmt.Errorf("trailing JSON value")
+	}
+	return nil
 }

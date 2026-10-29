@@ -524,9 +524,12 @@ func StartKnowledgeStructureRuntime(ctx context.Context) {
 							claim, err := claimKnowledgeStructure(claimCtx, record, common.GenerateUUID())
 							cancel()
 							if err == nil && claim != nil {
-								if claim.Protocol == documentTaskProtocol {
+								switch claim.Protocol {
+								case documentTaskProtocol:
 									d.runKnowledgeDocument(ctx, claim)
-								} else {
+								case entity.KnowledgeParsedProtocol:
+									d.runKnowledgeParsed(ctx, claim)
+								case "", "code_structure/0.1.0":
 									d.runKnowledgeStructure(ctx, claim)
 								}
 							}

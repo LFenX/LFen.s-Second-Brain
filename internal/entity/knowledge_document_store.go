@@ -33,6 +33,7 @@ func (KnowledgeDocumentOperationRow) TableName() string { return "knowledge_docu
 // KnowledgeDocumentRepresentationRecord and its nodes become visible in one
 // publication transaction. Derived text is distinct from the immutable original.
 type KnowledgeDocumentRepresentationRecord struct {
+	Protocol         string `gorm:"size:40;not null;default:document_structure/0.1.0"`
 	ID               string `gorm:"primaryKey;size:64"`
 	OwnerID          string `gorm:"size:32;not null"`
 	DomainID         string `gorm:"size:32;not null;index"`

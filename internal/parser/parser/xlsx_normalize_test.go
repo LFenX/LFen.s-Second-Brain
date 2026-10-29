@@ -126,7 +126,7 @@ func TestXLSXParser_ReturnsUnrecoverableReadError(t *testing.T) {
 	}
 }
 
-func TestXLSXParser_WarnsWhenMergedCellsCannotBeRead(t *testing.T) {
+func TestXLSXParser_RejectsUnreadableMergedCells(t *testing.T) {
 	data := newTestXLSX(t, func(f *excelize.File) {
 		mustSetCell(t, f, "Sheet1", "A1", "Name")
 		mustSetCell(t, f, "Sheet1", "A2", "Alice")
@@ -135,14 +135,8 @@ func TestXLSXParser_WarnsWhenMergedCellsCannotBeRead(t *testing.T) {
 
 	p, _ := NewXLSXParser("")
 	res := p.ParseWithResult(t.Context(), "bad-merge.xlsx", data)
-	if res.Err != nil {
-		t.Fatalf("ParseWithResult: %v", res.Err)
-	}
-	if !strings.Contains(spreadsheetText(res), "Alice") {
-		t.Fatalf("parsed rows = %q, want sheet data", spreadsheetText(res))
-	}
-	if !strings.Contains(strings.Join(res.Warnings, "\n"), "merged cells") {
-		t.Fatalf("warnings = %v, want merged-cells warning", res.Warnings)
+	if res.Err == nil || !strings.Contains(res.Err.Error(), "merged cells") {
+		t.Fatalf("unreadable merge metadata must fail rather than appear faithful: %v", res.Err)
 	}
 }
 

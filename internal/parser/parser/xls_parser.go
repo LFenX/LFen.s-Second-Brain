@@ -127,7 +127,14 @@ func parseBIFF8Bytes(ctx context.Context, data []byte) ([]map[string]any, int, e
 	}
 	defer reader.Close()
 
+	merges, err := biff8SheetMergeRanges(data)
+	if err != nil {
+		return nil, 0, err
+	}
 	sheetCount := reader.SheetCount()
+	if len(merges) != sheetCount {
+		return nil, sheetCount, fmt.Errorf("BIFF merged-cell sheet binding mismatch")
+	}
 	items := make([]map[string]any, 0, sheetCount)
 	for sheetIndex := 0; reader.NextSheet(); sheetIndex++ {
 		if err := ctx.Err(); err != nil {
@@ -137,7 +144,11 @@ func parseBIFF8Bytes(ctx context.Context, data []byte) ([]map[string]any, int, e
 		if err := ctx.Err(); err != nil {
 			return nil, sheetCount, err
 		}
-		items = append(items, buildSheetItems(records, reader.SheetName(), sheetIndex+1, headerRow, dataRows, nil)...)
+		sheetItems := buildSheetItems(records, reader.SheetName(), sheetIndex+1, headerRow, dataRows, nil)
+		if err := applySpreadsheetMerges(sheetItems, merges[sheetIndex]); err != nil {
+			return nil, sheetCount, err
+		}
+		items = append(items, sheetItems...)
 	}
 	if err := reader.Err(); err != nil {
 		return nil, sheetCount, fmt.Errorf("read BIFF workbook: %w", err)

@@ -371,7 +371,7 @@ func (s *DocumentService) InsertDocument(doc *entity.Document) error {
 
 // insertDocument serializes publication with domain registration. Only the
 // multipart path supplies a validator for the actual supported source bytes.
-func (s *DocumentService) insertDocument(ctx context.Context, doc *entity.Document, validate func(*entity.Knowledgebase) error) error {
+func (s *DocumentService) insertDocument(ctx context.Context, doc *entity.Document, validate func(*gorm.DB, *entity.Knowledgebase) error) error {
 	return dao.DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var current entity.Knowledgebase
 		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).Where("id = ?", doc.KbID).Take(&current).Error; err != nil {
@@ -384,7 +384,7 @@ func (s *DocumentService) insertDocument(ctx context.Context, doc *entity.Docume
 			return permission.ErrKnowledgeIngestionDenied
 		}
 		if validate != nil {
-			if err := validate(&current); err != nil {
+			if err := validate(tx, &current); err != nil {
 				return err
 			}
 		}

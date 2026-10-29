@@ -15,6 +15,8 @@ import (
 	"ragflow/internal/storage"
 	"ragflow/internal/utility"
 	"strings"
+
+	"gorm.io/gorm"
 )
 
 // UploadLocalDocuments stores each uploaded file in object storage and inserts a
@@ -29,6 +31,10 @@ import (
 // Gaps vs Python (documented, not yet ported): thumbnail generation and
 // read_potential_broken_pdf repair.
 func (s *DocumentService) UploadLocalDocuments(ctx context.Context, kb *entity.Knowledgebase, tenantID string, files []*multipart.FileHeader, parentPath string, parserConfigOverride map[string]interface{}) ([]map[string]interface{}, []string) {
+	return s.uploadLocalDocuments(ctx, kb, tenantID, files, parentPath, parserConfigOverride, nil)
+}
+
+func (s *DocumentService) uploadLocalDocuments(ctx context.Context, kb *entity.Knowledgebase, tenantID string, files []*multipart.FileHeader, parentPath string, parserConfigOverride map[string]interface{}, parsed *parsedUploadAuthority) ([]map[string]interface{}, []string) {
 	storageImpl := storage.GetStorageFactory().GetStorage()
 	if storageImpl == nil {
 		return nil, []string{"storage not initialized"}
@@ -39,6 +45,11 @@ func (s *DocumentService) UploadLocalDocuments(ctx context.Context, kb *entity.K
 		return nil, []string{err.Error()}
 	}
 	kb = current
+	if parsed != nil {
+		if err := parsed.verify(ctx, dao.DB, current); err != nil {
+			return nil, []string{err.Error()}
+		}
+	}
 
 	// Resolve (and create if needed) the dataset's file-manager folder up front.
 	// Without the File / file2document linkage the document list (which inner-joins
@@ -64,7 +75,11 @@ func (s *DocumentService) UploadLocalDocuments(ctx context.Context, kb *entity.K
 
 	for _, fh := range files {
 		var blob []byte
-		blob, err = readFileHeaderBytes(fh)
+		if parsed != nil {
+			blob, err = parsed.readFile(fh)
+		} else {
+			blob, err = readFileHeaderBytes(fh)
+		}
 		if err != nil {
 			errMsgs = append(errMsgs, fh.Filename+": "+err.Error())
 			continue
@@ -80,7 +95,12 @@ func (s *DocumentService) UploadLocalDocuments(ctx context.Context, kb *entity.K
 
 		filetype := utility.FilenameType(filename)
 		if kb.KnowledgeEnabled {
-			if int64(len(blob)) > entity.KnowledgeMaxSourceBytes || !utility.IsKnowledgeTextSource(filename, blob) {
+			if parsed != nil {
+				if err := parsed.validateBlob(filename, blob); err != nil {
+					errMsgs = append(errMsgs, err.Error())
+					continue
+				}
+			} else if int64(len(blob)) > entity.KnowledgeMaxSourceBytes || !utility.IsKnowledgeTextSource(filename, blob) {
 				errMsgs = append(errMsgs, fh.Filename+": Knowledge foundation supports UTF-8 text/code up to 2 MiB only")
 				continue
 			}
@@ -105,9 +125,25 @@ func (s *DocumentService) UploadLocalDocuments(ctx context.Context, kb *entity.K
 			continue
 		}
 
-		selection, parserConfig := resolveDocumentParser(ctx, kb, filename, filetype, merged)
+		var selection *service.ParserSelection
+		var parserConfig entity.JSONMap
+		if parsed != nil {
+			selection, parserConfig = service.CurrentSelection("general", nil), entity.JSONMap{}
+		} else {
+			selection, parserConfig = resolveDocumentParser(ctx, kb, filename, filetype, merged)
+		}
 		doc := s.newDatasetDocument(kb, tenantID, filename, location, string(filetype), selection, parserConfig, "local", int64(len(blob)), blob)
-		if err = s.insertDocument(ctx, doc, func(current *entity.Knowledgebase) error {
+		if err = s.insertDocument(ctx, doc, func(tx *gorm.DB, current *entity.Knowledgebase) error {
+			if parsed != nil {
+				if err := parsed.verify(ctx, tx, current); err != nil {
+					return err
+				}
+				if err := parsed.validateBlob(filename, blob); err != nil {
+					return err
+				}
+				kb = current
+				return nil
+			}
 			if current.KnowledgeEnabled {
 				if current.CreatedBy != tenantID {
 					return permission.ErrKnowledgeIngestionDenied

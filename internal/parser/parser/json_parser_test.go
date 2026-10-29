@@ -53,7 +53,7 @@ func TestJSONParser_UTF8BOM(t *testing.T) {
 	assertJSONTexts(t, res, `{"q":"a"}`, `{"q":"b"}`)
 }
 
-// Non-UTF-8 files are decoded before json.Unmarshal, which would otherwise
+// Non-UTF-8 files are decoded before JSON decoding, which would otherwise
 // replace every invalid byte with U+FFFD.
 func TestJSONParser_DecodesNonUTF8(t *testing.T) {
 	src := `[{"q":"中文问题"}]`
@@ -81,5 +81,49 @@ func TestJSONParser_DecodesNonUTF8(t *testing.T) {
 				t.Errorf("encoding = %v, want %q", res.File["encoding"], tc.encoding)
 			}
 		})
+	}
+}
+
+func TestJSONParser_PreservesExactNumbers(t *testing.T) {
+	for _, fixture := range []struct {
+		name  string
+		input string
+		want  []string
+	}{
+		{
+			"object",
+			`{"id":9007199254740993,"amount":0.123456789012345678901}`,
+			[]string{`{"amount":0.123456789012345678901,"id":9007199254740993}`},
+		},
+		{
+			"array",
+			`[9007199254740993,{"id":9007199254740995},0.123456789012345678901]`,
+			[]string{`9007199254740993`, `{"id":9007199254740995}`, `0.123456789012345678901`},
+		},
+		{
+			"jsonl",
+			"{\"id\":9007199254740993}\n{\"id\":9007199254740995}\n",
+			[]string{`{"id":9007199254740993}`, `{"id":9007199254740995}`},
+		},
+		{
+			"negative_exponent_zero_false_null",
+			`{"negative":-9007199254740993,"exponent":1.000000000000000000001e+40,"zero":-0,"flag":false,"nil":null}`,
+			[]string{`{"exponent":1.000000000000000000001e+40,"flag":false,"negative":-9007199254740993,"nil":null,"zero":-0}`},
+		},
+	} {
+		t.Run(fixture.name, func(t *testing.T) {
+			result := NewJSONParser().ParseWithResult(context.Background(), "synthetic.json", []byte(fixture.input))
+			if result.Err != nil {
+				t.Fatal(result.Err)
+			}
+			assertJSONTexts(t, result, fixture.want...)
+		})
+	}
+}
+
+func TestJSONParser_RetainsFallbackForTrailingValues(t *testing.T) {
+	for _, input := range []string{`[9007199254740993] null`, `{"id":9007199254740993} false`} {
+		result := NewJSONParser().ParseWithResult(context.Background(), "synthetic.json", []byte(input))
+		assertJSONTexts(t, result, input)
 	}
 }

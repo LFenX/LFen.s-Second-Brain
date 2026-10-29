@@ -1,5 +1,549 @@
 export default {
   translation: {
+    knowledgeConsumption: {
+      archTitle: 'Content data architecture and current boundaries',
+      archFlow: 'Original content to fixed evidence',
+      archAuthority:
+        'Evidence comes from original and fixed revision metadata, this capability response, the selected representation and current permission. Indexes and this page do not replace the original.',
+      archIdentity:
+        'Current reads are owner only. Each read rechecks the current identity, domain, source and integrity. IDs, paths and references grant no access.',
+      archObject: 'Object or stage',
+      archFields: 'Identity, fields and coordinates',
+      archEvidence: 'Current evidence and limits',
+      archStage_source: 'Source and original',
+      archStage_revision: 'Fixed revision',
+      archStage_representation: 'Representation',
+      archStage_node: 'Typed node and locator',
+      archStage_chunk: 'Typed chunks',
+      archStage_index: 'Rebuildable lexical index',
+      archStage_evidence: 'Fixed evidence reference',
+      archFields_source:
+        'source_id identifies a source; existing save and object storage paths own original bytes.',
+      archFields_revision:
+        'source_revision_id and source_sha256 pin original bytes without following the head.',
+      archFields_representation:
+        'representation_ref kind, id and producer_sha256 pin an interpretation. Temporary parser_result is not publication.',
+      archFields_node:
+        'node_ref, locator and text range/status keep original positions separate from reading ranges.',
+      archFields_chunk:
+        'Node types and valid UTF-8 boundaries produce ranges that need coverage and source evidence.',
+      archFields_index:
+        'Rebuilt from fixed content; permission, index version, coverage and readiness are separate.',
+      archFields_evidence:
+        'Pin source_ref, representation_ref and node_ref, preserving locators, byte ranges and fragment digests.',
+      archState_source:
+        'Saving is established by actual save results and original readback.',
+      archState_revision:
+        'The source digest belongs to original bytes, not derived reading text.',
+      archState_representation:
+        'These are server-registered fixed kinds. Readability depends on each actual representation state.',
+      archState_node:
+        'Reads check namespaces, source, coordinates and text status. Missing nodes are refused.',
+      archState_chunk:
+        'This response supplies no completed typed-chunk or coverage evidence. End-to-end readiness is unclaimed.',
+      archState_evidence:
+        'Fixed reads verify identity and fragment digests. Index hits must separately prove their unified evidence connection.',
+      archIndexUnknown:
+        'Current lexical permission is unavailable; index readiness is unknown.',
+      archIndexEnabled:
+        'Lexical permission is enabled. The selected representation is not assumed indexed or searchable.',
+      archIndexDisabled:
+        'Lexical permission is disabled. Searchability is unclaimed.',
+      archIndependent_save: 'Save state',
+      archIndependent_parse: 'Parse state',
+      archIndependent_index: 'Index state',
+      archIndependent_search: 'Search state',
+      archIndependentMeaning_save:
+        'An original or revision can exist without extracted text.',
+      archIndependentMeaning_parse:
+        'Representation and node states do not establish a completed index.',
+      archIndependentMeaning_index:
+        'Check fixed versions and coverage independently of permission.',
+      archIndependentMeaning_search:
+        'Require actual hits, authorization and fixed readback. Registration or HTTP 200 does not establish quality.',
+      archCoordinates:
+        'source_utf8 is original text/code UTF-8; derived_utf8 is fixed derived reading; item_utf8 belongs to temporary items only. A DOCX natural path is not a Word physical page.',
+      archIncomplete:
+        'Arrows show data dependencies. Unproven chunk, index and retrieval stages remain unverified; overall foundation completion is unclaimed.',
+      matrixTitle: 'File families, outputs and processing states',
+      registrationCount:
+        'Producer registrations: {{count}}. Code/text structure rows: {{structures}}. Registration counts are not successful runtime test counts.',
+      registrationPending: 'Not returned',
+      familyExtensions: 'File family / extensions',
+      outputKinds: 'Producer output categories',
+      saveState: 'Save',
+      parseState: 'Parse',
+      indexState: 'Index',
+      searchState: 'Search',
+      outputBoundaries:
+        'Extensions classify files; output categories describe source-defined branches. Check each actual result for extraction and fixed publication.',
+      producerRegistration: 'Producer registration',
+      structureRegistration: 'Structure registration',
+      mappingUnknown:
+        'No fixed mapping is available; outputs and extensions remain unverified.',
+      output_text: 'Text',
+      output_heading: 'Heading',
+      output_list: 'List',
+      output_code: 'Code / code symbols',
+      output_table: 'Structured table',
+      output_image: 'Image payload',
+      output_configuration: 'Configuration placeholder',
+      output_markdown: 'Markdown awaiting normalization',
+      note_markdownNormalization:
+        'Markdown normalization identifies text, headings, lists, code, tables and image payloads. A file need not contain every category.',
+      note_slidesFlattenTables:
+        'The local producer flattens table text into per-slide text instead of returning table items.',
+      note_xlsImageBranch:
+        'Image payloads belong to the compatible OOXML branch; they are not promised for BIFF input.',
+      note_plainCodeText:
+        'These extensions are read as text. Code symbols require the corresponding structure parser.',
+      note_emailBody:
+        'Body and headers produce text. Attachment capability is separate; registration is not attachment extraction proof.',
+      note_imageIsNotOCR: 'An image payload or alt text is not OCR text.',
+      note_audioIsNotTranscript:
+        'Configuration and file checks only; this is not an audio transcript.',
+      savedTextRequired:
+        'Reads an already saved, valid UTF-8 source; this response contains no save result.',
+      saveNotReported:
+        'This capability response does not establish original saving for this family.',
+      fixedPathPending:
+        'The deployed generic fixed publication path still requires integration.',
+      matrixIndexUnknown: 'Permission unavailable; index readiness is unknown.',
+      matrixIndexEnabled:
+        'Permission enabled; index readiness is not returned.',
+      matrixIndexDisabled:
+        'Permission disabled; index availability is unclaimed.',
+      capabilitySources: 'Capability sources and count meanings',
+      classificationSource:
+        'Extensions use a fixed mapping of the current filename classifier. Classification is not upload admission or extraction proof.',
+      producerSource:
+        'Outputs follow producer and shared normalization branches. This display invokes no parsing, model or remote operation.',
+      structureSource:
+        'Code/text structure rows follow the existing structure contract and matching rules; their count is separate from the 16 producer categories.',
+      runtimeSources:
+        'Save, runtime readiness and permission use existing C1/R1/R2 capabilities. They contain no per-file test evidence; unit results must not be reported as live success.',
+      family_pdf: 'PDF document',
+      family_doc: 'Word binary document',
+      family_docx: 'Word OOXML document',
+      family_ppt: 'PowerPoint binary presentation',
+      family_pptx: 'PowerPoint OOXML presentation',
+      family_xls: 'Excel binary workbook',
+      family_xlsx: 'Excel OOXML workbook',
+      family_csv: 'CSV table',
+      family_html: 'HTML page',
+      family_md: 'Markdown document',
+      family_txt: 'Plain text / source text',
+      family_epub: 'EPUB book',
+      family_json: 'JSON / line-delimited JSON',
+      family_email: 'Email',
+      family_visual: 'Image',
+      family_aural: 'Audio',
+      family_typescript: 'TypeScript source',
+      family_tsx: 'TSX source',
+      family_go: 'Go source',
+      originalPage: 'Physical page {{number}} of the original',
+      originalBytes: 'Original UTF-8 bytes [{{start}}, {{end}})',
+      temporaryElement: 'Temporary parsed item at index {{number}}',
+      documentOnly: 'Original document only',
+      noReadingRange: 'No verified reading range',
+      space_source_utf8: 'Original UTF-8 bytes',
+      space_derived_utf8: 'Derived reading UTF-8 bytes',
+      space_item_utf8: 'Temporary item UTF-8 bytes',
+      support: 'Processing and support',
+      architecture:
+        'Original and fixed revision → representation → typed nodes and source positions. Indexes are rebuildable derivatives.',
+      separateStates:
+        'Saving, parsing, indexing and searching have separate states.',
+      format: 'Format',
+      import: 'Import',
+      structure: 'Structure parsing',
+      retrieval: 'Current retrieval',
+      verification: 'Verified scope',
+      state_supported: 'Available',
+      state_conditional: 'Available with conditions',
+      state_unsupported: 'Unsupported',
+      state_unknown: 'Capability unverified',
+      notVerified: 'Not tested',
+      verificationFailed: 'Test failed at this tier',
+      verifiedBounded: 'Tested within the stated scope',
+      noQualityClaim:
+        'Capability declarations and bounded tests do not establish complex retrieval quality or overall acceptance.',
+      tier_component: 'Component',
+      tier_native_http: 'Native HTTP',
+      tier_browser: 'Browser',
+      tier_mcp_sdk: 'MCP SDK',
+      content: 'Unified content',
+      fixedIdentity: 'Fixed source and representation',
+      fixedLink: 'Open this fixed node',
+      representation_source_revision: 'Original text',
+      representation_structure_view: 'Structured content',
+      representation_document_representation: 'Document content',
+      representation_parser_result: 'Temporary parsed content',
+      kind_file: 'Source',
+      kind_symbol: 'Code symbol',
+      kind_section: 'Section',
+      kind_passage: 'Passage',
+      kind_document: 'Document',
+      kind_page: 'Page',
+      kind_slide: 'Slide',
+      kind_heading: 'Heading',
+      kind_paragraph: 'Paragraph',
+      kind_text_box: 'Text box',
+      kind_text_block: 'Text block',
+      kind_table: 'Table',
+      kind_row: 'Row',
+      kind_cell: 'Cell',
+      kind_list: 'List',
+      kind_list_item: 'List item',
+      kind_media: 'Media',
+      kind_unsupported_block: 'Unsupported block',
+      kind_opaque: 'Uninterpreted item',
+      structure_not_built: 'Structure not built',
+      structure_building: 'Building structure',
+      structure_published: 'Structure published',
+      structure_failed: 'Structure failed',
+      structure_unsupported: 'Structure unsupported',
+      current_current: 'Current revision when checked',
+      current_historical: 'Historical revision',
+      current_unknown: 'Currentness unverified',
+      noNodes:
+        'This representation has no browsable nodes; this does not establish that the original is empty.',
+      text_available: 'Text available',
+      text_empty: 'Text confirmed empty',
+      text_unsupported: 'Text extraction unsupported',
+      text_unsupported_or_requires_ocr:
+        'No extractable text or OCR required; OCR is disabled in this scope',
+      text_unavailable: 'Text unavailable',
+      originalLocator: 'Original position',
+      readingCoordinates: 'Reading coordinates',
+      precision: 'Position precision',
+      coordinateWarning:
+        'Derived UTF-8 bytes are not original positions. DOCX source paths are not Word physical pages.',
+      read: 'Read fixed content',
+      verifiedWindow: 'This window and fixed reference are verified',
+      moreText: 'Read next window',
+      currentReading:
+        'Unified reads: at most {{bytes}} bytes per window and {{count}} nodes per page.',
+      lexicalEnabled: 'Existing local lexical permission is enabled',
+      lexicalDisabled: 'Existing local lexical permission is disabled',
+      lexicalSeparate: 'Reading, parsing and retrieval readiness are separate',
+      originalImportAvailable:
+        'Original intake is ready; saving does not parse automatically',
+      importNeedsBinding:
+        'Confirm the specific import path and content constraints',
+      runtimeNotReady: 'Runtime dependencies are unavailable or unverified',
+      runtimeUnknown: 'Runtime readiness for this format is unavailable',
+      runtimeReadyConditional:
+        'Runtime dependencies ready; domain permission and actual publication are still required',
+      result_structured:
+        'Structured output registered; extraction success is unverified',
+      result_image_payload: 'Image payload and alt only; not OCR text',
+      result_configuration_only:
+        'Configuration validation only; not audio transcription',
+      retrievalNeedsSelection:
+        'Confirm the fixed representation and index readiness',
+      noEvidenceInCapabilities:
+        'This capability response provides no per-format execution evidence',
+      chooseText: 'Text sources',
+      chooseStructure: 'Project structure',
+      chooseDocument: 'Original documents',
+      chooseSourceHint:
+        'Choose a source path on the left, or choose a project or original by name.',
+      fixedSelection:
+        'Revision and representation are fixed. Later source or head changes do not replace this selection.',
+      fixCurrentView: 'Pin the current published structure',
+      noStructure: 'No published structure is available',
+      originalHeadDifferent:
+        'The chosen original revision differs from the current structure. The selection is retained.',
+      fixedContent: 'Pinned content',
+      representation_ready: 'Representation ready',
+      representation_empty: 'Explicitly empty representation',
+      representation_partial: 'Representation includes unsupported content',
+      representation_unavailable: 'Representation unavailable',
+      representation_normalization_required:
+        'Existing normalization is required',
+      reason_original_has_no_text_representation:
+        'The original is saved but has no text representation.',
+      reason_representation_contains_unsupported_content:
+        'Some content is unsupported. Browsable nodes do not establish complete extraction accuracy.',
+      reason_no_extractable_text: 'No text is currently extractable.',
+      reason_media_not_ocr: 'No OCR was performed on this media.',
+      reason_unsupported_source_block: 'This source block is unsupported.',
+      noTextRepresentation:
+        'No text root exists. No empty document or synthetic root is invented.',
+      root: 'Root node',
+      noChildren: 'No child nodes at this level',
+      children: 'Browse child nodes',
+      unnamed: 'Unnamed node',
+      mediaNotOcr: 'Media metadata only; no OCR or automatic external fetch.',
+      tableShape:
+        'Source table: {{rows}} rows and at most {{cells}} cells; layout is not inferred.',
+      cellPosition: 'Source cell: row {{row}}, column {{cell}}',
+      originalSlide: 'Original slide {{number}}',
+      originalLines: 'Original lines {{start}}–{{end}}',
+      nameTruncated: 'Name truncated',
+      fixedHistoryHint:
+        'Fixed revision read; currentness is based on metadata when checked.',
+
+      chooseParsed: 'Published parser results',
+      chooseParsedSource:
+        'Select a source on the left to discover results for its fixed revision.',
+      parsedOrder:
+        'Numbers show display order, not processing time or recency. Selection pins the representation and producer.',
+      parsedEntry: 'Parsed result item {{number}}',
+      noParsedRepresentation:
+        'No published parsed representation exists for this revision; the original is not assumed empty.',
+      parsedItemPosition:
+        'Parsed item order {{number}}; not an original page or byte position',
+      parserMetadataWarning:
+        'Derived reading text and original positions are checked separately. Producer numbers are not verified original coordinates.',
+      sheet: 'Sheet',
+      altText: 'Alternative text, not OCR',
+      producerMetadata: 'Producer metadata',
+      positionsUnknown: 'The producer supplied no position numbers.',
+      positionsProducerOnly:
+        'Producer position numbers only; no page frame or original bytes are inferred.',
+      parsedTable: 'Parsed table grid',
+      tableGridMeaning:
+        'Public grid positions are shown; covered cells do not repeat text. Merge spans are stated separately.',
+      coveredCell: 'Covered by a merged cell',
+      emptyTableRow: 'Empty row (0 cells)',
+      cellSpan: 'Merge span: {{rows}} rows × {{columns}} columns',
+      tablePreviewClipped:
+        'Preview is limited to 20 rows and 12 columns. Use the fixed read for complete derived text.',
+      representation_parsed_representation: 'Published parsed representation',
+      manualFlow: 'Original and manual parsing',
+      bytes: 'bytes',
+      manualSeparation:
+        'Saving the original, fixing a snapshot, parsing, indexing and searching are separate steps. Saving does not start parsing.',
+      manualEnabled: 'Local parsing is enabled.',
+      manualDisabled:
+        'Local parsing is off by default. Enabling it still requires a manually started task.',
+      manualEnable: 'Enable local parsing',
+      manualFormats: 'Registered local formats',
+      manualFile: 'Choose one original (up to 2 MiB)',
+      manualInvalidFile:
+        'Choose one file in a registered format, up to 2 MiB. Use Document originals for PDF, DOCX and PPTX.',
+      manualSaving: 'Saving original',
+      manualSave: 'Save original only',
+      manualUseSelected: 'Use selected text source',
+      manualUploadUnknown:
+        'The save outcome is unconfirmed. Further uploads are blocked to avoid duplicates; check the file list first.',
+      manualSaved: 'Original saved; snapshot not fixed yet',
+      manualSnapshot: 'Fix original snapshot',
+      manualSnapshotted: 'Fixed source obtained',
+      manualSourceState: 'Source state',
+      manualParser: 'Local parser',
+      manualUnsupported: 'This format is unsupported in this workflow',
+      manualNotReady:
+        'The source, policy or local runtime is not ready. Refresh the state before trying again.',
+      manualRetryTask: 'Retry the same task creation',
+      manualStart: 'Start parsing manually',
+      manualTaskUnknown:
+        'Task creation is unconfirmed. Retry uses the same request; this page does not create another task automatically.',
+      manualTask: 'Current parsing task',
+      manualFailure: 'Failure reason',
+      manualCancelling:
+        'Cancellation is cleaning up. Cancellation is complete only when the server returns Cancelled.',
+      manualRetryCancel: 'Retry the same cancellation',
+      manualCancel: 'Request cancellation',
+      manualProblem: 'This operation has no confirmed result',
+      manualUnexpected: 'Refresh the current state',
+      manualUnconfirmed:
+        'The write outcome is unconfirmed. Refresh first; a network error does not prove that the operation did not run.',
+      manualRefresh: 'Refresh source and task state',
+      manualResult: 'Fixed parsed result',
+      manualState_queued: 'Waiting to parse',
+      manualState_running: 'Parsing',
+      manualState_cancel_requested: 'Cancellation requested',
+      manualState_cancelled: 'Cancelled',
+      manualState_failed: 'Parsing failed',
+      manualState_succeeded: 'Parsed result published',
+      manualPhase_queued: 'Queued',
+      manualPhase_reading_original: 'Reading original',
+      manualPhase_extracting: 'Extracting content',
+      manualPhase_cleaning: 'Cleaning temporary resources',
+      manualPhase_done: 'Finished',
+    },
+    knowledgeLocalLexical: {
+      title: 'Local lexical search',
+      intro: 'Owner only · Fixed representations · Local keyword search',
+      failed: 'Operation did not complete',
+      policy: 'Local lexical master permission',
+      policyRules:
+        'Off by default. Both the master and content lexical permissions are required for indexing and search. Models are disabled; ingestion is manual.',
+      enabled: 'Enabled',
+      disabled: 'Disabled',
+      versions: 'Foundation policy {{foundation}} / local policy {{local}}',
+      confirmEnable: 'Confirm enabling local lexical indexing and search',
+      confirmDisable: 'Confirm disabling local lexical indexing and search',
+      enable: 'Enable local lexical capability',
+      disable: 'Disable local lexical capability',
+      pending: 'Original request outcome needs checking',
+      pendingHint:
+        'Keep the first request and idempotency key. Resending uses the saved body without changing versions or generating a new key.',
+      confirmResend: 'Confirm resending the saved original request and key',
+      resend: 'Resend original request',
+      chooseSources: 'Fixed source selection',
+      currentSources: 'Current text sources',
+      fixedRevision: 'Open by revision ID',
+      structureView: 'Published structure view',
+      revisionId: 'Fixed source revision ID',
+      viewId: 'Fixed structure view ID',
+      openRevision: 'Open fixed revision',
+      openView: 'Open fixed view',
+      openHead: 'Explicitly open the current structure view',
+      noView: 'This project has no published structure view',
+      fixedView: 'Fixed structure view',
+      addC1: 'Add fixed C1 original',
+      addR1: 'Add fixed R1 source',
+      fixedIdentity: 'Fixed reference details',
+      remove: 'Remove',
+      fixedHint:
+        'One fixed revision and representation per source, up to 32 sources. Updates never switch the selection automatically.',
+      replaceHint:
+        'This source already has another fixed revision or representation. Confirm replacement and check the index again.',
+      replace: 'Replace this fixed source selection',
+      currentness_current: 'Current revision when checked',
+      currentness_historical: 'Historical revision',
+      currentness_unknown: 'Fixed revision; currentness not checked',
+      snapshot_current: 'All fixed revisions were current when checked',
+      snapshot_historical: 'The selection contains historical revisions',
+      snapshot_mixed: 'The selection contains current and historical revisions',
+      index: 'Fixed selection index',
+      inspect: 'Check readiness',
+      confirmIndex: 'Confirm local lexical indexing for this fixed selection',
+      createIndex: 'Create index job',
+      readiness_unindexed: 'Not indexed',
+      readiness_building: 'Building index',
+      readiness_coverage_gap: 'Fixed selection coverage is incomplete',
+      readiness_stale: 'Index is stale',
+      readiness_failed: 'Index failed',
+      readiness_ready: 'Fixed selection is ready',
+      coverage:
+        'Sources covered {{covered}} / {{selected}}; bytes covered {{bytes}} / {{expected}}; indexed units {{units}}',
+      coveragePending: 'Coverage is not available yet',
+      job_queued: 'Index job queued',
+      job_building: 'Index job building',
+      job_published: 'Index job published',
+      job_failed: 'Index job failed',
+      stillProcessing: 'The job is still processing. You can check again.',
+      searchWhenReady:
+        'Both lexical permissions and a ready fixed selection are required to search.',
+      search: 'Search',
+      query: 'Keywords',
+      limit: 'Result limit (1–20)',
+      lexicalScore: 'Lexical score {{score}}',
+      returned: 'Returned {{count}} lexical hits in this request',
+      emptyHits: 'No hits in the current fixed selection',
+      readUnit: 'Read fixed unit',
+      fixedUnit: 'Fixed unit original',
+      completeUnit: 'Complete unit',
+      error_invalid_request:
+        'Request fields or byte limits do not match the contract.',
+      error_unauthenticated:
+        'The current identity cannot access this operation.',
+      error_not_found: 'The fixed object is not visible or does not exist.',
+      error_contract_mismatch: 'Contract versions do not match.',
+      error_policy_disabled: 'Local lexical permission is disabled.',
+      error_policy_changed: 'The policy changed. Check again.',
+      error_idempotency_conflict:
+        'The same key has conflicting content. Keep the original request and key.',
+      error_index_unindexed: 'The selection is not indexed.',
+      error_index_building: 'The index is still building.',
+      error_index_coverage_gap: 'Fixed selection coverage is incomplete.',
+      error_index_stale: 'The index is stale. Check again.',
+      error_index_failed: 'The index job failed.',
+      error_unit_oversize:
+        'An existing passage exceeds 8192 bytes and is rejected by this profile.',
+      error_unsupported_representation:
+        'This fixed representation is unsupported in this slice.',
+      error_source_unavailable: 'The fixed source is temporarily unavailable.',
+      error_integrity_error: 'Evidence integrity verification failed.',
+      error_capacity_exceeded: 'Processing capacity has been reached.',
+      error_unavailable: 'The service is unavailable.',
+      error_local_lexical_invalid_data:
+        'Fixed data failed consistency validation.',
+      error_local_lexical_invalid_response:
+        'The response failed field or byte validation.',
+      error_local_lexical_result_unknown:
+        'The outcome is unknown. The original request was preserved.',
+      error_local_lexical_storage_failed:
+        'Saving or restoring the original request failed. New writes are blocked.',
+      error_local_lexical_pending_request:
+        'An original request still needs checking.',
+      diagnostic_none: 'No index yet',
+      diagnostic_building: 'Building index',
+      diagnostic_coverage_gap: 'Incomplete coverage',
+      diagnostic_policy_disabled: 'Local lexical permission is disabled.',
+      diagnostic_policy_changed: 'The policy changed. Check again.',
+      diagnostic_profile_changed: 'The index profile changed',
+      diagnostic_index_failed: 'The index job failed.',
+      diagnostic_unit_oversize:
+        'An existing passage exceeds the unit byte limit.',
+      diagnostic_unsupported_representation:
+        'This fixed representation is unsupported in this slice.',
+      diagnostic_source_unavailable:
+        'The fixed source is temporarily unavailable.',
+      diagnostic_integrity_error: 'Evidence integrity verification failed.',
+      contentPolicy: 'Content lexical permission',
+      contentPolicyRules:
+        'Controls unified content indexing and search separately. This action preserves the current parse flag and does not create an index.',
+      contentVersions:
+        'Foundation policy {{foundation}} / Content policy {{content}}',
+      parseUnchanged: 'Parse state preserved: {{state}}',
+      confirmContentEnable:
+        'Confirm enabling content lexical indexing and search',
+      confirmContentDisable:
+        'Confirm disabling content lexical indexing and search',
+      enableContent: 'Enable content lexical access',
+      disableContent: 'Disable content lexical access',
+      addFixedRepresentation:
+        'Add this fixed representation to the local index selection',
+      documentView: 'Published document representations',
+      parsedSelectionHint:
+        'Add parsed files from the manual parse result or a published parsed representation.',
+      readiness_empty: 'The fixed selection has empty reading text',
+      readingCoverage:
+        'Reading bytes {{covered}} / {{expected}}; indexed units {{units}}',
+      coverageBoundary:
+        'Coverage measures reading text in the selected representation. It does not establish original-file completeness or retrieval quality.',
+      representation_ready: 'Ready representation',
+      representation_partial: 'Partial representation',
+      representation_empty: 'Empty representation',
+      textIndex_empty: 'No indexable reading text',
+      textIndex_available: 'Reading text indexed',
+      originalCoverage_source_utf8_exact: 'Exact original UTF-8 byte coverage',
+      originalCoverage_not_asserted: 'Original-file coverage not asserted',
+      unsearchableNodes: 'Unsearchable nodes: {{count}}',
+      profileBoundary:
+        'Language {{language}} · Unit limit {{bytes}} B · Lexical only · No parent expansion',
+      profileIdentity: 'Actual index profile and digests',
+      rankingBoundary:
+        'Native engine lexical order; no pagination; total match count is unknown.',
+      context: 'Fixed structural context',
+      contextBoundary:
+        'Only whole natural nodes within the evidence range are included; empty members are retained. Parent text is not expanded.',
+      nodeOmitted:
+        'Node metadata was explicitly omitted because it exceeds the budget.',
+      membersComplete: 'Members within the range are complete',
+      membersIncomplete: 'Members omitted within the range: {{count}}',
+      memberIdentity: 'Member fingerprint and text assembly',
+      contextIdentity: 'Context membership and scope',
+      omission_typed_members_not_defined_for_source_family:
+        'Typed members are not defined for this source family.',
+      omission_representation_contains_unsearchable_nodes:
+        'The representation contains unsearchable nodes.',
+      omission_whole_member_outside_evidence:
+        'A whole member lies outside this evidence range.',
+      omission_unsearchable_member: 'A member has no searchable reading text.',
+      omission_empty_member_not_anchored:
+        'An empty member has no usable position anchor.',
+      omission_member_limit: 'The response member limit was reached.',
+      omission_metadata_budget: 'The structural metadata budget was reached.',
+      diagnostic_empty_content: 'The selected reading text is empty.',
+      diagnostic_source_changed: 'The current source revision changed.',
+    },
     knowledgeDocument: {
       orderedList: 'Ordered list',
       unorderedList: 'Unordered list',

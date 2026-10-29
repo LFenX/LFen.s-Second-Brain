@@ -27,6 +27,7 @@ import (
 	"mime/quotedprintable"
 	"net/mail"
 	"path/filepath"
+	"sort"
 	"strings"
 	"time"
 
@@ -140,7 +141,13 @@ func (p *EmailParser) parseEmail(ctx context.Context, filename string, data []by
 	// Text representation: flatten fields into a single string for explicit
 	// text output and callers that need a display representation.
 	var sb strings.Builder
-	for k, v := range content {
+	keys := make([]string, 0, len(content))
+	for k := range content {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, k := range keys {
+		v := content[k]
 		// The metadata map (every non-basic header: Received chains,
 		// DKIM/ARC signatures, …) stays available in the JSON output, but
 		// flattening it into chunkable text buries the message under
@@ -163,7 +170,13 @@ func (p *EmailParser) parseEmail(ctx context.Context, filename string, data []by
 		case map[string]any:
 			sb.WriteString(k)
 			sb.WriteString(":{")
-			for mk, mv := range val {
+			mapKeys := make([]string, 0, len(val))
+			for mk := range val {
+				mapKeys = append(mapKeys, mk)
+			}
+			sort.Strings(mapKeys)
+			for _, mk := range mapKeys {
+				mv := val[mk]
 				if ms, ok := mv.(string); ok {
 					sb.WriteString(mk)
 					sb.WriteString(":")
@@ -370,22 +383,11 @@ func readMailBody(body io.Reader, contentType, cte string, collectAttachments bo
 		partCT := part.Header.Get("Content-Type")
 		partMedia, partParams, _ := mime.ParseMediaType(partCT)
 
-		if strings.HasPrefix(partMedia, "multipart/") {
-			// RFC 2045 6.4 forbids base64 and quoted-printable on a multipart
-			// entity, so a nested container is never CTE-decoded.
-			t, h, nestedAttachments := readMailBody(part, partCT, "", collectAttachments)
-			if t != "" {
-				textParts = append(textParts, t)
-			}
-			if h != "" {
-				htmlParts = append(htmlParts, h)
-			}
-			attachments = append(attachments, nestedAttachments...)
-			continue
-		}
-
 		// Check if this part is an attachment.
-		if collectAttachments && isAttachmentPart(part) {
+		if isAttachmentPart(part) {
+			if !collectAttachments {
+				continue
+			}
 			raw, _ := io.ReadAll(part)
 			raw = decodeCTE(raw, part.Header.Get("Content-Transfer-Encoding"))
 
@@ -399,6 +401,20 @@ func readMailBody(body io.Reader, contentType, cte string, collectAttachments bo
 				// prefers "raw" and falls back to "payload".
 				"raw": string(raw),
 			})
+			continue
+		}
+
+		if strings.HasPrefix(partMedia, "multipart/") {
+			// RFC 2045 6.4 forbids base64 and quoted-printable on a multipart
+			// entity, so a nested container is never CTE-decoded.
+			t, h, nestedAttachments := readMailBody(part, partCT, "", collectAttachments)
+			if t != "" {
+				textParts = append(textParts, t)
+			}
+			if h != "" {
+				htmlParts = append(htmlParts, h)
+			}
+			attachments = append(attachments, nestedAttachments...)
 			continue
 		}
 

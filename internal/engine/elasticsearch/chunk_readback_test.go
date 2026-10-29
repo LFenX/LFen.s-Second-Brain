@@ -24,8 +24,8 @@ import (
 	"testing"
 )
 
-// assertStoredField compares a field of the (JSON-decoded) captured bulk
-// document against the expected value using reflect.DeepEqual. The bulk body
+// assertStoredField compares a field of the (JSON-decoded) captured source
+// projection against the expected value using reflect.DeepEqual. The bulk body
 // round-trips through JSON, so numbers arrive as float64 and arrays as
 // []interface{}.
 func assertStoredField(t *testing.T, doc map[string]interface{}, key string, want interface{}) {
@@ -40,6 +40,33 @@ func assertStoredField(t *testing.T, doc map[string]interface{}, key string, wan
 	}
 }
 
+func capturedOrdinaryChunkSource(t *testing.T, actionLine, bodyLine string) map[string]interface{} {
+	t.Helper()
+	var action map[string]json.RawMessage
+	if err := json.Unmarshal([]byte(actionLine), &action); err != nil {
+		t.Fatal(err)
+	}
+	if len(action) != 1 || action["update"] == nil {
+		t.Fatalf("ordinary write must use atomic update: %s", actionLine)
+	}
+	var body struct {
+		ScriptedUpsert bool `json:"scripted_upsert"`
+		Script         struct {
+			Source string `json:"source"`
+			Params struct {
+				Doc map[string]interface{} `json:"doc"`
+			} `json:"params"`
+		} `json:"script"`
+	}
+	if err := json.Unmarshal([]byte(bodyLine), &body); err != nil {
+		t.Fatal(err)
+	}
+	if !body.ScriptedUpsert || !strings.HasPrefix(body.Script.Source, knowledgeWriteGuard) || !strings.Contains(body.Script.Source, "ctx._source.clear(); ctx._source.putAll(params.doc);") || body.Script.Params.Doc == nil {
+		t.Fatalf("ordinary atomic guard/source projection missing: %s", bodyLine)
+	}
+	return body.Script.Params.Doc
+}
+
 // TestInsertChunks_WritesIngestionShape is the T0 unit-tier read-back baseline
 // (issue #17371). It stands up an in-memory fake Elasticsearch, captures the
 // bulk request that InsertChunks sends, and asserts the stored document keeps
@@ -47,9 +74,9 @@ func assertStoredField(t *testing.T, doc map[string]interface{}, key string, wan
 // (docnm_kwd, content_with_weight, create_timestamp_flt, question_kwd,
 // important_kwd, page_num_int, position_int, kb_id overridden to datasetID).
 //
-// This guards the engine write boundary: when the suffixing is later moved
-// from ingestion into this boundary (T2), the document we send to ES must stay
-// byte-identical. No real ES is required, so it runs in the default unit tier.
+// The ordinary bulk action carries the source under script.params.doc so an
+// existing immutable knowledge row cannot be replaced. The source projection
+// must preserve the ingestion fields. No real ES is required in this unit tier.
 func TestInsertChunks_WritesIngestionShape(t *testing.T) {
 	var bulkBody []byte
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -99,10 +126,7 @@ func TestInsertChunks_WritesIngestionShape(t *testing.T) {
 	if len(lines) < 2 {
 		t.Fatalf("bulk body has %d lines, want >=2: %q", len(lines), string(bulkBody))
 	}
-	var doc map[string]interface{}
-	if err := json.Unmarshal([]byte(lines[1]), &doc); err != nil {
-		t.Fatalf("unmarshal doc line: %v", err)
-	}
+	doc := capturedOrdinaryChunkSource(t, lines[0], lines[1])
 
 	assertStoredField(t, doc, "docnm_kwd", "sample.md")
 	assertStoredField(t, doc, "content_with_weight", "hello world")
@@ -118,11 +142,8 @@ func TestInsertChunks_WritesIngestionShape(t *testing.T) {
 	if len(lines) != 8 {
 		t.Fatalf("bulk body has %d lines, want 8", len(lines))
 	}
-	for _, line := range []string{lines[3], lines[5], lines[7]} {
-		var stored map[string]interface{}
-		if err := json.Unmarshal([]byte(line), &stored); err != nil {
-			t.Fatal(err)
-		}
+	for _, i := range []int{3, 5, 7} {
+		stored := capturedOrdinaryChunkSource(t, lines[i-1], lines[i])
 		assertStoredField(t, stored, "available_int", float64(1))
 	}
 	if _, ok := visible["available_int"]; ok || nullAvailability["available_int"] != nil {

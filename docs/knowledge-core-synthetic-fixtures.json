@@ -1,0 +1,1265 @@
+{
+  "document_version": "1.0.0",
+  "status": "Prepared_NotParserOutput",
+  "recorded_date": "2026-10-28",
+  "manifest": {
+    "fixture_set": "knowledge-core-realignment-minimal-20261028",
+    "record_kind": "offline_fixture_preparation",
+    "synthetic_only": true,
+    "product_contract": false,
+    "constraints": {
+      "original_content": true,
+      "real_aics_content": false,
+      "attachment_fetches": 0,
+      "model_calls": 0,
+      "tsx_executed": false,
+      "dependencies_installed": false,
+      "parser_execution": "NotRun",
+      "retrieval_execution": "NotRun",
+      "runtime_api_requests": 0
+    },
+    "files": [
+      {
+        "path": "field-guide-v1.md",
+        "source_key": "synthetic-field-guide",
+        "revision_key": "md-v1",
+        "version": 1,
+        "supersedes_revision_key": null,
+        "byte_length": 580,
+        "sha256": "54cdc84e2ba89f4191a23902f3f7393ad3b47fe9b44e4e56f132d1c614c76ef8",
+        "encoding": "UTF-8",
+        "bom": false,
+        "newline": "LF",
+        "final_newline": true,
+        "line_count": 27,
+        "media_type": "text/markdown",
+        "charset": "utf-8",
+        "format": "markdown",
+        "original_synthetic": true
+      },
+      {
+        "path": "field-guide-v2.md",
+        "source_key": "synthetic-field-guide",
+        "revision_key": "md-v2",
+        "version": 2,
+        "supersedes_revision_key": "md-v1",
+        "byte_length": 580,
+        "sha256": "d04ff0dd5fcb7e49ccff838cf4473f87a0a7cbdb4c4c22e6d8080aa225c70fe1",
+        "encoding": "UTF-8",
+        "bom": false,
+        "newline": "LF",
+        "final_newline": true,
+        "line_count": 27,
+        "media_type": "text/markdown",
+        "charset": "utf-8",
+        "format": "markdown",
+        "original_synthetic": true
+      },
+      {
+        "path": "run-notes-v1.txt",
+        "source_key": "synthetic-run-notes",
+        "revision_key": "text-v1",
+        "version": 1,
+        "supersedes_revision_key": null,
+        "byte_length": 279,
+        "sha256": "4666dd2979f23e1bf7bdb6199de1a0112c946eb1ae689d8b6e01acf93290d462",
+        "encoding": "UTF-8",
+        "bom": false,
+        "newline": "CRLF",
+        "final_newline": true,
+        "line_count": 11,
+        "media_type": "text/plain",
+        "charset": "utf-8",
+        "format": "plain_text",
+        "original_synthetic": true
+      },
+      {
+        "path": "signal-card-v1.tsx",
+        "source_key": "synthetic-signal-card",
+        "revision_key": "tsx-v1",
+        "version": 1,
+        "supersedes_revision_key": null,
+        "byte_length": 721,
+        "sha256": "67af464ec94005887aaba2cbbfc20d6fe816b585c148465b48150e8fa45ebaff",
+        "encoding": "UTF-8",
+        "bom": false,
+        "newline": "LF",
+        "final_newline": true,
+        "line_count": 32,
+        "media_type": "text/plain",
+        "charset": "utf-8",
+        "format": "tsx",
+        "original_synthetic": true
+      }
+    ],
+    "revision_relationships": [
+      {
+        "source_key": "synthetic-field-guide",
+        "from_revision": "md-v1",
+        "to_revision": "md-v2",
+        "relationship": "same_source_new_revision",
+        "author_changes": [
+          "阈值表的缓冲上限由12条改为18条",
+          "代码块的bufferLimit由12改为18"
+        ],
+        "current_fixture_revision": "md-v2"
+      }
+    ],
+    "media_type_note": "TSX按text/plain保存，format=tsx；不声明浏览器执行或业务接口类型。",
+    "gold_facts": "gold-facts.json",
+    "evidence_limit": "仅输入和人工预标准备；不是实际parser输出、检索结果、权限验证或人的产品验收。"
+  },
+  "source_files": [
+    {
+      "path": "field-guide-v1.md",
+      "content_utf8": "# 星栈运维样例\n\n> 本文为原创合成资料，所有名称、数值与链接只用于离线验证。\n\n## 交接规则\n\n星栈演练代号为 MIST-42，交接窗口为 09:10—09:25。\n\n- 先核对来源修订。\n- 再记录处理结果。\n\n## 阈值表\n\n| 指标 | 阈值 | 单位 |\n| --- | --- | --- |\n| 缓冲上限 | 12 | 条 |\n| 等待上限 | 40 | 秒 |\n\n## 代码与附件\n\n```ts\nexport const bufferLimit = 12;\n```\n\n[离线附件：星栈示意图](https://fixtures.invalid/attachments/star-stack-diagram.svg)\n\n附件只保留链接；本批不抓取附件正文。\n"
+    },
+    {
+      "path": "field-guide-v2.md",
+      "content_utf8": "# 星栈运维样例\n\n> 本文为原创合成资料，所有名称、数值与链接只用于离线验证。\n\n## 交接规则\n\n星栈演练代号为 MIST-42，交接窗口为 09:10—09:25。\n\n- 先核对来源修订。\n- 再记录处理结果。\n\n## 阈值表\n\n| 指标 | 阈值 | 单位 |\n| --- | --- | --- |\n| 缓冲上限 | 18 | 条 |\n| 等待上限 | 40 | 秒 |\n\n## 代码与附件\n\n```ts\nexport const bufferLimit = 18;\n```\n\n[离线附件：星栈示意图](https://fixtures.invalid/attachments/star-stack-diagram.svg)\n\n附件只保留链接；本批不抓取附件正文。\n"
+    },
+    {
+      "path": "run-notes-v1.txt",
+      "content_utf8": "合成运行笔记\r\n记录编号：TEXT-SYN-07\r\n\r\n第一轮\r\n交接人代号：青屿。\r\n重复片段：星栈信号\r\n结果：先保存原文，再建立索引。\r\n\r\n第二轮\r\n重复片段：星栈信号\r\n备注：空行保留，重复内容不合并为同一来源位置。\r\n"
+    },
+    {
+      "path": "signal-card-v1.tsx",
+      "content_utf8": "import { useState } from 'react';\nimport type { ReactNode } from 'react';\n\nexport type SignalCardProps = {\n  label: string;\n  badge?: ReactNode;\n};\n\nexport const defaultSignalLabel = '星栈就绪';\n\nexport function SignalCard({ label, badge }: SignalCardProps) {\n  const [expanded, setExpanded] = useState(false);\n\n  function toggleDetails() {\n    setExpanded((current) => !current);\n  }\n\n  return (\n    <section aria-label={label}>\n      <h2>{label}</h2>\n      <button type=\"button\" onClick={toggleDetails}>\n        {expanded ? '收起详情' : '展开详情'}\n      </button>\n      {expanded && (\n        <p>\n          星栈组件仅用于合成验证。\n          {badge}\n        </p>\n      )}\n    </section>\n  );\n}\n"
+    }
+  ],
+  "gold": {
+    "fixture_set": "knowledge-core-realignment-minimal-20261028",
+    "record_kind": "author_defined_gold_preparation",
+    "product_contract": false,
+    "synthetic_only": true,
+    "label_basis": "作者先设定文字、类型、结构父子和自然位置；字节区间仅据保存后的原始文件计算。",
+    "execution_status": {
+      "parser": "NotRun",
+      "chunker": "NotRun",
+      "lexical_index": "NotRun",
+      "vector_index": "NotRun",
+      "retrieval": "NotRun",
+      "authorization_filter": "NotRun",
+      "model_calls": 0,
+      "attachment_fetches": 0
+    },
+    "coordinates": {
+      "bytes": "UTF-8原始字节，0起半开区间",
+      "lines": "1起包含端点；不把文件结尾换行算作额外内容行",
+      "crlf": "CR和LF各占1字节，禁止先归一成LF再使用本预标",
+      "hierarchy": "作者期望的结构父子，不是实际parser产物"
+    },
+    "fact_count": 39,
+    "facts": [
+      {
+        "fact_id": "md1-document",
+        "file": "field-guide-v1.md",
+        "revision_key": "md-v1",
+        "author_declared_type": "markdown_document",
+        "author_expected_parent_fact_id": null,
+        "statement": "Markdown首版，完整原始文本。",
+        "verbatim_text": "# 星栈运维样例\n\n> 本文为原创合成资料，所有名称、数值与链接只用于离线验证。\n\n## 交接规则\n\n星栈演练代号为 MIST-42，交接窗口为 09:10—09:25。\n\n- 先核对来源修订。\n- 再记录处理结果。\n\n## 阈值表\n\n| 指标 | 阈值 | 单位 |\n| --- | --- | --- |\n| 缓冲上限 | 12 | 条 |\n| 等待上限 | 40 | 秒 |\n\n## 代码与附件\n\n```ts\nexport const bufferLimit = 12;\n```\n\n[离线附件：星栈示意图](https://fixtures.invalid/attachments/star-stack-diagram.svg)\n\n附件只保留链接；本批不抓取附件正文。\n",
+        "byte_range": {
+          "start": 0,
+          "end": 580,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 1,
+          "end_line": 27,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "title": "星栈运维样例"
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "md1-title",
+        "file": "field-guide-v1.md",
+        "revision_key": "md-v1",
+        "author_declared_type": "heading",
+        "author_expected_parent_fact_id": "md1-document",
+        "statement": "一级标题为星栈运维样例。",
+        "verbatim_text": "# 星栈运维样例",
+        "byte_range": {
+          "start": 0,
+          "end": 20,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 1,
+          "end_line": 1,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "heading_level": 1,
+            "heading_path": [
+              "星栈运维样例"
+            ]
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "md1-handover",
+        "file": "field-guide-v1.md",
+        "revision_key": "md-v1",
+        "author_declared_type": "section",
+        "author_expected_parent_fact_id": "md1-document",
+        "statement": "交接规则章节包含说明段落和两项列表。",
+        "verbatim_text": "## 交接规则\n\n星栈演练代号为 MIST-42，交接窗口为 09:10—09:25。\n\n- 先核对来源修订。\n- 再记录处理结果。\n\n",
+        "byte_range": {
+          "start": 110,
+          "end": 248,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 5,
+          "end_line": 11,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "heading_level": 2,
+            "heading_path": [
+              "星栈运维样例",
+              "交接规则"
+            ]
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "md1-handover-text",
+        "file": "field-guide-v1.md",
+        "revision_key": "md-v1",
+        "author_declared_type": "paragraph",
+        "author_expected_parent_fact_id": "md1-handover",
+        "statement": "演练代号MIST-42；交接窗口09:10—09:25。",
+        "verbatim_text": "星栈演练代号为 MIST-42，交接窗口为 09:10—09:25。",
+        "byte_range": {
+          "start": 127,
+          "end": 191,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 7,
+          "end_line": 7,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "heading_path": [
+              "星栈运维样例",
+              "交接规则"
+            ]
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "md1-list",
+        "file": "field-guide-v1.md",
+        "revision_key": "md-v1",
+        "author_declared_type": "unordered_list",
+        "author_expected_parent_fact_id": "md1-handover",
+        "statement": "无序列表按先核修订、再记结果的源顺序排列。",
+        "verbatim_text": "- 先核对来源修订。\n- 再记录处理结果。",
+        "byte_range": {
+          "start": 193,
+          "end": 246,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 9,
+          "end_line": 10,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "list_items": 2,
+            "heading_path": [
+              "星栈运维样例",
+              "交接规则"
+            ]
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "md1-list-item-1",
+        "file": "field-guide-v1.md",
+        "revision_key": "md-v1",
+        "author_declared_type": "list_item",
+        "author_expected_parent_fact_id": "md1-list",
+        "statement": "第一项要求先核对来源修订。",
+        "verbatim_text": "- 先核对来源修订。",
+        "byte_range": {
+          "start": 193,
+          "end": 219,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 9,
+          "end_line": 9,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "list_item_index": 1
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "md1-list-item-2",
+        "file": "field-guide-v1.md",
+        "revision_key": "md-v1",
+        "author_declared_type": "list_item",
+        "author_expected_parent_fact_id": "md1-list",
+        "statement": "第二项要求再记录处理结果。",
+        "verbatim_text": "- 再记录处理结果。",
+        "byte_range": {
+          "start": 220,
+          "end": 246,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 10,
+          "end_line": 10,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "list_item_index": 2
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "md1-thresholds",
+        "file": "field-guide-v1.md",
+        "revision_key": "md-v1",
+        "author_declared_type": "section",
+        "author_expected_parent_fact_id": "md1-document",
+        "statement": "阈值表章节。",
+        "verbatim_text": "## 阈值表\n\n| 指标 | 阈值 | 单位 |\n| --- | --- | --- |\n| 缓冲上限 | 12 | 条 |\n| 等待上限 | 40 | 秒 |\n\n",
+        "byte_range": {
+          "start": 248,
+          "end": 368,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 12,
+          "end_line": 18,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "heading_level": 2,
+            "heading_path": [
+              "星栈运维样例",
+              "阈值表"
+            ]
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "md1-table",
+        "file": "field-guide-v1.md",
+        "revision_key": "md-v1",
+        "author_declared_type": "table",
+        "author_expected_parent_fact_id": "md1-thresholds",
+        "statement": "三列两条数据；首版缓冲上限12条、等待上限40秒。",
+        "verbatim_text": "| 指标 | 阈值 | 单位 |\n| --- | --- | --- |\n| 缓冲上限 | 12 | 条 |\n| 等待上限 | 40 | 秒 |",
+        "byte_range": {
+          "start": 262,
+          "end": 366,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 14,
+          "end_line": 17,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "columns": 3,
+            "data_rows": 2,
+            "heading_path": [
+              "星栈运维样例",
+              "阈值表"
+            ]
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "md1-buffer-row",
+        "file": "field-guide-v1.md",
+        "revision_key": "md-v1",
+        "author_declared_type": "table_row",
+        "author_expected_parent_fact_id": "md1-table",
+        "statement": "首版缓冲上限为12条。",
+        "verbatim_text": "| 缓冲上限 | 12 | 条 |",
+        "byte_range": {
+          "start": 311,
+          "end": 338,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 16,
+          "end_line": 16,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "data_row_index": 1,
+            "column_names": [
+              "指标",
+              "阈值",
+              "单位"
+            ]
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "md1-code-section",
+        "file": "field-guide-v1.md",
+        "revision_key": "md-v1",
+        "author_declared_type": "section",
+        "author_expected_parent_fact_id": "md1-document",
+        "statement": "代码和附件链接同属一个章节。",
+        "verbatim_text": "## 代码与附件\n\n```ts\nexport const bufferLimit = 12;\n```\n\n[离线附件：星栈示意图](https://fixtures.invalid/attachments/star-stack-diagram.svg)\n\n附件只保留链接；本批不抓取附件正文。\n",
+        "byte_range": {
+          "start": 368,
+          "end": 580,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 19,
+          "end_line": 27,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "heading_level": 2,
+            "heading_path": [
+              "星栈运维样例",
+              "代码与附件"
+            ]
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "md1-code",
+        "file": "field-guide-v1.md",
+        "revision_key": "md-v1",
+        "author_declared_type": "fenced_code",
+        "author_expected_parent_fact_id": "md1-code-section",
+        "statement": "首版代码常量bufferLimit为12。",
+        "verbatim_text": "```ts\nexport const bufferLimit = 12;\n```",
+        "byte_range": {
+          "start": 388,
+          "end": 428,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 21,
+          "end_line": 23,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "symbol": "bufferLimit",
+            "language": "ts"
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "md1-attachment-link",
+        "file": "field-guide-v1.md",
+        "revision_key": "md-v1",
+        "author_declared_type": "attachment_reference",
+        "author_expected_parent_fact_id": "md1-code-section",
+        "statement": "只有附件链接，不含附件画面、颜色或正文。",
+        "verbatim_text": "[离线附件：星栈示意图](https://fixtures.invalid/attachments/star-stack-diagram.svg)",
+        "byte_range": {
+          "start": 430,
+          "end": 523,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 25,
+          "end_line": 25,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "attachment_body_present": false,
+            "fetch_policy": "do_not_fetch",
+            "url": "https://fixtures.invalid/attachments/star-stack-diagram.svg"
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "md1-attachment-policy",
+        "file": "field-guide-v1.md",
+        "revision_key": "md-v1",
+        "author_declared_type": "paragraph",
+        "author_expected_parent_fact_id": "md1-code-section",
+        "statement": "附件不抓取。",
+        "verbatim_text": "附件只保留链接；本批不抓取附件正文。",
+        "byte_range": {
+          "start": 525,
+          "end": 579,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 27,
+          "end_line": 27,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "heading_path": [
+              "星栈运维样例",
+              "代码与附件"
+            ]
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "md2-document",
+        "file": "field-guide-v2.md",
+        "revision_key": "md-v2",
+        "author_declared_type": "markdown_document",
+        "author_expected_parent_fact_id": null,
+        "statement": "同一合成来源的第二版。",
+        "verbatim_text": "# 星栈运维样例\n\n> 本文为原创合成资料，所有名称、数值与链接只用于离线验证。\n\n## 交接规则\n\n星栈演练代号为 MIST-42，交接窗口为 09:10—09:25。\n\n- 先核对来源修订。\n- 再记录处理结果。\n\n## 阈值表\n\n| 指标 | 阈值 | 单位 |\n| --- | --- | --- |\n| 缓冲上限 | 18 | 条 |\n| 等待上限 | 40 | 秒 |\n\n## 代码与附件\n\n```ts\nexport const bufferLimit = 18;\n```\n\n[离线附件：星栈示意图](https://fixtures.invalid/attachments/star-stack-diagram.svg)\n\n附件只保留链接；本批不抓取附件正文。\n",
+        "byte_range": {
+          "start": 0,
+          "end": 580,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 1,
+          "end_line": 27,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "title": "星栈运维样例",
+            "same_source_as": "md1-document"
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "md2-handover",
+        "file": "field-guide-v2.md",
+        "revision_key": "md-v2",
+        "author_declared_type": "section",
+        "author_expected_parent_fact_id": "md2-document",
+        "statement": "第二版保留交接章节。",
+        "verbatim_text": "## 交接规则\n\n星栈演练代号为 MIST-42，交接窗口为 09:10—09:25。\n\n- 先核对来源修订。\n- 再记录处理结果。\n\n",
+        "byte_range": {
+          "start": 110,
+          "end": 248,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 5,
+          "end_line": 11,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "heading_level": 2,
+            "heading_path": [
+              "星栈运维样例",
+              "交接规则"
+            ]
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "md2-handover-text",
+        "file": "field-guide-v2.md",
+        "revision_key": "md-v2",
+        "author_declared_type": "paragraph",
+        "author_expected_parent_fact_id": "md2-handover",
+        "statement": "第二版交接窗口仍为09:10—09:25。",
+        "verbatim_text": "星栈演练代号为 MIST-42，交接窗口为 09:10—09:25。",
+        "byte_range": {
+          "start": 127,
+          "end": 191,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 7,
+          "end_line": 7,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "heading_path": [
+              "星栈运维样例",
+              "交接规则"
+            ]
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "md2-thresholds",
+        "file": "field-guide-v2.md",
+        "revision_key": "md-v2",
+        "author_declared_type": "section",
+        "author_expected_parent_fact_id": "md2-document",
+        "statement": "第二版阈值章节。",
+        "verbatim_text": "## 阈值表\n\n| 指标 | 阈值 | 单位 |\n| --- | --- | --- |\n| 缓冲上限 | 18 | 条 |\n| 等待上限 | 40 | 秒 |\n\n",
+        "byte_range": {
+          "start": 248,
+          "end": 368,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 12,
+          "end_line": 18,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "heading_level": 2,
+            "heading_path": [
+              "星栈运维样例",
+              "阈值表"
+            ]
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "md2-table",
+        "file": "field-guide-v2.md",
+        "revision_key": "md-v2",
+        "author_declared_type": "table",
+        "author_expected_parent_fact_id": "md2-thresholds",
+        "statement": "第二版缓冲上限18条；等待上限仍40秒。",
+        "verbatim_text": "| 指标 | 阈值 | 单位 |\n| --- | --- | --- |\n| 缓冲上限 | 18 | 条 |\n| 等待上限 | 40 | 秒 |",
+        "byte_range": {
+          "start": 262,
+          "end": 366,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 14,
+          "end_line": 17,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "data_rows": 2,
+            "columns": 3
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "md2-buffer-row",
+        "file": "field-guide-v2.md",
+        "revision_key": "md-v2",
+        "author_declared_type": "table_row",
+        "author_expected_parent_fact_id": "md2-table",
+        "statement": "当前fixture修订缓冲上限18条。",
+        "verbatim_text": "| 缓冲上限 | 18 | 条 |",
+        "byte_range": {
+          "start": 311,
+          "end": 338,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 16,
+          "end_line": 16,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "data_row_index": 1,
+            "column_names": [
+              "指标",
+              "阈值",
+              "单位"
+            ]
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "md2-code-section",
+        "file": "field-guide-v2.md",
+        "revision_key": "md-v2",
+        "author_declared_type": "section",
+        "author_expected_parent_fact_id": "md2-document",
+        "statement": "第二版代码与附件章节。",
+        "verbatim_text": "## 代码与附件\n\n```ts\nexport const bufferLimit = 18;\n```\n\n[离线附件：星栈示意图](https://fixtures.invalid/attachments/star-stack-diagram.svg)\n\n附件只保留链接；本批不抓取附件正文。\n",
+        "byte_range": {
+          "start": 368,
+          "end": 580,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 19,
+          "end_line": 27,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "heading_level": 2,
+            "heading_path": [
+              "星栈运维样例",
+              "代码与附件"
+            ]
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "md2-code",
+        "file": "field-guide-v2.md",
+        "revision_key": "md-v2",
+        "author_declared_type": "fenced_code",
+        "author_expected_parent_fact_id": "md2-code-section",
+        "statement": "第二版代码常量bufferLimit为18。",
+        "verbatim_text": "```ts\nexport const bufferLimit = 18;\n```",
+        "byte_range": {
+          "start": 388,
+          "end": 428,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 21,
+          "end_line": 23,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "symbol": "bufferLimit",
+            "language": "ts"
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "text-document",
+        "file": "run-notes-v1.txt",
+        "revision_key": "text-v1",
+        "author_declared_type": "text_document",
+        "author_expected_parent_fact_id": null,
+        "statement": "含中文、空行和相同重复片段的CRLF文本。",
+        "verbatim_text": "合成运行笔记\r\n记录编号：TEXT-SYN-07\r\n\r\n第一轮\r\n交接人代号：青屿。\r\n重复片段：星栈信号\r\n结果：先保存原文，再建立索引。\r\n\r\n第二轮\r\n重复片段：星栈信号\r\n备注：空行保留，重复内容不合并为同一来源位置。\r\n",
+        "byte_range": {
+          "start": 0,
+          "end": 279,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 1,
+          "end_line": 11,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "newline": "CRLF",
+            "record_id": "TEXT-SYN-07"
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "text-round-1",
+        "file": "run-notes-v1.txt",
+        "revision_key": "text-v1",
+        "author_declared_type": "section",
+        "author_expected_parent_fact_id": "text-document",
+        "statement": "第一轮段落。",
+        "verbatim_text": "第一轮\r\n交接人代号：青屿。\r\n重复片段：星栈信号\r\n结果：先保存原文，再建立索引。\r\n\r\n",
+        "byte_range": {
+          "start": 50,
+          "end": 168,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 4,
+          "end_line": 8,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "section_name": "第一轮"
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "text-handover-code",
+        "file": "run-notes-v1.txt",
+        "revision_key": "text-v1",
+        "author_declared_type": "text_line",
+        "author_expected_parent_fact_id": "text-round-1",
+        "statement": "青屿仅为合成代号。",
+        "verbatim_text": "交接人代号：青屿。",
+        "byte_range": {
+          "start": 61,
+          "end": 88,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 5,
+          "end_line": 5,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "section_name": "第一轮"
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "text-repeat-1",
+        "file": "run-notes-v1.txt",
+        "revision_key": "text-v1",
+        "author_declared_type": "text_line",
+        "author_expected_parent_fact_id": "text-round-1",
+        "statement": "重复片段第一次出现，必须保留独立源位置。",
+        "verbatim_text": "重复片段：星栈信号",
+        "byte_range": {
+          "start": 90,
+          "end": 117,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 6,
+          "end_line": 6,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "duplicate_occurrence": 1,
+            "section_name": "第一轮"
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "text-result",
+        "file": "run-notes-v1.txt",
+        "revision_key": "text-v1",
+        "author_declared_type": "text_line",
+        "author_expected_parent_fact_id": "text-round-1",
+        "statement": "处理顺序是先保存原文，再建立索引。",
+        "verbatim_text": "结果：先保存原文，再建立索引。",
+        "byte_range": {
+          "start": 119,
+          "end": 164,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 7,
+          "end_line": 7,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "section_name": "第一轮"
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "text-round-2",
+        "file": "run-notes-v1.txt",
+        "revision_key": "text-v1",
+        "author_declared_type": "section",
+        "author_expected_parent_fact_id": "text-document",
+        "statement": "第二轮段落。",
+        "verbatim_text": "第二轮\r\n重复片段：星栈信号\r\n备注：空行保留，重复内容不合并为同一来源位置。\r\n",
+        "byte_range": {
+          "start": 168,
+          "end": 279,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 9,
+          "end_line": 11,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "section_name": "第二轮"
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "text-repeat-2",
+        "file": "run-notes-v1.txt",
+        "revision_key": "text-v1",
+        "author_declared_type": "text_line",
+        "author_expected_parent_fact_id": "text-round-2",
+        "statement": "同文字第二次出现，不能与第一处共用源位置。",
+        "verbatim_text": "重复片段：星栈信号",
+        "byte_range": {
+          "start": 179,
+          "end": 206,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 10,
+          "end_line": 10,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "duplicate_occurrence": 2,
+            "section_name": "第二轮"
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "text-duplicate-policy",
+        "file": "run-notes-v1.txt",
+        "revision_key": "text-v1",
+        "author_declared_type": "text_line",
+        "author_expected_parent_fact_id": "text-round-2",
+        "statement": "空行保留，重复内容保持不同来源位置。",
+        "verbatim_text": "备注：空行保留，重复内容不合并为同一来源位置。",
+        "byte_range": {
+          "start": 208,
+          "end": 277,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 11,
+          "end_line": 11,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "section_name": "第二轮"
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "tsx-document",
+        "file": "signal-card-v1.tsx",
+        "revision_key": "tsx-v1",
+        "author_declared_type": "tsx_module",
+        "author_expected_parent_fact_id": null,
+        "statement": "原创合成TSX模块，不编译、不执行。",
+        "verbatim_text": "import { useState } from 'react';\nimport type { ReactNode } from 'react';\n\nexport type SignalCardProps = {\n  label: string;\n  badge?: ReactNode;\n};\n\nexport const defaultSignalLabel = '星栈就绪';\n\nexport function SignalCard({ label, badge }: SignalCardProps) {\n  const [expanded, setExpanded] = useState(false);\n\n  function toggleDetails() {\n    setExpanded((current) => !current);\n  }\n\n  return (\n    <section aria-label={label}>\n      <h2>{label}</h2>\n      <button type=\"button\" onClick={toggleDetails}>\n        {expanded ? '收起详情' : '展开详情'}\n      </button>\n      {expanded && (\n        <p>\n          星栈组件仅用于合成验证。\n          {badge}\n        </p>\n      )}\n    </section>\n  );\n}\n",
+        "byte_range": {
+          "start": 0,
+          "end": 721,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 1,
+          "end_line": 32,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "module_file": "signal-card-v1.tsx",
+            "not_executed": true
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "tsx-import-state",
+        "file": "signal-card-v1.tsx",
+        "revision_key": "tsx-v1",
+        "author_declared_type": "import",
+        "author_expected_parent_fact_id": "tsx-document",
+        "statement": "导入React useState。",
+        "verbatim_text": "import { useState } from 'react';",
+        "byte_range": {
+          "start": 0,
+          "end": 33,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 1,
+          "end_line": 1,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "module_specifier": "react",
+            "imported_symbol": "useState"
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "tsx-import-type",
+        "file": "signal-card-v1.tsx",
+        "revision_key": "tsx-v1",
+        "author_declared_type": "type_import",
+        "author_expected_parent_fact_id": "tsx-document",
+        "statement": "仅类型导入ReactNode。",
+        "verbatim_text": "import type { ReactNode } from 'react';",
+        "byte_range": {
+          "start": 34,
+          "end": 73,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 2,
+          "end_line": 2,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "type_only": true,
+            "imported_symbol": "ReactNode",
+            "module_specifier": "react"
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "tsx-props",
+        "file": "signal-card-v1.tsx",
+        "revision_key": "tsx-v1",
+        "author_declared_type": "type_alias",
+        "author_expected_parent_fact_id": "tsx-document",
+        "statement": "Props含必需label字符串及可选ReactNode badge。",
+        "verbatim_text": "export type SignalCardProps = {\n  label: string;\n  badge?: ReactNode;\n};",
+        "byte_range": {
+          "start": 75,
+          "end": 147,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 4,
+          "end_line": 7,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "symbol": "SignalCardProps",
+            "exported": true
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "tsx-default-label",
+        "file": "signal-card-v1.tsx",
+        "revision_key": "tsx-v1",
+        "author_declared_type": "constant",
+        "author_expected_parent_fact_id": "tsx-document",
+        "statement": "默认标签文本为星栈就绪。",
+        "verbatim_text": "export const defaultSignalLabel = '星栈就绪';",
+        "byte_range": {
+          "start": 149,
+          "end": 198,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 9,
+          "end_line": 9,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "symbol": "defaultSignalLabel",
+            "exported": true
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "tsx-component",
+        "file": "signal-card-v1.tsx",
+        "revision_key": "tsx-v1",
+        "author_declared_type": "component_function",
+        "author_expected_parent_fact_id": "tsx-document",
+        "statement": "SignalCard组件维护expanded状态并切换详情。",
+        "verbatim_text": "export function SignalCard({ label, badge }: SignalCardProps) {\n  const [expanded, setExpanded] = useState(false);\n\n  function toggleDetails() {\n    setExpanded((current) => !current);\n  }\n\n  return (\n    <section aria-label={label}>\n      <h2>{label}</h2>\n      <button type=\"button\" onClick={toggleDetails}>\n        {expanded ? '收起详情' : '展开详情'}\n      </button>\n      {expanded && (\n        <p>\n          星栈组件仅用于合成验证。\n          {badge}\n        </p>\n      )}\n    </section>\n  );\n}\n",
+        "byte_range": {
+          "start": 200,
+          "end": 721,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 11,
+          "end_line": 32,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "exported": true,
+            "parameter_type": "SignalCardProps",
+            "symbol": "SignalCard"
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "tsx-toggle",
+        "file": "signal-card-v1.tsx",
+        "revision_key": "tsx-v1",
+        "author_declared_type": "nested_function",
+        "author_expected_parent_fact_id": "tsx-component",
+        "statement": "内部函数toggleDetails取反expanded状态。",
+        "verbatim_text": "  function toggleDetails() {\n    setExpanded((current) => !current);\n  }",
+        "byte_range": {
+          "start": 316,
+          "end": 388,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 14,
+          "end_line": 16,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "symbol": "toggleDetails",
+            "enclosing_symbol": "SignalCard"
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "tsx-jsx-section",
+        "file": "signal-card-v1.tsx",
+        "revision_key": "tsx-v1",
+        "author_declared_type": "jsx_element",
+        "author_expected_parent_fact_id": "tsx-component",
+        "statement": "多行JSX包含标题、按钮和条件详情。",
+        "verbatim_text": "    <section aria-label={label}>\n      <h2>{label}</h2>\n      <button type=\"button\" onClick={toggleDetails}>\n        {expanded ? '收起详情' : '展开详情'}\n      </button>\n      {expanded && (\n        <p>\n          星栈组件仅用于合成验证。\n          {badge}\n        </p>\n      )}\n    </section>",
+        "byte_range": {
+          "start": 401,
+          "end": 713,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 19,
+          "end_line": 30,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "jsx_tag": "section",
+            "enclosing_symbol": "SignalCard",
+            "multiline": true
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      },
+      {
+        "fact_id": "tsx-jsx-paragraph",
+        "file": "signal-card-v1.tsx",
+        "revision_key": "tsx-v1",
+        "author_declared_type": "jsx_element",
+        "author_expected_parent_fact_id": "tsx-jsx-section",
+        "statement": "条件段落包含合成验证文本及badge。",
+        "verbatim_text": "        <p>\n          星栈组件仅用于合成验证。\n          {badge}\n        </p>",
+        "byte_range": {
+          "start": 600,
+          "end": 689,
+          "convention": "zero_based_half_open_utf8"
+        },
+        "natural_source_location": {
+          "start_line": 25,
+          "end_line": 28,
+          "line_convention": "one_based_inclusive",
+          "author_locator": {
+            "jsx_tag": "p",
+            "enclosing_symbol": "SignalCard",
+            "multiline": true
+          }
+        },
+        "label_origin": "author_set_not_parser_output"
+      }
+    ],
+    "retrieval_question_count": 8,
+    "retrieval_questions": [
+      {
+        "case_id": "Q01",
+        "polarity": "positive",
+        "question": "MIST-42的交接窗口是什么？",
+        "allowed_revisions": [
+          "md-v2"
+        ],
+        "expected_answer": "09:10—09:25",
+        "expected_fact_ids": [
+          "md2-handover-text"
+        ],
+        "check": "精确文字和当前修订源位置"
+      },
+      {
+        "case_id": "Q02",
+        "polarity": "positive",
+        "question": "当前星栈的缓冲上限是多少条，表格与代码是否一致？",
+        "allowed_revisions": [
+          "md-v2"
+        ],
+        "expected_answer": "18条；bufferLimit也为18。",
+        "expected_fact_ids": [
+          "md2-buffer-row",
+          "md2-code"
+        ],
+        "forbidden_answer": "12条作为当前值",
+        "check": "同版表格与代码事实"
+      },
+      {
+        "case_id": "Q03",
+        "polarity": "positive",
+        "question": "只查看首版md-v1时，缓冲上限是多少条？",
+        "allowed_revisions": [
+          "md-v1"
+        ],
+        "expected_answer": "12条",
+        "expected_fact_ids": [
+          "md1-buffer-row",
+          "md1-code"
+        ],
+        "forbidden_fact_ids": [
+          "md2-buffer-row",
+          "md2-code"
+        ],
+        "check": "固定历史修订，不能混入v2"
+      },
+      {
+        "case_id": "Q04",
+        "polarity": "positive",
+        "question": "TEXT-SYN-07中的“重复片段：星栈信号”出现几次，各在哪一轮？",
+        "allowed_revisions": [
+          "text-v1"
+        ],
+        "expected_answer": "2次，分别在第一轮与第二轮，文字相同、字节位置不同。",
+        "expected_fact_ids": [
+          "text-repeat-1",
+          "text-repeat-2"
+        ],
+        "check": "重复内容位置保真"
+      },
+      {
+        "case_id": "Q05",
+        "polarity": "positive",
+        "question": "哪个组件使用SignalCardProps并由内部函数切换详情？给出组件、类型和函数名。",
+        "allowed_revisions": [
+          "tsx-v1"
+        ],
+        "expected_answer": "组件SignalCard；类型SignalCardProps；内部函数toggleDetails。",
+        "expected_fact_ids": [
+          "tsx-component",
+          "tsx-props",
+          "tsx-toggle",
+          "tsx-jsx-section"
+        ],
+        "check": "代码符号、父子结构与多行JSX"
+      },
+      {
+        "case_id": "Q06",
+        "polarity": "negative",
+        "question": "星栈的数据库管理员密码是什么？",
+        "allowed_revisions": [
+          "md-v2",
+          "text-v1",
+          "tsx-v1"
+        ],
+        "expected_answer": null,
+        "expected_behavior": "无依据时返回未找到或无法据来源回答",
+        "expected_fact_ids": [],
+        "check": "原始文件不含该事实，不补造秘密"
+      },
+      {
+        "case_id": "Q07",
+        "polarity": "negative",
+        "question": "星栈附件示意图的主色是什么？",
+        "allowed_revisions": [
+          "md-v1"
+        ],
+        "expected_answer": null,
+        "expected_behavior": "指出只有链接、没有附件画面；不抓取URL、不猜颜色",
+        "expected_fact_ids": [
+          "md1-attachment-link",
+          "md1-attachment-policy"
+        ],
+        "check": "附件指向与正文可用性分离"
+      },
+      {
+        "case_id": "Q08",
+        "polarity": "negative",
+        "question": "只授权运行笔记TEXT-SYN-07时，SignalCard的内部状态变量是什么？",
+        "allowed_revisions": [
+          "text-v1"
+        ],
+        "expected_answer": null,
+        "expected_behavior": "授权范围内无该事实，不读取TSX或返回范围外内容",
+        "expected_fact_ids": [],
+        "forbidden_fact_ids": [
+          "tsx-component",
+          "tsx-toggle",
+          "tsx-jsx-section"
+        ],
+        "check": "这是待测范围过滤问题，未执行权限验证"
+      }
+    ],
+    "expected_revision_delta": {
+      "from": "md-v1",
+      "to": "md-v2",
+      "changes": 2,
+      "unchanged_file_byte_length": 580,
+      "changed_bytes": "两处ASCII数字2改为8；其他原始字节相同",
+      "meaning": "表格和代码均由12改为18，位置相同不代表修订相同"
+    },
+    "evidence_limit": "全部为fixture与人工预标准备；本文件不证明任何parser、检索、引用、权限或产品验收通过。"
+  },
+  "verification_scope": "仅核输入原字节、摘要、人工标注位置与引用一致；parser/chunk/索引/检索/权限均NotRun。"
+}

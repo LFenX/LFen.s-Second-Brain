@@ -1,0 +1,793 @@
+{
+  "schema_version": 1,
+  "archive_id": "knowledge-core-20261028",
+  "recorded_date": "2026-10-28",
+  "status": "Archived_HistoryOnly",
+  "authority": "本聊天真人要求“没必要的明确归档到一个归档文件夹中吧，或者历史参考，不当作正式开发指引文档”",
+  "source_head": "7233c495311f1c40c67254582138169d5ed0e205",
+  "archive_plan_sha256": "37c475516e8b24a7f2c2c7a6a439e361d2e346e2a83552151cdd0bdf00df4c73",
+  "archived": [
+    {
+      "source": "docs/stage1a-review-round-10-interrupted.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage1a-review-round-10-interrupted.md",
+      "original_sha256": "a2eb96375a4abe7f965285cd05bb79b417818f5b6c34e5dbb1f8b0e97a97bbb4",
+      "action": "Archive",
+      "blockers": [],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [],
+      "archive_sha256": "37917a4b10804c396f5e72ce1090d70ae5e647a34b6beda6b3f3e8dafe65df63",
+      "original_git_commit": "7233c495311f1c40c67254582138169d5ed0e205",
+      "content_changes": "仅增加历史提示并调整Markdown相对链接，原事实/失败/决定文本保持",
+      "current_development_guidance": false
+    },
+    {
+      "source": "docs/stage1a-review-round-6.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage1a-review-round-6.md",
+      "original_sha256": "3941248b310c14601282bad3a86818cae7c7a87c2a791a09f6056e06be0f9b87",
+      "action": "Archive",
+      "blockers": [],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [],
+      "archive_sha256": "664889afba363520debdd52067a5131dad02ae47762f74e7569121e747d99627",
+      "original_git_commit": "7233c495311f1c40c67254582138169d5ed0e205",
+      "content_changes": "仅增加历史提示并调整Markdown相对链接，原事实/失败/决定文本保持",
+      "current_development_guidance": false
+    },
+    {
+      "source": "docs/stage1a-review-round-7.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage1a-review-round-7.md",
+      "original_sha256": "81101fcca22bdc49c814aab931f301b70ccb8f66eca149792f58e320825361cc",
+      "action": "Archive",
+      "blockers": [],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [],
+      "archive_sha256": "5b57dc5d21071d82bd927f5653e079086d358b44b1bb3d715c8c405724ba8522",
+      "original_git_commit": "7233c495311f1c40c67254582138169d5ed0e205",
+      "content_changes": "仅增加历史提示并调整Markdown相对链接，原事实/失败/决定文本保持",
+      "current_development_guidance": false
+    },
+    {
+      "source": "docs/stage1a-review-round-8.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage1a-review-round-8.md",
+      "original_sha256": "f22982afdda19b8aa5ea9d0b2f139301ad7a2f25d93710a68b72706efd0d69b9",
+      "action": "Archive",
+      "blockers": [],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [],
+      "archive_sha256": "28cd2d3b384ba023c09bf4658bbb3dd8a89a0cc88acb5defad920efde06b4e66",
+      "original_git_commit": "7233c495311f1c40c67254582138169d5ed0e205",
+      "content_changes": "仅增加历史提示并调整Markdown相对链接，原事实/失败/决定文本保持",
+      "current_development_guidance": false
+    },
+    {
+      "source": "docs/stage1a-review-round-9.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage1a-review-round-9.md",
+      "original_sha256": "efe1b1272e6c203b810016c0633aa90359790b00af9148e504a67f7401da4c4c",
+      "action": "Archive",
+      "blockers": [],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [],
+      "archive_sha256": "739a5df9b862e79de8871611fd3096a97f3ecbe274daa3d1da1533a4f855aa28",
+      "original_git_commit": "7233c495311f1c40c67254582138169d5ed0e205",
+      "content_changes": "仅增加历史提示并调整Markdown相对链接，原事实/失败/决定文本保持",
+      "current_development_guidance": false
+    },
+    {
+      "source": "docs/stage1a-two-fixes-verification.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage1a-two-fixes-verification.md",
+      "original_sha256": "a9d2853a4237d21dfbb2318cf6e7d31ba8b58dce845c6c9379bd561388d43e6a",
+      "action": "Archive",
+      "blockers": [],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [],
+      "archive_sha256": "6117d5fd69697a0b233955092cc2710b09efe32a4536fe600b7364ed95e861e9",
+      "original_git_commit": "7233c495311f1c40c67254582138169d5ed0e205",
+      "content_changes": "仅增加历史提示并调整Markdown相对链接，原事实/失败/决定文本保持",
+      "current_development_guidance": false
+    },
+    {
+      "source": "docs/stage2r2-directory-handoff.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage2r2-directory-handoff.md",
+      "original_sha256": "19c5784442d423966d3f14bf124a0234e16c08257088af0fda01d91801bb4e33",
+      "action": "Archive",
+      "blockers": [],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [],
+      "archive_sha256": "95ef2d5aa2ea8d1181e209b85122cca4a355552ec8679db1df9d51c6cd0ceb16",
+      "original_git_commit": "7233c495311f1c40c67254582138169d5ed0e205",
+      "content_changes": "仅增加历史提示并调整Markdown相对链接，原事实/失败/决定文本保持",
+      "current_development_guidance": false
+    },
+    {
+      "source": "docs/stage2r3-batch-handoff.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage2r3-batch-handoff.md",
+      "original_sha256": "4a3695de98310a0483f2e6294d8dcdf5ccbf798994c87f5f7b4ebeac2d906925",
+      "action": "Archive",
+      "blockers": [],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [],
+      "archive_sha256": "a659e534306d1b69cf80c9d68c417c7760e795c375575b640616f9ee50b4ceb1",
+      "original_git_commit": "7233c495311f1c40c67254582138169d5ed0e205",
+      "content_changes": "仅增加历史提示并调整Markdown相对链接，原事实/失败/决定文本保持",
+      "current_development_guidance": false
+    },
+    {
+      "source": "docs/stage2r7-execution-plan.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage2r7-execution-plan.md",
+      "original_sha256": "d2bd7dc85e34e59f87eb1dbc20ade3e31f82d261e57b9833785d164fd6876a6a",
+      "action": "Archive",
+      "blockers": [],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [],
+      "archive_sha256": "e431c8884963dcf66b848e06dc2fde49abc619672f8c2f3b7248fb25e64d247c",
+      "original_git_commit": "7233c495311f1c40c67254582138169d5ed0e205",
+      "content_changes": "仅增加历史提示并调整Markdown相对链接，原事实/失败/决定文本保持",
+      "current_development_guidance": false
+    },
+    {
+      "source": "docs/stage2r7-synthetic-handoff.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage2r7-synthetic-handoff.md",
+      "original_sha256": "f589cad5cc69e05b1e049e08d866f8e444352a5ada70f2039b9ac498249e81ac",
+      "action": "Archive",
+      "blockers": [],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [],
+      "archive_sha256": "176cd65d8943423df4fa5a601eea193dd3168bc4f0b8f8cb1ca9a9ed3b6f00ef",
+      "original_git_commit": "7233c495311f1c40c67254582138169d5ed0e205",
+      "content_changes": "仅增加历史提示并调整Markdown相对链接，原事实/失败/决定文本保持",
+      "current_development_guidance": false
+    },
+    {
+      "source": "docs/stage3r2-document-runtime.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage3r2-document-runtime.md",
+      "original_sha256": "6fcf127ece3d164b30ab651dc7169ac8473a2ba4a628c3942d94b2d2bf06f4cd",
+      "action": "Archive",
+      "blockers": [],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [],
+      "archive_sha256": "a1b448da1be285c75c042ee7ab8411204471e48e6bc047affcb9f5a5470d36c4",
+      "original_git_commit": "7233c495311f1c40c67254582138169d5ed0e205",
+      "content_changes": "仅增加历史提示并调整Markdown相对链接，原事实/失败/决定文本保持",
+      "current_development_guidance": false
+    }
+  ],
+  "retained_historical": [
+    {
+      "source": "docs/stage1ab-handoff.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage1ab-handoff.md",
+      "original_sha256": "b8f1b892c7758ca45c90da7b0380bd3e46097669ecd844706985461dfb909690",
+      "action": "RetainPath_HistoricalReferenceOnly",
+      "blockers": [
+        "HistoricalEvidenceReference"
+      ],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [
+        "docs/stage1ab-receipt.json",
+        "docs/stage1ab-runtime-verification.json"
+      ],
+      "current_development_guidance": false,
+      "status": "HistoricalReferenceOnly_PathRetained",
+      "reason": "保留原路径和原字节以免破坏既有源码/契约/历史证据引用；不得作当前开发指引"
+    },
+    {
+      "source": "docs/stage1b-delivery.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage1b-delivery.md",
+      "original_sha256": "b2d6ad95199e21690f3d673260a6079608a4f42ffa562a2469352f900fed2d22",
+      "action": "RetainPath_HistoricalReferenceOnly",
+      "blockers": [
+        "HistoricalEvidenceReference"
+      ],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [
+        "docs/stage1ab-runtime-verification.json",
+        "docs/stage2a-c2-verification.json"
+      ],
+      "current_development_guidance": false,
+      "status": "HistoricalReferenceOnly_PathRetained",
+      "reason": "保留原路径和原字节以免破坏既有源码/契约/历史证据引用；不得作当前开发指引"
+    },
+    {
+      "source": "docs/stage2a-c2-handoff.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage2a-c2-handoff.md",
+      "original_sha256": "a39ab74480b88c05780f1f9ba490d9bb0495e7fabcfc0ca7356c9e96992cc24e",
+      "action": "RetainPath_HistoricalReferenceOnly",
+      "blockers": [
+        "ProtectedContractReference",
+        "HistoricalEvidenceReference"
+      ],
+      "code_refs": [],
+      "protected_refs": [
+        "docs/knowledge-sources-v1.openapi.json"
+      ],
+      "evidence_refs": [
+        "docs/stage2a-c2-verification.json",
+        "docs/stage2ab-runtime-verification.json",
+        "docs/stage2b-import-ui-verification.json"
+      ],
+      "current_development_guidance": false,
+      "status": "HistoricalReferenceOnly_PathRetained",
+      "reason": "保留原路径和原字节以免破坏既有源码/契约/历史证据引用；不得作当前开发指引"
+    },
+    {
+      "source": "docs/stage2a-source-preparation.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage2a-source-preparation.md",
+      "original_sha256": "a74227e27879520dce07a0ca45cd68c041438cdfcf13c181289e800b87a84031",
+      "action": "RetainPath_HistoricalReferenceOnly",
+      "blockers": [
+        "ProtectedContractReference",
+        "HistoricalEvidenceReference"
+      ],
+      "code_refs": [],
+      "protected_refs": [
+        "docs/knowledge-directory-import-v0.3.candidate.md"
+      ],
+      "evidence_refs": [
+        "docs/stage2a-c2-verification.json"
+      ],
+      "current_development_guidance": false,
+      "status": "HistoricalReferenceOnly_PathRetained",
+      "reason": "保留原路径和原字节以免破坏既有源码/契约/历史证据引用；不得作当前开发指引"
+    },
+    {
+      "source": "docs/stage2ab-integration-handoff.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage2ab-integration-handoff.md",
+      "original_sha256": "3a2d6886c03457cfd20d5e0a1df6e4405d123064b44e3aa7cf87200d61d1f5c2",
+      "action": "RetainPath_HistoricalReferenceOnly",
+      "blockers": [
+        "RetainedHistoricalReference"
+      ],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [],
+      "retained_history_refs": [
+        "docs/stage2a-c2-handoff.md",
+        "docs/stage2b-import-ui-handoff.md"
+      ],
+      "current_development_guidance": false,
+      "status": "HistoricalReferenceOnly_PathRetained",
+      "reason": "保留原路径和原字节以免破坏既有源码/契约/历史证据引用；不得作当前开发指引"
+    },
+    {
+      "source": "docs/stage2b-import-ui-handoff.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage2b-import-ui-handoff.md",
+      "original_sha256": "a18017cbfb5ac58922f88ced2551b8314556dac5d2af0134e20a925d14e6b599",
+      "action": "RetainPath_HistoricalReferenceOnly",
+      "blockers": [
+        "HistoricalEvidenceReference"
+      ],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [
+        "docs/stage2ab-runtime-verification.json",
+        "docs/stage2b-import-ui-verification.json"
+      ],
+      "current_development_guidance": false,
+      "status": "HistoricalReferenceOnly_PathRetained",
+      "reason": "保留原路径和原字节以免破坏既有源码/契约/历史证据引用；不得作当前开发指引"
+    },
+    {
+      "source": "docs/stage2r3-batch-consumer-handoff.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage2r3-batch-consumer-handoff.md",
+      "original_sha256": "c08e85c152051dbc48f4e81403e29566a69734ff7365fa5d30fca34d062486c6",
+      "action": "RetainPath_HistoricalReferenceOnly",
+      "blockers": [
+        "HistoricalEvidenceReference"
+      ],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [
+        "docs/stage2r3-batch-contract-verification.json"
+      ],
+      "current_development_guidance": false,
+      "status": "HistoricalReferenceOnly_PathRetained",
+      "reason": "保留原路径和原字节以免破坏既有源码/契约/历史证据引用；不得作当前开发指引"
+    },
+    {
+      "source": "docs/stage2r4-original-handoff.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage2r4-original-handoff.md",
+      "original_sha256": "bd0842391a29dd082032d4695344674bd97179111dcd785cf2aa98f92232065b",
+      "action": "RetainPath_HistoricalReferenceOnly",
+      "blockers": [
+        "HistoricalEvidenceReference"
+      ],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [
+        "docs/stage2r4-original-contract-verification.json"
+      ],
+      "current_development_guidance": false,
+      "status": "HistoricalReferenceOnly_PathRetained",
+      "reason": "保留原路径和原字节以免破坏既有源码/契约/历史证据引用；不得作当前开发指引"
+    },
+    {
+      "source": "docs/stage2r5-consumer-contract-input.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage2r5-consumer-contract-input.md",
+      "original_sha256": "02b235056136f8e8a7006548139b3730c17760ad9cf89c839840b58aeda64616",
+      "action": "RetainPath_HistoricalReferenceOnly",
+      "blockers": [
+        "RetainedHistoricalReference"
+      ],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [],
+      "retained_history_refs": [
+        "docs/stage2r4-original-handoff.md"
+      ],
+      "current_development_guidance": false,
+      "status": "HistoricalReferenceOnly_PathRetained",
+      "reason": "保留原路径和原字节以免破坏既有源码/契约/历史证据引用；不得作当前开发指引"
+    },
+    {
+      "source": "docs/stage2r5-web-client-delivery.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage2r5-web-client-delivery.md",
+      "original_sha256": "242eab1fb6b30329ca9dd8c6cccff057ff243afebc5598937b20939a8cd08058",
+      "action": "RetainPath_HistoricalReferenceOnly",
+      "blockers": [
+        "RetainedHistoricalReference"
+      ],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [],
+      "retained_history_refs": [
+        "docs/stage2r5-web-client-handoff.md"
+      ],
+      "current_development_guidance": false,
+      "status": "HistoricalReferenceOnly_PathRetained",
+      "reason": "保留原路径和原字节以免破坏既有源码/契约/历史证据引用；不得作当前开发指引"
+    },
+    {
+      "source": "docs/stage2r5-web-client-handoff.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage2r5-web-client-handoff.md",
+      "original_sha256": "21b6efdcd102285f675b1fba8802357b201a309e5249645ef5c6d3cd263545e6",
+      "action": "RetainPath_HistoricalReferenceOnly",
+      "blockers": [
+        "HistoricalEvidenceReference"
+      ],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [
+        "docs/stage2r5-web-client-verification.json"
+      ],
+      "current_development_guidance": false,
+      "status": "HistoricalReferenceOnly_PathRetained",
+      "reason": "保留原路径和原字节以免破坏既有源码/契约/历史证据引用；不得作当前开发指引"
+    },
+    {
+      "source": "docs/stage2r5-web-handoff.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage2r5-web-handoff.md",
+      "original_sha256": "cdcd6acdda97654ec927835b01e138ddd8a09d40a5d50e7ba463922dabce554c",
+      "action": "RetainPath_HistoricalReferenceOnly",
+      "blockers": [
+        "CodeConsumer"
+      ],
+      "code_refs": [
+        "tools/scripts/verify_knowledge_web_contract.cjs"
+      ],
+      "protected_refs": [],
+      "evidence_refs": [],
+      "current_development_guidance": false,
+      "status": "HistoricalReferenceOnly_PathRetained",
+      "reason": "保留原路径和原字节以免破坏既有源码/契约/历史证据引用；不得作当前开发指引"
+    },
+    {
+      "source": "docs/stage2r5-web-rss-preparation.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage2r5-web-rss-preparation.md",
+      "original_sha256": "0c6881208776dfcdc06f24a6bf6367579d283d5f5f7d5f01a0c0a379d7d37cf1",
+      "action": "RetainPath_HistoricalReferenceOnly",
+      "blockers": [
+        "HistoricalEvidenceReference"
+      ],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [
+        "docs/stage2r4-preimplementation-preparation.json",
+        "docs/stage2r5-web-contract-verification.json"
+      ],
+      "current_development_guidance": false,
+      "status": "HistoricalReferenceOnly_PathRetained",
+      "reason": "保留原路径和原字节以免破坏既有源码/契约/历史证据引用；不得作当前开发指引"
+    },
+    {
+      "source": "docs/stage2r6-lifecycle-client-handoff.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage2r6-lifecycle-client-handoff.md",
+      "original_sha256": "b52ec4a7eb89f9f25c6e7a607248d2cf98288ceb4f1ce2d16c3f49fa3e8ac19d",
+      "action": "RetainPath_HistoricalReferenceOnly",
+      "blockers": [
+        "HistoricalEvidenceReference"
+      ],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [
+        "docs/stage2r6-lifecycle-client-verification.json",
+        "docs/stage2r6-lifecycle-verification.json"
+      ],
+      "current_development_guidance": false,
+      "status": "HistoricalReferenceOnly_PathRetained",
+      "reason": "保留原路径和原字节以免破坏既有源码/契约/历史证据引用；不得作当前开发指引"
+    },
+    {
+      "source": "docs/stage2r6-lifecycle-client-notes.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage2r6-lifecycle-client-notes.md",
+      "original_sha256": "98d232bd8c5c9ce39fff95a676fdf1374e65e906619cd2cc5e799f48dbae390e",
+      "action": "RetainPath_HistoricalReferenceOnly",
+      "blockers": [
+        "HistoricalEvidenceReference"
+      ],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [
+        "docs/stage2r6-lifecycle-client-verification.json"
+      ],
+      "current_development_guidance": false,
+      "status": "HistoricalReferenceOnly_PathRetained",
+      "reason": "保留原路径和原字节以免破坏既有源码/契约/历史证据引用；不得作当前开发指引"
+    },
+    {
+      "source": "docs/stage2r6-lifecycle-design-input.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage2r6-lifecycle-design-input.md",
+      "original_sha256": "f887ca7cb410498e5d2cc5ee961b035209a173a7cfe68d5b807ca931d863a40b",
+      "action": "RetainPath_HistoricalReferenceOnly",
+      "blockers": [
+        "HistoricalEvidenceReference"
+      ],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [
+        "docs/stage2r5-reading-preparation-verification.json"
+      ],
+      "current_development_guidance": false,
+      "status": "HistoricalReferenceOnly_PathRetained",
+      "reason": "保留原路径和原字节以免破坏既有源码/契约/历史证据引用；不得作当前开发指引"
+    },
+    {
+      "source": "docs/stage2r6-lifecycle-handoff.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage2r6-lifecycle-handoff.md",
+      "original_sha256": "ce512e43987275992e19f02f13ef5bbb05a47f687c432acf67982900f31a4a34",
+      "action": "RetainPath_HistoricalReferenceOnly",
+      "blockers": [
+        "HistoricalEvidenceReference"
+      ],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [
+        "docs/stage2r6-lifecycle-contract-verification.json"
+      ],
+      "current_development_guidance": false,
+      "status": "HistoricalReferenceOnly_PathRetained",
+      "reason": "保留原路径和原字节以免破坏既有源码/契约/历史证据引用；不得作当前开发指引"
+    },
+    {
+      "source": "docs/stage2r6-lifecycle-preparation.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage2r6-lifecycle-preparation.md",
+      "original_sha256": "94bff45203896f6396ee158d3011600e3b07d00c4b136deb85df7e5f7f3067b8",
+      "action": "RetainPath_HistoricalReferenceOnly",
+      "blockers": [
+        "RetainedHistoricalReference"
+      ],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [],
+      "retained_history_refs": [
+        "docs/stage2r4-original-handoff.md",
+        "docs/stage2r6-lifecycle-design-input.md"
+      ],
+      "current_development_guidance": false,
+      "status": "HistoricalReferenceOnly_PathRetained",
+      "reason": "保留原路径和原字节以免破坏既有源码/契约/历史证据引用；不得作当前开发指引"
+    },
+    {
+      "source": "docs/stage2r7-exit-readiness.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage2r7-exit-readiness.md",
+      "original_sha256": "9606c0d241ed9a0f4c9577413ad161e81b1f4981ec0a58303053f64637a0d52c",
+      "action": "RetainPath_HistoricalReferenceOnly",
+      "blockers": [
+        "RetainedHistoricalReference"
+      ],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [],
+      "retained_history_refs": [
+        "docs/stage2r4-original-handoff.md"
+      ],
+      "current_development_guidance": false,
+      "status": "HistoricalReferenceOnly_PathRetained",
+      "reason": "保留原路径和原字节以免破坏既有源码/契约/历史证据引用；不得作当前开发指引"
+    },
+    {
+      "source": "docs/stage3-document-readiness.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage3-document-readiness.md",
+      "original_sha256": "dc1800ed96e197781a96759064c9b3b442c634f295b43ebe4538e843850ecb38",
+      "action": "RetainPath_HistoricalReferenceOnly",
+      "blockers": [
+        "ProtectedContractReference",
+        "HistoricalEvidenceReference"
+      ],
+      "code_refs": [],
+      "protected_refs": [
+        "docs/knowledge-document-structure-v0.1.candidate.md"
+      ],
+      "evidence_refs": [
+        "docs/stage3-document-readiness-verification.json"
+      ],
+      "current_development_guidance": false,
+      "status": "HistoricalReferenceOnly_PathRetained",
+      "reason": "保留原路径和原字节以免破坏既有源码/契约/历史证据引用；不得作当前开发指引"
+    },
+    {
+      "source": "docs/stage3-structure-preparation.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage3-structure-preparation.md",
+      "original_sha256": "9895ec4183d85195114ffe17765a0bd5493b8a4b8550ab9318ae95c7d06add8b",
+      "action": "RetainPath_HistoricalReferenceOnly",
+      "blockers": [
+        "HistoricalEvidenceReference"
+      ],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [
+        "docs/stage3r1-structure-candidate-verification.json"
+      ],
+      "current_development_guidance": false,
+      "status": "HistoricalReferenceOnly_PathRetained",
+      "reason": "保留原路径和原字节以免破坏既有源码/契约/历史证据引用；不得作当前开发指引"
+    },
+    {
+      "source": "docs/stage3r1-structure-client-handoff.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage3r1-structure-client-handoff.md",
+      "original_sha256": "4119cf03f436d38ca852524ad876d35df1d45b2a07fc4082f0468b3cfe8e10c7",
+      "action": "RetainPath_HistoricalReferenceOnly",
+      "blockers": [
+        "HistoricalEvidenceReference"
+      ],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [
+        "docs/stage3r1-structure-client-verification.json"
+      ],
+      "current_development_guidance": false,
+      "status": "HistoricalReferenceOnly_PathRetained",
+      "reason": "保留原路径和原字节以免破坏既有源码/契约/历史证据引用；不得作当前开发指引"
+    },
+    {
+      "source": "docs/stage3r1-structure-client-notes.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage3r1-structure-client-notes.md",
+      "original_sha256": "0ffaef25532435f45daf2511d06a7537bca2871962a328bdf015b0366603798c",
+      "action": "RetainPath_HistoricalReferenceOnly",
+      "blockers": [
+        "HistoricalEvidenceReference"
+      ],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [
+        "docs/stage3r1-structure-client-verification.json"
+      ],
+      "current_development_guidance": false,
+      "status": "HistoricalReferenceOnly_PathRetained",
+      "reason": "保留原路径和原字节以免破坏既有源码/契约/历史证据引用；不得作当前开发指引"
+    },
+    {
+      "source": "docs/stage3r1-structure-handoff.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage3r1-structure-handoff.md",
+      "original_sha256": "0c60451ac3fa673cb67f940940a66cd389555013f2312561dbe2f632d0a704b4",
+      "action": "RetainPath_HistoricalReferenceOnly",
+      "blockers": [
+        "HistoricalEvidenceReference"
+      ],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [
+        "docs/stage3r1-structure-candidate-verification.json",
+        "docs/stage3r2-document-candidate-verification.json"
+      ],
+      "current_development_guidance": false,
+      "status": "HistoricalReferenceOnly_PathRetained",
+      "reason": "保留原路径和原字节以免破坏既有源码/契约/历史证据引用；不得作当前开发指引"
+    },
+    {
+      "source": "docs/stage3r2-document-client-handoff.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage3r2-document-client-handoff.md",
+      "original_sha256": "68c505ec11d68fc503e0bf618928d932c1e821fc9c5d046ee92cc94cd9413e26",
+      "action": "RetainPath_HistoricalReferenceOnly",
+      "blockers": [
+        "HistoricalEvidenceReference"
+      ],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [
+        "docs/stage3r2-document-client-verification.json"
+      ],
+      "current_development_guidance": false,
+      "status": "HistoricalReferenceOnly_PathRetained",
+      "reason": "保留原路径和原字节以免破坏既有源码/契约/历史证据引用；不得作当前开发指引"
+    },
+    {
+      "source": "docs/stage3r2-document-client-notes.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage3r2-document-client-notes.md",
+      "original_sha256": "63427bef79c774541a1d6f3be36c8710b779cf52ce16284c75640352db0921be",
+      "action": "RetainPath_HistoricalReferenceOnly",
+      "blockers": [
+        "HistoricalEvidenceReference"
+      ],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [
+        "docs/stage3r2-document-client-verification.json"
+      ],
+      "current_development_guidance": false,
+      "status": "HistoricalReferenceOnly_PathRetained",
+      "reason": "保留原路径和原字节以免破坏既有源码/契约/历史证据引用；不得作当前开发指引"
+    },
+    {
+      "source": "docs/stage3r2-document-handoff.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage3r2-document-handoff.md",
+      "original_sha256": "7858f2092133016dba0a12173e48ca5787da069b5880d74c637eba2fded855e8",
+      "action": "RetainPath_HistoricalReferenceOnly",
+      "blockers": [
+        "HistoricalEvidenceReference"
+      ],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [
+        "docs/stage3r2-document-candidate-verification.json",
+        "docs/stage3r2-input-readiness-verification.json"
+      ],
+      "current_development_guidance": false,
+      "status": "HistoricalReferenceOnly_PathRetained",
+      "reason": "保留原路径和原字节以免破坏既有源码/契约/历史证据引用；不得作当前开发指引"
+    },
+    {
+      "source": "docs/stage3r2-input-readiness.md",
+      "destination": "docs/archive/knowledge-core-20261028/stage3r2-input-readiness.md",
+      "original_sha256": "cd538287814746d8759a380f153db77e82bbf30d71bc4e3418141eb35b8cea80",
+      "action": "RetainPath_HistoricalReferenceOnly",
+      "blockers": [
+        "HistoricalEvidenceReference"
+      ],
+      "code_refs": [],
+      "protected_refs": [],
+      "evidence_refs": [
+        "docs/stage3r2-input-readiness-verification.json"
+      ],
+      "current_development_guidance": false,
+      "status": "HistoricalReferenceOnly_PathRetained",
+      "reason": "保留原路径和原字节以免破坏既有源码/契约/历史证据引用；不得作当前开发指引"
+    }
+  ],
+  "incoming_documents_updated": [
+    "README.md",
+    "会话接续说明.md",
+    "本地第二大脑知识库技术方案.md",
+    "docs/stage2-local-coordination.md"
+  ],
+  "link_rewrites": [
+    {
+      "file": "docs/archive/knowledge-core-20261028/stage1a-two-fixes-verification.md",
+      "old": "../阶段1-A-B交接说明.md",
+      "new": "../../../阶段1-A-B交接说明.md"
+    },
+    {
+      "file": "docs/archive/knowledge-core-20261028/stage1a-two-fixes-verification.md",
+      "old": "../阶段1-A对抗性审查报告.json",
+      "new": "../../../阶段1-A对抗性审查报告.json"
+    },
+    {
+      "file": "docs/archive/knowledge-core-20261028/stage2r2-directory-handoff.md",
+      "old": "knowledge-directory-import-v1.openapi.json",
+      "new": "../../knowledge-directory-import-v1.openapi.json"
+    },
+    {
+      "file": "docs/archive/knowledge-core-20261028/stage2r2-directory-handoff.md",
+      "old": "knowledge-directory-import-v1.examples.json",
+      "new": "../../knowledge-directory-import-v1.examples.json"
+    },
+    {
+      "file": "docs/archive/knowledge-core-20261028/stage2r2-directory-handoff.md",
+      "old": "knowledge-directory-import-v1.freeze.json",
+      "new": "../../knowledge-directory-import-v1.freeze.json"
+    },
+    {
+      "file": "docs/archive/knowledge-core-20261028/stage2r2-directory-handoff.md",
+      "old": "stage2r2-directory-verification.json",
+      "new": "../../stage2r2-directory-verification.json"
+    },
+    {
+      "file": "docs/archive/knowledge-core-20261028/stage2r3-batch-handoff.md",
+      "old": "knowledge-batch-import-v1.openapi.json",
+      "new": "../../knowledge-batch-import-v1.openapi.json"
+    },
+    {
+      "file": "docs/archive/knowledge-core-20261028/stage2r3-batch-handoff.md",
+      "old": "stage2r3-batch-verification.json",
+      "new": "../../stage2r3-batch-verification.json"
+    },
+    {
+      "file": "docs/archive/knowledge-core-20261028/stage2r7-execution-plan.md",
+      "old": "../本地第二大脑知识库技术方案.md#358-阶段16双人任务顺序与验收",
+      "new": "../../../本地第二大脑知识库技术方案.md#358-阶段16双人任务顺序与验收"
+    },
+    {
+      "file": "docs/archive/knowledge-core-20261028/stage2r7-execution-plan.md",
+      "old": "stage2r7-synthetic-preparation.json",
+      "new": "../../stage2r7-synthetic-preparation.json"
+    },
+    {
+      "file": "docs/archive/knowledge-core-20261028/stage2r7-execution-plan.md",
+      "old": "stage2r7-synthetic-exit-verification.json",
+      "new": "../../stage2r7-synthetic-exit-verification.json"
+    },
+    {
+      "file": "docs/archive/knowledge-core-20261028/stage2r7-synthetic-handoff.md",
+      "old": "stage2r7-main-integration.json",
+      "new": "../../stage2r7-main-integration.json"
+    },
+    {
+      "file": "docs/archive/knowledge-core-20261028/stage2r7-synthetic-handoff.md",
+      "old": "stage2r7-synthetic-exit-verification.json",
+      "new": "../../stage2r7-synthetic-exit-verification.json"
+    },
+    {
+      "file": "docs/archive/knowledge-core-20261028/stage2r7-synthetic-handoff.md",
+      "old": "stage2r7-synthetic-preparation.json",
+      "new": "../../stage2r7-synthetic-preparation.json"
+    },
+    {
+      "file": "docs/archive/knowledge-core-20261028/stage3r2-document-runtime.md",
+      "old": "stage3r2-input-readiness.md",
+      "new": "../../stage3r2-input-readiness.md"
+    },
+    {
+      "file": "README.md",
+      "old": "docs/stage2r7-synthetic-handoff.md",
+      "new": "docs/archive/knowledge-core-20261028/stage2r7-synthetic-handoff.md"
+    },
+    {
+      "file": "README.md",
+      "old": "docs/stage1a-two-fixes-verification.md",
+      "new": "docs/archive/knowledge-core-20261028/stage1a-two-fixes-verification.md"
+    },
+    {
+      "file": "会话接续说明.md",
+      "old": "docs/stage2r7-synthetic-handoff.md",
+      "new": "docs/archive/knowledge-core-20261028/stage2r7-synthetic-handoff.md"
+    },
+    {
+      "file": "会话接续说明.md",
+      "old": "docs/stage2r3-batch-handoff.md",
+      "new": "docs/archive/knowledge-core-20261028/stage2r3-batch-handoff.md"
+    },
+    {
+      "file": "本地第二大脑知识库技术方案.md",
+      "old": "docs/stage1a-two-fixes-verification.md",
+      "new": "docs/archive/knowledge-core-20261028/stage1a-two-fixes-verification.md"
+    },
+    {
+      "file": "本地第二大脑知识库技术方案.md",
+      "old": "docs/stage2r2-directory-handoff.md",
+      "new": "docs/archive/knowledge-core-20261028/stage2r2-directory-handoff.md"
+    },
+    {
+      "file": "本地第二大脑知识库技术方案.md",
+      "old": "docs/stage2r7-execution-plan.md",
+      "new": "docs/archive/knowledge-core-20261028/stage2r7-execution-plan.md"
+    },
+    {
+      "file": "docs/stage2-local-coordination.md",
+      "old": "stage2r7-synthetic-handoff.md",
+      "new": "archive/knowledge-core-20261028/stage2r7-synthetic-handoff.md"
+    }
+  ],
+  "protected_count": 47,
+  "protected_bytes_unchanged": true
+}

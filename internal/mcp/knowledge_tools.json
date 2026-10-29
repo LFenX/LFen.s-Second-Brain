@@ -1,0 +1,2814 @@
+[
+  {
+    "name": "knowledge_inspect_local_index",
+    "description": "检查显式固定修订集合的本地词法索引状态。返回该集合的策略、readiness 与覆盖状态。",
+    "inputSchema": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "type": "object",
+      "$ref": "#/definitions/InspectIndexRequest",
+      "definitions": {
+        "C1RepresentationRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id",
+            "producer_sha256"
+          ],
+          "properties": {
+            "kind": {
+              "const": "source_revision"
+            },
+            "id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "producer_sha256": {
+              "type": "null"
+            }
+          }
+        },
+        "DomainPath": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "domain_id"
+          ],
+          "properties": {
+            "domain_id": {
+              "$ref": "#/definitions/ID32"
+            }
+          }
+        },
+        "Hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "ID32": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{32}$"
+        },
+        "InspectIndexRequest": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "path",
+            "body"
+          ],
+          "properties": {
+            "operation": {
+              "const": "inspectIndex"
+            },
+            "path": {
+              "$ref": "#/definitions/DomainPath"
+            },
+            "body": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "contract_version",
+                "selection"
+              ],
+              "properties": {
+                "contract_version": {
+                  "const": "0.1.0-candidate"
+                },
+                "selection": {
+                  "$ref": "#/definitions/Selection"
+                }
+              }
+            }
+          }
+        },
+        "R1RepresentationRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id",
+            "producer_sha256"
+          ],
+          "properties": {
+            "kind": {
+              "const": "structure_view"
+            },
+            "id": {
+              "$ref": "#/definitions/Hash"
+            },
+            "producer_sha256": {
+              "$ref": "#/definitions/Hash"
+            }
+          }
+        },
+        "RepresentationRef": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/C1RepresentationRef"
+            },
+            {
+              "$ref": "#/definitions/R1RepresentationRef"
+            }
+          ]
+        },
+        "Selection": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "targets"
+          ],
+          "properties": {
+            "kind": {
+              "const": "fixed_revisions"
+            },
+            "targets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Target"
+              },
+              "minItems": 1,
+              "maxItems": 32,
+              "uniqueItems": true
+            }
+          }
+        },
+        "SourceRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "domain_id",
+            "source_id",
+            "source_revision_id",
+            "source_sha256"
+          ],
+          "properties": {
+            "domain_id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "source_id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "source_revision_id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "source_sha256": {
+              "$ref": "#/definitions/Hash"
+            }
+          }
+        },
+        "Target": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "source_ref",
+            "representation_ref"
+          ],
+          "properties": {
+            "source_ref": {
+              "$ref": "#/definitions/SourceRef"
+            },
+            "representation_ref": {
+              "$ref": "#/definitions/RepresentationRef"
+            }
+          }
+        }
+      }
+    },
+    "outputSchema": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/definitions/InspectIndexResponse"
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/definitions/ErrorResponse"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "operation": {
+                  "const": "inspectIndex"
+                }
+              },
+              "required": [
+                "operation"
+              ]
+            }
+          ]
+        }
+      ],
+      "definitions": {
+        "ByteRange": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "start_byte",
+            "end_byte"
+          ],
+          "properties": {
+            "start_byte": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2097152
+            },
+            "end_byte": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2097152
+            }
+          }
+        },
+        "C1RepresentationRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id",
+            "producer_sha256"
+          ],
+          "properties": {
+            "kind": {
+              "const": "source_revision"
+            },
+            "id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "producer_sha256": {
+              "type": "null"
+            }
+          }
+        },
+        "CompleteCoverage": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "selected_source_count",
+            "covered_source_count",
+            "expected_source_bytes",
+            "covered_source_bytes",
+            "tokenless_source_bytes",
+            "indexed_unit_count",
+            "complete",
+            "missing_ranges"
+          ],
+          "properties": {
+            "selected_source_count": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 32
+            },
+            "covered_source_count": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 32
+            },
+            "expected_source_bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 16777216
+            },
+            "covered_source_bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 16777216
+            },
+            "tokenless_source_bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 16777216
+            },
+            "indexed_unit_count": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 32768
+            },
+            "complete": {
+              "const": true
+            },
+            "missing_ranges": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/MissingRange"
+              },
+              "minItems": 0,
+              "maxItems": 0
+            }
+          }
+        },
+        "Coverage": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "selected_source_count",
+            "covered_source_count",
+            "expected_source_bytes",
+            "covered_source_bytes",
+            "tokenless_source_bytes",
+            "indexed_unit_count",
+            "complete",
+            "missing_ranges"
+          ],
+          "properties": {
+            "selected_source_count": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 32
+            },
+            "covered_source_count": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 32
+            },
+            "expected_source_bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 16777216
+            },
+            "covered_source_bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 16777216
+            },
+            "tokenless_source_bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 16777216
+            },
+            "indexed_unit_count": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 32768
+            },
+            "complete": {
+              "type": "boolean"
+            },
+            "missing_ranges": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/MissingRange"
+              },
+              "minItems": 0,
+              "maxItems": 32768
+            }
+          }
+        },
+        "ErrorResponse": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "contract_version",
+            "request_id",
+            "data",
+            "code",
+            "message",
+            "outcome_known",
+            "retry_same_key"
+          ],
+          "properties": {
+            "operation": {
+              "type": "string",
+              "enum": [
+                "getLocalPolicy",
+                "changeLocalPolicy",
+                "inspectIndex",
+                "createIndex",
+                "getIndexJob",
+                "search",
+                "read"
+              ]
+            },
+            "contract_version": {
+              "const": "0.1.0-candidate"
+            },
+            "request_id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "data": {
+              "type": "null"
+            },
+            "code": {
+              "type": "string",
+              "enum": [
+                "invalid_request",
+                "unauthenticated",
+                "not_found",
+                "contract_mismatch",
+                "policy_disabled",
+                "policy_changed",
+                "idempotency_conflict",
+                "index_unindexed",
+                "index_building",
+                "index_coverage_gap",
+                "index_stale",
+                "index_failed",
+                "unit_oversize",
+                "unsupported_representation",
+                "source_unavailable",
+                "integrity_error",
+                "capacity_exceeded",
+                "unavailable"
+              ]
+            },
+            "message": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 512
+            },
+            "outcome_known": {
+              "type": "boolean"
+            },
+            "retry_same_key": {
+              "type": "boolean"
+            }
+          }
+        },
+        "Hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "ID32": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{32}$"
+        },
+        "IncompleteCoverage": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "selected_source_count",
+            "covered_source_count",
+            "expected_source_bytes",
+            "covered_source_bytes",
+            "tokenless_source_bytes",
+            "indexed_unit_count",
+            "complete",
+            "missing_ranges"
+          ],
+          "properties": {
+            "selected_source_count": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 32
+            },
+            "covered_source_count": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 32
+            },
+            "expected_source_bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 16777216
+            },
+            "covered_source_bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 16777216
+            },
+            "tokenless_source_bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 16777216
+            },
+            "indexed_unit_count": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 32768
+            },
+            "complete": {
+              "const": false
+            },
+            "missing_ranges": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/MissingRange"
+              },
+              "minItems": 1,
+              "maxItems": 32768
+            }
+          }
+        },
+        "IndexRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "index_id",
+            "manifest_sha256"
+          ],
+          "properties": {
+            "index_id": {
+              "$ref": "#/definitions/Hash"
+            },
+            "manifest_sha256": {
+              "$ref": "#/definitions/Hash"
+            }
+          }
+        },
+        "InitializedLocalPolicy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "domain_id",
+            "local_policy_version",
+            "foundation_policy_version",
+            "enabled",
+            "mode",
+            "read_authority",
+            "accepted_inputs",
+            "allowed_model_uses",
+            "external_models",
+            "local_inference",
+            "remote_fetches",
+            "automatic_ingestion",
+            "vector_index"
+          ],
+          "properties": {
+            "domain_id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "local_policy_version": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "foundation_policy_version": {
+              "$ref": "#/definitions/Version"
+            },
+            "enabled": {
+              "type": "boolean"
+            },
+            "mode": {
+              "const": "owner_only_lexical"
+            },
+            "read_authority": {
+              "const": "existing_foundation_owner"
+            },
+            "accepted_inputs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "c1_text_root_at_most_8192_bytes",
+                  "r1_published_passage"
+                ]
+              },
+              "minItems": 2,
+              "maxItems": 2,
+              "uniqueItems": true
+            },
+            "allowed_model_uses": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 0,
+              "maxItems": 0
+            },
+            "external_models": {
+              "const": false
+            },
+            "local_inference": {
+              "const": false
+            },
+            "remote_fetches": {
+              "const": false
+            },
+            "automatic_ingestion": {
+              "const": false
+            },
+            "vector_index": {
+              "const": "not_created"
+            }
+          }
+        },
+        "InspectIndexResponse": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "contract_version",
+            "request_id",
+            "data"
+          ],
+          "properties": {
+            "operation": {
+              "const": "inspectIndex"
+            },
+            "contract_version": {
+              "const": "0.1.0-candidate"
+            },
+            "request_id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "data": {
+              "$ref": "#/definitions/ReadinessData"
+            }
+          }
+        },
+        "LocalPolicy": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/UninitializedLocalPolicy"
+            },
+            {
+              "$ref": "#/definitions/InitializedLocalPolicy"
+            }
+          ]
+        },
+        "MissingRange": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "source_ref",
+            "range"
+          ],
+          "properties": {
+            "source_ref": {
+              "$ref": "#/definitions/SourceRef"
+            },
+            "range": {
+              "$ref": "#/definitions/ByteRange"
+            }
+          }
+        },
+        "R1RepresentationRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id",
+            "producer_sha256"
+          ],
+          "properties": {
+            "kind": {
+              "const": "structure_view"
+            },
+            "id": {
+              "$ref": "#/definitions/Hash"
+            },
+            "producer_sha256": {
+              "$ref": "#/definitions/Hash"
+            }
+          }
+        },
+        "Readiness": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/Readiness_unindexed"
+            },
+            {
+              "$ref": "#/definitions/Readiness_building"
+            },
+            {
+              "$ref": "#/definitions/Readiness_ready"
+            },
+            {
+              "$ref": "#/definitions/Readiness_coverage_gap"
+            },
+            {
+              "$ref": "#/definitions/Readiness_stale"
+            },
+            {
+              "$ref": "#/definitions/Readiness_failed"
+            }
+          ]
+        },
+        "ReadinessData": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "policy",
+            "readiness"
+          ],
+          "properties": {
+            "policy": {
+              "$ref": "#/definitions/LocalPolicy"
+            },
+            "readiness": {
+              "$ref": "#/definitions/Readiness"
+            }
+          }
+        },
+        "Readiness_building": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "publication",
+            "index_ref",
+            "selection",
+            "selection_sha256",
+            "snapshot_currentness",
+            "coverage",
+            "diagnostic_codes"
+          ],
+          "properties": {
+            "kind": {
+              "const": "building"
+            },
+            "publication": {
+              "const": "not_published"
+            },
+            "index_ref": {
+              "type": "null"
+            },
+            "selection": {
+              "$ref": "#/definitions/Selection"
+            },
+            "selection_sha256": {
+              "$ref": "#/definitions/Hash"
+            },
+            "snapshot_currentness": {
+              "type": "string",
+              "enum": [
+                "current",
+                "historical",
+                "mixed"
+              ]
+            },
+            "coverage": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Coverage"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "diagnostic_codes": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "none",
+                  "building",
+                  "coverage_gap",
+                  "policy_disabled",
+                  "policy_changed",
+                  "profile_changed",
+                  "index_failed",
+                  "unit_oversize",
+                  "unsupported_representation",
+                  "source_unavailable",
+                  "integrity_error"
+                ]
+              },
+              "minItems": 1,
+              "maxItems": 16
+            }
+          }
+        },
+        "Readiness_coverage_gap": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "publication",
+            "index_ref",
+            "selection",
+            "selection_sha256",
+            "snapshot_currentness",
+            "coverage",
+            "diagnostic_codes"
+          ],
+          "properties": {
+            "kind": {
+              "const": "coverage_gap"
+            },
+            "publication": {
+              "const": "not_published"
+            },
+            "index_ref": {
+              "type": "null"
+            },
+            "selection": {
+              "$ref": "#/definitions/Selection"
+            },
+            "selection_sha256": {
+              "$ref": "#/definitions/Hash"
+            },
+            "snapshot_currentness": {
+              "type": "string",
+              "enum": [
+                "current",
+                "historical",
+                "mixed"
+              ]
+            },
+            "coverage": {
+              "$ref": "#/definitions/IncompleteCoverage"
+            },
+            "diagnostic_codes": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "none",
+                  "building",
+                  "coverage_gap",
+                  "policy_disabled",
+                  "policy_changed",
+                  "profile_changed",
+                  "index_failed",
+                  "unit_oversize",
+                  "unsupported_representation",
+                  "source_unavailable",
+                  "integrity_error"
+                ]
+              },
+              "minItems": 1,
+              "maxItems": 16
+            }
+          }
+        },
+        "Readiness_failed": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "publication",
+            "index_ref",
+            "selection",
+            "selection_sha256",
+            "snapshot_currentness",
+            "coverage",
+            "diagnostic_codes"
+          ],
+          "properties": {
+            "kind": {
+              "const": "failed"
+            },
+            "publication": {
+              "const": "not_published"
+            },
+            "index_ref": {
+              "type": "null"
+            },
+            "selection": {
+              "$ref": "#/definitions/Selection"
+            },
+            "selection_sha256": {
+              "$ref": "#/definitions/Hash"
+            },
+            "snapshot_currentness": {
+              "type": "string",
+              "enum": [
+                "current",
+                "historical",
+                "mixed"
+              ]
+            },
+            "coverage": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Coverage"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "diagnostic_codes": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "none",
+                  "building",
+                  "coverage_gap",
+                  "policy_disabled",
+                  "policy_changed",
+                  "profile_changed",
+                  "index_failed",
+                  "unit_oversize",
+                  "unsupported_representation",
+                  "source_unavailable",
+                  "integrity_error"
+                ]
+              },
+              "minItems": 1,
+              "maxItems": 16
+            }
+          }
+        },
+        "Readiness_ready": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "publication",
+            "index_ref",
+            "selection",
+            "selection_sha256",
+            "snapshot_currentness",
+            "coverage",
+            "diagnostic_codes"
+          ],
+          "properties": {
+            "kind": {
+              "const": "ready"
+            },
+            "publication": {
+              "const": "published"
+            },
+            "index_ref": {
+              "$ref": "#/definitions/IndexRef"
+            },
+            "selection": {
+              "$ref": "#/definitions/Selection"
+            },
+            "selection_sha256": {
+              "$ref": "#/definitions/Hash"
+            },
+            "snapshot_currentness": {
+              "type": "string",
+              "enum": [
+                "current",
+                "historical",
+                "mixed"
+              ]
+            },
+            "coverage": {
+              "$ref": "#/definitions/CompleteCoverage"
+            },
+            "diagnostic_codes": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "none",
+                  "building",
+                  "coverage_gap",
+                  "policy_disabled",
+                  "policy_changed",
+                  "profile_changed",
+                  "index_failed",
+                  "unit_oversize",
+                  "unsupported_representation",
+                  "source_unavailable",
+                  "integrity_error"
+                ]
+              },
+              "minItems": 0,
+              "maxItems": 0
+            }
+          }
+        },
+        "Readiness_stale": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "publication",
+            "index_ref",
+            "selection",
+            "selection_sha256",
+            "snapshot_currentness",
+            "coverage",
+            "diagnostic_codes"
+          ],
+          "properties": {
+            "kind": {
+              "const": "stale"
+            },
+            "publication": {
+              "const": "published"
+            },
+            "index_ref": {
+              "$ref": "#/definitions/IndexRef"
+            },
+            "selection": {
+              "$ref": "#/definitions/Selection"
+            },
+            "selection_sha256": {
+              "$ref": "#/definitions/Hash"
+            },
+            "snapshot_currentness": {
+              "type": "string",
+              "enum": [
+                "current",
+                "historical",
+                "mixed"
+              ]
+            },
+            "coverage": {
+              "$ref": "#/definitions/CompleteCoverage"
+            },
+            "diagnostic_codes": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "none",
+                  "building",
+                  "coverage_gap",
+                  "policy_disabled",
+                  "policy_changed",
+                  "profile_changed",
+                  "index_failed",
+                  "unit_oversize",
+                  "unsupported_representation",
+                  "source_unavailable",
+                  "integrity_error"
+                ]
+              },
+              "minItems": 1,
+              "maxItems": 16
+            }
+          }
+        },
+        "Readiness_unindexed": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "publication",
+            "index_ref",
+            "selection",
+            "selection_sha256",
+            "snapshot_currentness",
+            "coverage",
+            "diagnostic_codes"
+          ],
+          "properties": {
+            "kind": {
+              "const": "unindexed"
+            },
+            "publication": {
+              "const": "not_published"
+            },
+            "index_ref": {
+              "type": "null"
+            },
+            "selection": {
+              "$ref": "#/definitions/Selection"
+            },
+            "selection_sha256": {
+              "$ref": "#/definitions/Hash"
+            },
+            "snapshot_currentness": {
+              "type": "string",
+              "enum": [
+                "current",
+                "historical",
+                "mixed"
+              ]
+            },
+            "coverage": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Coverage"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "diagnostic_codes": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "none",
+                  "building",
+                  "coverage_gap",
+                  "policy_disabled",
+                  "policy_changed",
+                  "profile_changed",
+                  "index_failed",
+                  "unit_oversize",
+                  "unsupported_representation",
+                  "source_unavailable",
+                  "integrity_error"
+                ]
+              },
+              "minItems": 1,
+              "maxItems": 16
+            }
+          }
+        },
+        "RepresentationRef": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/C1RepresentationRef"
+            },
+            {
+              "$ref": "#/definitions/R1RepresentationRef"
+            }
+          ]
+        },
+        "Selection": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "targets"
+          ],
+          "properties": {
+            "kind": {
+              "const": "fixed_revisions"
+            },
+            "targets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Target"
+              },
+              "minItems": 1,
+              "maxItems": 32,
+              "uniqueItems": true
+            }
+          }
+        },
+        "SourceRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "domain_id",
+            "source_id",
+            "source_revision_id",
+            "source_sha256"
+          ],
+          "properties": {
+            "domain_id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "source_id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "source_revision_id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "source_sha256": {
+              "$ref": "#/definitions/Hash"
+            }
+          }
+        },
+        "Target": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "source_ref",
+            "representation_ref"
+          ],
+          "properties": {
+            "source_ref": {
+              "$ref": "#/definitions/SourceRef"
+            },
+            "representation_ref": {
+              "$ref": "#/definitions/RepresentationRef"
+            }
+          }
+        },
+        "UninitializedLocalPolicy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "domain_id",
+            "local_policy_version",
+            "foundation_policy_version",
+            "enabled",
+            "mode",
+            "read_authority",
+            "accepted_inputs",
+            "allowed_model_uses",
+            "external_models",
+            "local_inference",
+            "remote_fetches",
+            "automatic_ingestion",
+            "vector_index"
+          ],
+          "properties": {
+            "domain_id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "local_policy_version": {
+              "const": 0
+            },
+            "foundation_policy_version": {
+              "$ref": "#/definitions/Version"
+            },
+            "enabled": {
+              "const": false
+            },
+            "mode": {
+              "const": "owner_only_lexical"
+            },
+            "read_authority": {
+              "const": "existing_foundation_owner"
+            },
+            "accepted_inputs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "c1_text_root_at_most_8192_bytes",
+                  "r1_published_passage"
+                ]
+              },
+              "minItems": 2,
+              "maxItems": 2,
+              "uniqueItems": true
+            },
+            "allowed_model_uses": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 0,
+              "maxItems": 0
+            },
+            "external_models": {
+              "const": false
+            },
+            "local_inference": {
+              "const": false
+            },
+            "remote_fetches": {
+              "const": false
+            },
+            "automatic_ingestion": {
+              "const": false
+            },
+            "vector_index": {
+              "const": "not_created"
+            }
+          }
+        },
+        "Version": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        }
+      }
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "knowledge_search_local",
+    "description": "在显式固定发布索引和修订集合内执行本地纯词法搜索，返回固定单元与证据引用；首片不支持翻页。",
+    "inputSchema": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "type": "object",
+      "$ref": "#/definitions/SearchRequest",
+      "definitions": {
+        "C1RepresentationRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id",
+            "producer_sha256"
+          ],
+          "properties": {
+            "kind": {
+              "const": "source_revision"
+            },
+            "id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "producer_sha256": {
+              "type": "null"
+            }
+          }
+        },
+        "DomainPath": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "domain_id"
+          ],
+          "properties": {
+            "domain_id": {
+              "$ref": "#/definitions/ID32"
+            }
+          }
+        },
+        "Hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "ID32": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{32}$"
+        },
+        "IndexRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "index_id",
+            "manifest_sha256"
+          ],
+          "properties": {
+            "index_id": {
+              "$ref": "#/definitions/Hash"
+            },
+            "manifest_sha256": {
+              "$ref": "#/definitions/Hash"
+            }
+          }
+        },
+        "R1RepresentationRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id",
+            "producer_sha256"
+          ],
+          "properties": {
+            "kind": {
+              "const": "structure_view"
+            },
+            "id": {
+              "$ref": "#/definitions/Hash"
+            },
+            "producer_sha256": {
+              "$ref": "#/definitions/Hash"
+            }
+          }
+        },
+        "RepresentationRef": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/C1RepresentationRef"
+            },
+            {
+              "$ref": "#/definitions/R1RepresentationRef"
+            }
+          ]
+        },
+        "SearchRequest": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "path",
+            "body"
+          ],
+          "properties": {
+            "operation": {
+              "const": "search"
+            },
+            "path": {
+              "$ref": "#/definitions/DomainPath"
+            },
+            "body": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "contract_version",
+                "index_ref",
+                "selection",
+                "query",
+                "limit"
+              ],
+              "properties": {
+                "contract_version": {
+                  "const": "0.1.0-candidate"
+                },
+                "index_ref": {
+                  "$ref": "#/definitions/IndexRef"
+                },
+                "selection": {
+                  "$ref": "#/definitions/Selection"
+                },
+                "query": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096,
+                  "pattern": "\\S"
+                },
+                "limit": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 8
+                }
+              }
+            }
+          }
+        },
+        "Selection": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "targets"
+          ],
+          "properties": {
+            "kind": {
+              "const": "fixed_revisions"
+            },
+            "targets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Target"
+              },
+              "minItems": 1,
+              "maxItems": 32,
+              "uniqueItems": true
+            }
+          }
+        },
+        "SourceRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "domain_id",
+            "source_id",
+            "source_revision_id",
+            "source_sha256"
+          ],
+          "properties": {
+            "domain_id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "source_id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "source_revision_id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "source_sha256": {
+              "$ref": "#/definitions/Hash"
+            }
+          }
+        },
+        "Target": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "source_ref",
+            "representation_ref"
+          ],
+          "properties": {
+            "source_ref": {
+              "$ref": "#/definitions/SourceRef"
+            },
+            "representation_ref": {
+              "$ref": "#/definitions/RepresentationRef"
+            }
+          }
+        }
+      }
+    },
+    "outputSchema": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/definitions/SearchResponse"
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/definitions/ErrorResponse"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "operation": {
+                  "const": "search"
+                }
+              },
+              "required": [
+                "operation"
+              ]
+            }
+          ]
+        }
+      ],
+      "definitions": {
+        "Binding": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "index_ref",
+            "selection",
+            "selection_sha256",
+            "local_policy_version",
+            "foundation_policy_version",
+            "profile_sha256",
+            "engine",
+            "execution_profile",
+            "parent_expansion",
+            "unit_policy",
+            "published_at"
+          ],
+          "properties": {
+            "index_ref": {
+              "$ref": "#/definitions/IndexRef"
+            },
+            "selection": {
+              "$ref": "#/definitions/Selection"
+            },
+            "selection_sha256": {
+              "$ref": "#/definitions/Hash"
+            },
+            "local_policy_version": {
+              "$ref": "#/definitions/Version"
+            },
+            "foundation_policy_version": {
+              "$ref": "#/definitions/Version"
+            },
+            "profile_sha256": {
+              "$ref": "#/definitions/Hash"
+            },
+            "engine": {
+              "const": "elasticsearch"
+            },
+            "execution_profile": {
+              "const": "local_lexical_no_models_v1"
+            },
+            "parent_expansion": {
+              "const": "disabled"
+            },
+            "unit_policy": {
+              "const": "existing_r1_passage_or_bounded_c1_root"
+            },
+            "published_at": {
+              "$ref": "#/definitions/Timestamp"
+            }
+          }
+        },
+        "ByteRange": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "start_byte",
+            "end_byte"
+          ],
+          "properties": {
+            "start_byte": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2097152
+            },
+            "end_byte": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2097152
+            }
+          }
+        },
+        "C1EvidenceRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "evidence_version",
+            "index_ref",
+            "index_row_id",
+            "source_ref",
+            "representation_ref",
+            "node_ref",
+            "coordinate_space",
+            "range",
+            "fragment_sha256"
+          ],
+          "properties": {
+            "evidence_version": {
+              "const": "0.1.0-candidate"
+            },
+            "index_ref": {
+              "$ref": "#/definitions/IndexRef"
+            },
+            "index_row_id": {
+              "$ref": "#/definitions/Hash"
+            },
+            "source_ref": {
+              "$ref": "#/definitions/SourceRef"
+            },
+            "representation_ref": {
+              "$ref": "#/definitions/C1RepresentationRef"
+            },
+            "node_ref": {
+              "$ref": "#/definitions/C1NodeRef"
+            },
+            "coordinate_space": {
+              "const": "source_utf8"
+            },
+            "range": {
+              "$ref": "#/definitions/ByteRange"
+            },
+            "fragment_sha256": {
+              "$ref": "#/definitions/Hash"
+            }
+          }
+        },
+        "C1NodeRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id"
+          ],
+          "properties": {
+            "kind": {
+              "const": "c1_node"
+            },
+            "id": {
+              "$ref": "#/definitions/Hash"
+            }
+          }
+        },
+        "C1RepresentationRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id",
+            "producer_sha256"
+          ],
+          "properties": {
+            "kind": {
+              "const": "source_revision"
+            },
+            "id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "producer_sha256": {
+              "type": "null"
+            }
+          }
+        },
+        "CompleteCoverage": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "selected_source_count",
+            "covered_source_count",
+            "expected_source_bytes",
+            "covered_source_bytes",
+            "tokenless_source_bytes",
+            "indexed_unit_count",
+            "complete",
+            "missing_ranges"
+          ],
+          "properties": {
+            "selected_source_count": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 32
+            },
+            "covered_source_count": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 32
+            },
+            "expected_source_bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 16777216
+            },
+            "covered_source_bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 16777216
+            },
+            "tokenless_source_bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 16777216
+            },
+            "indexed_unit_count": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 32768
+            },
+            "complete": {
+              "const": true
+            },
+            "missing_ranges": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/MissingRange"
+              },
+              "minItems": 0,
+              "maxItems": 0
+            }
+          }
+        },
+        "ErrorResponse": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "contract_version",
+            "request_id",
+            "data",
+            "code",
+            "message",
+            "outcome_known",
+            "retry_same_key"
+          ],
+          "properties": {
+            "operation": {
+              "type": "string",
+              "enum": [
+                "getLocalPolicy",
+                "changeLocalPolicy",
+                "inspectIndex",
+                "createIndex",
+                "getIndexJob",
+                "search",
+                "read"
+              ]
+            },
+            "contract_version": {
+              "const": "0.1.0-candidate"
+            },
+            "request_id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "data": {
+              "type": "null"
+            },
+            "code": {
+              "type": "string",
+              "enum": [
+                "invalid_request",
+                "unauthenticated",
+                "not_found",
+                "contract_mismatch",
+                "policy_disabled",
+                "policy_changed",
+                "idempotency_conflict",
+                "index_unindexed",
+                "index_building",
+                "index_coverage_gap",
+                "index_stale",
+                "index_failed",
+                "unit_oversize",
+                "unsupported_representation",
+                "source_unavailable",
+                "integrity_error",
+                "capacity_exceeded",
+                "unavailable"
+              ]
+            },
+            "message": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 512
+            },
+            "outcome_known": {
+              "type": "boolean"
+            },
+            "retry_same_key": {
+              "type": "boolean"
+            }
+          }
+        },
+        "EvidenceRef": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/C1EvidenceRef"
+            },
+            {
+              "$ref": "#/definitions/R1EvidenceRef"
+            }
+          ]
+        },
+        "Hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "Hit": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "evidence_ref",
+            "text",
+            "score",
+            "match_type",
+            "source_currentness"
+          ],
+          "properties": {
+            "evidence_ref": {
+              "$ref": "#/definitions/EvidenceRef"
+            },
+            "text": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 8192
+            },
+            "score": {
+              "type": "number"
+            },
+            "match_type": {
+              "const": "lexical"
+            },
+            "source_currentness": {
+              "type": "string",
+              "enum": [
+                "current",
+                "historical"
+              ]
+            }
+          }
+        },
+        "ID32": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{32}$"
+        },
+        "IndexRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "index_id",
+            "manifest_sha256"
+          ],
+          "properties": {
+            "index_id": {
+              "$ref": "#/definitions/Hash"
+            },
+            "manifest_sha256": {
+              "$ref": "#/definitions/Hash"
+            }
+          }
+        },
+        "MissingRange": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "source_ref",
+            "range"
+          ],
+          "properties": {
+            "source_ref": {
+              "$ref": "#/definitions/SourceRef"
+            },
+            "range": {
+              "$ref": "#/definitions/ByteRange"
+            }
+          }
+        },
+        "R1EvidenceRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "evidence_version",
+            "index_ref",
+            "index_row_id",
+            "source_ref",
+            "representation_ref",
+            "node_ref",
+            "coordinate_space",
+            "range",
+            "fragment_sha256"
+          ],
+          "properties": {
+            "evidence_version": {
+              "const": "0.1.0-candidate"
+            },
+            "index_ref": {
+              "$ref": "#/definitions/IndexRef"
+            },
+            "index_row_id": {
+              "$ref": "#/definitions/Hash"
+            },
+            "source_ref": {
+              "$ref": "#/definitions/SourceRef"
+            },
+            "representation_ref": {
+              "$ref": "#/definitions/R1RepresentationRef"
+            },
+            "node_ref": {
+              "$ref": "#/definitions/R1NodeRef"
+            },
+            "coordinate_space": {
+              "const": "source_utf8"
+            },
+            "range": {
+              "$ref": "#/definitions/ByteRange"
+            },
+            "fragment_sha256": {
+              "$ref": "#/definitions/Hash"
+            }
+          }
+        },
+        "R1NodeRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id"
+          ],
+          "properties": {
+            "kind": {
+              "const": "r1_node"
+            },
+            "id": {
+              "$ref": "#/definitions/Hash"
+            }
+          }
+        },
+        "R1RepresentationRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id",
+            "producer_sha256"
+          ],
+          "properties": {
+            "kind": {
+              "const": "structure_view"
+            },
+            "id": {
+              "$ref": "#/definitions/Hash"
+            },
+            "producer_sha256": {
+              "$ref": "#/definitions/Hash"
+            }
+          }
+        },
+        "RepresentationRef": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/C1RepresentationRef"
+            },
+            {
+              "$ref": "#/definitions/R1RepresentationRef"
+            }
+          ]
+        },
+        "SearchData": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "binding",
+            "coverage",
+            "readiness",
+            "query",
+            "requested_limit",
+            "returned_count",
+            "hits",
+            "total_matches",
+            "pagination",
+            "ranking",
+            "parent_expansion"
+          ],
+          "properties": {
+            "binding": {
+              "$ref": "#/definitions/Binding"
+            },
+            "coverage": {
+              "$ref": "#/definitions/CompleteCoverage"
+            },
+            "readiness": {
+              "const": "ready"
+            },
+            "query": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096,
+              "pattern": "\\S"
+            },
+            "requested_limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 8
+            },
+            "returned_count": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 8
+            },
+            "hits": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Hit"
+              },
+              "minItems": 0,
+              "maxItems": 8
+            },
+            "total_matches": {
+              "type": "null"
+            },
+            "pagination": {
+              "const": "not_supported_in_first_slice"
+            },
+            "ranking": {
+              "const": "native_lexical_only"
+            },
+            "parent_expansion": {
+              "const": "disabled"
+            }
+          }
+        },
+        "SearchResponse": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "contract_version",
+            "request_id",
+            "data"
+          ],
+          "properties": {
+            "operation": {
+              "const": "search"
+            },
+            "contract_version": {
+              "const": "0.1.0-candidate"
+            },
+            "request_id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "data": {
+              "$ref": "#/definitions/SearchData"
+            }
+          }
+        },
+        "Selection": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "targets"
+          ],
+          "properties": {
+            "kind": {
+              "const": "fixed_revisions"
+            },
+            "targets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Target"
+              },
+              "minItems": 1,
+              "maxItems": 32,
+              "uniqueItems": true
+            }
+          }
+        },
+        "SourceRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "domain_id",
+            "source_id",
+            "source_revision_id",
+            "source_sha256"
+          ],
+          "properties": {
+            "domain_id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "source_id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "source_revision_id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "source_sha256": {
+              "$ref": "#/definitions/Hash"
+            }
+          }
+        },
+        "Target": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "source_ref",
+            "representation_ref"
+          ],
+          "properties": {
+            "source_ref": {
+              "$ref": "#/definitions/SourceRef"
+            },
+            "representation_ref": {
+              "$ref": "#/definitions/RepresentationRef"
+            }
+          }
+        },
+        "Timestamp": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,9})?Z$"
+        },
+        "Version": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        }
+      }
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "knowledge_read_local",
+    "description": "按完整固定证据引用回读同一单元，保留原始 UTF-8 字节与换行；引用本身不授予访问权限。",
+    "inputSchema": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "type": "object",
+      "$ref": "#/definitions/ReadRequest",
+      "definitions": {
+        "ByteRange": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "start_byte",
+            "end_byte"
+          ],
+          "properties": {
+            "start_byte": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2097152
+            },
+            "end_byte": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2097152
+            }
+          }
+        },
+        "C1EvidenceRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "evidence_version",
+            "index_ref",
+            "index_row_id",
+            "source_ref",
+            "representation_ref",
+            "node_ref",
+            "coordinate_space",
+            "range",
+            "fragment_sha256"
+          ],
+          "properties": {
+            "evidence_version": {
+              "const": "0.1.0-candidate"
+            },
+            "index_ref": {
+              "$ref": "#/definitions/IndexRef"
+            },
+            "index_row_id": {
+              "$ref": "#/definitions/Hash"
+            },
+            "source_ref": {
+              "$ref": "#/definitions/SourceRef"
+            },
+            "representation_ref": {
+              "$ref": "#/definitions/C1RepresentationRef"
+            },
+            "node_ref": {
+              "$ref": "#/definitions/C1NodeRef"
+            },
+            "coordinate_space": {
+              "const": "source_utf8"
+            },
+            "range": {
+              "$ref": "#/definitions/ByteRange"
+            },
+            "fragment_sha256": {
+              "$ref": "#/definitions/Hash"
+            }
+          }
+        },
+        "C1NodeRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id"
+          ],
+          "properties": {
+            "kind": {
+              "const": "c1_node"
+            },
+            "id": {
+              "$ref": "#/definitions/Hash"
+            }
+          }
+        },
+        "C1RepresentationRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id",
+            "producer_sha256"
+          ],
+          "properties": {
+            "kind": {
+              "const": "source_revision"
+            },
+            "id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "producer_sha256": {
+              "type": "null"
+            }
+          }
+        },
+        "DomainPath": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "domain_id"
+          ],
+          "properties": {
+            "domain_id": {
+              "$ref": "#/definitions/ID32"
+            }
+          }
+        },
+        "EvidenceRef": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/C1EvidenceRef"
+            },
+            {
+              "$ref": "#/definitions/R1EvidenceRef"
+            }
+          ]
+        },
+        "Hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "ID32": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{32}$"
+        },
+        "IndexRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "index_id",
+            "manifest_sha256"
+          ],
+          "properties": {
+            "index_id": {
+              "$ref": "#/definitions/Hash"
+            },
+            "manifest_sha256": {
+              "$ref": "#/definitions/Hash"
+            }
+          }
+        },
+        "R1EvidenceRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "evidence_version",
+            "index_ref",
+            "index_row_id",
+            "source_ref",
+            "representation_ref",
+            "node_ref",
+            "coordinate_space",
+            "range",
+            "fragment_sha256"
+          ],
+          "properties": {
+            "evidence_version": {
+              "const": "0.1.0-candidate"
+            },
+            "index_ref": {
+              "$ref": "#/definitions/IndexRef"
+            },
+            "index_row_id": {
+              "$ref": "#/definitions/Hash"
+            },
+            "source_ref": {
+              "$ref": "#/definitions/SourceRef"
+            },
+            "representation_ref": {
+              "$ref": "#/definitions/R1RepresentationRef"
+            },
+            "node_ref": {
+              "$ref": "#/definitions/R1NodeRef"
+            },
+            "coordinate_space": {
+              "const": "source_utf8"
+            },
+            "range": {
+              "$ref": "#/definitions/ByteRange"
+            },
+            "fragment_sha256": {
+              "$ref": "#/definitions/Hash"
+            }
+          }
+        },
+        "R1NodeRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id"
+          ],
+          "properties": {
+            "kind": {
+              "const": "r1_node"
+            },
+            "id": {
+              "$ref": "#/definitions/Hash"
+            }
+          }
+        },
+        "R1RepresentationRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id",
+            "producer_sha256"
+          ],
+          "properties": {
+            "kind": {
+              "const": "structure_view"
+            },
+            "id": {
+              "$ref": "#/definitions/Hash"
+            },
+            "producer_sha256": {
+              "$ref": "#/definitions/Hash"
+            }
+          }
+        },
+        "ReadRequest": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "path",
+            "body"
+          ],
+          "properties": {
+            "operation": {
+              "const": "read"
+            },
+            "path": {
+              "$ref": "#/definitions/DomainPath"
+            },
+            "body": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "contract_version",
+                "evidence_ref"
+              ],
+              "properties": {
+                "contract_version": {
+                  "const": "0.1.0-candidate"
+                },
+                "evidence_ref": {
+                  "$ref": "#/definitions/EvidenceRef"
+                }
+              }
+            }
+          }
+        },
+        "SourceRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "domain_id",
+            "source_id",
+            "source_revision_id",
+            "source_sha256"
+          ],
+          "properties": {
+            "domain_id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "source_id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "source_revision_id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "source_sha256": {
+              "$ref": "#/definitions/Hash"
+            }
+          }
+        }
+      }
+    },
+    "outputSchema": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/definitions/ReadResponse"
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/definitions/ErrorResponse"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "operation": {
+                  "const": "read"
+                }
+              },
+              "required": [
+                "operation"
+              ]
+            }
+          ]
+        }
+      ],
+      "definitions": {
+        "ByteRange": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "start_byte",
+            "end_byte"
+          ],
+          "properties": {
+            "start_byte": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2097152
+            },
+            "end_byte": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2097152
+            }
+          }
+        },
+        "C1EvidenceRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "evidence_version",
+            "index_ref",
+            "index_row_id",
+            "source_ref",
+            "representation_ref",
+            "node_ref",
+            "coordinate_space",
+            "range",
+            "fragment_sha256"
+          ],
+          "properties": {
+            "evidence_version": {
+              "const": "0.1.0-candidate"
+            },
+            "index_ref": {
+              "$ref": "#/definitions/IndexRef"
+            },
+            "index_row_id": {
+              "$ref": "#/definitions/Hash"
+            },
+            "source_ref": {
+              "$ref": "#/definitions/SourceRef"
+            },
+            "representation_ref": {
+              "$ref": "#/definitions/C1RepresentationRef"
+            },
+            "node_ref": {
+              "$ref": "#/definitions/C1NodeRef"
+            },
+            "coordinate_space": {
+              "const": "source_utf8"
+            },
+            "range": {
+              "$ref": "#/definitions/ByteRange"
+            },
+            "fragment_sha256": {
+              "$ref": "#/definitions/Hash"
+            }
+          }
+        },
+        "C1NodeRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id"
+          ],
+          "properties": {
+            "kind": {
+              "const": "c1_node"
+            },
+            "id": {
+              "$ref": "#/definitions/Hash"
+            }
+          }
+        },
+        "C1RepresentationRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id",
+            "producer_sha256"
+          ],
+          "properties": {
+            "kind": {
+              "const": "source_revision"
+            },
+            "id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "producer_sha256": {
+              "type": "null"
+            }
+          }
+        },
+        "ErrorResponse": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "contract_version",
+            "request_id",
+            "data",
+            "code",
+            "message",
+            "outcome_known",
+            "retry_same_key"
+          ],
+          "properties": {
+            "operation": {
+              "type": "string",
+              "enum": [
+                "getLocalPolicy",
+                "changeLocalPolicy",
+                "inspectIndex",
+                "createIndex",
+                "getIndexJob",
+                "search",
+                "read"
+              ]
+            },
+            "contract_version": {
+              "const": "0.1.0-candidate"
+            },
+            "request_id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "data": {
+              "type": "null"
+            },
+            "code": {
+              "type": "string",
+              "enum": [
+                "invalid_request",
+                "unauthenticated",
+                "not_found",
+                "contract_mismatch",
+                "policy_disabled",
+                "policy_changed",
+                "idempotency_conflict",
+                "index_unindexed",
+                "index_building",
+                "index_coverage_gap",
+                "index_stale",
+                "index_failed",
+                "unit_oversize",
+                "unsupported_representation",
+                "source_unavailable",
+                "integrity_error",
+                "capacity_exceeded",
+                "unavailable"
+              ]
+            },
+            "message": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 512
+            },
+            "outcome_known": {
+              "type": "boolean"
+            },
+            "retry_same_key": {
+              "type": "boolean"
+            }
+          }
+        },
+        "EvidenceRef": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/C1EvidenceRef"
+            },
+            {
+              "$ref": "#/definitions/R1EvidenceRef"
+            }
+          ]
+        },
+        "Hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "ID32": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{32}$"
+        },
+        "IndexRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "index_id",
+            "manifest_sha256"
+          ],
+          "properties": {
+            "index_id": {
+              "$ref": "#/definitions/Hash"
+            },
+            "manifest_sha256": {
+              "$ref": "#/definitions/Hash"
+            }
+          }
+        },
+        "R1EvidenceRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "evidence_version",
+            "index_ref",
+            "index_row_id",
+            "source_ref",
+            "representation_ref",
+            "node_ref",
+            "coordinate_space",
+            "range",
+            "fragment_sha256"
+          ],
+          "properties": {
+            "evidence_version": {
+              "const": "0.1.0-candidate"
+            },
+            "index_ref": {
+              "$ref": "#/definitions/IndexRef"
+            },
+            "index_row_id": {
+              "$ref": "#/definitions/Hash"
+            },
+            "source_ref": {
+              "$ref": "#/definitions/SourceRef"
+            },
+            "representation_ref": {
+              "$ref": "#/definitions/R1RepresentationRef"
+            },
+            "node_ref": {
+              "$ref": "#/definitions/R1NodeRef"
+            },
+            "coordinate_space": {
+              "const": "source_utf8"
+            },
+            "range": {
+              "$ref": "#/definitions/ByteRange"
+            },
+            "fragment_sha256": {
+              "$ref": "#/definitions/Hash"
+            }
+          }
+        },
+        "R1NodeRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id"
+          ],
+          "properties": {
+            "kind": {
+              "const": "r1_node"
+            },
+            "id": {
+              "$ref": "#/definitions/Hash"
+            }
+          }
+        },
+        "R1RepresentationRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id",
+            "producer_sha256"
+          ],
+          "properties": {
+            "kind": {
+              "const": "structure_view"
+            },
+            "id": {
+              "$ref": "#/definitions/Hash"
+            },
+            "producer_sha256": {
+              "$ref": "#/definitions/Hash"
+            }
+          }
+        },
+        "ReadData": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "evidence_ref",
+            "text",
+            "encoding",
+            "byte_length",
+            "source_currentness",
+            "complete"
+          ],
+          "properties": {
+            "evidence_ref": {
+              "$ref": "#/definitions/EvidenceRef"
+            },
+            "text": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 8192
+            },
+            "encoding": {
+              "const": "utf-8"
+            },
+            "byte_length": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 8192
+            },
+            "source_currentness": {
+              "type": "string",
+              "enum": [
+                "current",
+                "historical"
+              ]
+            },
+            "complete": {
+              "const": true
+            }
+          }
+        },
+        "ReadResponse": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "contract_version",
+            "request_id",
+            "data"
+          ],
+          "properties": {
+            "operation": {
+              "const": "read"
+            },
+            "contract_version": {
+              "const": "0.1.0-candidate"
+            },
+            "request_id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "data": {
+              "$ref": "#/definitions/ReadData"
+            }
+          }
+        },
+        "SourceRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "domain_id",
+            "source_id",
+            "source_revision_id",
+            "source_sha256"
+          ],
+          "properties": {
+            "domain_id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "source_id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "source_revision_id": {
+              "$ref": "#/definitions/ID32"
+            },
+            "source_sha256": {
+              "$ref": "#/definitions/Hash"
+            }
+          }
+        }
+      }
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  }
+]

@@ -12,6 +12,7 @@ import (
 	"net/url"
 	"reflect"
 	"strconv"
+	"sync/atomic"
 	"time"
 	"unicode/utf8"
 
@@ -182,10 +183,23 @@ func originalQuery(c *gin.Context, allowed ...string) (url.Values, bool) {
 type originalRequestBody struct {
 	io.ReadCloser
 	controller *http.ResponseController
+	reachedEOF atomic.Bool
+}
+
+func (b *originalRequestBody) Read(p []byte) (int, error) {
+	n, err := b.ReadCloser.Read(p)
+	if err == io.EOF {
+		b.reachedEOF.Store(true)
+	}
+	return n, err
 }
 
 func (b *originalRequestBody) Close() error {
-	_ = b.controller.SetReadDeadline(time.Now())
+	// After EOF, net/http may already be reading the next request on this
+	// connection. A forced deadline would cancel that connection context.
+	if !b.reachedEOF.Load() {
+		_ = b.controller.SetReadDeadline(time.Now())
+	}
 	return b.ReadCloser.Close()
 }
 
@@ -278,7 +292,7 @@ func (h *DatasetsHandler) KnowledgeOriginal(operation string) gin.HandlerFunc {
 			}
 			defer controller.SetReadDeadline(time.Time{})
 			media, _, _ := mime.ParseMediaType(c.GetHeader("Content-Type"))
-			data, err = h.datasetsService.ReceiveKnowledgeOriginal(receiveCtx, actor.ID, domain, registration, c.Param("upload_id"), &originalRequestBody{c.Request.Body, controller}, c.Request.ContentLength, c.GetHeader("Content-Range"), c.GetHeader("Content-Encoding"), media)
+			data, err = h.datasetsService.ReceiveKnowledgeOriginal(receiveCtx, actor.ID, domain, registration, c.Param("upload_id"), &originalRequestBody{ReadCloser: c.Request.Body, controller: controller}, c.Request.ContentLength, c.GetHeader("Content-Range"), c.GetHeader("Content-Encoding"), media)
 			if err != nil {
 				c.Request.Close = true
 				c.Header("Connection", "close")

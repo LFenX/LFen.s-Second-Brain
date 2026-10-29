@@ -266,8 +266,8 @@ func (d *DatasetService) ReceiveKnowledgeOriginal(ctx context.Context, user, dom
 	var received atomic.Int64
 	renewed := make(chan error, 1)
 	renewCtx, stopRenew := context.WithCancel(ctx)
-	defer stopRenew()
 	go func() {
+		defer close(renewed)
 		ticker := time.NewTicker(10 * time.Second)
 		defer ticker.Stop()
 		for {
@@ -278,23 +278,19 @@ func (d *DatasetService) ReceiveKnowledgeOriginal(ctx context.Context, user, dom
 			case <-ticker.C:
 				if err := d.renewOriginalTransfer(renewCtx, transfer, received.Load()); err != nil {
 					stop()
-					_ = body.Close()
 					renewed <- err
 					return
 				}
 			}
 		}
 	}()
-	closed := make(chan struct{})
-	go func() {
-		select {
-		case <-ctx.Done():
-			_ = body.Close()
-		case <-closed:
+	stopBody := watchKnowledgeUploadBody(ctx, body)
+	defer func() {
+		stopRenew()
+		for range renewed {
 		}
+		stopBody()
 	}()
-	defer close(closed)
-	defer body.Close()
 	scratch, cleanupScratch, prepareErr := prepareOriginalScratch(ctx, transfer)
 	var stage *knowledgeOriginalStage
 	if prepareErr == nil {

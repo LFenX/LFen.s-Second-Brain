@@ -484,10 +484,9 @@ func TestXLSXParser_HeaderAndCaption(t *testing.T) {
 	}
 }
 
-// TestXLSXParser_MergedHeaderInheritance asserts a horizontally merged header
-// cell's slave columns inherit the master text, so a wide merged title does not
-// render as a row of blank header cells.
-func TestXLSXParser_MergedHeaderInheritance(t *testing.T) {
+// TestXLSXParser_MergedHeaderGeometry asserts a horizontally merged header
+// cell keeps one master label and covered slots for its full column extent.
+func TestXLSXParser_MergedHeaderGeometry(t *testing.T) {
 	data := newTestXLSX(t, func(f *excelize.File) {
 		// Row 1 is the header; A1:C1 merged into one wide label "Sales Report".
 		mustSetCell(t, f, "Sheet1", "A1", "Sales Report")
@@ -508,15 +507,14 @@ func TestXLSXParser_MergedHeaderInheritance(t *testing.T) {
 		t.Fatalf("ParseWithResult: %v", res.Err)
 	}
 	text := spreadsheetText(res)
-	if !strings.Contains(text, "<th>Sales Report</th><th>Sales Report</th><th>Sales Report</th>") {
-		t.Fatalf("merged master text not inherited into header cells, got:\n%s", text)
+	if !strings.Contains(text, `colspan="3"`) || strings.Count(text, "Sales Report") != 1 {
+		t.Fatalf("merged header geometry or unique master text missing, got:\n%s", text)
 	}
 }
 
-// TestXLSXParser_MergedDataCellInheritance asserts a vertically merged data
-// cell's slave rows inherit the master text, so every row chunk keeps its
-// group label instead of rendering an empty first cell.
-func TestXLSXParser_MergedDataCellInheritance(t *testing.T) {
+// TestXLSXParser_MergedDataCellGeometry asserts a vertically merged data
+// cell keeps its actual row span instead of duplicating its master value.
+func TestXLSXParser_MergedDataCellGeometry(t *testing.T) {
 	data := newTestXLSX(t, func(f *excelize.File) {
 		mustSetCell(t, f, "Sheet1", "A1", "Group")
 		mustSetCell(t, f, "Sheet1", "B1", "Item")
@@ -531,8 +529,8 @@ func TestXLSXParser_MergedDataCellInheritance(t *testing.T) {
 		t.Fatalf("ParseWithResult: %v", res.Err)
 	}
 	text := spreadsheetText(res)
-	if !strings.Contains(text, "<tr><td>G1</td><td>y</td></tr>") {
-		t.Fatalf("slave row did not inherit merged master text, got:\n%s", text)
+	if !strings.Contains(text, `rowspan="2"`) || strings.Count(text, "G1") != 1 || !strings.Contains(text, "<td>y</td>") {
+		t.Fatalf("merged row geometry or unique master text missing, got:\n%s", text)
 	}
 	positions := res.JSON[0].ToMap()["positions"].([][]float64)
 	if len(positions) != 3 {
@@ -567,8 +565,7 @@ func TestXLSXParser_MergedDataCellHorizontalUntouched(t *testing.T) {
 }
 
 // TestXLSXParser_MergedDataCellBeyondTruncation asserts a merged slave cell
-// past its row's truncation point (excelize drops trailing empties) is still
-// filled: the row grows exactly up to the slave column to host the value.
+// past its row's truncation point retains a covered slot and its origin span.
 func TestXLSXParser_MergedDataCellBeyondTruncation(t *testing.T) {
 	data := newTestXLSX(t, func(f *excelize.File) {
 		mustSetCell(t, f, "Sheet1", "A1", "name")
@@ -593,8 +590,8 @@ func TestXLSXParser_MergedDataCellBeyondTruncation(t *testing.T) {
 	}
 	text := spreadsheetText(res)
 	want := "<tr><td>Mike</td><td>28</td><td>IT</td><td>Important customer</td></tr>"
-	if !strings.Contains(text, want) {
-		t.Fatalf("truncated slave cells not filled, got:\n%s", text)
+	if strings.Contains(text, want) || strings.Count(text, "Important customer") != 1 || strings.Count(text, `rowspan="2"`) != 3 {
+		t.Fatalf("merged geometry or unique master text missing, got:\n%s", text)
 	}
 }
 
@@ -613,7 +610,7 @@ func TestXLSXParser_MergedHeaderDownIntoDataUntouched(t *testing.T) {
 		t.Fatalf("ParseWithResult: %v", res.Err)
 	}
 	text := spreadsheetText(res)
-	if !strings.Contains(text, "<tr><th>H</th><th>Name</th></tr>") {
+	if !strings.Contains(text, `rowspan="2"`) || !strings.Contains(text, "<th>Name</th>") {
 		t.Fatalf("want header row untouched, got:\n%s", text)
 	}
 	if strings.Contains(text, "<td>H</td>") {

@@ -131,7 +131,7 @@ func documentChildExe(pid int) (uint64, uint64, error) {
 }
 
 func documentChildBaseValid(owner DocumentChildOwnership) bool {
-	return owner.Version == documentChildVersion && documentChildHash(owner.TaskID, 32) && owner.Attempt >= 1 && owner.Attempt <= 3 && documentChildHash(owner.Token, 64) && documentChildHash(owner.InputSHA256, 64) && owner.InputBytes > 0 && owner.InputBytes <= documentChildInputLimit && owner.Directory == documentChildDirectory(owner.TaskID, owner.Attempt) && owner.ParentPID > 0 && owner.ParentStartTicks > 0 && owner.BootID != "" && len(owner.BootID) <= 64 && owner.ExecutableDevice > 0 && owner.ExecutableInode > 0
+	return owner.Version == documentChildVersion && documentChildHash(owner.TaskID, 32) && owner.Attempt >= 1 && owner.Attempt <= 3 && documentChildHash(owner.Token, 64) && documentChildHash(owner.InputSHA256, 64) && owner.InputBytes >= 0 && owner.InputBytes <= documentChildInputLimit && owner.Directory == documentChildDirectory(owner.TaskID, owner.Attempt) && owner.ParentPID > 0 && owner.ParentStartTicks > 0 && owner.BootID != "" && len(owner.BootID) <= 64 && owner.ExecutableDevice > 0 && owner.ExecutableInode > 0
 }
 
 func documentChildOwnerBaseEqual(left, right DocumentChildOwnership) bool {

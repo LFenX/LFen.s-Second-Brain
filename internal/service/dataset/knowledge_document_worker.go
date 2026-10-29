@@ -339,7 +339,7 @@ func (d *DatasetService) documentPublish(ctx context.Context, claim *structureCl
 			return err
 		}
 		if err == nil {
-			if prior.OwnerID != claim.OwnerID || prior.DomainID != claim.DomainID || prior.SourceID != rep.Original.SourceID {
+			if prior.Protocol != documentTaskProtocol || prior.OwnerID != claim.OwnerID || prior.DomainID != claim.DomainID || prior.SourceID != rep.Original.SourceID {
 				return documentError(409, "document_integrity")
 			}
 			if err := documentVerifyPublished(tx, &prior, bound); err != nil {

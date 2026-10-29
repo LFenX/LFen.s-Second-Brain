@@ -100,11 +100,24 @@ func loadLifecycleSource(tx *gorm.DB, kb *entity.Knowledgebase, source string) (
 	if binding.FileID != head.FileID || binding.RelativePath != head.RelativePath {
 		return nil, lifecycleConflict("lifecycle_integrity")
 	}
-	valid := reg.SourceKind == "text_file" && head.RepresentationKind == "text" || reg.SourceKind == "controlled_directory" && head.RepresentationKind == "text" || reg.SourceKind == "original_document" && head.RepresentationKind == "original_only" || (reg.SourceKind == "web_page" || reg.SourceKind == "web_feed") && head.RepresentationKind == "web_capture"
+	valid := reg.SourceKind == "text_file" && head.RepresentationKind == "text" || reg.SourceKind == "controlled_directory" && head.RepresentationKind == "text" || (reg.SourceKind == "original_document" || reg.SourceKind == "parsed_file" && reg.InputMode == "native_snapshot") && head.RepresentationKind == "original_only" || (reg.SourceKind == "web_page" || reg.SourceKind == "web_feed") && head.RepresentationKind == "web_capture"
 	if !valid || head.RepresentationKind != "text" && head.OriginalRegistrationID != reg.ID {
 		return nil, lifecycleConflict("lifecycle_integrity")
 	}
 	data.binding, data.registration = &binding, &reg
+	return data, nil
+}
+
+// The existing lifecycle API remains scoped to its original source families.
+// Parsed-source state uses the explicit unified-content adapter.
+func loadKnowledgeLifecycleSource(tx *gorm.DB, kb *entity.Knowledgebase, source string) (*lifecycleSourceData, error) {
+	data, err := loadLifecycleSource(tx, kb, source)
+	if err != nil {
+		return nil, err
+	}
+	if data.registration != nil && data.registration.SourceKind == "parsed_file" {
+		return nil, knowledgeNotFound()
+	}
 	return data, nil
 }
 
@@ -137,7 +150,7 @@ func lifecycleDetail(kb *entity.Knowledgebase, data *lifecycleSourceData) entity
 func (d *DatasetService) GetKnowledgeSourceLifecycle(ctx context.Context, user, domain, source string) (*entity.KnowledgeLifecycleDetail, error) {
 	var result *entity.KnowledgeLifecycleDetail
 	err := d.lifecycleTransaction(ctx, user, domain, func(tx *gorm.DB, kb *entity.Knowledgebase) error {
-		data, err := loadLifecycleSource(tx, kb, source)
+		data, err := loadKnowledgeLifecycleSource(tx, kb, source)
 		if err != nil {
 			return err
 		}
@@ -203,7 +216,7 @@ func (d *DatasetService) CheckKnowledgeSourceMoveTarget(ctx context.Context, use
 	}
 	var result *entity.KnowledgeLifecycleTarget
 	err := d.lifecycleTransaction(ctx, user, domain, func(tx *gorm.DB, kb *entity.Knowledgebase) error {
-		data, err := loadLifecycleSource(tx, kb, source)
+		data, err := loadKnowledgeLifecycleSource(tx, kb, source)
 		if err != nil {
 			return err
 		}
@@ -341,7 +354,7 @@ func (d *DatasetService) CommandKnowledgeSourceLifecycle(ctx context.Context, us
 		if !errors.Is(err, gorm.ErrRecordNotFound) {
 			return err
 		}
-		data, err := loadLifecycleSource(tx, kb, source)
+		data, err := loadKnowledgeLifecycleSource(tx, kb, source)
 		if err != nil {
 			return err
 		}

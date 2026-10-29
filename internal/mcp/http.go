@@ -50,12 +50,23 @@ func Credential(headers http.Header) string {
 // NewHandler authenticates every request and binds legacy SSE sessions to their
 // owner. Wire framing, initialization and dispatch remain SDK responsibilities.
 func NewHandler(resolve func(context.Context, string) (string, error), connector func(string) Connector, opts Options) *Handler {
+	return newHTTPHandler(func(ctx context.Context, headers http.Header) (context.Context, string, error) {
+		userID, err := resolve(ctx, Credential(headers))
+		return ctx, userID, err
+	}, func(ctx context.Context, userID string) *sdk.Server {
+		return newServer(ctx, connector(userID))
+	}, opts)
+}
+
+// newHTTPHandler shares framing, origin checks and cancellation across profiles.
+// authenticate can return an authenticated context carrying native session proof.
+func newHTTPHandler(authenticate func(context.Context, http.Header) (context.Context, string, error), serverForUser func(context.Context, string) *sdk.Server, opts Options) *Handler {
 	lifetime, cancel := context.WithCancel(context.Background())
 	var mu sync.Mutex
 	sessions := make(map[string]sseSession)
 	type identityKey struct{}
 	streamable := sdk.NewStreamableHTTPHandler(func(r *http.Request) *sdk.Server {
-		return newServer(r.Context(), connector(r.Context().Value(identityKey{}).(string)))
+		return serverForUser(r.Context(), r.Context().Value(identityKey{}).(string))
 	}, &sdk.StreamableHTTPOptions{Stateless: true, JSONResponse: opts.JSONResponse, MaxRequestBodyBytes: 1 << 20, PropagateRequestCancellation: true})
 	mux := http.NewServeMux()
 	if opts.StreamableHTTP {
@@ -72,7 +83,7 @@ func NewHandler(resolve func(context.Context, string) (string, error), connector
 			// Hold the registry lock through Connect: it publishes the endpoint before
 			// returning, so a fast client's first POST must wait until it is ready.
 			mu.Lock()
-			session, err := newServer(r.Context(), connector(owner)).Connect(r.Context(), transport, nil)
+			session, err := serverForUser(r.Context(), owner).Connect(r.Context(), transport, nil)
 			if err == nil {
 				sessions[id] = sseSession{owner, transport}
 			}
@@ -127,12 +138,12 @@ func NewHandler(resolve func(context.Context, string) (string, error), connector
 		defer stop()
 		detach := context.AfterFunc(lifetime, stop)
 		defer detach()
-		userID, err := resolve(ctx, Credential(r.Header))
-		if err != nil || userID == "" {
+		authenticated, userID, err := authenticate(ctx, r.Header)
+		if err != nil || authenticated == nil || userID == "" {
 			http.Error(w, "invalid authorization", http.StatusUnauthorized)
 			return
 		}
-		mux.ServeHTTP(w, r.WithContext(context.WithValue(ctx, identityKey{}, userID)))
+		mux.ServeHTTP(w, r.WithContext(context.WithValue(authenticated, identityKey{}, userID)))
 	})
 	return &Handler{handler: protected, cancel: cancel}
 }

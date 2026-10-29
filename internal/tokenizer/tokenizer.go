@@ -62,16 +62,18 @@ type poolInstance struct {
 // analyzers. currentSize is atomic and sits outside that pair so the hot paths
 // keep their existing read-modify-write.
 type analyzerPool struct {
-	config       PoolConfig
-	baseAnalyzer *rag.Analyzer      // guarded by stateMu
-	instances    chan *poolInstance // send/recv and close guarded by stateMu
-	currentSize  int32              // atomic
-	initialized  bool               // guarded by stateMu
-	stateMu      sync.RWMutex
-	stopCh       chan struct{} // closed once by stopOnce to wake waiters
-	stopOnce     sync.Once
-	borrowers    sync.WaitGroup // checked-out instances not yet released
-	wg           sync.WaitGroup
+	config         PoolConfig
+	producerSHA256 string
+	producerErr    error
+	baseAnalyzer   *rag.Analyzer      // guarded by stateMu
+	instances      chan *poolInstance // send/recv and close guarded by stateMu
+	currentSize    int32              // atomic
+	initialized    bool               // guarded by stateMu
+	stateMu        sync.RWMutex
+	stopCh         chan struct{} // closed once by stopOnce to wake waiters
+	stopOnce       sync.Once
+	borrowers      sync.WaitGroup // checked-out instances not yet released
+	wg             sync.WaitGroup
 }
 
 // defaultLanguage is applied to every analyzer instance on pool acquisition
@@ -163,6 +165,7 @@ func Init(cfg *PoolConfig) error {
 		return wrapped
 	}
 
+	producerBefore, producerErr := lexicalProducerFingerprint(cfg.DictPath)
 	if err = baseAnalyzer.Load(); err != nil {
 		wrapped := fmt.Errorf("failed to load base analyzer: %w", err)
 		common.Error("Failed to load base analyzer", wrapped)
@@ -171,6 +174,10 @@ func Init(cfg *PoolConfig) error {
 	}
 
 	p.baseAnalyzer = baseAnalyzer
+	p.producerSHA256, p.producerErr = lexicalProducerFingerprint(cfg.DictPath)
+	if producerErr != nil || producerBefore != p.producerSHA256 {
+		p.producerErr = errors.New("lexical resources changed or unavailable during analyzer load")
+	}
 
 	// Pre-warm minSize instances
 	for i := 0; i < cfg.MinSize; i++ {

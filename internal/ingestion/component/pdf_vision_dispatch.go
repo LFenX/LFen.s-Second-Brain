@@ -246,28 +246,6 @@ func dispatchMonkeyOCRv2PDF(ctx context.Context, db *gorm.DB, filename string, b
 	return buildMarkdownOCRDispatchResult(md), nil
 }
 
-func parseMarkdownToJSONItems(ctx context.Context, filename, mdText string) []parser.DocItem {
-	mp, err := parser.NewMarkdownParser(parser.GoMarkdown)
-	if err != nil {
-		warnParserNormalizationFallback(filename, "markdown", err)
-		return []parser.DocItem{parser.NewTextJSONItem(mdText)}
-	}
-	// OCR Markdown is an untrusted backend response. Keep normalization
-	// deterministic and local: embedded data URIs remain available, while
-	// remote image URLs do not introduce network I/O at the Parser boundary.
-	mp.FetchRemoteImages = false
-	res := mp.ParseWithResult(ctx, filename, []byte(mdText))
-	if res.Err != nil {
-		warnParserNormalizationFallback(filename, "markdown", res.Err)
-		return []parser.DocItem{parser.NewTextJSONItem(mdText)}
-	}
-	if len(res.JSON) == 0 {
-		warnParserNormalizationFallback(filename, "markdown", fmt.Errorf("parser returned no JSON items"))
-		return []parser.DocItem{parser.NewTextJSONItem(mdText)}
-	}
-	return res.JSON
-}
-
 func buildMarkdownOCRDispatchResult(md string) parser.ParseResult {
 	// Keep the backend's Markdown intact here. buildParserOutputs is the
 	// single normalization boundary for all non-JSON parser responses.

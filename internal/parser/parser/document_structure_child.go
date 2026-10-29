@@ -30,6 +30,7 @@ type DocumentChildControl struct {
 	TaskID         string `json:"task_id"`
 	Attempt        int    `json:"attempt"`
 	Format         string `json:"format"`
+	Filename       string `json:"filename,omitempty"`
 	ProfileID      string `json:"profile_id"`
 	ProducerSHA256 string `json:"producer_sha256"`
 	InputSHA256    string `json:"input_sha256"`
@@ -101,7 +102,15 @@ func documentChildHash(value string, length int) bool {
 func documentChildControlValid(control DocumentChildControl, complete bool) bool {
 	profiles := map[string]string{"pdf": "pdf-plain-pages/1", "pptx": "pptx-ooxml-slides/1", "docx": "docx-ooxml-blocks/1"}
 	profile, supported := profiles[control.Format]
-	if !supported || profile != control.ProfileID || !documentChildHash(control.TaskID, 32) || control.Attempt < 1 || control.Attempt > 3 || !documentChildHash(control.ProducerSHA256, 64) || !documentChildHash(control.InputSHA256, 64) || control.InputBytes < 1 || control.InputBytes > documentChildInputLimit {
+	minimum := int64(1)
+	maximum := int64(documentChildInputLimit)
+	if control.ProfileID == KnowledgeParsedLocalProfile {
+		profile, supported = KnowledgeParsedLocalProfile, KnowledgeParsedLocalFormat(control.Format) && knowledgeParsedFilename(control.Format, control.Filename)
+		minimum, maximum = 0, 2<<20
+	} else if control.Filename != "" {
+		return false
+	}
+	if !supported || profile != control.ProfileID || !documentChildHash(control.TaskID, 32) || control.Attempt < 1 || control.Attempt > 3 || !documentChildHash(control.ProducerSHA256, 64) || !documentChildHash(control.InputSHA256, 64) || control.InputBytes < minimum || control.InputBytes > maximum {
 		return false
 	}
 	if complete {

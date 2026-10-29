@@ -21,7 +21,7 @@ func (d *DatasetService) documentReadRepresentation(ctx context.Context, owner, 
 			return documentError(404, "not_found")
 		}
 		var row entity.KnowledgeDocumentRepresentationRecord
-		if err := tx.Omit("reading_text", "manifest").Where("id = ? AND owner_id = ? AND domain_id = ?", id, owner, domain).Take(&row).Error; err != nil {
+		if err := tx.Omit("reading_text", "manifest").Where("id = ? AND owner_id = ? AND domain_id = ? AND protocol = ?", id, owner, domain, documentTaskProtocol).Take(&row).Error; err != nil {
 			return err
 		}
 		rep, err := documentDecode[entity.KnowledgeDocumentRepresentation](row.Payload)

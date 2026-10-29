@@ -61,7 +61,14 @@ func lifecycleMetadataRevision(tx *gorm.DB, kb *entity.Knowledgebase, user strin
 	case "text":
 		input = knowledgeSourceInputHash(current.SHA256, entity.SnapshotKnowledgeSourceRequest{RelativePath: relative, GroupID: classification.GroupID, ComponentSide: classification.ComponentSide, Language: classification.Language})
 	case "original_only":
-		input = originalInputHash(current.SHA256, current.OriginalFilename, current.OriginalMediaType, relative, classification)
+		if data.registration != nil && data.registration.SourceKind == "parsed_file" {
+			input, err = parsedSourceInput(data.registration.ID, current.SHA256, current.OriginalFilename, relative, classification)
+			if err != nil {
+				return err
+			}
+		} else {
+			input = originalInputHash(current.SHA256, current.OriginalFilename, current.OriginalMediaType, relative, classification)
+		}
 	case "web_capture":
 		webData, err = loadWebRevision(tx, user, kb.ID, current.ID)
 		if err != nil {

@@ -153,7 +153,7 @@ func parseXLSXBytes(data []byte, mediaBudget *embeddedMediaBudget) ([]map[string
 	items := make([]map[string]any, 0)
 	warnings := make([]string, 0)
 	for sheetIdx, sheet := range sheets {
-		records, dataRows, headerRow, sheetWarnings, err := readSpreadsheetRecords(f, sheet)
+		records, dataRows, headerRow, merged, sheetWarnings, err := readSpreadsheetRecords(f, sheet)
 		if err != nil {
 			return nil, warnings, len(sheets), err
 		}
@@ -167,7 +167,11 @@ func parseXLSXBytes(data []byte, mediaBudget *embeddedMediaBudget) ([]map[string
 		}
 		// One wire shape for every spreadsheet sheet: segmented HTML tables
 		// with row-aligned positions, images interleaved at their anchors.
-		items = append(items, buildSheetItems(records, sheet, sheetIdx+1, headerRow, dataRows, images)...)
+		sheetItems := buildSheetItems(records, sheet, sheetIdx+1, headerRow, dataRows, images)
+		if mergeErr := applySpreadsheetMerges(sheetItems, merged); mergeErr != nil {
+			return nil, warnings, len(sheets), mergeErr
+		}
+		items = append(items, sheetItems...)
 		warnings = append(warnings, imageWarnings...)
 	}
 	return items, warnings, len(sheets), nil

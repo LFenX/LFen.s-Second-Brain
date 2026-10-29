@@ -1,0 +1,158 @@
+{
+  "id": "KCF-LEXICAL-UNIFIED-020-CANDIDATE-04",
+  "status": "ActualOwningDTO_HTTPAndContext_InteropCandidate_NotFrozen",
+  "contract_version": "0.2.0-candidate",
+  "job_protocol": "content_lexical/0.2.0",
+  "schema": {
+    "path": ".local-data/knowledge-core-development-20261029/backend/lexical-unified-candidate01/content-lexical.schema03.json",
+    "sha256": "2007881d6653b8f18f5ac8873342f4c5174d4a3ce6440e3687b9a620b763d4c7",
+    "bytes": 267561
+  },
+  "endpoints": [
+    {
+      "method": "POST",
+      "path": "/api/v1/datasets/{dataset_id}/knowledge/content/lexical/inspect",
+      "operation": "inspectIndex",
+      "request_definition": "LexicalInspectRequest",
+      "data_definition": "LexicalInspectData",
+      "response_definition": "LexicalinspectIndexResponse",
+      "success_status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/datasets/{dataset_id}/knowledge/content/lexical/indexes",
+      "operation": "createIndex",
+      "request_definition": "LexicalCreateRequest",
+      "data_definition": "LexicalJob",
+      "response_definition": "LexicalcreateIndexResponse",
+      "success_status": 202
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/datasets/{dataset_id}/knowledge/content/lexical/jobs/get",
+      "operation": "getIndexJob",
+      "request_definition": "LexicalJobRequest",
+      "data_definition": "LexicalJob",
+      "response_definition": "LexicalgetIndexJobResponse",
+      "success_status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/datasets/{dataset_id}/knowledge/content/lexical/search",
+      "operation": "search",
+      "request_definition": "LexicalSearchRequest",
+      "data_definition": "LexicalSearchData",
+      "response_definition": "LexicalsearchResponse",
+      "success_status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/datasets/{dataset_id}/knowledge/content/lexical/evidence/read",
+      "operation": "read",
+      "request_definition": "LexicalReadRequest",
+      "data_definition": "LexicalReadData",
+      "response_definition": "LexicalreadResponse",
+      "success_status": 200
+    }
+  ],
+  "request_limits": {
+    "json_bytes": 32768,
+    "selection_targets": 32,
+    "unique_source_per_selection": true,
+    "query_utf8_bytes": 4096,
+    "search_limit": 20
+  },
+  "response_limits": {
+    "json_bytes": 1048576,
+    "unit_utf8_bytes": 8192,
+    "typed_members": 32,
+    "context_metadata_json_bytes": 65536
+  },
+  "inspect_data_keys": [
+    "effective_policy",
+    "profile",
+    "readiness"
+  ],
+  "job_states": [
+    "queued",
+    "building",
+    "published",
+    "failed"
+  ],
+  "owning_core": {
+    "queue": "knowledge_local_lexical_job",
+    "runtime": "StartKnowledgeLocalLexicalRuntime",
+    "active_domain_quota": 4,
+    "slots": 2,
+    "publication": "knowledge_local_lexical_publication",
+    "tokenizer": "lexicalTokenizeInputs / existing full_text component",
+    "query": "one lexicalSearchRows / existing nlp.RetrievalService and DocEngine.Search",
+    "publication_transaction": "one lexicalExecutePlan with content/source/lifecycle fences"
+  },
+  "selection_assembly": {
+    "source_revision": "Existing immutable c1_node root; PlanContentRanges exact UTF-8 subranges <=8192; whole-source locator retained; no synthetic passage node.",
+    "structure_view": "Existing fixed r1_node passage; complete source_utf8 range.",
+    "document_representation": "Existing fixed r2_node passage; complete derived_utf8 range.",
+    "parsed_representation": "Existing fixed parsed_node passage; complete derived_utf8 range."
+  },
+  "authorization": {
+    "native_signed_session": true,
+    "current_owner_domain_and_source": true,
+    "index_and_search": "Master local lexical AND independent content lexical must both be enabled; captured local/content/foundation policy versions and profile are checked.",
+    "fixed_evidence_read": "Current native owner/domain/source authorization and exact immutable publication membership; indexing opt-in does not replace the existing fixed-content read authority.",
+    "parsed_policy": "Parse and lexical toggles remain independent."
+  },
+  "context": {
+    "owner": "DatasetService.ReadKnowledgeContentLexical",
+    "node": "Actual unified owning node. Its range describes that node; data.text and evidence_ref.range alone define the returned evidence fragment. No parent text is added.",
+    "typed_members": "Whole natural nodes contained in the evidence fragment, after full owning manifest/tree validation. Each member carries its original payload SHA.",
+    "empty": "Validated status=empty nodes retain zero-length range, empty SHA, natural location and attributes, including the actual R2 empty cell and its empty paragraph.",
+    "table": "Parsed full TableData preserves grid/row_span/col_span/covered/null positions. Recompute uncovered cell text with TAB and rows with LF and require exact fragment bytes. Do not serialize diagnostic OriginRow/OriginCol as authority.",
+    "omission": "Boundary-crossing, unsearchable, member-count or metadata-budget omissions set typed_members_complete=false with explicit reasons; an oversized node uses node:null and node_omission_reason. Representation partial state remains separate.",
+    "final_checks": "Re-read full owning snapshot, publication, exact evidence bytes, source authorization and current policies before returning."
+  },
+  "mcp": {
+    "owning_chat": "MCP adapter owner via coordinator",
+    "new_route_proposal": "/api/v1/knowledge/content/mcp",
+    "profile_selection": "Explicit new profile; exact profile value belongs to the MCP owning candidate.",
+    "tools": [
+      "knowledge_inspect_local_index",
+      "knowledge_search_local",
+      "knowledge_read_local"
+    ],
+    "allowed_actions": [
+      "inspect",
+      "search",
+      "read"
+    ],
+    "excluded_actions": [
+      "create_index",
+      "get_job",
+      "cancel_job",
+      "policy",
+      "upload",
+      "snapshot"
+    ],
+    "service_mapping": {
+      "knowledge_inspect_local_index": "InspectKnowledgeContentLexical",
+      "knowledge_search_local": "SearchKnowledgeContentLexical",
+      "knowledge_read_local": "ReadKnowledgeContentLexical"
+    },
+    "sql_auth_range_implementation": "Only the same DatasetService owns these checks; no MCP SQL or evidence assembly."
+  },
+  "legacy": {
+    "version": "0.1.0-candidate",
+    "http_and_schema": "Unchanged endpoints and frozen schema; SQL readers explicitly filter the old protocol.",
+    "identity_codec": "Unchanged old typed-LP/IDs; new independent 0.2 binding/row/publication domains.",
+    "c1_whole_root_limit": "Existing 0.1 root <=8192 limit unchanged."
+  },
+  "models_enabled": false,
+  "remote_fetches": false,
+  "parent_expansion": "disabled",
+  "ranking": "native_lexical_only",
+  "total_matches": null,
+  "pagination": "none",
+  "human_interface_decision": "Pending",
+  "new_runtime_acceptance": "Pending",
+  "quality": "NotStarted"
+}

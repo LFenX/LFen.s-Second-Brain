@@ -289,7 +289,7 @@ func (h *DatasetsHandler) KnowledgeWeb(operation string) gin.HandlerFunc {
 			}
 			defer controller.SetReadDeadline(time.Time{})
 			media, _, _ := mime.ParseMediaType(c.GetHeader("Content-Type"))
-			data, err = h.datasetsService.ReceiveKnowledgeWebCapture(receiveCtx, actor.ID, domain, registration, c.Param("capture_id"), &originalRequestBody{c.Request.Body, controller}, c.Request.ContentLength, c.GetHeader("Content-Range"), c.GetHeader("Content-Encoding"), media)
+			data, err = h.datasetsService.ReceiveKnowledgeWebCapture(receiveCtx, actor.ID, domain, registration, c.Param("capture_id"), &originalRequestBody{ReadCloser: c.Request.Body, controller: controller}, c.Request.ContentLength, c.GetHeader("Content-Range"), c.GetHeader("Content-Encoding"), media)
 			if err != nil {
 				c.Request.Close = true
 				c.Header("Connection", "close")

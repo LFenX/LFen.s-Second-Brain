@@ -46,6 +46,13 @@ func documentBinarySHA() string {
 // server bootstrap. It verifies this executable's actual producer and performs
 // only bounded local parsing, without creating services, queues or models.
 func ParseKnowledgeDocumentChild(ctx context.Context, control parser.DocumentChildControl, input []byte) (json.RawMessage, error) {
+	if control.ProfileID == parser.KnowledgeParsedLocalProfile {
+		profile, err := parsedLocalProfile(control.Format)
+		if err != nil || !profile.RuntimeReady || profile.ProducerSHA256 != control.ProducerSHA256 {
+			return nil, &parser.DocumentStructureError{Code: "producer_changed"}
+		}
+		return parser.ParseKnowledgeParsedChild(ctx, control, input)
+	}
 	profile, err := documentProfile(control.ProfileID)
 	if err != nil || !profile.RuntimeReady || profile.Format != control.Format || profile.ProducerSHA256 != control.ProducerSHA256 {
 		return nil, &parser.DocumentStructureError{Code: "producer_changed"}

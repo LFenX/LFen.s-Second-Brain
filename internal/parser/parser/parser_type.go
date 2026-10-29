@@ -22,47 +22,14 @@ import (
 	"ragflow/internal/utility"
 )
 
-// GetParser returns the ParseResultProducer for the given file type.
-// Each format picks a single backend — the Python dispatcher does
-// not pass any lib_type knob for these families, so the Go side
-// mirrors that with one constructor per format. Constructors mirror
-// the NewPDFParser shape (no error return): none of them have inputs
-// that could fail, so the error slot is dead weight.
+// GetParser creates the producer registered for the supplied file type.
+// Capability discovery reads the same registry. Constructor errors are
+// returned to the caller without substituting another backend.
 func GetParser(fileType utility.FileType) (ParseResultProducer, error) {
-	switch fileType {
-	case utility.FileTypePPTX:
-		return NewPPTXParser(), nil
-	case utility.FileTypePPT:
-		return NewPPTParser(), nil
-	case utility.FileTypeXLSX:
-		return NewXLSXParser("")
-	case utility.FileTypeXLS:
-		return NewXLSParser("")
-	case utility.FileTypeCSV:
-		return NewCSVParser(), nil
-	case utility.FileTypeDOCX:
-		return NewDOCXParser(), nil
-	case utility.FileTypeDOC:
-		return NewDOCParser(), nil
-	case utility.FileTypePDF:
-		return NewPDFParser(), nil
-	case utility.FileTypeHTML:
-		return NewHTMLParser(), nil
-	case utility.FileTypeMarkdown:
-		return NewMarkdownParser(GoMarkdown)
-	case utility.FileTypeTXT:
-		return NewTextParser(), nil
-	case utility.FileTypeEPUB:
-		return NewEPUBParser(), nil
-	case utility.FileTypeJSON:
-		return NewJSONParser(), nil
-	case utility.FileTypeEMAIL:
-		return NewEmailParser(), nil
-	case utility.FileTypeVISUAL:
-		return NewPictureParser(), nil
-	case utility.FileTypeAURAL:
-		return NewAudioParser(), nil
-	default:
-		return nil, fmt.Errorf("unsupported file type: %s", fileType)
+	for _, registration := range parserRegistrations {
+		if registration.capability.FileType == fileType {
+			return registration.create()
+		}
 	}
+	return nil, fmt.Errorf("unsupported file type: %s", fileType)
 }

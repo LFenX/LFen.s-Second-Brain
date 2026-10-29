@@ -1,0 +1,421 @@
+{
+  "document_version": "1.0.0",
+  "task_id": "knowledge-core-reference-lock-20261028",
+  "recorded_date": "2026-10-28",
+  "status": "EngineeringVerified_ReferenceLockAndArchiveOnly",
+  "request_snapshot": {
+    "original_text": "请你先锁定当前任务背景下所有可信的参考文档，防止后续子会话读取历史遗存的错误文档影响任务完成质量和可能的跑偏",
+    "source": "本聊天2026-10-28真人直接消息",
+    "steering_original_text": "没必要的明确归档到一个归档文件夹中吧，或者历史参考，不当作正式开发指引文档"
+  },
+  "clarification": {
+    "mode": "Skipped",
+    "state": "Settled",
+    "notice": "本轮跳过补充提问。我会按“任务依据、工作计划、事实快照、既有契约、设计草稿、历史资料”区分权限，并校验版本和摘要；可信资料也不会被自动视为已批准方案。",
+    "survey_refs": [
+      "AGENTS.md",
+      "web/AGENTS.md",
+      "docs/knowledge-core-realignment-plan.md",
+      "README.md#2026-10-28前缀",
+      "docs/stage3r2-document-backend-verification.json.contracts.protected_files"
+    ],
+    "rounds": [],
+    "basis": "用户已明确要求锁定资料与后续读取边界；采用既有docs目录、分层用途、白名单与摘要核验，不改产品接口或目录结构。"
+  },
+  "authority": {
+    "coordinator_thread_id": "01a18185-7d13-7b43-af32-f6c03ab768f6",
+    "single_writer": "/root",
+    "allowed": [
+      "锁定可信参考资料及适用章节/字段",
+      "修订资料入口和子任务交接规则",
+      "新增只读校验/读取脚本并针对性验证",
+      "将无必要的、无保护及生产引用依赖的旧Markdown说明归档到docs/archive，或明确登记为历史参考"
+    ],
+    "prohibited": [
+      "修改既有47保护件原文",
+      "把草稿升级为批准契约",
+      "删除历史证据/真实数据",
+      "模型/本地推理/真实资料调用",
+      "部署/凭据/卷变化",
+      "启动多轮或对抗性审查",
+      "未经本轮范围授权重排源码目录、移动47保护件或破坏仍有效的引用"
+    ]
+  },
+  "first_principles_analysis": {
+    "outcome": "后续任务只能依据明确用途的当前资料，旧交接和候选不能自动恢复执行权。",
+    "facts": [
+      {
+        "fact": "README、接续、技术方案和旧handoff混有多个历史时点“当前/下一步”。",
+        "refs": [
+          "README.md",
+          "会话接续说明.md",
+          "本地第二大脑知识库技术方案.md",
+          "docs/stage3r2-document-handoff.md"
+        ]
+      },
+      {
+        "fact": "47保护件中26份formal、21份旧candidate，必须区分保留字节与现行契约用途。",
+        "refs": [
+          "docs/stage3r2-document-backend-verification.json.contracts.protected_files"
+        ]
+      },
+      {
+        "fact": "新的两个知识内核候选仍Draft_NotFreezeReady；合成Parser/Chunk/检索未执行。",
+        "refs": [
+          "docs/knowledge-core-unified-model.candidate.md",
+          "docs/knowledge-core-local-access.candidate.md",
+          "docs/knowledge-core-synthetic-fixtures.json"
+        ]
+      }
+    ],
+    "constraints": [
+      "最新真人指令和AGENTS优先",
+      "保留历史/47原字节与目录结构",
+      "共享检出主控单写",
+      "不把受控入口当OS权限隔离",
+      "真人本轮补充要求明确归档或标为历史参考，不再作为正式开发指引"
+    ],
+    "assumptions": [
+      {
+        "item": "后续执行者遵守AGENTS和主控指定资料入口。",
+        "validation": "任务必须回报基线ID/主控锁摘要/条目用途；标准入口对用途/摘要/未知条目拒绝。"
+      }
+    ],
+    "unknowns": [
+      {
+        "item": "未登记的上游/包文档是否对某个未来问题可靠",
+        "owner": "主控",
+        "resolution": "具体任务中按源码复核再解锁；当前默认背景，不阻塞本轮"
+      }
+    ],
+    "base_elements": [
+      "原话",
+      "资料身份与用途",
+      "选择器",
+      "固定字节/源码快照",
+      "主控派发"
+    ],
+    "causal_chain": "先区分用途，再限定章节/字段并校验字节；默认不继承链接和旧动作，才能减少历史指引污染。",
+    "alternatives": [
+      {
+        "option": "只加最新版本提示",
+        "decision": "Rejected",
+        "reason": "不能阻止旧候选/交接或全文读取混入"
+      },
+      {
+        "option": "移动/删除旧文档",
+        "decision": "Rejected",
+        "reason": "破坏历史与既有路径，且受目录边界限制"
+      },
+      {
+        "option": "原位保留+权威清单+摘要/选择器+交接约束",
+        "decision": "Selected",
+        "reason": "可追溯，可校验，不改变产品或历史"
+      }
+    ],
+    "criteria": [
+      "用途不混淆",
+      "旧保护原字节不变",
+      "未知资料默认不作当前依据",
+      "选择器不泄漏历史动作",
+      "可信不等于批准"
+    ],
+    "plan_refs": [
+      "docs/knowledge-core-reference-authority.md"
+    ]
+  },
+  "task_profile": {
+    "scope": "资料治理与只读工具，不是产品能力实现",
+    "carrier": "沿用docs中的需求/计划/执行/验证/验收/证据记录，不迁移项目目录；未运行正式机器治理Gate。",
+    "skill": "run-governed-product-workflow"
+  },
+  "execution": [
+    {
+      "event": "survey",
+      "result": "复核当前HEAD/工作区、当前资料和混合历史风险，区分26formal与21历史candidate；上轮14项工作区变更保留。"
+    },
+    {
+      "event": "implementation",
+      "result": "建立当前参考入口、AGENTS/Web及交接边界；只读脚本无refresh/approve能力。"
+    },
+    {
+      "event": "user_steering",
+      "result": "真人要求实际归档无必要旧说明，或明确历史参考；将在原字节保护/源码引用/证据绑定核对后选择可归档文件，保留必要路径。"
+    },
+    {
+      "event": "archive_plan_and_preflight",
+      "result": "对39份旧阶段Markdown说明核对代码、保护件及历史引用，按依赖闭包选定11份移动，28份保留原路径/字节且降为历史参考。"
+    },
+    {
+      "event": "archive_completed",
+      "result": "已移11份至docs/archive/knowledge-core-20261028，增加历史提示并调整相对链接；23链接调整，4份当前混合文档更新链接；原Git版本/原SHA/新SHA与路径全部留档。"
+    },
+    {
+      "event": "reference_lock_generated",
+      "result": "KCRL-20261028-01：51可读条目/用途及选择器、363资料分类、26既有formal/21受保护旧候选分离、4914实现/配置代码文件指纹。"
+    },
+    {
+      "event": "targeted_verification",
+      "result": "36项针对性检查全部通过，138个当前/归档索引链接可解析；47保护件及28保留历史件原字节保持。"
+    }
+  ],
+  "verification": {
+    "status": "Passed_ReferenceGovernanceOnly",
+    "scope": "只验证引用/选择器/拒绝/摘要/归档/链接与原文保留；产品Parser/索引/检索/MCP/权限未执行。",
+    "tests": 36,
+    "passed": 36,
+    "failed": [],
+    "manifest_file_sha256": "772f92841a16f2ae08a8d648422d962ad2dfb1f844f05ba972c0c1e798726692",
+    "manifest_payload_sha256": "cd96ceeb594a4b246f8ee6caf9776280575b9a08c0c4d3c4a3e47555b2532484",
+    "lock_id": "KCRL-20261028-01",
+    "readable_entries": 51,
+    "inventory_documents": 363,
+    "source_files": 4914,
+    "archived_documents": 11,
+    "retained_historical_documents": 28,
+    "protected_files": 47,
+    "formal_contract_files": 26,
+    "protected_historical_candidates": 21,
+    "local_links_checked": 138,
+    "checks": [
+      {
+        "name": "exact manifest and source snapshot",
+        "result": "Passed"
+      },
+      {
+        "name": "README prefix excludes v0.62+",
+        "result": "Passed"
+      },
+      {
+        "name": "session prefix excludes old write windows",
+        "result": "Passed"
+      },
+      {
+        "name": "technical plan only chapter41",
+        "result": "Passed"
+      },
+      {
+        "name": "coordination prefix excludes old v0.61 handoffs",
+        "result": "Passed"
+      },
+      {
+        "name": "original product request only",
+        "result": "Passed"
+      },
+      {
+        "name": "latest lock and archive request only",
+        "result": "Passed"
+      },
+      {
+        "name": "draft readable only as design",
+        "result": "Passed"
+      },
+      {
+        "name": "draft cannot be existing contract",
+        "result": "Passed"
+      },
+      {
+        "name": "local access draft cannot be execution plan",
+        "result": "Passed"
+      },
+      {
+        "name": "old protected candidate blocked",
+        "result": "Passed"
+      },
+      {
+        "name": "old handoff blocked",
+        "result": "Passed"
+      },
+      {
+        "name": "archived plan blocked",
+        "result": "Passed"
+      },
+      {
+        "name": "arbitrary private path not accepted",
+        "result": "Passed"
+      },
+      {
+        "name": "incorrect coordinator SHA refused",
+        "result": "Passed"
+      },
+      {
+        "name": "incorrect lock ID refused",
+        "result": "Passed"
+      },
+      {
+        "name": "missing use refused",
+        "result": "Passed"
+      },
+      {
+        "name": "refresh has no automatic path",
+        "result": "Passed"
+      },
+      {
+        "name": "formal contract readable with original scope",
+        "result": "Passed"
+      },
+      {
+        "name": "synthetic input still NotRun",
+        "result": "Passed"
+      },
+      {
+        "name": "26 formal and21 protected historical candidates separated",
+        "result": "Passed"
+      },
+      {
+        "name": "unlisted default and archived classification",
+        "result": "Passed"
+      },
+      {
+        "name": "manifest tamper refused without recomputing digest",
+        "result": "Passed"
+      },
+      {
+        "name": "source fingerprint mismatch refused",
+        "result": "Passed"
+      },
+      {
+        "name": "protected digest mismatch refused",
+        "result": "Passed"
+      },
+      {
+        "name": "archive digest mismatch refused",
+        "result": "Passed"
+      },
+      {
+        "name": "whole-file reference drift refused",
+        "result": "Passed"
+      },
+      {
+        "name": "request selection permits outcome update but refuses request rewrite",
+        "result": "Passed"
+      },
+      {
+        "name": "path traversal and private files rejected before read",
+        "result": "Passed"
+      },
+      {
+        "name": "ambiguous and absent selectors fail closed",
+        "result": "Passed"
+      },
+      {
+        "name": "11 moves preserve original Git evidence and archive current bytes",
+        "result": "Passed"
+      },
+      {
+        "name": "28 retained historical documents unchanged",
+        "result": "Passed"
+      },
+      {
+        "name": "current selected guidance links resolve",
+        "result": "Passed"
+      },
+      {
+        "name": "archive metadata and header links resolve",
+        "result": "Passed"
+      },
+      {
+        "name": "23 relative-link relocations target existing files",
+        "result": "Passed"
+      },
+      {
+        "name": "Git whitespace and reference script syntax",
+        "result": "Passed"
+      }
+    ],
+    "receipt": ".local-data/knowledge-core-reference-lock-20261028/verification-result.json",
+    "receipt_sha256": "7d7cd64d16c14a0350239e191b7639320d6058f87204ff55143728725a22f4f6",
+    "formal_machine_gate": "NotRun_RepositoryNativeCarrier",
+    "write_guard": "官方脚本已运行；因本项目沿用既有docs载体，输出WARNING表示未执行task package allowed_paths，不宣称正式机器治理Gate通过。",
+    "product_tests": "NotRun_NoProductBehaviorChanged",
+    "model_calls": 0,
+    "local_inference": 0,
+    "real_materials_used": false,
+    "services_mutated": false
+  },
+  "user_decision": {
+    "outcome": "Pending",
+    "scope": "本轮资料锁定与历史归档工程结果；不是统一模型候选冻结或整体产品验收",
+    "source": null
+  },
+  "evidence": {
+    "authority": "docs/knowledge-core-reference-authority.md",
+    "lock": "docs/knowledge-core-reference-lock.json",
+    "reader": "tools/scripts/knowledge-reference-lock.cjs"
+  },
+  "publication": {
+    "commit_created": false,
+    "push_performed": false,
+    "deployment_performed": false
+  },
+  "incomplete_items": [],
+  "failure_and_correction": [
+    {
+      "phase": "archive_preflight_attempt_1",
+      "observed": "预检在README_ar.md拒绝一个与归档无关的./相对路径规范化；所有移动发生前已停止。",
+      "cause": "迁移脚本最初会规范化未受归档影响的相对链接。",
+      "correction": "非移动文件仅在目标确被迁移时改链接，其他链接原样保留；第二次预检和移动通过。",
+      "data_changed_before_failure": false,
+      "evidence": ".local-data/knowledge-core-reference-lock-20261028/apply-archive.cjs",
+      "retry_result": "Archived_HistoryOnly"
+    }
+  ],
+  "requirement_trace": [
+    {
+      "id": "REF-01",
+      "source": "request_snapshot.original_text",
+      "quote": "请你先锁定当前任务背景下所有可信的参考文档，防止后续子会话读取历史遗存的错误文档影响任务完成质量和可能的跑偏",
+      "reading": "完整锁定当前任务可信资料及用途，防后续任务误用历史遗存。",
+      "status": "Implemented",
+      "evidence": [
+        "docs/knowledge-core-reference-authority.md",
+        "docs/knowledge-core-reference-lock.json",
+        "tools/scripts/knowledge-reference-lock.cjs",
+        "AGENTS.md",
+        "web/AGENTS.md",
+        "docs/knowledge-core-realignment-plan.md"
+      ],
+      "actual": "原话/工程规则/工作计划/源码事实/既有契约/候选/合成输入/历史证据分层；章节和JSON字段选择器；未知/用途错误/摘要漂移/旧交接/候选冒充契约均拒绝。"
+    },
+    {
+      "id": "REF-02",
+      "source": "request_snapshot.steering_original_text",
+      "quote": "没必要的明确归档到一个归档文件夹中吧，或者历史参考，不当作正式开发指引文档",
+      "reading": "无必要旧说明归档；必要保留路径明确标为历史，不作正式开发指引。",
+      "status": "Implemented",
+      "evidence": [
+        "docs/archive/README.md",
+        "docs/archive/knowledge-core-archive-manifest.json",
+        "docs/knowledge-core-reference-lock.json"
+      ],
+      "actual": "11份物理归档，28份保留路径历史参考；47保护件原字节保持，21旧候选不列现行契约；记录迁移和原/新摘要，不删除历史测量或失败。"
+    }
+  ],
+  "limitations": [
+    "只读工具限制标准入口与资料用途；普通文件工具仍可打开文件，不能声称OS级隔离或保证模型绝不误读。后续任务须遵守AGENTS并回报主控指定基线/摘要/条目。",
+    "旧报告仍表示原版本/原范围，保留其原字节；本轮不改旧Pending/Approved，不将当前资料锁定视为候选冻结或产品验收。",
+    "上轮交付记录中的文件摘要属于上轮快照；本轮已明确将其登记为历史结果，当前资料摘要以引用锁为准。",
+    "本轮未修改产品行为、构建/部署、调用项目模型或迁移源码结构；资料与工具在本地工作区，尚未提交或推送。"
+  ],
+  "result": {
+    "engineering": "Implemented_ReferenceLockAndArchive",
+    "artifacts": [
+      {
+        "path": "docs/knowledge-core-reference-lock.json",
+        "sha256": "772f92841a16f2ae08a8d648422d962ad2dfb1f844f05ba972c0c1e798726692"
+      },
+      {
+        "path": ".local-data/knowledge-core-reference-lock-20261028/verification-result.json",
+        "sha256": "7d7cd64d16c14a0350239e191b7639320d6058f87204ff55143728725a22f4f6"
+      },
+      {
+        "path": "docs/archive/knowledge-core-archive-manifest.json",
+        "sha256": "38017348629f0f517c7343777068961b04984c712108a865ba0d148918a896e9"
+      }
+    ],
+    "archive_index": "docs/archive/README.md",
+    "current_entry": "docs/knowledge-core-reference-authority.md",
+    "handoff_lock_id": "KCRL-20261028-01",
+    "handoff_manifest_sha256": "772f92841a16f2ae08a8d648422d962ad2dfb1f844f05ba972c0c1e798726692"
+  }
+}

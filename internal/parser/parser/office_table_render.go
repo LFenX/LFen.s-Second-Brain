@@ -527,10 +527,17 @@ func mergeRanges(f *excelize.File, sheet string) ([]mergeRange, error) {
 		return nil, err
 	}
 	for _, mc := range cells {
-		sr, sc := axisToRC(mc.GetStartAxis())
-		er, ec := axisToRC(mc.GetEndAxis())
-		if sr == 0 || sc == 0 || er == 0 || ec == 0 {
-			continue
+		if len(mc) == 0 {
+			return nil, fmt.Errorf("invalid merged-cell reference")
+		}
+		parts := strings.Split(mc[0], ":")
+		if len(parts) != 2 {
+			return nil, fmt.Errorf("invalid merged-cell reference")
+		}
+		sr, sc := axisToRC(parts[0])
+		er, ec := axisToRC(parts[1])
+		if sr == 0 || sc == 0 || er < sr || ec < sc {
+			return nil, fmt.Errorf("invalid merged-cell reference")
 		}
 		out = append(out, mergeRange{sr, sc, er, ec})
 	}
@@ -858,20 +865,20 @@ func isSubtotalRow(row []string) bool {
 	return false
 }
 
-func readSpreadsheetRecords(f *excelize.File, sheet string) ([][]string, []int, int, []string, error) {
+func readSpreadsheetRecords(f *excelize.File, sheet string) ([][]string, []int, int, []mergeRange, []string, error) {
 	rows, err := f.GetRows(sheet)
 	if err != nil {
-		return nil, nil, 0, nil, fmt.Errorf("read XLSX sheet %q rows: %w", sheet, err)
+		return nil, nil, 0, nil, nil, fmt.Errorf("read XLSX sheet %q rows: %w", sheet, err)
 	}
 	if len(rows) == 0 {
-		return nil, nil, 0, nil, nil
+		return nil, nil, 0, nil, nil, nil
 	}
 	rows = cleanIllegalControlChars(rows)
 
 	var warnings []string
 	ranges, err := mergeRanges(f, sheet)
 	if err != nil {
-		warnings = append(warnings, fmt.Sprintf("read XLSX sheet %q merged cells: %v", sheet, err))
+		return nil, nil, 0, nil, warnings, fmt.Errorf("read XLSX sheet %q merged cells: %w", sheet, err)
 	}
 	tables, err := f.GetTables(sheet)
 	if err != nil {
@@ -909,5 +916,5 @@ func readSpreadsheetRecords(f *excelize.File, sheet string) ([][]string, []int, 
 	}
 	records = trimTrailingEmptyColumns(records)
 
-	return records, absDataRows, headerRow, warnings, nil
+	return records, absDataRows, headerRow, ranges, warnings, nil
 }

@@ -358,18 +358,15 @@ func (d *DatasetService) ReceiveKnowledgeWebCapture(ctx context.Context, user, d
 	defer d.releaseWebTransfer(ctx, transfer)
 	ctx, cancel := context.WithTimeout(ctx, 30*time.Second)
 	defer cancel()
-	defer body.Close()
 	var received atomic.Int64
-	stopRenew, renewed := d.runWebRenewal(ctx, transfer, &received, func() { cancel(); _ = body.Close() })
-	closed := make(chan struct{})
-	go func() {
-		select {
-		case <-ctx.Done():
-			_ = body.Close()
-		case <-closed:
+	stopRenew, renewed := d.runWebRenewal(ctx, transfer, &received, cancel)
+	stopBody := watchKnowledgeUploadBody(ctx, body)
+	defer func() {
+		stopRenew()
+		for range renewed {
 		}
+		stopBody()
 	}()
-	defer close(closed)
 	raw, readErr := io.ReadAll(io.LimitReader(&originalProgressReader{ctx: ctx, body: body, received: &received}, (2<<20)+1))
 	var failure error
 	if readErr != nil {
@@ -414,6 +411,7 @@ func (d *DatasetService) runWebRenewal(ctx context.Context, transfer *webTransfe
 	ctx, stop := context.WithCancel(ctx)
 	done := make(chan error, 1)
 	go func() {
+		defer close(done)
 		ticker := time.NewTicker(5 * time.Second)
 		defer ticker.Stop()
 		for {

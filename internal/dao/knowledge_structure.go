@@ -11,13 +11,17 @@ import (
 
 var knowledgeStructureReady atomic.Bool
 var knowledgeDocumentReady atomic.Bool
+var knowledgeContentReady atomic.Bool
 
 func KnowledgeStructureRuntimeReady() bool { return knowledgeStructureReady.Load() }
 
 func KnowledgeDocumentRuntimeReady() bool { return knowledgeDocumentReady.Load() }
 
+func KnowledgeContentRuntimeReady() bool { return knowledgeContentReady.Load() }
+
 func migrateKnowledgeStructure(ctx context.Context, db *gorm.DB) error {
 	knowledgeStructureReady.Store(false)
+	knowledgeContentReady.Store(false)
 	for _, model := range []any{
 		&entity.KnowledgeStructurePolicyRecord{}, &entity.KnowledgeStructureOperationRecord{},
 		&entity.KnowledgeStructureTaskRecord{}, &entity.KnowledgeStructureLeaseRecord{},
@@ -41,5 +45,9 @@ func migrateKnowledgeStructure(ctx context.Context, db *gorm.DB) error {
 		}
 	}
 	knowledgeDocumentReady.Store(true)
+	if err := autoMigrateSafely(ctx, db, &entity.KnowledgeContentPolicyRecord{}); err != nil {
+		return fmt.Errorf("migrate knowledge content policy: %w", err)
+	}
+	knowledgeContentReady.Store(true)
 	return nil
 }

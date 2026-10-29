@@ -217,7 +217,7 @@ func TestParseMarkdownToJSONItemsDoesNotResolveRemoteImages(t *testing.T) {
 	}
 	t.Cleanup(func() { net.DefaultResolver = originalResolver })
 
-	items := parseMarkdownToJSONItems(t.Context(), "ocr.md", "![remote](https://images.example.invalid/figure.png)")
+	items := parser.NormalizeParseResult(t.Context(), "ocr.md", parser.ParseResult{OutputFormat: "markdown", Markdown: "![remote](https://images.example.invalid/figure.png)"}).Result.JSON
 	if len(items) != 1 {
 		t.Fatalf("items = %#v, want one Markdown image block", items)
 	}

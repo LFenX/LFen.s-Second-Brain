@@ -1,0 +1,2570 @@
+{
+  "schema_version": 1,
+  "task_id": "KC-EXEC-20261028-01",
+  "status": "Paused_ExplicitHumanRequest_FoundationAndQualityIncomplete",
+  "coordinator_thread_id": "01a18185-7d13-7b43-af32-f6c03ab768f6",
+  "request_snapshot": {
+    "original_text": "现在开始统筹任务，开始工作吧，让大家都动起来",
+    "steering": [
+      "你为什么开的是子代理 而不是会话？",
+      "如果只是调研，当我没说"
+    ],
+    "product_request_ref": "knowledge-core-realignment-record.json#/request_snapshot",
+    "interpretation": "实际启动并行方案调研与离线验证，主控收敛具体候选。持续开发任务采用独立会话；子代理当前不接业务实现。"
+  },
+  "clarification": {
+    "state": "Settled_ForResearchAndOfflinePreparation",
+    "notice": "本轮准备范围已明确，跳过补充提问。我会汇总出具体、可审阅的首条链路方案，再安排业务接入。",
+    "new_product_interface_decision": "Pending_KCLS-20261028-01"
+  },
+  "baseline": {
+    "branch": "codex/stage3r2-document",
+    "head": "7233c495311f1c40c67254582138169d5ed0e205",
+    "reference_lock_id": "KCRL-20261028-01",
+    "reference_lock_sha256": "772f92841a16f2ae08a8d648422d962ad2dfb1f844f05ba972c0c1e798726692",
+    "source_snapshot_sha256": "a042cc7f1632b6ca66d7e74e97a0f23f67edde86a8f36d76460f254c9557bd7e",
+    "preexisting_dirty_owner": "主控；含上一轮参考锁、归档、指引修订及旧未推提交，不还原、不重写。",
+    "protected_file_count": 47
+  },
+  "objective": "在已完成首片上继续完成统一知识库基础：现有来源与解析器统一内容投影、类型分块、入库、召回和回源；基础完成后再实测复杂数据召回质量与MCP作用。",
+  "first_principles_analysis": {
+    "result": "并行产出能由主控核对的具体候选，后续执行者不依赖旧历史指引或口头假设。",
+    "facts": [
+      {
+        "statement": "已有C1/R1固定来源与节点，注册知识域仍为owner-only/catalogue。",
+        "evidence_ref": "code-inventory/implementation_facts"
+      },
+      {
+        "statement": "原生chunk、DocEngine与检索链已存在；新知识引用的身份和持久映射尚缺具体方案。",
+        "evidence_ref": "unified-model-draft/design_reference"
+      },
+      {
+        "statement": "4份合成原件、39人工事实和8个问题已准备；不能作为实际解析或检索通过证据。",
+        "evidence_ref": "synthetic-fixtures/synthetic_input"
+      },
+      {
+        "statement": "ES GetFields会把对象转字符串，引用须用严格字符串字段并在拥有层解码；不能当metadata保存。",
+        "evidence_ref": "internal/engine/elasticsearch/chunk.go:2669"
+      },
+      {
+        "statement": "原生ES available_int=0语义是lt1；文档状态共同helper会更新无compile_kwd来源行，需新协议隔离。",
+        "evidence_ref": "internal/engine/elasticsearch/chunk.go:2219; internal/service/document/wiki_refresh.go:68"
+      }
+    ],
+    "constraints": [
+      "47保护件及旧ID原字节保持；共享源码、Git、部署写窗仅主控持有。",
+      "仅合成数据；项目模型调用、模型推理和真实资料外发为零。",
+      "新共享业务接口须交具体版本与影响供真人决定；本轮研究不构成批准。",
+      "不新建第二套后端、组织树、解析器或节点身份权威；不扩大格式范围。"
+    ],
+    "assumptions": [
+      {
+        "statement": "能在原生索引行上承载新增固定证据映射。",
+        "verification": "检查写入、映射、查询字段、父正文与返回的完整拥有路径；真实持久化另验。"
+      }
+    ],
+    "unknowns": [
+      {
+        "item": "新索引行身份的字节编码与旧ID并存边界",
+        "owner": "KC-E1",
+        "blocks": "业务接线",
+        "resolution": "已形成具体候选；不代表真实运行验证通过。",
+        "evidence_ref": "knowledge-core-lexical-slice.candidate.md"
+      },
+      {
+        "item": "可信knowledge_ref经过原生全链的具体字段映射",
+        "owner": "KC-E2",
+        "blocks": "业务接线",
+        "resolution": "已形成具体候选；不代表真实运行验证通过。",
+        "evidence_ref": "knowledge-core-lexical-slice.candidate.md"
+      },
+      {
+        "item": "无模型首片的严格schema、错误和修订选择",
+        "owner": "KC-E3",
+        "blocks": "新接口决定",
+        "resolution": "已形成具体候选；不代表真实运行验证通过。",
+        "evidence_ref": "knowledge-core-lexical-slice.candidate.md"
+      }
+    ],
+    "elements": [
+      "固定来源修订",
+      "可信文本范围",
+      "原生索引行",
+      "当前身份与授权",
+      "无模型执行策略"
+    ],
+    "causal_chain": "固定来源和范围决定证据；索引只保存投影；查询必须先限制有效索引集合再返回固定证据；明确无模型策略才能复用原生能力而不触发默认模型支路。",
+    "alternatives": [
+      {
+        "option": "继续泛化盘点",
+        "assessment": "保持现状，三个具体缺口仍阻断业务。"
+      },
+      {
+        "option": "三路分别搭建新实现",
+        "assessment": "制造多套身份与检索路径，违背复用和单写窗约束。"
+      },
+      {
+        "option": "共享锁下并行离线候选，主控统一接线",
+        "assessment": "采用；并行解决独立缺口，正式行为由具体候选收敛。"
+      }
+    ],
+    "decision_criteria": [
+      "复用现有拥有层",
+      "固定引用可核对",
+      "权限不扩大",
+      "模型执行为零",
+      "候选可复跑",
+      "不把模拟结果当联调"
+    ],
+    "plan_trace": [
+      {
+        "task": "KC-E1",
+        "elements": [
+          "固定来源修订",
+          "可信文本范围",
+          "原生索引行"
+        ]
+      },
+      {
+        "task": "KC-E2",
+        "elements": [
+          "原生索引行",
+          "可信文本范围"
+        ]
+      },
+      {
+        "task": "KC-E3",
+        "elements": [
+          "当前身份与授权",
+          "无模型执行策略"
+        ]
+      },
+      {
+        "task": "KC-E0主控汇总",
+        "elements": [
+          "固定来源修订",
+          "原生索引行",
+          "当前身份与授权",
+          "无模型执行策略"
+        ]
+      }
+    ],
+    "verification": "原始需求逐项交代；复跑离线probe并核关键源码主张；检查保护摘要、源码指纹与参考锁。实际引擎/Web/MCP/模型质量保持未验。"
+  },
+  "dispatch": [
+    {
+      "id": "KC-E1",
+      "agent": "/root/code_inventory",
+      "assignment": "固定索引行身份与合成范围实验",
+      "write_window": ".local-data/knowledge-core-execution-20261028/identity/",
+      "startup": "锁校验和指定条目读取已通过",
+      "state": "Completed_ResearchWindowReturned",
+      "delivered": ".local-data/knowledge-core-execution-20261028/identity/production-profile-runs/2026-10-28T09-40-18-088Z-6d18364f/",
+      "business_write_permission": "None"
+    },
+    {
+      "id": "KC-E2",
+      "agent": "/root/content_model_research",
+      "assignment": "可信证据在原生索引写入/查询/父正文/返回中的具体映射",
+      "write_window": ".local-data/knowledge-core-execution-20261028/persistence/",
+      "startup": "锁校验和指定条目读取已通过",
+      "state": "Completed_ResearchWindowReturned",
+      "delivered": ".local-data/knowledge-core-execution-20261028/persistence/KC-E2-persistence-candidate.a02.md",
+      "business_write_permission": "None"
+    },
+    {
+      "id": "KC-E3",
+      "agent": "/root/retrieval_mcp_permissions",
+      "assignment": "owner-only无模型首片严格接口和范围负例",
+      "write_window": ".local-data/knowledge-core-execution-20261028/access/",
+      "startup": "锁校验和指定条目读取已通过",
+      "state": "Completed_ResearchWindowReturned",
+      "delivered": ".local-data/knowledge-core-execution-20261028/access/wp3-owner-lexical-v0.1-a01/candidate-a04.md",
+      "business_write_permission": "None"
+    }
+  ],
+  "coordination": {
+    "shared_source_writer": "主控（基础续作；三会话仅ignored准备窗，后续逐次授精确源码写窗）",
+    "agents_may_delegate_or_contact_each_other": false,
+    "formal_development_sessions": "真人已明确批准创建后端/Web/MCP三个独立会话；创建ID及写窗另记development_dispatch；执行者只正常回报，由主控主动读取，执行者不互发消息。",
+    "root_write_scope": [
+      "本轮执行记录",
+      "具体候选汇总",
+      "复核后的当前计划/引用锁",
+      ".local-data/knowledge-core-execution-20261028/root/",
+      "复跑子任务仅新增指定报告/全新运行目录；原脚本与历史结果保留"
+    ],
+    "git_deployment_model_permissions_for_agents": "None",
+    "research_agents": "三者均已completed，未开启无人值守工作。"
+  },
+  "acceptance": [
+    {
+      "id": "R1",
+      "original_requirement": "现在开始统筹任务",
+      "criterion": "主控实际派发、记录基线/写窗/依赖并统一汇总",
+      "status": "Completed_CurrentPreparation"
+    },
+    {
+      "id": "R2",
+      "original_requirement": "开始工作吧，让大家都动起来",
+      "criterion": "三名执行者完成具体离线产物并回报；主控复跑与收敛",
+      "status": "Completed_ThreeDeliveriesAndCoordinatorReplay"
+    },
+    {
+      "id": "R3",
+      "original_requirement": "如果只是调研，当我没说",
+      "criterion": "当前子代理限调研和离线验证，持续开发改用独立会话",
+      "status": "Applied_ResearchSubagentsAndThreeRealDevelopmentSessionsCompleted"
+    }
+  ],
+  "execution_events": [
+    {
+      "type": "dispatch",
+      "summary": "已实际向三个既有子代理发送新任务；三者均已回报通过指定引用锁。"
+    },
+    {
+      "type": "tool_failure",
+      "summary": "根检索命令误带不存在的internal/nlp/search.go；没有修改；随后定位到internal/service/nlp/retrieval.go。"
+    },
+    {
+      "type": "governance_boundary",
+      "summary": "沿用真人指定根中文/docs结构；check_write_guard返回无task package警告，未执行allowed_paths门。未运行正式机器Gate，不将手工记录称为正式门禁通过。"
+    },
+    {
+      "type": "tool_failure_and_retry",
+      "summary": "ignored现场快照脚本首次运行因相对import多一层失败；将路径修正为../../../tools/scripts后重跑，不扩大范围。"
+    },
+    {
+      "type": "handoff",
+      "summary": "三路均通过旧锁启动并完成，交回所有ignored研究写窗；业务写权从未授予。"
+    },
+    {
+      "type": "failure_and_retry",
+      "summary": "KC-E3首轮88/89，failed-readiness示例诊断码写成failed，实际枚举index_failed；保留run-001与旧输入，最终a04和主控当前独立报告均96/96。"
+    },
+    {
+      "type": "corrected_claim",
+      "summary": "KC-E3一度从NLP调用点推断q_0_vec失败回退；主控读ES KNNScores空向量早退与GetScores/RerankWithKNN后纠正，执行者核实撤回；未据此新增NLP评分改动。"
+    },
+    {
+      "type": "design_revision",
+      "summary": "KC-E2已真实执行的旧available=1序列化示例8项通过其旧断言，但不代表选定协议；原脚本/结果保留，a02改为始终0和逐行manifest检查15项。"
+    },
+    {
+      "type": "tool_failure_and_retry",
+      "summary": "主控汇总脚本首次Ajv相对路径多一层，入口失败未写产物；修正后衔接验证捕获主控把index_ref.index_id占位值写成32位，a04实际要求Hash64。修成64位后11项通过；已完成的15项序列化复跑未因无关修正重复运行。"
+    },
+    {
+      "type": "finite_scope",
+      "summary": "两种既有精确单元替代尚未证明偏移保真的split/merge；完整类型感知分块质量、R2、部门与Grant仍未验。"
+    },
+    {
+      "type": "source_scope",
+      "summary": "本轮仅新增候选/记录/参考基线历史快照并修订当前入口，无共享业务源码、Git或部署变更。上一轮dirty完整保留。"
+    },
+    {
+      "type": "human_implementation_approval",
+      "summary": "真人直接回复按候选实施并建会话（推荐），绑定已保存三件候选/subject SHA；不是工程Acceptance或部署批准。"
+    },
+    {
+      "type": "backend_component_returned",
+      "summary": "后端已明确停写并回交；主控实核源码/构建输入/原指纹重构通过，刷新受影响事实。不是整体业务联通、最终Acceptance或部署。",
+      "at_utc": "2026-10-28T11:49:08.871Z"
+    },
+    {
+      "type": "web_component_returned",
+      "at_utc": "2026-10-28T12:08:14.225Z",
+      "summary": "Web按11路径唯一租约精确应用并停写；主控实核字节/范围/index通过。真实HTTP和浏览器尚未执行。"
+    },
+    {
+      "type": "mcp_component_returned",
+      "at_utc": "2026-10-28T12:54:05.220Z",
+      "summary": "主控收回8路径及S01，核实际源码/构建输入/binary及旧指纹重构通过；真实服务验证未执行。"
+    },
+    {
+      "type": "actual_native_integration_verified",
+      "at_utc": "2026-10-28T15:14:38.288Z",
+      "summary": "同版隔离原生HTTP、真实MinIO/R1、Web浏览器及两具名MCP SDK业务验证完成；9条原要求逐项区分实际HTTP与真实SQL/ES组件证据。原POC未替换，人的最终验收Pending。"
+    },
+    {
+      "type": "human_continuation_foundation_before_quality",
+      "at_utc": "2026-10-28T16:43:37.949Z",
+      "original_messages": [
+        {
+          "original": "我没有看到现在底层数据结构的架构和现在解析器支持的数据类型"
+        },
+        {
+          "original": "没有完成你停下来干嘛？"
+        },
+        {
+          "original": "你要实测各种复杂数据最终召回的质量以及MCP工具是否发挥了做用，"
+        },
+        {
+          "original": "现在连基础都没跑完，怎么能测呢"
+        }
+      ],
+      "summary": "真人要求继续原主线，明确先补基础再测复杂数据召回与MCP作用；保留已完成首片实证，统一基础进入Active，模型/外发/发布边界不变。"
+    },
+    {
+      "type": "foundation_internal_and_HTTP_read_unit_verified",
+      "at_utc": "2026-10-28T17:30:06.793Z",
+      "summary": "统一强类型投影、四读取方法与独立0.2 HTTP adapter已落源码并完成定向基础检查；20份实际Go返回通过消费者schema。旧0.1模型草稿退出当前指引，基础整体、固定parser发布与索引/真实消费者仍未完成。"
+    },
+    {
+      "type": "Web_and_native_read_foundation_verified",
+      "at_utc": "2026-10-28T18:43:37.702Z",
+      "summary": "Web11路径完整接入并经58测试/零新增诊断/1675构建产物核收；新隔离API、7原生身份、3建域请求、23合成来源/统一C1读取和21基础反例实证分层记录。固定parser发布/索引/浏览器/质量仍继续。"
+    },
+    {
+      "type": "parsed_upload_and_JSON_numeric_verified_reference13",
+      "at_utc": "2026-10-29T04:42:24.789Z",
+      "summary": "主控独立核收7路径实际共享上传链路、3243公开构建输入和64注册路由原始响应；全部响应与新0.2严格候选schema交叉通过。另实际复现并修复JSON数字精度，仅2路径及5项窄测。同步当前模型、候选schema和事实，旧b0/旧模型原字节归档，不产生接口或业务联调批准。"
+    },
+    {
+      "type": "schema_dependency_correction_reference14",
+      "at_utc": "2026-10-29T04:50:12.870Z",
+      "summary": "修正13锁对构建依赖的漏查：现有Web直接导入原schema路径，不能在新消费者/运行未接通时换成parsed候选。恢复原路径b0作为当前消费者代码依赖；85adc另存同0.2 parsed设计候选并独立登记，用途和状态明确，不增加读取服务或兼容实现。"
+    },
+    {
+      "type": "architecture_source_verified_and_current_guidance_consolidated",
+      "at_utc": "2026-10-29T05:03:31.891Z",
+      "summary": "已独核架构4路径、41实际共享触及测试、同字节64准备测试、2024构建输入与1675产物；同步当前源，并将活跃指引尾部累积的旧“当前进度”撤出到原字节归档，现行计划只保留一个当前状态。"
+    },
+    {
+      "type": "native_layout_closed_and_parser_fidelity_failures_recorded",
+      "at_utc": "2026-10-29T05:21:55.982Z",
+      "summary": "独立核收真实滚动缺陷的单文件修复、17触及测试及2024输入/1675新布局产物；记录12原件实际owned parser探针的3个保真缺陷与2个错误断言，质量仍未启动。"
+    },
+    {
+      "type": "native_architecture_and_parser_fidelity_independently_closed",
+      "at_utc": "2026-10-29T05:39:23.239Z",
+      "summary": "核收原生中文架构/滚动/来源回读19件证据与26请求；关闭Email附件正文边界及XLSX/BIFF8 XLS合并几何3项真实缺陷，保留首轮失败和错误断言记录；8源路径/3245构建输入/12原件及分层定向检查均已独核，未部署新API或批准新接口。"
+    },
+    {
+      "type": "human_specific020_approved_and_unified26_applied",
+      "at_utc": "2026-10-29T17:45:28.049Z",
+      "summary": "真人明确批准固定KCF-020-20261030-01接口及独立合成实测；主控完整复核并合入同一核心四类混合检索26路径，与已验3264公共Go输入逐字节一致。同步PDF/PPTX实际旧运行证据、保留首次401及Web/MCP未闭合项；未宣称新运行或质量已通过。",
+      "subject_sha256": "2495953aec14e4a62d0a703d05759a81e599716a0fd9d09e554b302f109d795b"
+    },
+    {
+      "type": "reference18_ignored_path_rejected_public_byte_identical_copies_registered",
+      "at_utc": "2026-10-29T17:46:17.726Z",
+      "reason": "No lock-script change or integrity relaxation; only reviewed public schema/protocol/scope are copied into docs. Private/ignored material remains denied by the reader."
+    },
+    {
+      "type": "upload_body_close_fix_source_closed",
+      "at_utc": "2026-10-29T17:56:14.483Z",
+      "summary": "上传EOF/deadline与关闭协程生命周期修复的7路径已独核并合入，覆盖原件和既有web capture共用拥有路径；原53拥有层测试、3回归（包含于拥有层）和2原生鉴权离线探针及候选四模式/CLI help通过，红绿相同测试字节保留。鉴权规则、签名及旧现场运行未改；当前5023组合构建与新真实环境复验仍待完成，不能把离线机制关闭当作旧现场401最终归因。统一检索26保持字节；Web历史切换/新任务启动和MCP合法路径投影/路由仍在收尾；质量尚未启动。",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 5023,
+        "sha256": "d27f81ad065b36a58c721927b8c9383ca9f5c03a7edfb70d95af17d83c8831f4"
+      }
+    },
+    {
+      "type": "content_readonly_MCP_source_source_closed",
+      "at_utc": "2026-10-29T18:10:12.668Z",
+      "summary": "MCP统一0.2三只读工具及真实API接线已合入10路径，使用同一个DatasetService；4回归文件和1公开合成夹具纳入测试，旧0.1字节未改。准备版14顶层/30子项、164JS、9实际Go数据封装、36冻结codec向量及13前缀/尾数组检查通过；原JS正则与冻结codec在7向量有差异，投影遵循实际codec，不宣称有限样本证明全域等价。完整JSON-RPC1MiB和no-store拒绝已核。主控只修正一处过时开发注释，行为未改，最终组合编译/真实SDK尚待；Web最终102测试和新构建包在核收，质量未启动。",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 5032,
+        "sha256": "bcbd1d9b47c0462e98f6a04562c2af5df84972469861c6416f80c6075e023e33"
+      }
+    },
+    {
+      "type": "unified_manual_lexical_Web_source_source_closed",
+      "at_utc": "2026-10-29T18:15:47.466Z",
+      "summary": "Web手动原件/快照/解析/取消/固定回读和四类统一词法消费的17最终路径已独核并合入；历史切换与终态再解析回归关闭。102测试、38原body/status回放、lint/format通过，类型基线207且新增0；2025构建输入和1673产物131830790字节逐件摘要核实。原架构/滚动和旧schema字节保留。统一26、上传7、MCP10及Web17已组合源码，最终Go构建、真实MySQL/MinIO/NATS/ES/Web/两个标准SDK尚待；先基础后复杂召回及独立盲集，质量未启动。",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 5032,
+        "sha256": "378f5cd7c4da198aa153a7beb49313034c151529b17a11fcf61dbce55ed4f8bb"
+      }
+    },
+    {
+      "type": "paused_explicit_human_request",
+      "at_utc": "2026-10-29T19:53:36.858Z",
+      "request_snapshot": "先暂停所有会话记录当前阶段，然后推送所有修改到远端",
+      "checkpoint": "docs/knowledge-core-pause-checkpoint-20261030.md",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 5032,
+        "sha256": "378f5cd7c4da198aa153a7beb49313034c151529b17a11fcf61dbce55ed4f8bb"
+      },
+      "implementation_continued": false,
+      "quality_started": false
+    }
+  ],
+  "verification": [
+    {
+      "id": "identity",
+      "scope": "OfflineCandidateOnly",
+      "passed": 36,
+      "failed": 0,
+      "report": ".local-data/knowledge-core-execution-20261028/identity/runs/2026-10-28T09-35-31-234Z-d73a84fc/identity-report.json",
+      "report_sha256": "985434d8fa40c1a65172dbb75c53b51f8048feb029d9ffdca12a47adb4b51955",
+      "coordinator_rerun": true
+    },
+    {
+      "id": "unit_profile",
+      "scope": "OfflineCandidateOnly",
+      "passed": 11,
+      "failed": 0,
+      "report": ".local-data/knowledge-core-execution-20261028/identity/production-profile-runs/2026-10-28T09-43-34-572Z-c0a651c9/production-profile-report.json",
+      "report_sha256": "38c51cab66cfea3ef9c1b6dcd6fd4f0b08f6eba42db70185650ad830be21fb8e",
+      "coordinator_rerun": true
+    },
+    {
+      "id": "strict_schema_and_constraints_a04",
+      "scope": "OfflineCandidateOnly",
+      "passed": 96,
+      "failed": 0,
+      "report": ".local-data/knowledge-core-execution-20261028/access/wp3-owner-lexical-v0.1-a01/reports/run-root-005.json",
+      "report_sha256": "47eef78f52dd62ad4ddc92860f8d28fdb769b193000201fbd21bdc67728a2ac6",
+      "coordinator_rerun": true
+    },
+    {
+      "id": "persistence_shape_a02",
+      "scope": "OfflineCandidateOnly",
+      "passed": 15,
+      "failed": 0,
+      "report": ".local-data/knowledge-core-execution-20261028/root/persistence-replay-result.json",
+      "report_sha256": "3a1f5695ddc1c0d0c988668f1a07d5aae24cd46af0a5836ef780dadd8699c513",
+      "coordinator_rerun": true
+    },
+    {
+      "id": "cross_artifact_integration",
+      "scope": "OfflineCandidateOnly",
+      "passed": 11,
+      "failed": 0,
+      "report": ".local-data/knowledge-core-execution-20261028/root/integration-result.json",
+      "report_sha256": "af3cd4160650ea478a64de995f9879eef0f9390d284f8c4f58084be1d44f803a",
+      "coordinator_rerun": true
+    },
+    {
+      "id": "source_and_protection",
+      "scope": "ScopeOnly",
+      "source_fingerprint": "a042cc7f1632b6ca66d7e74e97a0f23f67edde86a8f36d76460f254c9557bd7e",
+      "protected_files": 47,
+      "license": "Unchanged",
+      "head": "7233c495311f1c40c67254582138169d5ed0e205",
+      "actual_runtime": "NotRun"
+    },
+    {
+      "id": "KC-BE-COMPONENT",
+      "kind": "actual_backend_component",
+      "result": "Passed_ComponentScopeOnly",
+      "source_sha256": "cc3db7000d0e9bba4ea7654c63200922f475172dcd2c5997122dc65f9194598d",
+      "evidence_ref": "backend_component",
+      "actual": "33定向unit、2真实SQL/ES、1既有真实ES读回、构建/help通过；主控源码和构建输入/保护/原指纹重构通过",
+      "not_proven": [
+        "原生签名会话成功HTTP待验",
+        "真实MinIO保存/回源待验",
+        "R1 HTTP受理/任务发布待验",
+        "Web和两个具名MCP SDK实际业务互通待验",
+        "宿主/容器销毁后耐久性未验",
+        "召回质量/性能/全黄金问题未验",
+        "未替换当前POC、未部署、最终人工验收Pending"
+      ]
+    },
+    {
+      "id": "KC-WEB-COMPONENT",
+      "kind": "actual_web_component",
+      "result": "Passed_AppliedSourceComponentAndBuildOnly",
+      "source_sha256": "5649198a60aa1c4f183d53d726008f1ae417c923f8b39f1d9a975a55a083b3f7",
+      "evidence_ref": "web_component",
+      "not_proven": [
+        "HTTP为Mock/jsdom，不是实际签名会话业务成功",
+        "浏览器/MinIO/R1 HTTP及MCP客户端真实实连待验",
+        "未替换当前POC或部署；最终人工Acceptance仍Pending"
+      ]
+    },
+    {
+      "id": "KC-MCP-COMPONENT",
+      "kind": "actual_mcp_component",
+      "result": "Passed_AppliedSourceAndBuildOnly",
+      "source_sha256": "51397b380ba4ed87729467a9d2d1a9cedf6f098a2e281c22fe615356e9f01f0d",
+      "evidence_ref": "mcp_component",
+      "not_proven": [
+        "真实API/Admin实例尚未启动",
+        "真实签名session成功HTTP/MinIO/R1受理、Web浏览器及SDK业务实连待验",
+        "非OAuth/Grant/临时key实施；不宣称任意Agent兼容",
+        "未替换POC、未部署；最终人工Acceptance Pending"
+      ]
+    },
+    {
+      "id": "KC-LIVE-INTEGRATION",
+      "kind": "actual_native_HTTP_MinIO_Web_MCP",
+      "result": "Passed_EngineeringSyntheticVerification_FinalHumanAcceptancePending",
+      "source_sha256": "51397b380ba4ed87729467a9d2d1a9cedf6f098a2e281c22fe615356e9f01f0d",
+      "evidence_ref": "live_integration",
+      "limits": [
+        "最终人工Acceptance仍Pending；无提交、推送、部署或当前POC替换。",
+        "完整统一模型、部门/Grant/临时Key、模型增强、R2回接和更大样本范围后置，本首片不扩其范围。",
+        "取消、HTTP成员撤销、浏览器慢响应竞态注入、销毁后耐久性、召回质量和性能未验证；部分失败/写隔离/换plan的故障证据为真实SQL/ES组件层。",
+        "官方TS 1.30.0与Go v1.8.0仅在实际2025-11-25协议验证；Go首试2026-07-28被拒，不宣称任意客户端/全版本兼容。",
+        "全量类型基线207项既有诊断，零新增；不是全量typecheck通过。测试Web网关为合成预览，不是产品发布。",
+        "原生R1任务计数与词法组件尝试为0；未测量无关路径或全局进程级模型计数。"
+      ]
+    },
+    {
+      "id": "KCF-INTERNAL-HTTP-READ-BOUNDARY",
+      "at_utc": "2026-10-28T17:30:06.793Z",
+      "status": "InternalAndHTTPUnitVerified_OverallFoundationIncomplete",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 4966,
+        "sha256": "8ff351cec9ffee83f69cf3cc263a18ddb3b5310516d4ef7936ab349dca470217"
+      },
+      "evidence_ref": "foundation_continuation/current_implementation",
+      "human_final_acceptance": "Pending"
+    },
+    {
+      "id": "KCF-NORMALIZER-12",
+      "at_utc": "2026-10-28T17:49:12.298Z",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 4968,
+        "sha256": "9c35bcc0b484118e5d36206c25988c05e6ba914aaf6a38ea4ff5e14b04a53675"
+      },
+      "status": "ReturnedAndIndependentlyVerified",
+      "evidence": ".local-data/knowledge-core-development-20261029/backend/lease02-handoff.json",
+      "limits": "Synthetic local unit boundary; not fixed publication/recall quality"
+    },
+    {
+      "id": "KCF-WEB-NATIVE-C1",
+      "at_utc": "2026-10-28T18:43:37.702Z",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 4976,
+        "sha256": "e872c0382e37ecf01cdcdc8d6f0c9c906f214bc39d3046c0b0bf39e8aec8aba0"
+      },
+      "scope": "Foundation correctness, no recall-quality or new MCP tools proof",
+      "evidence_ref": "foundation_continuation/native_read_foundation"
+    },
+    {
+      "id": "KCF-UPLOAD-RAW64-AND-JSON-NUMBERS",
+      "at_utc": "2026-10-29T04:42:24.789Z",
+      "status": "EngineeringPassed_OverallFoundationIncomplete",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 4999,
+        "sha256": "c9f597f44fd13c5e01b7c94ecdaba8bdf4ce948a6e3ae14654740b0ad87f87d9"
+      },
+      "evidence_ref": "foundation_continuation/parsed_upload",
+      "human_final_acceptance": "Pending"
+    }
+  ],
+  "incomplete_items": [
+    "架构与能力最小Web候选实际应用和中文页面核验",
+    "同一词法核心四类混合选择、同一队列/发布/搜索/证据回读",
+    "新0.2共享接口的具体候选决定及受控合成联调",
+    "Web原件/手动解析/检索与MCP三只读的同版基础",
+    "基础完成后的复杂数据召回和工具作用实测"
+  ],
+  "user_decision": {
+    "outcome": "Pending",
+    "kind": "FinalHumanAcceptance",
+    "implementation_subject_sha256": "12ffb86169d187cd57b4c137ad32e543ac8bb86fa3b8130e2c348a62c3e7063e",
+    "subject_sha256": "0a16585b6b087701eb677ed7263d19fc930bc3eb18a2d289a0e96143382c87cb",
+    "source": "No human final acceptance observed"
+  },
+  "publication": {
+    "committed": false,
+    "pushed": false,
+    "deployed": false
+  },
+  "artifact_sha256": {
+    "docs/knowledge-core-lexical-slice.candidate.md": "cd70e6dc9f05bc2524d6da9148caadd332ed45870da2d2bed708e5f397361173",
+    "docs/knowledge-core-lexical-slice.candidate.json": "60abb0327fb1aa27e9b57b3c52c58e3979fe85a01aeebd0732fb62db78a5ab94",
+    "docs/knowledge-core-local-lexical-v0.1.candidate.schema.json": "745458939041900e265f55f1ff2b048314898e89747dc215d2085051ed4eb8d6"
+  },
+  "decision_subject": {
+    "candidate_id": "KCLS-20261028-01",
+    "artifacts": {
+      "docs/knowledge-core-lexical-slice.candidate.md": "cd70e6dc9f05bc2524d6da9148caadd332ed45870da2d2bed708e5f397361173",
+      "docs/knowledge-core-lexical-slice.candidate.json": "60abb0327fb1aa27e9b57b3c52c58e3979fe85a01aeebd0732fb62db78a5ab94",
+      "docs/knowledge-core-local-lexical-v0.1.candidate.schema.json": "745458939041900e265f55f1ff2b048314898e89747dc215d2085051ed4eb8d6"
+    },
+    "sha256": "12ffb86169d187cd57b4c137ad32e543ac8bb86fa3b8130e2c348a62c3e7063e",
+    "status": "ImplementationApproved_FinalAcceptanceSeparate",
+    "meaning": "只请求本片行为/接口及业务实施与合成验证；不批准模型、部门/Grant、当前POC替换、发布或最终验收。"
+  },
+  "metrics": {
+    "measured_model_attempts_component": 0,
+    "R1_HTTP_reported_model_calls": 0,
+    "R1_HTTP_reported_local_inference": 0,
+    "R1_HTTP_reported_external_fetches": 0,
+    "global_process_model_attempt_counter": "NotInstrumented_NotClaimed",
+    "real_materials_external_delivery": 0,
+    "captured_backend_HTTP_responses": 173,
+    "captured_backend_original_a04_responses": 74,
+    "MinIO_object_GETs": 8,
+    "MCP_tool_calls": 14,
+    "MCP_HTTP_status_observations": 44,
+    "browser_original_reads": 3,
+    "commits": 0,
+    "pushes": 0,
+    "deployments": 0
+  },
+  "reference_final_check": {
+    "status": "Passed_ReferenceLockOnly_ActualEvidenceSeparate",
+    "lock_id": "KCRL-20261028-07",
+    "manifest_sha256": "3dcbb056ddc84a4e7437ff936e43765b0b52cee4a0cb0aeeeb09e4c72e870fa9",
+    "checked_at_utc": "2026-10-28T15:16:06.729Z",
+    "entries": 63,
+    "protected_files": 47,
+    "approved_artifacts_unchanged": 3,
+    "report": ".local-data/knowledge-core-execution-20261028/root/reference-lock07-check.json",
+    "live_evidence": ".local-data/knowledge-core-execution-20261028/root/live-acceptance-result.json",
+    "previous_baseline_preserved": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261028-06.json",
+    "scope": "仅首片交付基线07的历史检查；当前入口以引用锁08为准。"
+  },
+  "approval_request": {
+    "state": "Answered_Approved_Implementation",
+    "subject_sha256": "12ffb86169d187cd57b4c137ad32e543ac8bb86fa3b8130e2c348a62c3e7063e",
+    "candidate_id": "KCLS-20261028-01",
+    "source": "AGENTS.md:173",
+    "scope": "具体首片接口/独立默认关闭本地词法扩展的业务实现和合成验证；批准后建立后端、Web、MCP持续开发会话并由主控统一协调。",
+    "excluded": "模型/真实资料外发、部门/Grant、当前POC替换、发布和最终验收不在本次确认中。"
+  },
+  "implementation_decision": {
+    "outcome": "Approved",
+    "subject_sha256": "12ffb86169d187cd57b4c137ad32e543ac8bb86fa3b8130e2c348a62c3e7063e",
+    "candidate_id": "KCLS-20261028-01",
+    "observed_at_utc": "2026-10-28T10:02:25Z",
+    "decided_at": "NotProvided",
+    "actor": "当前真人用户",
+    "source": {
+      "kind": "human_user_message",
+      "thread_id": "01a18185-7d13-7b43-af32-f6c03ab768f6",
+      "question_item_id": "[\"request_user_input_async\",\"call_9db9a06b2f7f487db2a150231b5442bb\",0]"
+    },
+    "question_original": "是否按首片候选 KCLS-20261028-01 进入业务实现与合成验证，并建立后端、Web、MCP 三个独立开发会话，由主会话统一协调？范围：默认关闭、仅所有者、固定修订、纯词法检索与准确回源；模型调用、部门/Grant、替换当前运行服务及发布另行决定。候选：D:/LFEN_project/dev_project/LFEN的第二大脑-知识库/docs/knowledge-core-lexical-slice.candidate.md",
+    "answer_original": "按候选实施并建会话（推荐）",
+    "scope": "本首片七项操作/独立本地许可的业务实现与合成验证；创建后端、Web、MCP独立会话，由主会话统一协调。",
+    "excluded": "模型调用、真实资料外发、部门/Grant、替换当前运行服务、发布、最终验收。",
+    "approved_artifact_sha256": {
+      "docs/knowledge-core-lexical-slice.candidate.md": "cd70e6dc9f05bc2524d6da9148caadd332ed45870da2d2bed708e5f397361173",
+      "docs/knowledge-core-lexical-slice.candidate.json": "60abb0327fb1aa27e9b57b3c52c58e3979fe85a01aeebd0732fb62db78a5ab94",
+      "docs/knowledge-core-local-lexical-v0.1.candidate.schema.json": "745458939041900e265f55f1ff2b048314898e89747dc215d2085051ed4eb8d6"
+    }
+  },
+  "development_dispatch": {
+    "status": "Paused_ExplicitHumanRequest",
+    "shared_source_writer": "root",
+    "baseline_git_head": "7233c495311f1c40c67254582138169d5ed0e205",
+    "threads": [
+      {
+        "role": "backend",
+        "thread_id": "01a181fc-2d4d-72d2-9229-bc46d54a6325",
+        "host_id": "local",
+        "title": "第二大脑｜无模型内核开发",
+        "state": "Paused_ExplicitHumanRequest",
+        "write_window": ".local-data/knowledge-core-development-20261029/backend/",
+        "shared_source_permission": "None",
+        "state_before_pause": "Active_ParsedPublicationClosure",
+        "write_window_status": "Returned_Paused"
+      },
+      {
+        "role": "web",
+        "thread_id": "01a181fc-3331-7cf0-8eee-053e23b533f6",
+        "host_id": "local",
+        "title": "第二大脑｜知识检索 Web 接入",
+        "state": "Paused_ExplicitHumanRequest",
+        "write_window": ".local-data/knowledge-core-development-20261029/web/",
+        "shared_source_permission": "None",
+        "state_before_pause": "LiveC1Verified_PreparingParsedConsumer",
+        "write_window_status": "Returned_Paused"
+      },
+      {
+        "role": "mcp",
+        "thread_id": "01a181fc-3c93-7110-ad37-08ea9fab24ae",
+        "host_id": "local",
+        "title": "第二大脑｜知识检索 MCP 接入",
+        "state": "Paused_ExplicitHumanRequest",
+        "write_window": ".local-data/knowledge-core-development-20261029/mcp/",
+        "shared_source_permission": "None",
+        "state_before_pause": "Active_NativeDOCX_R2Foundation",
+        "write_window_status": "Returned_Paused"
+      }
+    ],
+    "source_windows": [
+      {
+        "lease_id": "KCLS-BE-20261028-01",
+        "holder": "01a181fc-2d4d-72d2-9229-bc46d54a6325",
+        "path": ".local-data/knowledge-core-development-20261028/coordination/backend-source-lease-KCLS-BE-20261028-01.json",
+        "sha256": "1661277943acd51c6b6d6c81ba5b0a8eb2734ab7096a54801806552e4c9386ef",
+        "status": "Returned_WithParentLease"
+      },
+      {
+        "lease_id": "KCLS-BE-20261028-01-S01",
+        "holder": "01a181fc-2d4d-72d2-9229-bc46d54a6325",
+        "path": ".local-data/knowledge-core-development-20261028/coordination/backend-source-lease-KCLS-BE-20261028-01-S01.json",
+        "sha256": "61f5516b0a63d67bc59427c2e7c19daf2575a506bbba8bee1ee570ba47c7380d",
+        "status": "Returned_WithParentLease"
+      },
+      {
+        "lease_id": "KCLS-BE-20261028-01-S02",
+        "holder": "01a181fc-2d4d-72d2-9229-bc46d54a6325",
+        "path": ".local-data/knowledge-core-development-20261028/coordination/backend-source-lease-KCLS-BE-20261028-01-S02.json",
+        "sha256": "26db96a7e6bc54df0fa05e45c514e59eff6ec299e5f540dfe53a2614f88040fa",
+        "status": "Returned_WithParentLease"
+      },
+      {
+        "lease_id": "KCLS-WEB-20261028-01",
+        "holder": "01a181fc-3331-7cf0-8eee-053e23b533f6",
+        "path": ".local-data/knowledge-core-development-20261028/coordination/web-source-lease-KCLS-WEB-20261028-01.json",
+        "sha256": "61ee4cb570cdbbeb3fd41c4638a0f729af4607fe0e9581809a0c151ebd0f7525",
+        "status": "ReturnedToCoordinator"
+      },
+      {
+        "lease_id": "KCLS-MCP-20261028-01",
+        "holder": "01a181fc-3c93-7110-ad37-08ea9fab24ae",
+        "path": ".local-data/knowledge-core-development-20261028/coordination/mcp-source-lease-KCLS-MCP-20261028-01.json",
+        "sha256": "4c97a23cb86749171d14c6ce3ffbf980d3d7dd46ade6867d34ecb5ec872eaccd",
+        "status": "ReturnedToCoordinator"
+      },
+      {
+        "lease_id": "KCLS-MCP-20261028-01-S01",
+        "holder": "01a181fc-3c93-7110-ad37-08ea9fab24ae",
+        "path": ".local-data/knowledge-core-development-20261028/coordination/mcp-source-lease-KCLS-MCP-20261028-01-S01.json",
+        "sha256": "dc5cfc7e15284374adb1c4680de7834ec496dd9f761fbbe40ef13bf6cfaeaad0",
+        "status": "Returned_WithParent"
+      }
+    ],
+    "run_scope": "全部业务/候选/测试写窗口已交回；仅主协调保存暂停记录并执行已授权的Git提交推送。",
+    "reference_lock_id": "KCRL-20261030-22",
+    "observed_status": "AllThreeDevelopmentSessionsPaused_CheckpointsSaved",
+    "startup_verification": ".local-data/knowledge-core-execution-20261028/root/development-startup-verification.json",
+    "observed_at_utc": "2026-10-29T19:53:36.858Z",
+    "coordination_updates": [
+      {
+        "recorded_at_utc": "2026-10-28T10:34:32.217Z",
+        "actions": [
+          "已将独立核实的通用认证fallback与用户活跃检查缺口交后端，仅本片真实session入口解决。",
+          "Web从交互草稿推进为ignored可应用源码补丁，不改共享Web。",
+          "MCP选同一API listener的POST /api/v1/knowledge/mcp静态三只读profile，ignored补丁与两种官方SDK probe准备；未注册/运行新端点。"
+        ],
+        "reference_integrity_report": ".local-data/knowledge-core-execution-20261028/root/consumer-preparation-check-2026-10-28T10-33-45-720Z.json",
+        "wire_retry_report": ".local-data/knowledge-core-execution-20261028/root/consumer-wire-retry-2026-10-28T10-34-32-217Z.json",
+        "previous_dispatch": ".local-data/knowledge-core-development-20261028/coordination/dispatch-before-2026-10-28T10-34-32-217Z.json",
+        "actual_go_tests": "NotRunYet",
+        "actual_business_integration": "NotRun",
+        "final_user_decision": "Pending"
+      },
+      {
+        "recorded_at_utc": "2026-10-28T11:15:44.679Z",
+        "actions": [
+          "后端任务currentness硬编码与v2/换plan覆盖缺口已按原candidate.md:89集中交后端处理。",
+          "S01补document包私有启停helper单元测试；S02补既有ES测试脚本包装解包，原字段断言保留并安排真实ES旧读回测试。",
+          "MCP可用后端attempt02公开快照（主控3242文件核对），tokenizer native归档按明确SHA复用，handler/protocol unit通过仅限中途快照。",
+          "已启动独立MySQL/ES/Kvrocks/MinIO/NATS合成依赖，全部internal、tmpfs、无宿主端口；API尚未启动。",
+          "Web源码补丁11文件主控逐SHA核对通过，共享Web未应用；继续完整生产构建。"
+        ],
+        "backend": {
+          "unit": "attempt02 7 owning packages + 11 new cases passed; ES substitute in native chain",
+          "real_es": "create-only/conflict/exact0/legacy_lt1/ordinary-write-isolation passed",
+          "real_sql": "NotPassedYet; retained unused-import and overlong membership-fixture failures; correcting within scope",
+          "regression": "NLP/document selected old cases passed; existing ES wire-capture test failed after script envelope change, S02 repair and real readback pending",
+          "api_build_help": "NotRunYet"
+        },
+        "web": {
+          "patch_manifest": ".local-data/knowledge-core-development-20261028/web/staging-a04-20261028-01/patch-manifest.json",
+          "main_patch_sha256": "61a3666555ca6722afdd5f2f8e60b46055aaab753963fcd39d2b521fff1cdf67",
+          "patch_files": 11,
+          "shared_applied": false,
+          "jest": "23/23, jsdom/Mock HTTP only",
+          "types": "valid baseline 207, zero new diagnostics; first invalid 6461 attempt retained",
+          "full_production_build": "Running"
+        },
+        "mcp": {
+          "handler_and_protocol": "Passed_StagedUnitOnly",
+          "sdk_network_business": "NotRun",
+          "tokenizer_archive_sha256": "eaba41c8d856a5b6dda3ec8e2b85d43d8fb8aa0e8ec179e76b63f4308a7f18a0",
+          "native_api_config_and_auth_steps": "Preparing in ignored scope; project credentials prohibited; task-only MinIO config allowed"
+        },
+        "infrastructure_records": [
+          ".local-data/knowledge-core-development-20261028/coordination/synthetic-integration-environment-20261028-01.json",
+          ".local-data/knowledge-core-development-20261028/coordination/synthetic-integration-environment-20261028-02.json"
+        ],
+        "runtime_deployment": "NotAuthorized_NotRun",
+        "engineering_user_decision": "Pending"
+      },
+      {
+        "recorded_at_utc": "2026-10-28T11:54:19.195Z",
+        "actions": [
+          "主控收回BE源码并独立核最终字节、构建输入、测试日志与原源码指纹重构。",
+          "旧03原字节已归档，更新受影响事实并通过KCRL04资料校验。",
+          "Web按11文件租约先保存新13选区pack，随后自动应用已核补丁；主控停共享源码写入。",
+          "MCP仍只ignored v2/原生API+Admin测试配置与Probe准备；真实业务验证待后续同版接线。"
+        ],
+        "reference_lock_id": "KCRL-20261028-04",
+        "reference_lock_sha256": "d0533217883b284d9c995ce76a5a500ed8701ace64db27b03b44a28c1e479375"
+      }
+    ],
+    "source_lease_closure": "首片源码窗已交回；本轮新共享源码窗尚未签发，不能沿用旧窗。",
+    "reference_baseline_status": "CurrentFactsAndActualEvidenceReconciled",
+    "current_source_snapshot": {
+      "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+      "file_count": 4953,
+      "sha256": "51397b380ba4ed87729467a9d2d1a9cedf6f098a2e281c22fe615356e9f01f0d"
+    },
+    "endpoint_authority": ".local-data/knowledge-core-development-20261028/coordination/synthetic-endpoint-authority-03.json",
+    "runtime_attempt01": {
+      "status": "Failed_ExitedBeforeBusiness",
+      "health_pings": "Two GETs reached original POC; excluded from synthetic service evidence",
+      "identity_requests": 0,
+      "business_writes": 0,
+      "original_POC_changes": 0
+    },
+    "runtime_admission": {
+      "path": ".local-data/knowledge-core-execution-20261028/root/native-runtime-admission-forwarder03.json",
+      "sha256": "00d6ad5402ff0c63a385cfe138dbee3273bffee0907ed82ddce05291aba45362",
+      "binary_sha256": "b036e620be82d13c4fad0c6bd70c6d131cca5bf1e670da465e8545f952b9bdad",
+      "proxy_config_sha256": "fac11f7752252cf832479004e0aa2b1d48918c42adc8426257c7262bfa173f59"
+    },
+    "final_acceptance": "Pending",
+    "current_runtime_facts_ref": "/live_integration",
+    "native_runtime_authority": "Only 127.0.0.1:29380 API and 29381 test Web; original 19380/19381 forbidden for this fixture.",
+    "old_observations_usage": "以下runtime_attempt01/runtime_admission/startup和coordination_updates按原时点保留；当前以status/observed_status和live_integration为准。",
+    "backend_runtime_collection": {
+      "status": "CoordinatorCollectedActualArtifactsAndClosedScope",
+      "observed_at_utc": "2026-10-28T15:19:32.577Z",
+      "note": "真实HTTP/MinIO原产物已独立核收；主控已完成九条映射和交付，后端补充汇总不再构成交付依赖。",
+      "further_tool_or_write_authority": "None until new task",
+      "thread_status_at_last_observation": "active_finishing_response",
+      "latest_A_refs": {
+        "path": ".local-data/knowledge-core-development-20261028/backend/http-preparation-01/runs/runtime01/post-verify01/public-fixture-refs.json",
+        "sha256": "86ea5aa040d4f6905eca4551b728b03ddd4e29e542fc25997dbc1c8bccc72732"
+      }
+    },
+    "foundation_source_lease": {
+      "lease_id": "KCF-BE-20261029-01",
+      "path": ".local-data/knowledge-core-development-20261029/coordination/backend-foundation-lease01.json",
+      "sha256": "9e94208ecdeb47c1b0586ab30b5b6fabef9f60a090c66084bf2191fdb66e9cf5",
+      "allowed_files": [
+        "internal/entity/knowledge_content.go",
+        "internal/entity/knowledge_content_validation.go",
+        "internal/entity/knowledge_content_test.go",
+        "internal/service/dataset/knowledge_content_projection.go",
+        "internal/service/dataset/knowledge_content_read.go",
+        "internal/service/dataset/knowledge_content_test.go",
+        "internal/parser/parser/knowledge_content.go",
+        "internal/parser/parser/knowledge_content_test.go",
+        "internal/parser/parser/catalog.go",
+        "internal/parser/parser/catalog_test.go",
+        "internal/parser/parser/parser_type.go"
+      ],
+      "root_shared_source_writes": "PausedUntilReturn",
+      "Web_MCP": "IgnoredPreparationOnly",
+      "status": "FrozenAndCollectedByCoordinator_NotClaimingBackendReturned",
+      "closure": ".local-data/knowledge-core-development-20261029/coordination/backend-foundation-lease01-coordinator-closure.json"
+    },
+    "content_http_source_lease": {
+      "lease_id": "KCF-HTTP-20261029-01",
+      "path": ".local-data/knowledge-core-development-20261029/coordination/content-http-lease01.json",
+      "status": "ClosedByCoordinator_UnitVerified",
+      "closure": ".local-data/knowledge-core-development-20261029/coordination/content-http-lease01-closure.json"
+    },
+    "normalizer_source_lease": {
+      "id": "KCF-BE-20261029-02-NORMALIZER",
+      "path": ".local-data/knowledge-core-development-20261029/coordination/backend-normalizer-lease02.json",
+      "status": "ReturnedAndIndependentlyVerified",
+      "closure": ".local-data/knowledge-core-development-20261029/coordination/backend-normalizer-lease02-closure.json"
+    },
+    "web_content_source_lease": {
+      "id": "KCF-WEB-20261029-01",
+      "path": ".local-data/knowledge-core-development-20261029/coordination/web-content-lease01.json",
+      "status": "Returned_IndependentlyVerifiedForC1R1R2Consumer",
+      "closure": ".local-data/knowledge-core-development-20261029/coordination/web-content-lease01-closure.json"
+    },
+    "parsed_publication_source_lease": {
+      "id": "KCF-BE-20261029-03-PARSED-PUBLICATION",
+      "path": ".local-data/knowledge-core-development-20261029/coordination/backend-parsed-publication-lease03.json",
+      "sha256": "9f6255fc920b6c6a7862415624f49e86069c116f161f39ff92b170d7803a3e27",
+      "status": "Returned_IndependentlyVerified",
+      "closure": ".local-data/knowledge-core-development-20261029/coordination/backend-parsed-publication-lease03-closure.json"
+    },
+    "parsed_upload_source_lease": {
+      "id": "KCF-BE-20261029-04-PARSED-UPLOAD",
+      "path": ".local-data/knowledge-core-development-20261029/coordination/backend-parsed-upload-lease04.json",
+      "sha256": "f9de59eaf08d6707f614a8f7eb70297a493929b65fb40c25572e8aa5ad2abd08",
+      "status": "Returned_IndependentlyVerified",
+      "closure": ".local-data/knowledge-core-development-20261029/coordination/backend-parsed-upload-lease04-closure.json"
+    },
+    "JSON_numeric_source_lease": {
+      "path": ".local-data/knowledge-core-development-20261029/coordination/root-json-numeric-lease01.json",
+      "closure": ".local-data/knowledge-core-development-20261029/coordination/root-json-numeric-lease01-closure.json",
+      "status": "Returned_Verified"
+    },
+    "architecture_source_lease": {
+      "id": "KCF-WEB-20261029-02-ARCHITECTURE",
+      "path": ".local-data/knowledge-core-development-20261029/coordination/web-architecture-lease02.json",
+      "sha256": "51be6d6d88acf2ef4a90d9478e62114354569d1ccd9ac98a0be8d7bb52541cda",
+      "status": "Returned_IndependentlyVerified",
+      "closure": ".local-data/knowledge-core-development-20261029/coordination/web-architecture-lease02-closure.json"
+    },
+    "layout_source_lease": {
+      "lease_id": "KCF-WEB-20261029-03-NATIVE-LAYOUT",
+      "status": "Returned_IndependentlyVerified",
+      "closure": ".local-data/knowledge-core-development-20261029/coordination/web-layout-lease03-closure.json"
+    },
+    "parser_fidelity_source_lease": {
+      "lease_id": "KCF-ROOT-20261029-PARSER-FIDELITY-01",
+      "status": "Returned_IndependentlyVerified",
+      "closure": ".local-data/knowledge-core-development-20261029/coordination/root-parser-fidelity-lease01-closure.json"
+    },
+    "unified_lexical_source_lease": {
+      "lease_id": "KCF-ROOT-20261030-UNIFIED-LEXICAL-01",
+      "status": "Returned_IndependentlyVerified",
+      "closure": ".local-data/knowledge-core-development-20261029/coordination/root-unified-lexical-lease01-closure.json"
+    }
+  },
+  "backend_component": {
+    "status": "ComponentVerified_ConsumerIntegrationPending",
+    "observed_at_utc": "2026-10-28T11:49:08.871Z",
+    "source": {
+      "head": "7233c495311f1c40c67254582138169d5ed0e205",
+      "branch": "codex/stage3r2-document",
+      "file_count": 4939,
+      "sha256": "cc3db7000d0e9bba4ea7654c63200922f475172dcd2c5997122dc65f9194598d"
+    },
+    "source_change_count": {
+      "new": 25,
+      "modified": 8
+    },
+    "public_build_inputs": 3243,
+    "protected_files": 47,
+    "approved_files_unchanged": 3,
+    "operations": [
+      "getLocalPolicy",
+      "changeLocalPolicy",
+      "inspectIndex",
+      "createIndex",
+      "getIndexJob",
+      "search",
+      "read"
+    ],
+    "tests": {
+      "directed_unit": 33,
+      "nested_unit": 2,
+      "real_mysql_es_integration": 2,
+      "existing_real_es_readback": 1
+    },
+    "binary": {
+      "server_sha256": "a7ee77b500f41d7af1b67120330ac33b3a040fca8b3d01104810392f3bd03473",
+      "cli_sha256": "8c7239d9f54edb63d146b4713f431e0450ac3581e7a2e74c4387073019360bbc",
+      "server_modes_help": [
+        "api",
+        "admin",
+        "ingestor",
+        "syncer"
+      ],
+      "help_exit_code": 1,
+      "help_exit_reason": "cmd/ragflow_server.go既有实现；已核帮助输出，未修改入口"
+    },
+    "actual_scope": {
+      "synthetic_formats": [
+        "md",
+        "txt",
+        "tsx"
+      ],
+      "covered_source_bytes": 1580,
+      "published_rows": 3,
+      "SQL": "real MySQL8",
+      "index": "real Elasticsearch8",
+      "objects": "in-memory + native immutable FileCommit",
+      "R1": "real Build+Bind; fixture SQL publication",
+      "successful_outputs": "ServiceData",
+      "native_signed_session_success_HTTP": "NotRun",
+      "project_model_attempts": 0,
+      "blocked_external_http_attempts": 0
+    },
+    "evidence": {
+      "handoff_manifest": ".local-data/knowledge-core-development-20261028/backend/evidence/final-snapshot06/handoff-manifest.json",
+      "handoff_sha256": "b437d6cd4e35fb9d37c9ec212973d84bfd8b1f7b4218b95140cbe86f9ca42581",
+      "coordinator_handoff_check": ".local-data/knowledge-core-execution-20261028/root/backend-final-snapshot06-handoff-check-retry.json",
+      "original_schema_snapshot05_check": ".local-data/knowledge-core-execution-20261028/root/go-service-snapshot05-original-schema-retry.json"
+    },
+    "limits": [
+      "原生签名会话成功HTTP待验",
+      "真实MinIO保存/回源待验",
+      "R1 HTTP受理/任务发布待验",
+      "Web和两个具名MCP SDK实际业务互通待验",
+      "宿主/容器销毁后耐久性未验",
+      "召回质量/性能/全黄金问题未验",
+      "未替换当前POC、未部署、最终人工验收Pending"
+    ],
+    "followup": {
+      "status": "LiveFollowupVerified_SeeLiveIntegration",
+      "note": "保留以上组件观察时点和原方法/限制；后续真实服务证据独立记录，不回填早期NotRun为已测。",
+      "evidence_ref": "live_integration"
+    }
+  },
+  "web_component": {
+    "status": "Applied_ComponentAndFullBuildVerified_RealIntegrationPending",
+    "observed_at_utc": "2026-10-28T12:08:14.225Z",
+    "lease_id": "KCLS-WEB-20261028-01",
+    "source": {
+      "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+      "file_count": 4947,
+      "sha256": "5649198a60aa1c4f183d53d726008f1ae417c923f8b39f1d9a975a55a083b3f7"
+    },
+    "source_change_count": {
+      "new": 8,
+      "modified": 3
+    },
+    "tests": {
+      "jest": 23,
+      "new_jest": 6,
+      "existing_jest": 17,
+      "lint_warnings": 0,
+      "format_files": 11,
+      "type_diagnostics_baseline": 207,
+      "type_diagnostics_actual": 207,
+      "type_diagnostics_added": 0,
+      "full_typecheck_passed": false,
+      "full_vite_production_build": true,
+      "modules": 13806,
+      "js_chunks": 596
+    },
+    "evidence": {
+      "handoff": ".local-data/knowledge-core-development-20261028/web/lease-KCLS-WEB-20261028-01/handoff-result.json",
+      "handoff_sha256": "e84e968542662fac2fcf0eb9c18e438629b35e19389a8ac48beff249b9633b40",
+      "artifact_manifest_sha256": "c88356c15752204b07a62cfe0f4c2be438bd2e5c50686b9dba519dfecd436dcb",
+      "artifact_files": 38,
+      "coordinator_check": ".local-data/knowledge-core-execution-20261028/root/web-applied-handoff-independent-check-retry.json"
+    },
+    "limits": [
+      "HTTP为Mock/jsdom，不是实际签名会话业务成功",
+      "浏览器/MinIO/R1 HTTP及MCP客户端真实实连待验",
+      "未替换当前POC或部署；最终人工Acceptance仍Pending"
+    ],
+    "followup": {
+      "status": "LiveFollowupVerified_SeeLiveIntegration",
+      "note": "保留以上组件观察时点和原方法/限制；后续真实服务证据独立记录，不回填早期NotRun为已测。",
+      "evidence_ref": "live_integration"
+    }
+  },
+  "mcp_component": {
+    "status": "Applied_ComponentAndFinalGoBuildVerified_LiveClientPending",
+    "observed_at_utc": "2026-10-28T12:54:05.220Z",
+    "lease_id": "KCLS-MCP-20261028-01",
+    "supplement": "KCLS-MCP-20261028-01-S01",
+    "source": {
+      "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+      "file_count": 4953,
+      "sha256": "51397b380ba4ed87729467a9d2d1a9cedf6f098a2e281c22fe615356e9f01f0d"
+    },
+    "source_change_count": {
+      "new": 6,
+      "modified": 2
+    },
+    "operations": [
+      "knowledge_inspect_local_index",
+      "knowledge_search_local",
+      "knowledge_read_local"
+    ],
+    "route": {
+      "method": "POST",
+      "path": "/api/v1/knowledge/mcp",
+      "listener": "same native API",
+      "authentication": "native signed session only",
+      "writes_registered": 0
+    },
+    "public_build_inputs": 3247,
+    "excluded_unneeded_runtime_keys": [
+      "conf/private.pem",
+      "conf/public.pem"
+    ],
+    "unit_top_level": 15,
+    "go_server_cli_build": true,
+    "help_entrypoints": 5,
+    "binaries": [
+      {
+        "name": "ragflow_server",
+        "sha256": "b036e620be82d13c4fad0c6bd70c6d131cca5bf1e670da465e8545f952b9bdad",
+        "bytes": 332081672
+      },
+      {
+        "name": "ragflow-cli",
+        "sha256": "8117b5b2c325e71add374032c31a6d9669c21273a1919ce2f17efa5a7bdfbeda",
+        "bytes": 133697592
+      }
+    ],
+    "go_sdk_probe": {
+      "version": "v1.8.0",
+      "compiled": true,
+      "sha256": "2e6d8816bd5b83e7223d9cbb8ecc308d3cd49f092534e11134b6de564d872fba",
+      "real_connection": "NotRun"
+    },
+    "typescript_sdk": {
+      "version": "1.30.0",
+      "offline_checked": true,
+      "real_connection": "NotRun"
+    },
+    "evidence": {
+      "handoff": ".local-data/knowledge-core-development-20261028/mcp/source-execution-20261028T121235566Z-a75b5bf2-f961-43a6-9abd-cff261122a32/shared-source-handoff.json",
+      "handoff_sha256": "ed9e5313a6e1a45ee9cc7d863d6e04b3233de973a4fddfad20781b9ec82b04c3",
+      "coordinator_check": ".local-data/knowledge-core-execution-20261028/root/mcp-source-handoff-independent-check.json"
+    },
+    "limits": [
+      "真实API/Admin实例尚未启动",
+      "真实签名session成功HTTP/MinIO/R1受理、Web浏览器及SDK业务实连待验",
+      "非OAuth/Grant/临时key实施；不宣称任意Agent兼容",
+      "未替换POC、未部署；最终人工Acceptance Pending"
+    ],
+    "followup": {
+      "status": "LiveFollowupVerified_SeeLiveIntegration",
+      "note": "保留以上组件观察时点和原方法/限制；后续真实服务证据独立记录，不回填早期NotRun为已测。",
+      "evidence_ref": "live_integration"
+    }
+  },
+  "live_integration": {
+    "id": "KCLS-LIVE-ACCEPTANCE-20261028-01",
+    "status": "Passed_EngineeringSyntheticVerification_FinalHumanAcceptancePending",
+    "verified_at_utc": "2026-10-28T15:14:27.825Z",
+    "original_requirement_source": {
+      "path": "docs/knowledge-core-lexical-slice.candidate.md",
+      "sha256": "cd70e6dc9f05bc2524d6da9148caadd332ed45870da2d2bed708e5f397361173",
+      "line": 89,
+      "original": "实施验收至少覆盖：三类合成来源的真实保存/单元/索引/回源；新旧修订和换 plan 不覆盖；部分失败与重试不半发布；逐行引用和原文完全一致；启停文档不激活新行；原生普通写入不能覆盖新行；当前身份/策略变化立即限制 index/search；错误状态不冒充零命中；全流程模型和远程抓取尝试为0。质量参数另用样本讨论。"
+    },
+    "source_snapshot": {
+      "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+      "file_count": 4953,
+      "sha256": "51397b380ba4ed87729467a9d2d1a9cedf6f098a2e281c22fe615356e9f01f0d"
+    },
+    "final_server_sha256": "b036e620be82d13c4fad0c6bd70c6d131cca5bf1e670da465e8545f952b9bdad",
+    "delivery_subject_sha256": "0a16585b6b087701eb677ed7263d19fc930bc3eb18a2d289a0e96143382c87cb",
+    "implementation_approved_subject_sha256": "12ffb86169d187cd57b4c137ad32e543ac8bb86fa3b8130e2c348a62c3e7063e",
+    "criteria": [
+      {
+        "id": "LIVE-01",
+        "original": "三类合成来源的真实保存/单元/索引/回源",
+        "status": "Passed_ActualNativeHTTP_MinIO_Web_MCP",
+        "actual_HTTP_evidence": [
+          "prepare03: real C2 save, C1 revision/content, R1 accepted tasks and publications, seven lexical operations",
+          "ui-prepare01: independent B domain through same real paths",
+          "minio-chain01: eight object GETs and eight native metadata GETs"
+        ],
+        "detail": "MD/TXT/TSX 1580 bytes, published R1 + bounded C1 units; B real UI and both SDKs consume native results."
+      },
+      {
+        "id": "LIVE-02",
+        "original": "新旧修订和换 plan 不覆盖",
+        "status": "Passed_ActualRevisionHTTP_AndRealSQL_ESPlanIsolation",
+        "actual_HTTP_evidence": [
+          "prepare03 old/current fixed read 12/18"
+        ],
+        "component_evidence": [
+          "final-snapshot06 real SQL/ES plan/profile/fixed revision separation"
+        ],
+        "detail": "Old MD v1 and new v2 coexist; changing language/plan creates distinct binding and does not overwrite prior rows. Plan-switch injection was component tier."
+      },
+      {
+        "id": "LIVE-03",
+        "original": "部分失败与重试不半发布",
+        "status": "Passed_RealSQL_ESFaultAndRetry",
+        "actual_HTTP_evidence": null,
+        "component_evidence": [
+          "final-snapshot06: first ES row succeeds, SQL publication count stays 0; equivalent retry publishes full row set"
+        ],
+        "detail": "Fault/retry uses real MySQL and ES with controlled storage/parser fixtures; no HTTP fault-injection claim."
+      },
+      {
+        "id": "LIVE-04",
+        "original": "逐行引用和原文完全一致",
+        "status": "Passed_ActualHTTP_SDK_UI_OriginalByteComparisons",
+        "actual_HTTP_evidence": [
+          "26 independently checked HTTP/SDK hit/read fragments",
+          "B UI three complete unit texts and evidence references"
+        ],
+        "detail": "Exact UTF-8 bytes/ranges/source SHA/fragment SHA retained, including CRLF."
+      },
+      {
+        "id": "LIVE-05",
+        "original": "启停文档不激活新行",
+        "status": "Passed_RealESDocumentActivationIsolation",
+        "actual_HTTP_evidence": null,
+        "component_evidence": [
+          "real ES integration: exact0=1 legacy_lt1=2 activation=blocked",
+          "document wiki refresh unit exclusion"
+        ],
+        "detail": "Existing native document activation cannot activate marked knowledge rows; actual engine tier, not a UI toggle test."
+      },
+      {
+        "id": "LIVE-06",
+        "original": "原生普通写入不能覆盖新行",
+        "status": "Passed_RealESNativeOrdinaryWriteIsolation",
+        "actual_HTTP_evidence": null,
+        "component_evidence": [
+          "real ES ordinary_overwrite=blocked and original readback regression"
+        ],
+        "detail": "Create-only marked rows and ordinary bulk guard verified on real ES."
+      },
+      {
+        "id": "LIVE-07",
+        "original": "当前身份/策略变化立即限制 index/search",
+        "status": "Passed_ActualSessionAndPolicy_AndComponentMembership",
+        "actual_HTTP_evidence": [
+          "non-owner seven operations 404; no-session seven operations 401",
+          "disable prevents search; reenable makes old index stale; rebuild ready",
+          "native login rotation/old-session denial/logout then both SDK initializations 401"
+        ],
+        "component_evidence": [
+          "real SQL active-membership revocation refuses index/search"
+        ],
+        "detail": "No HTTP membership mutation claim; business owner retained, independent lifecycle identity used for logout."
+      },
+      {
+        "id": "LIVE-08",
+        "original": "错误状态不冒充零命中",
+        "status": "Passed_ActualHTTP_SDK_UIErrorAndZeroHitSeparation",
+        "actual_HTTP_evidence": [
+          "post-verify01: 28 structured errors, exact error codes and no data",
+          "MCP non-owner/tamper isError + data:null",
+          "B browser zero-hit text distinct from unindexed or failed states"
+        ],
+        "component_evidence": [
+          "all six readiness states in actual component evidence"
+        ],
+        "detail": "Not every failure state was injected through browser/HTTP; explicit errors never counted as successful empty results."
+      },
+      {
+        "id": "LIVE-09",
+        "original": "全流程模型和远程抓取尝试为0。质量参数另用样本讨论。",
+        "status": "Passed_BoundedNoModelExecutionEvidence",
+        "actual_HTTP_evidence": [
+          "three accepted/published R1 tasks each report models/local-inference/external-fetches=0",
+          "lexical HTTP policy disallows all model uses and external fetching"
+        ],
+        "component_evidence": [
+          "instrumented owning lexical path model_attempts=0 and external HTTP attempts=0"
+        ],
+        "detail": "Final API is internal-only with no model/proxy environment; tokenizer/retrieval explicitly use nil model. Global process-wide attempt counter is not instrumented and is not claimed."
+      }
+    ],
+    "backend": {
+      "actual_native_HTTP_responses": 173,
+      "complete_original_a04_responses": 74,
+      "seven_operations": [
+        "getLocalPolicy",
+        "inspectIndex",
+        "changeLocalPolicy",
+        "createIndex",
+        "getIndexJob",
+        "search",
+        "read"
+      ],
+      "four_revisions": 4,
+      "MinIO_object_GETs": 8,
+      "native_metadata_GETs": 8,
+      "R1_published_tasks": 3,
+      "post_integration_HTTP_responses": 43,
+      "latest_A_policy": {
+        "enabled": true,
+        "version": 3
+      },
+      "latest_A_index": {
+        "index_id": "5a71445fbfadd69e749a0e6a5200e563ac9e08c6bcdb011e57768504de1b5d1d",
+        "manifest_sha256": "f2d61eb01f4f243c31a9b13052d1f99dbd6b609c53d7e72b49f6e6272a79c1cd"
+      },
+      "latest_A_public_refs": {
+        "path": ".local-data/knowledge-core-development-20261028/backend/http-preparation-01/runs/runtime01/post-verify01/public-fixture-refs.json",
+        "sha256": "86ea5aa040d4f6905eca4551b728b03ddd4e29e542fc25997dbc1c8bccc72732"
+      }
+    },
+    "web": {
+      "origin": "http://127.0.0.1:29381",
+      "domain_id": "b286d4f8c6754f348f89af297383e2b7",
+      "job_id": "29f0cba018ac45ddad016227b083c97e",
+      "index_id": "e5129b1c32fbe7b898c7c9f8234b1283023b6030f4e6e29d4fdb94f490c03553",
+      "permission": "Observed_DefaultOffThenExplicitEnabled",
+      "fixed_sources": 3,
+      "covered_bytes": 1580,
+      "search_returned": 3,
+      "original_reads": [
+        {
+          "source_revision_id": "8d6594d598ef4c0983902ed09009ef46",
+          "bytes": 279,
+          "sha256": "4666dd2979f23e1bf7bdb6199de1a0112c946eb1ae689d8b6e01acf93290d462"
+        },
+        {
+          "source_revision_id": "59345e28bad34643be8e6cf3bb164a7a",
+          "bytes": 580,
+          "sha256": "d04ff0dd5fcb7e49ccff838cf4473f87a0a7cbdb4c4c22e6d8080aa225c70fe1"
+        },
+        {
+          "source_revision_id": "1196b1f874ed45eba79a5965ef8efd84",
+          "bytes": 721,
+          "sha256": "67af464ec94005887aaba2cbbfc20d6fe816b585c148465b48150e8fa45ebaff"
+        }
+      ],
+      "range_change_cleared_old_results": true,
+      "zero_hits_distinct": true,
+      "files": [
+        {
+          "path": ".local-data/knowledge-core-execution-20261028/root/browser-b-default-off.ax.txt",
+          "bytes": 258,
+          "sha256": "9f8797c2efbeefaf3e9cd22f7acf40f8702ff690a8629ebfe94bdd915c72699f"
+        },
+        {
+          "path": ".local-data/knowledge-core-execution-20261028/root/browser-b-after-job.ax.txt",
+          "bytes": 7976,
+          "sha256": "51316185adfeef673b31169b937b29afa93b4be7e39e7d6e3d402273c78543a9"
+        },
+        {
+          "path": ".local-data/knowledge-core-execution-20261028/root/browser-b-c1-read.ax.txt",
+          "bytes": 2041,
+          "sha256": "8946dcee1631225e8b44eb95f73112e6c1583581b5b01c6d5f4f9d05ef7cf24d"
+        },
+        {
+          "path": ".local-data/knowledge-core-execution-20261028/root/browser-b-r1-read.ax.txt",
+          "bytes": 2284,
+          "sha256": "1c10b75935cbae09e5364bfef6141955263bd016f6e96d4a4d93aff0ba379df5"
+        },
+        {
+          "path": ".local-data/knowledge-core-execution-20261028/root/browser-b-tsx-read.ax.txt",
+          "bytes": 2425,
+          "sha256": "86200127fede9c98396267f024b735310782734fa8c9b7f5ca212a0ff6280639"
+        },
+        {
+          "path": ".local-data/knowledge-core-execution-20261028/root/browser-b-zero-hit.ax.txt",
+          "bytes": 536,
+          "sha256": "362b0f9f08361061a9e3f39c902eb0a09bb52e93d6a70190d34b5ff2c2a4061a"
+        },
+        {
+          "path": ".local-data/knowledge-core-execution-20261028/root/browser-b-selection-change-clears.ax.txt",
+          "bytes": 1248,
+          "sha256": "2dc19cd9c32bd8c775c96efe22452aa8809806a9c19979323df062fceb919fdf"
+        },
+        {
+          "path": ".local-data/knowledge-core-execution-20261028/root/browser-b-ready-hit-read.full.ax.txt",
+          "bytes": 12198,
+          "sha256": "c031cdbddad74ac49a6c5ebc20e1edd00c239fa21a3e654f3aaaddab5491b38d"
+        },
+        {
+          "path": ".local-data/knowledge-core-execution-20261028/root/browser-b-default-off.jpg",
+          "bytes": 96730,
+          "sha256": "21f37808cf3fb8ca666f99985fbd1f0c0a3cd6dcc9ab71b9879b68df40960617"
+        },
+        {
+          "path": ".local-data/knowledge-core-execution-20261028/root/browser-b-final-search.jpg",
+          "bytes": 88488,
+          "sha256": "9cdebe65779a2c24840e2422af3a531c87e5f971d16923e63c1b27e4e18bad36"
+        },
+        {
+          "path": ".local-data/knowledge-core-execution-20261028/root/browser-b-final-hit.jpg",
+          "bytes": 91079,
+          "sha256": "566ee6e1368f627c8739e9906b7fa51ef801d08a8f701fb950254119efdf699d"
+        },
+        {
+          "path": ".local-data/knowledge-core-execution-20261028/root/browser-b-fixed-r1-original.jpg",
+          "bytes": 86041,
+          "sha256": "a02cf43d58ca46d6c9f187809302eafccb7b2608635fd30243f8f6b7ba795895"
+        },
+        {
+          "path": ".local-data/knowledge-core-execution-20261028/root/browser-b-evidence-ref.jpg",
+          "bytes": 107286,
+          "sha256": "866cbffe98264d09d5bf4b65ede376ffae833ded0cc84256713876cba100ed2b"
+        }
+      ]
+    },
+    "mcp": {
+      "result": {
+        "path": ".local-data/knowledge-core-development-20261028/mcp/source-execution-20261028T121235566Z-a75b5bf2-f961-43a6-9abd-cff261122a32/runtime-retry-attempt02/business-actual-a01/actual-result.json",
+        "bytes": 12072,
+        "sha256": "b6280ff9bc16f8fb62301f587d6eecef2021b80940f03de4601a50bfcdb6a62f"
+      },
+      "checked_artifacts": 17,
+      "actual_HTTP_responses": 44,
+      "tool_responses": 14,
+      "sdk_versions": [
+        "TypeScript 1.30.0",
+        "Go v1.8.0"
+      ],
+      "negotiated_protocol": "2025-11-25",
+      "go_requested_2026_version_rejected_then_fallback": true,
+      "native_session_lifecycle": "Observed_RotationAndLogoutRejectOldSessionAndBothSDKs",
+      "current_business_owner_rotated_or_logged_out": false,
+      "cancellation": "NotRun"
+    },
+    "runtime": {
+      "API": "http://127.0.0.1:29380",
+      "Web": "http://127.0.0.1:29381",
+      "API_container": {
+        "name": "lfen-kcls-synthetic-api-20261028-d9faa754-attempt02",
+        "id": "9703e60ffc6b2941709913f5ffd69734806ec2509f68721cacba77f31fa19fe5",
+        "state": "running",
+        "started_at": "2026-10-28T13:38:53.687759812Z",
+        "binary_sha256": "b036e620be82d13c4fad0c6bd70c6d131cca5bf1e670da465e8545f952b9bdad",
+        "networks": [
+          {
+            "name": "lfen-kcls-synthetic-20261028",
+            "id": "4cbe0636e61d721944638509973e078e58e7d98591e79d26aa4079c42f164f78",
+            "internal": true
+          }
+        ],
+        "external_model_or_proxy_environment_names": [],
+        "readonly_rootfs": true
+      },
+      "original_poc": {
+        "container": "lfen-ragflow-poc-ragflow-cpu-1",
+        "artifacts": [
+          {
+            "sha256": "dfc10da5e020c83942f4f6c6f6622d8f4f214076476bb5186ddc10df8d647065",
+            "path": "/ragflow/bin/ragflow_server"
+          },
+          {
+            "sha256": "eb8686f0d6e471bd0a0690695c94df0159480d714be142a48b5ef4d20506a610",
+            "path": "/ragflow/web/dist/index.html"
+          }
+        ],
+        "code_replaced": false,
+        "business_requests_sent_by_this_check": 0
+      },
+      "dedicated_new_dependencies": [
+        "MySQL",
+        "Elasticsearch",
+        "Kvrocks",
+        "MinIO",
+        "NATS capacity02"
+      ],
+      "preview_identity_expires_utc": "2026-10-28T16:00:24.764Z",
+      "durability": "tmpfs lifetime only"
+    },
+    "consumer_checks": [
+      {
+        "id": "HTTP7",
+        "original": "七项HTTP原生签名session、默认关闭/仅owner/固定修订",
+        "status": "Passed_ActualNativeService"
+      },
+      {
+        "id": "WEB",
+        "original": "同服务Web实际浏览器检索与准确回源",
+        "status": "Passed_ActualNativeService"
+      },
+      {
+        "id": "MCP-TS",
+        "original": "官方TypeScript SDK 1.30.0实际三只读工具互通",
+        "status": "Passed_ActualNativeService"
+      },
+      {
+        "id": "MCP-GO",
+        "original": "官方Go SDK v1.8.0实际三只读工具互通",
+        "status": "Passed_ActualNativeService"
+      }
+    ],
+    "counters": {
+      "R1_task_reported_model_calls": 0,
+      "R1_task_reported_local_inference": 0,
+      "R1_task_reported_external_fetches": 0,
+      "component_model_attempts": 0,
+      "component_external_HTTP_attempts": 0,
+      "global_process_counter": "NotInstrumented_NotClaimed"
+    },
+    "evidence_files": [
+      {
+        "path": ".local-data/knowledge-core-execution-20261028/root/live-consumers-independent-check.json",
+        "bytes": 5792,
+        "sha256": "7de40d9c881559b5608a23ceac1a0cd2e5ca036779ef53a026a6c98f3f1028d8"
+      },
+      {
+        "path": ".local-data/knowledge-core-execution-20261028/root/post-integration-boundaries-independent-check.json",
+        "bytes": 11930,
+        "sha256": "4b6019873f52e638a7cf94b1428facd07ea0eb5fc9e6ff062ba439b737993957"
+      },
+      {
+        "path": ".local-data/knowledge-core-execution-20261028/root/minio-chain-independent-check.json",
+        "bytes": 2418,
+        "sha256": "011eb7d4493aff313628f5975c1e4b638a89df3435ccc0807be465c9f97791a8"
+      },
+      {
+        "path": ".local-data/knowledge-core-execution-20261028/root/final-runtime-isolation-and-poc-check.json",
+        "bytes": 1413,
+        "sha256": "8b8f9b2e08ada6507af5dacc0cdee7ffa476ebbb8f20eeffd0af2a4184c69499"
+      },
+      {
+        "path": ".local-data/knowledge-core-execution-20261028/root/backend-final-snapshot06-handoff-check-retry.json",
+        "bytes": 3011,
+        "sha256": "51b560677a1257297a70cd7512d2461f383ab196b32156b3feaea0b85badee5d"
+      },
+      {
+        "path": ".local-data/knowledge-core-execution-20261028/root/mcp-source-handoff-independent-check.json",
+        "bytes": 2375,
+        "sha256": "d94ca6eeed52b5e0b0c944380c426ed8dd3e8f0608fcd2196a9bedbe0e03cddc"
+      },
+      {
+        "path": ".local-data/knowledge-core-execution-20261028/root/web-applied-handoff-independent-check-retry.json",
+        "bytes": 4222,
+        "sha256": "919903780a4f24c06fbf53b677eab0ab8bc11f51c9f96c48522cdc11a248c355"
+      },
+      {
+        "path": ".local-data/knowledge-core-development-20261028/backend/http-preparation-01/runs/runtime01/http-capture-manifest.json",
+        "bytes": 93395,
+        "sha256": "160012353b56d493de1efbaa9066623f63be41bf071840ed13a1410f5ad313fd"
+      },
+      {
+        "path": ".local-data/knowledge-core-development-20261028/backend/http-preparation-01/runs/runtime01/runtime-handoff.json",
+        "bytes": 16563,
+        "sha256": "6a414b2293271ceb86855fd2a0ad22fbc83878d4d97ae8175c97f9deb4eec004"
+      },
+      {
+        "path": ".local-data/knowledge-core-development-20261028/backend/http-preparation-01/runs/runtime01/post-verify01/result.json",
+        "bytes": 11152,
+        "sha256": "9067b4a76de5c3d94c853e83854fda8132e561b9bd1a027d9baaace121e35240"
+      },
+      {
+        "path": ".local-data/knowledge-core-development-20261028/backend/http-preparation-01/runs/runtime01/post-verify01/public-fixture-refs.json",
+        "bytes": 14886,
+        "sha256": "86ea5aa040d4f6905eca4551b728b03ddd4e29e542fc25997dbc1c8bccc72732"
+      },
+      {
+        "path": ".local-data/knowledge-core-development-20261028/backend/http-preparation-01/runs/runtime01/minio-chain01/result.json",
+        "bytes": 10189,
+        "sha256": "4535e94f285799621ca09b3c68947376a5cc126ee13f66802cac5fc9cd5c31e0"
+      },
+      {
+        "path": ".local-data/knowledge-core-development-20261028/mcp/source-execution-20261028T121235566Z-a75b5bf2-f961-43a6-9abd-cff261122a32/runtime-retry-attempt02/business-actual-a01/actual-result.json",
+        "bytes": 12072,
+        "sha256": "b6280ff9bc16f8fb62301f587d6eecef2021b80940f03de4601a50bfcdb6a62f"
+      },
+      {
+        "path": ".local-data/knowledge-core-development-20261028/mcp/source-execution-20261028T121235566Z-a75b5bf2-f961-43a6-9abd-cff261122a32/runtime-retry-attempt02/native-session-actual-result.log",
+        "bytes": 3635,
+        "sha256": "4301677a5abe1c69ce09ebd4a0922267439a81bdc0caf9a26c8760e9da5c2d6f"
+      },
+      {
+        "path": ".local-data/knowledge-core-development-20261028/backend/evidence/final-snapshot06/integration-attempt05.log",
+        "bytes": 18302,
+        "sha256": "fedcc62c4e1ce17b552d202f23cc469d4703e0bca5ee648e8f6598266a96fbca"
+      },
+      {
+        "path": ".local-data/knowledge-core-development-20261028/backend/evidence/final-snapshot06/integration-evidence/TestKnowledgeLocalLexicalRealSQLAndES-runtime-facts.service-data.json",
+        "bytes": 746,
+        "sha256": "92f8e0b9ff296f4444bfff8897cb42b66af42140fa732de6aa2bd0be3fe9ca70"
+      },
+      {
+        "path": ".local-data/knowledge-core-execution-20261028/root/browser-b-final-search.jpg",
+        "bytes": 88488,
+        "sha256": "9cdebe65779a2c24840e2422af3a531c87e5f971d16923e63c1b27e4e18bad36"
+      },
+      {
+        "path": ".local-data/knowledge-core-execution-20261028/root/browser-b-final-hit.jpg",
+        "bytes": 91079,
+        "sha256": "566ee6e1368f627c8739e9906b7fa51ef801d08a8f701fb950254119efdf699d"
+      },
+      {
+        "path": ".local-data/knowledge-core-execution-20261028/root/browser-b-evidence-ref.jpg",
+        "bytes": 107286,
+        "sha256": "866cbffe98264d09d5bf4b65ede376ffae833ded0cc84256713876cba100ed2b"
+      }
+    ],
+    "limits": [
+      "最终人工Acceptance仍Pending；无提交、推送、部署或当前POC替换。",
+      "完整统一模型、部门/Grant/临时Key、模型增强、R2回接和更大样本范围后置，本首片不扩其范围。",
+      "取消、HTTP成员撤销、浏览器慢响应竞态注入、销毁后耐久性、召回质量和性能未验证；部分失败/写隔离/换plan的故障证据为真实SQL/ES组件层。",
+      "官方TS 1.30.0与Go v1.8.0仅在实际2025-11-25协议验证；Go首试2026-07-28被拒，不宣称任意客户端/全版本兼容。",
+      "全量类型基线207项既有诊断，零新增；不是全量typecheck通过。测试Web网关为合成预览，不是产品发布。",
+      "原生R1任务计数与词法组件尝试为0；未测量无关路径或全局进程级模型计数。"
+    ],
+    "final_user_decision": "Pending"
+  },
+  "historical_reference_check_before_implementation": {
+    "lock_id": "KCRL-20261028-02",
+    "manifest_sha256": "bc55d803f65ff8d3640ac947d2e059b59be1dfd76b1d3d48bb6306812d0700fb",
+    "cases": 36,
+    "passed": 36,
+    "local_links_checked": 157,
+    "report": ".local-data/knowledge-core-execution-20261028/root/reference-verification-result.json",
+    "report_sha256": "95804240bb394bc0e13be76afdb0b82da5de951d2590412ff49a7f5bf4d89b47",
+    "previous_baseline_preserved": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261028-01.json"
+  },
+  "foundation_continuation": {
+    "id": "KCF-20261029-01",
+    "status": "Paused_ExplicitHumanRequest_FoundationIncomplete",
+    "recorded_at_utc": "2026-10-28T16:40:25.438Z",
+    "request_snapshot": {
+      "messages": [
+        {
+          "original": "我没有看到现在底层数据结构的架构和现在解析器支持的数据类型"
+        },
+        {
+          "original": "没有完成你停下来干嘛？"
+        },
+        {
+          "original": "你要实测各种复杂数据最终召回的质量以及MCP工具是否发挥了做用，"
+        },
+        {
+          "original": "现在连基础都没跑完，怎么能测呢"
+        }
+      ],
+      "source": "当前真人连续消息；主会话01a18185-7d13-7b43-af32-f6c03ab768f6"
+    },
+    "clarification": {
+      "mode": "SkippedRepeatedQuestions",
+      "notice": "先补基础，再测效果。本轮不重复提问，执行顺序固定为：统一数据结构 → 接入现有解析器 → 打通分块、入库、召回与回源 → 验证复杂数据召回质量和 MCP 的实际作用。基础未完成前，不启动质量评测，也不把接口调用成功当成效果通过。",
+      "state": "SettledForFoundationContinuation",
+      "basis": "沿用原始产品需求和当前真实C1/R1/R2/ParseResult拥有代码；最新真人明确先完成基础。模型调用/真实内容/发布仍独立约束，当前不需要依赖它们。"
+    },
+    "baseline": {
+      "lock_id": "KCRL-20261028-07",
+      "lock_sha256": "3dcbb056ddc84a4e7437ff936e43765b0b52cee4a0cb0aeeeb09e4c72e870fa9",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 4953,
+        "sha256": "51397b380ba4ed87729467a9d2d1a9cedf6f098a2e281c22fe615356e9f01f0d"
+      },
+      "head": "7233c495311f1c40c67254582138169d5ed0e205",
+      "branch": "codex/stage3r2-document"
+    },
+    "objective": "完成已有来源/解析结果到统一内容基础与同一知识服务的可运行接入；基础通过后再实测复杂数据召回质量和MCP作用。",
+    "first_principles_analysis": {
+      "result": "同一来源修订、表示、节点、原始/派生坐标和明确支持状态贯通保存、处理、检索、回源及Web/MCP。",
+      "facts": [
+        "首片C1小文本/R1词法链已验；完整统一投影和R2同链未实现。",
+        "C1/R1/R2和ParseResult均有现成拥有层；原件/ID/契约已被保护。"
+      ],
+      "constraints": [
+        "原47+3保护及旧ID原义保持",
+        "不重排/重命名现有目录",
+        "不把原件/派生/元素坐标混用",
+        "仅原创合成输入；项目模型/远抓0；原POC不替换/不删卷",
+        "三会话共享源码单写窗；旧事实随阶段更新"
+      ],
+      "assumptions": [
+        {
+          "text": "现有存储可经统一投影读取，不需建立第二原件/修订系统。",
+          "verification": "逐类适配测试和实际读回；若发现缺口先报告具体拥有层。"
+        }
+      ],
+      "unknowns": [
+        {
+          "text": "统一投影及文档进入同一索引的精确文件/版本形状",
+          "owner": "主控汇合后端建议",
+          "release": "具体类型、调用链、正反样例和文件白名单",
+          "blocks": "共享源码接入，当前不阻止独立补丁准备"
+        }
+      ],
+      "elements": [
+        "可信域/主体",
+        "不可变原件/修订",
+        "表示及producer",
+        "类型节点/关系",
+        "准确源位置",
+        "有界文本及不支持状态",
+        "可重建索引与固定证据"
+      ],
+      "causal_chain": "保留原身份和准确位置才能复用解析结果；统一投影消除消费端对C1/R1/R2的分支理解；索引仅派生，所有消费者共享拥有层授权和回源。",
+      "alternatives": [
+        {
+          "name": "保持首片现状",
+          "outcome": "不能满足统一基础与复杂数据召回要求",
+          "selected": false
+        },
+        {
+          "name": "新建全部内容/版本数据库并重解析",
+          "outcome": "重复既有能力、扩大迁移和保护风险",
+          "selected": false
+        },
+        {
+          "name": "既有存储上的统一强类型投影与同服务适配",
+          "outcome": "保留源身份和能力，逐类验证并贯通消费者",
+          "selected": true
+        }
+      ],
+      "criteria": [
+        "原文/修订/坐标真实",
+        "一个拥有服务",
+        "完整映射与不支持显式",
+        "复用现有解析器",
+        "可核对测试/运行证据"
+      ],
+      "plan_trace": [
+        "F1模型与格式能力统一：身份/表示/节点",
+        "F2同服务读入与回源：源位置/权限",
+        "F3分块与索引接入：类型/覆盖/不可变证据",
+        "F4Web/MCP同版消费：共享服务",
+        "F5基础逐项验收后质量实测：预标事实/问题/工具轨迹"
+      ]
+    },
+    "dispatch": {
+      "backend": "01a181fc-2d4d-72d2-9229-bc46d54a6325",
+      "web": "01a181fc-3331-7cf0-8eee-053e23b533f6",
+      "mcp": "01a181fc-3c93-7110-ad37-08ea9fab24ae",
+      "shared_source_writer": "root",
+      "child_shared_write_authority": "None; backend11 and coordinatorHTTP4 collected; next exact source lease required",
+      "cross_session_contact": "Only coordinator",
+      "spawn_more": false
+    },
+    "acceptance": [
+      {
+        "id": "F1",
+        "original_requirement": "从底层构建一个适配该知识库的数据结构",
+        "criterion": "C1/R1/R2/ParseResult全部能映射到同一可信source/revision/representation/node/locator/text类型；缺失和不支持有明确状态。",
+        "status": "Implemented_TypedModel_CurrentFactsReconciled_ParsedRuntimePending"
+      },
+      {
+        "id": "F2",
+        "original_requirement": "让其他所有类型的文档通过某种方式转换为该底层数据结构",
+        "criterion": "现有解析格式逐项登记实际转换能力，转换为统一表示；不把识别后缀当提取成功，已有解析器优先复用。",
+        "status": "ParserFidelityOriginal12Verified_NewNativeRuntimePending"
+      },
+      {
+        "id": "F3",
+        "original_requirement": "chunk要根据不同类型做感知…要保证数据提取本身的准确",
+        "criterion": "依据预标事实核内容/顺序/位置，类型分块覆盖和同版来源可验证，才能进入后续质量评测。",
+        "status": "Implemented_OneCoreFourKindCandidateSource_NativeAcceptancePending"
+      },
+      {
+        "id": "F4",
+        "original_requirement": "基础都没跑完，怎么能测呢",
+        "criterion": "基础模型、转换、入库、召回与回源先完成；不以首片/200/mock当整体完成。",
+        "status": "Incomplete_NewRuntimeWebMCPAndUploadFixPending"
+      },
+      {
+        "id": "Q1",
+        "original_requirement": "实测各种复杂数据最终召回的质量以及MCP工具是否发挥了做用",
+        "criterion": "基础通过后用含干扰/重复/空/不支持/跨修订的复杂合成样本和预标问题，记录召回、证据与MCP工具选择/搜索/读取轨迹，分别比较HTTP和SDK结果；具体模型参数另行决定。",
+        "status": "DependentOnFoundation_NotStarted"
+      }
+    ],
+    "incomplete_items": [
+      "关闭上传EOF/deadline/watcher修复及Web历史切换/MCP投影与实际接线候选",
+      "最终组合源码/Go及Web构建与启动核验",
+      "新增独立MySQL/MinIO/NATS/ES真实基础、四类混合检索、Web和两官方SDK",
+      "基础全部通过后的复杂召回与MCP工具作用实测"
+    ],
+    "user_decision": {
+      "outcome": "Pending_FinalAcceptance"
+    },
+    "publication": {
+      "committed": false,
+      "pushed": false,
+      "deployed": false
+    },
+    "current_implementation": {
+      "at_utc": "2026-10-28T17:30:06.793Z",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 4966,
+        "sha256": "8ff351cec9ffee83f69cf3cc263a18ddb3b5310516d4ef7936ab349dca470217"
+      },
+      "status": "InternalAndHTTPUnitVerified_OverallFoundationIncomplete",
+      "unified_version": "0.2.0-candidate",
+      "internal_tests": {
+        "count": 28,
+        "evidence": ".local-data/knowledge-core-development-20261029/backend/lease01-handoff.json",
+        "fixture_scope": "Synthetic SQLite/memory persisted carriers; constructed PDF projection is not extraction quality"
+      },
+      "parser_comment_recheck": {
+        "count": 20,
+        "attempt": "06"
+      },
+      "HTTP_checks": {
+        "count": 4,
+        "evidence": ".local-data/knowledge-core-development-20261029/coordination/content-http-verification/attempt01/result.json",
+        "router": "Compiled_NoMatchingTests",
+        "runtime": "NotRunning_NewVersion"
+      },
+      "actual_Go_consumer_schema": {
+        "count": 20,
+        "evidence": ".local-data/knowledge-core-development-20261029/coordination/content-go-schema-probe/attempt02/cross-check-result.json",
+        "first_validation_overlay_failure": "Separate probe record preserved; repeated fixture DB identity corrected with independent subtests"
+      },
+      "consumers_schema": {
+        "path": "docs/knowledge-core-content-v0.2.candidate.schema.json",
+        "sha256": "b0b6a92fd0525da7b64776fef48f58f7a839a7165f05d1831b2a9b1d88729d56",
+        "status": "Candidate_BoundToCurrentGoShape_NotLexicalOrMCPToolFreeze"
+      },
+      "model_calls": "NotInvoked",
+      "quality_evaluation": "NotStarted"
+    },
+    "current_source": {
+      "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+      "file_count": 5032,
+      "sha256": "378f5cd7c4da198aa153a7beb49313034c151529b17a11fcf61dbce55ed4f8bb"
+    },
+    "normalization_extension": {
+      "at_utc": "2026-10-28T17:49:12.298Z",
+      "status": "ImplementedAndNarrowTestVerified",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 4968,
+        "sha256": "9c35bcc0b484118e5d36206c25988c05e6ba914aaf6a38ea4ff5e14b04a53675"
+      },
+      "owner": "parser.NormalizeParseResult",
+      "component_delegates": true,
+      "source_files": 5,
+      "target_tests": 12,
+      "evidence": ".local-data/knowledge-core-development-20261029/backend/lease02-handoff.json",
+      "closure": ".local-data/knowledge-core-development-20261029/coordination/backend-normalizer-lease02-closure.json",
+      "fixed_publication": "InProgress_NotImplemented",
+      "quality": "NotStarted"
+    },
+    "web_consumption": {
+      "status": "Returned_IndependentlyVerifiedForC1R1R2Consumer",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 4976,
+        "sha256": "e872c0382e37ecf01cdcdc8d6f0c9c906f214bc39d3046c0b0bf39e8aec8aba0"
+      },
+      "at_utc": "2026-10-28T18:43:37.702Z",
+      "closure": ".local-data/knowledge-core-development-20261029/coordination/web-content-lease01-closure.json",
+      "tests": 58,
+      "types": {
+        "baseline": 207,
+        "current": 207,
+        "added": 0
+      },
+      "build": {
+        "dist": "D:\\LFEN_project\\dev_project\\LFEN的第二大脑-知识库\\.local-data\\knowledge-core-development-20261029\\web\\production-candidate-01\\evidence\\full-production-2026-10-28T18-12-40-671Z\\dist",
+        "files": 1675,
+        "bytes": 131436503,
+        "manifest_sha256": "2f8971a3d54c6324c7b41eeb724d97b1ca82b6b061c96627ef9f5c5d277084c0"
+      },
+      "browser": "Delegated_NotVerified"
+    },
+    "native_read_foundation": {
+      "status": "ActualNativeIdentityImportAndUnifiedC1ReadVerified_OverallFoundationIncomplete",
+      "at_utc": "2026-10-28T18:43:37.702Z",
+      "authority": ".local-data/knowledge-core-development-20261029/coordination/synthetic-endpoint-authority01.json",
+      "build_source": {
+        "file_count": 4966,
+        "sha256": "8ff351cec9ffee83f69cf3cc263a18ddb3b5310516d4ef7936ab349dca470217"
+      },
+      "server_sha256": "047f2ec425c8411588c36580835d9b2a2a946c9a52a84240eed30e3b3271e4e4",
+      "API_origin": "http://127.0.0.1:29390",
+      "identity_requests": 7,
+      "domain_setup_requests": 3,
+      "import_and_unified_read_requests": 23,
+      "unified_positive_schema_responses": 13,
+      "basic_read_and_negative_requests": 21,
+      "negative_error_responses": 20,
+      "source_refs": ".local-data/knowledge-core-development-20261029/coordination/native-foundation-data01/source-references.json",
+      "read_proof": ".local-data/knowledge-core-development-20261029/coordination/native-foundation-data01/import-state.json",
+      "negative_proof": ".local-data/knowledge-core-development-20261029/mcp/native-foundation-setup01/basic-http-negative01/handoff.json",
+      "scope": "Actual native synthetic HTTP, dedicated database/NATS and fixed original bytes; R2 fresh read/browser/new MCP tools/recall quality are not claimed",
+      "project_model_requests": "None",
+      "global_model_counter": "NotInstrumented_NotClaimed",
+      "quality": "NotStarted"
+    },
+    "parsed_publication": {
+      "status": "Passed_IndependentlyVerified_ParsedMechanicsOnly_BinaryIngressPending",
+      "at_utc": "2026-10-29T04:02:04.833Z",
+      "lease_id": "KCF-BE-20261029-03-PARSED-PUBLICATION",
+      "handoff": ".local-data/knowledge-core-development-20261029/backend/lease03-handoff.json",
+      "handoff_sha256": "3dfddccb28cdb9531f250e0003d178af03a28e717f0775fc21211f94a6ca8ff7",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 4997,
+        "sha256": "4dc3aa6bb7414e3faea7e60f254ba69f30369b1c3e901976303b4e7237d62e65"
+      },
+      "verified_files": 40,
+      "protected_files": 50,
+      "outside_window": "ExactOriginalSourceReconstructed",
+      "tests": {
+        "passed": 159,
+        "qualification": "158 passed in attempt08 plus the single corrected fixture in attempt09; no claim that all159 ran together in one attempt"
+      },
+      "runtime": "NotBuiltOrStarted_NewParsedVersion",
+      "quality": "NotStarted",
+      "upload_supplement": "Seven exact paths prepared and unit-verified in ignored; not applied",
+      "same_lexical_core": "Private R2/parsed adapters only; queue/publication/search pending",
+      "candidate_decision": "Pending_SpecificInterfaceDecisionRequired",
+      "user_final_acceptance": "Pending"
+    },
+    "native_R1_read": {
+      "path": ".local-data/knowledge-core-development-20261029/coordination/native-r1-foundation01/source-references-verification.json",
+      "source_count": 2,
+      "status": "Passed_At20_Limit100OriginalBuildDefectPreserved",
+      "new_source_fix": "UnitVerified_ActualNewBinaryPending"
+    },
+    "native_DOCX_read": {
+      "path": ".local-data/knowledge-core-development-20261029/mcp/native-r2-foundation01/handoff-final02.json",
+      "status": "Passed_ActualC2R2Unified_Full15NodeTree",
+      "node_count": 15,
+      "scope": "Original1827bytes and derived76bytes; original401 and traversal fixture failure retained; old4966 build only",
+      "independent_root_closure": ".local-data/knowledge-core-development-20261029/coordination/native-DOCX-r2-root-closure.json",
+      "real_browser": {
+        "path": ".local-data/knowledge-core-development-20261029/web/runtime-content-20261029-01/r2-addendum01/handoff.json",
+        "sha256": "133dad0e1cb1df46ac6ab93de52ad9f1c44226b8cf20362286915645e97fd20c",
+        "nodes": 15,
+        "requests": 99,
+        "root_verified_artifacts": 36,
+        "scope": "Old4966 runtime only"
+      }
+    },
+    "parsed_upload": {
+      "status": "Passed_Independent7PathsSourceInputsAndRawResponses",
+      "at_utc": "2026-10-29T04:24:19.308Z",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 4999,
+        "sha256": "d3cc60e3bc965dc5a87989d6072a313f59446a8ee26c6ca54602028017c2a8c8"
+      },
+      "handoff": ".local-data/knowledge-core-development-20261029/backend/lease04-handoff.json",
+      "handoff_sha256": "26b31d78a40735f931d299464b5cc41e604b14cb9e396a2d0e50210b7d6d9c24",
+      "verified_files": 7,
+      "protected_files": 50,
+      "public_build_inputs": 3243,
+      "raw_HTTP_responses": 64,
+      "outside_window": "ExactPreviousSourceReconstructed",
+      "validation_scope": "21 actual shared-input tests plus actual router/auth/owned-child engineering probe with SQLite/memory storage; no deployed MySQL/MinIO/NATS conclusion",
+      "response_index": "D:\\LFEN_project\\dev_project\\LFEN的第二大脑-知识库\\.local-data\\knowledge-core-development-20261029\\backend\\binary-http-probe01\\public04\\index.json",
+      "response_index_sha256": "49307c91108408624caba0ea7ae4ff80c6ef2f5cd069fe3a1c2a85da06df899a",
+      "runtime": "NotBuiltOrStarted_NewParsedVersion",
+      "quality": "NotStarted",
+      "candidate_schema": {
+        "path": "docs/knowledge-core-content-v0.2.parsed.candidate.schema.json",
+        "sha256": "85adc864e54d2fa564b5e1ccb398c24644cc995cb25d36ed29fbfa3c882a5948",
+        "offline_cases": 424,
+        "actual_Go_HTTP_cross": {
+          "count": 64,
+          "evidence": ".local-data/knowledge-core-development-20261029/coordination/content-real64-schema-cross01.json"
+        },
+        "status": "Candidate_NotHumanFrozen_NotLexicalMCPContract"
+      },
+      "binary_before_JSON_fix": {
+        "status": "Passed_BuiltAndStartedHelpOnly_NotRuntimeIntegration",
+        "at_utc": "2026-10-29T04:26:00.716Z",
+        "source": {
+          "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+          "file_count": 4999,
+          "sha256": "d3cc60e3bc965dc5a87989d6072a313f59446a8ee26c6ca54602028017c2a8c8"
+        },
+        "returned_handoff": ".local-data/knowledge-core-development-20261029/backend/lease04-handoff.json",
+        "returned_handoff_sha256": "26b31d78a40735f931d299464b5cc41e604b14cb9e396a2d0e50210b7d6d9c24",
+        "input_manifest": "D:\\LFEN_project\\dev_project\\LFEN的第二大脑-知识库\\.local-data\\knowledge-core-development-20261029\\backend\\build-input-manifest10.json",
+        "input_manifest_sha256": "f240556ea0bf5314a44b72ef409b88d52d1a1d4103bbc7b96026eaddb6f6a8a8",
+        "work": "/tmp/lfen-kcf-content-api-20261029-root02",
+        "container": "lfen-secondbrain-stage1-build",
+        "linker": "Ubuntu LLD 22.1.8 (compatible with GNU linkers)",
+        "server_sha256": "0c5b1ff38188d067c199850e64da2ceecb091d78b4fcac87c21feacac7dd075a",
+        "cli_sha256": "cf0ea344e058db0b458da3ba7b54a06f2ea037589ecff6043e49105585829fdf",
+        "server_modes": [
+          {
+            "mode": "--api",
+            "exit_code": 1,
+            "interpretation": "Intentional help exit1 after startup; no service bootstrap requested"
+          },
+          {
+            "mode": "--admin",
+            "exit_code": 1,
+            "interpretation": "Intentional help exit1 after startup; no service bootstrap requested"
+          },
+          {
+            "mode": "--ingestor",
+            "exit_code": 1,
+            "interpretation": "Intentional help exit1 after startup; no service bootstrap requested"
+          },
+          {
+            "mode": "--syncer",
+            "exit_code": 1,
+            "interpretation": "Intentional help exit1 after startup; no service bootstrap requested"
+          }
+        ],
+        "CLI_help_exit": 0,
+        "runtime_deployment": false,
+        "models_invoked": false,
+        "quality_evaluation": "NotStarted",
+        "human_interface_decision": "Pending"
+      }
+    },
+    "JSON_numeric_integrity": {
+      "status": "Passed_RootTwoPathJSONNumericFix",
+      "at_utc": "2026-10-29T04:37:14.694Z",
+      "lease_id": "KCF-ROOT-20261029-JSON-NUMERIC-01",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 4999,
+        "sha256": "c9f597f44fd13c5e01b7c94ecdaba8bdf4ce948a6e3ae14654740b0ad87f87d9"
+      },
+      "baseline": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 4999,
+        "sha256": "d3cc60e3bc965dc5a87989d6072a313f59446a8ee26c6ca54602028017c2a8c8"
+      },
+      "files": [
+        {
+          "path": "internal/parser/parser/json_parser.go",
+          "before_sha256": "f07f1f8fde12d489ed59afd9e966e224b3e19d271844105f83d54600df68fecd",
+          "after_sha256": "7c1444bbfe462f997406cbd1f2a883cf5a7cd86b65e53efeafa82252314be5ff"
+        },
+        {
+          "path": "internal/parser/parser/json_parser_test.go",
+          "before_sha256": "4c8af28b0ded5936cb7bd5704c879bbaf88f6b66ccf5409e6df5d6e45f9f8a52",
+          "after_sha256": "454f41f9e34631fe9a962f3d23df94b6500737de75d8f94275161a326229e704"
+        }
+      ],
+      "outside_window": "Exact4999d3ccBaselineReconstructed",
+      "protected_files": 50,
+      "tests": [
+        "TestJSONParser_SplitsArrayAndLines",
+        "TestJSONParser_UTF8BOM",
+        "TestJSONParser_DecodesNonUTF8",
+        "TestJSONParser_PreservesExactNumbers",
+        "TestJSONParser_RetainsFallbackForTrailingValues"
+      ],
+      "failed_original_probe": ".local-data/knowledge-core-development-20261029/coordination/json-number-probe01/result.json",
+      "passed_actual_shared_input": ".local-data/knowledge-core-development-20261029/coordination/json-number-probe01/fixed-result.json",
+      "binary02_qualification": "PreJSONFix4999d3ccBuildOnly; fixed JSON parser will be included in the next binary, no runtime replacement",
+      "quality": "NotStarted",
+      "write_authority": "Returned_RootNoOtherSourceWindow"
+    },
+    "schema_dependency_correction": {
+      "status": "Corrected_ExistingWebImportPreserved_NewCandidateSeparated",
+      "at_utc": "2026-10-29T04:50:12.869Z",
+      "existing_consumer": {
+        "path": "docs/knowledge-core-content-v0.2.candidate.schema.json",
+        "sha256": "b0b6a92fd0525da7b64776fef48f58f7a839a7165f05d1831b2a9b1d88729d56",
+        "use": "code_dependency"
+      },
+      "new_candidate": {
+        "path": "docs/knowledge-core-content-v0.2.parsed.candidate.schema.json",
+        "sha256": "85adc864e54d2fa564b5e1ccb398c24644cc995cb25d36ed29fbfa3c882a5948",
+        "use": "design_reference"
+      },
+      "evidence": "web/src/utils/knowledge-consumption.ts:23",
+      "reason": "修正13锁对构建依赖的漏查：现有Web直接导入原schema路径，不能在新消费者/运行未接通时换成parsed候选。恢复原路径b0作为当前消费者代码依赖；85adc另存同0.2 parsed设计候选并独立登记，用途和状态明确，不增加读取服务或兼容实现。",
+      "interfaces_approved": false
+    },
+    "architecture_visibility": {
+      "status": "Passed_Independent4Source2024Inputs1675Artifacts",
+      "at_utc": "2026-10-29T05:02:15.255Z",
+      "handoff": ".local-data/knowledge-core-development-20261029/web/architecture-minimal-candidate01/lease02/handoff-result.json",
+      "handoff_sha256": "5e53dc7d25219e86fa40d135a919455fc67d20b2dfb717188c59779b8e15cabf",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 4999,
+        "sha256": "7b74adf9010b4bf7a32247ee9fda68d1fd452a0697086d6ae2f769d9857fbee9"
+      },
+      "files": 4,
+      "outside_window": "Exact4999c9f5Reconstructed",
+      "protected": 52,
+      "actual_shared_touched_tests": 41,
+      "prepared_same_bytes_tests": 64,
+      "type_new_issues": 0,
+      "full_build": "ReusedVerifiedIdenticalInputs_NotRerun",
+      "build_inputs": 2024,
+      "artifacts": 1675,
+      "native_browser": {
+        "status": "Passed_IndependentRuntimeEvidenceAndListener",
+        "at_utc": "2026-10-29T05:30:17.4053779Z",
+        "handoff_sha256": "92082de72930e28572a0551a6948f02900b97206046125a921f5c980a48c3b07",
+        "artifacts": 19,
+        "native_requests": 26,
+        "architecture_stages": 7,
+        "format_rows": 20,
+        "last_row_visible": true,
+        "scroll_at_end": true,
+        "c1_bytes_match": true,
+        "r2_bytes_match": true,
+        "source_kind_switch_clears": true,
+        "API_changed": false,
+        "quality": "NotStarted"
+      },
+      "quality": "NotStarted"
+    },
+    "architecture_layout": {
+      "status": "Passed_IndependentOwningLayoutSourceInputsAndArtifacts",
+      "at_utc": "2026-10-29T05:21:55.972Z",
+      "lease_id": "KCF-WEB-20261029-03-NATIVE-LAYOUT",
+      "handoff": ".local-data/knowledge-core-development-20261029/web/native-layout-fix-candidate01/lease03/handoff-result.json",
+      "handoff_sha256": "64571eb787866608113f74307684e618c80e748c26067be988a7221654f0c81f",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 4999,
+        "sha256": "56c278c49a789edaeb82dabf94a833f1bc807503dd407644117543d47fe8c9fa"
+      },
+      "files": 1,
+      "protected": 52,
+      "outside_window": "Exact4999_7b74Reconstructed",
+      "actual_shared_tests": 17,
+      "types_added": 0,
+      "build_inputs": 2024,
+      "artifacts": 1675,
+      "build": "NewLayoutBuild_ExactInputsReusedAfterApplication_NotRerun",
+      "native_browser": {
+        "status": "Passed_IndependentRuntimeEvidenceAndListener",
+        "at_utc": "2026-10-29T05:30:17.4053779Z",
+        "handoff_sha256": "92082de72930e28572a0551a6948f02900b97206046125a921f5c980a48c3b07",
+        "artifacts": 19,
+        "native_requests": 26,
+        "architecture_stages": 7,
+        "format_rows": 20,
+        "last_row_visible": true,
+        "scroll_at_end": true,
+        "c1_bytes_match": true,
+        "r2_bytes_match": true,
+        "source_kind_switch_clears": true,
+        "API_changed": false,
+        "quality": "NotStarted"
+      },
+      "quality": "NotStarted"
+    },
+    "parser_originals_probe": {
+      "status": "Passed_ActualOwnedOriginal12_ThreeFidelityDefectsClosed_NativeNewRuntimePending",
+      "first_run": {
+        "path": ".local-data/knowledge-core-development-20261029/coordination/parser-foundation-probe01/result01.json",
+        "status": "ActualOwnedProducer_FirstRun7Passed5Failed_ThreeProductDefectsOpen_TwoAssertionsCorrectedNext",
+        "input_manifest_sha256": "cf002d5af027cbabea68fbf9da3f89f5312f78143e9ca5ddf7203dbccfb79c6e",
+        "quality": "NotStarted",
+        "product_defects": [
+          "Email text/plain attachment included in body when attachments field disabled",
+          "XLSX merged-cell geometry flattened",
+          "BIFF8 XLS merged-cell geometry absent"
+        ],
+        "assertion_corrections": [
+          "CSV RFC4180 reader normalizes quoted CRLF to LF",
+          "TextParser intentionally normalizes CRLF/CR to LF in derived representation"
+        ]
+      },
+      "latest": ".local-data/knowledge-core-development-20261029/coordination/root-parser-fidelity-lease01-closure.json",
+      "closure_sha256": "27c09d5bb8949f21099e78ff23b309654f585e37a4acdce1e158b0e2c8fe8a52",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 5001,
+        "sha256": "51ceb7ca3e7b5e6dfe4b3772c2027036905ff89964a0b5c6830e087d387e227e"
+      },
+      "original_cases": 12,
+      "targeted_checks": {
+        "actual_shared_top_level": 72,
+        "original_subcases_within_one_parent": 12,
+        "final_comment_only_revision_target": 1,
+        "qualification": "72 includes one validation-only original-input parent; final one-comment revision separately checked, not claimed one73-test run"
+      },
+      "known_boundary": "Merged ranges crossing reordered/segmented/unavailable source rows are explicitly refused rather than flattened",
+      "quality": "NotStarted"
+    },
+    "interface_decision": {
+      "id": "KCF-020-20261030-01",
+      "status": "Approved_ExactInterfacesAndIsolatedSyntheticImplementationValidation",
+      "subject_sha256": "2495953aec14e4a62d0a703d05759a81e599716a0fd9d09e554b302f109d795b",
+      "source": "Actual human reply to request_user_input_async/call_47e02b08280d4b85b1f9869a5179f2a1/0 in coordinator chat",
+      "question_original": "是否按具体候选 KCF-020-20261030-01 接入统一基础 0.2？范围：默认关闭、仅当前所有者、固定修订；C1/R1/R2/解析结果使用同一词法核心，接入手动解析 Web 和三个只读 MCP 工具；修复并验证后，在新增独立合成环境完成基础联调，再测复杂数据召回与 MCP 作用。候选说明：D:/LFEN_project/dev_project/LFEN的第二大脑-知识库/.local-data/knowledge-core-development-20261029/coordination/interface-candidate01/review.md；决定对象 SHA-256：2495953aec14e4a62d0a703d05759a81e599716a0fd9d09e554b302f109d795b。不包含模型调用、真实资料、部门/Grant、替换原 POC 或发布。",
+      "answer_original": "按具体候选继续接入并实测",
+      "recorded_at_utc": "2026-10-29T17:40:48.889Z",
+      "final_acceptance": "Pending_AfterActualEvidence",
+      "subject_changed": false,
+      "decision_file_sha256": "8f5119a1c7d2187cacd41f4278c738a6fa764c3a85705df9e5945fcdd25337b8",
+      "subject": {
+        "id": "KCF-020-20261030-01",
+        "status": "Pending_SpecificHumanDecision",
+        "coordinator": "01a18185-7d13-7b43-af32-f6c03ab768f6",
+        "reference": {
+          "lock_id": "KCRL-20261029-17",
+          "sha256": "620ea63e50e4ed6839a4a7fe5e6306dd8f23d4d17213c90f931df1036c967589"
+        },
+        "review": {
+          "path": ".local-data/knowledge-core-development-20261029/coordination/interface-candidate01/review.md",
+          "sha256": "8cbedd89604ed9f1327fed21e5c2fc26565d4351047d708af03e40ca56e4d308",
+          "bytes": 5195
+        },
+        "interfaces": [
+          {
+            "path": "docs/knowledge-core-content-v0.2.parsed.candidate.schema.json",
+            "sha256": "85adc864e54d2fa564b5e1ccb398c24644cc995cb25d36ed29fbfa3c882a5948",
+            "bytes": 368439
+          },
+          {
+            "path": ".local-data/knowledge-core-development-20261029/backend/lexical-unified-candidate01/protocol04.json",
+            "sha256": "811b507e69e6751d17b28ebcd777acdb50c50c47ceb8ae11accdbe8bfc704a6f",
+            "bytes": 6929
+          },
+          {
+            "path": ".local-data/knowledge-core-development-20261029/backend/lexical-unified-candidate01/content-lexical.schema03.json",
+            "sha256": "2007881d6653b8f18f5ac8873342f4c5174d4a3ce6440e3687b9a620b763d4c7",
+            "bytes": 267561
+          }
+        ],
+        "mcp": {
+          "route": "/api/v1/knowledge/content/mcp",
+          "profile_header": {
+            "name": "X-Knowledge-MCP-Profile",
+            "value": "knowledge-content-lexical/0.2.0-candidate"
+          },
+          "tools": [
+            {
+              "name": "knowledge_inspect_local_index",
+              "operation": "inspectIndex",
+              "request": "LexicalInspectRequest",
+              "data": "LexicalInspectData"
+            },
+            {
+              "name": "knowledge_search_local",
+              "operation": "search",
+              "request": "LexicalSearchRequest",
+              "data": "LexicalSearchData"
+            },
+            {
+              "name": "knowledge_read_local",
+              "operation": "read",
+              "request": "LexicalReadRequest",
+              "data": "LexicalReadData"
+            }
+          ],
+          "arguments": [
+            "profile_id exact",
+            "operation exact",
+            "path.domain_id",
+            "body same owning DTO"
+          ],
+          "business_owner": "DatasetService",
+          "tools_read_only": true,
+          "semantic_output": "Same fixed backend operation envelope and data; no additional business fields",
+          "max_complete_response_bytes": 1048576,
+          "cache_control": "no-store",
+          "schema_projection": "Only provably equivalent rewrites for schema engine; no widening"
+        },
+        "implementation_evidence": [
+          {
+            "path": ".local-data/knowledge-core-development-20261029/backend/lexical-unified-candidate01/handoff01.json",
+            "sha256": "ebbae3bc187a6fe2f21ce157f62319d12e501e477b8f47cec03d51c4ad9fd76d",
+            "bytes": 29915
+          },
+          {
+            "path": ".local-data/knowledge-core-development-20261029/backend/lexical-unified-candidate01/interop01.json",
+            "sha256": "71f4466d91f0b314c3548f5488bb2972e1517244b93c85d91e8172579f034549",
+            "bytes": 27243
+          }
+        ],
+        "permitted_scope": [
+          "same-owner original fixed revision and typed representations",
+          "default-off explicit manual parse and lexical permission",
+          "C1 R1 R2 parsed mixed single selection/job/publication/query",
+          "Web manual save snapshot parse cancel fixed read and mixed lexical consumer",
+          "three read-only MCP adapters to same owner service",
+          "serial shared-source review and application after narrow checks",
+          "new isolated original-synthetic native environment and two official SDKs",
+          "foundation before complex known/blind recall and actual operator tool-use scoring"
+        ],
+        "excluded": [
+          "new model OCR transcription embedding rerank generation calls",
+          "real AICS content",
+          "department Grant temporary MCP keys",
+          "replace original POC19380 19381 18080 or delete volumes",
+          "commit push publish release"
+        ],
+        "not_acceptance": [
+          "offline proof is not actual service acceptance",
+          "pending Web MCP and upload connection fixes must be verified before runtime",
+          "final product human acceptance remains separate"
+        ],
+        "at_utc": "2026-10-29T17:32:31.676Z"
+      },
+      "public_copies": [
+        {
+          "entry": "foundation-interface-review",
+          "original_path": ".local-data/knowledge-core-development-20261029/coordination/interface-candidate01/review.md",
+          "public_path": "docs/knowledge-core-unified-foundation-v0.2.candidate.md",
+          "sha256": "8cbedd89604ed9f1327fed21e5c2fc26565d4351047d708af03e40ca56e4d308",
+          "same_bytes": true
+        },
+        {
+          "entry": "foundation-lexical-protocol",
+          "original_path": ".local-data/knowledge-core-development-20261029/backend/lexical-unified-candidate01/protocol04.json",
+          "public_path": "docs/knowledge-core-content-lexical-v0.2.candidate.protocol.json",
+          "sha256": "811b507e69e6751d17b28ebcd777acdb50c50c47ceb8ae11accdbe8bfc704a6f",
+          "same_bytes": true
+        },
+        {
+          "entry": "foundation-lexical-schema",
+          "original_path": ".local-data/knowledge-core-development-20261029/backend/lexical-unified-candidate01/content-lexical.schema03.json",
+          "public_path": "docs/knowledge-core-content-lexical-v0.2.candidate.schema.json",
+          "sha256": "2007881d6653b8f18f5ac8873342f4c5174d4a3ce6440e3687b9a620b763d4c7",
+          "same_bytes": true
+        }
+      ]
+    },
+    "resume_request": {
+      "original": "你可以继续你的工作，其他线路之前被我主动中断，也可以由你恢复运作",
+      "source": "Actual human message in coordinator chat",
+      "recorded_at_utc": "2026-10-29T17:45:28.048Z",
+      "action": "ResumedSameThreeVisibleChats_NoNewAgentOrThread"
+    },
+    "unified_lexical_source": {
+      "status": "Implemented_Exact26SharedPaths_NativeAcceptancePending",
+      "closure": ".local-data/knowledge-core-development-20261029/coordination/root-unified-lexical-lease01-closure.json",
+      "closure_sha256": "9c430de4500e9b78f0b2694e1890bc322511c8d3d63a54919b8751c86a8d2ea5",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 5020,
+        "sha256": "100f971fc9d90ed76ca6ffb1cc82a437fff960c0fa1a8128c002129af12b4517"
+      },
+      "reused_checks": {
+        "input_files": 3264,
+        "all_actual_shared_input_hashes_match": true,
+        "service_tests": 13,
+        "handler_tests": 5,
+        "router_tests": 2,
+        "registered_HTTP_responses": 38,
+        "schema_checks": 190,
+        "semantic_checks": 15,
+        "build_and_help": "ExactCandidateInputsPreviouslyPassed_NotRerun"
+      },
+      "root_review": ".local-data/knowledge-core-development-20261029/coordination/backend-unified26-root-review02.json"
+    },
+    "native_PDF_PPTX": {
+      "status": "Passed_OldNativeRuntime_WithPreservedFirstConfirm401",
+      "closure": ".local-data/knowledge-core-development-20261029/coordination/native-r2-pdf-pptx-foundation01/root-closure01.json",
+      "closure_sha256": "ad5aa893154066f8beab42a6bb711520b6cb076a402213dc0d78fb2705b3debd",
+      "requests": 75,
+      "PDF": {
+        "nodes": 6,
+        "reading_bytes": 91
+      },
+      "PPTX": {
+        "nodes": 8,
+        "reading_bytes": 94,
+        "hidden_slide_preserved": true
+      },
+      "new_runtime": false,
+      "auth_cause": "Unconfirmed_FieldConnectionContextNotInstrumented"
+    },
+    "current_implementation_status": {
+      "status": "Paused_95NativeCheckpoints_DefaultZeroSchemaBoundary_Unresolved",
+      "at_utc": "2026-10-29T19:53:36.858Z",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 5032,
+        "sha256": "378f5cd7c4da198aa153a7beb49313034c151529b17a11fcf61dbce55ed4f8bb"
+      },
+      "current_interface_decision": "Approved_OnlyKCF020BoundSubject",
+      "source_writer": "root",
+      "child_shared_source_authority": "None",
+      "quality": "NotStarted",
+      "current_source_fact": "组合构建通过；原生基础95检查点完成后停在默认关闭合法零版本与schema不一致处；Web手动TXT/CSV已核、取消成功未验；混合发布/搜索、修正后双SDK与质量均未完成。",
+      "pause_checkpoint": "docs/knowledge-core-pause-checkpoint-20261030.md"
+    },
+    "historical_phase_fields": [
+      "baseline",
+      "first_principles_analysis",
+      "current_implementation",
+      "normalization_extension",
+      "binary_before_JSON_fix"
+    ],
+    "upload_body_close_fix": {
+      "status": "Implemented_SevenSharedPaths_OfflineVerified_NativeRetestPending",
+      "closure": ".local-data/knowledge-core-development-20261029/coordination/KCF-ROOT-20261030-UPLOAD-BODY-01/closure.json",
+      "closure_sha256": "12063e32bdf18ca5a7d8e87eab7b88a1ed8da7934a5ac3a4a86c3f1f7e1a4a29",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 5023,
+        "sha256": "d27f81ad065b36a58c721927b8c9383ca9f5c03a7edfb70d95af17d83c8831f4"
+      },
+      "prepared_verification": {
+        "baseline_red": "Expected behavioral failures preserved: two completed-body401 subcases and four close-lifetime subcases",
+        "same_test_bytes_red_green": true,
+        "regression_top_level_tests": 3,
+        "regression_subcases": 6,
+        "incomplete_read_control": "Passed_RedAndGreen",
+        "owning_suite_top_level_tests": 53,
+        "owning_suite_names": [
+          "TestKnowledgeOriginalBodyEOFLeavesConnectionUsable",
+          "TestKnowledgeOriginalBodyCloseInterruptsIncompleteRead",
+          "TestKnowledgeOriginalHandlerStrictJSON",
+          "TestKnowledgeOriginalAuthStreamsAfterNativeAuth",
+          "TestKnowledgeOriginalHeadAndAuthErrorsHaveNoBody",
+          "TestKnowledgeOriginalHandlerVersionAndSanitizedErrors",
+          "TestKnowledgeWebStrictJSONAndVersion",
+          "TestKnowledgeWebAuthBinaryAndSourceErrorSeparation",
+          "TestKnowledgeOriginalHTTPDeadlineCancellationIsTimeout",
+          "TestKnowledgeOriginalFlowVersionsAndFixedReads",
+          "TestKnowledgeOriginalFlowFormatsAndRejection",
+          "TestKnowledgeOriginalFlowCASAndRevocation",
+          "TestKnowledgeOriginalFlowSQLRollbackAndRetry",
+          "TestKnowledgeOriginalFlowStorageFailureKeepsRetryableUpload",
+          "TestKnowledgeOriginalFlowReadyFailureCannotPublishOrStayBusy",
+          "TestKnowledgeOriginalLeaseFencingAndCancelSlot",
+          "TestKnowledgeOriginalPreparationPreservesBytes",
+          "TestKnowledgeOriginalPreparationRejectsAndCleans",
+          "TestKnowledgeOriginalPreparationOfficeBounds",
+          "TestKnowledgeOriginalPreparationProbeBoundaries",
+          "TestKnowledgeOriginalPreparationCancellationAndRoot",
+          "TestKnowledgeOriginalPreparationLargeText",
+          "TestKnowledgeOriginalScratchKeepsActiveAndCleansExpired",
+          "TestKnowledgeOriginalScratchDoesNotAdoptForeignData",
+          "TestKnowledgeOriginalRegistrationAndUploadRecovery",
+          "TestKnowledgeOriginalQuotaExpiryPolicyAndCancel",
+          "TestKnowledgeOriginalIsolationAndC1Rejection",
+          "TestKnowledgeOriginalDigestVectors",
+          "TestKnowledgeOriginalRegistrationAndSourceDigestVectors",
+          "TestKnowledgeOriginalRangeVectors",
+          "TestKnowledgeOriginalSameBytesKeepDistinctSourceIdentities",
+          "TestKnowledgeOriginalPageByteBudgetAndCursorScope",
+          "TestKnowledgeUploadReceiveWaitsForBodyClose",
+          "TestKnowledgeWebObservationUniqueFixedAndPacked",
+          "TestKnowledgeWebObservationRejectsWholeConflictingFeed",
+          "TestKnowledgeWebObservationCrashLeaseExplicitResume",
+          "TestKnowledgeWebObservationEmptyWindowAndExpiry",
+          "TestKnowledgeWebAtomicThirtyTwoAndReceiptRecovery",
+          "TestKnowledgeWebIncrementalUnchangedAndHistoricalRevision",
+          "TestKnowledgeWebSQLFailurePublishesNothing",
+          "TestKnowledgeWebPreviewAcknowledgementExpiryAndLiveConflict",
+          "TestKnowledgeWebObservationPagesAndBoundedReferences",
+          "TestKnowledgeWebEntryBinaryAndUTF8Window",
+          "TestKnowledgeWebReadReauthorizesAfterObjectIO",
+          "TestKnowledgeWebFixedRevisionSurvivesCaptureExpiry",
+          "TestKnowledgeWebRegistrationIsNativeImmutableAndSeparated",
+          "TestKnowledgeWebCaptureCreationDoesNotAcquireAndRecovers",
+          "TestKnowledgeWebCaptureQuotaCancelExpiryAndPolicy",
+          "TestKnowledgeWebLongExactKeysAndLocalDeclaration",
+          "TestKnowledgeWebLocalUploadRawIntegrityAndReplay",
+          "TestKnowledgeWebUploadRejectsBoundariesAndRetainsState",
+          "TestKnowledgeWebUploadHTTPDeadlineAndStorageFailure",
+          "TestKnowledgeWebOnlineExplicitOnceAndUpstreamError"
+        ],
+        "native_auth_probe_top_level_tests": 2,
+        "native_auth": "PUT200 / same-connection confirm201 / me200 / fresh-connection same-session me200; plain-close and disabled-keepalive controls pass",
+        "negative_auth": "Canceled401 / active200; proof exact SHA identical to original investigation02",
+        "build": "Passed_CandidateBuild_FourServerModeHelp_CLIHelp",
+        "server_help": "api/admin/ingestor/syncer intentional exit1 with Usage",
+        "cli_help": "exit0",
+        "linker": "LLD22.1.8",
+        "go": "go1.27.3"
+      },
+      "shared_combined_verification": "Pending_FinalCombinedBuildAndNativeRuntime",
+      "fact": "上传EOF/deadline与关闭协程生命周期修复的7路径已独核并合入，覆盖原件和既有web capture共用拥有路径；原53拥有层测试、3回归（包含于拥有层）和2原生鉴权离线探针及候选四模式/CLI help通过，红绿相同测试字节保留。鉴权规则、签名及旧现场运行未改；当前5023组合构建与新真实环境复验仍待完成，不能把离线机制关闭当作旧现场401最终归因。统一检索26保持字节；Web历史切换/新任务启动和MCP合法路径投影/路由仍在收尾；质量尚未启动。"
+    },
+    "content_readonly_MCP_source": {
+      "status": "Implemented_TenSharedPaths_14PreparedGoChecks_ActualSDKPending",
+      "closure": ".local-data/knowledge-core-development-20261029/coordination/KCF-ROOT-20261030-CONTENT-MCP-01/closure.json",
+      "closure_sha256": "e9856f280c29028f0dfe27c9da5a7a02f88480daddb251d149afc30fd20afd47",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 5032,
+        "sha256": "bcbd1d9b47c0462e98f6a04562c2af5df84972469861c6416f80c6075e023e33"
+      },
+      "prepared_verification": {
+        "Go": {
+          "path": "D:\\LFEN_project\\dev_project\\LFEN的第二大脑-知识库\\.local-data\\knowledge-core-development-20261029\\mcp\\content-readonly-profile-compile01\\go-check-result.attempt07.json",
+          "sha256": "4cba5c994e0fb77c074b1b7e0fb08154a7486207cb96b76f5b309defc03ab8f1",
+          "passed_top_level": 14,
+          "passed_subtests": 30,
+          "input_manifest": {
+            "path": "D:\\LFEN_project\\dev_project\\LFEN的第二大脑-知识库\\.local-data\\knowledge-core-development-20261029\\mcp\\content-readonly-profile-compile01\\candidate-input-manifest07.json",
+            "sha256": "b24ddf7c6b986418cc823fc6fb10fa49e7afe20b5c7f7ab1500de96cae843f77"
+          }
+        },
+        "JavaScript": {
+          "path": "D:\\LFEN_project\\dev_project\\LFEN的第二大脑-知识库\\.local-data\\knowledge-core-development-20261029\\mcp\\content-readonly-profile-candidate04\\profile-test-result.attempt03.json",
+          "sha256": "5d39b0e18679283e40da709a38969a4c923498ef9d2655bae4854811f7c7d1db",
+          "passed": 164
+        },
+        "actual_Go_encoder_and_codec_cross": {
+          "path": "D:\\LFEN_project\\dev_project\\LFEN的第二大脑-知识库\\.local-data\\knowledge-core-development-20261029\\mcp\\content-readonly-profile-candidate04\\go-export-cross-validation.json",
+          "sha256": "7c08193fc747482aadff975a5039d109185e774449806033cf9e5c56e102550d",
+          "envelopes": 9,
+          "codec_cases": 36,
+          "empty_members": 2
+        },
+        "prefix_tail": {
+          "path": "D:\\LFEN_project\\dev_project\\LFEN的第二大脑-知识库\\.local-data\\knowledge-core-development-20261029\\mcp\\content-readonly-profile-candidate04\\schema-projection-verification02.json",
+          "sha256": "59ee37be0c8a603fc87caff7ece046edf08c416228d3116716d5520b18eac046",
+          "passed": 13
+        },
+        "office_proof": {
+          "path": "D:\\LFEN_project\\dev_project\\LFEN的第二大脑-知识库\\.local-data\\knowledge-core-development-20261029\\mcp\\content-readonly-profile-candidate04\\office-codec-conformance-proof.json",
+          "sha256": "33718c0f62cc660cc7d4a665ca5ac8b2f088d145c8601898c240bedc33d662f0"
+        },
+        "failure_history": {
+          "path": "D:\\LFEN_project\\dev_project\\LFEN的第二大脑-知识库\\.local-data\\knowledge-core-development-20261029\\mcp\\content-readonly-profile-candidate04\\failure-and-repair-history04.json",
+          "sha256": "9a7646f862b42c5d49589a36087a3030fd5e6c9358b7fdc8f952faf9bbcc43cc"
+        }
+      },
+      "shared_combined_verification": "Pending_FinalCombinedBuildAndNativeRuntime",
+      "fact": "MCP统一0.2三只读工具及真实API接线已合入10路径，使用同一个DatasetService；4回归文件和1公开合成夹具纳入测试，旧0.1字节未改。准备版14顶层/30子项、164JS、9实际Go数据封装、36冻结codec向量及13前缀/尾数组检查通过；原JS正则与冻结codec在7向量有差异，投影遵循实际codec，不宣称有限样本证明全域等价。完整JSON-RPC1MiB和no-store拒绝已核。主控只修正一处过时开发注释，行为未改，最终组合编译/真实SDK尚待；Web最终102测试和新构建包在核收，质量未启动。"
+    },
+    "unified_manual_lexical_Web_source": {
+      "status": "Implemented_SeventeenSharedPaths_102OfflineChecks_NewNativePending",
+      "closure": ".local-data/knowledge-core-development-20261029/coordination/KCF-ROOT-20261030-WEB-UNIFIED-01/closure.json",
+      "closure_sha256": "be0b4db1974e11eddd837b44cc086e01919facf107ad29d97d0d7f84b52a370b",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 5032,
+        "sha256": "378f5cd7c4da198aa153a7beb49313034c151529b17a11fcf61dbce55ed4f8bb"
+      },
+      "prepared_verification": {
+        "tests": {
+          "path": "evidence/jest-2026-10-29T17-58-22-523Z.json",
+          "sha256": "0787fb9a234aad213108f9ccef30a1c12c68d3de5cd7e1537a3d35dc8eb62e3f",
+          "exit_code": 0,
+          "passed": 102,
+          "suites": 3,
+          "console_warnings": 0
+        },
+        "types": {
+          "path": "evidence/types-2026-10-29T18-00-21-215Z.json",
+          "sha256": "d7d053f4f0493af2952c1134fbc24f31e55bc6d83cf09e6de24ddf8279ca86b1",
+          "baseline": 207,
+          "current": 207,
+          "added": 0
+        },
+        "lint": {
+          "path": "evidence/lint-2026-10-29T18-00-20-090Z.json",
+          "sha256": "ce297edeb07cdf434157faa55903f70347df64f871996647f0999f3acc7e3f00",
+          "exit_code": 0,
+          "errors": 0,
+          "warnings": 0
+        },
+        "format": {
+          "path": "evidence/format-check-2026-10-29T18-00-19-137Z.json",
+          "sha256": "dc334f292a214d21ab4865408b174f0a0caa4382c8584f6a9d19034c06caa360",
+          "exit_code": 0
+        },
+        "wire": {
+          "path": "evidence/wire-2026-10-29T18-05-23-310Z.json",
+          "sha256": "5640f2d0a7bf5295210ec4aefba6e5fb0e22670baf0f0fced9517dbfcf24e2bf",
+          "exit_code": 0,
+          "passed": 38,
+          "body_status_bytes": "原始已登记响应",
+          "headers": "按已核拥有层重现；不是本会话的原生header观察",
+          "network_requests": 0
+        },
+        "production": {
+          "path": "evidence/full-production-2026-10-29T18-01-14-257Z/result.json",
+          "sha256": "b57a6a6e558c74d3cbd0d72a0ad4b3ec019c664c3c1746c44f7619b8709ac45c",
+          "process_result": "evidence/full-production-2026-10-29T18-01-14-257Z/process-result.json",
+          "input_files": 2025,
+          "input_manifest_sha256": "db0ff9fde54059ed5fb552b0b18e2a7399d98b5c56858e9728cecd6b955d7ba3",
+          "artifact_files": 1673,
+          "artifact_bytes": 131830790,
+          "artifact_manifest_sha256": "c88040c2c92432da9d0b1acb13a89864d50d38af0ffeaffd2e606d64dbd347b1",
+          "reachable_required_modules": 13,
+          "minify": "terser",
+          "sourcemap": true,
+          "network_attempts": 0,
+          "environment_files_read": 0,
+          "forbidden_read_attempts": 0,
+          "new_native_browser": "未执行"
+        }
+      },
+      "shared_combined_verification": "Pending_FinalCombinedBuildAndNativeRuntime",
+      "fact": "Web手动原件/快照/解析/取消/固定回读和四类统一词法消费的17最终路径已独核并合入；历史切换与终态再解析回归关闭。102测试、38原body/status回放、lint/format通过，类型基线207且新增0；2025构建输入和1673产物131830790字节逐件摘要核实。原架构/滚动和旧schema字节保留。统一26、上传7、MCP10及Web17已组合源码，最终Go构建、真实MySQL/MinIO/NATS/ES/Web/两个标准SDK尚待；先基础后复杂召回及独立盲集，质量未启动。"
+    },
+    "pause_checkpoint": {
+      "path": "docs/knowledge-core-pause-checkpoint-20261030.md",
+      "sha256": "1e8fc6a46c48bc4d92d0b8e4194fed71ae28a9362bf976d3c784f3711b9d81e3"
+    }
+  },
+  "pause_checkpoint": {
+    "status": "Paused_NoAutomaticResume",
+    "recorded_at_utc": "2026-10-29T19:53:36.858Z",
+    "request_snapshot": "先暂停所有会话记录当前阶段，然后推送所有修改到远端",
+    "clarification": {
+      "state": "Settled",
+      "mode": "Skipped",
+      "notice": "已核对当前分支、远端和修改范围，本次不追加提问。",
+      "basis": "真人已明确要求暂停全部会话并推送全部当前修改；私有文件继续按既有gitignore留在本机。"
+    },
+    "path": "docs/knowledge-core-pause-checkpoint-20261030.md",
+    "sha256": "1e8fc6a46c48bc4d92d0b8e4194fed71ae28a9362bf976d3c784f3711b9d81e3",
+    "reference_lock_id": "KCRL-20261030-22",
+    "product_source_unchanged": true,
+    "implementation_and_quality_resumption": "RequiresExplicitHumanResume",
+    "git_scope": "CommitAndPushCurrentBranchOnly_NotProductPublication"
+  }
+}

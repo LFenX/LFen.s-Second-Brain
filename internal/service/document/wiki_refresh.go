@@ -74,7 +74,7 @@ func (s *DocumentService) loadAvailabilityToggleChunkIDs(ctx context.Context, in
 			KbIDs:        []string{datasetID},
 			Offset:       offset,
 			Limit:        sourceChunkAvailabilityBatchSize,
-			SelectFields: []string{"id", "compile_kwd", "type_kwd"},
+			SelectFields: []string{"id", "compile_kwd", "type_kwd", "knowledge_binding_kwd", "knowledge_ref"},
 			Filter:       map[string]any{"doc_id": []string{documentID}},
 		})
 		cancel()
@@ -85,6 +85,9 @@ func (s *DocumentService) loadAvailabilityToggleChunkIDs(ctx context.Context, in
 			break
 		}
 		for _, row := range result.Chunks {
+			if row["knowledge_binding_kwd"] != nil || row["knowledge_ref"] != nil {
+				continue
+			}
 			if enginetypes.IsNavigationRow(row) {
 				continue
 			}
@@ -114,7 +117,7 @@ func (s *DocumentService) loadSourceChunkIDs(ctx context.Context, indexName, dat
 			KbIDs:              []string{datasetID},
 			Offset:             offset,
 			Limit:              sourceChunkAvailabilityBatchSize,
-			SelectFields:       []string{"id", "compile_kwd", "type_kwd"},
+			SelectFields:       []string{"id", "compile_kwd", "type_kwd", "knowledge_binding_kwd", "knowledge_ref"},
 			Filter:             map[string]any{"doc_id": []string{documentID}},
 			IncludeUnavailable: includeUnavailable,
 		})
@@ -126,6 +129,9 @@ func (s *DocumentService) loadSourceChunkIDs(ctx context.Context, indexName, dat
 			break
 		}
 		for _, row := range result.Chunks {
+			if row["knowledge_binding_kwd"] != nil || row["knowledge_ref"] != nil {
+				continue
+			}
 			if enginetypes.IsNavigationRow(row) {
 				continue
 			}

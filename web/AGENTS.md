@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with the RAGFlow frontend (`web/`).
 
+## Current Project References
+
+Before using project plans, handoffs, or API documents, follow the root `AGENTS.md` reference boundary and `../docs/knowledge-core-reference-authority.md`. Run the reference check from the repository root and read only coordinator-assigned entry IDs/uses. Old frontend handoffs do not reopen write windows, and candidate DTOs are not approved contracts. The latest human scope and root restrictions on directory changes take precedence over general conventions below.
+
 ## Project Overview
 
 RAGFlow frontend is a React/TypeScript application built with Vite:

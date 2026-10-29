@@ -63,6 +63,7 @@ func (d *DatasetService) ListKnowledgeSourceLifecycles(ctx context.Context, user
 			Joins("JOIN document ON document.id = knowledge_source_lifecycle.source_id AND document.kb_id = knowledge_source_lifecycle.domain_id").
 			Joins("JOIN knowledge_source_revision ON knowledge_source_revision.document_id = knowledge_source_lifecycle.source_id AND knowledge_source_revision.domain_id = knowledge_source_lifecycle.domain_id AND knowledge_source_revision.is_current = ?", true).
 			Where("knowledge_source_lifecycle.domain_id = ? AND knowledge_source_lifecycle.state = ? AND document.status = ? AND knowledge_source_lifecycle.source_id > ?", domain, query.State, "1", after)
+		db = db.Where("NOT EXISTS (?)", tx.Model(&entity.KnowledgeSourceRegistration{}).Select("1").Where("knowledge_source_registration.id = knowledge_source_revision.original_registration_id AND knowledge_source_registration.domain_id = knowledge_source_revision.domain_id AND knowledge_source_registration.source_kind = ?", "parsed_file"))
 		if query.GroupScope == "ungrouped" {
 			db = db.Where("knowledge_source_revision.group_id IS NULL")
 		}

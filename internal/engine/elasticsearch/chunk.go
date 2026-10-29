@@ -276,6 +276,9 @@ func (e *Engine) insertChunks(ctx context.Context, chunks []map[string]interface
 	var buf bytes.Buffer
 	batchChunkCount := 0
 	for _, doc := range chunks {
+		if knowledgeReserved(doc) {
+			return nil, fmt.Errorf("reserved immutable knowledge fields")
+		}
 		if isMemoryIndex {
 			// Memory messages arrive with logical fields; map them to
 			// the storage document (tokenization included) before write.
@@ -289,8 +292,12 @@ func (e *Engine) insertChunks(ctx context.Context, chunks []map[string]interface
 		}
 
 		// Action line: use json.Marshal to properly escape string values
+		actionKind := "index"
+		if !isMemoryIndex {
+			actionKind = "update"
+		}
 		action, err := json.Marshal(map[string]interface{}{
-			"index": map[string]interface{}{
+			actionKind: map[string]interface{}{
 				"_index": baseName,
 				"_id":    chunkID,
 			},
@@ -311,7 +318,11 @@ func (e *Engine) insertChunks(ctx context.Context, chunks []map[string]interface
 		if raw, ok := formatOrderedTagFeas(docCopy["tag_feas"]); ok {
 			docCopy["tag_feas"] = raw
 		}
-		if err := jsonIterator.NewEncoder(&buf).Encode(docCopy); err != nil {
+		var persisted any = docCopy
+		if !isMemoryIndex {
+			persisted = knowledgeOrdinaryUpdate(docCopy)
+		}
+		if err := jsonIterator.NewEncoder(&buf).Encode(persisted); err != nil {
 			return nil, fmt.Errorf("failed to encode document: %w", err)
 		}
 
@@ -336,6 +347,9 @@ func (e *Engine) insertChunks(ctx context.Context, chunks []map[string]interface
 
 // UpdateChunks updates chunks by condition
 func (e *Engine) UpdateChunks(ctx context.Context, condition map[string]interface{}, newValue map[string]interface{}, baseName string, datasetID string) error {
+	if knowledgeReserved(newValue) {
+		return fmt.Errorf("reserved immutable knowledge fields")
+	}
 	fullIndexName := baseName
 	common.Info("ElasticsearchConnection.UpdateChunks called", zap.String("index_name", fullIndexName), zap.Any("condition", condition), zap.Any("new_value", newValue))
 
@@ -415,7 +429,7 @@ func (e *Engine) AdjustChunkPagerank(ctx context.Context, indexName, chunkID, kb
 	`
 	body, err := json.Marshal(map[string]interface{}{
 		"script": map[string]interface{}{
-			"source": script,
+			"source": knowledgeWriteGuard + script,
 			"lang":   "painless",
 			"params": map[string]interface{}{
 				"field":      common.PAGERANK_FLD,
@@ -573,6 +587,9 @@ func (e *Engine) updateSingleChunk(ctx context.Context, indexName, chunkID strin
 	if !ok {
 		return fmt.Errorf("%w: %s", types.ErrDocumentNotFound, chunkID)
 	}
+	if source, ok := firstHit["_source"].(map[string]any); ok && knowledgeReserved(source) {
+		return fmt.Errorf("immutable knowledge row")
+	}
 
 	doc := copyFields(newValue)
 	delete(doc, "id")
@@ -592,7 +609,7 @@ func (e *Engine) updateSingleChunk(ctx context.Context, indexName, chunkID strin
 	for _, k := range feasFields {
 		scriptBody := map[string]interface{}{
 			"script": map[string]interface{}{
-				"source": fmt.Sprintf("ctx._source.remove(\"%s\");", k),
+				"source": knowledgeWriteGuard + fmt.Sprintf("ctx._source.remove(\"%s\");", k),
 			},
 		}
 		body, _ = json.Marshal(scriptBody)
@@ -612,7 +629,7 @@ func (e *Engine) updateSingleChunk(ctx context.Context, indexName, chunkID strin
 	if removeField != "" {
 		scriptBody := map[string]interface{}{
 			"script": map[string]interface{}{
-				"source": fmt.Sprintf("ctx._source.remove('%s');", removeField),
+				"source": knowledgeWriteGuard + fmt.Sprintf("ctx._source.remove('%s');", removeField),
 			},
 		}
 		body, _ = json.Marshal(scriptBody)
@@ -641,7 +658,7 @@ func (e *Engine) updateSingleChunk(ctx context.Context, indexName, chunkID strin
 		if scripts != nil {
 			scriptBody := map[string]interface{}{
 				"script": map[string]interface{}{
-					"source": strings.Join(scripts, ""),
+					"source": knowledgeWriteGuard + strings.Join(scripts, ""),
 					"params": params,
 				},
 			}
@@ -664,7 +681,7 @@ func (e *Engine) updateSingleChunk(ctx context.Context, indexName, chunkID strin
 		if raw, ok := formatOrderedTagFeas(doc["tag_feas"]); ok {
 			doc["tag_feas"] = raw
 		}
-		updateBody := map[string]interface{}{"doc": doc}
+		updateBody := map[string]interface{}{"script": map[string]any{"lang": "painless", "source": knowledgeWriteGuard + "ctx._source.putAll(params.doc);", "params": map[string]any{"doc": doc}}}
 		body, _ := json.Marshal(updateBody)
 		req := esapi.UpdateRequest{
 			Index:      indexName,
@@ -846,6 +863,9 @@ func (e *Engine) updateChunksByQuery(ctx context.Context, indexName string, cond
 	scriptSource := strings.Join(scripts, "")
 	if scriptSource == "" {
 		return fmt.Errorf("no supported update fields for update by query")
+	}
+	if !strings.HasPrefix(indexName, "memory_") {
+		scriptSource = "if (ctx._source.containsKey('knowledge_binding_kwd') || ctx._source.containsKey('knowledge_ref')) { ctx.op = 'noop'; } else { " + scriptSource + " }"
 	}
 
 	// Build update by query body
@@ -2183,6 +2203,20 @@ func buildBoolQueryFromConditionRaw(filter map[string]interface{}, kbIDs []strin
 	}
 
 	for k, v := range filter {
+		if k == "knowledge_match_none" {
+			filterClauses = append(filterClauses, map[string]any{"match_none": map[string]any{}})
+			continue
+		}
+		if k == "knowledge_available_exact" {
+			// Internal lexical scope supplements the original <1 zero filter.
+			// Invalid values fail closed rather than dropping the predicate.
+			if v == 0 {
+				filterClauses = append(filterClauses, map[string]any{"term": map[string]any{"available_int": 0}})
+			} else {
+				filterClauses = append(filterClauses, map[string]any{"match_none": map[string]any{}})
+			}
+			continue
+		}
 		if k == "and" || k == "or" {
 			var children []interface{}
 			for _, child := range types.FilterClauses(v) {

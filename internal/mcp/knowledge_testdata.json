@@ -1,0 +1,410 @@
+{
+  "knowledge_inspect_local_index": {
+    "input": {
+      "operation": "inspectIndex",
+      "path": {
+        "domain_id": "11111111111111111111111111111111"
+      },
+      "body": {
+        "contract_version": "0.1.0-candidate",
+        "selection": {
+          "kind": "fixed_revisions",
+          "targets": [
+            {
+              "source_ref": {
+                "domain_id": "11111111111111111111111111111111",
+                "source_id": "33333333333333333333333333333333",
+                "source_revision_id": "66666666666666666666666666666666",
+                "source_sha256": "27e6c4994c6962d873b054db6d09ab13123b9630f80daa707338f80da890d1b1"
+              },
+              "representation_ref": {
+                "kind": "source_revision",
+                "id": "66666666666666666666666666666666",
+                "producer_sha256": null
+              }
+            },
+            {
+              "source_ref": {
+                "domain_id": "11111111111111111111111111111111",
+                "source_id": "44444444444444444444444444444444",
+                "source_revision_id": "77777777777777777777777777777777",
+                "source_sha256": "32ea7cd4036efd745ba45af35fa3b416994e91597abc406c5235ad02b39c3a99"
+              },
+              "representation_ref": {
+                "kind": "structure_view",
+                "id": "3295a8f96a5050d2b9c4aa409fd9f643d60f5d0485909088a8c3f6e6a289a3c4",
+                "producer_sha256": "5a0ae063b7a1b2e0e141be49e48fa32db9bd0e07e98ba0c360cff911fed61039"
+              }
+            },
+            {
+              "source_ref": {
+                "domain_id": "11111111111111111111111111111111",
+                "source_id": "55555555555555555555555555555555",
+                "source_revision_id": "88888888888888888888888888888888",
+                "source_sha256": "bfe19d25ba26a2cfb0d47f9872cddbf4797a50f30504d5b22d64e44ddee444b7"
+              },
+              "representation_ref": {
+                "kind": "structure_view",
+                "id": "c34043028116260502eeeaf606cd1b5aba7a1faaf44ea606ddff21a90d9eead9",
+                "producer_sha256": "5a0ae063b7a1b2e0e141be49e48fa32db9bd0e07e98ba0c360cff911fed61039"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "success": {
+      "operation": "inspectIndex",
+      "contract_version": "0.1.0-candidate",
+      "request_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "data": {
+        "policy": {
+          "domain_id": "11111111111111111111111111111111",
+          "local_policy_version": 1,
+          "foundation_policy_version": 1,
+          "enabled": true,
+          "mode": "owner_only_lexical",
+          "read_authority": "existing_foundation_owner",
+          "accepted_inputs": [
+            "c1_text_root_at_most_8192_bytes",
+            "r1_published_passage"
+          ],
+          "allowed_model_uses": [],
+          "external_models": false,
+          "local_inference": false,
+          "remote_fetches": false,
+          "automatic_ingestion": false,
+          "vector_index": "not_created"
+        },
+        "readiness": {
+          "kind": "ready",
+          "publication": "published",
+          "index_ref": {
+            "index_id": "51caecaf899d3667180c2835710c5b42b0d6db985011aa4ceea4e4d887ede586",
+            "manifest_sha256": "937a22712ea5c20073d2c8a226f1f4a9c2c30aba40a497f2412a34426f986535"
+          },
+          "selection": {
+            "kind": "fixed_revisions",
+            "targets": [
+              {
+                "source_ref": {
+                  "domain_id": "11111111111111111111111111111111",
+                  "source_id": "33333333333333333333333333333333",
+                  "source_revision_id": "66666666666666666666666666666666",
+                  "source_sha256": "27e6c4994c6962d873b054db6d09ab13123b9630f80daa707338f80da890d1b1"
+                },
+                "representation_ref": {
+                  "kind": "source_revision",
+                  "id": "66666666666666666666666666666666",
+                  "producer_sha256": null
+                }
+              },
+              {
+                "source_ref": {
+                  "domain_id": "11111111111111111111111111111111",
+                  "source_id": "44444444444444444444444444444444",
+                  "source_revision_id": "77777777777777777777777777777777",
+                  "source_sha256": "32ea7cd4036efd745ba45af35fa3b416994e91597abc406c5235ad02b39c3a99"
+                },
+                "representation_ref": {
+                  "kind": "structure_view",
+                  "id": "3295a8f96a5050d2b9c4aa409fd9f643d60f5d0485909088a8c3f6e6a289a3c4",
+                  "producer_sha256": "5a0ae063b7a1b2e0e141be49e48fa32db9bd0e07e98ba0c360cff911fed61039"
+                }
+              },
+              {
+                "source_ref": {
+                  "domain_id": "11111111111111111111111111111111",
+                  "source_id": "55555555555555555555555555555555",
+                  "source_revision_id": "88888888888888888888888888888888",
+                  "source_sha256": "bfe19d25ba26a2cfb0d47f9872cddbf4797a50f30504d5b22d64e44ddee444b7"
+                },
+                "representation_ref": {
+                  "kind": "structure_view",
+                  "id": "c34043028116260502eeeaf606cd1b5aba7a1faaf44ea606ddff21a90d9eead9",
+                  "producer_sha256": "5a0ae063b7a1b2e0e141be49e48fa32db9bd0e07e98ba0c360cff911fed61039"
+                }
+              }
+            ]
+          },
+          "selection_sha256": "d834b4dc7a9f3fbc39f096394778b56a48d470352a3d7e1c77d424529e04e79b",
+          "snapshot_currentness": "current",
+          "coverage": {
+            "selected_source_count": 3,
+            "covered_source_count": 3,
+            "expected_source_bytes": 158,
+            "covered_source_bytes": 158,
+            "tokenless_source_bytes": 0,
+            "indexed_unit_count": 3,
+            "complete": true,
+            "missing_ranges": []
+          },
+          "diagnostic_codes": []
+        }
+      }
+    }
+  },
+  "knowledge_search_local": {
+    "input": {
+      "operation": "search",
+      "path": {
+        "domain_id": "11111111111111111111111111111111"
+      },
+      "body": {
+        "contract_version": "0.1.0-candidate",
+        "index_ref": {
+          "index_id": "51caecaf899d3667180c2835710c5b42b0d6db985011aa4ceea4e4d887ede586",
+          "manifest_sha256": "937a22712ea5c20073d2c8a226f1f4a9c2c30aba40a497f2412a34426f986535"
+        },
+        "selection": {
+          "kind": "fixed_revisions",
+          "targets": [
+            {
+              "source_ref": {
+                "domain_id": "11111111111111111111111111111111",
+                "source_id": "33333333333333333333333333333333",
+                "source_revision_id": "66666666666666666666666666666666",
+                "source_sha256": "27e6c4994c6962d873b054db6d09ab13123b9630f80daa707338f80da890d1b1"
+              },
+              "representation_ref": {
+                "kind": "source_revision",
+                "id": "66666666666666666666666666666666",
+                "producer_sha256": null
+              }
+            },
+            {
+              "source_ref": {
+                "domain_id": "11111111111111111111111111111111",
+                "source_id": "44444444444444444444444444444444",
+                "source_revision_id": "77777777777777777777777777777777",
+                "source_sha256": "32ea7cd4036efd745ba45af35fa3b416994e91597abc406c5235ad02b39c3a99"
+              },
+              "representation_ref": {
+                "kind": "structure_view",
+                "id": "3295a8f96a5050d2b9c4aa409fd9f643d60f5d0485909088a8c3f6e6a289a3c4",
+                "producer_sha256": "5a0ae063b7a1b2e0e141be49e48fa32db9bd0e07e98ba0c360cff911fed61039"
+              }
+            },
+            {
+              "source_ref": {
+                "domain_id": "11111111111111111111111111111111",
+                "source_id": "55555555555555555555555555555555",
+                "source_revision_id": "88888888888888888888888888888888",
+                "source_sha256": "bfe19d25ba26a2cfb0d47f9872cddbf4797a50f30504d5b22d64e44ddee444b7"
+              },
+              "representation_ref": {
+                "kind": "structure_view",
+                "id": "c34043028116260502eeeaf606cd1b5aba7a1faaf44ea606ddff21a90d9eead9",
+                "producer_sha256": "5a0ae063b7a1b2e0e141be49e48fa32db9bd0e07e98ba0c360cff911fed61039"
+              }
+            }
+          ]
+        },
+        "query": "固定修订",
+        "limit": 3
+      }
+    },
+    "success": {
+      "operation": "search",
+      "contract_version": "0.1.0-candidate",
+      "request_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "data": {
+        "binding": {
+          "index_ref": {
+            "index_id": "51caecaf899d3667180c2835710c5b42b0d6db985011aa4ceea4e4d887ede586",
+            "manifest_sha256": "937a22712ea5c20073d2c8a226f1f4a9c2c30aba40a497f2412a34426f986535"
+          },
+          "selection": {
+            "kind": "fixed_revisions",
+            "targets": [
+              {
+                "source_ref": {
+                  "domain_id": "11111111111111111111111111111111",
+                  "source_id": "33333333333333333333333333333333",
+                  "source_revision_id": "66666666666666666666666666666666",
+                  "source_sha256": "27e6c4994c6962d873b054db6d09ab13123b9630f80daa707338f80da890d1b1"
+                },
+                "representation_ref": {
+                  "kind": "source_revision",
+                  "id": "66666666666666666666666666666666",
+                  "producer_sha256": null
+                }
+              },
+              {
+                "source_ref": {
+                  "domain_id": "11111111111111111111111111111111",
+                  "source_id": "44444444444444444444444444444444",
+                  "source_revision_id": "77777777777777777777777777777777",
+                  "source_sha256": "32ea7cd4036efd745ba45af35fa3b416994e91597abc406c5235ad02b39c3a99"
+                },
+                "representation_ref": {
+                  "kind": "structure_view",
+                  "id": "3295a8f96a5050d2b9c4aa409fd9f643d60f5d0485909088a8c3f6e6a289a3c4",
+                  "producer_sha256": "5a0ae063b7a1b2e0e141be49e48fa32db9bd0e07e98ba0c360cff911fed61039"
+                }
+              },
+              {
+                "source_ref": {
+                  "domain_id": "11111111111111111111111111111111",
+                  "source_id": "55555555555555555555555555555555",
+                  "source_revision_id": "88888888888888888888888888888888",
+                  "source_sha256": "bfe19d25ba26a2cfb0d47f9872cddbf4797a50f30504d5b22d64e44ddee444b7"
+                },
+                "representation_ref": {
+                  "kind": "structure_view",
+                  "id": "c34043028116260502eeeaf606cd1b5aba7a1faaf44ea606ddff21a90d9eead9",
+                  "producer_sha256": "5a0ae063b7a1b2e0e141be49e48fa32db9bd0e07e98ba0c360cff911fed61039"
+                }
+              }
+            ]
+          },
+          "selection_sha256": "d834b4dc7a9f3fbc39f096394778b56a48d470352a3d7e1c77d424529e04e79b",
+          "local_policy_version": 1,
+          "foundation_policy_version": 1,
+          "profile_sha256": "6bd4045e8b25a12ce17c34fd12e3a36a57f31216832b5b9187195cb26c0fb993",
+          "engine": "elasticsearch",
+          "execution_profile": "local_lexical_no_models_v1",
+          "parent_expansion": "disabled",
+          "unit_policy": "existing_r1_passage_or_bounded_c1_root",
+          "published_at": "2026-10-28T00:00:00Z"
+        },
+        "coverage": {
+          "selected_source_count": 3,
+          "covered_source_count": 3,
+          "expected_source_bytes": 158,
+          "covered_source_bytes": 158,
+          "tokenless_source_bytes": 0,
+          "indexed_unit_count": 3,
+          "complete": true,
+          "missing_ranges": []
+        },
+        "readiness": "ready",
+        "query": "固定修订",
+        "requested_limit": 3,
+        "returned_count": 1,
+        "hits": [
+          {
+            "evidence_ref": {
+              "evidence_version": "0.1.0-candidate",
+              "index_ref": {
+                "index_id": "51caecaf899d3667180c2835710c5b42b0d6db985011aa4ceea4e4d887ede586",
+                "manifest_sha256": "937a22712ea5c20073d2c8a226f1f4a9c2c30aba40a497f2412a34426f986535"
+              },
+              "index_row_id": "aa1da973443bbabf9e67e92a46ab5a576094341014290ea986a8baa83a1dab0c",
+              "source_ref": {
+                "domain_id": "11111111111111111111111111111111",
+                "source_id": "55555555555555555555555555555555",
+                "source_revision_id": "88888888888888888888888888888888",
+                "source_sha256": "bfe19d25ba26a2cfb0d47f9872cddbf4797a50f30504d5b22d64e44ddee444b7"
+              },
+              "representation_ref": {
+                "kind": "structure_view",
+                "id": "c34043028116260502eeeaf606cd1b5aba7a1faaf44ea606ddff21a90d9eead9",
+                "producer_sha256": "5a0ae063b7a1b2e0e141be49e48fa32db9bd0e07e98ba0c360cff911fed61039"
+              },
+              "node_ref": {
+                "kind": "r1_node",
+                "id": "ca9a324f5ead5dfa4aaff17991c1776586a28822ea4c8a34c97de908050d048b"
+              },
+              "coordinate_space": "source_utf8",
+              "range": {
+                "start_byte": 0,
+                "end_byte": 53
+              },
+              "fragment_sha256": "bfe19d25ba26a2cfb0d47f9872cddbf4797a50f30504d5b22d64e44ddee444b7"
+            },
+            "text": "# 合成说明\n\n知识库引用绑定固定修订。\n",
+            "score": 0.8,
+            "match_type": "lexical",
+            "source_currentness": "current"
+          }
+        ],
+        "total_matches": null,
+        "pagination": "not_supported_in_first_slice",
+        "ranking": "native_lexical_only",
+        "parent_expansion": "disabled"
+      }
+    }
+  },
+  "knowledge_read_local": {
+    "input": {
+      "operation": "read",
+      "path": {
+        "domain_id": "11111111111111111111111111111111"
+      },
+      "body": {
+        "contract_version": "0.1.0-candidate",
+        "evidence_ref": {
+          "evidence_version": "0.1.0-candidate",
+          "index_ref": {
+            "index_id": "51caecaf899d3667180c2835710c5b42b0d6db985011aa4ceea4e4d887ede586",
+            "manifest_sha256": "937a22712ea5c20073d2c8a226f1f4a9c2c30aba40a497f2412a34426f986535"
+          },
+          "index_row_id": "3bf84d7df7fc4e8cbc66fac97417ba025b0647496fce391c1f4354bd5f9f41eb",
+          "source_ref": {
+            "domain_id": "11111111111111111111111111111111",
+            "source_id": "33333333333333333333333333333333",
+            "source_revision_id": "66666666666666666666666666666666",
+            "source_sha256": "27e6c4994c6962d873b054db6d09ab13123b9630f80daa707338f80da890d1b1"
+          },
+          "representation_ref": {
+            "kind": "source_revision",
+            "id": "66666666666666666666666666666666",
+            "producer_sha256": null
+          },
+          "node_ref": {
+            "kind": "c1_node",
+            "id": "6373c871967405f5688cb96b4f97ed1584ee59792ac35781f4e1ed606d4ef4d8"
+          },
+          "coordinate_space": "source_utf8",
+          "range": {
+            "start_byte": 0,
+            "end_byte": 41
+          },
+          "fragment_sha256": "27e6c4994c6962d873b054db6d09ab13123b9630f80daa707338f80da890d1b1"
+        }
+      }
+    },
+    "success": {
+      "operation": "read",
+      "contract_version": "0.1.0-candidate",
+      "request_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "data": {
+        "evidence_ref": {
+          "evidence_version": "0.1.0-candidate",
+          "index_ref": {
+            "index_id": "51caecaf899d3667180c2835710c5b42b0d6db985011aa4ceea4e4d887ede586",
+            "manifest_sha256": "937a22712ea5c20073d2c8a226f1f4a9c2c30aba40a497f2412a34426f986535"
+          },
+          "index_row_id": "3bf84d7df7fc4e8cbc66fac97417ba025b0647496fce391c1f4354bd5f9f41eb",
+          "source_ref": {
+            "domain_id": "11111111111111111111111111111111",
+            "source_id": "33333333333333333333333333333333",
+            "source_revision_id": "66666666666666666666666666666666",
+            "source_sha256": "27e6c4994c6962d873b054db6d09ab13123b9630f80daa707338f80da890d1b1"
+          },
+          "representation_ref": {
+            "kind": "source_revision",
+            "id": "66666666666666666666666666666666",
+            "producer_sha256": null
+          },
+          "node_ref": {
+            "kind": "c1_node",
+            "id": "6373c871967405f5688cb96b4f97ed1584ee59792ac35781f4e1ed606d4ef4d8"
+          },
+          "coordinate_space": "source_utf8",
+          "range": {
+            "start_byte": 0,
+            "end_byte": 41
+          },
+          "fragment_sha256": "27e6c4994c6962d873b054db6d09ab13123b9630f80daa707338f80da890d1b1"
+        },
+        "text": "中文知识库。\nplain text α beta。\n",
+        "encoding": "utf-8",
+        "byte_length": 41,
+        "source_currentness": "current",
+        "complete": true
+      }
+    }
+  }
+}

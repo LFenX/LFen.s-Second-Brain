@@ -350,16 +350,11 @@ func buildParserOutputs(ctx context.Context, dispatched parser.ParseResult, name
 // so the downstream chunker receives structured items and converts them via
 // schema.ChunkDocsFromDocItem without ever calling DocItem.ToMap.
 func normalizeParserJSON(ctx context.Context, filename string, dispatched parser.ParseResult) []parser.DocItem {
-	if len(dispatched.JSON) > 0 {
-		return dispatched.JSON
+	normalized := parser.NormalizeParseResult(ctx, filename, dispatched)
+	if normalized.Status == "fallback_text" {
+		warnParserNormalizationFallback(filename, normalized.InputFormat, normalized.Diagnostic)
 	}
-	if dispatched.Markdown != "" {
-		return parseMarkdownToJSONItems(ctx, filename, dispatched.Markdown)
-	}
-	if dispatched.Text != "" {
-		return []parser.DocItem{parser.NewTextJSONItem(dispatched.Text)}
-	}
-	return []parser.DocItem{}
+	return normalized.Result.JSON
 }
 
 func warnParserNormalizationFallback(filename, source string, err error) {

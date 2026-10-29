@@ -125,6 +125,7 @@ func (d *DatasetService) ListKnowledgeOriginalRevisions(ctx context.Context, use
 		}
 		validDocuments := tx.Model(&entity.Document{}).Select("id").Where("kb_id = ? AND status = ?", domain, "1")
 		query := tx.Model(&entity.KnowledgeSourceRevision{}).Where("domain_id = ? AND is_current = ? AND representation_kind = ? AND document_id IN (?)", domain, true, "original_only", validDocuments)
+		query = query.Where("original_registration_id IN (?)", tx.Model(&entity.KnowledgeSourceRegistration{}).Select("id").Where("domain_id = ? AND source_kind = ? AND input_mode = ?", domain, "original_document", "original_upload"))
 		query = lifecycleActiveQuery(query)
 		if group != nil {
 			query = query.Where("group_id = ?", *group)

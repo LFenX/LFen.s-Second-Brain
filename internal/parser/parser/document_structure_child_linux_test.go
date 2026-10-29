@@ -26,6 +26,9 @@ import (
 func init() {
 	if IsDocumentStructureChild(os.Args[1:]) {
 		os.Exit(DocumentStructureChildMain(context.Background(), func(ctx context.Context, control DocumentChildControl, input []byte) (json.RawMessage, error) {
+			if control.ProfileID == KnowledgeParsedLocalProfile {
+				return ParseKnowledgeParsedChild(ctx, control, input)
+			}
 			switch string(input) {
 			case "test:block":
 				<-ctx.Done()

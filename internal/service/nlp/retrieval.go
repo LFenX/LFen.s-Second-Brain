@@ -599,6 +599,9 @@ func (s *RetrievalService) scoreSearchResult(ctx context.Context, req *Retrieval
 
 // RetrievalSearchRequest is the request struct for RetrievalService.Search()
 type RetrievalSearchRequest struct {
+	// KnowledgeLexical requests the trusted immutable row projection. Callers
+	// supply a published binding/row scope and a nil EmbeddingModel.
+	KnowledgeLexical    bool
 	Question            string
 	TenantIDs           []string
 	KbIDs               []string
@@ -740,6 +743,12 @@ func (s *RetrievalService) Search(ctx context.Context, req *RetrievalSearchReque
 	}
 
 	kwds := make(map[string]struct{})
+	if req.KnowledgeLexical {
+		if req.EmbeddingModel != nil || req.Question == "" || len(req.KbIDs) != 1 || len(req.TenantIDs) != 1 || req.Filter["knowledge_available_exact"] != 0 || req.Filter["available_int"] != 0 {
+			return nil, fmt.Errorf("invalid knowledge lexical search")
+		}
+		src = append(src, "id", "knowledge_ref", "knowledge_binding_kwd", "available_int")
+	}
 
 	// Build base engine request with common fields.
 	searchRequest := &types.SearchRequest{
@@ -782,6 +791,10 @@ func (s *RetrievalService) Search(ctx context.Context, req *RetrievalSearchReque
 			searchRequestWithRank := *searchRequest
 			searchRequestWithRank.MatchExprs = []interface{}{matchText}
 			searchRequestWithRank.RankFeature = req.RankFeature
+			if req.KnowledgeLexical && (matchText == nil || strings.TrimSpace(matchText.MatchingText) == "") {
+				searchRequestWithRank.Filter = maps.Clone(filters)
+				searchRequestWithRank.Filter["knowledge_match_none"] = true
+			}
 
 			engineResult, err = s.docEngine.Search(ctx, &searchRequestWithRank)
 			if err != nil {
