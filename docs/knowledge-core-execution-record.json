@@ -2566,5 +2566,29 @@
     "product_source_unchanged": true,
     "implementation_and_quality_resumption": "RequiresExplicitHumanResume",
     "git_scope": "CommitAndPushCurrentBranchOnly_NotProductPublication"
+  },
+  "resume": {
+    "status": "Resumed_ByExplicitHumanRequest",
+    "recorded_date": "2026-10-30",
+    "request_snapshot": "恢复开发",
+    "coordinator": "Claude Code 本地会话（D:/LFen_project/dev_project/LFENsSecondBrain），接替01a18185-7d13-7b43-af32-f6c03ab768f6的唯一源码／Git／部署协调权",
+    "checkout_facts": {
+      "previous_checkout": "D:/LFEN_project/dev_project/LFEN的第二大脑-知识库",
+      "previous_checkout_state": "真人答复：已经删了",
+      "resumed_from": "origin/codex/stage3r2-document 54e7c1b7a6987c3d7c8159b3490667ef9a072a5d",
+      "ignored_local_evidence": "暂停检查点列出的.local-data私有证据、零版本修正候选与29394/29395隔离服务在本检出中不存在；只作历史引用，不补造、不当作已复现"
+    },
+    "zero_local_policy_decision": {
+      "id": "KCF-021-20261030-01",
+      "question_original": "零版本卡点的修正需要改已批准且被哈希锁定的 0.2 schema：仅把策略视图 LexicalPolicy.local_policy_version 的 minimum 从 1 改为 0（与已批准的 0.1 \"默认关闭=0\" 一致），同步 MCP 工具 schema 和 Web 定义三处副本；任务/绑定/创建请求仍要求 ≥1。批准吗？",
+      "answer_original": "批准 (Recommended)",
+      "changed_files": [
+        "docs/knowledge-core-content-lexical-v0.2.candidate.schema.json",
+        "internal/mcp/knowledge_content_tools.json",
+        "web/src/utils/knowledge-local-lexical.ts"
+      ],
+      "unchanged_boundaries": "content/foundation策略版本、LexicalBinding、Job captured与创建请求expected版本仍minimum1；后端既有不变式local版本0⇒未开启保持；47保护件与其余26正式契约不变",
+      "basis": "0.1已批准schema的默认关闭策略local_policy_version为const 0；后端lexicalPolicyRow未建行时返回版本0；0.2策略视图minimum1导致合法默认关闭响应被拒（暂停检查点mixed-inspect-disabled与MCP integrity_error）"
+    }
   }
 }

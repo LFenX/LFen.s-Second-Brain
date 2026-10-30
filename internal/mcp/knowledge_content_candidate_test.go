@@ -142,6 +142,36 @@ func TestContentKnowledgeCandidateActualShapeEnvelope(t *testing.T) {
 	}
 }
 
+// A domain whose local lexical policy was never enabled reports version 0.
+// Only the policy view admits it; captured job and binding versions stay >= 1.
+func TestContentKnowledgeCandidateDisabledDefaultPolicy(t *testing.T) {
+	fixture, tools := contentCandidateActual(t), contentCandidateTools(t)
+	tool := tools["knowledge_inspect_local_index"]
+	for _, test := range []struct {
+		name    string
+		version int64
+		valid   bool
+	}{
+		{"never enabled", 0, true},
+		{"negative", -1, false},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			inspect := fixture.Inspect
+			inspect.Policy.LocalVersion = test.version
+			inspect.Policy.LocalEnabled = false
+			inspect.Policy.Enabled = false
+			if result := contentKnowledgeResult(tool, "inspectIndex", &inspect, nil); result.IsError == test.valid {
+				t.Fatalf("version %d: error=%v, expected valid=%v", test.version, result.IsError, test.valid)
+			}
+		})
+	}
+	search := fixture.Search
+	search.Binding.LocalVersion = 0
+	if result := contentKnowledgeResult(tools["knowledge_search_local"], "search", &search, nil); !result.IsError {
+		t.Fatal("binding with local policy version 0 accepted")
+	}
+}
+
 func TestContentKnowledgeCandidateSDKRegistration(t *testing.T) {
 	server := sdk.NewServer(&sdk.Implementation{Name: "candidate-unit-registry", Version: entity.KnowledgeContentVersion}, nil)
 	for _, tool := range contentCandidateTools(t) {

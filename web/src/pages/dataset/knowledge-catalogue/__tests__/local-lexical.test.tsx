@@ -35,6 +35,7 @@ import { useLocalLexicalActions } from '@/hooks/use-knowledge-local-lexical';
 import {
   checkLocalLexicalRequest,
   localLexicalSelectionKey,
+  validLocalLexicalSchema,
 } from '@/utils/knowledge-local-lexical';
 import {
   parseContentJSON,
@@ -4311,6 +4312,27 @@ test('严格解析拒绝重复字段与非score小数；只允许命中score的�
   expect(() =>
     parseContentJSON('{"data":{"hits":[{"score":1e999}]}}', true),
   ).toThrow();
+});
+test('从未开启的本地策略版本0只在策略视图合法；绑定版本仍须正整数', () => {
+  const disabled = {
+    ...fresh(Fixtures.inspect.effective_policy),
+    local_policy_version: 0,
+    local_lexical_enabled: false,
+    enabled: false,
+  };
+  expect(validLocalLexicalSchema('LexicalPolicy', disabled)).toBe(true);
+  expect(
+    validLocalLexicalSchema('LexicalPolicy', {
+      ...disabled,
+      local_policy_version: -1,
+    }),
+  ).toBe(false);
+  expect(
+    validLocalLexicalSchema('LexicalBinding', {
+      ...fresh(Fixtures.search.binding),
+      local_policy_version: 0,
+    }),
+  ).toBe(false);
 });
 test('旧local策略仅保留实际总开关，新的job操作固定为POST与32位job_id', async () => {
   Http.mockImplementation(async (config) => {

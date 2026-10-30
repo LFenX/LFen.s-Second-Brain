@@ -98,3 +98,5 @@
 - [参考基线KCRL-20261030-20原字节](knowledge-core-20261028/reference-baseline-KCRL-20261030-20.json)：合入本轮已复核源码前的历史状态；不得恢复旧写窗。
 
 - [参考基线KCRL-20261030-21原字节](knowledge-core-20261028/reference-baseline-KCRL-20261030-21.json)：2026-10-30真人暂停前的状态；旧Active和写窗不得恢复。
+
+- [参考基线KCRL-20261030-22原字节](knowledge-core-20261028/reference-baseline-KCRL-20261030-22.json)：2026-10-30真人暂停时的状态；恢复开发与零版本schema修正前，旧写窗不得恢复。

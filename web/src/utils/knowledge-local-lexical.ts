@@ -785,7 +785,7 @@ const LexicalDefinitions = {
       },
       local_policy_version: {
         type: 'integer',
-        minimum: 1,
+        minimum: 0,
         maximum: 9007199254740991,
       },
       content_policy_version: {

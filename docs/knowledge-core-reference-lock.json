@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "lock_id": "KCRL-20261030-22",
+  "lock_id": "KCRL-20261030-23",
   "recorded_date": "2026-10-30",
-  "coordinator_thread_id": "01a18185-7d13-7b43-af32-f6c03ab768f6",
-  "source_baseline_git_head": "7233c495311f1c40c67254582138169d5ed0e205",
+  "coordinator_thread_id": "claude-code-local-79bc9071-1cda-4656-9f5c-5d063df6d3de",
+  "source_baseline_git_head": "54e7c1b7a6987c3d7c8159b3490667ef9a072a5d",
   "source_snapshot": {
     "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
     "file_count": 5032,
-    "sha256": "378f5cd7c4da198aa153a7beb49313034c151529b17a11fcf61dbce55ed4f8bb"
+    "sha256": "08f5276a62571134d624d12d1dc9833321be3b3a7042696f0be9d24b907565ac"
   },
   "unlisted_policy": "DeniedAsCurrentGuidance_UntilCoordinatorReviewsAndAssigns",
   "authority_order": [
@@ -32,9 +32,9 @@
       },
       "integrity": {
         "mode": "file",
-        "sha256": "2c8c11695bf4a64d333c6601e1917a2eff90849aaa74238dbeaebd9081b69076"
+        "sha256": "f9b4999c7b9d797f655ed7e6e1961b0b80de1e6dbd6a2398474a04949e398bea"
       },
-      "selection_sha256": "2c8c11695bf4a64d333c6601e1917a2eff90849aaa74238dbeaebd9081b69076"
+      "selection_sha256": "f9b4999c7b9d797f655ed7e6e1961b0b80de1e6dbd6a2398474a04949e398bea"
     },
     {
       "id": "root-instructions",
@@ -136,9 +136,9 @@
       },
       "integrity": {
         "mode": "file",
-        "sha256": "dccac7b286b629833f53fabcf27793c17acae9b6602b1d58ddf280ee0f269769"
+        "sha256": "7bafc156e3448b256968ca4eb06bfc2017fb42afbe75c2499482f56112f66d6a"
       },
-      "selection_sha256": "dccac7b286b629833f53fabcf27793c17acae9b6602b1d58ddf280ee0f269769"
+      "selection_sha256": "7bafc156e3448b256968ca4eb06bfc2017fb42afbe75c2499482f56112f66d6a"
     },
     {
       "id": "code-inventory",
@@ -275,9 +275,9 @@
       },
       "integrity": {
         "mode": "file",
-        "sha256": "a997469417b432cc2e20e05b21eed4bebcccb46fbc1d48d5ffe22c7ed3660d34"
+        "sha256": "111f27fafc2b7ccbdc7454c7297a93957610db62dfbb0198e3c80b144c63d775"
       },
-      "selection_sha256": "f1b97993c3416857a7eb7fac72bfb5fbaa9111f76472e3561fc5ade5ec69ce04"
+      "selection_sha256": "6dde4a84c3abdfd32a3d49d446ac5e8095ab4f04b7c29284c458aab6f4fa64a1"
     },
     {
       "id": "technical-current",
@@ -476,9 +476,9 @@
       },
       "integrity": {
         "mode": "file",
-        "sha256": "68fd1c04b6acaf8427a3e947146f0be1ed3057204f06d7131925e4f8994915f3"
+        "sha256": "5d34626e22eae645e519507e40694c6d865792cfc34a12211039ec767d5bc438"
       },
-      "selection_sha256": "68fd1c04b6acaf8427a3e947146f0be1ed3057204f06d7131925e4f8994915f3"
+      "selection_sha256": "5d34626e22eae645e519507e40694c6d865792cfc34a12211039ec767d5bc438"
     },
     {
       "id": "archive-manifest",
@@ -1345,9 +1345,9 @@
       },
       "integrity": {
         "mode": "file",
-        "sha256": "2007881d6653b8f18f5ac8873342f4c5174d4a3ce6440e3687b9a620b763d4c7"
+        "sha256": "91772befbd71652977127002148a9a1e0065beb79be4a06f30f5e79f947eefb8"
       },
-      "selection_sha256": "2007881d6653b8f18f5ac8873342f4c5174d4a3ce6440e3687b9a620b763d4c7",
+      "selection_sha256": "91772befbd71652977127002148a9a1e0065beb79be4a06f30f5e79f947eefb8",
       "approval": {
         "entry": "foundation-interface-decision",
         "subject_sha256": "2495953aec14e4a62d0a703d05759a81e599716a0fd9d09e554b302f109d795b"
@@ -4111,20 +4111,24 @@
     "无自动refresh/approve或网络访问；子任务不得自改摘要以求通过"
   ],
   "update_rule": "仅主控在同范围授权内复核后变更，保存旧摘要/原因/新校验；接口/模型/发布新范围仍需真人具体决定。",
-  "manifest_payload_sha256": "af6ab749232335cb91f32910b304975da09293a4ac47c150348ba1bfa819cd3d",
+  "manifest_payload_sha256": "1dae0cfd3ac18e93dc676b06e6404b2d8e347bb674fb599e6393e0d43ecedec2",
   "previous_baseline": {
-    "lock_id": "KCRL-20261030-21",
-    "manifest_sha256": "fb9e0cfefaeb714cfabf824f996788756d4b86bd6984ed3ae09beac873b5c3fa",
-    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261030-21.json",
-    "archive_sha256": "a9f21447661b3c74d7941622525e2d992e6d5c2c7c8a77e45aff11a531257274",
+    "lock_id": "KCRL-20261030-22",
+    "manifest_sha256": "6479fe96b2d0a7ca39a654d3972e474c4c92d7ab0b944d0d8746108461be06cf",
+    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261030-22.json",
+    "archive_sha256": "68d35f72292aa5123e4ba97eab8f0a64fbd72b33c682a97e3ca56d04816711c5",
     "changed_files": [
+      "docs/knowledge-core-content-lexical-v0.2.candidate.schema.json",
+      "docs/knowledge-core-execution-record.json",
       "docs/knowledge-core-reference-authority.md",
       "docs/knowledge-core-realignment-plan.md",
-      "docs/knowledge-core-execution-record.json",
       "会话接续说明.md",
       "docs/archive/README.md",
-      "docs/knowledge-core-pause-checkpoint-20261030.md"
+      "internal/mcp/knowledge_content_tools.json",
+      "internal/mcp/knowledge_content_candidate_test.go",
+      "web/src/utils/knowledge-local-lexical.ts",
+      "web/src/pages/dataset/knowledge-catalogue/__tests__/local-lexical.test.tsx"
     ],
-    "reason": "真人明确要求暂停全部会话并保存推送当前阶段；仅更新已核暂停事实，产品源码与原批准对象未改变。"
+    "reason": "真人要求恢复开发并批准KCF-021-20261030-01：策略视图local_policy_version允许默认关闭0；同步恢复状态行，产品源码仅改三处schema副本及定向测试。"
   }
 }
