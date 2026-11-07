@@ -25,12 +25,14 @@ import OriginalRevisions, {
 } from './original-revisions';
 import { useOriginalFlow } from './use-original-flow';
 
-function OriginalWorkspace({
+function OriginalWorkspaceFlow({
   domain,
   owner,
+  onReload,
 }: {
   domain: string;
   owner: string;
+  onReload: () => void;
 }) {
   const { t } = useTranslation(),
     [params] = useSearchParams();
@@ -64,6 +66,14 @@ function OriginalWorkspace({
     <div className="space-y-5">
       <p>{t('knowledgeOriginal.scope')}</p>
       {!!flow.error && <OriginalFailure error={flow.error} />}
+      {flow.lockingUnavailable && (
+        <p role="status">{t('knowledgeOriginal.lockingUnavailable')}</p>
+      )}
+      {(flow.recoveryChanged || flow.corruptRecovery) && (
+        <Button variant="outline" onClick={onReload}>
+          {t('knowledgeOriginal.reloadRecovery')}
+        </Button>
+      )}
       {flow.corruptRecovery ? (
         <p>{t('knowledgeOriginal.corruptRecovery')}</p>
       ) : (
@@ -105,7 +115,7 @@ function OriginalWorkspace({
             !flow.registration &&
             (!flow.createPending || registrationRecovery) && (
               <>
-                {!hasPending && (
+                {!hasPending && !flow.freshRegistration && (
                   <form
                     onSubmit={open}
                     className="flex flex-wrap items-end gap-2"
@@ -175,6 +185,24 @@ function OriginalWorkspace({
       </Button>
       {showList && <OriginalRevisions domain={domain} />}
     </div>
+  );
+}
+function OriginalWorkspace({
+  domain,
+  owner,
+}: {
+  domain: string;
+  owner: string;
+}) {
+  const [revision, setRevision] = useState(0);
+  const reload = () => setRevision((value) => value + 1);
+  return (
+    <OriginalWorkspaceFlow
+      key={revision}
+      domain={domain}
+      owner={owner}
+      onReload={reload}
+    />
   );
 }
 export default function OriginalImport({ domain }: { domain: string }) {

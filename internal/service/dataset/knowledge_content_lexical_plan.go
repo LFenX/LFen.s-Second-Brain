@@ -156,7 +156,7 @@ func (d *DatasetService) prepareKnowledgeContentLexical(ctx context.Context, own
 			referenceSHA := lexicalSHA([]byte(reference))
 			id := contentLexicalRowID(binding, referenceSHA, r.EndByte-r.StartByte, fragmentSHA)
 			prepared.Rows = append(prepared.Rows, contentLexicalManifestRow{ID: id, Binding: binding, Plan: profile.SHA256, Reference: ref, ReferenceSHA256: referenceSHA, ByteLength: r.EndByte - r.StartByte})
-			prepared.Inputs = append(prepared.Inputs, lexicalTokenInput{ID: id, Binding: binding, Reference: reference, ReferenceSHA256: referenceSHA, TextSHA256: *r.SHA256, SourceID: target.Source.SourceID, ByteLength: r.EndByte - r.StartByte, Text: snapshot.Body[r.StartByte:r.EndByte], Name: snapshot.Name})
+			prepared.Inputs = append(prepared.Inputs, lexicalTokenInput{ID: id, Binding: binding, Reference: reference, ReferenceSHA256: referenceSHA, TextSHA256: *r.SHA256, SourceID: target.Source.SourceID, ByteLength: r.EndByte - r.StartByte, StartByte: r.StartByte, Text: snapshot.Body[r.StartByte:r.EndByte], Name: snapshot.Name})
 			cursor = r.EndByte
 			coverage.IndexedUnits++
 			if len(prepared.Rows) > 32768 {

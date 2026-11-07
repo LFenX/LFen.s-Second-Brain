@@ -67,6 +67,7 @@ import {
   contentWireBytes,
 } from '@/utils/knowledge-consumption';
 import {
+  KnowledgeConsumptionKeys,
   scopedKnowledgeContent,
   useContentParsedUpload,
 } from '@/hooks/use-knowledge-consumption';
@@ -81,6 +82,20 @@ type ContentParsedTaskRequest =
   import('@/interfaces/request/knowledge-consumption').ContentParsedTaskRequest;
 import { getKnowledgeSessionScope } from '@/hooks/use-knowledge-foundation';
 import KnowledgeRepresentation from '@/pages/dataset/knowledge-catalogue/knowledge-representation';
+import foundationService from '@/services/knowledge-foundation-service';
+import structureService from '@/services/knowledge-structure-service';
+import documentService from '@/services/knowledge-document-service';
+import { sample as documentSample } from '@/pages/dataset/knowledge-catalogue/__tests__/document-fixture';
+type StructureHead =
+  import('@/interfaces/database/knowledge-structure').StructureHead;
+type StructureView =
+  import('@/interfaces/database/knowledge-structure').StructureView;
+type DocumentHead =
+  import('@/interfaces/database/knowledge-document').DocumentHead;
+type DocumentRepresentation =
+  import('@/interfaces/database/knowledge-document').DocumentRepresentation;
+type OriginalRevision =
+  import('@/interfaces/database/knowledge-original').OriginalRevision;
 
 jest.mock('@/utils/next-request', () => ({
   __esModule: true,
@@ -104,16 +119,30 @@ jest.mock('@/components/ui/button', () => ({
   },
 }));
 jest.mock('@/pages/dataset/knowledge-import/batch-manifest', () => ({
-  ProjectPicker: () => null,
+  ProjectPicker: (props: Record<string, unknown>) => {
+    if (!mockUnifiedRealChoices) return null;
+    const { ProjectPicker } = jest.requireActual(
+      '@/pages/dataset/knowledge-import/batch-manifest',
+    );
+    return <ProjectPicker {...props} />;
+  },
 }));
 jest.mock('@/pages/dataset/knowledge-catalogue/document-prepare', () => ({
-  DocumentOriginalList: () => null,
+  DocumentOriginalList: (props: Record<string, unknown>) => {
+    if (!mockUnifiedRealChoices) return null;
+    const { DocumentOriginalList } = jest.requireActual(
+      '@/pages/dataset/knowledge-catalogue/document-prepare',
+    );
+    return <DocumentOriginalList {...props} />;
+  },
 }));
 jest.mock('@/hooks/use-knowledge-structure', () => ({
+  ...jest.requireActual('@/hooks/use-knowledge-structure'),
   useStructureHead: jest.fn(),
   useStructureView: jest.fn(),
 }));
 jest.mock('@/hooks/use-knowledge-document', () => ({
+  ...jest.requireActual('@/hooks/use-knowledge-document'),
   useDocumentHead: jest.fn(),
   useDocumentRepresentation: jest.fn(),
 }));
@@ -135,6 +164,7 @@ jest.mock('../local-lexical', () => ({
 }));
 const Http = request as unknown as jest.Mock;
 const Auth = getAuthorization as jest.Mock;
+let mockUnifiedRealChoices = false;
 const Domain = 'a'.repeat(32),
   Owner = 'b'.repeat(32),
   Revision = 'c'.repeat(32),
@@ -225,6 +255,7 @@ afterAll(() => {
   });
 });
 beforeEach(() => {
+  mockUnifiedRealChoices = false;
   Auth.mockReturnValue('offline-synthetic-session');
   Target = {
     source_ref: {
@@ -2499,5 +2530,1032 @@ describe('complete parsed candidate', () => {
     expect(state.createBodies[1]).toBe(original);
     reopened.unmount();
     reopened.client.clear();
+  });
+});
+
+it.each(['automatic', 'manual', 'manual-no-task', 'manual-terminal'] as const)(
+  'KC-B regression: published parsed choices refresh on %s completion/refresh',
+  async (mode) => {
+    parsedReaderFixture();
+    const running = await parsedTaskFixture('running');
+    const state = installParsedHTTP({
+      task:
+        mode === 'manual-terminal'
+          ? await parsedTaskFixture('failed')
+          : running,
+    });
+    const delegate = Http.getMockImplementation()!;
+    let published = false;
+    let publishedListCalls = 0;
+    Http.mockImplementation(async (config: { url: string }) => {
+      if (config.url.endsWith('/content/parsed-representations')) {
+        publishedListCalls += 1;
+        return response('parsed-representations', {
+          projection_version: KnowledgeContentVersion,
+          source_ref: Target.source_ref,
+          items: published ? [parsedTargetFixture()] : [],
+          next_cursor: null,
+        });
+      }
+      return delegate(config);
+    });
+    const view = renderParsed(
+      '?content=1&parsed=1&parsed_source=' +
+        SourceId +
+        (mode === 'manual-no-task' ? '' : '&parsed_task=' + running.task_id),
+    );
+    try {
+      await screen.findByText('knowledgeConsumption.noParsedRepresentation');
+      if (mode === 'manual-terminal')
+        await screen.findByText(/knowledgeConsumption.manualState_failed/);
+      else if (mode !== 'manual-no-task')
+        await screen.findByText(/knowledgeConsumption.manualState_running/);
+      expect(publishedListCalls).toBe(1);
+      published = true;
+      if (mode === 'automatic') {
+        state.task = {
+          ...running,
+          revision: running.revision + 1,
+          state: 'succeeded',
+          phase: 'done',
+          result: parsedTargetFixture(),
+          completed_at: running.updated_at,
+        };
+        await screen.findByText(
+          'knowledgeConsumption.manualResult',
+          {},
+          { timeout: 5000 },
+        );
+      } else {
+        fireEvent.click(
+          screen.getByRole('button', {
+            name: 'knowledgeConsumption.manualRefresh',
+          }),
+        );
+      }
+      await screen.findByRole(
+        'button',
+        {
+          name: 'synthetic.txt · knowledgeConsumption.parsedEntry',
+        },
+        { timeout: 1500 },
+      );
+      expect(
+        screen.queryByText('knowledgeConsumption.noParsedRepresentation'),
+      ).not.toBeInTheDocument();
+      expect(publishedListCalls).toBe(2);
+      for (let i = 0; i < 2; i += 1) {
+        await act(async () => {
+          await view.client.refetchQueries({
+            queryKey: KnowledgeConsumptionKeys.parsedTask(
+              getKnowledgeSessionScope(),
+              Scope,
+              running.task_id,
+              SourceId,
+            ),
+          });
+        });
+      }
+      expect(publishedListCalls).toBe(2);
+      expect(state.counts['parsed-task'] ?? 0).toBe(0);
+      expect(state.counts['parsed-source/upload'] ?? 0).toBe(0);
+    } finally {
+      view.unmount();
+      view.client.clear();
+    }
+  },
+  10000,
+);
+
+it('KC-B regression: a refresh completed after unmount cannot refetch the old source or list', async () => {
+  parsedReaderFixture();
+  const running = await parsedTaskFixture('running');
+  const state = installParsedHTTP({ task: running });
+  const delegate = Http.getMockImplementation()!;
+  let policyReads = 0;
+  let releasePolicy: (() => void) | undefined;
+  Http.mockImplementation(async (config: { url: string; method: string }) => {
+    if (config.url.endsWith('/content/policy') && config.method === 'get') {
+      policyReads += 1;
+      if (policyReads === 2) {
+        await new Promise<void>((resolve) => {
+          releasePolicy = resolve;
+        });
+      }
+    }
+    return delegate(config);
+  });
+  const view = renderParsed(
+    '?content=1&parsed=1&parsed_source=' +
+      SourceId +
+      '&parsed_task=' +
+      running.task_id,
+  );
+  await screen.findByText('knowledgeConsumption.noParsedRepresentation');
+  await screen.findByText(/knowledgeConsumption.manualState_running/);
+  fireEvent.click(
+    screen.getByRole('button', {
+      name: 'knowledgeConsumption.manualRefresh',
+    }),
+  );
+  await waitFor(() => expect(releasePolicy).toBeDefined());
+  const sourceReads = state.counts['parsed-source'];
+  const listReads = state.counts['parsed-representations'];
+  view.unmount();
+  view.client.clear();
+  await act(async () => {
+    releasePolicy!();
+    await Promise.resolve();
+  });
+  expect(state.counts['parsed-source']).toBe(sourceReads);
+  expect(state.counts['parsed-representations']).toBe(listReads);
+});
+
+it('KC-B regression: late manual refresh after source history switches cannot refetch either fixed list', async () => {
+  parsedReaderFixture();
+  const sourceA = parsedSourceFixture();
+  const sourceB = {
+    ...sourceA,
+    source_ref: {
+      ...sourceA.source_ref,
+      source_id: 'f'.repeat(32),
+      source_revision_id: '6'.repeat(32),
+    },
+  };
+  installParsedHTTP();
+  const delegate = Http.getMockImplementation()!;
+  let policyReads = 0;
+  let releasePolicy: (() => void) | undefined;
+  const sourceReads: string[] = [];
+  const listReads: string[] = [];
+  Http.mockImplementation(
+    async (config: { url: string; method: string; data?: string }) => {
+      if (config.url.endsWith('/content/policy') && config.method === 'get') {
+        policyReads += 1;
+        if (policyReads === 2)
+          await new Promise<void>((resolve) => {
+            releasePolicy = resolve;
+          });
+      }
+      if (config.url.endsWith('/content/parsed-source')) {
+        const body = JSON.parse(config.data!);
+        sourceReads.push(body.source_id);
+        return response(
+          'parsed-source',
+          body.source_id === sourceB.source_ref.source_id ? sourceB : sourceA,
+        );
+      }
+      if (config.url.endsWith('/content/parsed-representations')) {
+        const body = JSON.parse(config.data!);
+        listReads.push(body.query.source_ref.source_id);
+        return response('parsed-representations', {
+          projection_version: KnowledgeContentVersion,
+          source_ref: body.query.source_ref,
+          items: [],
+          next_cursor: null,
+        });
+      }
+      return delegate(config);
+    },
+  );
+  const view = renderParsedHistory([
+    '?content=1&parsed=1&parsed_source=' + sourceB.source_ref.source_id,
+    '?content=1&parsed=1&parsed_source=' + SourceId,
+  ]);
+  try {
+    await screen.findByText('knowledgeConsumption.noParsedRepresentation');
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: 'knowledgeConsumption.manualRefresh',
+      }),
+    );
+    await waitFor(() => expect(releasePolicy).toBeDefined());
+    fireEvent.click(
+      screen.getByRole('button', { name: 'previous parsed history' }),
+    );
+    await waitFor(() =>
+      expect(listReads).toEqual([SourceId, sourceB.source_ref.source_id]),
+    );
+    const beforeSources = [...sourceReads];
+    const beforeLists = [...listReads];
+    await act(async () => {
+      releasePolicy!();
+      await Promise.resolve();
+    });
+    expect(sourceReads).toEqual(beforeSources);
+    expect(listReads).toEqual(beforeLists);
+    expect(
+      new URLSearchParams(
+        JSON.parse(screen.getByTestId('parsed-location').textContent!).search,
+      ).get('parsed_source'),
+    ).toBe(sourceB.source_ref.source_id);
+  } finally {
+    view.unmount();
+    view.client.clear();
+  }
+});
+
+describe('UR-001 explicit unified read refresh', () => {
+  afterEach(() => {
+    mockUnifiedRealChoices = false;
+    jest.restoreAllMocks();
+  });
+
+  function refreshUnified() {
+    fireEvent.click(
+      screen.getByRole('button', { name: 'knowledgeCatalogue.refresh' }),
+    );
+  }
+
+  function publishedPage(
+    source: ContentTarget['source_ref'],
+    items: ContentTarget[],
+    next: string | null = null,
+  ) {
+    return response('parsed-representations', {
+      projection_version: KnowledgeContentVersion,
+      source_ref: source,
+      items,
+      next_cursor: next,
+    });
+  }
+
+  function representationRequests() {
+    return Http.mock.calls
+      .map(([config]) => config as { url: string; data?: string })
+      .filter((config) => config.url.endsWith('/content/representation'))
+      .map(
+        (config) => parseContentJSON(config.data!) as { target: ContentTarget },
+      );
+  }
+
+  function installRealChooserQueries() {
+    mockUnifiedRealChoices = true;
+    const structure = jest.requireMock('@/hooks/use-knowledge-structure');
+    const realStructure = jest.requireActual('@/hooks/use-knowledge-structure');
+    const document = jest.requireMock('@/hooks/use-knowledge-document');
+    const realDocument = jest.requireActual('@/hooks/use-knowledge-document');
+    structure.useStructureHead.mockImplementation(
+      realStructure.useStructureHead,
+    );
+    structure.useStructureView.mockImplementation(
+      realStructure.useStructureView,
+    );
+    document.useDocumentHead.mockImplementation(realDocument.useDocumentHead);
+    document.useDocumentRepresentation.mockImplementation(
+      realDocument.useDocumentRepresentation,
+    );
+  }
+
+  function renderChooser(scope = Scope) {
+    const client = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
+    const view = render(
+      <QueryClientProvider client={client}>
+        <MemoryRouter initialEntries={['?content=1']}>
+          <KnowledgeRepresentation scope={scope} source={null} />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+    return { ...view, client };
+  }
+
+  it('refreshes a same-revision no-task parsed observer from empty to published through the actual inner button', async () => {
+    parsedReaderFixture();
+    const state = installParsedHTTP();
+    const delegate = Http.getMockImplementation()!;
+    let published = false;
+    const reads: string[] = [];
+    Http.mockImplementation(async (config: { url: string; data?: string }) => {
+      if (config.url.endsWith('/content/parsed-representations')) {
+        const body = parseContentJSON(config.data!) as {
+          query: { source_ref: ContentTarget['source_ref']; cursor: string };
+        };
+        reads.push(body.query.cursor);
+        expect(body.query.source_ref).toEqual(Target.source_ref);
+        return publishedPage(Target.source_ref, published ? [Target] : []);
+      }
+      return delegate(config);
+    });
+    const view = renderParsed('?content=1&parsed=1&parsed_source=' + SourceId);
+    try {
+      await screen.findByText('knowledgeConsumption.noParsedRepresentation');
+      published = true;
+      refreshUnified();
+      await screen.findByRole('button', {
+        name: 'synthetic.txt · knowledgeConsumption.parsedEntry',
+      });
+      expect(reads).toEqual(['', '']);
+      expect(state.counts['parsed-task'] ?? 0).toBe(0);
+      expect(state.counts['parsed-source/upload'] ?? 0).toBe(0);
+      expect(state.counts['parsed-source/snapshot'] ?? 0).toBe(0);
+    } finally {
+      view.unmount();
+      view.client.clear();
+    }
+  });
+
+  it.each(['selection', 'fixed-url'] as const)(
+    'retains the old parsed %s and index while refreshing the active read surface',
+    async (binding) => {
+      parsedReaderFixture();
+      installParsedHTTP();
+      const oldTarget = JSON.parse(JSON.stringify(Target)) as ContentTarget;
+      const nextTarget: ContentTarget = {
+        ...oldTarget,
+        representation_ref: {
+          ...oldTarget.representation_ref,
+          id: '3'.repeat(64),
+        },
+      };
+      const delegate = Http.getMockImplementation()!;
+      let expanded = false;
+      let listReads = 0;
+      Http.mockImplementation(async (config: { url: string }) => {
+        if (config.url.endsWith('/content/parsed-representations')) {
+          listReads += 1;
+          return publishedPage(
+            oldTarget.source_ref,
+            expanded ? [oldTarget, nextTarget] : [oldTarget],
+          );
+        }
+        return delegate(config);
+      });
+      const params = new URLSearchParams(
+        binding === 'fixed-url'
+          ? new URL(contentFixedLink(Address), 'http://offline.test').search
+          : '?content=1',
+      );
+      if (binding === 'selection') {
+        params.set('parsed', '1');
+        params.set('parsed_source', SourceId);
+      }
+      const view = renderParsed('?' + params.toString());
+      try {
+        if (binding === 'fixed-url') {
+          await screen.findByText('knowledgeConsumption.representation_ready');
+          fireEvent.click(
+            screen.getByRole('button', {
+              name: 'knowledgeLocalLexical.addFixedRepresentation',
+            }),
+          );
+          const indexBefore =
+            screen.getByTestId('parsed-index-entry').textContent;
+          const locationBefore =
+            screen.getByTestId('parsed-location').textContent;
+          const readsBefore = representationRequests().length;
+          expanded = true;
+          refreshUnified();
+          await waitFor(() =>
+            expect(representationRequests().length).toBeGreaterThan(
+              readsBefore,
+            ),
+          );
+          expect(
+            representationRequests().every(
+              (request) =>
+                JSON.stringify(request.target) === JSON.stringify(oldTarget),
+            ),
+          ).toBe(true);
+          expect(screen.getByTestId('parsed-index-entry').textContent).toBe(
+            indexBefore,
+          );
+          expect(screen.getByTestId('parsed-location').textContent).toBe(
+            locationBefore,
+          );
+          expect(listReads).toBe(0);
+          return;
+        }
+        const oldChoice = await screen.findByRole('button', {
+          name: 'synthetic.txt · knowledgeConsumption.parsedEntry',
+        });
+        if (binding === 'selection') fireEvent.click(oldChoice);
+        await screen.findByText('knowledgeConsumption.representation_ready');
+        expect(listReads).toBe(1);
+        fireEvent.click(
+          screen.getByRole('button', {
+            name: 'knowledgeLocalLexical.addFixedRepresentation',
+          }),
+        );
+        const indexBefore =
+          screen.getByTestId('parsed-index-entry').textContent;
+        const locationBefore =
+          screen.getByTestId('parsed-location').textContent;
+        expanded = true;
+        refreshUnified();
+        await waitFor(() =>
+          expect(
+            screen.getAllByRole('button', {
+              name: 'synthetic.txt · knowledgeConsumption.parsedEntry',
+            }),
+          ).toHaveLength(2),
+        );
+        await screen.findByText('knowledgeConsumption.representation_ready');
+        expect(listReads).toBe(2);
+        expect(representationRequests().length).toBeGreaterThanOrEqual(2);
+        expect(
+          representationRequests().every(
+            (request) =>
+              JSON.stringify(request.target) === JSON.stringify(oldTarget),
+          ),
+        ).toBe(true);
+        expect(screen.getByTestId('parsed-index-entry').textContent).toBe(
+          indexBefore,
+        );
+        expect(screen.getByTestId('parsed-location').textContent).toBe(
+          locationBefore,
+        );
+        if (binding === 'selection') {
+          Target = nextTarget;
+          Address = {
+            ...Address,
+            target: nextTarget,
+            node_ref: { ...Address.node_ref, id: '8'.repeat(64) },
+          };
+          Node = { ...Node, ref: Address.node_ref };
+          Representation = {
+            ...Representation,
+            representation_ref: nextTarget.representation_ref,
+            root_ref: Address.node_ref,
+          };
+          Window = { ...Window, address: Address };
+          fireEvent.click(
+            screen.getAllByRole('button', {
+              name: 'synthetic.txt · knowledgeConsumption.parsedEntry',
+            })[1],
+          );
+          await waitFor(() =>
+            expect(representationRequests().at(-1)?.target).toEqual(nextTarget),
+          );
+          expect(listReads).toBe(2);
+          expect(
+            screen.queryByTestId('parsed-index-entry'),
+          ).not.toBeInTheDocument();
+        }
+      } finally {
+        view.unmount();
+        view.client.clear();
+      }
+    },
+  );
+
+  it('retains the selected file, busy upload and saved receipt across inner refresh without another write', async () => {
+    const state = installParsedHTTP({ snapshot: false });
+    const delegate = Http.getMockImplementation()!;
+    let release: (() => void) | undefined;
+    Http.mockImplementation(async (config: { url: string }) => {
+      if (config.url.endsWith('/content/parsed-source/upload')) {
+        await new Promise<void>((resolve) => {
+          release = resolve;
+        });
+      }
+      return delegate(config);
+    });
+    const view = renderParsed();
+    try {
+      await screen.findByText('knowledgeConsumption.manualEnabled');
+      const input = screen.getByLabelText(
+        'knowledgeConsumption.manualFile',
+      ) as HTMLInputElement;
+      const file = new File(['synthetic'], 'refresh.txt', {
+        type: 'text/plain',
+      });
+      fireEvent.change(input, { target: { files: [file] } });
+      refreshUnified();
+      expect(screen.getByLabelText('knowledgeConsumption.manualFile')).toBe(
+        input,
+      );
+      expect(input.files?.[0]).toBe(file);
+      fireEvent.click(
+        screen.getByRole('button', { name: 'knowledgeConsumption.manualSave' }),
+      );
+      await waitFor(() => expect(release).toBeDefined());
+      expect(
+        screen.getByRole('button', {
+          name: 'knowledgeConsumption.manualSaving',
+        }),
+      ).toBeDisabled();
+      refreshUnified();
+      expect(screen.getByLabelText('knowledgeConsumption.manualFile')).toBe(
+        input,
+      );
+      expect(
+        screen.getByRole('button', {
+          name: 'knowledgeConsumption.manualSaving',
+        }),
+      ).toBeDisabled();
+      await act(async () => release!());
+      release = undefined;
+      await screen.findByText(/knowledgeConsumption.manualSaved/);
+      const receiptBefore = screen.getByTestId('parsed-location').textContent;
+      const formBefore = screen.getByRole('region', {
+        name: 'knowledgeConsumption.manualFlow',
+      });
+      refreshUnified();
+      expect(
+        screen.getByRole('region', { name: 'knowledgeConsumption.manualFlow' }),
+      ).toBe(formBefore);
+      expect(screen.getByTestId('parsed-location').textContent).toBe(
+        receiptBefore,
+      );
+      expect(state.counts['parsed-source/upload']).toBe(1);
+      expect(state.counts['parsed-source/snapshot'] ?? 0).toBe(0);
+      expect(state.counts['parsed-task'] ?? 0).toBe(0);
+    } finally {
+      if (release) await act(async () => release!());
+      view.unmount();
+      view.client.clear();
+    }
+  });
+
+  it('does not install a delayed refreshed list after history moves to another fixed source', async () => {
+    const sourceA = parsedSourceFixture();
+    const sourceB = {
+      ...sourceA,
+      source_ref: {
+        ...sourceA.source_ref,
+        source_id: 'f'.repeat(32),
+        source_revision_id: '6'.repeat(32),
+      },
+      original_filename: 'next-source.txt',
+      relative_path: 'next-source.txt',
+    };
+    const targetA = parsedTargetFixture();
+    const targetB = { ...targetA, source_ref: sourceB.source_ref };
+    installParsedHTTP();
+    const delegate = Http.getMockImplementation()!;
+    let aReads = 0;
+    let release: (() => void) | undefined;
+    Http.mockImplementation(async (config: { url: string; data?: string }) => {
+      if (config.url.endsWith('/content/parsed-source')) {
+        const body = parseContentJSON(config.data!) as { source_id: string };
+        return response(
+          'parsed-source',
+          body.source_id === sourceB.source_ref.source_id ? sourceB : sourceA,
+        );
+      }
+      if (config.url.endsWith('/content/parsed-representations')) {
+        const body = parseContentJSON(config.data!) as {
+          query: { source_ref: ContentTarget['source_ref'] };
+        };
+        if (body.query.source_ref.source_id === sourceA.source_ref.source_id) {
+          aReads += 1;
+          if (aReads === 1) return publishedPage(sourceA.source_ref, []);
+          await new Promise<void>((resolve) => {
+            release = resolve;
+          });
+          return publishedPage(sourceA.source_ref, [targetA]);
+        }
+        return publishedPage(sourceB.source_ref, [targetB]);
+      }
+      return delegate(config);
+    });
+    const view = renderParsedHistory([
+      '?content=1&parsed=1&parsed_source=' + sourceB.source_ref.source_id,
+      '?content=1&parsed=1&parsed_source=' + sourceA.source_ref.source_id,
+    ]);
+    try {
+      await screen.findByText('knowledgeConsumption.noParsedRepresentation');
+      refreshUnified();
+      await waitFor(() => expect(release).toBeDefined());
+      fireEvent.click(
+        screen.getByRole('button', { name: 'previous parsed history' }),
+      );
+      await screen.findByRole('button', {
+        name: 'next-source.txt · knowledgeConsumption.parsedEntry',
+      });
+      await act(async () => release!());
+      release = undefined;
+      expect(
+        screen.queryByRole('button', {
+          name: 'synthetic.txt · knowledgeConsumption.parsedEntry',
+        }),
+      ).not.toBeInTheDocument();
+      expect(
+        new URLSearchParams(
+          JSON.parse(screen.getByTestId('parsed-location').textContent!).search,
+        ).get('parsed_source'),
+      ).toBe(sourceB.source_ref.source_id);
+      expect(aReads).toBe(2);
+    } finally {
+      if (release) await act(async () => release!());
+      view.unmount();
+      view.client.clear();
+    }
+  });
+
+  it.each(['session', 'domain'] as const)(
+    'rejects a late refreshed list after the %s scope changes',
+    async (boundary) => {
+      parsedReaderFixture();
+      installParsedHTTP();
+      const oldSource = parsedSourceFixture();
+      const oldTarget = JSON.parse(JSON.stringify(Target)) as ContentTarget;
+      const nextScope =
+        boundary === 'domain' ? { ...Scope, domain: '9'.repeat(32) } : Scope;
+      const nextSource = {
+        ...oldSource,
+        source_ref: {
+          ...oldSource.source_ref,
+          domain_id: nextScope.domain,
+          source_id: boundary === 'domain' ? '8'.repeat(32) : SourceId,
+        },
+      };
+      const nextTarget: ContentTarget = {
+        source_ref: nextSource.source_ref,
+        representation_ref: {
+          ...oldTarget.representation_ref,
+          id: '3'.repeat(64),
+        },
+      };
+      const delegate = Http.getMockImplementation()!;
+      let switched = false;
+      let oldReads = 0;
+      let release: (() => void) | undefined;
+      Http.mockImplementation(async (config: { url: string }) => {
+        if (config.url.endsWith('/content/policy')) {
+          return response('content-policy', {
+            ...parsedPolicyFixture(),
+            domain_id: switched ? nextScope.domain : Scope.domain,
+          });
+        }
+        if (config.url.endsWith('/content/parsed-source')) {
+          return response('parsed-source', switched ? nextSource : oldSource);
+        }
+        if (config.url.endsWith('/content/parsed-representations')) {
+          if (switched)
+            return publishedPage(nextSource.source_ref, [nextTarget]);
+          oldReads += 1;
+          if (oldReads === 1) return publishedPage(oldSource.source_ref, []);
+          await new Promise<void>((resolve) => {
+            release = resolve;
+          });
+          return publishedPage(oldSource.source_ref, [oldTarget]);
+        }
+        return delegate(config);
+      });
+      const client = new QueryClient({
+        defaultOptions: { queries: { retry: false } },
+      });
+      const tree = (scope: typeof Scope, sourceId: string) => (
+        <QueryClientProvider client={client}>
+          <MemoryRouter
+            key={scope.domain}
+            initialEntries={['?content=1&parsed=1&parsed_source=' + sourceId]}
+          >
+            <KnowledgeRepresentation scope={scope} source={null} />
+          </MemoryRouter>
+        </QueryClientProvider>
+      );
+      const view = render(tree(Scope, SourceId));
+      try {
+        await screen.findByText('knowledgeConsumption.noParsedRepresentation');
+        refreshUnified();
+        await waitFor(() => expect(release).toBeDefined());
+        switched = true;
+        if (boundary === 'session')
+          Auth.mockReturnValue('new-offline-synthetic-session');
+        view.rerender(tree(nextScope, nextSource.source_ref.source_id));
+        await screen.findByRole('button', {
+          name: 'synthetic.txt · knowledgeConsumption.parsedEntry',
+        });
+        await act(async () => release!());
+        release = undefined;
+        Target = nextTarget;
+        Address = { ...Address, target: nextTarget };
+        Representation = {
+          ...Representation,
+          source_ref: nextTarget.source_ref,
+          representation_ref: nextTarget.representation_ref,
+        };
+        Window = { ...Window, address: Address };
+        fireEvent.click(
+          screen.getByRole('button', {
+            name: 'synthetic.txt · knowledgeConsumption.parsedEntry',
+          }),
+        );
+        await waitFor(() =>
+          expect(representationRequests().at(-1)?.target).toEqual(nextTarget),
+        );
+        expect(oldReads).toBe(2);
+      } finally {
+        if (release) await act(async () => release!());
+        view.unmount();
+        client.clear();
+      }
+    },
+  );
+
+  it('starts a refreshed publication listing at a fresh empty cursor rather than the previous upper-bound continuation', async () => {
+    installParsedHTTP();
+    const first = parsedTargetFixture();
+    const second = {
+      ...first,
+      representation_ref: { ...first.representation_ref, id: '3'.repeat(64) },
+    };
+    const added = {
+      ...first,
+      representation_ref: { ...first.representation_ref, id: '4'.repeat(64) },
+    };
+    const delegate = Http.getMockImplementation()!;
+    const cursors: string[] = [];
+    let refreshed = false;
+    Http.mockImplementation(async (config: { url: string; data?: string }) => {
+      if (config.url.endsWith('/content/parsed-representations')) {
+        const body = parseContentJSON(config.data!) as {
+          query: { cursor: string };
+        };
+        cursors.push(body.query.cursor);
+        if (refreshed) {
+          expect(body.query.cursor).toBe('');
+          return publishedPage(first.source_ref, [first, added]);
+        }
+        return body.query.cursor
+          ? publishedPage(first.source_ref, [second])
+          : publishedPage(first.source_ref, [first], 'old-upper-bound');
+      }
+      return delegate(config);
+    });
+    const view = renderParsed('?content=1&parsed=1&parsed_source=' + SourceId);
+    try {
+      fireEvent.click(
+        await screen.findByRole('button', { name: 'knowledgeCatalogue.more' }),
+      );
+      await waitFor(() =>
+        expect(
+          screen.getAllByRole('button', {
+            name: 'synthetic.txt · knowledgeConsumption.parsedEntry',
+          }),
+        ).toHaveLength(2),
+      );
+      refreshed = true;
+      refreshUnified();
+      await waitFor(() => expect(cursors).toEqual(['', 'old-upper-bound', '']));
+      await waitFor(() =>
+        expect(
+          screen.getAllByRole('button', {
+            name: 'synthetic.txt · knowledgeConsumption.parsedEntry',
+          }),
+        ).toHaveLength(2),
+      );
+      expect(
+        screen.queryByRole('button', { name: 'knowledgeCatalogue.more' }),
+      ).not.toBeInTheDocument();
+    } finally {
+      view.unmount();
+      view.client.clear();
+    }
+  });
+
+  it('refreshes real R1 project/head queries while retaining the selected old view until the user fixes a new head', async () => {
+    installRealChooserQueries();
+    const project = {
+      id: '3'.repeat(32),
+      domain_id: Domain,
+      parent_id: null,
+      kind: 'project' as const,
+      name: 'refresh-project-one',
+      component_side: 'backend' as const,
+    };
+    let moreProjects = false;
+    const groups = jest
+      .spyOn(foundationService, 'groups')
+      .mockImplementation(async () => ({
+        items: moreProjects
+          ? [
+              project,
+              { ...project, id: '4'.repeat(32), name: 'refresh-project-two' },
+            ]
+          : [project],
+        next_cursor: '',
+      }));
+    const oldView: StructureView = {
+      view_id: '1'.repeat(64),
+      domain_id: Domain,
+      owner_id: Owner,
+      project_id: project.id,
+      manifest_id: '5'.repeat(32),
+      manifest_sha256: '6'.repeat(64),
+      foundation_policy_version: 1,
+      structure_policy_version: 1,
+      producer_sha256: '2'.repeat(64),
+      producer_format: 'code-structure-v1',
+      aliases: [],
+      members: [
+        {
+          source_id: SourceId,
+          source_revision_id: Revision,
+          source_node_id: NodeId,
+          root_structure_node_id: '7'.repeat(64),
+          lifecycle_version: 1,
+          parser: 'text',
+          sha256: Sha,
+          byte_length: 9,
+          relative_path: 'old-r1.txt',
+          classification: {
+            group_id: null,
+            component_side: 'non_code',
+            language: 'text',
+          },
+        },
+      ],
+      source_count: 1,
+      node_count: 1,
+      relation_count: 0,
+      source_bytes: 9,
+      published_at: '2026-10-30T00:00:00Z',
+      model_calls: 0,
+      local_inference: 0,
+      lexical_index: 'not_created',
+      vector_index: 'not_created',
+    };
+    const nextView: StructureView = {
+      ...oldView,
+      view_id: '8'.repeat(64),
+      manifest_id: '9'.repeat(32),
+      members: [{ ...oldView.members[0], relative_path: 'new-r1.txt' }],
+    };
+    let head: StructureHead = {
+      domain_id: Domain,
+      project_id: project.id,
+      view_id: oldView.view_id,
+      current_manifest_id: oldView.manifest_id,
+      currentness: 'current',
+      reasons: [],
+      checked_at: '2026-10-30T00:00:00Z',
+      affected_sources: [],
+    };
+    const heads = jest
+      .spyOn(structureService, 'head')
+      .mockImplementation(async () => ({
+        data: JSON.parse(JSON.stringify(head)),
+        httpStatus: 200,
+      }));
+    const views = jest
+      .spyOn(structureService, 'view')
+      .mockImplementation(async (scope) => ({
+        data: scope.view === oldView.view_id ? oldView : nextView,
+        httpStatus: 200,
+      }));
+    const view = renderChooser();
+    try {
+      fireEvent.click(
+        screen.getByRole('button', {
+          name: 'knowledgeConsumption.chooseStructure',
+        }),
+      );
+      fireEvent.click(
+        await screen.findByRole('button', { name: project.name }),
+      );
+      fireEvent.click(
+        await screen.findByRole('button', {
+          name: 'knowledgeConsumption.fixCurrentView',
+        }),
+      );
+      await screen.findByRole('button', { name: 'old-r1.txt' });
+      expect(heads).toHaveBeenCalledTimes(1);
+      moreProjects = true;
+      head = {
+        ...head,
+        view_id: nextView.view_id,
+        current_manifest_id: nextView.manifest_id,
+      };
+      refreshUnified();
+      await screen.findByRole('button', { name: 'refresh-project-two' });
+      await waitFor(() => expect(heads).toHaveBeenCalledTimes(2));
+      expect(groups).toHaveBeenCalledTimes(2);
+      expect(views.mock.calls.map(([scope]) => scope.view)).toEqual([
+        oldView.view_id,
+      ]);
+      expect(
+        screen.getByRole('button', { name: 'old-r1.txt' }),
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByRole('button', { name: 'new-r1.txt' }),
+      ).not.toBeInTheDocument();
+      fireEvent.click(
+        screen.getByRole('button', {
+          name: 'knowledgeConsumption.fixCurrentView',
+        }),
+      );
+      await screen.findByRole('button', { name: 'new-r1.txt' });
+      expect(views.mock.calls.map(([scope]) => scope.view)).toEqual([
+        oldView.view_id,
+        nextView.view_id,
+      ]);
+      expect(heads).toHaveBeenCalledTimes(2);
+    } finally {
+      view.unmount();
+      view.client.clear();
+    }
+  });
+
+  it('refreshes real R2 original/head queries and retains the chosen original when the new head has another revision', async () => {
+    installRealChooserQueries();
+    const rep = documentSample<{ data: DocumentRepresentation }>(
+      'response_representation_pdf',
+    ).data;
+    const scope = { owner: rep.owner_id, domain: rep.domain_id };
+    const original: OriginalRevision = {
+      ...rep.original,
+      relative_path: rep.source_snapshot.relative_path,
+      classification: rep.source_snapshot.classification,
+      parse_status: 'not_parsed',
+      structure_status: 'not_built',
+      full_text_status: 'not_built',
+      vector_status: 'not_built',
+      is_current: true,
+      created_at: rep.published_at,
+    };
+    const nextOriginal: OriginalRevision = {
+      ...original,
+      source_revision_id: '7'.repeat(32),
+      sha256: '6'.repeat(64),
+      original_filename: 'new-revision.pdf',
+    };
+    let expanded = false;
+    const originals = jest
+      .spyOn(documentService, 'originals')
+      .mockImplementation(async () => ({
+        data: {
+          items: expanded ? [original, nextOriginal] : [original],
+          next_cursor: null,
+        },
+        httpStatus: 200,
+      }));
+    let head: DocumentHead = {
+      domain_id: scope.domain,
+      source_id: original.source_id,
+      active_representation_id: rep.representation_id,
+      active_source_revision_id: original.source_revision_id,
+      current_source_revision_id: original.source_revision_id,
+      current_lifecycle_version: 1,
+      foundation_policy_version: rep.foundation_policy_version,
+      document_policy_version: rep.document_policy_version,
+      latest_task_id: null,
+      currentness: 'current',
+      reasons: [],
+      checked_at: rep.published_at,
+    };
+    const heads = jest
+      .spyOn(documentService, 'head')
+      .mockImplementation(async () => ({
+        data: JSON.parse(JSON.stringify(head)),
+        httpStatus: 200,
+      }));
+    const representations = jest
+      .spyOn(documentService, 'representation')
+      .mockResolvedValue({
+        data: rep,
+        httpStatus: 200,
+      });
+    const view = renderChooser(scope);
+    try {
+      fireEvent.click(
+        screen.getByRole('button', {
+          name: 'knowledgeConsumption.chooseDocument',
+        }),
+      );
+      fireEvent.click(
+        await screen.findByRole('button', {
+          name: new RegExp(original.original_filename),
+        }),
+      );
+      await screen.findByRole('button', { name: original.original_filename });
+      expect(heads).toHaveBeenCalledTimes(1);
+      expect(representations).toHaveBeenCalledTimes(1);
+      expanded = true;
+      head = {
+        ...head,
+        active_source_revision_id: nextOriginal.source_revision_id,
+        current_source_revision_id: nextOriginal.source_revision_id,
+        active_representation_id: '8'.repeat(64),
+      };
+      refreshUnified();
+      await screen.findByRole('button', { name: /new-revision.pdf/ });
+      await screen.findByText('knowledgeConsumption.originalHeadDifferent');
+      expect(originals).toHaveBeenCalledTimes(2);
+      expect(heads).toHaveBeenCalledTimes(2);
+      expect(
+        heads.mock.calls.every(
+          ([value]) => value.source === original.source_id,
+        ),
+      ).toBe(true);
+      expect(
+        representations.mock.calls.every(
+          ([value]) =>
+            value.source === original.source_id &&
+            value.revision === original.source_revision_id &&
+            value.representation === rep.representation_id,
+        ),
+      ).toBe(true);
+      expect(
+        screen.queryByRole('button', { name: original.original_filename }),
+      ).not.toBeInTheDocument();
+    } finally {
+      view.unmount();
+      view.client.clear();
+    }
   });
 });

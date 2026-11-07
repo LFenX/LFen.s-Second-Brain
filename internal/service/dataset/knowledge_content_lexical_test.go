@@ -36,7 +36,7 @@ func contentLexicalTokenizer(t *testing.T) {
 
 func contentLexicalSession(t *testing.T, s *DatasetService, local, content bool) context.Context {
 	t.Helper()
-	if err := dao.DB.AutoMigrate(&entity.KnowledgeContentPolicyRecord{}, &entity.KnowledgeLexicalPolicyRecord{}, &entity.KnowledgeLexicalOperationRecord{}, &entity.KnowledgeLexicalJobRecord{}, &entity.KnowledgeLexicalPublicationRecord{}); err != nil {
+	if err := dao.DB.AutoMigrate(&entity.KnowledgeStructureOperationRecord{}, &entity.KnowledgeContentPolicyRecord{}, &entity.KnowledgeLexicalPolicyRecord{}, &entity.KnowledgeLexicalOperationRecord{}, &entity.KnowledgeLexicalJobRecord{}, &entity.KnowledgeLexicalPublicationRecord{}); err != nil {
 		t.Fatal(err)
 	}
 	token, valid := "synthetic-content-lexical-native-session", "1"

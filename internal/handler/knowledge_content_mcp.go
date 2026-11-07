@@ -25,7 +25,7 @@ func NewKnowledgeContentMCPHandler(owner *dataset.DatasetService) (*KnowledgeCon
 
 func (h *KnowledgeContentMCPHandler) HandleMCP(c *gin.Context) {
 	c.Header("Cache-Control", "no-store")
-	if c.Request.Method != http.MethodPost {
+	if c.Request.Method != http.MethodPost && c.Request.Method != http.MethodGet {
 		c.Header("Allow", http.MethodPost)
 		c.Status(http.StatusMethodNotAllowed)
 		return

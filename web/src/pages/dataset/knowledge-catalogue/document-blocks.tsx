@@ -53,9 +53,9 @@ export function DocumentBlockView({
           : undefined;
   const className =
     kind === 'row'
-      ? 'flex flex-wrap gap-2 border-b border-border-button p-2'
+      ? 'min-w-0 space-y-2 border-b border-border-button p-2'
       : kind === 'cell'
-        ? 'min-w-0 flex-1 border border-border-button p-2'
+        ? 'min-w-48 flex-1 border border-border-button p-2'
         : 'min-w-0 space-y-2 rounded border border-border-button p-3';
   return (
     <div role={role} className={className}>
@@ -148,6 +148,15 @@ function DocumentBlockChildren({
         n.payload.attributes.placement === 'inline'
       ),
   );
+  const childBlocks = children.map((child) => (
+    <DocumentBlockView
+      key={child.document_node_id}
+      scope={scope}
+      representation={representation}
+      node={child}
+      depth={depth + 1}
+    />
+  ));
   return (
     <>
       <DocumentText
@@ -156,15 +165,13 @@ function DocumentBlockChildren({
         node={node}
         media={inline}
       />
-      {children.map((child) => (
-        <DocumentBlockView
-          key={child.document_node_id}
-          scope={scope}
-          representation={representation}
-          node={child}
-          depth={depth + 1}
-        />
-      ))}
+      {node.payload.kind === 'row' ? (
+        <div className="flex min-w-0 items-stretch gap-2 overflow-x-auto">
+          {childBlocks}
+        </div>
+      ) : (
+        childBlocks
+      )}
       {!children.length &&
         !node.payload.own_reading_range &&
         !inline.length && (

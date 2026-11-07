@@ -9,7 +9,6 @@ import { MemoryRouter, Route, Routes } from 'react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import request from '@/utils/next-request';
 import OriginalImport from '../original';
-import { Domain } from '../../knowledge-catalogue/__tests__/fixture';
 import {
   DomainId,
   OwnerId,
@@ -87,7 +86,23 @@ let reg: OriginalRegistration,
   upload: OriginalUpload | null,
   receipt: OriginalReceipt | null;
 let loseCreate: boolean, loseConfirm: boolean, loseRegistration: boolean;
-const NativeDomain = { ...Domain, domain_id: DomainId, owner_id: OwnerId };
+type KnowledgeDomain =
+  import('@/interfaces/database/knowledge-foundation').KnowledgeDomain;
+const NativeDomain: KnowledgeDomain = {
+  domain_id: DomainId,
+  owner_id: OwnerId,
+  name: 'Synthetic private domain',
+  category: 'project',
+  contract_version: '1.0.0',
+  policy: {
+    version: 1,
+    access: 'owner_only',
+    index_modes: ['catalogue'],
+    allowed_model_uses: [],
+    external_models: false,
+    automatic_ingestion: false,
+  },
+};
 function mount(search = '?mode=original') {
   const client = new QueryClient({
     defaultOptions: { queries: { retry: false } },
@@ -109,6 +124,12 @@ function mount(search = '?mode=original') {
 }
 beforeEach(async () => {
   localStorage.clear();
+  Object.defineProperty(navigator, 'locks', {
+    configurable: true,
+    value: {
+      request: async (_key: string, work: () => Promise<unknown>) => work(),
+    },
+  });
   reg = await makeRegistration();
   upload = null;
   receipt = null;

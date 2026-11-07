@@ -214,7 +214,11 @@ export const useFetchNextKnowledgeListByPage = () => {
   const { filterValue, setFilterValue, handleFilterSubmit } =
     useHandleFilterSubmit();
 
-  const { data, isFetching: loading } = useQuery<IDatasetListResult>({
+  const {
+    data,
+    isFetching: loading,
+    refetch,
+  } = useQuery<IDatasetListResult>({
     queryKey: [
       KnowledgeApiAction.FetchKnowledgeListByPage,
       {
@@ -257,6 +261,7 @@ export const useFetchNextKnowledgeListByPage = () => {
     filterValue,
     setFilterValue,
     handleFilterSubmit,
+    refetch,
   };
 };
 
@@ -397,7 +402,9 @@ export const useUpdateKnowledge = (shouldFetchList = false) => {
             queryKey: [KnowledgeApiAction.FetchKnowledgeListByPage],
           });
         } else {
-          queryClient.invalidateQueries({ queryKey: ['fetchKnowledgeDetail'] });
+          queryClient.invalidateQueries({
+            queryKey: KnowledgeConfigurationKeys.all(),
+          });
         }
       }
       return data;
@@ -405,6 +412,12 @@ export const useUpdateKnowledge = (shouldFetchList = false) => {
   });
 
   return { data, loading, saveKnowledgeConfiguration: mutateAsync };
+};
+
+export const KnowledgeConfigurationKeys = {
+  all: () => [KnowledgeApiAction.FetchKnowledgeDetail] as const,
+  detail: (knowledgeBaseId: string | null | undefined) =>
+    [...KnowledgeConfigurationKeys.all(), knowledgeBaseId] as const,
 };
 
 export const useFetchKnowledgeBaseConfiguration = (props?: {
@@ -416,7 +429,7 @@ export const useFetchKnowledgeBaseConfiguration = (props?: {
   const knowledgeBaseId = searchParams.get('id') || id;
 
   const { data, isFetching: loading } = useQuery<IDataset>({
-    queryKey: [KnowledgeApiAction.FetchKnowledgeDetail, knowledgeBaseId],
+    queryKey: KnowledgeConfigurationKeys.detail(knowledgeBaseId),
     initialData: {} as IDataset,
     gcTime: 0,
     enabled: !!knowledgeBaseId && isEdit,

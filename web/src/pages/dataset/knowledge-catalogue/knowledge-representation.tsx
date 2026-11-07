@@ -113,6 +113,7 @@ function ContentSelection({
       () => (params.get('parsed') === '1' ? 'parsed' : 'text'),
     ),
     [generation, setGeneration] = useState(0),
+    [readRefresh, setReadRefresh] = useState(0),
     [indexChoice, setIndexChoice] = useState<LocalLexicalChoice | null>(null);
   let fixed: ContentAddress | null = null,
     error: unknown = null;
@@ -161,7 +162,10 @@ function ContentSelection({
       setMode('document');
     },
     reset = clear,
-    refresh = () => setGeneration((n) => n + 1);
+    refresh = () => {
+      setGeneration((n) => n + 1);
+      setReadRefresh((n) => n + 1);
+    };
   if (error) return <CatalogueFailure error={error} onRetry={reset} />;
   const textSelection: Selection | null =
     mode === 'text' && source && source.domain_id === scope.domain
@@ -212,15 +216,26 @@ function ContentSelection({
           key={parsedChoiceKey(params)}
           scope={scope}
           source={source}
+          readRefresh={readRefresh}
           onChoose={chooseParsed}
           onClear={clearParsed}
         />
       )}
       {mode === 'structure' && (
-        <StructureChoice scope={scope} onChoose={choose} onClear={clear} />
+        <StructureChoice
+          scope={scope}
+          onChoose={choose}
+          onClear={clear}
+          readRefresh={readRefresh}
+        />
       )}
       {mode === 'document' && (
-        <OriginalChoice scope={scope} onChoose={choose} onClear={clear} />
+        <OriginalChoice
+          scope={scope}
+          onChoose={choose}
+          onClear={clear}
+          readRefresh={readRefresh}
+        />
       )}
       {target ? (
         <ResolvedContent
@@ -634,11 +649,13 @@ type ParsedHistory = {
 function ParsedChoice({
   scope,
   source,
+  readRefresh,
   onChoose,
   onClear,
 }: {
   scope: ContentScope;
   source: KnowledgeSource | null;
+  readRefresh: number;
   onChoose: (value: Selection) => void;
   onClear: () => void;
 }) {
@@ -671,8 +688,10 @@ function ParsedChoice({
       : undefined;
   const [file, setFile] = useState<File | null>(null),
     [problem, setProblem] = useState<unknown>(null),
-    [busy, setBusy] = useState('');
+    [busy, setBusy] = useState(''),
+    [publishedRefresh, setPublishedRefresh] = useState(0);
   const resultShown = useRef(''),
+    mounted = useRef(true),
     cancelRequest = useRef<
       | Parameters<
           ReturnType<typeof useContentParsedTaskCancel>['mutateAsync']
@@ -693,6 +712,12 @@ function ParsedChoice({
     (error) => error instanceof KnowledgeRequestError && error.status === 401,
   );
   useContentScopeError(privateError);
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
   useEffect(() => {
     resultShown.current = '';
     onClear();
@@ -912,8 +937,11 @@ function ParsedChoice({
   const refresh = async () => {
     setProblem(null);
     await policy.refetch();
+    if (!mounted.current) return;
     if (route.source) await current.refetch();
+    if (!mounted.current) return;
     if (route.task) await task.refetch();
+    if (mounted.current) setPublishedRefresh((value) => value + 1);
   };
   const resetRoute = () =>
     writeRoute('', '', {
@@ -1089,7 +1117,17 @@ function ParsedChoice({
             )}
           </Button>
           <PublishedParsedChoices
-            key={contentCanonical(meta.source_ref)}
+            key={
+              contentCanonical(meta.source_ref) +
+              ':' +
+              publishedRefresh +
+              ':' +
+              readRefresh +
+              ':' +
+              (task.data?.state === 'succeeded'
+                ? task.data.task_id + ':' + task.data.revision
+                : '')
+            }
             scope={scope}
             source={meta}
             onChoose={onChoose}

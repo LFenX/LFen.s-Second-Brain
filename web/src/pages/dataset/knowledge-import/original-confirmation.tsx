@@ -91,6 +91,9 @@ export function OriginalReceiptView({ flow }: { flow: OriginalFlow }) {
   const another = () => {
     void flow.startAnother();
   };
+  const startNew = () => {
+    void flow.startNewRegistration();
+  };
   return (
     <section className="space-y-4" aria-label={t('knowledgeOriginal.receipt')}>
       <h2 className="text-lg font-semibold">
@@ -110,9 +113,21 @@ export function OriginalReceiptView({ flow }: { flow: OriginalFlow }) {
       <p className="text-sm text-text-secondary">
         {t('knowledgeOriginal.receiptSnapshot')}
       </p>
-      <Button variant="outline" onClick={another} disabled={flow.busy}>
-        {t('knowledgeOriginal.another')}
-      </Button>
+      <div className="flex flex-wrap gap-2">
+        <Button
+          variant="outline"
+          onClick={another}
+          disabled={flow.busy || flow.cancelling}
+        >
+          {t('knowledgeOriginal.continueRegistration')}
+        </Button>
+        <Button
+          onClick={startNew}
+          disabled={flow.busy || flow.cancelling || flow.unknown}
+        >
+          {t('knowledgeOriginal.startNewRegistration')}
+        </Button>
+      </div>
     </section>
   );
 }

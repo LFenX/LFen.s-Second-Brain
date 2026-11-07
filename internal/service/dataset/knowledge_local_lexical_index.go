@@ -12,6 +12,7 @@ import (
 	"ragflow/internal/ingestion/component"
 	"ragflow/internal/ingestion/task/indexdoc"
 	"ragflow/internal/tokenizer"
+	"sort"
 	"strings"
 	"unicode/utf8"
 )
@@ -162,6 +163,7 @@ type lexicalTokenInput struct {
 	TextSHA256      string
 	SourceID        string
 	ByteLength      int64
+	StartByte       int64
 	Text            string
 	Name            string
 }
@@ -169,7 +171,7 @@ type lexicalTokenInput struct {
 func lexicalTokenize(ctx context.Context, job entity.KnowledgeLexicalJobRecord, units []lexicalUnit) ([]map[string]any, int64, error) {
 	inputs := make([]lexicalTokenInput, len(units))
 	for i, unit := range units {
-		inputs[i] = lexicalTokenInput{ID: unit.Row.ID, Binding: unit.Row.Binding, Reference: unit.Row.Reference, ReferenceSHA256: unit.Row.ReferenceSHA256, TextSHA256: unit.Row.TextSHA256, SourceID: unit.Row.Target.Source.SourceID, ByteLength: unit.Row.ByteLength, Text: unit.Text, Name: unit.Name}
+		inputs[i] = lexicalTokenInput{ID: unit.Row.ID, Binding: unit.Row.Binding, Reference: unit.Row.Reference, ReferenceSHA256: unit.Row.ReferenceSHA256, TextSHA256: unit.Row.TextSHA256, SourceID: unit.Row.Target.Source.SourceID, ByteLength: unit.Row.ByteLength, StartByte: unit.Row.Member.Range.Start, Text: unit.Text, Name: unit.Name}
 	}
 	return lexicalTokenizeInputs(ctx, job, inputs)
 }
@@ -182,10 +184,28 @@ func lexicalTokenizeInputs(ctx context.Context, job entity.KnowledgeLexicalJobRe
 	if err != nil {
 		return nil, 0, err
 	}
+	// Reading order belongs to each fixed binding, independent of the selected set.
+	byBinding := make(map[string][]int)
+	for i, unit := range units {
+		byBinding[unit.Binding] = append(byBinding[unit.Binding], i)
+	}
+	orderByInput := make([]int, len(units))
+	for _, indices := range byBinding {
+		sort.Slice(indices, func(i, j int) bool {
+			left, right := units[indices[i]], units[indices[j]]
+			if left.StartByte != right.StartByte {
+				return left.StartByte < right.StartByte
+			}
+			return left.ID < right.ID
+		})
+		for order, i := range indices {
+			orderByInput[i] = order
+		}
+	}
 	rows := make([]map[string]any, 0, len(units))
 	var tokenless int64
 	for i, unit := range units {
-		if !entity.ValidKnowledgeLexicalHash(unit.ID) || !entity.ValidKnowledgeLexicalHash(unit.Binding) || !entity.ValidKnowledgeLexicalID(unit.SourceID) || unit.ByteLength != int64(len(unit.Text)) || unit.ByteLength > 8192 || !utf8.ValidString(unit.Text) || !utf8.ValidString(unit.Name) || len(unit.Reference) == 0 || len(unit.Reference) > 64<<10 || !utf8.ValidString(unit.Reference) || lexicalSHA([]byte(unit.Text)) != unit.TextSHA256 || lexicalSHA([]byte(unit.Reference)) != unit.ReferenceSHA256 {
+		if !entity.ValidKnowledgeLexicalHash(unit.ID) || !entity.ValidKnowledgeLexicalHash(unit.Binding) || !entity.ValidKnowledgeLexicalID(unit.SourceID) || unit.StartByte < 0 || unit.ByteLength != int64(len(unit.Text)) || unit.ByteLength > 8192 || !utf8.ValidString(unit.Text) || !utf8.ValidString(unit.Name) || len(unit.Reference) == 0 || len(unit.Reference) > 64<<10 || !utf8.ValidString(unit.Reference) || lexicalSHA([]byte(unit.Text)) != unit.TextSHA256 || lexicalSHA([]byte(unit.Reference)) != unit.ReferenceSHA256 {
 			return nil, 0, lexicalError(409, "integrity_error")
 		}
 		out, err := stage.Invoke(ctx, dao.DB, map[string]any{"name": unit.Name, "tenant_id": "", "kb_id": job.DomainID, "lang": job.Language, "output_format": "chunks", "chunks": []map[string]any{{"text": unit.Text}}})
@@ -215,7 +235,7 @@ func lexicalTokenizeInputs(ctx context.Context, job entity.KnowledgeLexicalJobRe
 		row["knowledge_binding_kwd"] = unit.Binding
 		row["knowledge_ref"] = unit.Reference
 		row["available_int"] = 0
-		row["chunk_order_int"] = i
+		row["chunk_order_int"] = orderByInput[i]
 		if _, err := indexdoc.ProcessChunksForPipeline(chunks, unit.SourceID, unit.Name, job.CreatedAt); err != nil {
 			return nil, 0, err
 		}

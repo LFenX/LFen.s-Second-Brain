@@ -63,7 +63,7 @@ func TestContentKnowledgeCandidateAPIWiringUnavailableOwner(t *testing.T) {
 	}
 }
 
-func TestContentKnowledgeCandidateNonPOSTNoStore(t *testing.T) {
+func TestContentKnowledgeCandidateUnsupportedMethodNoStore(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	profile, err := NewKnowledgeContentMCPHandler(&dataset.DatasetService{})
 	if err != nil {
@@ -72,7 +72,7 @@ func TestContentKnowledgeCandidateNonPOSTNoStore(t *testing.T) {
 	defer profile.Close()
 	response := httptest.NewRecorder()
 	ctx, _ := gin.CreateTestContext(response)
-	ctx.Request = httptest.NewRequest(http.MethodGet, "/api/v1/knowledge/content/mcp", nil)
+	ctx.Request = httptest.NewRequest(http.MethodPut, "/api/v1/knowledge/content/mcp", nil)
 	profile.HandleMCP(ctx)
 	ctx.Writer.WriteHeaderNow()
 	if response.Code != http.StatusMethodNotAllowed || response.Header().Get("Allow") != http.MethodPost || response.Header().Get("Cache-Control") != "no-store" {

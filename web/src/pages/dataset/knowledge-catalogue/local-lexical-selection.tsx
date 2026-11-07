@@ -332,10 +332,12 @@ export function StructureChoice({
   scope,
   onChoose,
   onClear,
+  readRefresh = 0,
 }: {
   scope: ContentScope;
   onChoose: (value: Selection) => void;
   onClear: () => void;
+  readRefresh?: number;
 }) {
   const [project, setProject] = useState(''),
     [view, setView] = useState('');
@@ -346,9 +348,18 @@ export function StructureChoice({
   };
   return (
     <div className="space-y-3">
-      <ProjectPicker domain={scope.domain} onChoose={choose} />
+      <ProjectPicker
+        key={readRefresh}
+        domain={scope.domain}
+        onChoose={choose}
+      />
       {project && (
-        <StructureHeadChoice scope={scope} project={project} onView={setView} />
+        <StructureHeadChoice
+          key={project + ':' + readRefresh}
+          scope={scope}
+          project={project}
+          onView={setView}
+        />
       )}
       {view && (
         <StructureMembers
@@ -443,10 +454,12 @@ export function OriginalChoice({
   scope,
   onChoose,
   onClear,
+  readRefresh = 0,
 }: {
   scope: ContentScope;
   onChoose: (value: Selection) => void;
   onClear: () => void;
+  readRefresh?: number;
 }) {
   const [original, setOriginal] = useState<OriginalRevision | null>(null);
   const choose = (value: OriginalRevision) => {
@@ -455,10 +468,10 @@ export function OriginalChoice({
   };
   return (
     <div className="space-y-3">
-      <DocumentOriginalList scope={scope} onSelect={choose} />
+      <DocumentOriginalList key={readRefresh} scope={scope} onSelect={choose} />
       {original && (
         <OriginalHeadChoice
-          key={original.source_revision_id}
+          key={original.source_revision_id + ':' + readRefresh}
           scope={scope}
           original={original}
           onChoose={onChoose}

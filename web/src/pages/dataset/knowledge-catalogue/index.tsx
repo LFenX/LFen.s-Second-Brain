@@ -3,6 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { Link, useParams, useSearchParams } from 'react-router';
 import { Button } from '@/components/ui/button';
 import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible';
+import {
   useKnowledgeContract,
   useKnowledgeDomain,
   useKnowledgeGroups,
@@ -388,6 +393,7 @@ function DomainCatalogue({
   const [path, setPath] = useState<KnowledgeGroup[]>([]);
   const [source, setSource] = useState<KnowledgeSource | null>(null);
   const [explainContent, setExplainContent] = useState(false);
+  const [navigationOpen, setNavigationOpen] = useState(false);
   const toggleContentExplanation = () => setExplainContent((value) => !value);
   const [sourceView, setSourceView] = useState<
     | 'text'
@@ -523,9 +529,9 @@ function DomainCatalogue({
   }
   return (
     <CatalogueScopeFailure.Provider value={setScopeFailure}>
-      <header className="space-y-3 border-b border-border-button pb-4">
+      <header className="shrink-0 space-y-3 border-b border-border-button pb-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h1 className="break-all text-2xl font-semibold">
+          <h1 className="break-all text-lg font-semibold sm:text-2xl">
             {domain.data.name} · {t('knowledgeCatalogue.title')}
           </h1>
           <Button variant="outline" onClick={handleRefresh}>
@@ -577,141 +583,157 @@ function DomainCatalogue({
           </Link>
         </p>
       )}
-      <div
+      <Collapsible
         key={generation}
-        className="grid min-h-0 flex-1 grid-cols-1 gap-6 overflow-auto pt-4 xl:grid-cols-[minmax(16rem,1fr)_minmax(0,2fr)]"
+        open={navigationOpen}
+        onOpenChange={setNavigationOpen}
+        className="flex min-h-0 flex-1 flex-col gap-3 pt-4 xl:grid xl:grid-cols-[minmax(16rem,1fr)_minmax(0,2fr)] xl:gap-6"
       >
-        <nav
-          aria-label={t('knowledgeCatalogue.structure')}
-          className="min-w-0 space-y-4 overflow-auto"
-        >
-          <div className="flex flex-wrap items-center gap-2">
-            <Button variant="outline" onClick={handleDomainRoot}>
-              {t('knowledgeCatalogue.allSources')}
-            </Button>
-            {!!path.length && (
-              <Button variant="outline" onClick={handleGroupParent}>
-                {t('knowledgeCatalogue.parentGroup')}
+        <CollapsibleTrigger asChild>
+          <Button variant="outline" className="self-start xl:hidden">
+            {t(
+              navigationOpen
+                ? 'knowledgeDocument.collapse'
+                : 'knowledgeDocument.expand',
+            )}{' '}
+            · {t('knowledgeCatalogue.structure')}
+          </Button>
+        </CollapsibleTrigger>
+        <CollapsibleContent forceMount asChild>
+          <nav
+            aria-label={t('knowledgeCatalogue.structure')}
+            className="min-h-0 max-h-[40dvh] min-w-0 space-y-4 overflow-auto data-[state=closed]:hidden xl:max-h-none xl:data-[state=closed]:block"
+          >
+            <div className="flex flex-wrap items-center gap-2">
+              <Button variant="outline" onClick={handleDomainRoot}>
+                {t('knowledgeCatalogue.allSources')}
               </Button>
-            )}
-          </div>
-          <p className="break-all text-sm">
-            {[domain.data.name, ...path.map((group) => group.name)].join(' / ')}
-          </p>
-          <h2 className="font-semibold">{t('knowledgeCatalogue.groups')}</h2>
-          <Groups
-            domainId={domainId}
-            path={path}
-            onSelect={handleGroupSelect}
-            onRefresh={handleRefresh}
-          />
-          <h2 className="font-semibold">{t('knowledgeCatalogue.sources')}</h2>
-          <div className="flex flex-wrap gap-2">
-            <Button
-              variant={sourceView === 'content' ? 'default' : 'outline'}
-              aria-pressed={sourceView === 'content'}
-              onClick={showContent}
-            >
-              {t('knowledgeConsumption.content')}
-            </Button>
-            <Button
-              variant={sourceView === 'text' ? 'default' : 'outline'}
-              aria-pressed={sourceView === 'text'}
-              onClick={showText}
-            >
-              {t('knowledgeOriginal.textSources')}
-            </Button>
-            <Button
-              variant={sourceView === 'original' ? 'default' : 'outline'}
-              aria-pressed={sourceView === 'original'}
-              onClick={showOriginals}
-            >
-              {t('knowledgeOriginal.originals')}
-            </Button>
-            <Button
-              variant={sourceView === 'web' ? 'default' : 'outline'}
-              aria-pressed={sourceView === 'web'}
-              onClick={showWeb}
-            >
-              {t('knowledgeWeb.revisions')}
-            </Button>
-            <Button
-              variant={sourceView === 'lifecycle' ? 'default' : 'outline'}
-              aria-pressed={sourceView === 'lifecycle'}
-              onClick={showLifecycle}
-            >
-              {t('knowledgeLifecycle.title')}
-            </Button>
-            <Button
-              variant={sourceView === 'structure' ? 'default' : 'outline'}
-              aria-pressed={sourceView === 'structure'}
-              onClick={showStructure}
-            >
-              {t('knowledgeStructure.title')}
-            </Button>
-            <Button
-              variant={sourceView === 'document' ? 'default' : 'outline'}
-              aria-pressed={sourceView === 'document'}
-              onClick={showDocument}
-            >
-              {t('knowledgeDocument.title')}
-            </Button>
-            <Button
-              variant={sourceView === 'local-lexical' ? 'default' : 'outline'}
-              aria-pressed={sourceView === 'local-lexical'}
-              onClick={showLocalLexical}
-            >
-              {t('knowledgeLocalLexical.title')}
-            </Button>
-          </div>
-          {sourceView === 'content' ? (
-            <>
+              {!!path.length && (
+                <Button variant="outline" onClick={handleGroupParent}>
+                  {t('knowledgeCatalogue.parentGroup')}
+                </Button>
+              )}
+            </div>
+            <p className="break-all text-sm">
+              {[domain.data.name, ...path.map((group) => group.name)].join(
+                ' / ',
+              )}
+            </p>
+            <h2 className="font-semibold">{t('knowledgeCatalogue.groups')}</h2>
+            <Groups
+              domainId={domainId}
+              path={path}
+              onSelect={handleGroupSelect}
+              onRefresh={handleRefresh}
+            />
+            <h2 className="font-semibold">{t('knowledgeCatalogue.sources')}</h2>
+            <div className="flex flex-wrap gap-2">
+              <Button
+                variant={sourceView === 'content' ? 'default' : 'outline'}
+                aria-pressed={sourceView === 'content'}
+                onClick={showContent}
+              >
+                {t('knowledgeConsumption.content')}
+              </Button>
+              <Button
+                variant={sourceView === 'text' ? 'default' : 'outline'}
+                aria-pressed={sourceView === 'text'}
+                onClick={showText}
+              >
+                {t('knowledgeOriginal.textSources')}
+              </Button>
+              <Button
+                variant={sourceView === 'original' ? 'default' : 'outline'}
+                aria-pressed={sourceView === 'original'}
+                onClick={showOriginals}
+              >
+                {t('knowledgeOriginal.originals')}
+              </Button>
+              <Button
+                variant={sourceView === 'web' ? 'default' : 'outline'}
+                aria-pressed={sourceView === 'web'}
+                onClick={showWeb}
+              >
+                {t('knowledgeWeb.revisions')}
+              </Button>
+              <Button
+                variant={sourceView === 'lifecycle' ? 'default' : 'outline'}
+                aria-pressed={sourceView === 'lifecycle'}
+                onClick={showLifecycle}
+              >
+                {t('knowledgeLifecycle.title')}
+              </Button>
+              <Button
+                variant={sourceView === 'structure' ? 'default' : 'outline'}
+                aria-pressed={sourceView === 'structure'}
+                onClick={showStructure}
+              >
+                {t('knowledgeStructure.title')}
+              </Button>
+              <Button
+                variant={sourceView === 'document' ? 'default' : 'outline'}
+                aria-pressed={sourceView === 'document'}
+                onClick={showDocument}
+              >
+                {t('knowledgeDocument.title')}
+              </Button>
+              <Button
+                variant={sourceView === 'local-lexical' ? 'default' : 'outline'}
+                aria-pressed={sourceView === 'local-lexical'}
+                onClick={showLocalLexical}
+              >
+                {t('knowledgeLocalLexical.title')}
+              </Button>
+            </div>
+            {sourceView === 'content' ? (
+              <>
+                <p className="text-sm text-text-secondary">
+                  {t('knowledgeConsumption.chooseSourceHint')}
+                </p>
+                <Sources
+                  domainId={domainId}
+                  groupId={path.at(-1)?.id}
+                  onSelect={handleContentSourceSelect}
+                  onRefresh={handleRefresh}
+                />
+              </>
+            ) : sourceView === 'local-lexical' ? (
               <p className="text-sm text-text-secondary">
-                {t('knowledgeConsumption.chooseSourceHint')}
+                {t('knowledgeLocalLexical.fixedHint')}
               </p>
+            ) : sourceView === 'document' ? (
+              <p className="text-sm text-text-secondary">
+                {t('knowledgeDocument.chooseOriginal')}
+              </p>
+            ) : sourceView === 'structure' ? (
+              <p className="text-sm text-text-secondary">
+                {t('knowledgeStructure.chooseProject')}
+              </p>
+            ) : sourceView === 'lifecycle' ? (
+              <p className="text-sm text-text-secondary">
+                {t('knowledgeLifecycle.selectSource')}
+              </p>
+            ) : sourceView === 'web' ? (
+              <WebRevisions
+                domain={domainId}
+                owner={domain.data.owner_id}
+                group={path.at(-1)?.id}
+              />
+            ) : sourceView === 'original' ? (
+              <OriginalRevisions domain={domainId} group={path.at(-1)?.id} />
+            ) : (
               <Sources
                 domainId={domainId}
                 groupId={path.at(-1)?.id}
-                onSelect={handleContentSourceSelect}
+                onSelect={setSource}
                 onRefresh={handleRefresh}
               />
-            </>
-          ) : sourceView === 'local-lexical' ? (
-            <p className="text-sm text-text-secondary">
-              {t('knowledgeLocalLexical.fixedHint')}
-            </p>
-          ) : sourceView === 'document' ? (
-            <p className="text-sm text-text-secondary">
-              {t('knowledgeDocument.chooseOriginal')}
-            </p>
-          ) : sourceView === 'structure' ? (
-            <p className="text-sm text-text-secondary">
-              {t('knowledgeStructure.chooseProject')}
-            </p>
-          ) : sourceView === 'lifecycle' ? (
-            <p className="text-sm text-text-secondary">
-              {t('knowledgeLifecycle.selectSource')}
-            </p>
-          ) : sourceView === 'web' ? (
-            <WebRevisions
-              domain={domainId}
-              owner={domain.data.owner_id}
-              group={path.at(-1)?.id}
-            />
-          ) : sourceView === 'original' ? (
-            <OriginalRevisions domain={domainId} group={path.at(-1)?.id} />
-          ) : (
-            <Sources
-              domainId={domainId}
-              groupId={path.at(-1)?.id}
-              onSelect={setSource}
-              onRefresh={handleRefresh}
-            />
-          )}
-        </nav>
+            )}
+          </nav>
+        </CollapsibleContent>
         <main
           aria-label={t('knowledgeCatalogue.original')}
-          className="min-w-0 overflow-auto"
+          className="min-h-0 min-w-0 flex-1 overflow-auto"
         >
           {sourceView === 'content' ? (
             <Suspense fallback={<CatalogueLoading />}>
@@ -780,7 +802,7 @@ function DomainCatalogue({
               />
             )}
         </main>
-      </div>
+      </Collapsible>
     </CatalogueScopeFailure.Provider>
   );
 }
@@ -820,9 +842,9 @@ export default function KnowledgeCatalogue() {
     );
   }
   return (
-    <section className="flex h-full min-h-0 min-w-0 flex-col p-6 text-text-primary">
+    <section className="flex h-full min-h-0 min-w-0 flex-col p-2 text-text-primary sm:p-6">
       <Link
-        className="mb-4 text-sm text-text-secondary underline"
+        className="mb-2 shrink-0 text-sm text-text-secondary underline sm:mb-4"
         to="/datasets"
       >
         {t('knowledgeCatalogue.datasets')}

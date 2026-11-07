@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "lock_id": "KCRL-20261030-23",
-  "recorded_date": "2026-10-30",
-  "coordinator_thread_id": "claude-code-local-79bc9071-1cda-4656-9f5c-5d063df6d3de",
-  "source_baseline_git_head": "54e7c1b7a6987c3d7c8159b3490667ef9a072a5d",
+  "lock_id": "KCRL-20261107-27",
+  "recorded_date": "2026-11-07",
+  "coordinator_thread_id": "01a1a9a5-c724-7f52-8cbb-16d19d982ba4",
+  "source_baseline_git_head": "87d61549e4b8ecdf2827170c7851b2ed7bb0c251",
   "source_snapshot": {
     "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
-    "file_count": 5032,
-    "sha256": "08f5276a62571134d624d12d1dc9833321be3b3a7042696f0be9d24b907565ac"
+    "file_count": 5045,
+    "sha256": "834afa38cfd22b83fcd3d599fe4ec7e1a6e57e22428ab3e2e517a1b460260359"
   },
   "unlisted_policy": "DeniedAsCurrentGuidance_UntilCoordinatorReviewsAndAssigns",
   "authority_order": [
@@ -26,15 +26,15 @@
       "allowed_uses": [
         "reference_policy"
       ],
-      "limitation": "资料用途/入口规则；不批准产品接口、模型或发布。",
+      "limitation": "资料用途/入口规则；不批准产品接口、模型或发布。 Ref27仅登记同一round3选择器内受控命名源码集合后续，不续授模型、业务、部署或产品验收范围。",
       "selector": {
         "type": "whole"
       },
       "integrity": {
         "mode": "file",
-        "sha256": "f9b4999c7b9d797f655ed7e6e1961b0b80de1e6dbd6a2398474a04949e398bea"
+        "sha256": "22b62583d69cdcd74a86c37ab45cbed78ce838e8398f7ee1c607a2a5c00892de"
       },
-      "selection_sha256": "f9b4999c7b9d797f655ed7e6e1961b0b80de1e6dbd6a2398474a04949e398bea"
+      "selection_sha256": "22b62583d69cdcd74a86c37ab45cbed78ce838e8398f7ee1c607a2a5c00892de"
     },
     {
       "id": "root-instructions",
@@ -1369,6 +1369,128 @@
         "sha256": "1e8fc6a46c48bc4d92d0b8e4194fed71ae28a9362bf976d3c784f3711b9d81e3"
       },
       "selection_sha256": "1e8fc6a46c48bc4d92d0b8e4194fed71ae28a9362bf976d3c784f3711b9d81e3"
+    },
+    {
+      "id": "coordination-20261105-current",
+      "path": "docs/knowledge-core-execution-record.json",
+      "role": "current_context",
+      "allowed_uses": [
+        "current_context"
+      ],
+      "limitation": "2026-11-05最新真人协调分工与分层截止事实；foundation-current只保留原需求/批准对象范围，旧Paused/主控/source不作本轮进度。旧coordination-current ID保留其历史前缀范围，无新契约冻结、模型、真实内容、发布或最终验收授权。",
+      "selector": {
+        "type": "json_pointer",
+        "pointer": "/coordination_20261105"
+      },
+      "integrity": {
+        "mode": "selection",
+        "sha256": "e62a3af68c2d70c0e5abf8fe063e9a310d986cef2dc05ae62b6c5da73ec4201a"
+      },
+      "selection_sha256": "e62a3af68c2d70c0e5abf8fe063e9a310d986cef2dc05ae62b6c5da73ec4201a"
+    },
+    {
+      "id": "reference-lock-23-history",
+      "path": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261030-23.json",
+      "role": "historical_evidence",
+      "allowed_uses": [
+        "historical_baseline"
+      ],
+      "limitation": "23锁原字节历史配置，仅供追溯；不继承其中旧主控、写窗或当前资料授权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "4c863ce7bed90587b687294a7e06b489c04bbab090fcf590c8444a35cf205976"
+      },
+      "selection_sha256": "4c863ce7bed90587b687294a7e06b489c04bbab090fcf590c8444a35cf205976"
+    },
+    {
+      "id": "coordination-20261105-round2",
+      "path": "docs/knowledge-core-execution-record.json",
+      "role": "current_context",
+      "allowed_uses": [
+        "current_context"
+      ],
+      "selector": {
+        "type": "json_pointer",
+        "pointer": "/coordination_20261105_round2"
+      },
+      "integrity": {
+        "mode": "selection",
+        "sha256": "67c57c14fcc3c4af405645cb02056f658f6253a01c6abc4f2fca5655a429a683"
+      },
+      "selection_sha256": "67c57c14fcc3c4af405645cb02056f658f6253a01c6abc4f2fca5655a429a683",
+      "limitation": "最新独立闭窗事实；旧24快照不改，不批准新接口/模型/真实内容/最终验收/发布。"
+    },
+    {
+      "id": "reference-lock-24-history",
+      "path": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261105-24.json",
+      "role": "historical_evidence",
+      "allowed_uses": [
+        "historical_baseline"
+      ],
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "4e034c76731e74c4d927dd97bd1b4fd7e35de734fc28145d866cd9aad961d2e7"
+      },
+      "selection_sha256": "4e034c76731e74c4d927dd97bd1b4fd7e35de734fc28145d866cd9aad961d2e7",
+      "limitation": "24原字节历史配置，仅供追溯；不继承旧写窗和当前进度。"
+    },
+    {
+      "id": "coordination-20261106-round3",
+      "path": "docs/knowledge-core-execution-record.json",
+      "role": "current_context",
+      "allowed_uses": [
+        "current_context"
+      ],
+      "selector": {
+        "type": "json_pointer",
+        "pointer": "/coordination_20261106_round3"
+      },
+      "integrity": {
+        "mode": "selection",
+        "sha256": "7d6424372252cb75a76bebb4ba31747b19a49c4d627fcacfff0d1f609df1110d"
+      },
+      "selection_sha256": "7d6424372252cb75a76bebb4ba31747b19a49c4d627fcacfff0d1f609df1110d",
+      "limitation": "第三轮独立事实入口；仅在实际28源码及独立B回执核实、独审和总控精确四文件租约后机械生效。各运行/质量门按各自时点与版本保留，不批准新接口、模型、真实内容、最终验收或发布。 Ref27只追加shared_ordinal_followup；旧28和分层运行事实保留原时点，命名源码集合后续仅据实际应用与分层回执登记，未完成门不标Pass。"
+    },
+    {
+      "id": "reference-lock-25-history",
+      "path": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261105-25.json",
+      "role": "historical_evidence",
+      "allowed_uses": [
+        "historical_baseline"
+      ],
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "834794de4d8823e65abe2898bae50a785a32b172c14f37d41895ffdd7cb6e7a6"
+      },
+      "selection_sha256": "834794de4d8823e65abe2898bae50a785a32b172c14f37d41895ffdd7cb6e7a6",
+      "limitation": "25锁151884字节原始快照，仅追溯，不恢复旧主控、写窗、进度或额外资料授权。"
+    },
+    {
+      "id": "reference-lock-26-history",
+      "path": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261106-26.json",
+      "role": "historical_evidence",
+      "allowed_uses": [
+        "historical_baseline"
+      ],
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "5ffa4579e9061c052ad9afa9a1b9895c9cb7e2a9cab7887651592430b3e4f6c6"
+      },
+      "selection_sha256": "5ffa4579e9061c052ad9afa9a1b9895c9cb7e2a9cab7887651592430b3e4f6c6",
+      "limitation": "26锁154916字节原始快照，仅追溯，不恢复旧写窗、运行验收或额外资料授权。"
     }
   ],
   "protected_files": {
@@ -1465,6 +1587,11 @@
       "path": "docs/knowledge-core-execution-record.json",
       "pointer": "/foundation_continuation/interface_decision/answer_original",
       "sha256": "916dc1c3fc0286856ed9764178dce877c943c529c6e1d8936779a5fbef676b0e"
+    },
+    {
+      "path": "docs/knowledge-core-execution-record.json",
+      "pointer": "/coordination_20261105/request_snapshot/original",
+      "sha256": "a483d5687e3147f567be4be9f819bd2cd7adaa321b2ec1a53410f944b97dacf9"
     }
   ],
   "archive": {
@@ -2685,6 +2812,30 @@
           "selector": {
             "type": "json_pointer",
             "pointer": "/implementation_decision"
+          }
+        },
+        {
+          "id": "coordination-20261105-current",
+          "role": "current_context",
+          "selector": {
+            "type": "json_pointer",
+            "pointer": "/coordination_20261105"
+          }
+        },
+        {
+          "id": "coordination-20261105-round2",
+          "role": "current_context",
+          "selector": {
+            "type": "json_pointer",
+            "pointer": "/coordination_20261105_round2"
+          }
+        },
+        {
+          "id": "coordination-20261106-round3",
+          "role": "current_context",
+          "selector": {
+            "type": "json_pointer",
+            "pointer": "/coordination_20261106_round3"
           }
         }
       ]
@@ -4024,6 +4175,58 @@
       "path": "阶段1-A底座验证报告.json",
       "category": "UnreviewedBackground_NotCurrentGuidance",
       "allowed_entries": []
+    },
+    {
+      "path": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261030-23.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "reference-lock-23-history",
+          "role": "historical_evidence",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261105-24.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "reference-lock-24-history",
+          "role": "historical_evidence",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261105-25.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "reference-lock-25-history",
+          "role": "historical_evidence",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261106-26.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "reference-lock-26-history",
+          "role": "historical_evidence",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
     }
   ],
   "external_sources": [
@@ -4110,25 +4313,24 @@
     "引用锁是工程工作流约束，不是OS文件权限隔离",
     "无自动refresh/approve或网络访问；子任务不得自改摘要以求通过"
   ],
-  "update_rule": "仅主控在同范围授权内复核后变更，保存旧摘要/原因/新校验；接口/模型/发布新范围仍需真人具体决定。",
-  "manifest_payload_sha256": "1dae0cfd3ac18e93dc676b06e6404b2d8e347bb674fb599e6393e0d43ecedec2",
+  "update_rule": "仅主控在同范围内复核事实/差异/摘要并决定变更；最新真人规定总控不做实际工作，机械应用只能由具名执行者在唯一精确写窗中承担。保存旧锁原字节/摘要、原因、受影响条目和新校验；不得为未知漂移刷新摘要。接口/模型/真实内容/发布新范围仍需真人具体决定。",
+  "manifest_payload_sha256": "048d7bd6336a343794ce431ac1fd8f7a5fc9c67dbaad0f8ef3633ffd86d7f6cb",
   "previous_baseline": {
-    "lock_id": "KCRL-20261030-22",
-    "manifest_sha256": "6479fe96b2d0a7ca39a654d3972e474c4c92d7ab0b944d0d8746108461be06cf",
-    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261030-22.json",
-    "archive_sha256": "68d35f72292aa5123e4ba97eab8f0a64fbd72b33c682a97e3ca56d04816711c5",
+    "lock_id": "KCRL-20261106-26",
+    "manifest_sha256": "5ffa4579e9061c052ad9afa9a1b9895c9cb7e2a9cab7887651592430b3e4f6c6",
+    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261106-26.json",
+    "archive_sha256": "5ffa4579e9061c052ad9afa9a1b9895c9cb7e2a9cab7887651592430b3e4f6c6",
     "changed_files": [
-      "docs/knowledge-core-content-lexical-v0.2.candidate.schema.json",
+      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261106-26.json",
       "docs/knowledge-core-execution-record.json",
       "docs/knowledge-core-reference-authority.md",
-      "docs/knowledge-core-realignment-plan.md",
-      "会话接续说明.md",
-      "docs/archive/README.md",
-      "internal/mcp/knowledge_content_tools.json",
-      "internal/mcp/knowledge_content_candidate_test.go",
-      "web/src/utils/knowledge-local-lexical.ts",
-      "web/src/pages/dataset/knowledge-catalogue/__tests__/local-lexical.test.tsx"
+      "docs/knowledge-core-reference-lock.json",
+      "internal/engine/elasticsearch/knowledge_local_lexical_ordinal_test.go",
+      "internal/service/dataset/knowledge_content_lexical_plan.go",
+      "internal/service/dataset/knowledge_content_lexical_test.go",
+      "internal/service/dataset/knowledge_lexical_ordinal_test.go",
+      "internal/service/dataset/knowledge_local_lexical_index.go"
     ],
-    "reason": "真人要求恢复开发并批准KCF-021-20261030-01：策略视图local_policy_version允许默认关闭0；同步恢复状态行，产品源码仅改三处schema副本及定向测试。"
+    "reason": "受控命名源码集合内部ordinal修复实际应用后的后续观察；保留Ref26原字节与全部旧事实/失败/时点，只更新同一round3中的shared_ordinal_followup和对应当前导语。actual source仅采用实际回执及全源码实测；不推成旧runtime或质量通过，不续授新产品、模型或部署范围。"
   }
 }

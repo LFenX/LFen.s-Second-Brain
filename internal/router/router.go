@@ -245,6 +245,7 @@ func (r *Router) Setup(engine *gin.Engine) {
 	r.setupKnowledgeLocalLexicalRoutes(engine)
 	engine.POST("/api/v1/knowledge/mcp", r.datasetsHandler.KnowledgeMCP)
 	engine.POST("/api/v1/knowledge/content/mcp", r.datasetsHandler.KnowledgeContentMCP)
+	engine.GET("/api/v1/knowledge/content/mcp", r.datasetsHandler.KnowledgeContentMCP)
 	authorized := engine.Group("")
 	authorized.Use(r.authHandler.AuthMiddleware())
 	{

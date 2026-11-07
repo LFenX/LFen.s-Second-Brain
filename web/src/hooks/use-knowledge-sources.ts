@@ -5,6 +5,8 @@ import type {
   KnowledgeRegistrationRequest,
 } from '@/interfaces/request/knowledge-sources';
 import service from '@/services/knowledge-sources-service';
+import type { KnowledgeImportReceipt } from '@/interfaces/database/knowledge-sources';
+import { KnowledgeConfigurationKeys } from './use-knowledge-request';
 import { KnowledgeRequestError } from '@/services/knowledge-foundation-service';
 import {
   getKnowledgeSessionScope,
@@ -41,6 +43,21 @@ export function useKnowledgeImportActions(domainId: string) {
     return value;
   }
   const options = { retry: false, gcTime: 0 } as const;
+  const refreshImportedSource = (receipt: KnowledgeImportReceipt) => {
+    if (
+      getKnowledgeSessionScope() !== session ||
+      receipt.domain_id !== domainId ||
+      receipt.status !== 'succeeded'
+    )
+      return;
+    void client.invalidateQueries({
+      queryKey: KnowledgeKeys.domainScope(session, domainId),
+    });
+    void client.invalidateQueries({
+      queryKey: KnowledgeConfigurationKeys.detail(domainId),
+      exact: true,
+    });
+  };
   const register = useMutation({
     ...options,
     mutationKey: KnowledgeImportKeys.action(session, domainId, 'register'),
@@ -68,12 +85,7 @@ export function useKnowledgeImportActions(domainId: string) {
       registrationId: string;
       request: KnowledgeCommitRequest;
     }) => guarded(() => service.confirm(domainId, registrationId, request)),
-    onSuccess: (result) => {
-      if (result.data.status === 'succeeded')
-        void client.invalidateQueries({
-          queryKey: KnowledgeKeys.domainScope(session, domainId),
-        });
-    },
+    onSuccess: (result) => refreshImportedSource(result.data),
   });
   const readPreview = useMutation({
     ...options,
@@ -97,6 +109,7 @@ export function useKnowledgeImportActions(domainId: string) {
       registrationId: string;
       taskId: string;
     }) => guarded(() => service.receipt(domainId, registrationId, taskId)),
+    onSuccess: refreshImportedSource,
   });
   const registration = useMutation({
     ...options,

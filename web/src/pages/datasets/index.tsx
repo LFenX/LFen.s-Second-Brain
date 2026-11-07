@@ -20,6 +20,7 @@ import { DatasetCreatingDialog } from './dataset-creating-dialog';
 import { useSaveKnowledge } from './hooks';
 import { useRenameDataset } from './use-rename-dataset';
 import { useSelectOwners } from './use-select-owners';
+import { KnowledgeDomainEntry } from './knowledge-domain-entry';
 
 export default function Datasets() {
   const { t } = useTranslation();
@@ -43,9 +44,14 @@ export default function Datasets() {
     setFilterValue,
     handleFilterSubmit,
     loading,
+    refetch,
   } = useFetchNextKnowledgeListByPage();
 
   const owners = useSelectOwners();
+  const handleRefreshDatasets = useCallback(
+    () => refetch({ throwOnError: true }),
+    [refetch],
+  );
 
   const {
     datasetRenameLoading,
@@ -83,82 +89,89 @@ export default function Datasets() {
 
   return (
     <>
-      {loading && !kbs?.length ? (
-        <article
-          className="size-full flex items-center justify-center"
-          data-testid="datasets-list"
-        >
-          <Spin size="large" />
-        </article>
-      ) : kbs?.length || searchString ? (
-        <article
-          className="size-full min-w-0 flex flex-col"
-          data-testid="datasets-list"
-        >
-          <header className="mb-4 min-w-0 px-5 pt-8">
-            <ListFilterBar
-              title={t('header.dataset')}
-              searchString={searchString}
-              onSearchChange={handleInputChange}
-              value={filterValue}
-              filters={owners}
-              onChange={handleFilterSubmit}
-              icon={'datasets'}
+      <div className="flex h-full min-h-0 min-w-0 flex-col">
+        <div className="flex shrink-0 justify-end px-5 pt-3">
+          <KnowledgeDomainEntry refreshNative={handleRefreshDatasets} />
+        </div>
+        <div className="min-h-0 flex-1">
+          {loading && !kbs?.length ? (
+            <article
+              className="size-full flex items-center justify-center"
+              data-testid="datasets-list"
             >
-              <Button onClick={showModal}>
-                <Plus className="size-[1em]" />
-                {t('knowledgeList.createKnowledgeBase')}
-              </Button>
-            </ListFilterBar>
-          </header>
+              <Spin size="large" />
+            </article>
+          ) : kbs?.length || searchString ? (
+            <article
+              className="size-full min-w-0 flex flex-col"
+              data-testid="datasets-list"
+            >
+              <header className="mb-4 min-w-0 px-5 pt-8">
+                <ListFilterBar
+                  title={t('header.dataset')}
+                  searchString={searchString}
+                  onSearchChange={handleInputChange}
+                  value={filterValue}
+                  filters={owners}
+                  onChange={handleFilterSubmit}
+                  icon={'datasets'}
+                >
+                  <Button onClick={showModal}>
+                    <Plus className="size-[1em]" />
+                    {t('knowledgeList.createKnowledgeBase')}
+                  </Button>
+                </ListFilterBar>
+              </header>
 
-          {kbs?.length ? (
-            <>
-              <CardContainer className="flex-1 overflow-auto px-5">
-                {kbs.map((dataset) => (
-                  <DatasetCard
-                    dataset={dataset}
-                    key={dataset.id}
-                    showDatasetRenameModal={showDatasetRenameModal}
+              {kbs?.length ? (
+                <>
+                  <CardContainer className="flex-1 overflow-auto px-5">
+                    {kbs.map((dataset) => (
+                      <DatasetCard
+                        dataset={dataset}
+                        key={dataset.id}
+                        showDatasetRenameModal={showDatasetRenameModal}
+                      />
+                    ))}
+                  </CardContainer>
+
+                  <footer className="mt-4 px-5 pb-5">
+                    <RAGFlowPagination
+                      {...pick(pagination, 'current', 'pageSize')}
+                      total={total_datasets}
+                      onChange={handlePageChange}
+                    />
+                  </footer>
+                </>
+              ) : (
+                <div className="flex-1 flex items-center justify-center">
+                  <EmptyAppCard
+                    showIcon
+                    size="large"
+                    className="w-[480px] p-14"
+                    isSearch
+                    type={EmptyCardType.Dataset}
+                    onClick={() => showModal()}
                   />
-                ))}
-              </CardContainer>
-
-              <footer className="mt-4 px-5 pb-5">
-                <RAGFlowPagination
-                  {...pick(pagination, 'current', 'pageSize')}
-                  total={total_datasets}
-                  onChange={handlePageChange}
-                />
-              </footer>
-            </>
+                </div>
+              )}
+            </article>
           ) : (
-            <div className="flex-1 flex items-center justify-center">
+            <article
+              className="size-full flex items-center justify-center"
+              data-testid="datasets-list"
+            >
               <EmptyAppCard
                 showIcon
                 size="large"
                 className="w-[480px] p-14"
-                isSearch
                 type={EmptyCardType.Dataset}
                 onClick={() => showModal()}
               />
-            </div>
+            </article>
           )}
-        </article>
-      ) : (
-        <article
-          className="size-full flex items-center justify-center"
-          data-testid="datasets-list"
-        >
-          <EmptyAppCard
-            showIcon
-            size="large"
-            className="w-[480px] p-14"
-            type={EmptyCardType.Dataset}
-            onClick={() => showModal()}
-          />
-        </article>
-      )}
+        </div>
+      </div>
       {visible && (
         <DatasetCreatingDialog
           hideModal={hideModal}

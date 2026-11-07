@@ -386,14 +386,18 @@ export function useDocumentActions(s: DocumentScope) {
     run((signal) => service.download(view, rep, signal));
   const refresh = async (source?: string) => {
     await Promise.all([
-      client.invalidateQueries({
-        queryKey: KnowledgeDocumentKeys.policy(session, s),
-      }),
+      client.invalidateQueries(
+        { queryKey: KnowledgeDocumentKeys.policy(session, s) },
+        { throwOnError: true },
+      ),
       ...(source
         ? [
-            client.invalidateQueries({
-              queryKey: KnowledgeDocumentKeys.head(session, { ...s, source }),
-            }),
+            client.invalidateQueries(
+              {
+                queryKey: KnowledgeDocumentKeys.head(session, { ...s, source }),
+              },
+              { throwOnError: true },
+            ),
           ]
         : []),
     ]);

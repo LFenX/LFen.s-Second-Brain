@@ -102,6 +102,7 @@ export default defineConfig(({ mode }) => {
       },
     },
     css: {
+      preprocessorMaxWorkers: 0,
       modules: {
         localsConvention: 'camelCase',
       },

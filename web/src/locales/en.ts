@@ -1,5 +1,63 @@
 export default {
   translation: {
+    knowledgeDomain: {
+      entry: 'Create or choose a knowledge domain',
+      select: 'Choose an existing domain',
+      name: 'Domain name',
+      category: 'Domain category',
+      category_family: 'Family',
+      category_personal: 'Personal',
+      category_project: 'Project',
+      category_experience: 'Experience',
+      category_resource: 'Resource',
+      category_custom: 'Custom',
+      policyHint:
+        'Create an empty private dataset and register it as a domain. This only organizes the catalogue, with no model calls, parsing or automatic ingestion. Shared is a project classification and does not change access.',
+      create: 'Create knowledge domain',
+      nameHint:
+        'Use at most 128 UTF-8 bytes. The category cannot change after registration.',
+      existingDataset: 'Register an existing empty private dataset',
+      existingHint:
+        'Only your private datasets with empty counters are listed. The server still checks connectors, task history and access. Check the identity before choosing; names are not unique identities.',
+      identity: 'View object identity',
+      details: 'View receipt details',
+      loading: 'Loading',
+      refresh: 'Refresh existing results',
+      more: 'Load more',
+      readFailure: 'Could not read results. Try refreshing.',
+      identityPending:
+        'Confirming the current user. Creation and selection require a confirmed identity.',
+      working: 'Waiting for a receipt.',
+      nativeCreated:
+        'The native dataset has a real ID. Domain registration is not confirmed yet. Check its status and continue with this ID.',
+      nativeUnknown:
+        'Dataset creation is unconfirmed. Refresh existing results and explicitly choose a verified identity. Creation will not repeat automatically.',
+      check: 'Check registration',
+      retryRegistration: 'Register this dataset with the same category',
+      unknown:
+        'The result is unconfirmed. Check existing state before continuing. Creation will not repeat automatically.',
+      rejected:
+        'The request did not complete. Check the receipt; any confirmed dataset ID is retained.',
+      ready: 'Domain confirmed',
+      original: 'Register original content',
+      directory: 'Register a directory',
+      catalogue: 'Open knowledge catalogue',
+    },
+    groupCreate: {
+      title: 'Create root project group',
+      hint: 'Create a root project group with at most 256 characters, then explicitly choose it for this registration. This does not parse content or change existing classification.',
+      name: 'Project group name',
+      create: 'Create project group',
+      identity: 'View group identity',
+      created: 'Group receipt confirmed',
+      found: 'Existing group verified',
+      select: 'Choose this project group',
+      unknown:
+        'Group creation is unconfirmed and will not repeat automatically.',
+      recoveryHint:
+        'Refresh and verify real group identities. Duplicate names are allowed. Choosing an existing group does not prove the original request created it.',
+      checkChoice: 'Verify this item',
+    },
     knowledgeConsumption: {
       archTitle: 'Content data architecture and current boundaries',
       archFlow: 'Original content to fixed evidence',
@@ -512,7 +570,7 @@ export default {
       representation_partial: 'Partial representation',
       representation_empty: 'Empty representation',
       textIndex_empty: 'No indexable reading text',
-      textIndex_available: 'Reading text indexed',
+      textIndex_available: 'Reading text available for indexing',
       originalCoverage_source_utf8_exact: 'Exact original UTF-8 byte coverage',
       originalCoverage_not_asserted: 'Original-file coverage not asserted',
       unsearchableNodes: 'Unsearchable nodes: {{count}}',
@@ -1096,6 +1154,11 @@ export default {
         'The receipt preserves the source snapshot at confirmation. Fixed details show whether the revision is current when read.',
       fixedDetails: 'View fixed original',
       another: 'Import another file',
+      continueRegistration: 'Continue with the current file scope',
+      startNewRegistration: 'Start another collection',
+      reloadRecovery: 'Reload import progress',
+      lockingUnavailable:
+        'This browser cannot safely switch import progress. Upgrade or use a browser with Web Locks support, then retry. Saved originals can still be viewed and downloaded.',
       newPreparation: 'Prepare a new upload',
       recovery: 'Check original request',
       unconfirmed: 'The result is unconfirmed. Check the original result.',

@@ -1,4 +1,11 @@
-import { useState, type ChangeEvent, type FormEvent } from 'react';
+import {
+  useCallback,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type FormEvent,
+} from 'react';
+import { GroupCreate } from './group-create';
 import { useTranslation } from 'react-i18next';
 import Contract from '../../../../../docs/knowledge-sources-v1.openapi.json';
 import { Button } from '@/components/ui/button';
@@ -56,22 +63,38 @@ function GroupPicker({
   domainId,
   value,
   onChange,
+  disabled,
+  createDisabled,
 }: {
   domainId: string;
   value: string | null;
   onChange: (value: string | null) => void;
+  disabled?: boolean;
+  createDisabled?: boolean;
 }) {
   const { t } = useTranslation();
   const [path, setPath] = useState<KnowledgeGroup[]>([]);
   const [selectedName, setSelectedName] = useState('');
+  const [createLocked, setCreateLocked] = useState(false);
+  const lock = useRef(false);
+  const handleLockChange = useCallback((next: boolean) => {
+    lock.current = next;
+    setCreateLocked(next);
+  }, []);
   const query = useKnowledgeGroups(domainId, path.at(-1)?.id);
   const handleSelect = (group: KnowledgeGroup) => {
+    if (disabled || lock.current) return;
     setSelectedName(group.name);
     onChange(group.id);
   };
-  const handleBrowse = (group: KnowledgeGroup) => setPath([...path, group]);
-  const handleParent = () => setPath(path.slice(0, -1));
+  const handleBrowse = (group: KnowledgeGroup) => {
+    if (!lock.current) setPath([...path, group]);
+  };
+  const handleParent = () => {
+    if (!lock.current) setPath(path.slice(0, -1));
+  };
   const handleNone = () => {
+    if (disabled || lock.current) return;
     onChange(null);
     setSelectedName('');
   };
@@ -94,40 +117,56 @@ function GroupPicker({
           {path.map((group) => group.name).join(' / ') ||
             t('knowledgeImport.rootGroups')}
         </p>
-        <div className="flex gap-2">
-          <Button type="button" variant="outline" onClick={handleNone}>
-            {t('knowledgeImport.noGroup')}
-          </Button>
-          {!!path.length && (
-            <Button type="button" variant="ghost" onClick={handleParent}>
-              {t('knowledgeCatalogue.parentGroup')}
+        <fieldset disabled={disabled || createLocked} className="space-y-2">
+          <div className="flex gap-2">
+            <Button type="button" variant="outline" onClick={handleNone}>
+              {t('knowledgeImport.noGroup')}
             </Button>
+            {!!path.length && (
+              <Button type="button" variant="ghost" onClick={handleParent}>
+                {t('knowledgeCatalogue.parentGroup')}
+              </Button>
+            )}
+          </div>
+          {query.isError ? (
+            <CatalogueFailure error={query.error} onRetry={handleRetry} />
+          ) : query.isPending ? (
+            <CatalogueLoading />
+          ) : (
+            <>
+              <ul className="space-y-2">
+                {query.data.pages
+                  .flatMap((page) => page.items)
+                  .map((group) => (
+                    <GroupChoice
+                      key={group.id}
+                      group={group}
+                      onSelect={handleSelect}
+                      onBrowse={handleBrowse}
+                    />
+                  ))}
+              </ul>
+              <LoadMore
+                more={query.hasNextPage}
+                loading={query.isFetching}
+                onMore={handleMore}
+              />
+            </>
           )}
-        </div>
-        {query.isError ? (
-          <CatalogueFailure error={query.error} onRetry={handleRetry} />
-        ) : query.isPending ? (
-          <CatalogueLoading />
-        ) : (
-          <>
-            <ul className="space-y-2">
-              {query.data.pages
-                .flatMap((page) => page.items)
-                .map((group) => (
-                  <GroupChoice
-                    key={group.id}
-                    group={group}
-                    onSelect={handleSelect}
-                    onBrowse={handleBrowse}
-                  />
-                ))}
-            </ul>
-            <LoadMore
-              more={query.hasNextPage}
-              loading={query.isFetching}
-              onMore={handleMore}
-            />
-          </>
+        </fieldset>
+        {!path.length && (
+          <GroupCreate
+            domainId={domainId}
+            disabled={disabled}
+            createDisabled={createDisabled}
+            groups={query.data?.pages.flatMap((page) => page.items) || []}
+            onSelect={handleSelect}
+            onLockChange={handleLockChange}
+            onRefresh={handleRetry}
+            onMore={handleMore}
+            more={query.hasNextPage}
+            reading={query.isFetching}
+          />
         )}
       </div>
     </details>
@@ -138,10 +177,14 @@ export function ClassificationFields({
   domainId,
   value,
   onChange,
+  disabled,
+  createDisabled,
 }: {
   domainId: string;
   value: Classification;
   onChange: (value: Classification) => void;
+  disabled?: boolean;
+  createDisabled?: boolean;
 }) {
   const { t } = useTranslation();
   const handleGroup = (group_id: string | null) =>
@@ -151,11 +194,14 @@ export function ClassificationFields({
   const handleLanguage = (event: ChangeEvent<HTMLInputElement>) =>
     onChange({ ...value, language: event.target.value });
   return (
-    <div className="space-y-3">
+    <fieldset disabled={disabled} className="space-y-3">
       <GroupPicker
+        key={domainId}
         domainId={domainId}
         value={value.group_id}
         onChange={handleGroup}
+        disabled={disabled}
+        createDisabled={createDisabled}
       />
       <div className="grid gap-3 sm:grid-cols-2">
         <label className="space-y-1">
@@ -182,7 +228,7 @@ export function ClassificationFields({
           />
         </label>
       </div>
-    </div>
+    </fieldset>
   );
 }
 

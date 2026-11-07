@@ -96,6 +96,19 @@ export function OriginalFailure({
     </div>
   );
 }
+function groupCreationDisabled(flow: OriginalFlow) {
+  return (
+    flow.unknown ||
+    !!flow.confirmPending ||
+    (!!flow.createPending &&
+      (flow.createPending.kind === 'upload' || !flow.registration)) ||
+    flow.blocked ||
+    flow.recoveryChanged ||
+    flow.lockingUnavailable ||
+    flow.corruptRecovery
+  );
+}
+
 export function OriginalRegistrationForm({
   domain,
   flow,
@@ -176,6 +189,8 @@ export function OriginalRegistrationForm({
         domainId={domain}
         value={classification}
         onChange={setClassification}
+        disabled={flow.busy || flow.cancelling}
+        createDisabled={groupCreationDisabled(flow)}
       />
       <Button
         type="submit"
@@ -255,6 +270,8 @@ export function OriginalFileFields({
         domainId={domain}
         value={classification}
         onChange={setClassification}
+        disabled={flow.busy || flow.cancelling}
+        createDisabled={groupCreationDisabled(flow)}
       />
       <Button type="submit" disabled={flow.busy || !files.length}>
         {t('knowledgeOriginal.prepare')}

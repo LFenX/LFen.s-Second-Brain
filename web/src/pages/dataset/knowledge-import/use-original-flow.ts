@@ -13,7 +13,11 @@ import type {
 import service, {
   OriginalRequestError,
 } from '@/services/knowledge-original-service';
-import foundationService from '@/services/knowledge-foundation-service';
+import foundationService, {
+  KnowledgeContractVersion,
+  KnowledgeRequestError,
+} from '@/services/knowledge-foundation-service';
+import { validKnowledgeData } from '@/utils/knowledge-foundation-schema';
 import {
   useOriginalActions,
   KnowledgeOriginalKeys,
@@ -30,6 +34,7 @@ import {
 } from '@/utils/knowledge-original-schema';
 import {
   originalScope,
+  originalStorageKey,
   originalDigest,
   originalUnexpired,
   latestOriginalUpload,
@@ -42,6 +47,8 @@ import {
   type OriginalConfirmPending,
 } from '@/utils/knowledge-original';
 
+class OriginalRecoveryChanged extends Error {}
+
 export function useOriginalFlow(
   domain: string,
   owner: string,
@@ -51,6 +58,8 @@ export function useOriginalFlow(
     actions = useOriginalActions(domain);
   const [initial] = useState(() => {
     try {
+      if (storageKey !== originalStorageKey(domain, owner))
+        throw Error('Original recovery scope mismatch');
       return {
         create: loadOriginalRecovery(storageKey, 'create', domain, owner),
         confirm: loadOriginalRecovery(storageKey, 'confirm', domain, owner),
@@ -77,6 +86,37 @@ export function useOriginalFlow(
     [canReset, setCanReset] = useState(false);
   const [progress, setProgress] = useState(0),
     [cancelling, setCancelling] = useState(false);
+  const [operation, setOperation] = useState(0),
+    [freshRegistration, setFreshRegistration] = useState(false),
+    [recoveryChanged, setRecoveryChanged] = useState(false),
+    [lockingUnavailable, setLockingUnavailable] = useState(false);
+  const [scope] = useState(() => ({
+    domain,
+    owner,
+    storageKey,
+    session: getKnowledgeSessionScope(),
+  }));
+  const view = useRef(scope);
+  view.current = {
+    domain,
+    owner,
+    storageKey,
+    session: getKnowledgeSessionScope(),
+  };
+  const epoch = useRef(0),
+    lostRecovery = useRef(false),
+    lostScope = useRef(false),
+    recovery = useRef({ create: initial.create, confirm: initial.confirm }),
+    completedReceipt = useRef<OriginalReceipt | null>(null);
+  if (
+    scope.domain !== domain ||
+    scope.owner !== owner ||
+    scope.storageKey !== storageKey ||
+    scope.session !== view.current.session
+  ) {
+    lostScope.current = true;
+    lostRecovery.current = true;
+  }
   const Alive = useRef(true),
     Busy = useRef(false),
     Latest = useRef<OriginalUpload | null>(null);
@@ -87,6 +127,18 @@ export function useOriginalFlow(
   const RejectedConfirmation = useRef<string | null>(null);
   Confirmation.current = confirmPending;
   Action.current = actions;
+  const isCurrent = useCallback(
+    () =>
+      Alive.current &&
+      !lostRecovery.current &&
+      epoch.current === operation &&
+      scope.domain === view.current.domain &&
+      scope.owner === view.current.owner &&
+      scope.storageKey === view.current.storageKey &&
+      scope.session === view.current.session &&
+      scope.session === getKnowledgeSessionScope(),
+    [operation, scope],
+  );
   useEffect(() => {
     Alive.current = true;
     return () => {
@@ -96,9 +148,16 @@ export function useOriginalFlow(
   }, []);
   const fail = useCallback(
     (value: unknown) => {
-      if (!Alive.current) return;
+      if (!isCurrent()) return;
       setError(value);
-      if (originalScopeFailure(value)) {
+      if (
+        value instanceof OriginalRecoveryChanged ||
+        originalScopeFailure(value)
+      ) {
+        lostRecovery.current = true;
+        completedReceipt.current = null;
+        Controller.current?.abort();
+        setRecoveryChanged(true);
         RejectedConfirmation.current = null;
         setCanReset(false);
         setCanResend(false);
@@ -106,51 +165,177 @@ export function useOriginalFlow(
         setRegistration(null);
         setUpload(null);
         setReceipt(null);
-        client.removeQueries({
-          queryKey: KnowledgeOriginalKeys.scope(
-            getKnowledgeSessionScope(),
-            domain,
-          ),
-        });
+        if (originalScopeFailure(value))
+          client.removeQueries({
+            queryKey: KnowledgeOriginalKeys.scope(
+              getKnowledgeSessionScope(),
+              domain,
+            ),
+          });
       }
     },
-    [client, domain],
+    [client, domain, isCurrent],
   );
-  const rememberUpload = useCallback((value: OriginalUpload) => {
-    if (!Alive.current) return value;
-    Latest.current = latestOriginalUpload(Latest.current, value);
-    setUpload(Latest.current);
-    if (!Confirmation.current && !Busy.current) setUnknown(false);
-    return Latest.current;
-  }, []);
+  const checkRecovery = useCallback(() => {
+    if (!isCurrent()) throw Error('Inactive original operation');
+    const stored = {
+      create: loadOriginalRecovery(storageKey, 'create', domain, owner),
+      confirm: loadOriginalRecovery(storageKey, 'confirm', domain, owner),
+    };
+    if (JSON.stringify(stored) !== JSON.stringify(recovery.current))
+      throw new OriginalRecoveryChanged(
+        'Original recovery changed in another view',
+      );
+  }, [isCurrent, storageKey, domain, owner]);
+  useEffect(() => {
+    const check = (event: StorageEvent | Event) => {
+      if (
+        event instanceof StorageEvent &&
+        event.key !== null &&
+        event.key !== storageKey + ':create' &&
+        event.key !== storageKey + ':confirm'
+      )
+        return;
+      if (!isCurrent() || initial.error) return;
+      try {
+        checkRecovery();
+      } catch (issue) {
+        fail(issue);
+      }
+    };
+    window.addEventListener('storage', check);
+    window.addEventListener('focus', check);
+    return () => {
+      window.removeEventListener('storage', check);
+      window.removeEventListener('focus', check);
+    };
+  }, [checkRecovery, isCurrent, fail, initial.error, storageKey]);
+  const rememberUpload = useCallback(
+    (value: OriginalUpload) => {
+      if (!isCurrent()) return value;
+      const pending = recovery.current.create;
+      if (
+        pending?.kind !== 'upload' ||
+        pending.registration_id !== value.registration_id ||
+        (pending.upload_id !== null && pending.upload_id !== value.upload_id)
+      )
+        return value;
+      checkRecovery();
+      Latest.current = latestOriginalUpload(Latest.current, value);
+      setUpload(Latest.current);
+      if (!Confirmation.current && !Busy.current) setUnknown(false);
+      return Latest.current;
+    },
+    [checkRecovery, isCurrent],
+  );
+  async function exclusive(work: () => Promise<void>) {
+    if (!isCurrent()) throw Error('Inactive original operation');
+    const locks = navigator.locks;
+    if (!locks || typeof locks.request !== 'function') {
+      setLockingUnavailable(true);
+      throw Error('Browser recovery locking unavailable');
+    }
+    setLockingUnavailable(false);
+    let entered = false;
+    try {
+      await locks.request(storageKey + ':write', async () => {
+        entered = true;
+        checkRecovery();
+        await work();
+      });
+    } catch (issue) {
+      if (!entered && isCurrent()) setLockingUnavailable(true);
+      throw issue;
+    }
+  }
   async function request<T>(work: () => Promise<T>) {
-    if (!Alive.current) throw Error('Inactive original view');
-    const result = await Action.current.run(work);
-    if (!Alive.current) throw Error('Inactive original view');
+    checkRecovery();
+    const result = await Action.current.run(() => {
+      checkRecovery();
+      return work();
+    });
+    checkRecovery();
     return result;
   }
   async function run(work: () => Promise<void>) {
-    if (Busy.current || initial.error) return;
+    if (Busy.current || Cancelling.current || initial.error || !isCurrent())
+      return false;
     Busy.current = true;
     setBusy(true);
     setError(null);
     try {
-      await work();
+      await exclusive(work);
+      return true;
     } catch (issue) {
       if ((issue as { code?: string }).code !== 'ERR_CANCELED') fail(issue);
       else if (Alive.current && !Cancelling.current) setUnknown(true);
+      return false;
     } finally {
       Busy.current = false;
       if (Alive.current) setBusy(false);
     }
   }
   function saveCreate(value: OriginalCreatePending) {
+    checkRecovery();
     saveOriginalRecovery(storageKey, 'create', value);
+    recovery.current.create = value;
     setCreatePending(value);
+    checkRecovery();
   }
   function saveConfirm(value: OriginalConfirmPending) {
+    checkRecovery();
     saveOriginalRecovery(storageKey, 'confirm', value);
+    recovery.current.confirm = value;
     setConfirmPending(value);
+    checkRecovery();
+  }
+  function clearRecovery(kind: 'create' | 'confirm') {
+    checkRecovery();
+    clearOriginalRecovery(storageKey, kind);
+    recovery.current[kind] = null;
+    if (kind === 'create') setCreatePending(null);
+    else setConfirmPending(null);
+    checkRecovery();
+  }
+  function rememberReceipt(value: OriginalReceipt) {
+    checkRecovery();
+    completedReceipt.current = value;
+    setReceipt(value);
+  }
+  function checkCompletedOperation() {
+    const saved = completedReceipt.current;
+    if (!saved || saved.import_task_id !== receipt?.import_task_id)
+      throw Error('Restore the completed original receipt first');
+    const pending = recovery.current;
+    if (pending.confirm)
+      checkOriginalReceipt(
+        saved,
+        domain,
+        pending.confirm.registration_id,
+        pending.confirm.request,
+      );
+    if (
+      pending.create &&
+      (pending.create.registration_id !== saved.registration_id ||
+        (pending.create.kind === 'upload' &&
+          pending.create.upload_id !== saved.upload_id))
+    )
+      throw Error('Resolve the other original request first');
+  }
+  function finishPreparation(isNew: boolean) {
+    epoch.current += 1;
+    setOperation(epoch.current);
+    setFreshRegistration(isNew);
+    completedReceipt.current = null;
+    setUpload(null);
+    Latest.current = null;
+    setReceipt(null);
+    setUnknown(false);
+    setCanResend(false);
+    setCanReset(false);
+    RejectedConfirmation.current = null;
+    setBlocked(false);
+    setProgress(0);
   }
   function acceptRegistration(value: OriginalRegistration) {
     setRegistration(value);
@@ -195,7 +380,7 @@ export function useOriginalFlow(
     )
       throw Error('Recovered another receipt');
     saveConfirm({ ...original, import_task_id: value.import_task_id });
-    setReceipt(value);
+    rememberReceipt(value);
     RejectedConfirmation.current = null;
     setCanReset(false);
     setUnknown(false);
@@ -256,6 +441,44 @@ export function useOriginalFlow(
       throw issue;
     }
   }
+  async function readRetryScope() {
+    let currentDomain;
+    try {
+      currentDomain = await request(() => foundationService.domain(domain));
+    } catch (issue) {
+      if (
+        issue instanceof KnowledgeRequestError &&
+        issue.status === 502 &&
+        issue.code === 'knowledge_invalid_response'
+      )
+        throw new OriginalRequestError(409, 'policy_changed');
+      throw issue;
+    }
+    if (currentDomain.domain_id !== domain || currentDomain.owner_id !== owner)
+      throw new OriginalRequestError(404, 'knowledge_not_found');
+    if (currentDomain.contract_version !== KnowledgeContractVersion)
+      throw new OriginalRequestError(409, 'knowledge_contract_version');
+    if (!validKnowledgeData('Domain', currentDomain))
+      throw new OriginalRequestError(409, 'policy_changed');
+  }
+  async function readCreateByKey<T>(work: () => Promise<T>): Promise<T | null> {
+    try {
+      return await request(work);
+    } catch (issue) {
+      if (
+        !(issue instanceof OriginalRequestError) ||
+        issue.status !== 404 ||
+        issue.code !== 'knowledge_not_found'
+      )
+        throw issue;
+      await readRetryScope();
+      setBlocked(false);
+      setUnknown(true);
+      setCanResend(true);
+      setCanReset(false);
+      return null;
+    }
+  }
   async function readConfirmationContext(original: OriginalConfirmPending) {
     if (
       createPending?.kind !== 'upload' ||
@@ -287,6 +510,7 @@ export function useOriginalFlow(
       owner,
       original.registration_id,
     );
+    checkRecovery();
     if (
       value.upload_id !== original.request.upload_id ||
       (['ready', 'committed'].includes(value.state) &&
@@ -354,6 +578,7 @@ export function useOriginalFlow(
           createPending.registration_key !== input.registration_key)
       )
         throw Error('Re-enter the original registration configuration');
+      if (createPending && !registration) await readRetryScope();
       const original: OriginalCreatePending = {
         ...originalScope(domain, owner),
         kind: 'registration',
@@ -393,7 +618,7 @@ export function useOriginalFlow(
           current.upload_id,
           file,
           (event) => {
-            if (Alive.current)
+            if (isCurrent())
               setProgress(
                 Math.max(0, Math.min(100, (event.loaded / file.size) * 100)),
               );
@@ -540,7 +765,7 @@ export function useOriginalFlow(
       }
       try {
         if (createPending?.kind === 'registration') {
-          const result = await request(() =>
+          const result = await readCreateByKey(() =>
             service.registrationByKey(
               domain,
               owner,
@@ -548,6 +773,7 @@ export function useOriginalFlow(
               createPending.config_sha256,
             ),
           );
+          if (!result) return;
           saveCreate({
             ...createPending,
             registration_id: result.data.registration_id,
@@ -556,16 +782,17 @@ export function useOriginalFlow(
           return;
         }
         if (createPending?.kind === 'upload') {
-          const value = await acceptUpload(
-            (await request(() => service.uploadByKey(createPending))).data,
-            createPending,
+          const result = await readCreateByKey(() =>
+            service.uploadByKey(createPending),
           );
+          if (!result) return;
+          const value = await acceptUpload(result.data, createPending);
           const reg = await request(() =>
             service.registration(domain, value.registration_id, owner),
           );
           acceptRegistration(reg.data);
           if (value.state === 'committed' && value.import_task_id)
-            setReceipt(
+            rememberReceipt(
               (
                 await request(() =>
                   service.receipt(
@@ -599,7 +826,8 @@ export function useOriginalFlow(
         await sendConfirmation(confirmPending);
         return;
       }
-      if (createPending?.kind === 'upload')
+      if (createPending?.kind === 'upload') {
+        await readRetryScope();
         await acceptUpload(
           (
             await request(() =>
@@ -613,34 +841,37 @@ export function useOriginalFlow(
           ).data,
           createPending,
         );
+      }
     });
   async function cancel() {
-    if (Cancelling.current || !upload || receipt) return;
+    if (Cancelling.current || !isCurrent() || !upload || receipt) return;
     Cancelling.current = true;
     setCancelling(true);
     Controller.current?.abort();
     try {
-      const result = await request(() =>
-        service.cancel(domain, upload.registration_id, upload.upload_id),
-      );
-      const value = rememberUpload(result.data);
-      setUnknown(false);
-      setError(null);
-      if (value.state === 'committed' && value.import_task_id) {
-        const saved = (
-          await request(() =>
-            service.receipt(
-              domain,
-              value.registration_id,
-              value.import_task_id!,
-            ),
-          )
-        ).data;
-        if (saved.upload_id !== value.upload_id)
-          throw Error('Cancellation returned another receipt');
-        if (confirmPending) acceptReceipt(saved, confirmPending);
-        else setReceipt(saved);
-      }
+      await exclusive(async () => {
+        const result = await request(() =>
+          service.cancel(domain, upload.registration_id, upload.upload_id),
+        );
+        const value = rememberUpload(result.data);
+        setUnknown(false);
+        setError(null);
+        if (value.state === 'committed' && value.import_task_id) {
+          const saved = (
+            await request(() =>
+              service.receipt(
+                domain,
+                value.registration_id,
+                value.import_task_id!,
+              ),
+            )
+          ).data;
+          if (saved.upload_id !== value.upload_id)
+            throw Error('Cancellation returned another receipt');
+          if (confirmPending) acceptReceipt(saved, confirmPending);
+          else rememberReceipt(saved);
+        }
+      });
     } catch (issue) {
       fail(issue);
       setUnknown(true);
@@ -651,6 +882,7 @@ export function useOriginalFlow(
   }
   const startAnother = () =>
     run(async () => {
+      if (receipt) checkCompletedOperation();
       let recoveredRegistration: OriginalRegistration | null = null;
       if (confirmPending && !receipt) {
         if (
@@ -705,7 +937,7 @@ export function useOriginalFlow(
             ).data
           : null);
       if (!reg) throw Error('Restore the registration first');
-      clearOriginalRecovery(storageKey, 'confirm');
+      clearRecovery('confirm');
       saveCreate({
         ...originalScope(domain, owner),
         kind: 'registration',
@@ -713,39 +945,51 @@ export function useOriginalFlow(
         config_sha256: reg.config_sha256,
         registration_id: reg.registration_id,
       });
-      setConfirmPending(null);
-      setUpload(null);
-      Latest.current = null;
-      setReceipt(null);
-      setUnknown(false);
-      setCanResend(false);
-      setCanReset(false);
-      RejectedConfirmation.current = null;
-      setBlocked(false);
       setRegistration(reg);
-      setProgress(0);
+      finishPreparation(false);
     });
-  const reauthorize = () =>
-    run(async () => {
-      if (createPending || confirmPending) return;
-      setBlocked(false);
-      setError(null);
-      Action.current.reset();
+  const startNewRegistration = () => {
+    if (!completedReceipt.current || !receipt || blocked || unknown)
+      return Promise.resolve(false);
+    return run(async () => {
+      checkCompletedOperation();
+      clearRecovery('confirm');
+      clearRecovery('create');
+      setRegistration(null);
+      finishPreparation(true);
     });
+  };
+  const reauthorize = () => {
+    if (
+      !isCurrent() ||
+      Busy.current ||
+      Cancelling.current ||
+      createPending ||
+      confirmPending
+    )
+      return;
+    setBlocked(false);
+    setError(null);
+    Action.current.reset();
+  };
+  const active = isCurrent();
   return {
-    registration,
-    upload,
-    receipt,
-    createPending,
-    confirmPending,
+    registration: active ? registration : null,
+    upload: active ? upload : null,
+    receipt: active ? receipt : null,
+    createPending: active ? createPending : null,
+    confirmPending: active ? confirmPending : null,
     busy,
-    error,
-    blocked,
+    error: error || (active ? null : new Error('Inactive original view')),
+    blocked: !active || blocked,
     unknown,
     canResend,
     canReset,
     progress,
     cancelling,
+    freshRegistration,
+    recoveryChanged: recoveryChanged || lostScope.current,
+    lockingUnavailable,
     corruptRecovery: !!initial.error,
     fail,
     rememberUpload,
@@ -758,6 +1002,7 @@ export function useOriginalFlow(
     resend,
     cancel,
     startAnother,
+    startNewRegistration,
     reauthorize,
   };
 }
