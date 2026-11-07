@@ -14,6 +14,7 @@
  *  limitations under the License.
  */
 
+import { KnowledgeConfigurationKeys } from './knowledge-configuration-keys';
 import { useHandleFilterSubmit } from '@/components/list-filter-bar/use-handle-filter-submit';
 import message from '@/components/ui/message';
 import { isDatasetId } from '@/utils/dataset-util';
@@ -412,12 +413,6 @@ export const useUpdateKnowledge = (shouldFetchList = false) => {
   });
 
   return { data, loading, saveKnowledgeConfiguration: mutateAsync };
-};
-
-export const KnowledgeConfigurationKeys = {
-  all: () => [KnowledgeApiAction.FetchKnowledgeDetail] as const,
-  detail: (knowledgeBaseId: string | null | undefined) =>
-    [...KnowledgeConfigurationKeys.all(), knowledgeBaseId] as const,
 };
 
 export const useFetchKnowledgeBaseConfiguration = (props?: {

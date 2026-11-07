@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "id": "KCA-20261108-02-A",
+  "status": "SpecificHumanApprovedA_PendingRegistration_NotImplemented",
+  "subject_id": "KCA-20261108-02",
+  "subject_manifest": {
+    "path": ".local-data/coordination-20261108/design/knowledge-access-candidate02/subject-manifest.safe.json",
+    "bytes": 8262,
+    "sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+  },
+  "proposed_formal_subject_path": "docs/knowledge-access-20261108-02/subject-manifest.safe.json",
+  "selected_option": "A",
+  "question_item_id": "[\"request_user_input_async\",\"call_ae7af8c8856d4f04b6976c437cd2d60e\",0]",
+  "question_original": "是否按已独审方案 KCA-20261108-02 实施：个人只读共享 → 部门授权 → 临时 MCP 凭据？首版限定固定资料版本、结构化内容摘要、许可范围内固定顺序检索；权限变更后可能需续签。MCP 凭据默认 1 小时、可撤销，先支持可配置令牌的客户端。B 仅实施前两阶段，MCP 等指定 OAuth 方案。具体对象：[方案摘要](D:/LFen_project/dev_project/LFENsSecondBrain/.local-data/coordination-20261108/design/knowledge-access-candidate02/decision-summary.zh-CN.txt)，subject SHA-256：a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3。仍仅用合成资料，不新增模型调用。",
+  "options_original": [
+    "A：实施三个阶段（推荐）",
+    "B：先做个人／部门共享，MCP 暂缓"
+  ],
+  "answer_original": "A：实施三个阶段（推荐）",
+  "root_recorded_at_utc": "2026-11-07T19:36:57Z",
+  "time_meaning": "Root收到真人答复后首次记录时钟；不冒充用户点击时刻",
+  "record_prepared_at_utc": "2026-11-07T19:41:34.099Z",
+  "provenance": {
+    "coordinator_thread_id": "01a1a9a5-c724-7f52-8cbb-16d19d982ba4",
+    "source": "Root ROOT-KCA02-DECISION-PREP01 exact human reply transfer;field strings transcribed verbatim,not a reconstructed question or purported original JSON wire encoding.",
+    "human_reply_evidence": {
+      "path": ".local-data/coordination-20261108/access-decision/prep01/human-reply.original.json",
+      "bytes": 1101,
+      "sha256": "58bb711a9cdc7261b2c83cea975073bab23c05f91a369c0244621fdd2f28cc26"
+    },
+    "original_design_handoff": {
+      "path": ".local-data/coordination-20261108/design/knowledge-access-candidate02/handoff.safe.json",
+      "bytes": 22673,
+      "sha256": "d5e0f75c35ed948facc6518cd133d111fe778fd7d8097dada60c90fd7c7b1e73"
+    },
+    "independent_C_review": {
+      "path": ".local-data/coordination-20261108/review/knowledge-access02/handoff.safe.json",
+      "bytes": 14909,
+      "sha256": "5b164c901d476b718893efc811f7d2528d2426fbd463eb7bff761521fc99384f"
+    }
+  },
+  "approval": {
+    "meaning": "Specific human approval of the exact KCA-20261108-02 whole14-member subject and Option A S1/S2/S3 implementation scope;not a generic continue instruction.",
+    "stages": [
+      "S1_user_module_Web",
+      "S2_departments",
+      "S3_managed_MCP"
+    ],
+    "surface": {
+      "native_HTTP_operations": 14,
+      "per_stage": [
+        9,
+        2,
+        3
+      ],
+      "MCP_tools": 3,
+      "metadata_tables": 9
+    },
+    "approved_constraints": [
+      "Fixed complete source revisions/representations and exact module versions;no implicit latest/path/group/node inheritance.",
+      "Read or read_search grant with closed scoped evidence and structured member summaries;stable authorized-row search order.",
+      "Final effective subset must cover complete transitive provenance after narrowing;readonly first access stays inspect/read.",
+      "Coarse tenant authorization epoch renewal;one-time short-lived credential default1h,max8h,also bounded by parent Grant expiry,and revocable.",
+      "Named configurable Bearer clients first;native identity and existing Go ingestion/retrieval core reused.",
+      "Synthetic material only;no new model calls."
+    ],
+    "not_selected": "Option B S1/S2-only with S3 OAuth alternative was not selected.",
+    "specific_supersession": "Earlier pending-decision or department/temporary-MCP exclusions do not block this exact approved subject. Existing owner-only0.2 contracts keep their original behavior;this approval adds the separately scoped access design only.",
+    "still_excluded": [
+      "OAuth authorization-server design or arbitrary-Agent automatic onboarding",
+      "real AICS or any new model/OCR/transcription/embedding/rerank/generation calls",
+      "production deployment,external release/publication or final product acceptance",
+      "Agent personality/memory or root-directory restructuring",
+      "destructive resource/volume removal or recreating existing runtime credentials"
+    ]
+  },
+  "immutable_originals": {
+    "subject_member_count": 14,
+    "subject_member_bytes": 331418,
+    "original_Draft_and_Pending_fields": "Original writing-time states;retained byte-for-byte. This separate human decision supplies current exact approval;do not rewrite them or imply tests ran.",
+    "approved_subject_manifest_raw_bytes": 8262,
+    "approved_subject_manifest_raw_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3",
+    "public_copy_map": {
+      "path": ".local-data/coordination-20261108/access-decision/prep01/public-copy-map.json",
+      "bytes": 12952,
+      "sha256": "d90531766b8f6c73e82c66c1e58c60447310fae43ff4702bfece0272254c1150"
+    }
+  },
+  "implementation_state": {
+    "registration": "Pending_IndependentReviewAndRootRegistration",
+    "source_implementation": "NotImplemented",
+    "product_acceptance_groups": 70,
+    "product_tests": "AllNotRun",
+    "runtime_security_acceptance": "NotRun",
+    "C_review": "194 offline static checks and six design findings resolved;not runtime/product tests."
+  },
+  "execution_boundary": {
+    "this_task": "Ignored decision/mapping/entry/order preparation only;no source,Git,formal-doc,reference-lock,runtime,account or credential writes.",
+    "future_code_tasks": "Must cite a newly registered exact reference lock plus its Root-supplied raw SHA,entry/use and fresh bounded source lease;do not implement directly from ignored candidate paths.",
+    "stage_commits": "Latest human instruction requires commit and push after each completed accepted stage;Root assigns the scoped Git executor separately.",
+    "Ref28_source_closure": "Still requires A actual13 application receipt,actual canonical source fingerprint and Root acceptance. No Ref28 generated by this record."
+  }
+}

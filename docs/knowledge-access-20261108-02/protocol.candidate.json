@@ -1,0 +1,397 @@
+{
+  "id": "KCA-20261108-02",
+  "status": "Draft_PendingSpecificDecision",
+  "contract_version": "0.3.0-candidate",
+  "operations": [
+    {
+      "operation": "setDepartment",
+      "path": "/api/v1/knowledge/access/admin/departments/set",
+      "method": "POST",
+      "input": "SetDepartmentRequest",
+      "output": "Department",
+      "auth": "tenant_owner",
+      "success_status": 200,
+      "stage": "S2_departments",
+      "response": "SetDepartmentResponse"
+    },
+    {
+      "operation": "listDepartments",
+      "path": "/api/v1/knowledge/access/departments/list",
+      "method": "POST",
+      "input": "ListDepartmentsRequest",
+      "output": "ListDepartmentsData",
+      "auth": "native_same_tenant_catalog_or_owner_roster",
+      "success_status": 200,
+      "stage": "S2_departments",
+      "response": "ListDepartmentsResponse"
+    },
+    {
+      "operation": "setPolicy",
+      "path": "/api/v1/knowledge/access/admin/domains/policy/set",
+      "method": "POST",
+      "input": "SetPolicyRequest",
+      "output": "Policy",
+      "auth": "domain_owner",
+      "success_status": 200,
+      "stage": "S1_user_module_Web",
+      "response": "SetPolicyResponse"
+    },
+    {
+      "operation": "setModule",
+      "path": "/api/v1/knowledge/access/admin/modules/set",
+      "method": "POST",
+      "input": "SetModuleRequest",
+      "output": "ModuleAdmin",
+      "auth": "domain_owner",
+      "success_status": 200,
+      "stage": "S1_user_module_Web",
+      "response": "SetModuleResponse"
+    },
+    {
+      "operation": "getModuleAdmin",
+      "path": "/api/v1/knowledge/access/admin/modules/get",
+      "method": "POST",
+      "input": "GetModuleAdminRequest",
+      "output": "ModuleAdmin",
+      "auth": "domain_owner",
+      "success_status": 200,
+      "stage": "S1_user_module_Web",
+      "response": "GetModuleAdminResponse"
+    },
+    {
+      "operation": "listModules",
+      "path": "/api/v1/knowledge/access/modules/list",
+      "method": "POST",
+      "input": "ListModulesRequest",
+      "output": "ListModulesData",
+      "auth": "native_recipient",
+      "success_status": 200,
+      "stage": "S1_user_module_Web",
+      "response": "ListModulesResponse"
+    },
+    {
+      "operation": "createGrant",
+      "path": "/api/v1/knowledge/access/admin/grants/create",
+      "method": "POST",
+      "input": "CreateGrantRequest",
+      "output": "Grant",
+      "auth": "domain_owner",
+      "success_status": 201,
+      "stage": "S1_user_module_Web",
+      "response": "CreateGrantResponse"
+    },
+    {
+      "operation": "revokeGrant",
+      "path": "/api/v1/knowledge/access/admin/grants/revoke",
+      "method": "POST",
+      "input": "RevokeGrantRequest",
+      "output": "Revoked",
+      "auth": "domain_owner",
+      "success_status": 200,
+      "stage": "S1_user_module_Web",
+      "response": "RevokeGrantResponse"
+    },
+    {
+      "operation": "createCredential",
+      "path": "/api/v1/knowledge/access/credentials/create",
+      "method": "POST",
+      "input": "CreateCredentialRequest",
+      "output": "CredentialMintData",
+      "auth": "native_recipient",
+      "success_status": 201,
+      "stage": "S3_managed_MCP",
+      "response": "CreateCredentialResponse"
+    },
+    {
+      "operation": "revokeCredential",
+      "path": "/api/v1/knowledge/access/credentials/revoke",
+      "method": "POST",
+      "input": "RevokeCredentialRequest",
+      "output": "Revoked",
+      "auth": "credential_subject",
+      "success_status": 200,
+      "stage": "S3_managed_MCP",
+      "response": "RevokeCredentialResponse"
+    },
+    {
+      "operation": "listCredentials",
+      "path": "/api/v1/knowledge/access/credentials/list",
+      "method": "POST",
+      "input": "ListCredentialsRequest",
+      "output": "ListCredentialsData",
+      "auth": "credential_subject",
+      "success_status": 200,
+      "stage": "S3_managed_MCP",
+      "response": "ListCredentialsResponse"
+    },
+    {
+      "operation": "inspect",
+      "path": "/api/v1/knowledge/access/inspect",
+      "method": "POST",
+      "input": "InspectRequest",
+      "output": "InspectData",
+      "auth": "native_recipient",
+      "success_status": 200,
+      "stage": "S1_user_module_Web",
+      "response": "InspectResponse"
+    },
+    {
+      "operation": "search",
+      "path": "/api/v1/knowledge/access/search",
+      "method": "POST",
+      "input": "SearchRequest",
+      "output": "SearchData",
+      "auth": "native_recipient",
+      "success_status": 200,
+      "stage": "S1_user_module_Web",
+      "response": "SearchResponse"
+    },
+    {
+      "operation": "read",
+      "path": "/api/v1/knowledge/access/read",
+      "method": "POST",
+      "input": "ReadRequest",
+      "output": "ReadData",
+      "auth": "native_recipient",
+      "success_status": 200,
+      "stage": "S1_user_module_Web",
+      "response": "ReadResponse"
+    }
+  ],
+  "errors": {
+    "400": [
+      "invalid_request"
+    ],
+    "401": [
+      "unauthenticated"
+    ],
+    "403": [
+      "action_denied"
+    ],
+    "404": [
+      "not_found"
+    ],
+    "409": [
+      "version_conflict",
+      "scope_changed",
+      "view_stale",
+      "index_stale",
+      "index_unindexed",
+      "scope_not_supported",
+      "idempotency_conflict",
+      "integrity_error"
+    ],
+    "412": [
+      "contract_mismatch"
+    ],
+    "413": [
+      "capacity_exceeded"
+    ],
+    "429": [
+      "rate_limited"
+    ],
+    "503": [
+      "unavailable"
+    ]
+  },
+  "transport": {
+    "management_and_web": "Existing signed native session; API/beta token refusal retained",
+    "mcp": "Only new restricted bearer; native/old API/model tokens rejected",
+    "content_type": "application/json",
+    "request_bytes": 32768,
+    "response_bytes": 1048576,
+    "strict_json": [
+      "all declared keys required, nullable only where explicit",
+      "unknown/duplicate fields rejected",
+      "valid UTF8, no unpaired surrogates, finite exact safe integers",
+      "semantic UTF8 byte limits additionally checked; JSON Schema maxLength alone is not a byte limit"
+    ],
+    "response_headers": {
+      "Cache-Control": "no-store",
+      "X-Knowledge-Access-Version": "0.3.0-candidate",
+      "X-Request-ID": "server generated 32hex"
+    },
+    "wrong_methods": "405 Allow: POST (authenticate protected MCP before returning method status)",
+    "version_mismatch": "412 contract_mismatch, no fallback"
+  },
+  "bounds": {
+    "departments_per_tenant": 64,
+    "members_per_department": 256,
+    "modules_per_domain": 64,
+    "targets_per_module": 32,
+    "rows_per_view": 32768,
+    "search_limit": 20,
+    "text_UTF8_bytes": 8192,
+    "typed_member_summaries": 32,
+    "typed_metadata_JSON_bytes": 65536,
+    "view_TTL_seconds": 300,
+    "credential_default_TTL_seconds": 3600,
+    "credential_max_TTL_seconds": 28800,
+    "grant_max_TTL_seconds": 2592000,
+    "live_credentials_per_user_domain": 20,
+    "live_views_per_user_domain": 20,
+    "consumer_requests_per_actor_domain_minute": 60,
+    "credential_mints_per_user_minute": 5,
+    "view_capture_JSON_bytes": 65536,
+    "request_deadline_seconds": 15
+  },
+  "unavailable_or_stale": "No partial content/metadata/results. Return fixed error with data:null; no automatic scope expansion, refetch fallback, rerun index, credential mint or model call.",
+  "new_vs_old": "New v0.3 DTO/profile/route namespace. Do not widen old 1.0/0.1/0.2 HTTP/MCP endpoints or accept new credentials there. Raw owner publication/selection/evidence_ref never appears in consumer v0.3 output.",
+  "paging": "No consumer search/list cursor or top20 continuation. Read-only whole-unit traversal uses explicit target_index/unit_ordinal in read under a bound view; it is not arbitrary pagination or a separate authorization capability.",
+  "read_only_unit_contract": {
+    "acquisition": "inspect returns at most32 fixed target catalog entries with each authorized whole-unit count. A new read-only caller selects read.selector={kind:unit,view_id,target_index,unit_ordinal:0}; it requires read only and does not run lexical search. read returns exact evidence_ref and unit_locator. evidence selector supports later exact re-read.",
+    "target_order": "Canonical ascending tuple(domain_id,source_id,revision_id,source_sha256,representation.kind,representation.id,producer_sha256); targets[i].target is fixed for the view. Scope/module/version change invalidates the view, never changes its ordinal meaning.",
+    "unit_order": "Within each target sort the verified private publication rows by(range.start_byte,range.end_byte,node_id,row_id), ascending, tie-complete. Every unit is one whole existing published row, no arbitrary node/range/parent selection.",
+    "bounds": "Catalog<=32 entries; per-target and total units<=32768. Each read returns one complete<=8192UTF8-byte unit and at most32 bounded typed summaries. target_index<catalog length and unit_ordinal<that entry unit_count; otherwise400 invalid_request after current view authorization. unit_count0 explicitly means no readable lexical unit.",
+    "continuation": "unit_locator.next_unit_ordinal is ordinal+1 if below target_unit_count, otherwise null. This is bounded deterministic traversal inside the same current view, not a search cursor or capability. Changing view/user/credential requires a new inspect and new selectors/refs.",
+    "no_upgrade": "read mode keeps only inspect/read tools. No search/matching/scoring/model/provider query is performed to obtain a first ref. Search requests remain denied."
+  },
+  "effective_dependency_closure": {
+    "rule": "After all intersections, for each selected target t require all transitive dependency footprints in the FINAL effective selected target set E, never merely the parent module. Exact domain/source/revision/SHA and any proven representation/contribution identity must match. Unknown or incomplete footprint =>409 scope_not_supported.",
+    "stages": [
+      "native inspect after requested source_ids",
+      "credential mint after view subset and requested mode attenuation",
+      "MCP inspect after credential captured subset and any further source_ids",
+      "every read/search row and typed-member proof",
+      "fresh final-permit validation before response release"
+    ],
+    "no_widening": "If A requires B but E={A}, reject the entire request. Do not silently add B, consult the parent module as authority, drop required dependencies or return partial A. Dependencies A->B->C require C in E at its exact revision/SHA.",
+    "coverage_basis": "A footprint traceable to a specific contributing Target must be covered by that exact selected complete target. A source-only footprint requires a selected complete source_revision target proving full source_utf8 coverage of that exact revision/SHA; a different derived representation or same source_id alone is insufficient. Binary/unknown cross-source contributions without such proof are refused.",
+    "positive": "A+B is accepted only when the complete proof footprints are covered by the actual final A+B targets. An unrelated ordinary A-only source with no outside dependency remains valid."
+  },
+  "mcp_wire": {
+    "profile": "Existing protocol versions2025-11-25/2025-06-18 and current Go SDKv1.8.0; no2026 protocol upgrade. This is managed bearer, not OAuth discovery.",
+    "dispatch_priority": [
+      "Origin/admission and request-size/header checks",
+      "current bearer authentication (and parent liveness) before SDK dispatch",
+      "official SDK JSON-RPC structure/method/tool dispatch",
+      "closed owning tool arguments and operation business checks",
+      "fresh final authentication/authorization and bounded response release"
+    ],
+    "rows": [
+      {
+        "case": "Missing/invalid/revoked/expired credential or invalid current parent authority, before dispatch OR detected at final gate",
+        "http": 401,
+        "jsonrpc": "No result or JSON-RPC error carrier",
+        "isError": "absent",
+        "body": "Fixed mcpTransport Error envelope,data:null",
+        "headers": "WWW-Authenticate: Bearer realm=\"knowledge-access\",error=\"invalid_token\"; no-store; do not advertise nonexistent OAuth metadata"
+      },
+      {
+        "case": "Invalid Origin or independently forbidden transport admission for an otherwise known principal",
+        "http": 403,
+        "jsonrpc": "none",
+        "isError": "absent",
+        "body": "Fixed mcpTransport action_denied,data:null",
+        "headers": "no-store; no OAuth scope escalation; tool action insufficiency is handled below, not by this row"
+      },
+      {
+        "case": "Authentication/final authentication DB unavailable; validity cannot be established",
+        "http": 503,
+        "jsonrpc": "none",
+        "isError": "absent",
+        "body": "Fixed mcpTransport unavailable,data:null",
+        "headers": "no-store; no false invalid_token claim"
+      },
+      {
+        "case": "Body>32768 bytes / unsupported content-type / invalid Accept or protocol header / malformed JSON,batch,invalid RPC outer request",
+        "http": "413 /415 /400 respectively",
+        "jsonrpc": "No tool result. Preserve current selected SDK transport rejection; use fixed bounded diagnostic/no echoed body.",
+        "isError": "absent",
+        "body": "Fixed transport diagnostic only; no business data,structuredContent or text result"
+      },
+      {
+        "case": "Well-formed tools/call to unknown or unavailable tool, including search under read-only registry",
+        "http": 200,
+        "jsonrpc": "error.code=-32602, no result",
+        "isError": "absent",
+        "body": "Official SDK invalid-params error with safe generic message; no structuredContent/text business carrier"
+      },
+      {
+        "case": "Known RPC method but malformed CallToolParams at SDK protocol decoding",
+        "http": 200,
+        "jsonrpc": "error.code=-32602, no result",
+        "isError": "absent",
+        "body": "Official protocol invalid-params error; no operation data"
+      },
+      {
+        "case": "Unsupported RPC method under the selected2025 legacy HTTP transport",
+        "http": 400,
+        "jsonrpc": "Current GoSDK checkRequest rejects before dispatch; do not claim every such request returns JSON-RPC -32601",
+        "isError": "absent",
+        "body": "Fixed bounded transport diagnostic. This differs from the SDK2026 HTTP404/MethodNotFound branch, which is not selected here."
+      },
+      {
+        "case": "Known registered tool: arguments fail the application closed DTO or semantic validation",
+        "http": 200,
+        "jsonrpc": "result, no error",
+        "isError": true,
+        "body": "Matching operation Error envelope code=invalid_request,data:null in structuredContent and one JSON text carrier"
+      },
+      {
+        "case": "Known registered tool: live credential but read-only view used for search / inaccessible item / own expired view / dependency not closed / stale publication / business data DB error",
+        "http": 200,
+        "jsonrpc": "result, no error",
+        "isError": true,
+        "body": "Matching operation Error envelope action_denied/not_found/view_stale/scope_not_supported/index_stale/unavailable,data:null; never mirror the native HTTP403/404/409/503 into this tool-result status"
+      },
+      {
+        "case": "Credential expires/revokes/loses authority during a tool call",
+        "http": 401,
+        "jsonrpc": "Discard buffered tool result entirely",
+        "isError": "absent",
+        "body": "Use first row,not a success-shaped tool result. A later request also401. A view alone expiring while credential remains valid instead uses tool result view_stale above."
+      },
+      {
+        "case": "Business response/complete encoded JSON-RPC result exceeds1MiB or output schema invalid",
+        "http": 200,
+        "jsonrpc": "Replace entire planned result with a small fixed tool failure, preserving only a safe request id",
+        "isError": true,
+        "body": "capacity_exceeded or integrity_error,data:null; both carriers match and are validated. Re-encode and remeasure the WHOLE JSON-RPC response including result wrapper,id,both carriers."
+      },
+      {
+        "case": "Even fixed fallback cannot encode/fit; no response bytes emitted yet",
+        "http": 503,
+        "jsonrpc": "none",
+        "isError": "absent",
+        "body": "Empty body; do not emit a partial result or the rejected data"
+      },
+      {
+        "case": "Successful tool call",
+        "http": 200,
+        "jsonrpc": "result, no error",
+        "isError": false,
+        "body": "Matching success operation envelope in structuredContent and JSON text; both same decoded object"
+      },
+      {
+        "case": "Accepted notification",
+        "http": 202,
+        "jsonrpc": "none",
+        "isError": "absent",
+        "body": "Empty body"
+      },
+      {
+        "case": "Authenticated GET or DELETE for this sessionless/no-SSE endpoint",
+        "http": 405,
+        "jsonrpc": "none",
+        "isError": "absent",
+        "body": "Empty body; Allow: POST; invalid credentials still401 before method result"
+      }
+    ],
+    "carrier_invariants": [
+      "isError is explicitly true on every application tool failure and false on success. Protocol errors have error and no result; transport errors have no tool carrier.",
+      "Text parses to the exact same closed envelope as structuredContent, not merely a similar message. Error envelopes always data:null and no source/citation/count/ref.",
+      "Current bearer auth is checked at final output gate even when the planned business result is already an error. Its401/503 overrides all buffered results.",
+      "The native HTTP error status map remains unchanged for native endpoints. MCP business tool results do not reuse native HTTP statuses.",
+      "No source/SQL/secret values or rejected request body may be used as protocol diagnostics. Whole-response byte guard includes JSON-RPC id; if it cannot safely be echoed use the empty503 fallback."
+    ],
+    "sources": [
+      "https://modelcontextprotocol.io/specification/2025-11-25/server/tools",
+      "https://modelcontextprotocol.io/specification/2025-11-25/basic/transports",
+      "https://raw.githubusercontent.com/modelcontextprotocol/go-sdk/v1.8.0/mcp/server.go",
+      "https://raw.githubusercontent.com/modelcontextprotocol/go-sdk/v1.8.0/mcp/streamable.go"
+    ],
+    "execution": "NotRun_WireRequirementsOnly"
+  },
+  "native_command_receipt": "Use persistence.transactions.command_receipts for all seven writes. An exact completed replay returns the ORIGINAL safe receipt data,not a current-resource snapshot; reload through the existing authorized metadata operation before a subsequent CAS edit. Credential replay never returns a secret. Known rolled-back/prevalidation failures do not consume a key; an unknown commit does not count as rollback."
+}

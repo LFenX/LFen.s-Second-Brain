@@ -1,0 +1,820 @@
+{
+  "status": "Draft_PendingSpecificDecision",
+  "fixture_policy": "Synthetic only, no real AICS/model/credential/account creation in this design task.",
+  "subjects": [
+    "personal owner P",
+    "native recipient U",
+    "departmentA members A1/A2",
+    "departmentB member B1",
+    "native tenant owner/admin",
+    "outside tenant X",
+    "disabled user/issuer",
+    "leaked bearer holder"
+  ],
+  "corpus": "One private A+B owner publication; explicit A-only/B-only modules; revision1/revision2; C1/R1/R2/parsed representatives; cross-domain link; authorized typed empty/whole/boundary and hidden-provenance members. All byte fixtures authored and frozen before later execution.",
+  "cases": [
+    {
+      "id": "ID01",
+      "group": "identity",
+      "tier": "unit",
+      "actor": "owner",
+      "input": "Old owner1.0/0.1/0.2 native HTTP and MCP reads",
+      "expected": "Existing response/status/schema unchanged; no share rows needed",
+      "evidence_required": "Old contract fixtures and route SQL/auth checks",
+      "execution": "NotRun"
+    },
+    {
+      "id": "ID02",
+      "group": "identity",
+      "tier": "unit",
+      "actor": "personal recipient U",
+      "input": "Direct user grant in current tenant, moduleA",
+      "expected": "Only moduleA metadata/read scope is visible",
+      "evidence_required": "Actual User/UserTenant/grant/module SQL rows",
+      "execution": "NotRun",
+      "candidate02_required_subcases": [
+        "Fresh read-only user Grant,empty cache: inspect catalog ->read unit0 ->ref re-read; no search engine call.",
+        "Actual target with multiple units: traverse bounded next ordinal,including last=null,zero-unit target and out-of-bounds indices.",
+        "New view/same-user other credential cannot reuse ref/locator; readonly search still denied."
+      ]
+    },
+    {
+      "id": "ID03",
+      "group": "identity",
+      "tier": "unit",
+      "actor": "departmentA member A1",
+      "input": "Grant for exact departmentA/moduleA",
+      "expected": "Read/search only under live departmentA membership",
+      "evidence_required": "Same-tenant joins; principal separate from storage owner",
+      "execution": "NotRun"
+    },
+    {
+      "id": "ID04",
+      "group": "identity",
+      "tier": "unit",
+      "actor": "departmentB member B1",
+      "input": "Only departmentA grant exists",
+      "expected": "404 not_found, no module count or names",
+      "evidence_required": "Compare entire response/error bodies, no source loads",
+      "execution": "NotRun"
+    },
+    {
+      "id": "ID05",
+      "group": "identity",
+      "tier": "unit",
+      "actor": "tenant admin",
+      "input": "Admin role but no content grant",
+      "expected": "No read authority or credential mint",
+      "evidence_required": "Native role is not domain owner or content grant",
+      "execution": "NotRun"
+    },
+    {
+      "id": "ID06",
+      "group": "identity",
+      "tier": "unit",
+      "actor": "tenant owner",
+      "input": "Manage department roster without domain grant",
+      "expected": "Roster management succeeds; content remains denied",
+      "evidence_required": "Separate admin/domain checks",
+      "execution": "NotRun"
+    },
+    {
+      "id": "ID07",
+      "group": "identity",
+      "tier": "unit",
+      "actor": "outside tenant X",
+      "input": "Same department name or injected tenant/domain ID",
+      "expected": "404; no cross-tenant membership or read",
+      "evidence_required": "Bound joins, never metadata/name matching",
+      "execution": "NotRun"
+    },
+    {
+      "id": "ID08",
+      "group": "identity",
+      "tier": "unit",
+      "actor": "superuser/API/beta token",
+      "input": "Old or new access entry",
+      "expected": "Old API-token refusal preserved; no implicit superuser share bypass",
+      "evidence_required": "Real auth dispatcher flags and native session verifier",
+      "execution": "NotRun"
+    },
+    {
+      "id": "ID09",
+      "group": "identity",
+      "tier": "unit",
+      "actor": "disabled user / lost native membership",
+      "input": "Previously valid grant/view/token",
+      "expected": "No content, metadata, count or tools discovery",
+      "evidence_required": "Live identity/membership joins even without epoch bump",
+      "execution": "NotRun"
+    },
+    {
+      "id": "ID10",
+      "group": "identity",
+      "tier": "unit",
+      "actor": "owner disabled or domain transferred",
+      "input": "Old grant and token issued by prior owner",
+      "expected": "Denied; no automatic grant adoption",
+      "evidence_required": "Current CreatedBy/issuer membership recheck",
+      "execution": "NotRun"
+    },
+    {
+      "id": "SC01",
+      "group": "scope",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "ModuleA contains only fixed A revision1; owner publication contains A+B",
+      "expected": "No B source ID/name/count/selection/ref in any carrier",
+      "evidence_required": "Full serialized new HTTP/MCP body scan against synthetic B sentinels; denied B source-body reads0",
+      "execution": "NotRun"
+    },
+    {
+      "id": "SC02",
+      "group": "scope",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "A revision2 created after grant to revision1",
+      "expected": "Revision2 not visible; no latest/head inheritance",
+      "evidence_required": "Exact tuple resolution and module definition",
+      "execution": "NotRun"
+    },
+    {
+      "id": "SC03",
+      "group": "scope",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Node/ref belongs to B or another revision",
+      "expected": "404; reference not a capability",
+      "evidence_required": "Exact view/evidence/private mapping membership",
+      "execution": "NotRun"
+    },
+    {
+      "id": "SC04",
+      "group": "scope",
+      "tier": "unit",
+      "actor": "owner",
+      "input": "Module request has node_id/range/path_prefix/group/tag/latest fields",
+      "expected": "400 invalid_request before mutation",
+      "evidence_required": "Strict unknown/duplicate/nullable/UTF8 JSON validation",
+      "execution": "NotRun"
+    },
+    {
+      "id": "SC05",
+      "group": "scope",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Authorized A has relationship/link to domainB",
+      "expected": "No domainB metadata/content/attachment expansion",
+      "evidence_required": "Projection allowlist and cross-domain reads denied",
+      "execution": "NotRun"
+    },
+    {
+      "id": "SC06",
+      "group": "scope",
+      "tier": "unit",
+      "actor": "owner",
+      "input": "R1 node targetA depends on sourceA+B but module contains onlyA",
+      "expected": "409 scope_not_supported, no partial inferred scope",
+      "evidence_required": "Conservative transitive provenance closure",
+      "execution": "NotRun",
+      "candidate02_required_subcases": [
+        "Parent module A+B is valid but A target depends on B: native inspect source_ids[A] must409 scope_not_supported.",
+        "Module/captured token may cover A+B; actual view A-only must still refuse. Unknown binary/cross-source lineage refused before source body read."
+      ]
+    },
+    {
+      "id": "SC07",
+      "group": "scope",
+      "tier": "unit",
+      "actor": "owner",
+      "input": "All R1 source dependencies fixed and included in module",
+      "expected": "Allow creation if complete proof and one-publication membership valid",
+      "evidence_required": "Actual complete manifest dependency proof",
+      "execution": "NotRun",
+      "candidate02_required_subcases": [
+        "Actual final A+B exact dependency-closed proof succeeds.",
+        "A->B->C with C absent,different B revision/SHA or uncovered contributing representation fails whole request."
+      ]
+    },
+    {
+      "id": "SC08",
+      "group": "scope",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Inspect source_ids contains one outside credential/module scope",
+      "expected": "Reject whole request404; no silent widening or intersection-success fiction",
+      "evidence_required": "No body/projection/query execution",
+      "execution": "NotRun"
+    },
+    {
+      "id": "SC09",
+      "group": "scope",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Read-only grant plus separate web_and_mcp grant lacking requested mode",
+      "expected": "No combining actions/delivery across grants",
+      "evidence_required": "One parent grant in view and credential",
+      "execution": "NotRun"
+    },
+    {
+      "id": "SC10",
+      "group": "scope",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Token captured dependency-closed independent A-only subset of moduleA+B; MCP inspect null sources. Separate required subcase A->B is nonclosed and must be rejected.",
+      "expected": "Independent closed A-only remains A-only,never whole module; when A depends on omitted B,the whole narrowed request fails scope_not_supported.",
+      "evidence_required": "Credential capture preserved from native mint view",
+      "execution": "NotRun",
+      "candidate02_required_subcases": [
+        "Token captured closed A+B then MCP source_ids[A] fails if A->B; parent module cannot refill B.",
+        "Independent A-only target with no outside dependency still succeeds.",
+        "Recheck closure/fences during search/read and final permit; no hidden source-body access from parent module."
+      ]
+    },
+    {
+      "id": "SC11",
+      "group": "scope",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Source hidden/archive/unlink then restore; old view/ref",
+      "expected": "Denied or view_stale; old view never revives",
+      "evidence_required": "Lifecycle/fence versions and current active state",
+      "execution": "NotRun"
+    },
+    {
+      "id": "SC12",
+      "group": "scope",
+      "tier": "unit",
+      "actor": "owner",
+      "input": "Module target outside original publication or mixed owner/domain",
+      "expected": "409 scope_not_supported/integrity_error, no mutation",
+      "evidence_required": "Private original publication exact membership",
+      "execution": "NotRun"
+    },
+    {
+      "id": "SE01",
+      "group": "retrieval",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Authorized bindingA/idA and bindingB/idB; injected cross-pair",
+      "expected": "Only exact paired OR clauses, not binding×ID cross-product",
+      "evidence_required": "GORM/engine request probe of the same production helper",
+      "execution": "NotRun"
+    },
+    {
+      "id": "SE02",
+      "group": "retrieval",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "No authorized rows",
+      "expected": "Match_none or controlled no-searchable error; no unfiltered query",
+      "evidence_required": "Engine request capture before search",
+      "execution": "NotRun"
+    },
+    {
+      "id": "SE03",
+      "group": "retrieval",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Engine returns unauthorized row even after filter",
+      "expected": "Entire response fails; no emitted text/ref/count",
+      "evidence_required": "Real service handling with malicious stub",
+      "execution": "NotRun"
+    },
+    {
+      "id": "SE04",
+      "group": "retrieval",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Engine row ref/SHA/text/byte_length mismatched",
+      "expected": "Integrity error with data:null",
+      "evidence_required": "Exact immutable proof service",
+      "execution": "NotRun"
+    },
+    {
+      "id": "SE05",
+      "group": "retrieval",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Search requested embedding/rerank/model/parent/attachment fields",
+      "expected": "400; backend model/pipeline calls0",
+      "evidence_required": "Closed input schema plus actual provider spies",
+      "execution": "NotRun"
+    },
+    {
+      "id": "SE06",
+      "group": "retrieval",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Search uses configured embedding on native dataset",
+      "expected": "Nil encoder, fallback false, no rerank/metadata enhancement",
+      "evidence_required": "Owning request and execution-spy assertion",
+      "execution": "NotRun"
+    },
+    {
+      "id": "SE07",
+      "group": "retrieval",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Result includes owner binding.selection or raw index ref",
+      "expected": "Output schema/projection rejects before release",
+      "evidence_required": "Serialize only new structs; do not redact raw old DTO",
+      "execution": "NotRun"
+    },
+    {
+      "id": "SE08",
+      "group": "retrieval",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Partial authorized module search",
+      "expected": "Returned_count only permitted emitted hits, total_matches:null, no global count/coverage",
+      "evidence_required": "Both structuredContent and JSON text carrier",
+      "execution": "NotRun"
+    },
+    {
+      "id": "SE09",
+      "group": "retrieval",
+      "tier": "integration",
+      "actor": "A1",
+      "input": "Real ES contains high-scoring denied B and authorized A; limit1",
+      "expected": "A selected with row-pair filter before top-k and ID order; no B influence via postfilter",
+      "evidence_required": "Capture final ES query and actual result",
+      "execution": "NotRun"
+    },
+    {
+      "id": "SE10",
+      "group": "retrieval",
+      "tier": "integration",
+      "actor": "A1",
+      "input": "Change denied corpus term frequencies while A rows/query unchanged",
+      "expected": "Same authorized stable-ID order and no numeric scores/statistics",
+      "evidence_required": "Verify backend OrderBy before limit and no final score resort",
+      "execution": "NotRun"
+    },
+    {
+      "id": "TY01",
+      "group": "typed",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Whole allowed table/cell/paragraph member inside evidence",
+      "expected": "Only summary(kind,range,ID,payloadSHA), no Attributes/payload/relationships/URL",
+      "evidence_required": "Real projection schema and sentinel scan",
+      "execution": "NotRun"
+    },
+    {
+      "id": "TY02",
+      "group": "typed",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Member crosses evidence boundary or provenance not authorized",
+      "expected": "No member output; boundary omission allowed only for safe same-source members; unknown dependency refuses target",
+      "evidence_required": "Actual complete-tree verification and range checks",
+      "execution": "NotRun"
+    },
+    {
+      "id": "TY03",
+      "group": "typed",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Validated empty cell at evidence boundary",
+      "expected": "Keep empty status,zero range,empty text SHA; no synthetic nonempty text",
+      "evidence_required": "Existing owning empty-node proof plus new summary",
+      "execution": "NotRun"
+    },
+    {
+      "id": "TY04",
+      "group": "typed",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "32+ typed members or64KiB metadata/1MiB total response",
+      "expected": "Explicit omission for safe metadata budget or capacity error, never overrun/partial data",
+      "evidence_required": "Full UTF8/JSON/MCP carrier byte accounting",
+      "execution": "NotRun",
+      "candidate02_required_subcases": [
+        "Measure complete encoded JSON-RPC id+result+both carriers,not each carrier separately. Oversize result becomes fixed isError capacity failure; fallback encoding/size failure returns empty503,never partial data.",
+        "Exercise actual15s timeout,20view/credential caps,5mints/min,60calls/min,max generation and malformed auth/Origin inputs in owning tests; no static schema pass stands in for them."
+      ]
+    },
+    {
+      "id": "TY05",
+      "group": "typed",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Raw original download, attachment ID/URL/presigned request",
+      "expected": "No new route/tool; old route still requires its own native owner authority",
+      "evidence_required": "No storage URL generated and no remote fetch",
+      "execution": "NotRun"
+    },
+    {
+      "id": "RV01",
+      "group": "revocation",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Token/view/grant now exactly expires_at",
+      "expected": "Deny without clock-skew grace",
+      "evidence_required": "Injected trusted clock around exact boundary",
+      "execution": "NotRun"
+    },
+    {
+      "id": "RV02",
+      "group": "revocation",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Remove A1 from departmentA after view creation",
+      "expected": "Later calls/ref/tools discovery denied; no cached positive decision",
+      "evidence_required": "Actual roster transaction epoch+live membership",
+      "execution": "NotRun"
+    },
+    {
+      "id": "RV03",
+      "group": "revocation",
+      "tier": "integration",
+      "actor": "A1",
+      "input": "Revoke grant between engine return and final body release",
+      "expected": "Discard buffered text/metadata/count/ref and fail",
+      "evidence_required": "Deterministic final-authorization barrier",
+      "execution": "NotRun",
+      "candidate02_required_subcases": [
+        "Two real MySQL connections and explicit isolation: revoke commits before final current-read permit ->no release; permit commits before revoke ->documented in-flight completion allowed.",
+        "Do not reuse an earlier repeatable-read snapshot as final authority; verify actual conflicting locks/epoch/source fences and durable audit in permit transaction."
+      ]
+    },
+    {
+      "id": "RV04",
+      "group": "revocation",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Revoke one credential; another token has same user/grant",
+      "expected": "Revoked token denied; other valid token cannot reuse revoked-token view",
+      "evidence_required": "Credential identity bound to every view/ref",
+      "execution": "NotRun"
+    },
+    {
+      "id": "RV05",
+      "group": "revocation",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Unrelated tenant authorization edit",
+      "expected": "Existing tokens/views stale by intentional coarse epoch; explicit reissue needed",
+      "evidence_required": "No silently refreshed captured scope",
+      "execution": "NotRun"
+    },
+    {
+      "id": "RV06",
+      "group": "revocation",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Local/content/foundation/share policy version changes",
+      "expected": "Old0.3 credential/view/ref denied even with old publication present",
+      "evidence_required": "Current version comparison; old owner0.2 semantics unchanged",
+      "execution": "NotRun"
+    },
+    {
+      "id": "RV07",
+      "group": "revocation",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "DB failure during cached response final validation",
+      "expected": "503 data:null; cache does not authorize",
+      "evidence_required": "No-store/no ETag/304 path",
+      "execution": "NotRun"
+    },
+    {
+      "id": "RV08",
+      "group": "revocation",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Old owner cursor,foreign view,cursor query param,expired view",
+      "expected": "No conversion; cursor unknown400,foreign404,own stale409",
+      "evidence_required": "Strict input parsing and bound view lookup",
+      "execution": "NotRun"
+    },
+    {
+      "id": "RV09",
+      "group": "revocation",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Revocation commits after response final auth point",
+      "expected": "In-flight response may finish; subsequent requests denied",
+      "evidence_required": "Linearization documented; no impossible recall claim",
+      "execution": "NotRun"
+    },
+    {
+      "id": "CR01",
+      "group": "credential",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Mint from native web_and_mcp view and narrower mode",
+      "expected": "Single subject/grant/module/version/exact target capture,TTL min parent cap",
+      "evidence_required": "Real persistent credential row and one-time response",
+      "execution": "NotRun",
+      "candidate02_required_subcases": [
+        "Read-only credential starts from no refs and completes same unit-selector flow over actual native+MCP service.",
+        "Recompute FINAL subset dependency closure at mint,including exact revision/SHA and representation contribution; A-only that needs B is rejected,never expanded."
+      ]
+    },
+    {
+      "id": "CR02",
+      "group": "credential",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Mint from web_only view,other user view or restricted credential",
+      "expected": "403/404/401; no account/key generation",
+      "evidence_required": "Native-only endpoint and one-parent authority",
+      "execution": "NotRun"
+    },
+    {
+      "id": "CR03",
+      "group": "credential",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Database read after successful mint",
+      "expected": "Only256bit secret verifier, no recoverable token/password/model/owner key",
+      "evidence_required": "Compare exact persistence fields and logs",
+      "execution": "NotRun"
+    },
+    {
+      "id": "CR04",
+      "group": "credential",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Retry same mint key after lost first response",
+      "expected": "Same metadata, token:null,unavailable_after_first_response; no second secret",
+      "evidence_required": "Atomic idempotency and explicit revoke/reissue flow",
+      "execution": "NotRun",
+      "candidate02_required_subcases": [
+        "First mint response lost,process restarts,original view expires/is collected: same operation/body/key returns original safe metadata token:null,never another secret.",
+        "Unknown commit stays unknown until same primary command reservation resolves. No blind new-key mint."
+      ]
+    },
+    {
+      "id": "CR05",
+      "group": "credential",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Same key with changed request",
+      "expected": "409 idempotency_conflict; original record preserved",
+      "evidence_required": "Canonical request digest and named unique column set",
+      "execution": "NotRun",
+      "candidate02_required_subcases": [
+        "Seven writes each: same-key/same-body after lost reply,restart and stale CAS; same-key/different-body; concurrent same key.",
+        "Null-ID department/module create yields one ID,one mutation/epoch and one receipt. Exact replay rechecks current stored-scope management auth.",
+        "90day safe receipt compaction retains unique key tombstone; old key cannot execute again."
+      ]
+    },
+    {
+      "id": "CR06",
+      "group": "credential",
+      "tier": "unit",
+      "actor": "attacker",
+      "input": "Wrong audience,Host spoof,query/cookie/body/duplicate auth,old owner/API/model token, redirect attempting to change origin/path",
+      "expected": "Rejected before business/tools metadata; no downstream forwarding",
+      "evidence_required": "Header/audience dispatcher and log assertions",
+      "execution": "NotRun"
+    },
+    {
+      "id": "CR07",
+      "group": "credential",
+      "tier": "unit",
+      "actor": "attacker with leaked bearer",
+      "input": "Use within current limited scope then revoke",
+      "expected": "Bearer works only current limited scope until revoke/expiry; later401",
+      "evidence_required": "No claim client_label is sender binding; audit uses credential ID only",
+      "execution": "NotRun"
+    },
+    {
+      "id": "CR08",
+      "group": "credential",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Bad secret and unknown credential ID",
+      "expected": "Uniform401,constant-time verifier compare when record found,no token detail in response/log",
+      "evidence_required": "Actual verifier source/unit probe later",
+      "execution": "NotRun"
+    },
+    {
+      "id": "AU01",
+      "group": "audit",
+      "tier": "unit",
+      "actor": "owner",
+      "input": "Grant/module/department mutation audit insert fails",
+      "expected": "Entire transaction rolls back including epoch, no partial privilege",
+      "evidence_required": "Fault-injected real SQL transaction",
+      "execution": "NotRun"
+    },
+    {
+      "id": "AU02",
+      "group": "audit",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Allowed read audit append fails before release",
+      "expected": "No business data released;503",
+      "evidence_required": "Bounded audit metadata only",
+      "execution": "NotRun"
+    },
+    {
+      "id": "AU03",
+      "group": "audit",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Synthetic sentinels in token/query/source body and errors",
+      "expected": "No plaintext token/verifier/query/body/owner raw selection in audit/retrieval/ES logs",
+      "evidence_required": "Inspect actual logs in authorized synthetic test window",
+      "execution": "NotRun"
+    },
+    {
+      "id": "DB01",
+      "group": "migration",
+      "tier": "unit",
+      "actor": "operator",
+      "input": "Existing owner-only database with no new policy/Grant rows",
+      "expected": "Sharing defaults off; no content/permissions/publication mutation",
+      "evidence_required": "Migration snapshots/DDL/old contract replay",
+      "execution": "NotRun"
+    },
+    {
+      "id": "DB02",
+      "group": "migration",
+      "tier": "integration",
+      "actor": "operator",
+      "input": "MySQL named indexes and UUID IDs plus concurrent CAS mutation",
+      "expected": "Complete-column-set uniqueness/no duplicate index; all SQL bound; one winner and monotonic epoch",
+      "evidence_required": "Actual generated SQL+DryRun and real transaction probe",
+      "execution": "NotRun",
+      "candidate02_required_subcases": [
+        "Actual MySQL+SQLite audit UNIQUE(actor,operation,key),noncommand NULL rows allowed. Pending receipt never committed; entity/epoch/receipt commit or rollback together.",
+        "No duplicate tenant_state tenant_id ordinary index beyond PK. Existing full-column-set named index behavior remains."
+      ]
+    },
+    {
+      "id": "DB03",
+      "group": "migration",
+      "tier": "unit",
+      "actor": "operator",
+      "input": "Rollback new routes/defaults after synthetic use",
+      "expected": "Shared access disabled; preserve content/audit/metadata; no destructive down",
+      "evidence_required": "No volume/resource/credential recreation commands",
+      "execution": "NotRun"
+    },
+    {
+      "id": "WB01",
+      "group": "web",
+      "tier": "unit",
+      "actor": "recipient",
+      "input": "Switch users/logout/stale delayed read completes",
+      "expected": "No old view/text/cache/secret restored under new identity",
+      "evidence_required": "Actual hook race tests and session-specific cache keys",
+      "execution": "NotRun"
+    },
+    {
+      "id": "WB02",
+      "group": "web",
+      "tier": "unit",
+      "actor": "recipient",
+      "input": "Mint response/close/unmount",
+      "expected": "Secret only one-time component display/copy; no QueryClient/localStorage/telemetry/URL",
+      "evidence_required": "Browser storage/network/console inspection later",
+      "execution": "NotRun"
+    },
+    {
+      "id": "WB03",
+      "group": "web",
+      "tier": "e2e",
+      "actor": "owner+personal+A1+B1",
+      "input": "Create module/grant,consume,removeA1,revoke token,try old ref/cache",
+      "expected": "Correct filtered UI and current denial; ordinary owner paths unaffected",
+      "evidence_required": "Actual isolated synthetic browser+SQL/ES services",
+      "execution": "NotRun",
+      "candidate02_required_subcases": [
+        "Department confirmation uses fixed tenant renewal warning; a tenant owner lacking other domain ownership makes no global impact-count query and sees no invented exact count.",
+        "Read-only shared Web uses bounded target/unit traversal,not hidden search."
+      ]
+    },
+    {
+      "id": "MC01",
+      "group": "MCP",
+      "tier": "e2e",
+      "actor": "named official Go/TS managed clients",
+      "input": "Initialize/tools/list/inspect/search/read with every HTTP request authenticated",
+      "expected": "Only allowed tools; same new service DTO, no owner credential; whole result budget",
+      "evidence_required": "Pinned actual SDK versions/transport/raw operation trace, no secrets in public output",
+      "execution": "NotRun",
+      "candidate02_required_subcases": [
+        "Pinned Go/TS SDK each: fresh readonly inspect/unit-read/ref-read,multi-unit bounds and search denied.",
+        "Unknown/unavailable tool:-32602 protocol error; malformed outer selected2025 transport:400; malformed CallToolParams:-32602; business DTO invalid:200 result isError:true.",
+        "view_stale and business unavailable:200 result isError:true with equal carriers; mid-call token revoke/expiry:401 with no result; auth DB unavailable:503.",
+        "Check success isError:false,all HTTP statuses/error-vs-result,structured/text equality,whole JSON-RPC budget including ID and bounded fallback."
+      ]
+    },
+    {
+      "id": "MC02",
+      "group": "MCP",
+      "tier": "e2e",
+      "actor": "read-only temporary credential",
+      "input": "Try search,index,policy,Grant,credential/model tools or arguments",
+      "expected": "Read-only search is not registered:HTTP200 JSON-RPC error -32602,no result; unknown write/model tools similarly refused. A registered search with a read-only view instead returnsHTTP200 tool Error action_denied,isError:true; native HTTP search remains403.",
+      "evidence_required": "Real tool registry and service spies",
+      "execution": "NotRun"
+    },
+    {
+      "id": "MC03",
+      "group": "MCP",
+      "tier": "e2e",
+      "actor": "revoked/expired temporary credential",
+      "input": "Tools/list,GET probe,call,old ref,session/cache reuse",
+      "expected": "401 before metadata/call; session not authority; valid GET405 AllowPOST",
+      "evidence_required": "Every wire request counted incl overhead/errors/close",
+      "execution": "NotRun"
+    },
+    {
+      "id": "MC04",
+      "group": "MCP",
+      "tier": "e2e",
+      "actor": "OAuth-only host",
+      "input": "Try automatic OAuth connection to managed bearer profile",
+      "expected": "Explicitly unsupported, no fake AS/discovery or universal interoperability claim",
+      "evidence_required": "Named host behavior; no improvised owner-token fallback",
+      "execution": "NotRun"
+    },
+    {
+      "id": "RV10",
+      "group": "revocation",
+      "tier": "unit",
+      "actor": "A1",
+      "input": "Module version changes or new targets added; reuse old grant/view/token",
+      "expected": "No old grant automatically broadens. Old module-version grant/view/token fails; owner must create a new grant explicitly.",
+      "evidence_required": "Same persisted grant module_version compared with current module, tenant epoch and final auth",
+      "execution": "NotRun"
+    },
+    {
+      "id": "SC13",
+      "group": "scope",
+      "tier": "unit",
+      "actor": "native domain owner without self Grant",
+      "input": "List owner modules/policy for administration, then inspect/read/mint new shared path",
+      "expected": "Owner metadata flag/current policy CAS state visible; modes[] gives no implicit shared consume or credential authority. Recipient owner requires explicit self grant for new path.",
+      "evidence_required": "Mixed owner/recipient module-list projection and actual authorization entry guards",
+      "execution": "NotRun"
+    },
+    {
+      "id": "DB04",
+      "group": "migration",
+      "tier": "unit",
+      "actor": "native owner",
+      "input": "No sharing-policy row, create first module and reopen administration after refresh",
+      "expected": "Owner policy view explicitly version0/enabled:false, CAS create uses0; no accidental default enable or unqueryable policy version.",
+      "evidence_required": "Actual missing-row DB case plus v0.3 closed response schema",
+      "execution": "NotRun"
+    }
+  ],
+  "counts": {
+    "total": 70,
+    "by_tier": {
+      "unit": 61,
+      "integration": 4,
+      "e2e": 5
+    },
+    "executed": 0
+  },
+  "execution_plan": {
+    "unit": "Future exact package-scoped build.sh --test for actual owning service/DAO/handler/MCP/NLP/ES changes; frontend touched-hook suites under web/AGENTS.md. No raw go test or fake schema-only security pass.",
+    "integration": "Future separate integration-tagged MySQL/ES tests with prepared services. Capture bound SQL and real filter/order/limit; no model calls.",
+    "e2e": "Future isolated original-synthetic Web and two named official SDK clients. Keep original POC volumes/config unchanged; count auth/protocol/error/close traffic.",
+    "native_tail": "build.sh --test invokes native/... tail after a successful package run; count parent TestMain skip and crop events separately. Do not add model/fetch_testdata tags or call parent SKIP full pass.",
+    "not_run": "All acceptance tests NotRun. Local JSON/ref/schema authoring checks prove only candidate artifact consistency."
+  },
+  "feedback_coverage": {
+    "KCA-C-001": [
+      "ID02",
+      "CR01",
+      "MC01",
+      "WB03"
+    ],
+    "KCA-C-002": [
+      "SC06",
+      "SC07",
+      "SC10",
+      "CR01",
+      "RV03"
+    ],
+    "KCA-C-003": [
+      "CR04",
+      "CR05",
+      "DB02",
+      "AU01"
+    ],
+    "KCA-C-004": [
+      "MC01",
+      "MC02",
+      "MC03",
+      "TY04"
+    ],
+    "KCA-C-005": [
+      "WB03",
+      "SC13"
+    ],
+    "KCA-C-006": [
+      "DB02"
+    ]
+  }
+}

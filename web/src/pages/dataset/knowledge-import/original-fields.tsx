@@ -142,7 +142,7 @@ export function OriginalRegistrationForm({
       default_classification: classification,
     };
     if (!validOriginalData('CreateRegistration', input)) {
-      flow.fail(new Error('Invalid registration'));
+      flow.fail(new KnowledgeRequestError(400, 'knowledge_invalid_request'));
       return;
     }
     void flow.register(input);

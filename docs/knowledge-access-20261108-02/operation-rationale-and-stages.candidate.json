@@ -1,0 +1,300 @@
+{
+  "status": "Draft_PendingSpecificDecision",
+  "operations": [
+    {
+      "operation": "setDepartment",
+      "path": "/api/v1/knowledge/access/admin/departments/set",
+      "method": "POST",
+      "input": "SetDepartmentRequest",
+      "output": "Department",
+      "auth": "tenant_owner",
+      "success_status": 200,
+      "stage": "S2_departments",
+      "response": "SetDepartmentResponse",
+      "product_need": "A flat department with an exact same-tenant roster is missing. Combine name/state and full roster replacement under one CAS rather than two mutable APIs.",
+      "reuse_or_avoid": "Reuse native Tenant/UserTenant identity and existing native member-picker APIs; do not create accounts/roles/org tree. UI presents the fixed tenant invalidation warning without claiming unavailable exact impact counts."
+    },
+    {
+      "operation": "listDepartments",
+      "path": "/api/v1/knowledge/access/departments/list",
+      "method": "POST",
+      "input": "ListDepartmentsRequest",
+      "output": "ListDepartmentsData",
+      "auth": "native_same_tenant_catalog_or_owner_roster",
+      "success_status": 200,
+      "stage": "S2_departments",
+      "response": "ListDepartmentsResponse",
+      "product_need": "Domain owner must choose a known department; tenant owner must reopen roster editing after refresh. One catalog returns names only to other active tenant members and roster/count only to tenant owner.",
+      "reuse_or_avoid": "Native tenant-member list is reused for the picker, but cannot represent department subsets. No separate department get/roster/list-members API."
+    },
+    {
+      "operation": "setPolicy",
+      "path": "/api/v1/knowledge/access/admin/domains/policy/set",
+      "method": "POST",
+      "input": "SetPolicyRequest",
+      "output": "Policy",
+      "auth": "domain_owner",
+      "success_status": 200,
+      "stage": "S1_user_module_Web",
+      "response": "SetPolicyResponse",
+      "product_need": "Explicit default-off shared-domain opt-in and emergency disable must be separate from existing model/parse policy.",
+      "reuse_or_avoid": "Frozen owner-only policy cannot gain fields or silently change access semantics. No generic policy engine."
+    },
+    {
+      "operation": "setModule",
+      "path": "/api/v1/knowledge/access/admin/modules/set",
+      "method": "POST",
+      "input": "SetModuleRequest",
+      "output": "ModuleAdmin",
+      "auth": "domain_owner",
+      "success_status": 200,
+      "stage": "S1_user_module_Web",
+      "response": "SetModuleResponse",
+      "product_need": "Create/update/disable one exact fixed-publication target subset with CAS. One set replaces separate create/update/delete operations.",
+      "reuse_or_avoid": "Reuse existing owner publication/typed target selectors; module is not a KnowledgeGroup or another index."
+    },
+    {
+      "operation": "getModuleAdmin",
+      "path": "/api/v1/knowledge/access/admin/modules/get",
+      "method": "POST",
+      "input": "GetModuleAdminRequest",
+      "output": "ModuleAdmin",
+      "auth": "domain_owner",
+      "success_status": 200,
+      "stage": "S1_user_module_Web",
+      "response": "GetModuleAdminResponse",
+      "product_need": "Owner needs exact scope and grant metadata to edit/revoke after a refresh. Bundle the bounded grant list here. Its owner-only result includes current domain policy and current live grants; retained grant/audit history is not returned.",
+      "reuse_or_avoid": "No separate grant-list endpoint, source browser or audit query is needed for the first closure."
+    },
+    {
+      "operation": "listModules",
+      "path": "/api/v1/knowledge/access/modules/list",
+      "method": "POST",
+      "input": "ListModulesRequest",
+      "output": "ListModulesData",
+      "auth": "native_recipient",
+      "success_status": 200,
+      "stage": "S1_user_module_Web",
+      "response": "ListModulesResponse",
+      "product_need": "Recipients need a Shared with me entry point filtered before SQL counts and output. It also returns current native owner module administrative summaries and owner-only sharing policy CAS state (including default0), not shared consumption privilege; this avoids separate module-list/policy-get endpoints.",
+      "reuse_or_avoid": "Existing ListKnowledgeDomains/Groups is frozen owner-only and must not expose shares by widening its predicate."
+    },
+    {
+      "operation": "createGrant",
+      "path": "/api/v1/knowledge/access/admin/grants/create",
+      "method": "POST",
+      "input": "CreateGrantRequest",
+      "output": "Grant",
+      "auth": "domain_owner",
+      "success_status": 201,
+      "stage": "S1_user_module_Web",
+      "response": "CreateGrantResponse",
+      "product_need": "Owner explicitly permits one named native user/module/mode/channel/expiry; S2 adds exact department subject. Immutable definition avoids mutable permissions-in-place.",
+      "reuse_or_avoid": "Native team membership is identity only; existing native dataset Use/Run is not a read-sharing grant."
+    },
+    {
+      "operation": "revokeGrant",
+      "path": "/api/v1/knowledge/access/admin/grants/revoke",
+      "method": "POST",
+      "input": "RevokeGrantRequest",
+      "output": "Revoked",
+      "auth": "domain_owner",
+      "success_status": 200,
+      "stage": "S1_user_module_Web",
+      "response": "RevokeGrantResponse",
+      "product_need": "Owner must revoke one immutable grant immediately and invalidate later view/ref use.",
+      "reuse_or_avoid": "Cannot repurpose source archive/delete or tenant membership removal as grant revocation."
+    },
+    {
+      "operation": "createCredential",
+      "path": "/api/v1/knowledge/access/credentials/create",
+      "method": "POST",
+      "input": "CreateCredentialRequest",
+      "output": "CredentialMintData",
+      "auth": "native_recipient",
+      "success_status": 201,
+      "stage": "S3_managed_MCP",
+      "response": "CreateCredentialResponse",
+      "product_need": "Recipient explicitly creates a self credential from an active native web_and_mcp view, preserving its single grant and selected target subset.",
+      "reuse_or_avoid": "No new principal-selection API or recipient grant-list is needed. Native/API/model tokens are never borrowed."
+    },
+    {
+      "operation": "revokeCredential",
+      "path": "/api/v1/knowledge/access/credentials/revoke",
+      "method": "POST",
+      "input": "RevokeCredentialRequest",
+      "output": "Revoked",
+      "auth": "credential_subject",
+      "success_status": 200,
+      "stage": "S3_managed_MCP",
+      "response": "RevokeCredentialResponse",
+      "product_need": "User can stop one leaked/unused bearer without removing the department grant.",
+      "reuse_or_avoid": "Existing API-token management has broader identity semantics and cannot be widened/reused."
+    },
+    {
+      "operation": "listCredentials",
+      "path": "/api/v1/knowledge/access/credentials/list",
+      "method": "POST",
+      "input": "ListCredentialsRequest",
+      "output": "ListCredentialsData",
+      "auth": "credential_subject",
+      "success_status": 200,
+      "stage": "S3_managed_MCP",
+      "response": "ListCredentialsResponse",
+      "product_need": "Safe metadata supports expiry/revocation and unknown first-mint delivery recovery; optional exact request key returns metadata only.",
+      "reuse_or_avoid": "Combine by-key metadata lookup with this list; no token retrieval/refresh/rotate endpoint."
+    },
+    {
+      "operation": "inspect",
+      "path": "/api/v1/knowledge/access/inspect",
+      "method": "POST",
+      "input": "InspectRequest",
+      "output": "InspectData",
+      "auth": "native_recipient",
+      "success_status": 200,
+      "stage": "S1_user_module_Web",
+      "response": "InspectResponse",
+      "product_need": "Resolve one current exact authorization view and show authorized metadata/readiness; choose delivery and mode in one call. Also return bounded per-target whole-unit counts so read-only users can select a first unit without search.",
+      "reuse_or_avoid": "Private immutable proof/row loaders are reusable. Existing0.2 inspect full-selection DTO and owner authentication cannot be returned to a restricted reader."
+    },
+    {
+      "operation": "search",
+      "path": "/api/v1/knowledge/access/search",
+      "method": "POST",
+      "input": "SearchRequest",
+      "output": "SearchData",
+      "auth": "native_recipient",
+      "success_status": 200,
+      "stage": "S1_user_module_Web",
+      "response": "SearchResponse",
+      "product_need": "Match only authorized whole rows and emit new scoped citations, count and stable ordering.",
+      "reuse_or_avoid": "Reuse query builder, DocEngine, ES and bound row-pair filter; keep old owner Use/Run guards. No new retrieval backend/model path."
+    },
+    {
+      "operation": "read",
+      "path": "/api/v1/knowledge/access/read",
+      "method": "POST",
+      "input": "ReadRequest",
+      "output": "ReadData",
+      "auth": "native_recipient",
+      "success_status": 200,
+      "stage": "S1_user_module_Web",
+      "response": "ReadResponse",
+      "product_need": "A new view/evidence identifier must be reauthorized on every fixed evidence read and output. One closed selector supports first read by view target/unit ordinal and later exact evidence ref; same operation/tool and read action only.",
+      "reuse_or_avoid": "Reuse immutable byte/hash/provenance validators after proper shared authorization; never fake owner session or emit old full context."
+    }
+  ],
+  "removed_from_initial18": [
+    {
+      "operation": "setDepartmentMembers",
+      "resolution": "Merged into setDepartment atomic complete roster CAS."
+    },
+    {
+      "operation": "listGrantsAdmin",
+      "resolution": "Bounded grant metadata embedded only in getModuleAdmin."
+    },
+    {
+      "operation": "listGrants",
+      "resolution": "Native inspect explicitly requests delivery+mode and binds one qualifying grant; credential mint takes that view_id."
+    },
+    {
+      "operation": "listAudit",
+      "resolution": "Server audit recording is required; a general audit-query UI/API is deferred. Initial Web shows safe grant/credential metadata and last use only."
+    }
+  ],
+  "stages": [
+    {
+      "id": "S1_user_module_Web",
+      "minimum_deliverable": true,
+      "HTTP_operations": [
+        "setPolicy",
+        "setModule",
+        "getModuleAdmin",
+        "listModules",
+        "createGrant",
+        "revokeGrant",
+        "inspect",
+        "search",
+        "read"
+      ],
+      "new_tables": [
+        "knowledge_access_tenant_state",
+        "knowledge_access_domain_policy",
+        "knowledge_access_module",
+        "knowledge_access_grant",
+        "knowledge_access_view",
+        "knowledge_access_audit"
+      ],
+      "delivers": "Explicit direct-user fixed-module sharing, safe scoped search/read and Web closure; no department subject or temporary bearer exposure yet.",
+      "gate": "Specific subject decision, owning code review and meaningful scoped tests/real synthetic SQL+ES/Web checks. This is a bounded development/product slice, not a claim that the entire0.3 candidate is complete.",
+      "contract_handling": "Expose only this declared user-only slice in an isolated synthetic acceptance environment. Department and credential operations remain unregistered. No client is promised final full0.3 until S2/S3 pass; no permanent alternate implementation or owner-token fallback.",
+      "tests": "NotRun",
+      "commit_checkpoint": "After accepted stage evidence, normal project stage commit+push by Root-assigned Git owner under current human authorization; this task makes no Git writes."
+    },
+    {
+      "id": "S2_departments",
+      "HTTP_operations": [
+        "setDepartment",
+        "listDepartments"
+      ],
+      "new_tables": [
+        "knowledge_access_department",
+        "knowledge_access_department_member"
+      ],
+      "delivers": "Exact department A/B mapping and grants, with live roster checks and coarse tenant epoch invalidation. Same S1 authorization/projection core.",
+      "gate": "S1 accepted plus department positive/negative/roster-race synthetic tests; no generic role hierarchy.",
+      "tests": "NotRun",
+      "commit_checkpoint": "Separate reviewed stage commit+push after acceptance."
+    },
+    {
+      "id": "S3_managed_MCP",
+      "HTTP_operations": [
+        "createCredential",
+        "revokeCredential",
+        "listCredentials"
+      ],
+      "additional_endpoint": "/api/v1/knowledge/access/mcp",
+      "MCP_tools": [
+        "knowledge_access_inspect",
+        "knowledge_access_search",
+        "knowledge_access_read"
+      ],
+      "new_tables": [
+        "knowledge_access_credential"
+      ],
+      "delivers": "One-time short-lived bearer delivery and revocation, exact named SDK/client interoperability for the same scoped service.",
+      "gate": "S2/core accepted, secret lifecycle and revoke/ref/cache tests, real isolated named SDK checks and Web handoff; no generated credential in this design task.",
+      "tests": "NotRun",
+      "commit_checkpoint": "Separate reviewed stage commit+push after acceptance."
+    }
+  ],
+  "later_separate_decisions": [
+    {
+      "subject": "OAuth-only/automatic Agent onboarding",
+      "needed_only_if": "Required by selected consuming hosts",
+      "requires": "Choose an existing trusted AS/IdP and explicit OAuth resource metadata/audience/PKCE/client model. New exact candidate; not silently part of S3."
+    },
+    {
+      "subject": "Node/byte ACL, dynamic head scopes, rich typed payload and attachments",
+      "requires": "New bounded provenance/projection/interface candidate and independent acceptance. Do not add for this first department/module closure."
+    }
+  ],
+  "decision_options": [
+    {
+      "id": "A",
+      "recommended": true,
+      "label": "按固定模块与具名Bearer方案分阶段推进",
+      "consequence": "Accept S1/S2/S3 scope, fixed-target granularity, typed summaries, stable lexical order and coarse credential renewal. Broad any-Agent OAuth onboarding remains later."
+    },
+    {
+      "id": "B",
+      "recommended": false,
+      "label": "共享内核继续，凭据阶段先补OAuth候选",
+      "consequence": "S1/S2 can still proceed after decision; S3 transport not yet selected. Root first obtains chosen OAuth host/authorization-server constraints and presents a replacement exact S3 subject."
+    }
+  ],
+  "decision_mechanism": "Root independent review first. Human decision binds a concrete subject-manifest raw SHA and selected option. This candidate is not implementation authorization and this task asks no open-ended user question.",
+  "stage_activation": "S1/S2 are explicitly scoped isolated synthetic acceptance/development slices, with unimplemented later routes unregistered; they do not advertise a completed final0.3 interface or require a permanent alternate backend. External0.3 release/rollout is separate after all chosen stages and actual evidence. No general runtime phase/feature negotiation API is added.",
+  "command_persistence": "Extend the existing access audit row for exactly seven mutation receipts and one unique actor+operation+key map; no new generic command API or table.",
+  "read_only": "Read mode retained. Existing inspect+read close first access and multi-unit traversal. No silent upgrade to read_search and no fourth MCP tool."
+}

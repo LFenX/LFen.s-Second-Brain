@@ -1,0 +1,2328 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.lfen.invalid/knowledge-access/0.3.0-candidate",
+  "title": "Knowledge access exact candidate DTOs",
+  "x-status": "Draft_PendingSpecificDecision",
+  "$comment": "Draft only. No new interface is authorized until a specific human decision binds the subject. All objects are closed; semantic relational/UTF8/byte/time checks are specified in authorization-model.candidate.json. Candidate02 adds read-only unit selection under the existing read operation; no search authority, arbitrary range or new endpoint.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/SetDepartmentResponse"
+    },
+    {
+      "$ref": "#/$defs/ListDepartmentsResponse"
+    },
+    {
+      "$ref": "#/$defs/SetPolicyResponse"
+    },
+    {
+      "$ref": "#/$defs/SetModuleResponse"
+    },
+    {
+      "$ref": "#/$defs/GetModuleAdminResponse"
+    },
+    {
+      "$ref": "#/$defs/ListModulesResponse"
+    },
+    {
+      "$ref": "#/$defs/CreateGrantResponse"
+    },
+    {
+      "$ref": "#/$defs/RevokeGrantResponse"
+    },
+    {
+      "$ref": "#/$defs/CreateCredentialResponse"
+    },
+    {
+      "$ref": "#/$defs/RevokeCredentialResponse"
+    },
+    {
+      "$ref": "#/$defs/ListCredentialsResponse"
+    },
+    {
+      "$ref": "#/$defs/InspectResponse"
+    },
+    {
+      "$ref": "#/$defs/SearchResponse"
+    },
+    {
+      "$ref": "#/$defs/ReadResponse"
+    }
+  ],
+  "$defs": {
+    "Version": {
+      "const": "0.3.0-candidate"
+    },
+    "ID": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{32}$"
+    },
+    "OwningNodeID": {
+      "type": "string",
+      "pattern": "^(?:[a-f0-9]{32}|[a-f0-9]{64})$"
+    },
+    "Hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "Time": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,9})?Z$"
+    },
+    "Generation": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "Key": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{16,128}$"
+    },
+    "Mode": {
+      "enum": [
+        "read",
+        "read_search"
+      ]
+    },
+    "Delivery": {
+      "enum": [
+        "web_only",
+        "web_and_mcp"
+      ]
+    },
+    "Subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "id"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "user",
+            "department"
+          ]
+        },
+        "id": {
+          "$ref": "#/$defs/ID"
+        }
+      }
+    },
+    "Source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "domain_id",
+        "source_id",
+        "source_revision_id",
+        "source_sha256"
+      ],
+      "properties": {
+        "domain_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "source_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "source_revision_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "source_sha256": {
+          "$ref": "#/$defs/Hash"
+        }
+      }
+    },
+    "Representation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "id",
+        "producer_sha256"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "source_revision",
+            "structure_view",
+            "document_representation",
+            "parsed_representation"
+          ]
+        },
+        "id": {
+          "$ref": "#/$defs/OwningNodeID"
+        },
+        "producer_sha256": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Hash"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "source_revision"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "producer_sha256": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "producer_sha256": {
+                "$ref": "#/$defs/Hash"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "representation"
+      ],
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/Source"
+        },
+        "representation": {
+          "$ref": "#/$defs/Representation"
+        }
+      }
+    },
+    "OwnerPublication": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "manifest_sha256"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Hash"
+        },
+        "manifest_sha256": {
+          "$ref": "#/$defs/Hash"
+        }
+      }
+    },
+    "ModuleScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "publication",
+        "targets"
+      ],
+      "properties": {
+        "kind": {
+          "const": "fixed_published_targets"
+        },
+        "publication": {
+          "$ref": "#/$defs/OwnerPublication"
+        },
+        "targets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Target"
+          },
+          "minItems": 1,
+          "maxItems": 32,
+          "uniqueItems": true
+        }
+      }
+    },
+    "Range": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "start_byte",
+        "end_byte",
+        "sha256"
+      ],
+      "properties": {
+        "start_byte": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "end_byte": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "sha256": {
+          "$ref": "#/$defs/Hash"
+        }
+      },
+      "$comment": "Go semantic validation also requires end>=start, exact UTF-8 boundaries and SHA over that exact interval."
+    },
+    "Citation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target",
+        "node_id",
+        "coordinate_space",
+        "range",
+        "display_name",
+        "position_label",
+        "revision_binding"
+      ],
+      "properties": {
+        "target": {
+          "$ref": "#/$defs/Target"
+        },
+        "node_id": {
+          "$ref": "#/$defs/OwningNodeID"
+        },
+        "coordinate_space": {
+          "enum": [
+            "source_utf8",
+            "derived_utf8"
+          ]
+        },
+        "range": {
+          "$ref": "#/$defs/Range"
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "position_label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "revision_binding": {
+          "const": "fixed"
+        }
+      }
+    },
+    "EvidenceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "view_id",
+        "evidence_id"
+      ],
+      "properties": {
+        "contract_version": {
+          "$ref": "#/$defs/Version"
+        },
+        "view_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "evidence_id": {
+          "$ref": "#/$defs/Hash"
+        }
+      }
+    },
+    "TypedMember": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "node_id",
+        "kind",
+        "range",
+        "text_status",
+        "payload_sha256"
+      ],
+      "properties": {
+        "node_id": {
+          "$ref": "#/$defs/OwningNodeID"
+        },
+        "kind": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{0,63}$"
+        },
+        "range": {
+          "$ref": "#/$defs/Range"
+        },
+        "text_status": {
+          "enum": [
+            "available",
+            "empty"
+          ]
+        },
+        "payload_sha256": {
+          "$ref": "#/$defs/Hash"
+        }
+      }
+    },
+    "TypedContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "members",
+        "members_complete",
+        "omission_reasons"
+      ],
+      "properties": {
+        "members": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/TypedMember"
+          },
+          "minItems": 0,
+          "maxItems": 32,
+          "uniqueItems": true
+        },
+        "members_complete": {
+          "type": "boolean"
+        },
+        "omission_reasons": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "typed_payload_not_exposed_in_access_v03",
+              "whole_member_outside_evidence",
+              "unsearchable_member",
+              "member_budget",
+              "metadata_budget"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 5,
+          "uniqueItems": true
+        }
+      }
+    },
+    "Department": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "department_id",
+        "tenant_id",
+        "name",
+        "version",
+        "enabled",
+        "member_count",
+        "user_ids"
+      ],
+      "properties": {
+        "department_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "tenant_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "member_count": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 256
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "user_ids": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ID"
+              },
+              "minItems": 0,
+              "maxItems": 256,
+              "uniqueItems": true
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "$comment": "Native tenant owner receives roster and count. Other active same-tenant members receive only enabled department catalog names/IDs with user_ids/member_count both null; no content authority follows."
+    },
+    "Policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "domain_id",
+        "version",
+        "enabled"
+      ],
+      "properties": {
+        "domain_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "version": {
+          "$ref": "#/$defs/Generation"
+        },
+        "enabled": {
+          "type": "boolean"
+        }
+      },
+      "$comment": "Absent new sharing policy is exactly version0/enabled:false; an existing persistent row starts at1. No inference of sharing enablement."
+    },
+    "ModuleAdmin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "module_id",
+        "domain_id",
+        "name",
+        "version",
+        "enabled",
+        "scope",
+        "grants",
+        "policy"
+      ],
+      "properties": {
+        "module_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "domain_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "scope": {
+          "$ref": "#/$defs/ModuleScope"
+        },
+        "grants": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Grant"
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "uniqueItems": true
+        },
+        "policy": {
+          "$ref": "#/$defs/Policy"
+        }
+      }
+    },
+    "ModuleSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "module_id",
+        "domain_id",
+        "name",
+        "version",
+        "target_count",
+        "modes",
+        "mcp_delivery_allowed",
+        "enabled",
+        "administrative_owner"
+      ],
+      "properties": {
+        "module_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "domain_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "target_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32
+        },
+        "modes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Mode"
+          },
+          "minItems": 0,
+          "maxItems": 2,
+          "uniqueItems": true
+        },
+        "mcp_delivery_allowed": {
+          "type": "boolean"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "administrative_owner": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Grant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "grant_id",
+        "domain_id",
+        "module_id",
+        "module_version",
+        "subject",
+        "mode",
+        "delivery",
+        "issued_at",
+        "expires_at",
+        "revoked_at",
+        "issued_by_user_id"
+      ],
+      "properties": {
+        "grant_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "domain_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "module_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "module_version": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "subject": {
+          "$ref": "#/$defs/Subject"
+        },
+        "mode": {
+          "$ref": "#/$defs/Mode"
+        },
+        "delivery": {
+          "$ref": "#/$defs/Delivery"
+        },
+        "issued_at": {
+          "$ref": "#/$defs/Time"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/Time"
+        },
+        "revoked_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "issued_by_user_id": {
+          "$ref": "#/$defs/ID"
+        }
+      }
+    },
+    "Credential": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "credential_id",
+        "domain_id",
+        "module_id",
+        "module_version",
+        "mode",
+        "client_label",
+        "issued_at",
+        "expires_at",
+        "revoked_at",
+        "last_used_at"
+      ],
+      "properties": {
+        "credential_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "domain_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "module_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "module_version": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "mode": {
+          "$ref": "#/$defs/Mode"
+        },
+        "client_label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "issued_at": {
+          "$ref": "#/$defs/Time"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/Time"
+        },
+        "revoked_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "last_used_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "CredentialMintData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "credential",
+        "token",
+        "delivery"
+      ],
+      "properties": {
+        "credential": {
+          "$ref": "#/$defs/Credential"
+        },
+        "token": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^kac1_[a-f0-9]{32}\\.[A-Za-z0-9_-]{43}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "delivery": {
+          "enum": [
+            "issued_once",
+            "unavailable_after_first_response"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "delivery": {
+                "const": "issued_once"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "token": {
+                "type": "string"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "token": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Revoked": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "revoked_at"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/ID"
+        },
+        "revoked_at": {
+          "$ref": "#/$defs/Time"
+        }
+      }
+    },
+    "SetDepartmentRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "tenant_id",
+        "department_id",
+        "expected_version",
+        "name",
+        "enabled",
+        "user_ids",
+        "confirmed",
+        "idempotency_key"
+      ],
+      "properties": {
+        "contract_version": {
+          "$ref": "#/$defs/Version"
+        },
+        "tenant_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "department_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ID"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expected_version": {
+          "$ref": "#/$defs/Generation"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "user_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ID"
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "uniqueItems": true
+        },
+        "confirmed": {
+          "const": true
+        },
+        "idempotency_key": {
+          "$ref": "#/$defs/Key"
+        }
+      }
+    },
+    "ListDepartmentsRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "tenant_id"
+      ],
+      "properties": {
+        "contract_version": {
+          "$ref": "#/$defs/Version"
+        },
+        "tenant_id": {
+          "$ref": "#/$defs/ID"
+        }
+      }
+    },
+    "ListDepartmentsData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "items",
+        "pagination"
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Department"
+          },
+          "minItems": 0,
+          "maxItems": 64,
+          "uniqueItems": true
+        },
+        "pagination": {
+          "const": "none"
+        }
+      }
+    },
+    "SetPolicyRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "domain_id",
+        "expected_version",
+        "enabled",
+        "confirmed",
+        "idempotency_key"
+      ],
+      "properties": {
+        "contract_version": {
+          "$ref": "#/$defs/Version"
+        },
+        "domain_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "expected_version": {
+          "$ref": "#/$defs/Generation"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "confirmed": {
+          "const": true
+        },
+        "idempotency_key": {
+          "$ref": "#/$defs/Key"
+        }
+      }
+    },
+    "SetModuleRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "domain_id",
+        "module_id",
+        "expected_version",
+        "name",
+        "enabled",
+        "scope",
+        "confirmed",
+        "idempotency_key"
+      ],
+      "properties": {
+        "contract_version": {
+          "$ref": "#/$defs/Version"
+        },
+        "domain_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "module_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ID"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expected_version": {
+          "$ref": "#/$defs/Generation"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "scope": {
+          "$ref": "#/$defs/ModuleScope"
+        },
+        "confirmed": {
+          "const": true
+        },
+        "idempotency_key": {
+          "$ref": "#/$defs/Key"
+        }
+      }
+    },
+    "GetModuleAdminRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "domain_id",
+        "module_id"
+      ],
+      "properties": {
+        "contract_version": {
+          "$ref": "#/$defs/Version"
+        },
+        "domain_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "module_id": {
+          "$ref": "#/$defs/ID"
+        }
+      }
+    },
+    "ListModulesRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "tenant_id",
+        "domain_id"
+      ],
+      "properties": {
+        "contract_version": {
+          "$ref": "#/$defs/Version"
+        },
+        "tenant_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "domain_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ID"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "ListModulesData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "items",
+        "pagination",
+        "owned_domain_policies"
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ModuleSummary"
+          },
+          "minItems": 0,
+          "maxItems": 64,
+          "uniqueItems": true
+        },
+        "pagination": {
+          "const": "none"
+        },
+        "owned_domain_policies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Policy"
+          },
+          "minItems": 0,
+          "maxItems": 64,
+          "uniqueItems": true
+        }
+      }
+    },
+    "CreateGrantRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "domain_id",
+        "module_id",
+        "expected_module_version",
+        "subject",
+        "mode",
+        "delivery",
+        "expires_at",
+        "confirmed",
+        "idempotency_key"
+      ],
+      "properties": {
+        "contract_version": {
+          "$ref": "#/$defs/Version"
+        },
+        "domain_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "module_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "expected_module_version": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "subject": {
+          "$ref": "#/$defs/Subject"
+        },
+        "mode": {
+          "$ref": "#/$defs/Mode"
+        },
+        "delivery": {
+          "$ref": "#/$defs/Delivery"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/Time"
+        },
+        "confirmed": {
+          "const": true
+        },
+        "idempotency_key": {
+          "$ref": "#/$defs/Key"
+        }
+      }
+    },
+    "RevokeGrantRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "domain_id",
+        "grant_id",
+        "confirmed",
+        "idempotency_key"
+      ],
+      "properties": {
+        "contract_version": {
+          "$ref": "#/$defs/Version"
+        },
+        "domain_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "grant_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "confirmed": {
+          "const": true
+        },
+        "idempotency_key": {
+          "$ref": "#/$defs/Key"
+        }
+      }
+    },
+    "CreateCredentialRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "view_id",
+        "mode",
+        "ttl_seconds",
+        "client_label",
+        "confirmed",
+        "idempotency_key"
+      ],
+      "properties": {
+        "contract_version": {
+          "$ref": "#/$defs/Version"
+        },
+        "view_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "mode": {
+          "$ref": "#/$defs/Mode"
+        },
+        "ttl_seconds": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 60,
+              "maximum": 28800
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "client_label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "confirmed": {
+          "const": true
+        },
+        "idempotency_key": {
+          "$ref": "#/$defs/Key"
+        }
+      }
+    },
+    "RevokeCredentialRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "credential_id",
+        "confirmed",
+        "idempotency_key"
+      ],
+      "properties": {
+        "contract_version": {
+          "$ref": "#/$defs/Version"
+        },
+        "credential_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "confirmed": {
+          "const": true
+        },
+        "idempotency_key": {
+          "$ref": "#/$defs/Key"
+        }
+      }
+    },
+    "ListCredentialsRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "domain_id",
+        "idempotency_key"
+      ],
+      "properties": {
+        "contract_version": {
+          "$ref": "#/$defs/Version"
+        },
+        "domain_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "idempotency_key": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Key"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "ListCredentialsData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "items",
+        "pagination"
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Credential"
+          },
+          "minItems": 0,
+          "maxItems": 20,
+          "uniqueItems": true
+        },
+        "pagination": {
+          "const": "none"
+        }
+      }
+    },
+    "InspectRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "domain_id",
+        "module_id",
+        "mode",
+        "delivery",
+        "source_ids"
+      ],
+      "properties": {
+        "contract_version": {
+          "$ref": "#/$defs/Version"
+        },
+        "domain_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "module_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "mode": {
+          "$ref": "#/$defs/Mode"
+        },
+        "delivery": {
+          "$ref": "#/$defs/Delivery"
+        },
+        "source_ids": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ID"
+              },
+              "minItems": 1,
+              "maxItems": 32,
+              "uniqueItems": true
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "InspectData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "view_id",
+        "domain_id",
+        "module_id",
+        "module_version",
+        "mode",
+        "delivery",
+        "expires_at",
+        "targets",
+        "source_count",
+        "unit_count",
+        "readiness",
+        "pagination"
+      ],
+      "properties": {
+        "view_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "domain_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "module_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "module_version": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "mode": {
+          "$ref": "#/$defs/Mode"
+        },
+        "delivery": {
+          "$ref": "#/$defs/Delivery"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/Time"
+        },
+        "targets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/TargetCatalogEntry"
+          },
+          "minItems": 1,
+          "maxItems": 32,
+          "uniqueItems": true
+        },
+        "source_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32
+        },
+        "unit_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 32768
+        },
+        "readiness": {
+          "const": "ready"
+        },
+        "pagination": {
+          "const": "none"
+        }
+      }
+    },
+    "SearchRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "view_id",
+        "query",
+        "limit"
+      ],
+      "properties": {
+        "contract_version": {
+          "$ref": "#/$defs/Version"
+        },
+        "view_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "query": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        }
+      }
+    },
+    "Hit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence_ref",
+        "citation",
+        "text",
+        "byte_length",
+        "rank_ordinal"
+      ],
+      "properties": {
+        "evidence_ref": {
+          "$ref": "#/$defs/EvidenceRef"
+        },
+        "citation": {
+          "$ref": "#/$defs/Citation"
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 8192
+        },
+        "byte_length": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8192
+        },
+        "rank_ordinal": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        }
+      }
+    },
+    "SearchData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "view_id",
+        "query",
+        "requested_limit",
+        "returned_count",
+        "hits",
+        "total_matches",
+        "pagination",
+        "ranking",
+        "parent_expansion"
+      ],
+      "properties": {
+        "view_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "query": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "requested_limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "returned_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20
+        },
+        "hits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Hit"
+          },
+          "minItems": 0,
+          "maxItems": 20,
+          "uniqueItems": true
+        },
+        "total_matches": {
+          "type": "null"
+        },
+        "pagination": {
+          "const": "none"
+        },
+        "ranking": {
+          "const": "scoped_lexical_stable_id"
+        },
+        "parent_expansion": {
+          "const": "disabled"
+        }
+      }
+    },
+    "ReadRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "selector"
+      ],
+      "properties": {
+        "contract_version": {
+          "$ref": "#/$defs/Version"
+        },
+        "selector": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/UnitReadSelector"
+            },
+            {
+              "$ref": "#/$defs/EvidenceReadSelector"
+            }
+          ]
+        }
+      }
+    },
+    "ReadData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence_ref",
+        "citation",
+        "text",
+        "byte_length",
+        "encoding",
+        "complete",
+        "typed_context",
+        "attachments",
+        "parent_expansion",
+        "unit_locator"
+      ],
+      "properties": {
+        "evidence_ref": {
+          "$ref": "#/$defs/EvidenceRef"
+        },
+        "citation": {
+          "$ref": "#/$defs/Citation"
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 8192
+        },
+        "byte_length": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8192
+        },
+        "encoding": {
+          "const": "utf-8"
+        },
+        "complete": {
+          "const": true
+        },
+        "typed_context": {
+          "$ref": "#/$defs/TypedContext"
+        },
+        "attachments": {
+          "const": "not_exposed"
+        },
+        "parent_expansion": {
+          "const": "disabled"
+        },
+        "unit_locator": {
+          "$ref": "#/$defs/UnitLocator"
+        }
+      }
+    },
+    "Error": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation",
+        "contract_version",
+        "request_id",
+        "data",
+        "code",
+        "message",
+        "outcome_known",
+        "retry_same_key"
+      ],
+      "properties": {
+        "operation": {
+          "enum": [
+            "setDepartment",
+            "listDepartments",
+            "setPolicy",
+            "setModule",
+            "getModuleAdmin",
+            "listModules",
+            "createGrant",
+            "revokeGrant",
+            "createCredential",
+            "revokeCredential",
+            "listCredentials",
+            "inspect",
+            "search",
+            "read",
+            "mcpTransport"
+          ]
+        },
+        "contract_version": {
+          "$ref": "#/$defs/Version"
+        },
+        "request_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "data": {
+          "type": "null"
+        },
+        "code": {
+          "enum": [
+            "invalid_request",
+            "unauthenticated",
+            "action_denied",
+            "not_found",
+            "version_conflict",
+            "scope_changed",
+            "view_stale",
+            "index_stale",
+            "index_unindexed",
+            "scope_not_supported",
+            "idempotency_conflict",
+            "contract_mismatch",
+            "capacity_exceeded",
+            "rate_limited",
+            "integrity_error",
+            "unavailable"
+          ]
+        },
+        "message": {
+          "const": "Knowledge access operation could not be completed"
+        },
+        "outcome_known": {
+          "type": "boolean"
+        },
+        "retry_same_key": {
+          "type": "boolean"
+        }
+      }
+    },
+    "SetDepartmentResponse": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "contract_version",
+            "request_id",
+            "data"
+          ],
+          "properties": {
+            "operation": {
+              "const": "setDepartment"
+            },
+            "contract_version": {
+              "$ref": "#/$defs/Version"
+            },
+            "request_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "data": {
+              "$ref": "#/$defs/Department"
+            }
+          }
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Error"
+            },
+            {
+              "properties": {
+                "operation": {
+                  "const": "setDepartment"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "ListDepartmentsResponse": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "contract_version",
+            "request_id",
+            "data"
+          ],
+          "properties": {
+            "operation": {
+              "const": "listDepartments"
+            },
+            "contract_version": {
+              "$ref": "#/$defs/Version"
+            },
+            "request_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "data": {
+              "$ref": "#/$defs/ListDepartmentsData"
+            }
+          }
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Error"
+            },
+            {
+              "properties": {
+                "operation": {
+                  "const": "listDepartments"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "SetPolicyResponse": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "contract_version",
+            "request_id",
+            "data"
+          ],
+          "properties": {
+            "operation": {
+              "const": "setPolicy"
+            },
+            "contract_version": {
+              "$ref": "#/$defs/Version"
+            },
+            "request_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "data": {
+              "$ref": "#/$defs/Policy"
+            }
+          }
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Error"
+            },
+            {
+              "properties": {
+                "operation": {
+                  "const": "setPolicy"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "SetModuleResponse": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "contract_version",
+            "request_id",
+            "data"
+          ],
+          "properties": {
+            "operation": {
+              "const": "setModule"
+            },
+            "contract_version": {
+              "$ref": "#/$defs/Version"
+            },
+            "request_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "data": {
+              "$ref": "#/$defs/ModuleAdmin"
+            }
+          }
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Error"
+            },
+            {
+              "properties": {
+                "operation": {
+                  "const": "setModule"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "GetModuleAdminResponse": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "contract_version",
+            "request_id",
+            "data"
+          ],
+          "properties": {
+            "operation": {
+              "const": "getModuleAdmin"
+            },
+            "contract_version": {
+              "$ref": "#/$defs/Version"
+            },
+            "request_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "data": {
+              "$ref": "#/$defs/ModuleAdmin"
+            }
+          }
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Error"
+            },
+            {
+              "properties": {
+                "operation": {
+                  "const": "getModuleAdmin"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "ListModulesResponse": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "contract_version",
+            "request_id",
+            "data"
+          ],
+          "properties": {
+            "operation": {
+              "const": "listModules"
+            },
+            "contract_version": {
+              "$ref": "#/$defs/Version"
+            },
+            "request_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "data": {
+              "$ref": "#/$defs/ListModulesData"
+            }
+          }
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Error"
+            },
+            {
+              "properties": {
+                "operation": {
+                  "const": "listModules"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "CreateGrantResponse": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "contract_version",
+            "request_id",
+            "data"
+          ],
+          "properties": {
+            "operation": {
+              "const": "createGrant"
+            },
+            "contract_version": {
+              "$ref": "#/$defs/Version"
+            },
+            "request_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "data": {
+              "$ref": "#/$defs/Grant"
+            }
+          }
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Error"
+            },
+            {
+              "properties": {
+                "operation": {
+                  "const": "createGrant"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "RevokeGrantResponse": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "contract_version",
+            "request_id",
+            "data"
+          ],
+          "properties": {
+            "operation": {
+              "const": "revokeGrant"
+            },
+            "contract_version": {
+              "$ref": "#/$defs/Version"
+            },
+            "request_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "data": {
+              "$ref": "#/$defs/Revoked"
+            }
+          }
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Error"
+            },
+            {
+              "properties": {
+                "operation": {
+                  "const": "revokeGrant"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "CreateCredentialResponse": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "contract_version",
+            "request_id",
+            "data"
+          ],
+          "properties": {
+            "operation": {
+              "const": "createCredential"
+            },
+            "contract_version": {
+              "$ref": "#/$defs/Version"
+            },
+            "request_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "data": {
+              "$ref": "#/$defs/CredentialMintData"
+            }
+          }
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Error"
+            },
+            {
+              "properties": {
+                "operation": {
+                  "const": "createCredential"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "RevokeCredentialResponse": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "contract_version",
+            "request_id",
+            "data"
+          ],
+          "properties": {
+            "operation": {
+              "const": "revokeCredential"
+            },
+            "contract_version": {
+              "$ref": "#/$defs/Version"
+            },
+            "request_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "data": {
+              "$ref": "#/$defs/Revoked"
+            }
+          }
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Error"
+            },
+            {
+              "properties": {
+                "operation": {
+                  "const": "revokeCredential"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "ListCredentialsResponse": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "contract_version",
+            "request_id",
+            "data"
+          ],
+          "properties": {
+            "operation": {
+              "const": "listCredentials"
+            },
+            "contract_version": {
+              "$ref": "#/$defs/Version"
+            },
+            "request_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "data": {
+              "$ref": "#/$defs/ListCredentialsData"
+            }
+          }
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Error"
+            },
+            {
+              "properties": {
+                "operation": {
+                  "const": "listCredentials"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "InspectResponse": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "contract_version",
+            "request_id",
+            "data"
+          ],
+          "properties": {
+            "operation": {
+              "const": "inspect"
+            },
+            "contract_version": {
+              "$ref": "#/$defs/Version"
+            },
+            "request_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "data": {
+              "$ref": "#/$defs/InspectData"
+            }
+          }
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Error"
+            },
+            {
+              "properties": {
+                "operation": {
+                  "const": "inspect"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "SearchResponse": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "contract_version",
+            "request_id",
+            "data"
+          ],
+          "properties": {
+            "operation": {
+              "const": "search"
+            },
+            "contract_version": {
+              "$ref": "#/$defs/Version"
+            },
+            "request_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "data": {
+              "$ref": "#/$defs/SearchData"
+            }
+          }
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Error"
+            },
+            {
+              "properties": {
+                "operation": {
+                  "const": "search"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "ReadResponse": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "contract_version",
+            "request_id",
+            "data"
+          ],
+          "properties": {
+            "operation": {
+              "const": "read"
+            },
+            "contract_version": {
+              "$ref": "#/$defs/Version"
+            },
+            "request_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "data": {
+              "$ref": "#/$defs/ReadData"
+            }
+          }
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Error"
+            },
+            {
+              "properties": {
+                "operation": {
+                  "const": "read"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "TargetCatalogEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target",
+        "unit_count"
+      ],
+      "properties": {
+        "target": {
+          "$ref": "#/$defs/Target"
+        },
+        "unit_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 32768
+        }
+      }
+    },
+    "UnitReadSelector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "view_id",
+        "target_index",
+        "unit_ordinal"
+      ],
+      "properties": {
+        "kind": {
+          "const": "unit"
+        },
+        "view_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "target_index": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 31
+        },
+        "unit_ordinal": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 32767
+        }
+      }
+    },
+    "EvidenceReadSelector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "evidence_ref"
+      ],
+      "properties": {
+        "kind": {
+          "const": "evidence"
+        },
+        "evidence_ref": {
+          "$ref": "#/$defs/EvidenceRef"
+        }
+      }
+    },
+    "UnitLocator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "view_id",
+        "target_index",
+        "unit_ordinal",
+        "target_unit_count",
+        "next_unit_ordinal"
+      ],
+      "properties": {
+        "view_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "target_index": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 31
+        },
+        "unit_ordinal": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 32767
+        },
+        "target_unit_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32768
+        },
+        "next_unit_ordinal": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 32767
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

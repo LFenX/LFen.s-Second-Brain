@@ -1334,3 +1334,43 @@ it('does not consume an ordinary registration-by-ID 404 after a successful uploa
   expect(api.create).not.toHaveBeenCalled();
   expect(api.register).not.toHaveBeenCalled();
 });
+
+it('B28 regression: rejects unsupported CSV registration locally with accurate input feedback and permits a corrected DOCX submission', async () => {
+  render(<OriginalImport domain={DomainId} />, { wrapper: wrapper() });
+  const form = await screen.findByRole('form', {
+    name: 'knowledgeOriginal.registration',
+  });
+  fireEvent.change(within(form).getByLabelText('knowledgeOriginal.name'), {
+    target: { value: 'Synthetic validation' },
+  });
+  fireEvent.change(within(form).getByLabelText('knowledgeOriginal.paths'), {
+    target: { value: 'synthetic/unsupported.csv' },
+  });
+  const key = (
+    within(form).getByLabelText(
+      'knowledgeOriginal.registrationKey',
+    ) as HTMLInputElement
+  ).value;
+  fireEvent.submit(form);
+  await screen.findByText('knowledgeOriginal.invalidInput');
+  expect(
+    screen.queryByText('knowledgeOriginal.unconfirmed'),
+  ).not.toBeInTheDocument();
+  expect(
+    screen.queryByRole('button', { name: 'knowledgeOriginal.checkResult' }),
+  ).not.toBeInTheDocument();
+  expect(api.register).not.toHaveBeenCalled();
+  expect(localStorage.getItem(StorageKey + ':create')).toBeNull();
+  fireEvent.change(within(form).getByLabelText('knowledgeOriginal.paths'), {
+    target: { value: FreshPath },
+  });
+  fireEvent.submit(form);
+  await screen.findByRole('form', { name: 'knowledgeOriginal.prepare' });
+  expect(api.register).toHaveBeenCalledTimes(1);
+  expect(api.register.mock.calls[0][2]).toEqual(
+    expect.objectContaining({
+      registration_key: key,
+      include_paths: [FreshPath],
+    }),
+  );
+});

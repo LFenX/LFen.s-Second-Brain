@@ -1,0 +1,63 @@
+{
+  "status": "Draft_PendingSpecificDecision",
+  "fixtures": [
+    {
+      "name": "synthetic-A.csv",
+      "source_id": "000000000000000000000000000000c9",
+      "revision_id": "0000000000000000000000000000012d",
+      "body_utf8": "类别,代号\n合成A,A-001\n空值,\n",
+      "expected_reading_utf8": "类别\t代号\n合成A\tA-001\n空值\t",
+      "scope": "moduleA allowed",
+      "source_UTF8_bytes": 36,
+      "source_sha256": "f04a56bbb3b93dbf8cb01cb26076dcae7983dd860d7d0fc2ec1a909ed3116de5",
+      "expected_reading_UTF8_bytes": 35,
+      "expected_reading_sha256": "adea993dc1601a0b494678d5423bd43f4c6dbd65463958b31a6d8d83042a057c"
+    },
+    {
+      "name": "synthetic-B.csv",
+      "source_id": "000000000000000000000000000000ca",
+      "revision_id": "0000000000000000000000000000012e",
+      "body_utf8": "类别,代号\n合成B,B_ONLY_NOT_AUTHORIZED\n",
+      "expected_reading_utf8": "类别\t代号\n合成B\tB_ONLY_NOT_AUTHORIZED",
+      "scope": "moduleB only, forbidden to A1",
+      "source_UTF8_bytes": 44,
+      "source_sha256": "fc64a9cc671db5e0f4bec43b1466a9b13b1bdf7cda82b18ad1a0e026b163f941",
+      "expected_reading_UTF8_bytes": 43,
+      "expected_reading_sha256": "c28555ae7f94cdb84da30872b061505a88e6e3d64bd95c8b9f139bcd55ce291c"
+    },
+    {
+      "name": "synthetic-A-r2.csv",
+      "source_id": "000000000000000000000000000000c9",
+      "revision_id": "0000000000000000000000000000012f",
+      "body_utf8": "类别,代号\n合成A,A_NEW_REVISION_NOT_GRANTED\n",
+      "expected_reading_utf8": "类别\t代号\n合成A\tA_NEW_REVISION_NOT_GRANTED",
+      "scope": "new revision not inherited by moduleA",
+      "source_UTF8_bytes": 49,
+      "source_sha256": "a4bba31717c916378247035d413a41454b79c4aabec4cb996d65668a0865bac1",
+      "expected_reading_UTF8_bytes": 48,
+      "expected_reading_sha256": "d7b06f6424cf3612eaf9feb148f8decffc2c8051901465557d68b2f36c923b9d"
+    }
+  ],
+  "identities": {
+    "tenant": "0000000000000000000000000000000a",
+    "owner": "0000000000000000000000000000000b",
+    "personal_user": "0000000000000000000000000000000c",
+    "departmentA": "00000000000000000000000000000029",
+    "departmentB": "0000000000000000000000000000002a",
+    "A1": "00000000000000000000000000000015",
+    "A2": "00000000000000000000000000000016",
+    "B1": "00000000000000000000000000000017",
+    "outside_tenant_user": "00000000000000000000000000000018",
+    "domain": "00000000000000000000000000000064",
+    "moduleA": "000000000000000000000000000001f5",
+    "moduleB": "000000000000000000000000000001f6"
+  },
+  "fixture_note": "Static synthetic definitions only. No accounts,SQL rows,credentials or secrets created. Future actual tests must build/admit these sources with real owning code, bind actual producer/representation/node IDs and native fixtures, and freeze actual outputs before acceptance. Illustrative representation/node/profile IDs are not asserted runtime producer hashes.",
+  "private_publication": "Future owner publishes A+B; moduleA selects only fixed A representation/revision301. This does not permit B source-body loading. Multi-source R1 dependency fixture A+B is rejected for A-only scope unless all dependencies are explicitly granted.",
+  "typed_expectations": [
+    "A complete table summary stays within the A evidence range.",
+    "A trailing empty cell has range[start=end=reading byte length] and SHA256(empty).",
+    "No Attributes/TableData/relationship/attachment/storage URL field in shared0.3 output."
+  ],
+  "execution": "NotRun"
+}

@@ -6858,6 +6858,639 @@
       ],
       "preservation": "All previous round3 and older source/main/runtime/failures/acceptance observations keep their original values and times. This followup does not turn the repaired source into a previously tested runtime.",
       "new_model_real_content_deployment_publication_or_product_acceptance_authorized": false
+    },
+    "stage02_and_access_authorization_followup": {
+      "status": "ActualSourceAndSpecificHumanApproval_ReferenceRegistrationPrepared",
+      "record_prepared_at_utc": "2026-11-07T20:01:34.559Z",
+      "coordinator": "01a1a9a5-c724-7f52-8cbb-16d19d982ba4",
+      "writer": "D",
+      "task": "ROOT-REFERENCE28-PREPARE01",
+      "observation_rules": "Every result keeps its original report time/version/scope. Runtime/GUI/stage02-Git pending values are at Root PREPARE01 dispatch,not a later D runtime probe. Formal activation remains separate actual exact21+Ref28 closure.",
+      "source_application": {
+        "status": "AppliedExact13_PendingReferenceClosure",
+        "actual_receipt": {
+          "path": ".local-data/coordination-20261108/integration/exact13-apply01/handoff.safe.json",
+          "bytes": 13301,
+          "sha256": "65189ce25f2a52499cbdda2217a3e132ca5d5ca9ec70c903712f1230acaebec9"
+        },
+        "completed_at_utc": "2026-11-07T19:49:44.597Z",
+        "copied_at_utc": "2026-11-07T19:46:08.620Z",
+        "exact_postimage_set": {
+          "algorithm": "sha256-sorted-path-nul-postimage-sha256-lf-v1",
+          "sha256": "6ba64cb80917ac88ed6cd0020ec56921b3d7bdf9cf7682e26672bfd89f46aea5"
+        },
+        "counts": {
+          "paths": 13,
+          "modify": 10,
+          "add": 3,
+          "Go": 2,
+          "Web": 11
+        },
+        "actual_whole_source": {
+          "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+          "file_count": 5048,
+          "sha256": "4226d996c441a79fd1a05475c26fc52a856b693a3bbfc0aaca1cdd81b00510ba"
+        },
+        "actual13": [
+          {
+            "path": "internal/service/dataset/knowledge_local_lexical_worker.go",
+            "operation": "modify",
+            "kind": "file",
+            "bytes": 6915,
+            "sha256": "6ad35dfc113be5950c7502e64e23e3eccdcf83cb5cdca5c6baf6eaa5b2b11427"
+          },
+          {
+            "path": "internal/service/dataset/knowledge_local_lexical_worker_test.go",
+            "operation": "add",
+            "kind": "file",
+            "bytes": 11722,
+            "sha256": "ee09da7436719dd29eb49eed1797286668bfb35d26ebd5219baa0da338b456ae"
+          },
+          {
+            "path": "web/src/hooks/__tests__/knowledge-original-content-refresh.test.tsx",
+            "operation": "add",
+            "kind": "file",
+            "bytes": 11929,
+            "sha256": "c0338c7caf201fa7ebe0fa10db0d3d9d8bc8ab72883cc5c048223773a1e31b78"
+          },
+          {
+            "path": "web/src/hooks/knowledge-configuration-keys.ts",
+            "operation": "add",
+            "kind": "file",
+            "bytes": 222,
+            "sha256": "cbc57e0fca89fab25d2b826456697f1c22723e41f1283d5c9ff6be903535ee1d"
+          },
+          {
+            "path": "web/src/hooks/use-knowledge-consumption.ts",
+            "operation": "modify",
+            "kind": "file",
+            "bytes": 12114,
+            "sha256": "6c86924be447786ce2792d049e5914ea039d850e241a411a67d6c1ebb11cd7ff"
+          },
+          {
+            "path": "web/src/hooks/use-knowledge-request.ts",
+            "operation": "modify",
+            "kind": "file",
+            "bytes": 39067,
+            "sha256": "35ea61b519d354e4d94a58692bad38dbd3d719a46215a091b985cc5c1029bbfb"
+          },
+          {
+            "path": "web/src/hooks/use-knowledge-sources.ts",
+            "operation": "modify",
+            "kind": "file",
+            "bytes": 4167,
+            "sha256": "5eb5ed6ac5b43e882ee7afc091c7a22ac465e97da770e8e8ba998ec6aa3e5e5a"
+          },
+          {
+            "path": "web/src/pages/dataset/knowledge-catalogue/__tests__/knowledge-consumption.test.tsx",
+            "operation": "modify",
+            "kind": "file",
+            "bytes": 122312,
+            "sha256": "bd6476137937f569b3736a365839e0bdd63354ad1845855da64835c6a7568a30"
+          },
+          {
+            "path": "web/src/pages/dataset/knowledge-catalogue/__tests__/lifecycle-recovery.test.tsx",
+            "operation": "modify",
+            "kind": "file",
+            "bytes": 24158,
+            "sha256": "ff3e2346bd7371463cdf1b22521b3ffbef0018c10026ffb5470e77e7f3532356"
+          },
+          {
+            "path": "web/src/pages/dataset/knowledge-catalogue/knowledge-representation.tsx",
+            "operation": "modify",
+            "kind": "file",
+            "bytes": 37657,
+            "sha256": "2ec9b53b18967025960a1bc929be347a61480878b7d94e2b9b356e88c5278545"
+          },
+          {
+            "path": "web/src/pages/dataset/knowledge-import/__tests__/original-new-registration.test.tsx",
+            "operation": "modify",
+            "kind": "file",
+            "bytes": 47024,
+            "sha256": "74e7df7a93378af66a288964c1c0681c8a2e17754585ba912933de4e159ee42e"
+          },
+          {
+            "path": "web/src/pages/dataset/knowledge-import/original-fields.tsx",
+            "operation": "modify",
+            "kind": "file",
+            "bytes": 8089,
+            "sha256": "44a2db52972982e5a482f4379f2d83fb7f479ea63f2f1a80146eed37f64c061a"
+          },
+          {
+            "path": "web/src/pages/dataset/knowledge-import/use-original-flow.ts",
+            "operation": "modify",
+            "kind": "file",
+            "bytes": 32411,
+            "sha256": "eb780424ebb4ac932010a1e64bb2a97483858834644a9d054919d8f09f61ba84"
+          }
+        ],
+        "outside13_source_rows_unchanged": 5035,
+        "protected47_unchanged": true,
+        "formal26_unchanged": true,
+        "committed49_verified": 49,
+        "HEAD": "78f0337dcda1cd2240797564f0176debba22c843",
+        "index_sha256": "4a124a8bcb61e3b62a134e6fe34c84807e5a7d4d506fc4ffbda69e38f1394982",
+        "Root_independent_after_guard": {
+          "provided_in_task": true,
+          "observed_at_utc": "2026-11-07T19:48:44.031Z",
+          "aggregate_sha256": "274ce5d9656112408317d3b495cdb43c8c384d0927e9c97ad95229ee65798e8a",
+          "status": "RootAccepted_Actual13_SourceAnd47_26_49_HEAD_Index"
+        },
+        "D_independent_actual_source_observation": {
+          "evidence": {
+            "path": ".local-data/coordination-20261108/reference28/candidate01/opening.safe.json",
+            "bytes": 5688,
+            "sha256": "e1bf847e65f35764f22bedbaa03a41a6da67e561c99e22f146e117c2305ecc83"
+          },
+          "at_utc": "2026-11-07T19:55:54.235Z",
+          "source": {
+            "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+            "file_count": 5048,
+            "sha256": "4226d996c441a79fd1a05475c26fc52a856b693a3bbfc0aaca1cdd81b00510ba"
+          },
+          "actual13_raw_postimages_verified": 13
+        },
+        "old_prediction": "Earlier5048/4226 value remains Predicted_NotApplied in its original evidence. This record uses actual13 receipt and independent current-source observation,not that prediction.",
+        "source_apply_is_not_build_runtime_or_GUI_acceptance": true,
+        "source_and_build_input_binding": {
+          "evidence": {
+            "path": ".local-data/coordination-20261108/integration/exact13-apply01/handoff.safe.json",
+            "bytes": 13301,
+            "sha256": "65189ce25f2a52499cbdda2217a3e132ca5d5ca9ec70c903712f1230acaebec9"
+          },
+          "Go": {
+            "handoffSHA256": "ed0ac6ed2a8c55e7b3416629895d09a76509bf5c48a7c1ab93b10eaf9e87ba60",
+            "inputCount": 3325,
+            "allCurrentMainInputsRawMatch": 3325,
+            "affectedExactGoTargets": 2,
+            "serverSHA256": "992907675220c2e47c56547c85c0d2f1cbb4e1c6904c3d6084574d7f4612b045",
+            "priorActualValidation": "D review + valid red +5top6statesSub + real SQL probe + CLI/server build +5help, retained original layer"
+          },
+          "Web": {
+            "handoffSHA256": "5288e99833b4fe451a4e084c3f6d856b8092eea1997949b0b3d1133a377cce61",
+            "inputCount": 2034,
+            "allCurrentMainInputsRawMatch": 2034,
+            "affectedExactWebTargets": 11,
+            "artifactFiles": 1073,
+            "artifactBytes": 56165520,
+            "indexSHA256": "eeea33cb00901137ecc9cb7c94b1607ffc2bbc57a6487c8ae329df957b6451e5",
+            "priorActualValidation": "C exact11 review, prior201 and37 replay, actual BUILD02 npm/Vite exit0; not repeated",
+            "deployed": false,
+            "GUIAcceptance": false
+          }
+        },
+        "old27_post_apply": {
+          "raw_sha256": "4013cba9546dd693a32f62a07c801a5522fafe2fd66339a499f77b7fdc0f9ac7",
+          "status": "KnownControlledSourceChange_PendingReferenceClosure",
+          "exact_check_exit": 1,
+          "hash_refreshed": false,
+          "claimed_pass": false
+        }
+      },
+      "Go_layers": {
+        "validation02": {
+          "evidence": {
+            "path": ".local-data/coordination-20261108/backend/lexical-retry-validation02/handoff.safe.json",
+            "bytes": 6883,
+            "sha256": "a7b322f96753f0637f35492f52735c481b3f7c88b8f744c3e8a4e0b73b319a22"
+          },
+          "status": "Passed_ActualRedAndGreen_NarrowTargets_SourceNotApplied",
+          "closed_at_utc": "2026-11-07T18:42:26.539Z",
+          "red": {
+            "actual_named_run": 1,
+            "expected_failure": true,
+            "wrapper_exit": 1,
+            "trace": "stale A claimed SQL attempt 3 with local count 2; third failure left state=queued diagnostic=index_failed"
+          },
+          "green": {
+            "wrapperExit": 0,
+            "newTopPasses": 4,
+            "existingMixedTopPasses": 1,
+            "statesSubPasses": 6,
+            "requiredFailures": 0,
+            "requiredSkips": 0,
+            "DryRunSQLAndBindingsActual": true,
+            "log": {
+              "file": "..\\lexical-retry-validation01\\out\\validation02\\green.log",
+              "bytes": 95130,
+              "sha256": "2775bb08c8be4fd48efe8acd63511b1559d80d3fb245023b1676aede9746c1e7"
+            }
+          },
+          "native": {
+            "parentTestMainSkippedBeforeMRun": true,
+            "parentBodyPassesClaimed": 0,
+            "cropTopPasses": 1,
+            "cropSubPasses": 3,
+            "terminals": [
+              {
+                "status": "PASS",
+                "name": "TestFromImageOrigin"
+              },
+              {
+                "status": "PASS",
+                "name": "TestFromImageOrigin/zero_origin"
+              },
+              {
+                "status": "PASS",
+                "name": "TestFromImageOrigin/non-zero_origin"
+              },
+              {
+                "status": "PASS",
+                "name": "TestFromImageOrigin/origin_offset_only_in_Y"
+              }
+            ]
+          }
+        },
+        "build01": {
+          "evidence": {
+            "path": ".local-data/coordination-20261108/backend/lexical-retry-build01/handoff.safe.json",
+            "bytes": 11059,
+            "sha256": "ed0ac6ed2a8c55e7b3416629895d09a76509bf5c48a7c1ab93b10eaf9e87ba60"
+          },
+          "status": "Passed_OneOriginalBuildGo_ServerFourModesHelp_CLIHelp_ActualHelperRemoved_SourceNotApplied",
+          "closed_at_utc": "2026-11-07T19:03:07.218Z",
+          "actual_build_command": [
+            "bash",
+            "build.sh",
+            "--go"
+          ],
+          "actual_build_count": 1,
+          "wrapper_exit": 0,
+          "elapsed_seconds": 275,
+          "artifacts": [
+            {
+              "file": "bin/ragflow-cli",
+              "bytes": 134490368,
+              "sha256": "8f244ecd485123d76018359c8ecb24f722b943860dd74985ba30fe3e2f5d1d34"
+            },
+            {
+              "file": "bin/ragflow_server",
+              "bytes": 334058960,
+              "sha256": "992907675220c2e47c56547c85c0d2f1cbb4e1c6904c3d6084574d7f4612b045"
+            }
+          ],
+          "startup": {
+            "verificationKind": "ActualNewELFHelpReachedGoMainAndModeUsage",
+            "serverModeHelpPasses": 4,
+            "CLIHelpPasses": 1,
+            "results": [
+              {
+                "artifact": "ragflow_server",
+                "argv": [
+                  "--api",
+                  "--help"
+                ],
+                "exit_code": 1,
+                "expected_exit_code_from_source": 1,
+                "mode_usage_seen": true,
+                "business_startup_requested": false
+              },
+              {
+                "artifact": "ragflow_server",
+                "argv": [
+                  "--admin",
+                  "--help"
+                ],
+                "exit_code": 1,
+                "expected_exit_code_from_source": 1,
+                "mode_usage_seen": true,
+                "business_startup_requested": false
+              },
+              {
+                "artifact": "ragflow_server",
+                "argv": [
+                  "--ingestor",
+                  "--help"
+                ],
+                "exit_code": 1,
+                "expected_exit_code_from_source": 1,
+                "mode_usage_seen": true,
+                "business_startup_requested": false
+              },
+              {
+                "artifact": "ragflow_server",
+                "argv": [
+                  "--syncer",
+                  "--help"
+                ],
+                "exit_code": 1,
+                "expected_exit_code_from_source": 1,
+                "mode_usage_seen": true,
+                "business_startup_requested": false
+              },
+              {
+                "artifact": "ragflow-cli",
+                "argv": [
+                  "--help"
+                ],
+                "exit_code": 0,
+                "expected_exit_code_from_source": 0,
+                "usage_seen": true,
+                "business_startup_requested": false
+              }
+            ],
+            "serverExpectedExitExplanation": "cmd/ragflow_server.go prints selected help before InitLocalVariables/config/services, then os.Exit(1); actual1 with matching mode Usage is expected.",
+            "CLIExpectedExitExplanation": "cmd/ragflow-cli.go help prints Usage and returns; actual0 expected.",
+            "businessServiceStartupRequested": false,
+            "portsBoundByHelper": false
+          },
+          "public_input_count": 3325,
+          "public_inputs_no_private_config": true,
+          "cleanup": {
+            "status": "Completed_ActualHelperAbsent_AfterInitialClientTimeout",
+            "observedAtUTC": "2026-11-07T19:01:43.757Z",
+            "helperAbsent": true,
+            "finalContainerCount": 14,
+            "original14IdentitiesPreserved": true,
+            "baseCacheVolumesRetained": [
+              "lfensb-gobuild",
+              "lfensb-gomod"
+            ],
+            "volumeRemovalRequested": false,
+            "removalRequests": 1,
+            "initialDockerRmClientTimedOutAfter30s": true,
+            "intermediateDaemonState": "removing",
+            "subsequentDaemonRemovalActuallyObserved": true,
+            "ephemeralTaskCacheRemovedWithOwnedHelper": true
+          }
+        },
+        "initial_failed_validation": {
+          "evidence": {
+            "path": ".local-data/coordination-20261108/backend/lexical-retry-validation01/handoff.safe.json",
+            "bytes": 5108,
+            "sha256": "cc15050e49b558845c41f47ffde7a35255dd8a569b07516bb149ef87cba99a5d"
+          },
+          "status": "Closed_Unsuccessful_FirstRedTimeout_NotValidRed_GreenNotRun",
+          "closed_at_utc": "2026-11-07T18:15:08.279Z",
+          "red": {
+            "wrapperExit": 124,
+            "namedRuns": 0,
+            "validRed": false,
+            "lastStage": "compile/link; log contains symbols summary but no named test run",
+            "nativeTail": "NotRun"
+          },
+          "green": {
+            "status": "NotRun",
+            "namedRuns": 0,
+            "DryRunSQLProbe": "NotRun"
+          },
+          "not_rewritten_by_later_green": true
+        },
+        "scope": "Actual narrow red/green,build and help evidence only. No new Go execution in document preparation;native parent body remains unexecuted and crop is separate."
+      },
+      "Web_layers": {
+        "independent_review": {
+          "evidence": {
+            "path": ".local-data/coordination-20261108/review/web-fixes01/handoff.safe.json",
+            "bytes": 28100,
+            "sha256": "a59b430074890262af876500ebc30f2fdc928a26807e8fcdf6e962e894a993dd"
+          },
+          "status": "NoVerifiedBlockingFindings_RecommendExact11Application_WindowReturned",
+          "completed_at_utc": "2026-11-07T18:50:49.117Z",
+          "exact11_review": true,
+          "existing_seven_suites": "201PASS0FAIL0SKIP recorded scope,not all rerun by C",
+          "independent_counts": [
+            {
+              "name": "independent-lifecycle-baseline-maintenance01",
+              "counts": {
+                "passed": 22,
+                "failed": 0,
+                "pending": 0,
+                "runtime_error_suites": 0,
+                "success": true,
+                "total_suites": 1
+              },
+              "result": {
+                "path": "D:\\LFen_project\\dev_project\\LFENsSecondBrain\\.local-data\\coordination-20261108\\review\\web-fixes01\\independent-lifecycle-baseline-maintenance01.result.json",
+                "bytes": 9107,
+                "sha256": "f46fe496400a94cf5ab6eec610767d8c2798bb14b425b4639115319addd8cec5"
+              }
+            },
+            {
+              "name": "independent-regressions01",
+              "counts": {
+                "passed": 15,
+                "failed": 0,
+                "pending": 121,
+                "runtime_error_suites": 0,
+                "success": true,
+                "total_suites": 3
+              },
+              "result": {
+                "path": "D:\\LFen_project\\dev_project\\LFENsSecondBrain\\.local-data\\coordination-20261108\\review\\web-fixes01\\independent-regressions01.result.json",
+                "bytes": 53811,
+                "sha256": "9a7940e29796b860b0536e1bc3e87ff672c825c9844c04869e7b866989acff68"
+              }
+            }
+          ],
+          "unique_count_not_additive": true,
+          "full_frontend_typecheck": "NotRun"
+        },
+        "build02": {
+          "evidence": {
+            "path": ".local-data/coordination-20261108/web/fixes-build02/handoff.safe.json",
+            "bytes": 28090,
+            "sha256": "5288e99833b4fe451a4e084c3f6d856b8092eea1997949b0b3d1133a377cce61"
+          },
+          "status": "Passed_ActualNPMAndViteExit0_CompleteCandidateArtifact_NotAppliedOrDeployed",
+          "completed_at_utc": "2026-11-07T19:28:01.849Z",
+          "public_input_count": 2034,
+          "public_input_manifest": {
+            "path": "D:\\LFen_project\\dev_project\\LFENsSecondBrain\\.local-data\\coordination-20261108\\web\\fixes-build02\\application-inputs.safe.json",
+            "bytes": 667086,
+            "sha256": "6e8e004953df520cd07dbca29c7746cc7352eb887939f1108d29e331f923e08f"
+          },
+          "project_npmrc": "Excluded as controlled environment projection, not a twelfth product fix. Contents/hash not inspected in02.",
+          "private_and_env_files": "Excluded; no private credential/config contents copied or printed.",
+          "production_attempts": {
+            "npm_wrappers": 1,
+            "Vite_builds": 1,
+            "NPM_exit": 0,
+            "Vite_exit": 0,
+            "automatic_retries": 0
+          },
+          "started_at_utc": "2026-11-07T19:20:59.581Z",
+          "exit_code": 0,
+          "signal": null,
+          "modules_transformed": 13817,
+          "artifact": {
+            "files": 1073,
+            "bytes": 56165520,
+            "index_html_sha256": "eeea33cb00901137ecc9cb7c94b1607ffc2bbc57a6487c8ae329df957b6451e5",
+            "tree_sha256": "ce214f623b3aed5964957fe5c2810551b3cbeba0c3385cf2b544e0ccce3480fc",
+            "complete_manifest": {
+              "path": "D:\\LFen_project\\dev_project\\LFENsSecondBrain\\.local-data\\coordination-20261108\\web\\fixes-build02\\artifact-manifest.safe.json",
+              "bytes": 181837,
+              "sha256": "c33359ca7991b5a8fed3685df5847cda30d20f20580ce817d1f9860e7e5aeb09"
+            }
+          },
+          "applied_or_deployed_by_build_task": false
+        },
+        "prior_failures": {
+          "BUILD01": {
+            "production_npm_wrappers": 1,
+            "production_Vite_builds": 0,
+            "exit_code": 1,
+            "status": "Preserved npm/project-config boundary failure before Vite; not compiler or OOM failure."
+          },
+          "BUILD02_low_load": {
+            "npm_config_wrappers_total": 4,
+            "npm_config_wrappers_failed": 1,
+            "npm_config_wrappers_passed": 3,
+            "Vite_CLI_version_invocations": 1,
+            "Vite_config_only_resolutions": 1,
+            "production_Vite_builds": 0,
+            "failed_precheck": "Public npm builtin hash validation recursed inside wrapped FS. Original logs/audit/revision preserved; fixed by validation before FS wrapping with the same narrow config permissions."
+          },
+          "C_original_history": {
+            "public_old_runs": 15,
+            "invalid_green02": "原6PASS/9FAIL/错误应用守卫保留；不算候选通过",
+            "old_green01": "两套加载错误保留",
+            "old_shell_stubs_green03": "不据它批准旧重依赖边",
+            "stopped_dependency_probes": "无最终JSON/体执行数未建立，不算PASS",
+            "browser03": "原15PASS/4FAIL/5NotRun保留，首次进入原因Unknown；82.382s限时观察FAIL保留，不归因服务端性能"
+          }
+        },
+        "browser03": {
+          "status": "Original15PASS4FAIL5NotRun_Preserved_NotRerunByBuildOrSourceApply",
+          "evidence": {
+            "name": "prior_browser03",
+            "path": "D:/LFen_project/dev_project/LFENsSecondBrain/.local-data/coordination-20261108/web/full-workflow03/handoff.safe.json",
+            "bytes": 10911,
+            "sha256": "c2e50077f5155e6c6654dce2e63beba76a426339f0f9bf9c64d6084a0fe267f9"
+          },
+          "not_retroactively_passed": true
+        },
+        "scope": "201 existing and independent37 are distinct reported scopes with overlap;no unique238 claim. Build completeness is not served GUI or full typecheck."
+      },
+      "KCA02_specific_decision": {
+        "status": "SpecificHumanApprovedA_PendingRegistration_NotImplemented",
+        "subject": {
+          "path": ".local-data/coordination-20261108/design/knowledge-access-candidate02/subject-manifest.safe.json",
+          "bytes": 8262,
+          "sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+        },
+        "human_question_item_id": "[\"request_user_input_async\",\"call_ae7af8c8856d4f04b6976c437cd2d60e\",0]",
+        "question_original": "是否按已独审方案 KCA-20261108-02 实施：个人只读共享 → 部门授权 → 临时 MCP 凭据？首版限定固定资料版本、结构化内容摘要、许可范围内固定顺序检索；权限变更后可能需续签。MCP 凭据默认 1 小时、可撤销，先支持可配置令牌的客户端。B 仅实施前两阶段，MCP 等指定 OAuth 方案。具体对象：[方案摘要](D:/LFen_project/dev_project/LFENsSecondBrain/.local-data/coordination-20261108/design/knowledge-access-candidate02/decision-summary.zh-CN.txt)，subject SHA-256：a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3。仍仅用合成资料，不新增模型调用。",
+        "options_original": [
+          "A：实施三个阶段（推荐）",
+          "B：先做个人／部门共享，MCP 暂缓"
+        ],
+        "answer_original": "A：实施三个阶段（推荐）",
+        "root_recorded_at_utc": "2026-11-07T19:36:57Z",
+        "time_meaning": "Root收到真人答复后首次记录时钟；不冒充用户点击时刻",
+        "decision_record": {
+          "original": {
+            "path": ".local-data/coordination-20261108/access-decision/prep01/implementation-decision.json",
+            "bytes": 6490,
+            "sha256": "1e8a25531d5a6804acb3ac5cc40b77655076217ecc2ea0f663bad76f45c92571"
+          },
+          "public_path": "docs/knowledge-access-20261108-02/implementation-decision.json"
+        },
+        "public_copy_map": {
+          "original": {
+            "path": ".local-data/coordination-20261108/access-decision/prep01/public-copy-map.json",
+            "bytes": 12952,
+            "sha256": "d90531766b8f6c73e82c66c1e58c60447310fae43ff4702bfece0272254c1150"
+          },
+          "public_path": "docs/knowledge-access-20261108-02/public-copy-map.json"
+        },
+        "subject_members": 14,
+        "subject_member_bytes": 331418,
+        "stages": [
+          "S1_user_module_Web",
+          "S2_departments",
+          "S3_managed_MCP"
+        ],
+        "surface": {
+          "native_HTTP_operations": 14,
+          "per_stage": [
+            9,
+            2,
+            3
+          ],
+          "MCP_tools": 3,
+          "metadata_tables": 9
+        },
+        "immutable_original_pending_fields": true,
+        "C_design_review": {
+          "path": ".local-data/coordination-20261108/review/knowledge-access02/handoff.safe.json",
+          "bytes": 14909,
+          "sha256": "5b164c901d476b718893efc811f7d2528d2426fbd463eb7bff761521fc99384f"
+        },
+        "design_static_checks": 194,
+        "product_acceptance_groups": 70,
+        "product_acceptance": "AllNotRun",
+        "source_implementation": "NotImplemented",
+        "registration_review": {
+          "status": "RegistrationReviewCompleted_WindowReturned_ReadyForRef28CandidateInclusion",
+          "evidence": {
+            "path": ".local-data/coordination-20261108/review/kca-decision01/handoff.safe.json",
+            "bytes": 8140,
+            "sha256": "9949fbb739f0b979f38043a505506e7fe08534cdded2fa3767382a42ed1429d8"
+          },
+          "completed_at_utc": "2026-11-07T19:59:35.089Z",
+          "Root_transferred_and_accepted": true,
+          "finding_counts": {
+            "P0": 0,
+            "P1": 0,
+            "P2": 0
+          },
+          "independent_registration_checks": {
+            "passed": 156,
+            "total": 156,
+            "artifact": {
+              "path": "D:\\LFen_project\\dev_project\\LFENsSecondBrain\\.local-data\\coordination-20261108\\review\\kca-decision01\\independent-registration-checks.safe.json",
+              "bytes": 14878,
+              "sha256": "5480e941f2dc1d3c80baf0938e34342269c1fbf12da6129eeef4a03199e0cacc"
+            }
+          },
+          "accepted_17_raw_files_and_17_entry_uses": true,
+          "original_14_subject_and156_relative_refs_unchanged": true,
+          "substantive_revision_requests": 0,
+          "full_Ref28_21_review_or_formal_activation": "StillSeparate_NotGrantedByThisReview",
+          "product_acceptance": "All70NotRun"
+        },
+        "new_code_task_prerequisite": "Actual registered new lock+Root exact raw SHA+permitted entries/uses+new bounded source lease. Never implement directly from ignored candidate paths.",
+        "specific_scope_supersession": "Earlier generic department/MCP pending exclusions remain original historical facts;exact KCA02 Option A now authorizes S1/S2/S3 implementation and synthetic acceptance only. Existing owner-only0.2 behavior remains unchanged."
+      },
+      "stage02_pending_at_Root_dispatch": {
+        "new_API_switch": "Pending",
+        "new_Web_switch": "Pending",
+        "targeted_GUI": "Pending",
+        "stage02_commit_push": "Pending",
+        "previous_runtime": "All prior Go57/Webfca evidence retains original observation/version/scope;not reprobed here.",
+        "stage1_git": {
+          "commit": "78f0337dcda1cd2240797564f0176debba22c843",
+          "remote": "Root-confirmed actual equality;earlier D read-only remote confirmation retained",
+          "evidence": {
+            "path": ".local-data/coordination-20261108/reference28/preload01/main-before.safe.json",
+            "bytes": 696,
+            "sha256": "bf296de540d2838da628ac2f8f297ec09a80c35c2778ea4aa88464df6ca8a2d8"
+          }
+        },
+        "latest_human_instruction": "Complete each accepted stage with a commit and push by separately assigned Git owner;old historical no-commit/push wording does not override this newer instruction."
+      },
+      "quality_and_scope_preservation": {
+        "Q04_operator_version_applicability": "Existing applicability boundary preserved;no Gold,answers,operator output,model or quality re-execution read or performed here.",
+        "model_counters": "Only task-scoped zero-call reports;no inference of global zero.",
+        "still_excluded": [
+          "OAuth authorization-server design or arbitrary-Agent automatic onboarding",
+          "real AICS or any new model/OCR/transcription/embedding/rerank/generation calls",
+          "production deployment,external release/publication or final product acceptance",
+          "Agent personality/memory or root-directory restructuring",
+          "destructive resource/volume removal or recreating existing runtime credentials"
+        ],
+        "old_contracts": 26,
+        "protected_files": 47,
+        "archived_documents": 11,
+        "retained_historical_documents": 28,
+        "old_registered_entry_selectors": 80,
+        "old_record_roots": 35,
+        "old_round3_children": 28,
+        "original_raw_subtree_spans": 62
+      },
+      "formal_activation": "Candidate overlay validation only until Root freezes all21 exact postimages,independent review passes,and a named finite mechanical exact21 lease actually applies them and verifies new Ref28. No new raw lock SHA is embedded in this selected content."
     }
   }
 }

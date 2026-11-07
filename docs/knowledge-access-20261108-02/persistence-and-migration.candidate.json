@@ -1,0 +1,385 @@
+{
+  "status": "Draft_PendingSpecificDecision",
+  "tables": [
+    {
+      "name": "knowledge_access_tenant_state",
+      "fields": {
+        "tenant_id": "PK existing Tenant.ID",
+        "epoch": "int64 safe generation,not null default0"
+      },
+      "unique_column_sets": [],
+      "named_indexes": [],
+      "additional_indexes": [],
+      "primary_key_column_set": [
+        "tenant_id"
+      ],
+      "index_coverage_rule": "Primary key counts as an already covered exact column set; no second ordinary tenant_id index."
+    },
+    {
+      "name": "knowledge_access_department",
+      "fields": {
+        "id": "PK32hex",
+        "tenant_id": "existing Tenant.ID",
+        "name": "varchar128",
+        "version": "int64>=1",
+        "enabled": "bool",
+        "created_by": "existing tenant-owner User.ID",
+        "created_at": "UTC",
+        "updated_at": "UTC"
+      },
+      "unique_column_sets": [
+        [
+          "tenant_id",
+          "id"
+        ]
+      ],
+      "named_indexes": [
+        {
+          "name": "idx_ka_department_1",
+          "columns": [
+            "tenant_id",
+            "id"
+          ],
+          "unique": true
+        }
+      ],
+      "additional_indexes": [
+        [
+          "tenant_id"
+        ]
+      ]
+    },
+    {
+      "name": "knowledge_access_department_member",
+      "fields": {
+        "id": "PK32hex",
+        "department_id": "department FK",
+        "user_id": "existing User.ID",
+        "created_at": "UTC"
+      },
+      "unique_column_sets": [
+        [
+          "department_id",
+          "user_id"
+        ]
+      ],
+      "named_indexes": [
+        {
+          "name": "idx_ka_department_member_1",
+          "columns": [
+            "department_id",
+            "user_id"
+          ],
+          "unique": true
+        }
+      ],
+      "additional_indexes": []
+    },
+    {
+      "name": "knowledge_access_domain_policy",
+      "fields": {
+        "domain_id": "PK existing Knowledgebase.ID",
+        "tenant_id": "existing Tenant.ID",
+        "enabled": "bool defaultfalse",
+        "version": "int64>=1",
+        "updated_by": "current domain owner",
+        "updated_at": "UTC"
+      },
+      "unique_column_sets": [],
+      "named_indexes": [],
+      "additional_indexes": [
+        [
+          "tenant_id"
+        ]
+      ]
+    },
+    {
+      "name": "knowledge_access_module",
+      "fields": {
+        "id": "PK32hex",
+        "domain_id": "existing Knowledgebase.ID",
+        "tenant_id": "existing Tenant.ID",
+        "name": "varchar128",
+        "version": "int64>=1",
+        "enabled": "bool",
+        "scope_json": "closed canonical fixed publication+targets JSON<=32768",
+        "scope_sha256": "char64",
+        "created_by": "domain owner",
+        "created_at": "UTC",
+        "updated_at": "UTC"
+      },
+      "unique_column_sets": [
+        [
+          "domain_id",
+          "id"
+        ]
+      ],
+      "named_indexes": [
+        {
+          "name": "idx_ka_module_1",
+          "columns": [
+            "domain_id",
+            "id"
+          ],
+          "unique": true
+        }
+      ],
+      "additional_indexes": [
+        [
+          "tenant_id"
+        ]
+      ]
+    },
+    {
+      "name": "knowledge_access_grant",
+      "fields": {
+        "id": "PK32hex",
+        "tenant_id": "existing Tenant.ID",
+        "domain_id": "existing Knowledgebase.ID",
+        "module_id": "module FK",
+        "subject_kind": "user|department",
+        "subject_id": "existing User or department ID",
+        "mode": "read|read_search",
+        "delivery": "web_only|web_and_mcp",
+        "issued_by": "domain owner",
+        "definition_json": "immutable canonical request",
+        "issued_at": "UTC",
+        "expires_at": "UTC nonnull",
+        "revoked_at": "UTC nullable",
+        "module_version": "int64 captured at issuance; must equal current module version",
+        "create_command_id": "FK access_audit.id; sole durable creation command link,not an alternate key map"
+      },
+      "unique_column_sets": [],
+      "named_indexes": [],
+      "additional_indexes": [
+        [
+          "module_id",
+          "subject_kind",
+          "subject_id"
+        ],
+        [
+          "expires_at"
+        ]
+      ]
+    },
+    {
+      "name": "knowledge_access_credential",
+      "fields": {
+        "id": "PK32hex",
+        "tenant_id": "Tenant.ID",
+        "subject_user_id": "User.ID",
+        "grant_id": "grant FK",
+        "domain_id": "Knowledgebase.ID",
+        "module_id": "module FK",
+        "module_version": "int64",
+        "tenant_epoch": "int64",
+        "capture_json": "exact selected targets/publication/policy/source fences<=65536bytes",
+        "mode": "read|read_search",
+        "audience": "canonical endpoint URI",
+        "verifier_sha256": "binary32,never public",
+        "client_label": "varchar128",
+        "issued_at": "UTC",
+        "expires_at": "UTC",
+        "revoked_at": "UTC nullable",
+        "last_used_at": "UTC nullable",
+        "create_command_id": "FK access_audit.id; sole durable creation command link,not an alternate key map"
+      },
+      "unique_column_sets": [],
+      "named_indexes": [],
+      "additional_indexes": [
+        [
+          "subject_user_id",
+          "domain_id",
+          "revoked_at"
+        ],
+        [
+          "expires_at"
+        ]
+      ]
+    },
+    {
+      "name": "knowledge_access_view",
+      "fields": {
+        "id": "PK32hex opaque",
+        "tenant_id": "Tenant.ID",
+        "subject_user_id": "User.ID",
+        "credential_id": "nullable credential FK",
+        "grant_id": "grant FK",
+        "domain_id": "Knowledgebase.ID",
+        "module_id": "module FK",
+        "module_version": "int64",
+        "tenant_epoch": "int64",
+        "private_manifest_json": "private publication ref+selected target descriptors, no full row map or body; combined capture<=65536bytes",
+        "capture_json": "policy/source-fence captures within combined65536byte cap",
+        "issued_at": "UTC",
+        "expires_at": "UTC<=5min and parent expiry"
+      },
+      "unique_column_sets": [],
+      "named_indexes": [],
+      "additional_indexes": [
+        [
+          "expires_at"
+        ],
+        [
+          "credential_id"
+        ],
+        [
+          "subject_user_id",
+          "domain_id"
+        ]
+      ]
+    },
+    {
+      "name": "knowledge_access_audit",
+      "fields": {
+        "id": "PK32hex",
+        "tenant_id": "Tenant.ID",
+        "actor_user_id": "nullable User.ID",
+        "credential_id": "nullable ID only",
+        "domain_id": "nullable ID only",
+        "module_id": "nullable ID only",
+        "action": "closed internal operation ID",
+        "outcome": "allowed|denied|changed|revoked",
+        "request_id": "32hex",
+        "definition_digest": "nullable canonical authorization-definition SHA only; no credential verifier",
+        "occurred_at": "UTC",
+        "before_definition_json": "nullable closed allowlisted authorization metadata<=32768bytes,never source text/token/verifier",
+        "after_definition_json": "nullable closed allowlisted authorization metadata<=32768bytes; preserve module scope+version history",
+        "command_operation": "nullable enum of exactly seven access mutation operation IDs; null on ordinary read/security audit",
+        "command_key": "nullable ASCII varchar128 COLLATE ascii_bin (MySQL) /TEXT COLLATE BINARY (SQLite),case-sensitive16..128; never a credential secret",
+        "command_request_sha256": "nullable binary32 canonical validated DTO digest",
+        "command_scope_kind": "nullable tenant|domain; required for committed command",
+        "command_scope_id": "nullable32hex exact authorized tenant/domain scope",
+        "command_state": "nullable pending_uncommitted|completed|compacted; pending may never commit",
+        "command_resource_id": "nullable32hex created/changed resource ID",
+        "command_http_status": "nullable original safe native HTTP result status",
+        "command_result_json": "nullable closed SAFE operation data<=1048576bytes; credential mint always token:null,delivery unavailable_after_first_response",
+        "command_committed_at": "nullable UTC",
+        "command_compacted_at": "nullable UTC"
+      },
+      "unique_column_sets": [
+        [
+          "actor_user_id",
+          "command_operation",
+          "command_key"
+        ]
+      ],
+      "named_indexes": [
+        {
+          "name": "idx_ka_audit_command_key",
+          "columns": [
+            "actor_user_id",
+            "command_operation",
+            "command_key"
+          ],
+          "unique": true
+        }
+      ],
+      "additional_indexes": [
+        [
+          "tenant_id",
+          "occurred_at"
+        ],
+        [
+          "domain_id",
+          "occurred_at"
+        ],
+        [
+          "command_resource_id"
+        ]
+      ]
+    }
+  ],
+  "existing_tables_reused": [
+    "user",
+    "tenant",
+    "user_tenant",
+    "knowledgebase",
+    "knowledge_source_revision",
+    "knowledge_source_lifecycle",
+    "knowledge_source_fence",
+    "knowledge_local_lexical_job",
+    "knowledge_local_lexical_publication",
+    "existing typed representation/node tables"
+  ],
+  "no_new_content_store": true,
+  "transactions": {
+    "lock_order": "Unique command reservation (mutations only) -> tenant epoch rows sorted tenant ID -> current native user/membership/domain owner -> policy/module/grant/credential -> source lifecycle fences under the reconciled native order -> completed same audit receipt. Fresh final-permit read transactions use corresponding shared/current locks. Native mutators must be adapted consistently before activation.",
+    "grant_and_module_mutation": "CAS expected_version, validate current issuer and exact target/lineage/live-source/publication membership under transaction, update module/immutable grant/revocation, increment tenant epoch, append audit, commit all or none. Never accept changed-row count0 as success. Grant pins module_version; module change invalidates all old-version grants and credentials/views. At most256 current live grants per module; getModuleAdmin includes only these, not retained history. Preserve previous and new bounded scope/department/grant definition metadata in audit before/after fields; credential audit uses only safe credential ID/expiry/mode/scope digest, never generic entity serialization or verifier. Authorization reads use before/after null.",
+    "department_roster": "Tenant native owner only; every member must be an active exact same-tenant UserTenant row. Full replacement bounded256,expected version,CAS,epoch+audit transaction. No team wildcard or inherited department hierarchy.",
+    "credential": "No epoch bump on mint/revoke/view/audit. Mint locks tenant epoch and parent grant, snapshots policy/fences, generates verifier and commits metadata+audit. Revoke sets revoked_at atomically and audit; subsequent final auth rejects its views. Cannot change grant/subject/scope in place. Mint from a live native web_and_mcp view, preserving its exact target subset and one grant; view expiry is not credential lifetime. No per-hit row-map SQL write is required: evidence digests derive from the view and verified immutable publication. Mint journal contains safe metadata only and returns token:null on replay,including after original view expiry/GC. Original transient secret is never encrypted/persisted for replay.",
+    "idempotency": "All seven writes use transactions.command_receipts; remove separate Grant/credential request-key maps. No name-based,process-local or CAS-only replay recovery.",
+    "command_receipts": {
+      "operations": [
+        "setDepartment",
+        "setPolicy",
+        "setModule",
+        "createGrant",
+        "revokeGrant",
+        "createCredential",
+        "revokeCredential"
+      ],
+      "table": "knowledge_access_audit (same row carries mutation audit + command receipt; no tenth table or new HTTP operation)",
+      "unique": "Named UNIQUE(actor_user_id,command_operation,command_key). Key is unique across scopes for one actor+operation. Exact scope is stored and included in the validated request binding; using that key for another scope/body is409,not a second mutation.",
+      "nullable": "All command fields null for ordinary audit events; SQL UNIQUE NULL semantics allow multiple read events. Committed command rows require non-null actor,operation,key,request SHA,scope,state and safe result. Pending rows exist only inside the transaction and are never committed.",
+      "request_SHA": "SHA256 UTF8 JSON array[knowledge-access-command/0.3.0,actual_actor_user_id,operation,canonical_validated_request_DTO]. Stable DTO field order,all declared nullable keys,arrays preserve order; reject unknown/duplicate/bad UTF8/unsafe numbers before canonicalization. No raw auth header/secret in digest input or stored request.",
+      "scope": {
+        "setDepartment": "tenant_id",
+        "setPolicy": "domain_id",
+        "setModule": "domain_id (including null-ID creation)",
+        "createGrant": "domain_id",
+        "revokeGrant": "domain_id",
+        "createCredential": "domain/tenant captured from native view on first execution; from committed receipt on replay even after view GC",
+        "revokeCredential": "credential native-self metadata scope,not a client-supplied foreign domain"
+      },
+      "algorithm": [
+        "Authenticate current native actor and validate canonical DTO/key. Query committed actor+operation+key; compare SHA and current management authorization for stored scope before returning any stored safe data. Do not require an expired original view/CAS version for an already committed exact replay.",
+        "If no committed receipt,begin transaction and reserve unique actor+operation+key as pending_uncommitted. Concurrent identical/different-body requests serialize on this unique key; a duplicate after the winner commits loads that winner through a fresh primary read and returns replay or409. A rolled-back reservation leaves no command.",
+        "Resolve and authorize exact tenant/domain/self scope. Acquire tenant state and resource locks under the documented global order,check expected version/current view/dependency closure,perform one mutation,increment epoch only if required and actually changed.",
+        "In the same transaction write before/after safe audit metadata and completed command receipt with resource ID,status and ORIGINAL safe result data. Record token:null for mint. Commit atomically. No committed source/Grant/credential/epoch change may exist without its receipt.",
+        "Release first response from transient result after commit. Same-key exact replay rebuilds a fresh response envelope with current request_id and stored original safe data; no mutation,no second resource/no additional epoch bump. createGrant replay200; set/revoke replay200; credential mint replay200 with token:null.",
+        "Current management authorization is always rechecked: tenant owner for department,current actual domain owner for policy/module/Grant,current native self credential metadata authority for mint/revoke. No replay of source content and no owner impersonation.",
+        "If the database response leaves commit unknown,return unavailable,data:null,outcome_known:false,retry_same_key:true. Preserve first failure. Retry EXACT operation/payload/key against the primary; wait/resolve the same unique reservation. A primary-unavailable or still-in-flight outcome remains unknown; never infer rollback from a cache or generate a new key/secret."
+      ],
+      "failures": "Prevalidation/CAS/auth failures and transactions known rolled back do not consume a command key; state and receipt both absent. An uncertain outcome is not labelled rolled back. Replays of a completed command are checked before stale expected_version and never change the winner result.",
+      "retention": "Keep complete safe receipt data90days. Ordinary audit events may follow the separate90day policy. Thereafter command row may compact to nonsecret actor/operation/key/request SHA/scope/resource/outcome tombstone; the unique key is retained indefinitely until explicit metadata-retirement scope. Exact replay of a compacted command returns409 idempotency_conflict,outcome_known:true,retry_same_key:false and NEVER executes again; no source/secret reconstruction. No automatic key deletion or reuse.",
+      "credential_lookup": "listCredentials with idempotency_key joins the same actor/createCredential/key journal to command_resource_id and owned credential metadata. It is not a second key store. Missing/compacted metadata never causes another mint.",
+      "execution": "NotRun"
+    }
+  },
+  "migration": [
+    {
+      "phase": "M0",
+      "state": "Draft",
+      "action": "Add the nine narrow metadata tables with explicit named unique indexes; compare existing indexes by complete column set. No renaming existing indexes; SQLite/MySQL dry-run probes and migration tests required later. Include the named audit-command unique column set and nullable noncommand semantics. Remove duplicate tenant_state tenant_id ordinary index; remove Grant/credential alternate request key maps."
+    },
+    {
+      "phase": "M1",
+      "state": "Draft",
+      "action": "Initialize tenant epoch rows0 lazily with conflict-safe insert; no department/module/grant/credential backfill. Missing domain policy defaults disabled. No modification of source bytes, owner-only grants, permissions or old publications."
+    },
+    {
+      "phase": "M2",
+      "state": "Draft",
+      "action": "Wire all existing native user/tenant membership/tenant/domain status mutations affecting shared access to epoch bump in same transaction. Live checks remain mandatory defense. Do not import inherited Python logic or create a second schema owner."
+    },
+    {
+      "phase": "M3",
+      "state": "Draft",
+      "action": "Apply new handler/service/projection/order/log policy behind default-off configuration; existing endpoints and frozen documents unchanged. Original content/ES mappings not recreated."
+    },
+    {
+      "phase": "M4",
+      "state": "Draft",
+      "action": "After specific decision and synthetic tests, owner explicitly enables sharing, creates module from an existing valid publication, creates grant; users explicitly mint short-lived credentials. No production account or secret seeded."
+    }
+  ],
+  "rollback": "Disable new sharing policy/routes, revoke credentials/grants, expire views. Preserve tables/audit for evidence; no destructive down migration, source deletion, credential recreation, volume deletion or reclassification of native datasets.",
+  "retention": "Expired view rows may be collected after a bounded1hour grace using their expires_at index. No stored content text in view/audit; mapping only. Audit90day retention is a proposed policy, cleanup requires its own operational scope. Grant/credential metadata retained through audit period with verifier cleared only after revoked+expired retention rule; no secret ever exists in DB. Historical module versions remain traceable through exact before/after authorization definitions; audit digests alone are insufficient after a module scope overwrite. Command receipt/tombstone retention follows the distinct non-reuse rule in transactions.command_receipts; ordinary audit GC must not remove command uniqueness or trigger a replay mutation.",
+  "DB_relational_checks": [
+    "All relationships same tenant/domain unless explicitly nullable audit metadata. Database FKs where existing cross-engine migration supports them; application transaction validation always required.",
+    "One current module record, version changes invalidate views; old scope definition retained only as bounded authorization metadata in audited mutation record or archival metadata, never content bytes.",
+    "No TTL cache authorizes; current DB liveness checks at start/final. DB outage blocks shared result, including a cached result."
+  ],
+  "execution": "NotRun"
+}

@@ -1,5 +1,23 @@
 # 当前任务参考资料基线
 
+**2026-11-08 第28基线候选：实际源码闭环与共享访问具体批准**
+
+当前基线ID：`KCRL-20261108-28`；总控为Codex会话`01a1a9a5-c724-7f52-8cbb-16d19d982ba4`。当前事实入口仍为`coordination-20261106-round3/current_context`，仅在原`/coordination_20261106_round3`内追加`stage02_and_access_authorization_followup`。旧35根字段、round3原28子段及其失败、时点、运行版本和验收范围原样保留；以下Ref27和更早导语均为各自原时点历史。
+
+A已实际应用冻结exact13源码：10修改、3新增，Go2/Web11；实际全源码5048份，canonical SHA-256 `4226d996c441a79fd1a05475c26fc52a856b693a3bbfc0aaca1cdd81b00510ba`。实际回执SHA `65189ce25f2a52499cbdda2217a3e132ca5d5ca9ec70c903712f1230acaebec9`，Root另核真实13差异、范围外5035源码、47保护/26合同/49已提交路径、HEAD和index；旧5045/834afa38是批准前快照。此前5048预测只保留为预测，当前事实来自实际应用回执与独立实测。旧Ref27原字节SHA `4013cba9546dd693a32f62a07c801a5522fafe2fd66339a499f77b7fdc0f9ac7`原样归档；应用后的旧锁仅source drift拒绝，不谎报通过、不刷新旧锁。
+
+分层验证按原回执登记：Go VALIDATE02真实red与4新/1既有top、6states sub绿，native父在m.Run前跳过，crop另计1top/3sub；BUILD01原build.sh --go实际构建CLI/server并完成四模式和CLI共5help。Web既有201与C独立37属于不同范围，不累加unique；BUILD02实际一次Vite/npm exit0，13817模块、1073产物/56165520字节，index `eeea33cb00901137ecc9cb7c94b1607ffc2bbc57a6487c8ae329df957b6451e5`。Go首轮timeout执行0、Web BUILD01 preVite失败、BUILD02预检失败及Browser03的15P/4F/5NotRun均保留；新构建不回填旧失败。新API/Web切换、定向GUI和阶段2 commit/push在Root本准备任务派发时仍Pending，旧Go57/Webfca运行证据保留原范围。各任务0调用不外推全局0；Q04的operator版本适用性边界不由此重写。
+
+真人已在Root的一次具体问题中选择“A：实施三个阶段（推荐）”，精确批准KCA-20261108-02 subject SHA `a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3`。新入口`access02-implementation-decision/implementation_authority`保存原问题、两选项、原答案及Root首次记录UTC；`access02-subject/implementation_design`和`access02-copy-map/reference_resolution`绑定原14件331418字节及独立正式路径映射。C 已完成决定/映射登记独审：17 件精确副本与用途、14 原件/subject 和 156 个相对引用一致，P0/P1/P2 均为 0，无实质修订要求；回执 SHA `9949fbb739f0b979f38043a505506e7fe08534cdded2fa3767382a42ed1429d8`。这只接受登记候选，完整 Ref28/21 件独审与正式生效仍是独立关口。
+
+原Draft/Pending字段是写成时状态，任何字节均不回填；当前批准来自独立具体决定。按S1个人只读模块共享→S2部门授权→S3临时MCP凭据实施与合成验收，接受固定版本、结构化成员摘要、许可行稳定顺序、粗世代续签、默认1小时/最长8小时且可撤销的凭据及具名可配置Bearer客户端先行。70组产品验收仍全部NotRun，方案尚未实现。
+
+上述批准只覆盖该exact subject，不把旧owner-only 0.2契约改成共享接口，不批准OAuth/任意Agent自动接入、新模型调用、真实AICS、生产部署/发布、人格记忆、根目录重排或破坏性删卷。旧26正式契约、47保护件、11归档、28历史原路径和80旧选择器/用途保留；17个新条目按具体决定、已批准设计、实施/验收计划、静态证据及合成输入分别读取，不一概升为已运行正式产品契约。后续代码任务须先取得实际生效且校验通过的新锁、总控给定raw SHA和具名有限源码窗，不能直接据ignored候选开业务写窗。最新真人要求每完成并验收一个阶段即commit并push，由Root另派Git执行者；旧历史禁令不覆盖这一最新明确授权，发布仍独立。
+
+本导语和候选后像本身不授予正式写入。须C登记复核、完整21件独审、Root冻结逐件/集合摘要并另签具名有限单次exact21租约，实际机械应用后再执行Ref28精确校验；本准备包只可声明候选叠加校验，不能声明main已通过Ref28。新锁raw SHA只在独立交接/闭环回执提供，不嵌入被锁内容。
+
+# 当前任务参考资料基线
+
 **2026-11-07 第三轮 shared ordinal 受控后续事实入口**
 
 当前基线ID：`KCRL-20261107-27`；总控仍为Codex会话`01a1a9a5-c724-7f52-8cbb-16d19d982ba4`。当前入口仍为`coordination-20261106-round3/current_context`，仅在原`/coordination_20261106_round3`内追加`shared_ordinal_followup`，观察截点为`2026-11-06T17:02:41.000Z`。旧28源码、原main/runtime/失败/验收时点和既有范围原样保留。

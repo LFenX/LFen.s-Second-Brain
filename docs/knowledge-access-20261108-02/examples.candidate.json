@@ -1,0 +1,468 @@
+{
+  "status": "Draft_PendingSpecificDecision",
+  "clock": "2030-01-01T00:00:00Z synthetic deterministic clock only",
+  "all_IDs": "Deterministic synthetic identifiers; no account,credential or secret created",
+  "examples": [
+    {
+      "id": "EX01",
+      "schema": "SetModuleRequest",
+      "value": {
+        "contract_version": "0.3.0-candidate",
+        "domain_id": "00000000000000000000000000000064",
+        "module_id": null,
+        "expected_version": 0,
+        "name": "A固定修订模块",
+        "enabled": true,
+        "scope": {
+          "kind": "fixed_published_targets",
+          "publication": {
+            "id": "3dcab72e0a2164626ba695ffb4049c60b7da0fbf8989e59f98dcba8d64d10350",
+            "manifest_sha256": "9a3c1a75a2bedf143b54c0cf076a3bf0449a9d94937960f44c5df5fbd5d07825"
+          },
+          "targets": [
+            {
+              "source": {
+                "domain_id": "00000000000000000000000000000064",
+                "source_id": "000000000000000000000000000000c9",
+                "source_revision_id": "0000000000000000000000000000012d",
+                "source_sha256": "f04a56bbb3b93dbf8cb01cb26076dcae7983dd860d7d0fc2ec1a909ed3116de5"
+              },
+              "representation": {
+                "kind": "parsed_representation",
+                "id": "054e2411d956a55fdfb54e6261a6c5f5705c542c4da047a3126b28a5db62dabc",
+                "producer_sha256": "9c88df58980a2ddfb587fa9f48e2d77e2e2c0ddc9808d4f7119b84a82ae879c6"
+              }
+            }
+          ]
+        },
+        "confirmed": true,
+        "idempotency_key": "synthetic-module-key-0001"
+      },
+      "expected": "S1 owner-only input. Underlying original A+B publication ID is never emitted in recipient outputs."
+    },
+    {
+      "id": "EX02",
+      "schema": "InspectRequest",
+      "value": {
+        "contract_version": "0.3.0-candidate",
+        "domain_id": "00000000000000000000000000000064",
+        "module_id": "000000000000000000000000000001f5",
+        "mode": "read",
+        "delivery": "web_and_mcp",
+        "source_ids": [
+          "000000000000000000000000000000c9"
+        ]
+      },
+      "expected": "New native read-only grant or read credential may inspect; no search permission required."
+    },
+    {
+      "id": "EX03",
+      "schema": "InspectResponse",
+      "value": {
+        "operation": "inspect",
+        "contract_version": "0.3.0-candidate",
+        "request_id": "000000000000000000000000000003e7",
+        "data": {
+          "view_id": "00000000000000000000000000000385",
+          "domain_id": "00000000000000000000000000000064",
+          "module_id": "000000000000000000000000000001f5",
+          "module_version": 1,
+          "mode": "read",
+          "delivery": "web_and_mcp",
+          "expires_at": "2030-01-01T00:05:00Z",
+          "targets": [
+            {
+              "target": {
+                "source": {
+                  "domain_id": "00000000000000000000000000000064",
+                  "source_id": "000000000000000000000000000000c9",
+                  "source_revision_id": "0000000000000000000000000000012d",
+                  "source_sha256": "f04a56bbb3b93dbf8cb01cb26076dcae7983dd860d7d0fc2ec1a909ed3116de5"
+                },
+                "representation": {
+                  "kind": "parsed_representation",
+                  "id": "054e2411d956a55fdfb54e6261a6c5f5705c542c4da047a3126b28a5db62dabc",
+                  "producer_sha256": "9c88df58980a2ddfb587fa9f48e2d77e2e2c0ddc9808d4f7119b84a82ae879c6"
+                }
+              },
+              "unit_count": 1
+            }
+          ],
+          "source_count": 1,
+          "unit_count": 1,
+          "readiness": "ready",
+          "pagination": "none"
+        }
+      },
+      "expected": "Scoped targetA only, no private B publication metadata."
+    },
+    {
+      "id": "EX04",
+      "schema": "ReadRequest",
+      "value": {
+        "contract_version": "0.3.0-candidate",
+        "selector": {
+          "kind": "unit",
+          "view_id": "00000000000000000000000000000385",
+          "target_index": 0,
+          "unit_ordinal": 0
+        }
+      },
+      "expected": "First read from empty cache using only read capability; no evidence ref/search/owner session required."
+    },
+    {
+      "id": "EX05",
+      "schema": "SearchResponse",
+      "value": {
+        "operation": "search",
+        "contract_version": "0.3.0-candidate",
+        "request_id": "000000000000000000000000000003e7",
+        "data": {
+          "view_id": "00000000000000000000000000000387",
+          "query": "合成A",
+          "requested_limit": 20,
+          "returned_count": 1,
+          "hits": [
+            {
+              "evidence_ref": {
+                "contract_version": "0.3.0-candidate",
+                "view_id": "00000000000000000000000000000387",
+                "evidence_id": "6405ad3d6150426c325d12885d70e62b3e16c3299c31368b8c28a3b1e80fe338"
+              },
+              "citation": {
+                "target": {
+                  "source": {
+                    "domain_id": "00000000000000000000000000000064",
+                    "source_id": "000000000000000000000000000000c9",
+                    "source_revision_id": "0000000000000000000000000000012d",
+                    "source_sha256": "f04a56bbb3b93dbf8cb01cb26076dcae7983dd860d7d0fc2ec1a909ed3116de5"
+                  },
+                  "representation": {
+                    "kind": "parsed_representation",
+                    "id": "054e2411d956a55fdfb54e6261a6c5f5705c542c4da047a3126b28a5db62dabc",
+                    "producer_sha256": "9c88df58980a2ddfb587fa9f48e2d77e2e2c0ddc9808d4f7119b84a82ae879c6"
+                  }
+                },
+                "node_id": "33fd441b856e1c3b4c05d448a08130a07f1f96546a4cda350fb1df722c2a92a1",
+                "coordinate_space": "derived_utf8",
+                "range": {
+                  "start_byte": 0,
+                  "end_byte": 35,
+                  "sha256": "adea993dc1601a0b494678d5423bd43f4c6dbd65463958b31a6d8d83042a057c"
+                },
+                "display_name": "synthetic-A.csv",
+                "position_label": "CSV rows1–3, derived text exact bytes",
+                "revision_binding": "fixed"
+              },
+              "text": "类别\t代号\n合成A\tA-001\n空值\t",
+              "byte_length": 35,
+              "rank_ordinal": 1
+            }
+          ],
+          "total_matches": null,
+          "pagination": "none",
+          "ranking": "scoped_lexical_stable_id",
+          "parent_expansion": "disabled"
+        }
+      },
+      "expected": "Only allowed A text/ref/citation, no numeric score or all-publication selection."
+    },
+    {
+      "id": "EX06",
+      "schema": "ReadResponse",
+      "value": {
+        "operation": "read",
+        "contract_version": "0.3.0-candidate",
+        "request_id": "000000000000000000000000000003e7",
+        "data": {
+          "evidence_ref": {
+            "contract_version": "0.3.0-candidate",
+            "view_id": "00000000000000000000000000000385",
+            "evidence_id": "6405ad3d6150426c325d12885d70e62b3e16c3299c31368b8c28a3b1e80fe338"
+          },
+          "citation": {
+            "target": {
+              "source": {
+                "domain_id": "00000000000000000000000000000064",
+                "source_id": "000000000000000000000000000000c9",
+                "source_revision_id": "0000000000000000000000000000012d",
+                "source_sha256": "f04a56bbb3b93dbf8cb01cb26076dcae7983dd860d7d0fc2ec1a909ed3116de5"
+              },
+              "representation": {
+                "kind": "parsed_representation",
+                "id": "054e2411d956a55fdfb54e6261a6c5f5705c542c4da047a3126b28a5db62dabc",
+                "producer_sha256": "9c88df58980a2ddfb587fa9f48e2d77e2e2c0ddc9808d4f7119b84a82ae879c6"
+              }
+            },
+            "node_id": "33fd441b856e1c3b4c05d448a08130a07f1f96546a4cda350fb1df722c2a92a1",
+            "coordinate_space": "derived_utf8",
+            "range": {
+              "start_byte": 0,
+              "end_byte": 35,
+              "sha256": "adea993dc1601a0b494678d5423bd43f4c6dbd65463958b31a6d8d83042a057c"
+            },
+            "display_name": "synthetic-A.csv",
+            "position_label": "CSV rows1–3, derived text exact bytes",
+            "revision_binding": "fixed"
+          },
+          "text": "类别\t代号\n合成A\tA-001\n空值\t",
+          "byte_length": 35,
+          "encoding": "utf-8",
+          "complete": true,
+          "typed_context": {
+            "members": [
+              {
+                "node_id": "f9e1f80b532d440a51c618b8b9a59f54c79ba7f5ac6e78dc20efd25f46a82f34",
+                "kind": "table",
+                "range": {
+                  "start_byte": 0,
+                  "end_byte": 35,
+                  "sha256": "adea993dc1601a0b494678d5423bd43f4c6dbd65463958b31a6d8d83042a057c"
+                },
+                "text_status": "available",
+                "payload_sha256": "ee37f6a7a9dff2b163420eadbb4de7bb03365483e284dfcc0839deaa2aac35ed"
+              },
+              {
+                "node_id": "379ecaf94c00abeed1b67db90672dc1a66c7494ffa06d12300f6fe22af3f9a42",
+                "kind": "cell",
+                "range": {
+                  "start_byte": 35,
+                  "end_byte": 35,
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                },
+                "text_status": "empty",
+                "payload_sha256": "428ff5901455ee1901e2458941d49ba1b0dc5c5b95e291a596a38bdf4a397d82"
+              }
+            ],
+            "members_complete": false,
+            "omission_reasons": [
+              "typed_payload_not_exposed_in_access_v03"
+            ]
+          },
+          "attachments": "not_exposed",
+          "parent_expansion": "disabled",
+          "unit_locator": {
+            "view_id": "00000000000000000000000000000385",
+            "target_index": 0,
+            "unit_ordinal": 0,
+            "target_unit_count": 1,
+            "next_unit_ordinal": null
+          }
+        }
+      },
+      "expected": "Whole typed summary only; actual TableData/Attributes/attachments omitted in this new profile. Returned evidence_ref can be used with selector.kind=evidence; new view/credential still cannot reuse it."
+    },
+    {
+      "id": "EX07",
+      "schema": "CreateCredentialRequest",
+      "value": {
+        "contract_version": "0.3.0-candidate",
+        "view_id": "00000000000000000000000000000385",
+        "mode": "read",
+        "ttl_seconds": null,
+        "client_label": "Synthetic managed client",
+        "confirmed": true,
+        "idempotency_key": "synthetic-credential-key-0001"
+      },
+      "expected": "Native session only. The future runtime may issue once; this candidate does not generate or contain a token."
+    },
+    {
+      "id": "EX08",
+      "schema": "Error",
+      "value": {
+        "operation": "read",
+        "contract_version": "0.3.0-candidate",
+        "request_id": "000000000000000000000000000003e7",
+        "data": null,
+        "code": "view_stale",
+        "message": "Knowledge access operation could not be completed",
+        "outcome_known": true,
+        "retry_same_key": false
+      },
+      "expected": "After own-view expiry/version change; no bytes/count/ref in error."
+    },
+    {
+      "id": "EX09",
+      "schema": "SetDepartmentRequest",
+      "value": {
+        "contract_version": "0.3.0-candidate",
+        "tenant_id": "0000000000000000000000000000000a",
+        "department_id": null,
+        "expected_version": 0,
+        "name": "合成部门A",
+        "enabled": true,
+        "user_ids": [
+          "00000000000000000000000000000015",
+          "00000000000000000000000000000016"
+        ],
+        "confirmed": true,
+        "idempotency_key": "synthetic-department-key-0001"
+      },
+      "expected": "Native tenant-owner only; B1 is not in the complete roster. Static request, no department created."
+    },
+    {
+      "id": "EX10",
+      "schema": "CreateGrantRequest",
+      "value": {
+        "contract_version": "0.3.0-candidate",
+        "domain_id": "00000000000000000000000000000064",
+        "module_id": "000000000000000000000000000001f5",
+        "expected_module_version": 1,
+        "subject": {
+          "kind": "department",
+          "id": "00000000000000000000000000000029"
+        },
+        "mode": "read",
+        "delivery": "web_and_mcp",
+        "expires_at": "2030-01-08T00:00:00Z",
+        "confirmed": true,
+        "idempotency_key": "synthetic-grant-key-0001"
+      },
+      "expected": "S2 owner chooses exact department/module version, not tenant-wide team permission."
+    },
+    {
+      "id": "EX11",
+      "schema": "CreateGrantResponse",
+      "value": {
+        "operation": "createGrant",
+        "contract_version": "0.3.0-candidate",
+        "request_id": "000000000000000000000000000003e7",
+        "data": {
+          "grant_id": "00000000000000000000000000000259",
+          "domain_id": "00000000000000000000000000000064",
+          "module_id": "000000000000000000000000000001f5",
+          "module_version": 1,
+          "subject": {
+            "kind": "department",
+            "id": "00000000000000000000000000000029"
+          },
+          "mode": "read",
+          "delivery": "web_and_mcp",
+          "issued_at": "2030-01-01T00:00:00Z",
+          "expires_at": "2030-01-08T00:00:00Z",
+          "revoked_at": null,
+          "issued_by_user_id": "0000000000000000000000000000000b"
+        }
+      },
+      "expected": "Illustrative immutable authorization metadata. Module version update requires a replacement grant."
+    },
+    {
+      "id": "EX12",
+      "schema": "CreateCredentialResponse",
+      "value": {
+        "operation": "createCredential",
+        "contract_version": "0.3.0-candidate",
+        "request_id": "000000000000000000000000000003e7",
+        "data": {
+          "credential": {
+            "credential_id": "000000000000000000000000000002bd",
+            "domain_id": "00000000000000000000000000000064",
+            "module_id": "000000000000000000000000000001f5",
+            "module_version": 1,
+            "mode": "read",
+            "client_label": "Synthetic managed client",
+            "issued_at": "2030-01-01T00:00:00Z",
+            "expires_at": "2030-01-01T01:00:00Z",
+            "revoked_at": null,
+            "last_used_at": null
+          },
+          "token": null,
+          "delivery": "unavailable_after_first_response"
+        }
+      },
+      "expected": "Same-key metadata-only replay model. No credential or secret was generated for this example."
+    },
+    {
+      "id": "EX13",
+      "schema": "SearchRequest",
+      "value": {
+        "contract_version": "0.3.0-candidate",
+        "view_id": "00000000000000000000000000000387",
+        "query": "合成A",
+        "limit": 20
+      },
+      "expected": "Independent read_search view for EX05,not the readonly EX03 view. Keeping this separate avoids an implicit action upgrade."
+    },
+    {
+      "id": "EX14",
+      "schema": "ListModulesResponse",
+      "value": {
+        "operation": "listModules",
+        "contract_version": "0.3.0-candidate",
+        "request_id": "000000000000000000000000000003e7",
+        "data": {
+          "items": [
+            {
+              "module_id": "000000000000000000000000000001f5",
+              "domain_id": "00000000000000000000000000000064",
+              "name": "A固定修订模块",
+              "version": 1,
+              "target_count": 1,
+              "modes": [],
+              "mcp_delivery_allowed": false,
+              "enabled": false,
+              "administrative_owner": true
+            }
+          ],
+          "pagination": "none",
+          "owned_domain_policies": [
+            {
+              "domain_id": "00000000000000000000000000000064",
+              "version": 0,
+              "enabled": false
+            }
+          ]
+        }
+      },
+      "expected": "Owner can reopen module/policy administration after refresh without a self Grant. Empty modes grants no shared consumption or credential mint."
+    }
+  ],
+  "negative_examples": [
+    {
+      "id": "NEG01",
+      "actor": "B1",
+      "request": "Inspect moduleA with only departmentA grant",
+      "expected_status": 404,
+      "expected_code": "not_found",
+      "no_data": true
+    },
+    {
+      "id": "NEG02",
+      "actor": "A1",
+      "request": "Read old view after grant revoke",
+      "expected_status": 404,
+      "expected_code": "not_found",
+      "no_data": true
+    },
+    {
+      "id": "NEG03",
+      "actor": "revoked bearer",
+      "request": "MCP tools/list",
+      "expected_status": 401,
+      "expected_code": "unauthenticated",
+      "no_data": true
+    },
+    {
+      "id": "NEG04",
+      "actor": "owner",
+      "request": "ModuleScope plus node/range selector",
+      "expected_status": 400,
+      "expected_code": "invalid_request",
+      "no_data": true
+    },
+    {
+      "id": "NEG05",
+      "actor": "A1",
+      "request": "Native inspect view delivery web_only -> credential mint",
+      "expected_status": 403,
+      "expected_code": "action_denied",
+      "no_data": true
+    }
+  ],
+  "execution": "NotRun_ExamplesOnly",
+  "scenarios": {
+    "readonly": "EX02/03(read) ->EX04(unit selector) ->EX06(result/ref),EX07(read-only mint); native and MCP path require no search",
+    "search": "EX13 and EX05 use a distinct read_search view",
+    "multi_unit": "Matrix ID02/CR01/MC01 require an actual multi-unit fixture and bound next_unit_ordinal traversal; current small example is one unit and makes no parser/runtime claim"
+  }
+}

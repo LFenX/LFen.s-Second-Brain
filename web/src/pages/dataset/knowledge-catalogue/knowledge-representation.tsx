@@ -938,6 +938,8 @@ function ParsedChoice({
     setProblem(null);
     await policy.refetch();
     if (!mounted.current) return;
+    await capabilities.refetch();
+    if (!mounted.current) return;
     if (route.source) await current.refetch();
     if (!mounted.current) return;
     if (route.task) await task.refetch();

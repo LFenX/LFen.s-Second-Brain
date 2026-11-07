@@ -1,0 +1,69 @@
+{
+  "status": "Draft_PendingSpecificDecision",
+  "flows": [
+    {
+      "actor": "active native tenant owner",
+      "steps": [
+        "Department page lists only current tenant departments.",
+        "Create/rename/disable flat department; roster picker contains only active same-tenant members.",
+        "Before confirmation show the fixed warning: this tenant authorization edit invalidates existing temporary credentials and views and requires renewal. Do not display an exact or estimated affected authorization/credential count; existing DTOs do not provide one.",
+        "One setDepartment command atomically replaces metadata+complete roster under one version. Other active same-tenant users may list enabled department names/IDs only; roster and member counts stay null."
+      ],
+      "no_implicit_content_read": true
+    },
+    {
+      "actor": "current domain owner",
+      "steps": [
+        "Use listModules for this native tenant/domain. Actual owner summaries include disabled modules and owner policy CAS state version0/false if no row; ownership is metadata administration only. Existing native source/publication pickers are reused.",
+        "Existing owner builds a normal fixed content0.2 publication with current model gates unchanged.",
+        "New Access tab defaults off. Explicitly enable sharing.",
+        "Create an access module by selecting a subset of that publication; preview exact fixed source/revision/SHA and whole target units, conservative multi-source lineage requirements, no latest/group/path/node inheritance.",
+        "Create a time-bounded user or department grant; choose read/read_search and web_only/web_and_mcp separately.",
+        "Revoke grant or disable sharing/module; show that already delivered text cannot be recalled and subsequent requests are checked.",
+        "Updating a module version requires explicit replacement grants; old grants never inherit newly added targets. Owner module details include the current live grant list; no separate Grant/audit-query surface.",
+        "ModuleAdmin returns current sharing policy so policy CAS is reviewable after refresh; no additional policy-get or Grant-list API. A domain owner with no self grant uses the admin link and cannot mint a temporary credential implicitly."
+      ],
+      "no_hidden_owner_API_expansion": true
+    },
+    {
+      "actor": "native recipient",
+      "steps": [
+        "Shared with me page lists only current permitted modules; no tenant/global source totals.",
+        "For read-only mode,inspect lists each fixed target with its unit_count. Open target_index/unit_ordinal0 through read,then use returned next_unit_ordinal or exact evidence_ref. No search authority or prior cached ref is required.",
+        "Choose requested mode/source subset; inspect creates a5minute fixed authorized view.",
+        "Search/read use new v0.3 DTO and evidence refs only; citation shows permitted fixed source and bounded typed summaries, not raw owner publication.",
+        "Any401/404/409 or expiry clears local shared view/text/ref query caches and requires an explicit fresh inspect; no background call to old owner endpoint."
+      ],
+      "limitations": [
+        "No original/attachment download",
+        "No node ACL or rich raw typed payload",
+        "Search stable ID order, top20, no continuation/total count"
+      ]
+    },
+    {
+      "actor": "native user with one qualifying grant",
+      "steps": [
+        "Temporary MCP panel starts from a current native inspect view requested for web_and_mcp, and shows its exact target subset, domain/module version/subject/mode/expiry and external client delivery warning.",
+        "Only a native web_and_mcp view from one qualifying grant may mint a self credential. Copy its exact target subset to the credential; owner personal use also needs a self grant.",
+        "Choose requested mode<=grant and TTL default1h/max8h. Confirm client label is descriptive, not sender binding.",
+        "Token shown once in component memory; explicit copy only. Display endpoint URL separately. No file/QR/URL/telemetry/storage/history export.",
+        "Lost first response is handled through own credential metadata, explicit revoke and a new idempotency key. No recoverable token replay.",
+        "Credential list exposes safe metadata only, expiry, last use, revoke; no verifier or token fragment.",
+        "If a write response is lost,retry the same operation/key/body to resolve the durable receipt. Mint replay supplies metadata with token:null even after its old view expires; explicitly revoke/reissue only after resolution,not on an unknown commit."
+      ],
+      "security_note": "Receiving client can retain/forward text; this service does not enforce remote model policy after delivery."
+    }
+  ],
+  "client_configuration": {
+    "managed_profile": "Canonical HTTPS endpoint + Authorization: Bearer from client secret storage. No owner/API/model key and no extra X-Knowledge-MCP-Profile header.",
+    "compatibility": "Named official Go/TS SDK versions and selected Agent integration must be tested later. Manual header support is not assumed for every Agent. OAuth-only hosts remain unsupported until separate OAuth decision.",
+    "server_responses": "No-store, buffered JSON-only, no SSE/resumption. Origin/CORS allowlist for native Web, no wildcard credentialed CORS. Reject user-controlled target/audience URLs.",
+    "redirects": "Client credential injection constrained to exact canonical endpoint; reject redirects and log redacted metadata only. Pin and test actual client behavior rather than assuming a custom header is safe everywhere."
+  },
+  "client_cache": {
+    "identity": "actor user ID + native/restricted auth kind + credential ID + module version + view ID; never token plaintext",
+    "lifecycle": "Clear on logout/user switch,view TTL,401/404/409,revocation/module updates. Abort pending older views and guard storage writes with current identity/view. Browser already-delivered data cannot be forcibly recalled.",
+    "secret_storage": "No localStorage/sessionStorage/QueryClient cache/devtools/console for minted token. Close/unmount clears only local component references; no claim of guaranteed physical memory erasure."
+  },
+  "execution": "NotRun_NoUIOrCredentialCreated"
+}

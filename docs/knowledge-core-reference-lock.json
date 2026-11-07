@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "lock_id": "KCRL-20261107-27",
-  "recorded_date": "2026-11-07",
+  "lock_id": "KCRL-20261108-28",
+  "recorded_date": "2026-11-08",
   "coordinator_thread_id": "01a1a9a5-c724-7f52-8cbb-16d19d982ba4",
-  "source_baseline_git_head": "87d61549e4b8ecdf2827170c7851b2ed7bb0c251",
+  "source_baseline_git_head": "78f0337dcda1cd2240797564f0176debba22c843",
   "source_snapshot": {
     "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
-    "file_count": 5045,
-    "sha256": "834afa38cfd22b83fcd3d599fe4ec7e1a6e57e22428ab3e2e517a1b460260359"
+    "file_count": 5048,
+    "sha256": "4226d996c441a79fd1a05475c26fc52a856b693a3bbfc0aaca1cdd81b00510ba"
   },
   "unlisted_policy": "DeniedAsCurrentGuidance_UntilCoordinatorReviewsAndAssigns",
   "authority_order": [
@@ -32,9 +32,9 @@
       },
       "integrity": {
         "mode": "file",
-        "sha256": "22b62583d69cdcd74a86c37ab45cbed78ce838e8398f7ee1c607a2a5c00892de"
+        "sha256": "26fdc3e7dfac6e30b2d9a5d9438dbabbc133a9255e9dbca61858982b31d3d9c6"
       },
-      "selection_sha256": "22b62583d69cdcd74a86c37ab45cbed78ce838e8398f7ee1c607a2a5c00892de"
+      "selection_sha256": "26fdc3e7dfac6e30b2d9a5d9438dbabbc133a9255e9dbca61858982b31d3d9c6"
     },
     {
       "id": "root-instructions",
@@ -1453,9 +1453,9 @@
       },
       "integrity": {
         "mode": "selection",
-        "sha256": "7d6424372252cb75a76bebb4ba31747b19a49c4d627fcacfff0d1f609df1110d"
+        "sha256": "65a0c1596222a9015ba2070bd0c4260dc79b0afd7fbb1e06cc57fc83856a4ac9"
       },
-      "selection_sha256": "7d6424372252cb75a76bebb4ba31747b19a49c4d627fcacfff0d1f609df1110d",
+      "selection_sha256": "65a0c1596222a9015ba2070bd0c4260dc79b0afd7fbb1e06cc57fc83856a4ac9",
       "limitation": "第三轮独立事实入口；仅在实际28源码及独立B回执核实、独审和总控精确四文件租约后机械生效。各运行/质量门按各自时点与版本保留，不批准新接口、模型、真实内容、最终验收或发布。 Ref27只追加shared_ordinal_followup；旧28和分层运行事实保留原时点，命名源码集合后续仅据实际应用与分层回执登记，未完成门不标Pass。"
     },
     {
@@ -1491,6 +1491,363 @@
       },
       "selection_sha256": "5ffa4579e9061c052ad9afa9a1b9895c9cb7e2a9cab7887651592430b3e4f6c6",
       "limitation": "26锁154916字节原始快照，仅追溯，不恢复旧写窗、运行验收或额外资料授权。"
+    },
+    {
+      "id": "access02-implementation-decision",
+      "path": "docs/knowledge-access-20261108-02/implementation-decision.json",
+      "role": "human_implementation_authority",
+      "allowed_uses": [
+        "implementation_authority"
+      ],
+      "limitation": "Verbatim specific human Option A for exact KCA-20261108-02;registration pending when written,not implementation/product/security acceptance.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "1e8a25531d5a6804acb3ac5cc40b77655076217ecc2ea0f663bad76f45c92571"
+      },
+      "selection_sha256": "1e8a25531d5a6804acb3ac5cc40b77655076217ecc2ea0f663bad76f45c92571",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-subject",
+      "path": "docs/knowledge-access-20261108-02/subject-manifest.safe.json",
+      "role": "approved_design",
+      "allowed_uses": [
+        "implementation_design"
+      ],
+      "limitation": "Exact approved original manifest bytes;its Draft fields and .local-data provenance paths remain. Resolve14 exact members only through access02-copy-map.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      },
+      "selection_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-copy-map",
+      "path": "docs/knowledge-access-20261108-02/public-copy-map.json",
+      "role": "engineering_dependency",
+      "allowed_uses": [
+        "reference_resolution"
+      ],
+      "limitation": "Exact one-to-one original-to-public raw copy resolution;does not change subject bytes or expand business scope.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "d90531766b8f6c73e82c66c1e58c60447310fae43ff4702bfece0272254c1150"
+      },
+      "selection_sha256": "d90531766b8f6c73e82c66c1e58c60447310fae43ff4702bfece0272254c1150",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-summary",
+      "path": "docs/knowledge-access-20261108-02/decision-summary.zh-CN.txt",
+      "role": "approved_design",
+      "allowed_uses": [
+        "implementation_design"
+      ],
+      "limitation": "Human-facing exact design summary;original Draft text is writing-time state;approval is only the separate exact decision.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "43050b978062eb7be23b6bb59fe4716a4bb4d0b3424570116b8ee78b1ba01e1b"
+      },
+      "selection_sha256": "43050b978062eb7be23b6bb59fe4716a4bb4d0b3424570116b8ee78b1ba01e1b",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-authorization",
+      "path": "docs/knowledge-access-20261108-02/authorization-model.candidate.json",
+      "role": "approved_design",
+      "allowed_uses": [
+        "implementation_design"
+      ],
+      "limitation": "Exact approved access semantics;does not widen old owner-only0.2 or authorize models.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "297f769d5ec7d7e360217ff732e4d1980236ec0645e62aad572f1f88c649f509"
+      },
+      "selection_sha256": "297f769d5ec7d7e360217ff732e4d1980236ec0645e62aad572f1f88c649f509",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-stages",
+      "path": "docs/knowledge-access-20261108-02/operation-rationale-and-stages.candidate.json",
+      "role": "execution_plan",
+      "allowed_uses": [
+        "execution_plan"
+      ],
+      "limitation": "Approved S1/S2/S3 sequencing and operation budget;original tests remain NotRun.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "abd35bafb5f856d7b23fd597016de7fc2eb41e107f3ee57da96cbbdaabf9f1cb"
+      },
+      "selection_sha256": "abd35bafb5f856d7b23fd597016de7fc2eb41e107f3ee57da96cbbdaabf9f1cb",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-protocol",
+      "path": "docs/knowledge-access-20261108-02/protocol.candidate.json",
+      "role": "approved_design",
+      "allowed_uses": [
+        "implementation_design"
+      ],
+      "limitation": "Exact shared read/closure/receipt/native/MCP wire design;not observed runtime.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "04191b440e165aa38e9d35ef2e800111516410de5efa025edccc258f6713f060"
+      },
+      "selection_sha256": "04191b440e165aa38e9d35ef2e800111516410de5efa025edccc258f6713f060",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-schema",
+      "path": "docs/knowledge-access-20261108-02/access.schema.candidate.json",
+      "role": "approved_design",
+      "allowed_uses": [
+        "implementation_design"
+      ],
+      "limitation": "New approved DTO design only;not a running or released existing_contract.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "805eed9e6b9bdb9472bd18ad627b8ae619b34c6757b4b454162c1a5687618d5a"
+      },
+      "selection_sha256": "805eed9e6b9bdb9472bd18ad627b8ae619b34c6757b4b454162c1a5687618d5a",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-openapi",
+      "path": "docs/knowledge-access-20261108-02/access.openapi.candidate.json",
+      "role": "approved_design",
+      "allowed_uses": [
+        "implementation_design"
+      ],
+      "limitation": "Fourteen native operations plus MCP transport design;preserve relative schema paths and staged registration.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "cf9d31417af65ae85814ef3427d0b49718442d0ed2fae3508785058bcd1afe4f"
+      },
+      "selection_sha256": "cf9d31417af65ae85814ef3427d0b49718442d0ed2fae3508785058bcd1afe4f",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-mcp",
+      "path": "docs/knowledge-access-20261108-02/mcp-tools.candidate.json",
+      "role": "approved_design",
+      "allowed_uses": [
+        "implementation_design"
+      ],
+      "limitation": "Three scoped readonly tools and precise wire mapping;named configurable Bearer clients only,no OAuth invention.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "c413e9c91233962bfd2abb4a64e83fff8d64bbb90d30a6d548a20c5b861b6c55"
+      },
+      "selection_sha256": "c413e9c91233962bfd2abb4a64e83fff8d64bbb90d30a6d548a20c5b861b6c55",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-persistence",
+      "path": "docs/knowledge-access-20261108-02/persistence-and-migration.candidate.json",
+      "role": "execution_plan",
+      "allowed_uses": [
+        "implementation_plan"
+      ],
+      "limitation": "Nine-table and migration/transaction plan;no SQL executed or current database claim.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "dc62d32ed4d3080d940240c23d254e425e4eb72fcc9760804581f56be379c976"
+      },
+      "selection_sha256": "dc62d32ed4d3080d940240c23d254e425e4eb72fcc9760804581f56be379c976",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-owning-impact",
+      "path": "docs/knowledge-access-20261108-02/owning-impact.safe.json",
+      "role": "implementation_fact",
+      "allowed_uses": [
+        "implementation_impact"
+      ],
+      "limitation": "Static source pins at approval snapshot and proposed owning changes;reverify current actual code after source closure,without rewriting original approved bytes.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "071d4584f3e17075b3f7fc474c063bda120438823f95b1c35de0f5593371532f"
+      },
+      "selection_sha256": "071d4584f3e17075b3f7fc474c063bda120438823f95b1c35de0f5593371532f",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-web-plan",
+      "path": "docs/knowledge-access-20261108-02/web-delivery.candidate.json",
+      "role": "execution_plan",
+      "allowed_uses": [
+        "implementation_plan"
+      ],
+      "limitation": "Planned Web flow and cache behavior;not a browser acceptance report or exact Web source write lease.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "17ac555a39b298d5cd6f7c043d7f44f05eb42ce65287cf0adeca72aa39de35e6"
+      },
+      "selection_sha256": "17ac555a39b298d5cd6f7c043d7f44f05eb42ce65287cf0adeca72aa39de35e6",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-acceptance-plan",
+      "path": "docs/knowledge-access-20261108-02/acceptance-matrix.candidate.json",
+      "role": "execution_plan",
+      "allowed_uses": [
+        "acceptance_plan"
+      ],
+      "limitation": "Seventy planned acceptance groups:61unit,4integration,5e2e;allNotRun.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "e0ec0e6a458e9437c743724b04c5797a52503b28520a7284115626ef0c2b6515"
+      },
+      "selection_sha256": "e0ec0e6a458e9437c743724b04c5797a52503b28520a7284115626ef0c2b6515",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-examples",
+      "path": "docs/knowledge-access-20261108-02/examples.candidate.json",
+      "role": "synthetic_input",
+      "allowed_uses": [
+        "synthetic_input"
+      ],
+      "limitation": "Fourteen illustrative request/response objects;offline schema validity is not business execution.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "bbe3b2011389afe8c149c85602ccfcd54fc03ed1ed025865a873f723fc891939"
+      },
+      "selection_sha256": "bbe3b2011389afe8c149c85602ccfcd54fc03ed1ed025865a873f723fc891939",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-fixtures",
+      "path": "docs/knowledge-access-20261108-02/synthetic-fixtures.candidate.json",
+      "role": "synthetic_input",
+      "allowed_uses": [
+        "synthetic_input"
+      ],
+      "limitation": "Original synthetic inputs only;no real AICS,accounts,credentials or test execution.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "d913e459d269f9fdbf79c9103d26b99ca2386fc9b9630732184b86446f2306ee"
+      },
+      "selection_sha256": "d913e459d269f9fdbf79c9103d26b99ca2386fc9b9630732184b86446f2306ee",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-source-research",
+      "path": "docs/knowledge-access-20261108-02/official-sources.safe.json",
+      "role": "implementation_fact",
+      "allowed_uses": [
+        "evidence_scope"
+      ],
+      "limitation": "Fixed primary-source research and original observation time;source references do not supply new product scope or runtime proof.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "b20a9f8e4e6b385fcf61291e49e6159ab31fe1c4d1d07dc650b5643b0e57d0d2"
+      },
+      "selection_sha256": "b20a9f8e4e6b385fcf61291e49e6159ab31fe1c4d1d07dc650b5643b0e57d0d2",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
     }
   ],
   "protected_files": {
@@ -4227,6 +4584,232 @@
           }
         }
       ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/implementation-decision.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-implementation-decision",
+          "role": "human_implementation_authority",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/subject-manifest.safe.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-subject",
+          "role": "approved_design",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/public-copy-map.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-copy-map",
+          "role": "engineering_dependency",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/decision-summary.zh-CN.txt",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-summary",
+          "role": "approved_design",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/authorization-model.candidate.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-authorization",
+          "role": "approved_design",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/operation-rationale-and-stages.candidate.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-stages",
+          "role": "execution_plan",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/protocol.candidate.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-protocol",
+          "role": "approved_design",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/access.schema.candidate.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-schema",
+          "role": "approved_design",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/access.openapi.candidate.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-openapi",
+          "role": "approved_design",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/mcp-tools.candidate.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-mcp",
+          "role": "approved_design",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/persistence-and-migration.candidate.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-persistence",
+          "role": "execution_plan",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/owning-impact.safe.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-owning-impact",
+          "role": "implementation_fact",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/web-delivery.candidate.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-web-plan",
+          "role": "execution_plan",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/acceptance-matrix.candidate.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-acceptance-plan",
+          "role": "execution_plan",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/examples.candidate.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-examples",
+          "role": "synthetic_input",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/synthetic-fixtures.candidate.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-fixtures",
+          "role": "synthetic_input",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/official-sources.safe.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-source-research",
+          "role": "implementation_fact",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261107-27.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
     }
   ],
   "external_sources": [
@@ -4311,26 +4894,84 @@
     "选择器外的混合历史内容不可作当前指引",
     "历史归档和保留原路径历史文件均不作正式开发指引",
     "引用锁是工程工作流约束，不是OS文件权限隔离",
-    "无自动refresh/approve或网络访问；子任务不得自改摘要以求通过"
+    "无自动refresh/approve或网络访问；子任务不得自改摘要以求通过",
+    "Specific human KCA-20261108-02 OptionA authorizes only exact S1/S2/S3 synthetic implementation scope;original Draft fields are immutable writing-time status,not absence of that later approval.",
+    "New approved-design/schema/OpenAPI/MCP plans are not existing_contract or runtime/product acceptance;old26 formal contracts and47 protected bindings remain unchanged.",
+    "Latest human stage commit+push instruction supersedes old time-scoped Git prohibitions;actual stage Git and production deployment/release remain separately coordinated actions."
   ],
   "update_rule": "仅主控在同范围内复核事实/差异/摘要并决定变更；最新真人规定总控不做实际工作，机械应用只能由具名执行者在唯一精确写窗中承担。保存旧锁原字节/摘要、原因、受影响条目和新校验；不得为未知漂移刷新摘要。接口/模型/真实内容/发布新范围仍需真人具体决定。",
-  "manifest_payload_sha256": "048d7bd6336a343794ce431ac1fd8f7a5fc9c67dbaad0f8ef3633ffd86d7f6cb",
+  "manifest_payload_sha256": "158a6f24525bd6bf83908d8d0a60093baaa856d51c80f8a539391348c1b30c3b",
   "previous_baseline": {
-    "lock_id": "KCRL-20261106-26",
-    "manifest_sha256": "5ffa4579e9061c052ad9afa9a1b9895c9cb7e2a9cab7887651592430b3e4f6c6",
-    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261106-26.json",
-    "archive_sha256": "5ffa4579e9061c052ad9afa9a1b9895c9cb7e2a9cab7887651592430b3e4f6c6",
+    "lock_id": "KCRL-20261107-27",
+    "manifest_sha256": "4013cba9546dd693a32f62a07c801a5522fafe2fd66339a499f77b7fdc0f9ac7",
+    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261107-27.json",
+    "archive_sha256": "4013cba9546dd693a32f62a07c801a5522fafe2fd66339a499f77b7fdc0f9ac7",
     "changed_files": [
-      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261106-26.json",
       "docs/knowledge-core-execution-record.json",
       "docs/knowledge-core-reference-authority.md",
       "docs/knowledge-core-reference-lock.json",
-      "internal/engine/elasticsearch/knowledge_local_lexical_ordinal_test.go",
-      "internal/service/dataset/knowledge_content_lexical_plan.go",
-      "internal/service/dataset/knowledge_content_lexical_test.go",
-      "internal/service/dataset/knowledge_lexical_ordinal_test.go",
-      "internal/service/dataset/knowledge_local_lexical_index.go"
+      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261107-27.json",
+      "docs/knowledge-access-20261108-02/acceptance-matrix.candidate.json",
+      "docs/knowledge-access-20261108-02/access.openapi.candidate.json",
+      "docs/knowledge-access-20261108-02/access.schema.candidate.json",
+      "docs/knowledge-access-20261108-02/authorization-model.candidate.json",
+      "docs/knowledge-access-20261108-02/decision-summary.zh-CN.txt",
+      "docs/knowledge-access-20261108-02/examples.candidate.json",
+      "docs/knowledge-access-20261108-02/mcp-tools.candidate.json",
+      "docs/knowledge-access-20261108-02/official-sources.safe.json",
+      "docs/knowledge-access-20261108-02/operation-rationale-and-stages.candidate.json",
+      "docs/knowledge-access-20261108-02/owning-impact.safe.json",
+      "docs/knowledge-access-20261108-02/persistence-and-migration.candidate.json",
+      "docs/knowledge-access-20261108-02/protocol.candidate.json",
+      "docs/knowledge-access-20261108-02/synthetic-fixtures.candidate.json",
+      "docs/knowledge-access-20261108-02/web-delivery.candidate.json",
+      "docs/knowledge-access-20261108-02/subject-manifest.safe.json",
+      "docs/knowledge-access-20261108-02/public-copy-map.json",
+      "docs/knowledge-access-20261108-02/implementation-decision.json"
     ],
-    "reason": "受控命名源码集合内部ordinal修复实际应用后的后续观察；保留Ref26原字节与全部旧事实/失败/时点，只更新同一round3中的shared_ordinal_followup和对应当前导语。actual source仅采用实际回执及全源码实测；不推成旧runtime或质量通过，不续授新产品、模型或部署范围。"
+    "already_applied_source_files": [
+      "internal/service/dataset/knowledge_local_lexical_worker.go",
+      "internal/service/dataset/knowledge_local_lexical_worker_test.go",
+      "web/src/hooks/__tests__/knowledge-original-content-refresh.test.tsx",
+      "web/src/hooks/knowledge-configuration-keys.ts",
+      "web/src/hooks/use-knowledge-consumption.ts",
+      "web/src/hooks/use-knowledge-request.ts",
+      "web/src/hooks/use-knowledge-sources.ts",
+      "web/src/pages/dataset/knowledge-catalogue/__tests__/knowledge-consumption.test.tsx",
+      "web/src/pages/dataset/knowledge-catalogue/__tests__/lifecycle-recovery.test.tsx",
+      "web/src/pages/dataset/knowledge-catalogue/knowledge-representation.tsx",
+      "web/src/pages/dataset/knowledge-import/__tests__/original-new-registration.test.tsx",
+      "web/src/pages/dataset/knowledge-import/original-fields.tsx",
+      "web/src/pages/dataset/knowledge-import/use-original-flow.ts"
+    ],
+    "actual_source_receipt": {
+      "path": ".local-data/coordination-20261108/integration/exact13-apply01/handoff.safe.json",
+      "bytes": 13301,
+      "sha256": "65189ce25f2a52499cbdda2217a3e132ca5d5ca9ec70c903712f1230acaebec9"
+    },
+    "existing_entries_with_updated_selection_digests": [
+      "reference-authority",
+      "coordination-20261106-round3"
+    ],
+    "new_access_entries": [
+      "access02-implementation-decision",
+      "access02-subject",
+      "access02-copy-map",
+      "access02-summary",
+      "access02-authorization",
+      "access02-stages",
+      "access02-protocol",
+      "access02-schema",
+      "access02-openapi",
+      "access02-mcp",
+      "access02-persistence",
+      "access02-owning-impact",
+      "access02-web-plan",
+      "access02-acceptance-plan",
+      "access02-examples",
+      "access02-fixtures",
+      "access02-source-research"
+    ],
+    "reason": "Close actual exact13 source application and register the later specific human KCA02 whole-subject OptionA. Preserve all old record raw values,old selectors/uses,contracts/protected/archive/history. Source comes from actual application and independent observation,not prediction;no runtime/GUI/product acceptance or new models/real content/OAuth scope is inferred."
   }
 }

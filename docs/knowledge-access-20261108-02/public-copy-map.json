@@ -1,0 +1,256 @@
+{
+  "schema_version": 1,
+  "id": "KCA-20261108-02-PUBLIC-MAP",
+  "status": "ProposedMapping_PendingIndependentReviewAndRegistration",
+  "task": "ROOT-KCA02-DECISION-PREP01",
+  "approved_subject": {
+    "id": "KCA-20261108-02",
+    "original": {
+      "path": ".local-data/coordination-20261108/design/knowledge-access-candidate02/subject-manifest.safe.json",
+      "bytes": 8262,
+      "sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+    },
+    "proposed_formal_path": "docs/knowledge-access-20261108-02/subject-manifest.safe.json"
+  },
+  "human_binding": {
+    "question_item_id": "[\"request_user_input_async\",\"call_ae7af8c8856d4f04b6976c437cd2d60e\",0]",
+    "selected_option": "A",
+    "original_question_contains_subject_sha256": true
+  },
+  "destination_directory": {
+    "path": "docs/knowledge-access-20261108-02",
+    "observed_kind": "absent",
+    "reason": "One new subject-specific docs subdirectory preserves all original basenames and156 OpenAPI relative schema references without changing the approved bytes; no existing path is renamed or moved."
+  },
+  "rows": [
+    {
+      "kind": "subject_member",
+      "original_path": ".local-data/coordination-20261108/design/knowledge-access-candidate02/acceptance-matrix.candidate.json",
+      "retained_raw_copy": ".local-data/coordination-20261108/access-decision/prep01/originals/acceptance-matrix.candidate.json",
+      "proposed_formal_path": "docs/knowledge-access-20261108-02/acceptance-matrix.candidate.json",
+      "bytes": 33454,
+      "sha256": "e0ec0e6a458e9437c743724b04c5797a52503b28520a7284115626ef0c2b6515",
+      "target_before": {
+        "kind": "absent",
+        "bytes": null,
+        "sha256": null
+      },
+      "copy_policy": "Exact raw bytes;no path,status,wording,line-ending or embedded pin rewrite."
+    },
+    {
+      "kind": "subject_member",
+      "original_path": ".local-data/coordination-20261108/design/knowledge-access-candidate02/access.openapi.candidate.json",
+      "retained_raw_copy": ".local-data/coordination-20261108/access-decision/prep01/originals/access.openapi.candidate.json",
+      "proposed_formal_path": "docs/knowledge-access-20261108-02/access.openapi.candidate.json",
+      "bytes": 56009,
+      "sha256": "cf9d31417af65ae85814ef3427d0b49718442d0ed2fae3508785058bcd1afe4f",
+      "target_before": {
+        "kind": "absent",
+        "bytes": null,
+        "sha256": null
+      },
+      "copy_policy": "Exact raw bytes;no path,status,wording,line-ending or embedded pin rewrite."
+    },
+    {
+      "kind": "subject_member",
+      "original_path": ".local-data/coordination-20261108/design/knowledge-access-candidate02/access.schema.candidate.json",
+      "retained_raw_copy": ".local-data/coordination-20261108/access-decision/prep01/originals/access.schema.candidate.json",
+      "proposed_formal_path": "docs/knowledge-access-20261108-02/access.schema.candidate.json",
+      "bytes": 51419,
+      "sha256": "805eed9e6b9bdb9472bd18ad627b8ae619b34c6757b4b454162c1a5687618d5a",
+      "target_before": {
+        "kind": "absent",
+        "bytes": null,
+        "sha256": null
+      },
+      "copy_policy": "Exact raw bytes;no path,status,wording,line-ending or embedded pin rewrite."
+    },
+    {
+      "kind": "subject_member",
+      "original_path": ".local-data/coordination-20261108/design/knowledge-access-candidate02/authorization-model.candidate.json",
+      "retained_raw_copy": ".local-data/coordination-20261108/access-decision/prep01/originals/authorization-model.candidate.json",
+      "proposed_formal_path": "docs/knowledge-access-20261108-02/authorization-model.candidate.json",
+      "bytes": 28611,
+      "sha256": "297f769d5ec7d7e360217ff732e4d1980236ec0645e62aad572f1f88c649f509",
+      "target_before": {
+        "kind": "absent",
+        "bytes": null,
+        "sha256": null
+      },
+      "copy_policy": "Exact raw bytes;no path,status,wording,line-ending or embedded pin rewrite."
+    },
+    {
+      "kind": "subject_member",
+      "original_path": ".local-data/coordination-20261108/design/knowledge-access-candidate02/decision-summary.zh-CN.txt",
+      "retained_raw_copy": ".local-data/coordination-20261108/access-decision/prep01/originals/decision-summary.zh-CN.txt",
+      "proposed_formal_path": "docs/knowledge-access-20261108-02/decision-summary.zh-CN.txt",
+      "bytes": 4712,
+      "sha256": "43050b978062eb7be23b6bb59fe4716a4bb4d0b3424570116b8ee78b1ba01e1b",
+      "target_before": {
+        "kind": "absent",
+        "bytes": null,
+        "sha256": null
+      },
+      "copy_policy": "Exact raw bytes;no path,status,wording,line-ending or embedded pin rewrite."
+    },
+    {
+      "kind": "subject_member",
+      "original_path": ".local-data/coordination-20261108/design/knowledge-access-candidate02/examples.candidate.json",
+      "retained_raw_copy": ".local-data/coordination-20261108/access-decision/prep01/originals/examples.candidate.json",
+      "proposed_formal_path": "docs/knowledge-access-20261108-02/examples.candidate.json",
+      "bytes": 17628,
+      "sha256": "bbe3b2011389afe8c149c85602ccfcd54fc03ed1ed025865a873f723fc891939",
+      "target_before": {
+        "kind": "absent",
+        "bytes": null,
+        "sha256": null
+      },
+      "copy_policy": "Exact raw bytes;no path,status,wording,line-ending or embedded pin rewrite."
+    },
+    {
+      "kind": "subject_member",
+      "original_path": ".local-data/coordination-20261108/design/knowledge-access-candidate02/mcp-tools.candidate.json",
+      "retained_raw_copy": ".local-data/coordination-20261108/access-decision/prep01/originals/mcp-tools.candidate.json",
+      "proposed_formal_path": "docs/knowledge-access-20261108-02/mcp-tools.candidate.json",
+      "bytes": 54895,
+      "sha256": "c413e9c91233962bfd2abb4a64e83fff8d64bbb90d30a6d548a20c5b861b6c55",
+      "target_before": {
+        "kind": "absent",
+        "bytes": null,
+        "sha256": null
+      },
+      "copy_policy": "Exact raw bytes;no path,status,wording,line-ending or embedded pin rewrite."
+    },
+    {
+      "kind": "subject_member",
+      "original_path": ".local-data/coordination-20261108/design/knowledge-access-candidate02/official-sources.safe.json",
+      "retained_raw_copy": ".local-data/coordination-20261108/access-decision/prep01/originals/official-sources.safe.json",
+      "proposed_formal_path": "docs/knowledge-access-20261108-02/official-sources.safe.json",
+      "bytes": 6080,
+      "sha256": "b20a9f8e4e6b385fcf61291e49e6159ab31fe1c4d1d07dc650b5643b0e57d0d2",
+      "target_before": {
+        "kind": "absent",
+        "bytes": null,
+        "sha256": null
+      },
+      "copy_policy": "Exact raw bytes;no path,status,wording,line-ending or embedded pin rewrite."
+    },
+    {
+      "kind": "subject_member",
+      "original_path": ".local-data/coordination-20261108/design/knowledge-access-candidate02/operation-rationale-and-stages.candidate.json",
+      "retained_raw_copy": ".local-data/coordination-20261108/access-decision/prep01/originals/operation-rationale-and-stages.candidate.json",
+      "proposed_formal_path": "docs/knowledge-access-20261108-02/operation-rationale-and-stages.candidate.json",
+      "bytes": 15390,
+      "sha256": "abd35bafb5f856d7b23fd597016de7fc2eb41e107f3ee57da96cbbdaabf9f1cb",
+      "target_before": {
+        "kind": "absent",
+        "bytes": null,
+        "sha256": null
+      },
+      "copy_policy": "Exact raw bytes;no path,status,wording,line-ending or embedded pin rewrite."
+    },
+    {
+      "kind": "subject_member",
+      "original_path": ".local-data/coordination-20261108/design/knowledge-access-candidate02/owning-impact.safe.json",
+      "retained_raw_copy": ".local-data/coordination-20261108/access-decision/prep01/originals/owning-impact.safe.json",
+      "proposed_formal_path": "docs/knowledge-access-20261108-02/owning-impact.safe.json",
+      "bytes": 14587,
+      "sha256": "071d4584f3e17075b3f7fc474c063bda120438823f95b1c35de0f5593371532f",
+      "target_before": {
+        "kind": "absent",
+        "bytes": null,
+        "sha256": null
+      },
+      "copy_policy": "Exact raw bytes;no path,status,wording,line-ending or embedded pin rewrite."
+    },
+    {
+      "kind": "subject_member",
+      "original_path": ".local-data/coordination-20261108/design/knowledge-access-candidate02/persistence-and-migration.candidate.json",
+      "retained_raw_copy": ".local-data/coordination-20261108/access-decision/prep01/originals/persistence-and-migration.candidate.json",
+      "proposed_formal_path": "docs/knowledge-access-20261108-02/persistence-and-migration.candidate.json",
+      "bytes": 19983,
+      "sha256": "dc62d32ed4d3080d940240c23d254e425e4eb72fcc9760804581f56be379c976",
+      "target_before": {
+        "kind": "absent",
+        "bytes": null,
+        "sha256": null
+      },
+      "copy_policy": "Exact raw bytes;no path,status,wording,line-ending or embedded pin rewrite."
+    },
+    {
+      "kind": "subject_member",
+      "original_path": ".local-data/coordination-20261108/design/knowledge-access-candidate02/protocol.candidate.json",
+      "retained_raw_copy": ".local-data/coordination-20261108/access-decision/prep01/originals/protocol.candidate.json",
+      "proposed_formal_path": "docs/knowledge-access-20261108-02/protocol.candidate.json",
+      "bytes": 18833,
+      "sha256": "04191b440e165aa38e9d35ef2e800111516410de5efa025edccc258f6713f060",
+      "target_before": {
+        "kind": "absent",
+        "bytes": null,
+        "sha256": null
+      },
+      "copy_policy": "Exact raw bytes;no path,status,wording,line-ending or embedded pin rewrite."
+    },
+    {
+      "kind": "subject_member",
+      "original_path": ".local-data/coordination-20261108/design/knowledge-access-candidate02/synthetic-fixtures.candidate.json",
+      "retained_raw_copy": ".local-data/coordination-20261108/access-decision/prep01/originals/synthetic-fixtures.candidate.json",
+      "proposed_formal_path": "docs/knowledge-access-20261108-02/synthetic-fixtures.candidate.json",
+      "bytes": 3519,
+      "sha256": "d913e459d269f9fdbf79c9103d26b99ca2386fc9b9630732184b86446f2306ee",
+      "target_before": {
+        "kind": "absent",
+        "bytes": null,
+        "sha256": null
+      },
+      "copy_policy": "Exact raw bytes;no path,status,wording,line-ending or embedded pin rewrite."
+    },
+    {
+      "kind": "subject_member",
+      "original_path": ".local-data/coordination-20261108/design/knowledge-access-candidate02/web-delivery.candidate.json",
+      "retained_raw_copy": ".local-data/coordination-20261108/access-decision/prep01/originals/web-delivery.candidate.json",
+      "proposed_formal_path": "docs/knowledge-access-20261108-02/web-delivery.candidate.json",
+      "bytes": 6298,
+      "sha256": "17ac555a39b298d5cd6f7c043d7f44f05eb42ce65287cf0adeca72aa39de35e6",
+      "target_before": {
+        "kind": "absent",
+        "bytes": null,
+        "sha256": null
+      },
+      "copy_policy": "Exact raw bytes;no path,status,wording,line-ending or embedded pin rewrite."
+    },
+    {
+      "kind": "original_subject_manifest",
+      "original_path": ".local-data/coordination-20261108/design/knowledge-access-candidate02/subject-manifest.safe.json",
+      "retained_raw_copy": ".local-data/coordination-20261108/access-decision/prep01/originals/subject-manifest.safe.json",
+      "proposed_formal_path": "docs/knowledge-access-20261108-02/subject-manifest.safe.json",
+      "bytes": 8262,
+      "sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3",
+      "target_before": {
+        "kind": "absent",
+        "bytes": null,
+        "sha256": null
+      },
+      "copy_policy": "Exact raw bytes;no path,status,wording,line-ending or embedded pin rewrite."
+    }
+  ],
+  "counts": {
+    "subject_members": 14,
+    "subject_member_bytes": 331418,
+    "subject_manifests": 1,
+    "original_bytes_preserved": 15
+  },
+  "resolution_rules": [
+    "Read registered public copies at each proposed_formal_path;match its exact original raw SHA and byte count.",
+    "The original subject manifest keeps its original .local-data paths as provenance. Resolve only its14 members through this one-to-one map; do not rewrite the manifest.",
+    "Subject outside_subject and supplemental receipts remain provenance/evidence,not hidden new normative contracts.",
+    "Relative schema refs keep their original basename and JSON Pointer. No network fetch is introduced.",
+    "If any proposed destination exists at execution time,verify exact bytes and report Root;never overwrite a different file. The executor needs a separate exact write lease."
+  ],
+  "mapping_self_copy": {
+    "original_path": ".local-data/coordination-20261108/access-decision/prep01/public-copy-map.json",
+    "proposed_formal_path": "docs/knowledge-access-20261108-02/public-copy-map.json",
+    "digest_location": "Independent registration plan/entry draft and frozen manifest;no circular self-hash."
+  },
+  "source_and_formal_writes": 0
+}

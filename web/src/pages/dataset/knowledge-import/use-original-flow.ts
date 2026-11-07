@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import { KnowledgeConfigurationKeys } from '@/hooks/knowledge-configuration-keys';
 import type {
   OriginalClassification,
   OriginalRegistration,
@@ -301,6 +302,11 @@ export function useOriginalFlow(
     checkRecovery();
     completedReceipt.current = value;
     setReceipt(value);
+    if (value.domain_id === domain && value.status === 'succeeded')
+      void client.invalidateQueries({
+        queryKey: KnowledgeConfigurationKeys.detail(domain),
+        exact: true,
+      });
   }
   function checkCompletedOperation() {
     const saved = completedReceipt.current;

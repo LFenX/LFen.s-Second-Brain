@@ -34,6 +34,7 @@ import {
   contentTaskTerminal,
 } from '@/utils/knowledge-consumption';
 import { CatalogueScopeFailure } from '@/pages/dataset/knowledge-catalogue/state';
+import { KnowledgeConfigurationKeys } from '@/hooks/knowledge-configuration-keys';
 
 export const KnowledgeConsumptionKeys = {
   scope: (session: number, scope: ContentScope) =>
@@ -349,6 +350,7 @@ function useContentAction<I, O>(
   scope: ContentScope,
   action: string,
   work: (input: I) => Promise<O>,
+  onSuccess?: (data: O) => void,
 ) {
   const session = getKnowledgeSessionScope(),
     active = useMemo(
@@ -379,6 +381,7 @@ function useContentAction<I, O>(
         try {
           const data = await work(input);
           check();
+          if (session === getKnowledgeSessionScope()) onSuccess?.(data);
           return data;
         } catch (error) {
           check();
@@ -391,13 +394,21 @@ export const useContentPolicyChange = (scope: ContentScope) =>
   useContentAction(scope, 'policy-change', (request: ContentPolicyRequest) =>
     service.changePolicy(scope, request),
   );
-export const useContentParsedUpload = (scope: ContentScope) =>
-  useContentAction(
+export function useContentParsedUpload(scope: ContentScope) {
+  const client = useQueryClient();
+  return useContentAction(
     scope,
     'parsed-upload',
     (input: { request: ContentParsedUploadRequest; file: File }) =>
       service.uploadParsedSource(scope, input.request, input.file),
+    () => {
+      void client.invalidateQueries({
+        queryKey: KnowledgeConfigurationKeys.detail(scope.domain),
+        exact: true,
+      });
+    },
   );
+}
 export const useContentParsedSnapshot = (scope: ContentScope) =>
   useContentAction(
     scope,

@@ -41,14 +41,9 @@ func (d *DatasetService) startKnowledgeLocalLexicalRuntime(ctx context.Context) 
 					case slots <- struct{}{}:
 						go func(j entity.KnowledgeLexicalJobRecord) {
 							defer func() { <-slots }()
-							claim := common.GenerateUUID()
-							now := time.Now().UTC()
-							result := dao.DB.WithContext(ctx).Model(&entity.KnowledgeLexicalJobRecord{}).Where("id = ? AND (state = ? OR (state = ? AND lease_until < ?))", j.ID, "queued", "building", now).Updates(map[string]any{"state": "building", "claim": claim, "lease_until": now.Add(2 * time.Minute), "attempt_count": gorm.Expr("attempt_count + 1")})
-							if result.Error == nil && result.RowsAffected == 1 {
-								j.Claim = claim
-								j.AttemptCount++
-								j.State = "building"
-								d.runKnowledgeLocalLexical(ctx, j)
+							claimed, err := claimKnowledgeLocalLexical(ctx, j)
+							if err == nil && claimed != nil {
+								d.runKnowledgeLocalLexical(ctx, *claimed)
 							}
 						}(candidate)
 					default:
@@ -57,6 +52,23 @@ func (d *DatasetService) startKnowledgeLocalLexicalRuntime(ctx context.Context) 
 			}
 		}
 	}()
+}
+
+// claimKnowledgeLocalLexical owns the state and lease transition used by the runtime.
+func claimKnowledgeLocalLexical(ctx context.Context, j entity.KnowledgeLexicalJobRecord) (*entity.KnowledgeLexicalJobRecord, error) {
+	claim := common.GenerateUUID()
+	now := time.Now().UTC()
+	result := dao.DB.WithContext(ctx).Model(&entity.KnowledgeLexicalJobRecord{}).Where("id = ? AND attempt_count = ? AND (state = ? OR (state = ? AND lease_until < ?))", j.ID, j.AttemptCount, "queued", "building", now).Updates(map[string]any{"state": "building", "claim": claim, "lease_until": now.Add(2 * time.Minute), "attempt_count": gorm.Expr("attempt_count + 1")})
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	if result.RowsAffected != 1 {
+		return nil, nil
+	}
+	j.Claim = claim
+	j.AttemptCount++
+	j.State = "building"
+	return &j, nil
 }
 
 func (d *DatasetService) runKnowledgeLocalLexical(parent context.Context, job entity.KnowledgeLexicalJobRecord) {

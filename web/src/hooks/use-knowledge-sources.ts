@@ -6,7 +6,7 @@ import type {
 } from '@/interfaces/request/knowledge-sources';
 import service from '@/services/knowledge-sources-service';
 import type { KnowledgeImportReceipt } from '@/interfaces/database/knowledge-sources';
-import { KnowledgeConfigurationKeys } from './use-knowledge-request';
+import { KnowledgeConfigurationKeys } from './knowledge-configuration-keys';
 import { KnowledgeRequestError } from '@/services/knowledge-foundation-service';
 import {
   getKnowledgeSessionScope,

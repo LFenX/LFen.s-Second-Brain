@@ -82,7 +82,9 @@ type ContentParsedTaskRequest =
   import('@/interfaces/request/knowledge-consumption').ContentParsedTaskRequest;
 import { getKnowledgeSessionScope } from '@/hooks/use-knowledge-foundation';
 import KnowledgeRepresentation from '@/pages/dataset/knowledge-catalogue/knowledge-representation';
-import foundationService from '@/services/knowledge-foundation-service';
+import foundationService, {
+  KnowledgeRequestError,
+} from '@/services/knowledge-foundation-service';
 import structureService from '@/services/knowledge-structure-service';
 import documentService from '@/services/knowledge-document-service';
 import { sample as documentSample } from '@/pages/dataset/knowledge-catalogue/__tests__/document-fixture';
@@ -3558,4 +3560,161 @@ describe('UR-001 explicit unified read refresh', () => {
       view.client.clear();
     }
   });
+});
+
+it('B28 regression: retries failed capabilities and restores the same parsed source without creating a task', async () => {
+  parsedReaderFixture();
+  const state = installParsedHTTP();
+  const capabilities = jest
+    .spyOn(service, 'capabilities')
+    .mockRejectedValueOnce(
+      new KnowledgeRequestError(503, 'knowledge_unavailable'),
+    )
+    .mockResolvedValue(Capabilities);
+  const view = renderParsed('?content=1&parsed=1&parsed_source=' + SourceId);
+  try {
+    await screen.findByText('knowledgeCatalogue.failed');
+    fireEvent.click(
+      screen.getByRole('button', { name: 'knowledgeCatalogue.retry' }),
+    );
+    await screen.findByText('knowledgeConsumption.noParsedRepresentation');
+    expect(
+      screen.queryByText('knowledgeCatalogue.failed'),
+    ).not.toBeInTheDocument();
+    expect(
+      JSON.parse(screen.getByTestId('parsed-location').textContent!).search,
+    ).toContain(SourceId);
+    expect(state.counts['parsed-task'] ?? 0).toBe(0);
+    expect(state.counts['parsed-source/upload'] ?? 0).toBe(0);
+    expect(capabilities).toHaveBeenCalledTimes(2);
+  } finally {
+    view.unmount();
+    view.client.clear();
+    capabilities.mockRestore();
+  }
+});
+
+it('B28 regression: a retried capability response after unmount cannot refresh the old source or published list', async () => {
+  parsedReaderFixture();
+  const state = installParsedHTTP();
+  let release: ((value: ContentCapabilities) => void) | undefined;
+  const capabilities = jest
+    .spyOn(service, 'capabilities')
+    .mockRejectedValueOnce(
+      new KnowledgeRequestError(503, 'knowledge_unavailable'),
+    )
+    .mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          release = resolve;
+        }),
+    );
+  const view = renderParsed('?content=1&parsed=1&parsed_source=' + SourceId);
+  try {
+    await screen.findByText('knowledgeCatalogue.failed');
+    fireEvent.click(
+      screen.getByRole('button', { name: 'knowledgeCatalogue.retry' }),
+    );
+    await waitFor(() => expect(release).toBeDefined());
+    const reads = state.counts['parsed-source'];
+    const lists = state.counts['parsed-representations'];
+    view.unmount();
+    view.client.clear();
+    await act(async () => {
+      release!(Capabilities);
+      await Promise.resolve();
+    });
+    expect(state.counts['parsed-source']).toBe(reads);
+    expect(state.counts['parsed-representations']).toBe(lists);
+  } finally {
+    view.unmount();
+    view.client.clear();
+    capabilities.mockRestore();
+  }
+});
+
+it('B28 regression: a late retried capability response cannot refresh the previous source after history switches', async () => {
+  parsedReaderFixture();
+  const sourceA = parsedSourceFixture();
+  const sourceB = {
+    ...sourceA,
+    source_ref: {
+      ...sourceA.source_ref,
+      source_id: 'f'.repeat(32),
+      source_revision_id: '6'.repeat(32),
+    },
+  };
+  installParsedHTTP();
+  const delegate = Http.getMockImplementation()!;
+  const sourceReads: string[] = [],
+    listReads: string[] = [];
+  Http.mockImplementation(
+    async (config: { url: string; method: string; data?: string }) => {
+      if (config.url.endsWith('/content/parsed-source')) {
+        const body = JSON.parse(config.data!);
+        sourceReads.push(body.source_id);
+        return response(
+          'parsed-source',
+          body.source_id === sourceB.source_ref.source_id ? sourceB : sourceA,
+        );
+      }
+      if (config.url.endsWith('/content/parsed-representations')) {
+        const body = JSON.parse(config.data!);
+        listReads.push(body.query.source_ref.source_id);
+        return response('parsed-representations', {
+          projection_version: KnowledgeContentVersion,
+          source_ref: body.query.source_ref,
+          items: [],
+          next_cursor: null,
+        });
+      }
+      return delegate(config);
+    },
+  );
+  let release: ((value: ContentCapabilities) => void) | undefined;
+  const capabilities = jest
+    .spyOn(service, 'capabilities')
+    .mockRejectedValueOnce(
+      new KnowledgeRequestError(503, 'knowledge_unavailable'),
+    )
+    .mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          release = resolve;
+        }),
+    )
+    .mockResolvedValue(Capabilities);
+  const view = renderParsedHistory([
+    '?content=1&parsed=1&parsed_source=' + sourceB.source_ref.source_id,
+    '?content=1&parsed=1&parsed_source=' + SourceId,
+  ]);
+  try {
+    await screen.findByText('knowledgeCatalogue.failed');
+    fireEvent.click(
+      screen.getByRole('button', { name: 'knowledgeCatalogue.retry' }),
+    );
+    await waitFor(() => expect(release).toBeDefined());
+    fireEvent.click(
+      screen.getByRole('button', { name: 'previous parsed history' }),
+    );
+    await screen.findByText('knowledgeConsumption.noParsedRepresentation');
+    const previousSources = [...sourceReads],
+      previousLists = [...listReads];
+    await act(async () => {
+      release!(Capabilities);
+      await Promise.resolve();
+    });
+    expect(sourceReads).toEqual(previousSources);
+    expect(listReads).toEqual(previousLists);
+    expect(listReads).toContain(sourceB.source_ref.source_id);
+    expect(
+      new URLSearchParams(
+        JSON.parse(screen.getByTestId('parsed-location').textContent!).search,
+      ).get('parsed_source'),
+    ).toBe(sourceB.source_ref.source_id);
+  } finally {
+    view.unmount();
+    view.client.clear();
+    capabilities.mockRestore();
+  }
 });

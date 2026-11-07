@@ -1,0 +1,1838 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Knowledge access candidate",
+    "version": "0.3.0-candidate",
+    "description": "Draft_PendingSpecificDecision; new endpoints only; existing owner-only contracts unchanged."
+  },
+  "x-status": "Draft_PendingSpecificDecision",
+  "paths": {
+    "/api/v1/knowledge/access/admin/departments/set": {
+      "post": {
+        "operationId": "setDepartment",
+        "x-authority": "tenant_owner",
+        "security": [
+          {
+            "NativeSession": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./access.schema.candidate.json#/$defs/SetDepartmentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success (draft)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/SetDepartmentResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/knowledge/access/departments/list": {
+      "post": {
+        "operationId": "listDepartments",
+        "x-authority": "native_same_tenant_catalog_or_owner_roster",
+        "security": [
+          {
+            "NativeSession": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./access.schema.candidate.json#/$defs/ListDepartmentsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success (draft)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/ListDepartmentsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/knowledge/access/admin/domains/policy/set": {
+      "post": {
+        "operationId": "setPolicy",
+        "x-authority": "domain_owner",
+        "security": [
+          {
+            "NativeSession": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./access.schema.candidate.json#/$defs/SetPolicyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success (draft)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/SetPolicyResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/knowledge/access/admin/modules/set": {
+      "post": {
+        "operationId": "setModule",
+        "x-authority": "domain_owner",
+        "security": [
+          {
+            "NativeSession": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./access.schema.candidate.json#/$defs/SetModuleRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success (draft)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/SetModuleResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/knowledge/access/admin/modules/get": {
+      "post": {
+        "operationId": "getModuleAdmin",
+        "x-authority": "domain_owner",
+        "security": [
+          {
+            "NativeSession": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./access.schema.candidate.json#/$defs/GetModuleAdminRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success (draft)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/GetModuleAdminResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/knowledge/access/modules/list": {
+      "post": {
+        "operationId": "listModules",
+        "x-authority": "native_recipient",
+        "security": [
+          {
+            "NativeSession": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./access.schema.candidate.json#/$defs/ListModulesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success (draft)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/ListModulesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/knowledge/access/admin/grants/create": {
+      "post": {
+        "operationId": "createGrant",
+        "x-authority": "domain_owner",
+        "security": [
+          {
+            "NativeSession": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./access.schema.candidate.json#/$defs/CreateGrantRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Same-key replay; credential secret is never recoverable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/CreateGrantResponse"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Success (draft)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/CreateGrantResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/knowledge/access/admin/grants/revoke": {
+      "post": {
+        "operationId": "revokeGrant",
+        "x-authority": "domain_owner",
+        "security": [
+          {
+            "NativeSession": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./access.schema.candidate.json#/$defs/RevokeGrantRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success (draft)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/RevokeGrantResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/knowledge/access/credentials/create": {
+      "post": {
+        "operationId": "createCredential",
+        "x-authority": "native_recipient",
+        "security": [
+          {
+            "NativeSession": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./access.schema.candidate.json#/$defs/CreateCredentialRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Same-key replay; credential secret is never recoverable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/CreateCredentialResponse"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Success (draft)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/CreateCredentialResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/knowledge/access/credentials/revoke": {
+      "post": {
+        "operationId": "revokeCredential",
+        "x-authority": "credential_subject",
+        "security": [
+          {
+            "NativeSession": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./access.schema.candidate.json#/$defs/RevokeCredentialRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success (draft)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/RevokeCredentialResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/knowledge/access/credentials/list": {
+      "post": {
+        "operationId": "listCredentials",
+        "x-authority": "credential_subject",
+        "security": [
+          {
+            "NativeSession": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./access.schema.candidate.json#/$defs/ListCredentialsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success (draft)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/ListCredentialsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/knowledge/access/inspect": {
+      "post": {
+        "operationId": "inspect",
+        "x-authority": "native_recipient",
+        "security": [
+          {
+            "NativeSession": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./access.schema.candidate.json#/$defs/InspectRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success (draft)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/InspectResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/knowledge/access/search": {
+      "post": {
+        "operationId": "search",
+        "x-authority": "native_recipient",
+        "security": [
+          {
+            "NativeSession": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./access.schema.candidate.json#/$defs/SearchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success (draft)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/SearchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/knowledge/access/read": {
+      "post": {
+        "operationId": "read",
+        "x-authority": "native_recipient",
+        "security": [
+          {
+            "NativeSession": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./access.schema.candidate.json#/$defs/ReadRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success (draft)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/ReadResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Fixed access error; see protocol error mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./access.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/knowledge/access/mcp": {
+      "post": {
+        "operationId": "accessMCP",
+        "x-profile": "knowledge-access/0.3.0-candidate",
+        "security": [
+          {
+            "RestrictedBearer": []
+          }
+        ],
+        "description": "Draft managed-client bearer profile, not OAuth discovery interoperability. Three new read-only tools, legacy MCP2025-11-25/2025-06-18 only. Each HTTP request and tool invocation rechecks current authorization. Native sessions/API/model tokens rejected.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Official MCP JSON-RPC transport envelope; exact tool inputs/outputs are mcp-tools.candidate.json"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "JSON-RPC result success OR tool execution failure isError:true,or protocol invalid-params error; see exact wire table"
+          },
+          "202": {
+            "description": "Accepted notification; no business data"
+          },
+          "400": {
+            "description": "Selected SDK transport malformed JSON/request/method/header rejection,not an owning operation result"
+          },
+          "401": {
+            "description": "Invalid credential; WWW-Authenticate Bearer invalid_token; no OAuth resource metadata is advertised"
+          },
+          "403": {
+            "description": "Known credential lacks action"
+          },
+          "413": {
+            "description": "Request size exceeded"
+          },
+          "415": {
+            "description": "Unsupported Content-Type; no tool result"
+          },
+          "429": {
+            "description": "Admission/rate limit; no business data"
+          },
+          "503": {
+            "description": "Service unavailable; no data"
+          }
+        },
+        "x-wire-error-contract": "./protocol.candidate.json#/mcp_wire"
+      },
+      "get": {
+        "operationId": "accessMCPGet",
+        "security": [
+          {
+            "RestrictedBearer": []
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Credential invalid"
+          },
+          "405": {
+            "description": "Allow: POST, no standalone SSE"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "NativeSession": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Existing native signed user session only; API/beta/restricted MCP tokens refused."
+      },
+      "RestrictedBearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "kac1 opaque temporary credential",
+        "description": "Manual managed-client credential; this does not define an OAuth authorization server."
+      }
+    }
+  }
+}

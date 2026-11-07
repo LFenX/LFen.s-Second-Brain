@@ -1,0 +1,159 @@
+{
+  "id": "KCA-20261108-02",
+  "status": "Draft_PendingSpecificDecision",
+  "scope_choice": {
+    "domain": "Reuse Knowledgebase.ID/TenantID/CreatedBy; ownership and existing owner-only endpoints remain unchanged.",
+    "department": "Flat explicit subset of active UserTenant members in exactly one existing tenant. Tenant owner alone manages department roster. Tenant admin/member/department manager status grants no knowledge reads.",
+    "module": "Separate access module, not KnowledgeGroup. A module selects1..32 complete fixed targets from one existing content0.2 immutable publication of the same owner/domain. Publication is private module administration input. Stable source_id alone, latest/head, group/path/tag selectors and arbitrary node/range selectors are rejected. Each grant pins exact module_version; module update requires explicit new grants and never broadens old grants.",
+    "source_revision": "Exact domain/source/revision/SHA+representation tuple; at most one target per source in one module. No future revision or representation inheritance. Historical fixed revisions can remain readable only while source is live and all captured fences/policies still match.",
+    "node": "No node/byte-window ACL. A unit selector is an ordinal of one whole already granted published row in a bound view,not an arbitrary node or range. Every target and its returned text/typed metadata must satisfy complete dependency closure against the FINAL effective view/credential subset. Parent-module-only coverage is never sufficient; unknown cross-source lineage is refused.",
+    "cross_domain": "One request/view/credential belongs to one domain and module. Cross-domain relations, links, tags and group parents never extend authority.",
+    "granularity_tradeoff": "Users wanting part of a source must prepare a separately controlled source or wait for a separate node-ACL decision; slicing an existing source is not silently authorized here."
+  },
+  "principal": {
+    "web": "Actual native signed user session. Recheck current User active/status/authenticated/nonanonymous, current active UserTenant role owner/admin/normal, tenant state and original domain owner authority. Superuser has no implicit bypass.",
+    "mcp": "Actual credential subject_user_id, separate storage_owner_id. Verify opaque credential directly against the access tables; never construct lexicalSession, substitute owner user ID, call native GetUserByToken with it, or forward owner/API/model credentials.",
+    "grant": "Domain current owner signs a read or read_search grant for one user or department and one module. Department grants resolve current exact membership per request. The issuer must still be the current valid domain owner/member. A user may create a credential only for themselves from one current qualifying grant; owner also needs an explicit self grant for personal MCP. Store module_version at issuance and require equality on every read; changing module definition does not update grants.",
+    "combinations": "Browser picks one live grant that individually covers the requested mode and delivery for the module; deterministic latest-issued then ID ordering among equivalent candidates. No assembling read from one grant and MCP delivery from another. Credential pins exactly that grant; tools cannot choose principal, issuer, tenant or alternate grant.",
+    "within_tenant_only": true,
+    "internal_type": "Private verifiedAccessActor holds actual user ID, auth kind, optional credential ID, single grant/module binding and authorized selected targets. Storage owner is separate locator/proof metadata; never an auth session or substitute principal. MCP current account checks select nonsecret status/membership fields, not owner/native AccessToken values or session hashes."
+  },
+  "effective_scope": {
+    "formula": "LiveUser ∩ LiveTenantMembership ∩ LiveCurrentDomainOwnerAuthority ∩ SharingPolicy ∩ OneLiveGrant(subject direct or current department,pinned module version) ∩ CurrentModuleVersionFixedTargets ∩ CredentialAttenuation(if MCP) ∩ RequestedSourceSubset ∩ CurrentSource/Representation/PublicationIntegrityAndLifecycle",
+    "actions": {
+      "read": "Inspect authorized metadata and read exact bounded lexical evidence only.",
+      "read_search": "Read plus model-free full-text matching over the same authorized rows.",
+      "delivery": "web_only or web_and_mcp. MCP requires web_and_mcp plus explicit issuance consent. Grant never authorizes project model use, remote fetch, indexing, parsing, upload, policy, grant or credential administration."
+    },
+    "defaults": "No access-domain policy row means sharing disabled. No matching grant means no shared module; no role/tag/path/group fallback. Inspect delivery is explicit: the chosen single grant must cover that channel and requested mode; a web_only view cannot mint MCP credentials.",
+    "source_subset": "Inspect source_ids=null means the complete current module targets for a native user, or the credential captured target subset for MCP. A non-null list must be a nonempty exact subset; any unknown/unauthorized source rejects the whole request rather than silently dropping it. Native mint from a current web_and_mcp view copies its exact target subset into credential capture; new MCP inspect null sources means that captured subset, not the complete module. After every such narrowing recompute the complete transitive footprint against the resulting exact E,not the parent module. If E is not closed, reject409 scope_not_supported with no view/credential/body and do not expand E.",
+    "expiry": "UTC comparison expires_at<=now denies, without grace. Grant expiry required, future<=30days. Credential ttl null means1hour, otherwise60..28800seconds, capped by parent grant expiry. View TTL<=300seconds and every parent expiry. Token mint requires a current native web_and_mcp view; copy its exact selected targets and one parent grant into credential capture, never broaden to the complete module.",
+    "fail_closed": "Any DB unavailable/integrity/unknown lineage/version failure yields no shared data, counts, references or partial success."
+  },
+  "generations": {
+    "tenant_epoch": "One int64 safe-integer monotonically incremented per tenant for every department/roster/module/grant/sharing-policy change. Coarse invalidation is intentional: even unrelated authorization edits require all affected tenant credentials to be reissued and views re-inspected. No distributed invalidation fanout or positive-auth TTL.",
+    "credential_capture": [
+      "tenant_epoch",
+      "grant_id",
+      "module_id+version",
+      "subject_user_id",
+      "audience",
+      "local/content/foundation/share policy versions",
+      "source lifecycle fences",
+      "mode",
+      "expires_at",
+      "exact selected targets copied from valid native mint view",
+      "grant pinned module_version"
+    ],
+    "credential_not_epoch_bumps": [
+      "credential creation/revocation",
+      "view creation",
+      "audit append",
+      "last_used update"
+    ],
+    "credential_revocation": "Check credential revoked_at on every request/final check, invalidating its views independently; revoke is idempotent. Revoking one token does not revoke another token or native browser grants.",
+    "other_live_checks": "User disable/delete, native membership loss, tenant/domain/owner status and grant/department liveness are live joins on every start/final check, even if an old mutation path missed an epoch bump. Their owning mutation transactions must also be wired to epoch for deterministic view invalidation.",
+    "policy_changes": "New0.3 views and credentials capture current local/content/foundation/share versions. Any mismatch invalidates old credential/view; no fixed owner publication reference bypass. Existing0.2 owner fixed-read semantics remain untouched.",
+    "source_lifecycle": "Capture lifecycle/fence versions, require active source and exact immutable revision/representation. Archive/restore/unlink/tombstone/fence change prevents old view revival. Merely creating a new revision confers no new access; old fixed revision remains historical only if captured access/lifecycle fences are still valid.",
+    "max_integer": "At9007199254740991 refuse further mutation and issue a controlled service error; never wrap a generation."
+  },
+  "authorization_views": {
+    "storage": "A private ephemeral row stores actual actor and optional credential ID, one grant+module version+epoch, selected target descriptors, original private publication ref and policy/source fences, combined<=65536bytes. Do not store full row maps, source text or per-hit secrets. Derive allowed rows from immutable publication metadata per request. view_id is random128bit lookup ID; evidence_id is SHA256 of UTF8 JSON array [knowledge-access-evidence/0.3.0,view_id,raw_row_id,binding,canonical_reference_sha256], all remaining parts ASCII. Evidence digest matches exactly one authorized row; collision/ambiguity fails closed. Neither identifier independently authorizes. The row ordinal map is derived from verified publication metadata and the final dependency-closed target set,never stored as source text; catalog/unit locator semantics are fixed in protocol.read_only_unit_contract.",
+    "binding": "Every view/ref use checks authenticated actor AND credential ID (or native mode), domain/module/grant/current generations and expiry. Another credential belonging to the same user cannot reuse it.",
+    "minting": "Inspect creates or returns an equivalent bounded5-minute view after authorization; no source bytes are returned by inspect. Derive the allowed whole-row map from the immutable private publication and selected targets per request; each evidence digest must match exactly one row of that map. Store no per-hit secret or content text. Never accept old owner evidence_ref, index_ref or owner selection as a substitute. Do not run old whole-selection ExpectedRows/currentness loading for a partial module: after private publication metadata verification, select allowed target rows before any source-body materialization. Denied source-body reads remain0. Credential lifetime is independent of the mint view5minute TTL; the mint view only needs to be live at issuance.",
+    "cursors": "Search and consumer lists have no cursor. Existing read now supports deterministic target/unit ordinals and next ordinal within a single live view,with all scope/identity checks. Old cursors/owner refs are rejected; an ordinal carries no authority by itself.",
+    "cache": "HTTP no-store; no shared positive-auth/content/query cache or ETag/304/resumable stream. Internal immutable raw parsing cache may remain keyed by exact hash; a cache hit still needs current dependency/authorization/final checks. Web QueryClient key includes actor+auth kind+credential ID(if any)+view ID; scope/expiry401/404/409 clears shared view/text/refs without falling back to old owner endpoint.",
+    "first_read": "inspect -> bounded target unit catalog -> read unit selector -> exact new evidence_ref and unit locator -> re-read via evidence selector. Available to native read Grant and read-mode credential from empty cache; never requires search or a prior ref."
+  },
+  "full_chain": [
+    "Authenticate before MCP metadata/tools/list and before any module visibility query. Strip/deny mixed auth, duplicate Authorization, credential in query/body/cookie, user-supplied owner/session/model/tenant impersonation fields. Audience comes from trusted configured canonical HTTPS endpoint, never incoming Host.",
+    "Resolve current exact allowed module targets and conservative provenance closure. Load/verify private original publication internally without changing caller identity. Refactor pure proof loaders under DatasetService; old owner wrappers keep their old guards, shared wrappers require a non-forgeable private validated access context. Closure is tested after credential attenuation and request source selection; do not reuse a parent module closure proof for a smaller set.",
+    "Generate only permitted whole binding+row pairs. Reuse lexicalSearchScope grouping: each OR clause binds one binding to its own row IDs, avoiding a cross-product. SQL visibility/list counts and ES matching filters apply the scope before candidate matching/order/limit. Empty authorized set is match_none, never unrestricted search.",
+    "Scoped search uses current native query builder and existing DocEngine/ES, nil embedding, dense fallback false, empty rank features, no highlighting/enhancement/models. New private order mode pushes id ascending into ES before top-k and preserves it through ES postprocessing; do not fetch global top-k then filter or sort. Return rank ordinals only, no raw BM25 score, corpus statistics, total hits or aggregation.",
+    "Verify returned row ID/binding/domain/source/ref/SHA/text against the authorized private mapping and fixed source again. A malicious engine result, injected unauthorized hit or metadata mismatch fails the whole result; never serialize denied rows to logs/errors/carriers.",
+    "Project new DTOs only. Targets/citations/counts/coverage are authorized subset only. Do not return original publication ID/manifest SHA/full selection, owner metadata, excluded-target counts, full context Node/Attributes, relationships, group tree, parent text, storage paths/URLs or attachment handles. Raw0.2 DTO must never be serialized and scrubbed afterward.",
+    "Read proves exact evidence membership and bytes/range/UTF8/SHA, verifies complete owning snapshot internally, and emits only whole typed-member summaries contained inside the same evidence and authorized provenance. Initial0.3 typed summaries omit raw typed payload and attributes; attachments/download/remote fetch are not offered. Author text can contain a link, but the service does not follow or turn it into an access grant. The new unit selector resolves the exact same whole row as an evidence selector; readonly first access must not invoke lexical search.",
+    "Build and schema-check one bounded complete response buffer, re-read all liveness/generation/policy/source fences and expiry, append allowed audit event, then release response. No streaming business bytes before final authorization. On final mismatch discard buffer and return fixed error; no hidden count/partial carrier remains.",
+    "Every later use of a view, evidence ref or cached text initiates the same current checks. Revoke commit linearizes authorization changes. A request whose final authorization point precedes revocation may finish delivery; already delivered content cannot be recalled. Requests finalized after commit fail. Do not promise erasure or prevent the receiving Agent from forwarding data."
+  ],
+  "credential_security": {
+    "format": "kac1_<32hex credential_id>.<43char base64url random256bit secret>",
+    "generation": "Future runtime crypto/rand only; no account/credential/secret generated in this candidate task.",
+    "stored_verifier": "SHA-256 over unambiguous length-delimited [knowledge-access-credential/1,credential_id,raw32byte secret]; unique credential ID lookup plus constant-time compare. High entropy bearer secret, not password; raw secret never persisted, encrypted for recovery, logged or included in audit/export.",
+    "audience": "One configured canonical /api/v1/knowledge/access/mcp URI stored on credential; exact service audience check and HTTPS external delivery. No refresh token, delegation chain, token exchange, owner/API/model key borrowing, or implicit rotation.",
+    "secret_delivery": "Native authenticated self mint, explicit consent, response no-store. Reveal exactly once in browser memory with explicit copy; no URL/QR/export/localStorage/sessionStorage/history/telemetry. Client stores by its secret facility outside repository. Bearer theft grants the same limited scope until expiry/revoke; client_label does not bind the sender.",
+    "idempotency": "Seven-operation audit command journal is authoritative. The first committed mint returns secret only from transient memory. Journal safe replay data contains token:null/delivery:unavailable_after_first_response,never raw secret or verifier. Same actor+operation+key with different canonical request409. Exact replay may use stored scope after the original view expires/is collected,with current native self/metadata authorization; it cannot mint again. Unknown commit returns unavailable/outcome_known:false/retry_same_key:true; retry exact request/key to resolve the same journal transaction,never change key blindly.",
+    "limits": "<=20 live credentials and20 live views per user/domain; reuse equivalent current views. Consumer requests<=60/minute per actor/domain and mint<=5/minute per user; capacity/rate errors do not widen or evict authorization. Validate every HTTP request, not only initialize. Rate limiting and audit metadata must not store verifier or token prefix/secret fragments.",
+    "no_cross_entry_fallback": "New credential only accepted at new MCP route. New route rejects old native/API/beta/model tokens. Old owner HTTP/MCP routes continue rejecting new key as unauthenticated. No conversion of a restricted subject into lexicalSession owner.",
+    "logout": "Native browser logout clears native UI caches; the independently issued MCP bearer remains limited by its own TTL/revocation/account membership. It does not borrow a native session. Explicit token revoke/account disable/membership loss stops it; do not promise all credentials are recalled just by closing the mint dialog.",
+    "client_transport": "Managed clients attach the bearer only to the exact configured scheme/host/port/path and reject redirects (or verify exact same origin+endpoint before reattaching). No token in request logging, tracing, source citations or proxy metadata. This is a client integration requirement to test, not assumed SDK/Agent behavior."
+  },
+  "evidence_limits": {
+    "text_UTF8_bytes": 8192,
+    "typed_members": 32,
+    "typed_metadata_JSON_bytes": 65536,
+    "complete_HTTP_or_MCP_response_bytes": 1048576,
+    "request_JSON_bytes": 32768,
+    "request_deadline_seconds": 15,
+    "byte_overflow": "Fixed capacity error before data release; never silently trim authorization evidence.",
+    "query_UTF8_bytes": 4096
+  },
+  "not_covered": [
+    "cross-tenant departments",
+    "department nesting/inherited organizational grants",
+    "dynamic latest/head/group/path/tag scopes",
+    "arbitrary node/byte ACL",
+    "original/attachment downloads or signed URLs",
+    "new indexing/parse/model use",
+    "OAuth AS/SSO/general Agent runtime",
+    "consumer pagination beyond top20",
+    "raw typed payload/geometry in shared0.3",
+    "guarantee about data forwarded by an already-authorized external client"
+  ],
+  "execution": "NotRun_DesignAndExpectedSemanticsOnly",
+  "semantic_validation": [
+    "New create uses null resource ID with expected_version0; update uses an existing exact same-tenant/domain ID with expected_version>=1. CAS zero rows409.",
+    "Module scope target count<=32,unique source_id,exact publication subset,producer identity and complete transitive dependencies; reject arbitrary node/range/latest/group/path/foreign source selectors.",
+    "Grant pins module version; at most256 live grants per current module and one live grant per subject+module version under epoch lock. Old-version grants remain audit metadata only. Module admin output contains only current live grants, no unbounded history.",
+    "Inspect selects one grant covering both requested mode and delivery; tokens require delivery web_and_mcp in MCP tool schema and service. Native web_only views cannot mint. A requested source outside complete current authority rejects the whole request.",
+    "Time bounds are evaluated against trusted UTC; credential expiry=min(requested TTL<=8h,parent grant expiry), independently of the mint view TTL. Same-key replay returns metadata only after current native self authentication and request digest check; an expired view never causes secret reissue.",
+    "Revoke/list credential metadata is native-self-only. Existing current content-grant loss does not confer content rights via these metadata endpoints. Exact request-key lookup returns at most one own record; ordinary list returns at most20 live/recent own records.",
+    "Typed member summary range is wholly inside evidence, valid empty SHA for zero range; text UTF8 byte count and source/producer/hash/representation identity are proved again. Citation display name derives from the fixed revision basename/original filename, not an unauthorized newer head title; no current-head existence flag is emitted.",
+    "No body is released before full encoding+schema/byte budget validation, current authorization final check and bounded audit append. Every source-body read happens after target authorization. No whole denied-source materialization as an implementation shortcut.",
+    "Lists have explicit complete-set caps; exceeding an authorized list bound returns capacity_exceeded, not a silent partial list claiming completion. Search is top20 only with no total/pagination; no outside-scope counts.",
+    "At most20 live views per user/domain (reuse equivalent current view),20 live credentials,60 consumer requests per minute per actor/domain,5 mints per minute per user. Limit errors never expand scope or make existing views authorize.",
+    "Verifier bytes are SHA256(concat(u32be(len(part))||part for parts [ASCII knowledge-access-credential/1,ASCII credential_id,raw32byte secret])). Strict base64url decoding exactly32bytes, constant-time comparison, never reusable owner/session/API/model material.",
+    "Module discovery must also support owner administration without a self grant: listModules returns actual owner module metadata with administrative_owner:true, including disabled modules, but modes may be[] and MCP delivery false. This never authorizes inspect/search/read or credential mint without a qualifying grant. Ordinary recipients see only enabled granted modules with nonempty modes and administrative_owner:false.",
+    "listModules accepts one native tenant and optional exact domain ID. owned_domain_policies contains only domains actually owned by the authenticated user, including missing-row version0/enabled:false, so the owner can obtain CAS state without a new policy-get endpoint. ModuleAdmin also includes current policy and only current live grants. Nonowners receive no policy administration metadata.",
+    "A department content audience does not replace domain CreatedBy ownership; department-owned governance/ownership transfer is outside this candidate.",
+    "Accepted read audit events are durable before release; unknown-credential denials may log only bounded global security event/request ID, never untrusted token text or verifier.",
+    "Shared Web renders returned evidence as plain escaped text; no HTML execution or automatic URL fetch. Position labels are derived from a small whitelist of fixed source locator fields, bounded512 characters; do not copy storage paths or arbitrary attributes.",
+    "Resolve tenant owner/role using current native UserTenant/Checker rules and active Tenant state; never infer a principal from Tenant.ID==User.ID, department name or category. Existing UserDAO.GetByTenantID shortcut is not a new subject-mapping authority.",
+    "ReadRequest has one closed selector: whole unit under a current view OR exact evidence ref. target/unit indices are bounds-checked after current view auth,not interpreted as source/node IDs.",
+    "Every scope narrowing must leave all transitive exact dependencies covered by the final E; closure is checked at inspect,mint,MCP reselect,read/search and final permit. Never add a missing dependency from the parent module.",
+    "Admin UI warns of coarse tenant-wide invalidation without asserting an affected authorization/credential count."
+  ],
+  "read_only_unit_contract": {
+    "acquisition": "inspect returns at most32 fixed target catalog entries with each authorized whole-unit count. A new read-only caller selects read.selector={kind:unit,view_id,target_index,unit_ordinal:0}; it requires read only and does not run lexical search. read returns exact evidence_ref and unit_locator. evidence selector supports later exact re-read.",
+    "target_order": "Canonical ascending tuple(domain_id,source_id,revision_id,source_sha256,representation.kind,representation.id,producer_sha256); targets[i].target is fixed for the view. Scope/module/version change invalidates the view, never changes its ordinal meaning.",
+    "unit_order": "Within each target sort the verified private publication rows by(range.start_byte,range.end_byte,node_id,row_id), ascending, tie-complete. Every unit is one whole existing published row, no arbitrary node/range/parent selection.",
+    "bounds": "Catalog<=32 entries; per-target and total units<=32768. Each read returns one complete<=8192UTF8-byte unit and at most32 bounded typed summaries. target_index<catalog length and unit_ordinal<that entry unit_count; otherwise400 invalid_request after current view authorization. unit_count0 explicitly means no readable lexical unit.",
+    "continuation": "unit_locator.next_unit_ordinal is ordinal+1 if below target_unit_count, otherwise null. This is bounded deterministic traversal inside the same current view, not a search cursor or capability. Changing view/user/credential requires a new inspect and new selectors/refs.",
+    "no_upgrade": "read mode keeps only inspect/read tools. No search/matching/scoring/model/provider query is performed to obtain a first ref. Search requests remain denied."
+  },
+  "final_effective_dependency_closure": {
+    "rule": "After all intersections, for each selected target t require all transitive dependency footprints in the FINAL effective selected target set E, never merely the parent module. Exact domain/source/revision/SHA and any proven representation/contribution identity must match. Unknown or incomplete footprint =>409 scope_not_supported.",
+    "stages": [
+      "native inspect after requested source_ids",
+      "credential mint after view subset and requested mode attenuation",
+      "MCP inspect after credential captured subset and any further source_ids",
+      "every read/search row and typed-member proof",
+      "fresh final-permit validation before response release"
+    ],
+    "no_widening": "If A requires B but E={A}, reject the entire request. Do not silently add B, consult the parent module as authority, drop required dependencies or return partial A. Dependencies A->B->C require C in E at its exact revision/SHA.",
+    "coverage_basis": "A footprint traceable to a specific contributing Target must be covered by that exact selected complete target. A source-only footprint requires a selected complete source_revision target proving full source_utf8 coverage of that exact revision/SHA; a different derived representation or same source_id alone is insufficient. Binary/unknown cross-source contributions without such proof are refused.",
+    "positive": "A+B is accepted only when the complete proof footprints are covered by the actual final A+B targets. An unrelated ordinary A-only source with no outside dependency remains valid."
+  },
+  "final_permit": "Fresh primary final-permit transaction uses current reads (READ COMMITTED or explicit locking current reads),not a reused repeatable-read snapshot. It locks current authorization epoch/credential/grant/source fences in agreed order,checks UTC expiry,records allowed audit and commits a permit before releasing buffered bytes. Revocation uses conflicting locks/epoch updates. Requests whose final-permit commit is after a prior revocation commit fail; a permit committed before revocation may finish delivery. A MySQL two-connection barrier test must establish the real ordering; no test has run.",
+  "management_idempotency": "All seven mutation operations use the closed command receipt fields of the existing access audit table, not process memory or resource names. Lookup by current actor+operation+key precedes stale CAS/view evaluation; request digest and current stored-scope management authorization still apply. Details and retention are authoritative in persistence.transactions.command_receipts. Hash-mismatch409 applies to an existing completed receipt; known rolled-back requests have not consumed the key. Current stored-scope management auth precedes any prior receipt result disclosure. Replay is historical safe receipt metadata,not fresh resource status."
+}

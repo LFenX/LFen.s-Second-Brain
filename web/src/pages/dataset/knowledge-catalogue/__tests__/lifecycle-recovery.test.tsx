@@ -49,6 +49,19 @@ function wrapper() {
 }
 let backend: import('./lifecycle-fixture').LifecycleBackend;
 beforeEach(() => {
+  const lockTails = new Map<string, Promise<unknown>>();
+  Object.defineProperty(navigator, 'locks', {
+    configurable: true,
+    value: {
+      request: (name: string, work: () => Promise<unknown>) => {
+        const next = (lockTails.get(name) ?? Promise.resolve())
+          .catch(() => {})
+          .then(work);
+        lockTails.set(name, next);
+        return next;
+      },
+    },
+  });
   localStorage.clear();
   backend = createLifecycleBackend();
   Http.mockReset().mockImplementation(backend.http);
@@ -479,7 +492,12 @@ it.each([
   'does not replace an old confirmation after an unknown or unauthorized POST (%s)',
   async (status, code) => {
     const flow = await oldConfirmation(new OriginalRequestError(status, code)),
-      original = flow.result.current.confirmPending!.request;
+      original = loadOriginalRecovery(
+        flow.key,
+        'confirm',
+        OriginalFixture.DomainId,
+        OriginalFixture.OwnerId,
+      )!.request;
     await act(async () => {
       await flow.result.current.recover();
     });
@@ -487,7 +505,13 @@ it.each([
     await act(async () => {
       await flow.result.current.startAnother();
     });
-    expect(flow.result.current.confirmPending?.request).toEqual(original);
+    if (status === 401) {
+      expect(flow.result.current.blocked).toBe(true);
+      expect(flow.result.current.confirmPending).toBeNull();
+      expect(flow.result.current.createPending).toBeNull();
+    } else {
+      expect(flow.result.current.confirmPending?.request).toEqual(original);
+    }
     expect(
       loadOriginalRecovery(
         flow.key,
@@ -569,8 +593,19 @@ it.each(['domain', 'registration', 'upload'])(
     expect(flow.result.current.upload).toBeNull();
     expect(flow.result.current.registration).toBeNull();
     expect(flow.result.current.receipt).toBeNull();
-    expect(flow.result.current.confirmPending?.request).toEqual(original);
+    expect(flow.result.current.confirmPending).toBeNull();
+    expect(flow.result.current.createPending).toBeNull();
+    expect(flow.result.current.recoveryChanged).toBe(true);
+    expect(
+      loadOriginalRecovery(
+        flow.key,
+        'confirm',
+        OriginalFixture.DomainId,
+        OriginalFixture.OwnerId,
+      ),
+    ).toMatchObject({ request: original });
     expect(flow.cancel).not.toHaveBeenCalled();
+    expect(flow.post).toHaveBeenCalledTimes(1);
   },
 );
 it.each(['recover', 'startAnother'] as const)(

@@ -1,0 +1,329 @@
+{
+  "status": "Draft_PendingSpecificDecision",
+  "baseline": {
+    "branch": "codex/stage3r2-document",
+    "HEAD": "78f0337dcda1cd2240797564f0176debba22c843",
+    "source_count": 5045,
+    "source_sha256": "834afa38cfd22b83fcd3d599fe4ec7e1a6e57e22428ab3e2e517a1b460260359",
+    "index_at_task_start": "4a124a8bcb61e3b62a134e6fe34c84807e5a7d4d506fc4ffbda69e38f1394982"
+  },
+  "evidence": [
+    {
+      "file": "internal/entity/user.go",
+      "line": 20,
+      "fact": "Native user identity and current status/authentication fields. No new user database."
+    },
+    {
+      "file": "internal/entity/tenant.go",
+      "line": 20,
+      "fact": "Native tenant is the outer membership boundary."
+    },
+    {
+      "file": "internal/entity/user_tenant.go",
+      "line": 20,
+      "fact": "Tenant role and active membership; no department subset."
+    },
+    {
+      "file": "internal/entity/knowledge.go",
+      "line": 15,
+      "fact": "KnowledgeGroup is organizational; KnowledgeDomain maps native dataset."
+    },
+    {
+      "file": "internal/service/dataset/knowledge.go",
+      "line": 46,
+      "fact": "knowledgeBase requires actual CreatedBy and current membership; cannot be used with a forged owner parameter for a new recipient."
+    },
+    {
+      "file": "internal/service/dataset/knowledge.go",
+      "line": 173,
+      "fact": "Existing scoped cursors are old owner-contract cursors; no shared authority."
+    },
+    {
+      "file": "internal/service/dataset/knowledge_local_lexical.go",
+      "line": 37,
+      "fact": "Native session verifier and current user checks, API/beta fallback absent."
+    },
+    {
+      "file": "internal/handler/knowledge_content_lexical.go",
+      "line": 156,
+      "fact": "Explicit API-token rejection at old0.2 handler."
+    },
+    {
+      "file": "internal/mcp/knowledge_content.go",
+      "line": 76,
+      "fact": "Current MCP profile/native session gating and repeated per-tool auth."
+    },
+    {
+      "file": "internal/service/dataset/knowledge_content_lexical_search.go",
+      "line": 19,
+      "fact": "Current search verifies whole manifest selection and returns full binding.selection at82; not safe to simply reuse old response for a subset grant."
+    },
+    {
+      "file": "internal/service/dataset/knowledge_local_lexical_search.go",
+      "line": 13,
+      "fact": "Whole binding+row pair scope precedes native query; reusable lower layer."
+    },
+    {
+      "file": "internal/service/dataset/knowledge_local_lexical_core.go",
+      "line": 42,
+      "fact": "Publication transaction checks owner/policy/claim/source identity; new grant never authorizes publication writes."
+    },
+    {
+      "file": "internal/service/dataset/knowledge_content_lexical_read.go",
+      "line": 113,
+      "fact": "Exact publication/evidence/bytes and final policy checks; owner guard cannot be bypassed."
+    },
+    {
+      "file": "internal/service/dataset/knowledge_content_lexical_context.go",
+      "line": 41,
+      "fact": "Full context validates typed owning tree; raw Node/Attributes must not be emitted into new scoped DTO."
+    },
+    {
+      "file": "internal/permission/knowledge_sources.go",
+      "line": 10,
+      "fact": "Native browse hides other-owner origins before pagination/aggregates; do not widen native browse with grants."
+    },
+    {
+      "file": "internal/permission/knowledge.go",
+      "line": 28,
+      "fact": "Existing model/ingestion prohibition remains."
+    },
+    {
+      "file": "internal/service/nlp/retrieval.go",
+      "line": 959,
+      "fact": "Current search log includes query/filter/IDs; new context must suppress sensitive payloads in this owning chain."
+    },
+    {
+      "file": "internal/engine/elasticsearch/chunk.go",
+      "line": 1514,
+      "fact": "ES postprocessing recalculates/sorts score; scoped stable ID order needs explicit preservation."
+    },
+    {
+      "file": "internal/permission/policy_ce.go",
+      "line": 529,
+      "fact": "Native tenant role requirements are already centralized."
+    },
+    {
+      "file": "internal/service/dataset/knowledge_content_read.go",
+      "line": 43,
+      "fact": "Representation/node/bytes methods require actual knowledgeBase owner. New shared proof loaders must be extracted, never called by impersonating owner."
+    },
+    {
+      "file": "internal/service/dataset/knowledge_lifecycle.go",
+      "line": 64,
+      "fact": "Current source lifecycle loader checks exact source/domain/document/native links; source fence versions must participate in new access capture."
+    },
+    {
+      "file": "internal/dao/user_tenant.go",
+      "line": 52,
+      "fact": "Native membership mutators exist separately; same-transaction epoch integration is required, not a cached roster assumption."
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "internal/entity/user.go",
+      "bytes": 2378,
+      "sha256": "204e26cd3db18c002edc7b8a773a95ca42297c12d764330f22ef4243e0ec7591"
+    },
+    {
+      "path": "internal/entity/tenant.go",
+      "bytes": 2656,
+      "sha256": "98e5a80f3ea85f626ab90f28c94e846f221b78807048913d0f30827af040a863"
+    },
+    {
+      "path": "internal/entity/user_tenant.go",
+      "bytes": 1319,
+      "sha256": "d1572a3a4dd9da161b8c44332843aa3a83630889e30641dec93c673f87b6db80"
+    },
+    {
+      "path": "internal/entity/knowledge.go",
+      "bytes": 7564,
+      "sha256": "e1e2552ef61ee8972e11916ed4fa1b08571a71de02ba13d8e2060d41618ff6ea"
+    },
+    {
+      "path": "internal/service/dataset/knowledge.go",
+      "bytes": 12148,
+      "sha256": "3cfa5439c11fdf20f71da2ae9b1dcda8ae85ab63b9cc994a32f2d94654624043"
+    },
+    {
+      "path": "internal/service/dataset/knowledge_local_lexical.go",
+      "bytes": 9713,
+      "sha256": "18a898c4de9721487063909ce3939077dfe06368ea56a9c4d23ecd296d84b8c4"
+    },
+    {
+      "path": "internal/handler/knowledge_content_lexical.go",
+      "bytes": 8560,
+      "sha256": "777ee68204fb4749146acf3177dc552add3097f83de947ac190bffc980935786"
+    },
+    {
+      "path": "internal/mcp/knowledge_content.go",
+      "bytes": 10883,
+      "sha256": "181563b0c6602d52b7f5550c8b1bcbba1960ca8f96a0eafb17a87c014e652ec2"
+    },
+    {
+      "path": "internal/service/dataset/knowledge_content_lexical_search.go",
+      "bytes": 4073,
+      "sha256": "f060d2a4ba520d037ff526bbbbeed671b76fecaebe76e02994b319723f47bd6a"
+    },
+    {
+      "path": "internal/service/dataset/knowledge_local_lexical_search.go",
+      "bytes": 5492,
+      "sha256": "2d1f1855e0c9bf1d1edcb88d380027617963df13b95fe664dfa8568e8dfe8059"
+    },
+    {
+      "path": "internal/service/dataset/knowledge_local_lexical_core.go",
+      "bytes": 4104,
+      "sha256": "a4753e5195f20155627972acaab317c42169daa38a6fcb0b9af5d763e9f89414"
+    },
+    {
+      "path": "internal/service/dataset/knowledge_content_lexical_read.go",
+      "bytes": 8610,
+      "sha256": "83178cc8427254ad2368f9cf0855cce36672cfbe1989acbfa9dd47bf181936b8"
+    },
+    {
+      "path": "internal/service/dataset/knowledge_content_lexical_context.go",
+      "bytes": 7289,
+      "sha256": "8f6e5e014cacea3f3d2b59901acb0662a17cc631617e5d94178ff23065fd2414"
+    },
+    {
+      "path": "internal/permission/knowledge_sources.go",
+      "bytes": 1600,
+      "sha256": "b6b0c039bb1f7eb233d2a7a9deb8d1471bb09dec27cf39a46fdf7423a1491f20"
+    },
+    {
+      "path": "internal/permission/knowledge.go",
+      "bytes": 2673,
+      "sha256": "d20c054714b9252d81561e86311b99011aadfbc2a53de248335d4825cab78aa1"
+    },
+    {
+      "path": "internal/service/nlp/retrieval.go",
+      "bytes": 48529,
+      "sha256": "3d7305f5c44a066d10088a6c46a20af45e4aa5bc686d904bed0ed648814fbb5e"
+    },
+    {
+      "path": "internal/engine/elasticsearch/chunk.go",
+      "bytes": 111784,
+      "sha256": "3c9d51a006c4e58f77e287959d5bc6d39d75bdd6ae52c538ae77ae876e02bb64"
+    },
+    {
+      "path": "internal/permission/policy_ce.go",
+      "bytes": 19218,
+      "sha256": "9b282e13f5a767613f16edcba6d674be103bae5afe94dc287502a4499f7f97b3"
+    },
+    {
+      "path": "internal/service/dataset/knowledge_content_read.go",
+      "bytes": 17687,
+      "sha256": "bf84f8f71e955c0a47907fc06a08b1de0b419bab679d4b67b169cf51425d06ab"
+    },
+    {
+      "path": "internal/service/dataset/knowledge_lifecycle.go",
+      "bytes": 20413,
+      "sha256": "4f364bcf0a3b1610f66c6501d9c87e5c9ce36c86452dacd96b30af84e0797884"
+    },
+    {
+      "path": "internal/dao/user_tenant.go",
+      "bytes": 8559,
+      "sha256": "b74dbd0d1060d4c767dfb164bbe20d77ff5de7aacd2fb7db9c64f169665047f9"
+    },
+    {
+      "path": "internal/service/tenant.go",
+      "bytes": 31875,
+      "sha256": "7681e95ca04eedd791dc07511a3e965018a0300b09e263b09dbd616c40e0353e"
+    },
+    {
+      "path": "internal/dao/user.go",
+      "bytes": 4906,
+      "sha256": "89ac2129f6a9f4d33d2f135f6479cbe24b672761c3b9cc9edb65805ee1964ed3"
+    }
+  ],
+  "proposed_owning_changes": [
+    {
+      "owner": "internal/entity/knowledge_access.go + knowledge_access_store.go + knowledge_access_validation.go",
+      "change": "Closed v0.3 DTOs, private persistent rows, strict semantic validation; new names per Go naming."
+    },
+    {
+      "owner": "internal/dao/knowledge_access.go + migration.go",
+      "change": "Explicit bound current-state joins, CAS and transactional mutation/revocation/audit/epoch; same schema owner and named column sets."
+    },
+    {
+      "owner": "internal/service/dataset/knowledge_access.go + knowledge_access_read.go + knowledge_access_search.go",
+      "change": "One DatasetService owns access resolution, bounded view/ref proofs and new projection. Extract pure immutable loaders from content paths with old wrappers unchanged; no token-to-owner conversion or copied second knowledge backend."
+    },
+    {
+      "owner": "internal/service/dataset/knowledge_content_lexical_* + knowledge_local_lexical_search.go",
+      "change": "Reuse proof/row/pair-filter core; no expansion of old owner-only methods. Never call old response method with the storage owner in place of caller."
+    },
+    {
+      "owner": "internal/service/nlp/retrieval.go + internal/engine/elasticsearch/chunk.go",
+      "change": "Scoped private stable-ID ordering pushed down before limit and retained after search. Keep existing owner relevance default; no in-memory sort of an already truncated global score window. Add scoped log redaction at query/filter/ID/body logging points, including error paths. Current parser skips id:verify the existing sortable keyword row identity mapping and implement explicit private mode on both query generation and score-postprocess boundaries; unsupported mapping fails closed,not an automatic index rewrite."
+    },
+    {
+      "owner": "internal/handler/knowledge_access.go + internal/router/knowledge_access.go",
+      "change": "New native-only management/Web namespace; shared recipient service not installed into old native browse/search/attachment endpoints. Complete buffer+schema+final auth before release."
+    },
+    {
+      "owner": "internal/mcp/knowledge_access.go + internal/handler/knowledge_access_mcp.go",
+      "change": "New restricted-bearer-only profile, fixed three tool schemas, official current SDK transport, per-request/per-call checks, whole result budget."
+    },
+    {
+      "owner": "internal/service/tenant.go + user status/membership owning DAO/service/admin mutation paths",
+      "change": "Epoch integration in same transaction as actual native status/membership change; inventory every path before implementation, with final live checks retained."
+    },
+    {
+      "owner": "web existing knowledge routes/hooks/services under web/AGENTS.md",
+      "change": "Owner module/grant policy panels; tenant-owner department roster; recipient shared-module browser and personal temporary-credential panel. Separate auth-specific query keys and no old owner fallback; exact Web paths require frontend owner review before source lease."
+    }
+  ],
+  "current_critical_findings": "No verified current owner-only P0/P1 found in these inspected paths; this is not an exhaustive repository security certification.",
+  "source_changes": "None_DesignOnly",
+  "runtime_tests": "NotRun",
+  "department_ownership_choice": "Domain remains owned by native CreatedBy user as custodian; department is an audience via explicit grant, not a new tenant or legal/storage owner. Department-owned governance/ownership transfer is not introduced.",
+  "native_mutation_integration_inventory": [
+    {
+      "path": "internal/dao/user_tenant.go",
+      "functions": [
+        "Create",
+        "Update",
+        "DeleteByUserID",
+        "DeleteByUserAndTenant",
+        "DeleteByUserAndTenantAndRole",
+        "UpdateRoleByUserAndTenant"
+      ],
+      "effect": "Membership/role additions/removals/restore need same-transaction epoch handling; live active membership checks remain mandatory."
+    },
+    {
+      "path": "internal/service/tenant.go",
+      "functions": [
+        "Invite/AcceptInvite",
+        "RemoveMember"
+      ],
+      "evidence_line": 843,
+      "effect": "Native tenant membership orchestration must use the same transaction for mutation+access epoch; no department identity shortcut."
+    },
+    {
+      "path": "internal/dao/user.go",
+      "functions": [
+        "user status/update/delete owning methods"
+      ],
+      "evidence_line": 49,
+      "effect": "Account status/disable/delete and native user membership operations must be inventoried by call sites; do not assume Tenant.ID maps the new access principal."
+    },
+    {
+      "path": "internal/service/dataset/crud.go + update.go and internal/admin/user_delete.go",
+      "evidence": "Code search located status update and deletion transactions; exact dependent path read/lease required before implementation.",
+      "effect": "Domain/owner/tenant deletion and status mutations need current liveness and epoch hooks; no access feature enabled before affected paths are covered."
+    }
+  ],
+  "candidate02_additional_owning_evidence": [
+    {
+      "file": "internal/mcp/knowledge_content.go",
+      "line": 251,
+      "fact": "Current owner encoder explicitly sets IsError and matching structured/text. New profile needs its own frozen wire table,not merely native HTTP codes."
+    },
+    {
+      "file": "internal/engine/elasticsearch/chunk.go",
+      "line": 3519,
+      "fact": "parseOrderByExpr currently skips id. New private scoped stable order must prove an existing sortable exact row identity mapping and bypass this skip only for the verified scoped mode,plus preserve order after score postprocessing. Appending OrderBy.Asc(id) alone cannot satisfy the design."
+    }
+  ]
+}

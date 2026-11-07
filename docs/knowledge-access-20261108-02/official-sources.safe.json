@@ -1,0 +1,100 @@
+{
+  "status": "Draft_PendingSpecificDecision",
+  "observed_at_utc": "2026-11-07T18:01:51.377Z",
+  "primary_sources_only": true,
+  "versions": {
+    "existing_service_supported_protocols": [
+      "2025-11-25",
+      "2025-06-18"
+    ],
+    "latest_official_authorization_page_observed": "2026-07-28",
+    "proposed_protocol_support": "Keep existing two versions; no automatic SDK/protocol upgrade"
+  },
+  "sources": [
+    {
+      "url": "https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization",
+      "kind": "official versioned spec",
+      "version": "2025-11-25",
+      "opened": true,
+      "summary": "Standard HTTP authorization defines OAuth discovery and resource-bound tokens. Tokens are sent in Authorization on each request; invalid/expired tokens use401 and inadequate action scopes403. Manual pre-issued bearer delivery alone does not implement that discovery/issuance flow."
+    },
+    {
+      "url": "https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization",
+      "kind": "official current versioned spec",
+      "version": "2026-07-28",
+      "opened": true,
+      "summary": "Current spec still separates resource-server verification from authorization-server issuance, with protected-resource metadata, audience restriction and per-request bearer handling. This candidate does not claim current OAuth interoperability or adopt its protocol changes."
+    },
+    {
+      "url": "https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices",
+      "kind": "official security guidance",
+      "version": "2026-07-28",
+      "opened": true,
+      "summary": "Audience confusion and token passthrough are distinct risks. Proposed verification accepts only this service temporary credential and never forwards owner/API/model tokens or the temporary credential to downstream services."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/modelcontextprotocol/go-sdk/v1.8.0/docs/protocol.md",
+      "kind": "official SDK versioned documentation",
+      "version": "v1.8.0",
+      "opened": true,
+      "summary": "Official Go SDK offers bearer verification middleware with a caller-supplied verifier. This supplies a transport hook, not application grant, provenance, current revocation or full OAuth-server policy."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/modelcontextprotocol/go-sdk/v1.8.0/mcp/streamable.go",
+      "kind": "official SDK versioned source",
+      "version": "v1.8.0",
+      "opened": true,
+      "summary": "StreamableClientTransport accepts an HTTPClient; this is a concrete managed-client point for a constrained header-injecting transport. Sessionless JSON behavior and GET/DELETE/retry traffic still require exact-version interoperability validation."
+    },
+    {
+      "url": "https://github.com/modelcontextprotocol/typescript-sdk/blob/main/packages/client/src/client/streamableHttp.ts",
+      "kind": "official SDK source",
+      "version": "main inspected,not a frozen client release",
+      "opened": true,
+      "summary": "Current official client transport exposes authProvider and requestInit/custom-fetch hooks. Exact behavior and an installed release must be pinned before claiming integration; main is only evidence that such a hook exists."
+    }
+  ],
+  "recommendation": {
+    "choice": "Managed-client opaque bearer for the new limited profile first",
+    "reason": "No new OAuth AS, IdP, dynamic registration, proxy token forwarding or Agent runtime is required for the concrete department/module use case.",
+    "cost": "Clients must securely supply a pre-issued bearer to every request. OAuth-only hosts and universal any-Agent connection are not achieved by this stage.",
+    "later_option": "If universal OAuth-host onboarding is required, separately choose a trusted authorization server and pre-registered client integration, then resource metadata/audience/PKCE/discovery tests. Reuse the same scoped DatasetService authorization core; do not treat OAuth authentication as knowledge authorization.",
+    "no_compatibility_claim": "No actual SDK/Agent/auth/runtime call executed in this task"
+  },
+  "fetch_failures_preserved": [
+    {
+      "url": "https://raw.githubusercontent.com/modelcontextprotocol/typescript-sdk/v1.30.0/src/client/streamableHttp.ts",
+      "result": "404 observed; not used as evidence of any release behavior"
+    },
+    {
+      "url": "https://github.com/modelcontextprotocol/typescript-sdk/blob/main/docs/clients/transports.md",
+      "result": "404 observed; replaced with actually opened official source path"
+    }
+  ],
+  "candidate02_primary_checks": [
+    {
+      "url": "https://modelcontextprotocol.io/specification/2025-11-25/server/tools",
+      "opened": true,
+      "version": "2025-11-25",
+      "summary": "Tool execution failures are isError results; unknown tools are protocol errors. Its example uses invalid-params -32602. This supports separating application failure carriers from transport/dispatch errors."
+    },
+    {
+      "url": "https://modelcontextprotocol.io/specification/2025-11-25/basic/transports",
+      "opened": true,
+      "version": "2025-11-25",
+      "summary": "Invalid Origin is HTTP403,accepted notifications202,no-SSE GET405,unsupported protocol header400. Selected server/SDK details still determine specific pre-dispatch rejection bodies."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/modelcontextprotocol/go-sdk/v1.8.0/mcp/server.go",
+      "opened": true,
+      "version": "v1.8.0",
+      "summary": "callTool returns JSON-RPC invalid-params for an unregistered tool. Candidate02 read-only registry therefore denies search through that protocol branch."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/modelcontextprotocol/go-sdk/v1.8.0/mcp/streamable.go",
+      "opened": true,
+      "version": "v1.8.0",
+      "summary": "Selected legacy2025 HTTP path rejects malformed payload/unsupported method at HTTP400 before dispatch; the newer2026 method-not-found branch differs. No runtime test was performed."
+    }
+  ]
+}
