@@ -1,5 +1,26 @@
 # 当前任务参考资料基线
 
+**2026-11-08 第29基线候选：阶段2完成与已授权品牌差异闭环**
+
+当前基线标识：`KCRL-20261108-29`；总控仍为 Codex 会话 `01a1a9a5-c724-7f52-8cbb-16d19d982ba4`。事实入口仍为 `coordination-20261106-round3/current_context`，只在原 `/coordination_20261106_round3` 内追加 `branding_and_stage02_completion_followup`。35 个根键、此前全部29个子段（包含原28子段和Ref28追加段）的原值与原始片段保留；下面第28及更早导语均保持完整原字节和原时点。
+
+阶段2已经正常 commit 并 push：`bae0c516b1966b904657cb69f0a23121f3bf0991`，parent `78f0337dcda1cd2240797564f0176debba22c843`，共34路径（13源码、21文档）。提交后 index SHA-256 为 `df2745f04039f8e5d271d509c1802c4af63e10cb40654c4e855bcab65a45e8ed`。总控已独立核实远端、clean 和当时 Ref28 通过；此后的人类品牌改动是新的工作区事实，不能把阶段2再写成待 Git，也不追改 Ref28 写成时的 Pending 字段。
+
+既有本地运行闭环据固定回执保留：API `d19f5c…` 的实际进程/挂载 ELF SHA 为 `992907675220c2e47c56547c85c0d2f1cbb4e1c6904c3d6084574d7f4612b045`，仅 identity+health；Web `9d8dd5…` 实际 served index 为 `eeea33cb00901137ecc9cb7c94b1607ffc2bbc57a6487c8ae329df957b6451e5`。24项后验为17 Pass、0 Fail、1 Partial、6 NotRun，原 Browser03 的15 Pass、4 Fail、5 NotRun不改、不当作全量重跑或唯一计数相加。F01失败分支未自然复现，F02具体CSV原因/修正仍Partial；没有产品最终验收或全栈同版结论。
+
+之后真人在既有会话“重新设计第二大脑图标”明确要求重新设计 Web 图标。总控直接读取实际 userMessage，绑定源会话 `01a1b7f8-6180-74c1-a50b-fa48574f625d`、turn `01a1b7f8-7d6e-7370-afa2-01b69d02faf9`；开始/结束1794087878和1794088263仅是turn元数据，不造点击或批准时间。最小品牌两文件权限已明确，不再重复请示。
+
+唯一已核实工作区变化是 `web/public/logo-mascot.png` 与 `web/src/conf.json`：PNG为814909字节、1254×1254、8位RGBA且有Alpha通道，SHA `dbcc3d91d13299d16af74f49683e7bf13204d39ba2239db03c18f18cef9b8cb2`；conf为140字节、SHA `55144749eaf93d04d23433941d434a72c0639b0bd3086a4455da475a8a8337ee`，仅 appLogo 从 `/logo-mascot.png?v=4` 到 `?v=5`，appName/projectUrl不变。产品品牌仍由该conf统一，原路径不重排。
+
+实际全树代码快照仍5048份，新 canonical SHA-256 为 `2c786735cda277f5d02238a2c6086f4c1972c5ce12369ed51545c5afe2efa152`。PNG不进入既有代码扩展名算法，conf进入；仅在内存的canonical摘要表以精确HEAD的conf摘要做反事实替换，即重建旧5048/4226快照，主树文件从未临时改回或恢复。这来自实际测量及已核实真人范围，不是预测、也不是刷新旧锁求通过。旧 Ref28 原177920字节/SHA `57ceba610d02b05e4340fcda302607abd2bda9d12e5214c4e8c6b338203276c2` 精确保存在新的基线快照路径；本准备时原CLI仍如实因 source drift REFUSED。
+
+总控已对源PNG做只读基础目视审阅：蓝/青脑形、白色书页线、金色连接点，无文字/秘密；这不是GUI上线验收。运行中的 Web 仍是阶段2已有v4静态产物，新Logo尚未构建、部署或GUI验收，不能称已上线。现有KCA-20261108-02具体人类A决定、subject `a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3`、17入口及原14件保持；S1/S2/S3仍按原具体范围推进，当前A/B只是ignored候选，70组原产品验收仍全部NotRun。品牌请求不扩大旧owner-only0.2接口或模型、真实AICS、OAuth、生产发布、人格记忆、根目录/资源权限。
+
+本候选只更新两项确实受影响的选择内容摘要及准确事实基线；97条/102用途、26正式契约、47保护件、11归档文档和28历史原路径清单不变。旧manifest快照另属基线链，不增加这些历史业务文档的指导用途。本准备仅可声明未修改校验器的四后像叠加 candidate-only 结果；须独审、总控冻结exact4并另授有限单次机械租约，实际应用后才执行主树Ref29精确校验。新锁raw SHA在独立交接中给出，不嵌入被锁内容。本准备0主树/Git/服务/模型写入，不外推全局零调用。
+
+---
+# 当前任务参考资料基线
+
 **2026-11-08 第28基线候选：实际源码闭环与共享访问具体批准**
 
 当前基线ID：`KCRL-20261108-28`；总控为Codex会话`01a1a9a5-c724-7f52-8cbb-16d19d982ba4`。当前事实入口仍为`coordination-20261106-round3/current_context`，仅在原`/coordination_20261106_round3`内追加`stage02_and_access_authorization_followup`。旧35根字段、round3原28子段及其失败、时点、运行版本和验收范围原样保留；以下Ref27和更早导语均为各自原时点历史。

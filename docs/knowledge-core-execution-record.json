@@ -7491,6 +7491,347 @@
         "original_raw_subtree_spans": 62
       },
       "formal_activation": "Candidate overlay validation only until Root freezes all21 exact postimages,independent review passes,and a named finite mechanical exact21 lease actually applies them and verifies new Ref28. No new raw lock SHA is embedded in this selected content."
+    },
+    "branding_and_stage02_completion_followup": {
+      "status": "ObservedStage02CompletionAndAuthorizedBrandDelta_Ref29CandidateOnly",
+      "record_prepared_at_utc": "2026-11-07T22:29:20.635Z",
+      "coordinator": "01a1a9a5-c724-7f52-8cbb-16d19d982ba4",
+      "writer": "D reused executor 01a1aa8c-49c4-7601-b846-2adc4fca877a",
+      "task": "ROOT-REF29-PREP01",
+      "observation_rules": {
+        "new_facts_append_only": true,
+        "old_35_root_keys_and_values_outside_this_append_preserved": true,
+        "all_prior_round3_children_preserved": true,
+        "no_retroactive_pending_failure_or_Unknown_rewrite": true,
+        "scope": "Specific completed stage2 Git/runtime and later authorized two-file branding source delta only;not S1-S3 implementation acceptance.",
+        "this_preparation": "Ignored candidate files only. Main Ref28 remains source-only REFUSED at preparation time;candidate-only validation is not actual main Ref29 activation."
+      },
+      "stage02_git_completion": {
+        "status": "Completed_NormalCommitAndPush_RootIndependentlyRemoteVerified",
+        "commit": "bae0c516b1966b904657cb69f0a23121f3bf0991",
+        "parent": "78f0337dcda1cd2240797564f0176debba22c843",
+        "branch": "codex/stage3r2-document",
+        "origin_commit_at_Root_verification": "bae0c516b1966b904657cb69f0a23121f3bf0991",
+        "index_sha256_after": "df2745f04039f8e5d271d509c1802c4af63e10cb40654c4e855bcab65a45e8ed",
+        "exact_paths": 34,
+        "composition": {
+          "source": 13,
+          "docs": 21
+        },
+        "normal_commit_no_history_rewrite": true,
+        "normal_hooks": {
+          "installed_original_hook_invoked": true,
+          "total_jobs": 11,
+          "strict_pass_count": 8,
+          "strict_passes": [
+            "gofmt",
+            "check-yaml",
+            "check-merge-conflict",
+            "check-case-conflict",
+            "check-symlinks",
+            "end-of-file-fixer",
+            "check-json",
+            "mixed-line-ending"
+          ],
+          "AcceptedExactFrozenHistoricalWhitespace": 1,
+          "original_glob_skip_count": 2,
+          "original_glob_skips": [
+            "ruff",
+            "ruff-format"
+          ],
+          "partition": "11 = 8 strict Pass + 1 AcceptedExactFrozenHistoricalWhitespace + 2 original glob skips;not eleven strict passes.",
+          "all_jobs_strict_pass": false,
+          "whole_hook_exit": 0,
+          "exact_frozen_historical_whitespace": {
+            "status": "AcceptedExactFrozenHistoricalWhitespace",
+            "path": "docs/knowledge-core-reference-authority.md",
+            "line": 80,
+            "raw_bytes": 2,
+            "raw_hex": "3e20",
+            "original_exit": 1,
+            "returned_exit": 0,
+            "worktree_and_staged_SHA256": "26fdc3e7dfac6e30b2d9a5d9438dbabbc133a9255e9dbca61858982b31d3d9c6",
+            "original_finding": "trailing whitespace: docs\\knowledge-core-reference-authority.md:80\r\n",
+            "original_finding_and_notice_retained": true,
+            "not_strict_zero": true,
+            "original_checker_sole_stderr_finding_preserved": true,
+            "sidecar": {
+              "path": ".local-data/coordination-20261108/git/stage02-exec01/hooks/python-check-71656.safe.json",
+              "bytes": 247,
+              "sha256": "72d834ef2ac34814a386888f5f3147ec83fe77837d76525b0d8adbf5ff157a68"
+            },
+            "acceptance_scope": "Only Root specially approved exact historical stage2 authority SHA26fd/line80/raw2B 3e20. Not a generic suppression or renewed exception for Ref29/new bytes.",
+            "original_file_changed": false,
+            "original_hook_disabled": false
+          },
+          "fix_executions_or_new_skips": 0,
+          "evidence": "Fixed C handoff and final-verification/hook-outcome retain the original exit1 finding and precise acceptance. No hook was rerun or file normalized in this preparation."
+        },
+        "clean_and_Ref28_pass_before_later_branding": "Root independently verified remote,clean and actual Ref28 pass before the separate human branding change. Current dirty brand files are later and do not undo completed stage2 Git.",
+        "source_at_stage02_commit": {
+          "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+          "file_count": 5048,
+          "sha256": "4226d996c441a79fd1a05475c26fc52a856b693a3bbfc0aaca1cdd81b00510ba"
+        },
+        "receipt": {
+          "path": ".local-data/coordination-20261108/git/stage02-exec01/handoff.safe.json",
+          "bytes": 34367,
+          "sha256": "1fe5d97bddbb5c0fd25b312e15002fcaf51045fe132d23d12f00e8d8662fc019"
+        },
+        "verification_receipt": {
+          "path": ".local-data/coordination-20261108/git/stage02-exec01/final-verification.safe.json",
+          "bytes": 12499,
+          "sha256": "0898962085e2ee152b1318f6ba25d2949c6d5fcae28211a185e8e0ba4a6869f6"
+        },
+        "this_task_git_actions": "Read-only HEAD,parent,index,status/commit metadata checks;no stage/commit/push/fetch/network remote probe. Root remote attestation is not labelled a new D remote probe."
+      },
+      "stage02_runtime_completion": {
+        "API": {
+          "receipt": {
+            "path": ".local-data/coordination-20261108/integration/api-runtime01/handoff.safe.json",
+            "bytes": 13102,
+            "sha256": "704c6a26e68dc637b6d0eff2e16e1b2fcce2c48279150f3f83224f9b084e9c30"
+          },
+          "container_id": "d19f5c222ff166e3ecc1075d59969ff6c2529f45277f38d8526642da1e2c7dc7",
+          "container_name": "second-brain-api",
+          "started_at": "2026-11-07T20:45:51.834550406Z",
+          "process_and_mounted_ELF_sha256": "992907675220c2e47c56547c85c0d2f1cbb4e1c6904c3d6084574d7f4612b045",
+          "bytes": 334058960,
+          "identity_match": true,
+          "health": {
+            "status": "Passed",
+            "attempts": 52,
+            "elapsedMs": 102729,
+            "budgetMs": 180000
+          },
+          "scope": "HTTP200 and owning handler status=ok, identity+health only",
+          "first_health_failures_preserved": true,
+          "CLI_replaced": false
+        },
+        "Web": {
+          "receipt": {
+            "path": ".local-data/coordination-20261108/web/runtime-ui01/handoff.safe.json",
+            "bytes": 21801,
+            "sha256": "29047074787c96d940c450463b5c1697b5d9ca0d0d0a3b60f18d315150265b4d"
+          },
+          "container_id": "9d8dd5c5e9996843cbb01151e2c6529bdeb4f0c9fe54f51a0b9ad1eae46b99a9",
+          "started_at": "2026-11-07T20:58:22.297067479Z",
+          "actual_served_index_sha256": "eeea33cb00901137ecc9cb7c94b1607ffc2bbc57a6487c8ae329df957b6451e5",
+          "static_readonly": true,
+          "artifact_file_count": 1073,
+          "artifact_total_bytes": 56165520,
+          "index_and_entry_resource_verification": "Initial/final actual index HTTP200 and41 linked JS/CSS resources actual200/exact artifact size+SHA per fixed B receipt;not rerun here."
+        },
+        "bounded_posterior_GUI": {
+          "matrix_receipt": {
+            "path": ".local-data/coordination-20261108/web/runtime-ui01/matrix.safe.json",
+            "bytes": 6778,
+            "sha256": "3c6b64b5b6514a3961fb3d54e89e39e0a88f9803e20f86c2350024bf2fef662a"
+          },
+          "total": 24,
+          "counts": {
+            "PASS": 17,
+            "FAIL": 0,
+            "Partial": 1,
+            "NotRun": 6
+          },
+          "scope": "Independent19 current checks plus5 explicitly retained NotRun edges; not a complete Browser03 rerun or total unique tests.",
+          "F01_failure_branch": "NotRun_NaturalFailureDidNotRecur;prior unit evidence not upgraded by normal UI.",
+          "F02": "Partial for specific CSV reason/correction;determinate rejection and continuation observed. Root assigned later S1 frontend owning improvement,not a main change in this record.",
+          "full_mobile_workflow": false,
+          "real_concurrency_and_ACL_change": "NotRun",
+          "whole_stage_or_product_final_acceptance": false
+        },
+        "old_Browser03": {
+          "counts": {
+            "PASS": 15,
+            "FAIL": 4,
+            "NotRun": 5
+          },
+          "preserved": "Retain original full-workflow03 evidence and failures;new posterior is not a full Browser03 rerun and not a unique test-count sum."
+        },
+        "old_validation_and_failures": "Keep old Go/Web first timeouts/prechecks/build failures,TestMain native bypass,crop scope,201/C37 scope,quality18/Q04 applicability and other Unknown at original versions/times. No backfill or inferred global zero calls.",
+        "current_runtime_reprobed_by_this_preparation": false,
+        "whole_stack_same_version_claim": false
+      },
+      "branding_human_request": {
+        "source": "Root directly read the actual human userMessage using read_thread; this executor relies on the explicit coordinator attestation in ROOT-REF29-PREP01,not another agent granting authority.",
+        "source_chat_id": "01a1b7f8-6180-74c1-a50b-fa48574f625d",
+        "source_chat_title": "重新设计第二大脑图标",
+        "source_turn_id": "01a1b7f8-7d6e-7370-afa2-01b69d02faf9",
+        "original_user_message": "现在这个，呃，web的这个 icon，图标啊，有点丑。我希望你重新生成一个，重新设计一个吧，啊，用 image 设计一个，符合这个我这个第二大脑项目的这个设计理念的一个一个一个图标，好吧。",
+        "turn_start_epoch_seconds": 1794087878,
+        "turn_end_epoch_seconds": 1794088263,
+        "turn_start_utc": "2026-11-07T21:44:38.000Z",
+        "turn_end_utc": "2026-11-07T21:51:03.000Z",
+        "timestamp_meaning": "Turn metadata only;not a human click/request/approval timestamp.",
+        "human_click_or_approval_time": "Unknown_NotRecorded",
+        "minimal_scope_authorized": [
+          "web/public/logo-mascot.png",
+          "web/src/conf.json"
+        ],
+        "repeat_human_confirmation_required": false,
+        "does_not_authorize": "No new business interface,access principal/model/RAG call,real AICS/OAuth/production release/personality-memory/root restructuring or destructive resource/volume action."
+      },
+      "actual_branding_source_delta": {
+        "current_HEAD": "bae0c516b1966b904657cb69f0a23121f3bf0991",
+        "current_index_sha256": "df2745f04039f8e5d271d509c1802c4af63e10cb40654c4e855bcab65a45e8ed",
+        "only_uncommitted_paths": [
+          "web/public/logo-mascot.png",
+          "web/src/conf.json"
+        ],
+        "files": [
+          {
+            "path": "web/public/logo-mascot.png",
+            "bytes": 814909,
+            "sha256": "dbcc3d91d13299d16af74f49683e7bf13204d39ba2239db03c18f18cef9b8cb2",
+            "headBytes": 1656895,
+            "headSha256": "7310601a99a9276db778bc72ab9022bcc6b6355ebf3e0505294fc7724a252543",
+            "mtime": "2026-11-07T21:46:24.387Z"
+          },
+          {
+            "path": "web/src/conf.json",
+            "bytes": 140,
+            "sha256": "55144749eaf93d04d23433941d434a72c0639b0bd3086a4455da475a8a8337ee",
+            "headBytes": 140,
+            "headSha256": "e33d058fb9c7b953f680d0f281439cfa7e6520d767505e71f2100d547546effe",
+            "mtime": "2026-11-07T21:47:40.589Z"
+          }
+        ],
+        "PNG_metadata": {
+          "width": 1254,
+          "height": 1254,
+          "bitDepth": 8,
+          "colorType": 6,
+          "format": "PNG_RGBA",
+          "alpha_channel_present": true,
+          "scope": "Header and Root-provided metadata;no new image generation or visual acceptance in this task."
+        },
+        "product_configuration": {
+          "previous": {
+            "appName": "LFen's Second Brain",
+            "appLogo": "/logo-mascot.png?v=4",
+            "projectUrl": "https://github.com/LFenX/LFen.s-Second-Brain"
+          },
+          "current": {
+            "appName": "LFen's Second Brain",
+            "appLogo": "/logo-mascot.png?v=5",
+            "projectUrl": "https://github.com/LFenX/LFen.s-Second-Brain"
+          },
+          "only_changed_value": "appLogo /logo-mascot.png?v=4 -> /logo-mascot.png?v=5",
+          "appName_and_projectUrl_unchanged": true
+        },
+        "current_source_snapshot": {
+          "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+          "file_count": 5048,
+          "sha256": "2c786735cda277f5d02238a2c6086f4c1972c5ce12369ed51545c5afe2efa152"
+        },
+        "source_measurement": "Actual complete current tree measurement,independently matched with unchanged owner getSourceSnapshot. PNG is excluded by this code-extension algorithm;conf.json is included. Counterfactual RAM-only canonical row-hash substitution for conf.json using exact HEAD bytes reconstructs old5048/4226 snapshot;main conf/logo/source files were never overwritten,temporarily reverted or restored. This is not a prediction or a refreshed old manifest.",
+        "Root_source_visual_review": {
+          "status": "RootReadOnlyBasicSourceReview",
+          "appearance": "Blue/cyan brain shape,white book-page lines,gold connection dots;no text/secrets observed by Root.",
+          "scope": "Root-provided source-file observation only;not new GUI/runtime/deployment acceptance and not a new D image/model action."
+        },
+        "no_bulk_source_deletion_or_root_layout_change": true
+      },
+      "branding_runtime_and_acceptance": {
+        "running_Web": "Stage2 existing v4 static artifact with served eeea index;source v5/logo bytes have not been built or deployed.",
+        "new_logo_build": "NotRun",
+        "new_logo_runtime_switch": "NotRun",
+        "new_logo_GUI_acceptance": "NotRun",
+        "new_logo_commit_or_push": "NotPerformedInThisPreparation",
+        "human_branding_scope": "Already explicitly authorized by actual human request;do not repeat confirmation merely because old Ref28 source snapshot differs."
+      },
+      "reference_transition": {
+        "old_lock_id": "KCRL-20261108-28",
+        "old_manifest_bytes": 177920,
+        "old_manifest_raw_sha256": "57ceba610d02b05e4340fcda302607abd2bda9d12e5214c4e8c6b338203276c2",
+        "old_manifest_payload_sha256": "158a6f24525bd6bf83908d8d0a60093baaa856d51c80f8a539391348c1b30c3b",
+        "old_source_snapshot": {
+          "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+          "file_count": 5048,
+          "sha256": "4226d996c441a79fd1a05475c26fc52a856b693a3bbfc0aaca1cdd81b00510ba"
+        },
+        "old_actual_CLI": "REFUSED: 源码事实基线漂移；请主控复核受影响资料",
+        "reason": "Only the reviewed and explicitly human-authorized brand delta follows stage2 completion. All97 entry selections/26formal/47protected/request checks/11archive/28historical passed before unchanged owner validator reached source-only refusal.",
+        "new_candidate_lock_id": "KCRL-20261108-29",
+        "new_actual_source": {
+          "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+          "file_count": 5048,
+          "sha256": "2c786735cda277f5d02238a2c6086f4c1972c5ce12369ed51545c5afe2efa152"
+        },
+        "exact_new_archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261108-28.json",
+        "archive_policy": "Exact original177920 bytes/SHA57ce;baseline snapshot chain only. The existing11 archived-document and28 retained-history lists are unchanged.",
+        "affected_entry_digests_only": [
+          "reference-authority",
+          "coordination-20261106-round3"
+        ],
+        "entry_and_use_count_unchanged": {
+          "entries": 97,
+          "uses": 102
+        },
+        "old_contracts_and_protected_unchanged": {
+          "formal": 26,
+          "protected": 47
+        },
+        "candidate_activation": "C independent review -> Root exact four-postimage freeze/finite single-use lease -> named mechanical application -> actual Ref29 --expect-sha256 check. No main Ref29 pass is claimed in this preparation."
+      },
+      "KCA02_preservation": {
+        "specific_human_option": "A",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3",
+        "access_entries": 17,
+        "original_members": 14,
+        "original_member_bytes": 331418,
+        "specific_decision_entry": "access02-implementation-decision/implementation_authority",
+        "scope": "Existing exact S1 personal fixed-module sharing -> S2 department -> S3 short-lived managed MCP synthetic implementation authority remains. No new business interface/model/real-AICS/OAuth/production/personality scope.",
+        "current_A_B_work": "Ignored implementation candidates only at Root dispatch;not main S1 completion.",
+        "original70_acceptance_cases": "All NotRun;not overwritten by stage2 GUI or metadata probes.",
+        "old_Draft_Pending_fields": "Immutable writing-time originals;later specific approval/registration and completed stage2 facts are separate records."
+      },
+      "preparation_boundary": {
+        "main_source_writes": 0,
+        "formal_document_writes": 0,
+        "Git_writes": 0,
+        "builds": 0,
+        "services_or_containers": 0,
+        "business_HTTP_SQL_or_model_calls": 0,
+        "private_config_or_credentials_read": false,
+        "Gold_or_real_AICS_reads": false,
+        "scope_of_zero_counts": "This preparation only,not the separate logo work or global runtime."
+      },
+      "evidence_registry": [
+        {
+          "path": ".local-data/coordination-20261108/integration/api-runtime01/handoff.safe.json",
+          "bytes": 13102,
+          "sha256": "704c6a26e68dc637b6d0eff2e16e1b2fcce2c48279150f3f83224f9b084e9c30"
+        },
+        {
+          "path": ".local-data/coordination-20261108/web/runtime-ui01/handoff.safe.json",
+          "bytes": 21801,
+          "sha256": "29047074787c96d940c450463b5c1697b5d9ca0d0d0a3b60f18d315150265b4d"
+        },
+        {
+          "path": ".local-data/coordination-20261108/web/runtime-ui01/matrix.safe.json",
+          "bytes": 6778,
+          "sha256": "3c6b64b5b6514a3961fb3d54e89e39e0a88f9803e20f86c2350024bf2fef662a"
+        },
+        {
+          "path": ".local-data/coordination-20261108/git/stage02-exec01/handoff.safe.json",
+          "bytes": 34367,
+          "sha256": "1fe5d97bddbb5c0fd25b312e15002fcaf51045fe132d23d12f00e8d8662fc019"
+        },
+        {
+          "path": ".local-data/coordination-20261108/git/stage02-exec01/final-verification.safe.json",
+          "bytes": 12499,
+          "sha256": "0898962085e2ee152b1318f6ba25d2949c6d5fcae28211a185e8e0ba4a6869f6"
+        }
+      ],
+      "unresolved_or_separate": [
+        "New logo runtime/GUI/build not performed.",
+        "S1/S2/S3 implementation and original70 product cases not accepted by this fact-only transition.",
+        "Human click/approval timestamp Unknown;only given turn metadata retained.",
+        "Ref29 main activation and its actual check require separate Root exact4 lease after independent review."
+      ]
     }
   }
 }
