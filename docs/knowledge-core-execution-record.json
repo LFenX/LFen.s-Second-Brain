@@ -8378,6 +8378,48 @@
         "S2S3": "Sequence gates retained"
       },
       "preservation": "Old execution bytes and full authority suffix retained; Ref34 raw manifest archived exactly. No application deployment or final usability claim in this candidate."
+    },
+    "resource_denial_consistency_followup": {
+      "state": "RootSolo_ResourceDenialConsistencyRepair_FullAcceptancePending",
+      "humanSteering": "现在暂停其他会话，后续所有任务由你一个人完成",
+      "coordination": "Root sole implementer/reviewer/executor; no other chats resumed or delegated.",
+      "git": {
+        "commit": "b084464727435e7e462fcc53d580371fcdb19f26",
+        "pushedAndRemoteMatched": true,
+        "allElevenCommitChecksPassed": true
+      },
+      "currentRuntime": {
+        "currentProductionGoBuild": "Initial246754728B server started as a separate local acceptance API after explicit public ELF release permissions; original userAPI29396 andWeb29395 unchanged. First failed starts retained; no fabricated startup root cause.",
+        "firstAcceptanceAPI": "Separate API shared main schema temporarily. A later queued native job failed profile_changed because the old executable and new executable have different pinned tokenizer producer fingerprints. This is test-environment interference; no product permission relaxation or producer hash rewrite.",
+        "isolation": "Old temporary acceptance APIs removed without volumes. Fresh second_brain_s1_acceptance_20261116 copied111 current schema structures and zero source rows. New acceptance API started against that schema using RAM plus container tmpfs config override of mysql.name only. Original private config, credentials and user services unchanged.",
+        "web": "2061 original build inputs and1079 artifacts reverified. Only two subsequent test-file differences; productionWeb identical. Exact artifact89d54d9f3a6509bc94ecd47e11270757b2bd60f1aa8c5d0b40b04a0bfe71656f started at local29398 for isolated acceptance; original29395 not changed. Browser confirmed full new login form loading, not authenticated workflow completion.",
+        "nativeAndHTTP": "Fresh synthetic native signup/team acceptance/domain/upload/snapshot/local lexical publication/policy/module/grant paths executed. Read-only recipient catalog and two whole-unit reads reconstructed9600 original bytes exactly; evidence re-read succeeded, search on read grant403 and denied target identifiers absent. Full driver not passed.",
+        "driverMistakes": "Ad-hoc driver originally expected grant replay201 although persistence explicitly specifies200; unit out-of-bounds expected404 although protocol specifies400. Original failures retained. Source-based fixes must not be called product bugs.",
+        "productFinding": "Existing full HTTP acceptance requires404 for inaccessible management and no-grant consumption, while owning service returned403. This candidate hides those resource states and retains403 for actual live grants missing requested mode/delivery. Existing no-self-grant unit expectation corrected and focused no-source-read/no-search regression added.",
+        "retirement": "Original HTTP05 session closed. Acceptance06 API retired before corrected build; synthetic schema retained and Web candidate remains separate. Original acceptance histories retained."
+      },
+      "candidate": {
+        "targets": [
+          "internal/service/dataset/knowledge_access.go",
+          "internal/service/dataset/knowledge_access_test.go"
+        ],
+        "change": "Exact inaccessible-management,disabled module/policy,ungranted resource hiding; live grant mode/delivery mismatch remains403. No expanded authority, new interface or production deployment.",
+        "buildProof": ".local-data/coordination-20261108/review/root-solo-20261116/access-denial01/compile/result.safe.json",
+        "validation": "68 scoped top-level units plus native tail, server/CLI build, actualLLD20 and five help checks; offline noSQL/HTTP/models. Six source overlays against immutable compiler image; all1787 inputs checked pre/post. Compiler removed and404; original attachment physically closed.",
+        "publicRelease": "New compiled public server/CLI artifacts are0555 for runtime UID0+CapDropALL; private configuration permissions unchanged."
+      },
+      "scope": {
+        "subject": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3",
+        "S1": "Pending corrected complete HTTP and synthetic Web workflow; no full product acceptance claim",
+        "S2S3": "Gates retained",
+        "syntheticOnly": true,
+        "models": 0,
+        "SMTP": 0,
+        "secretsPrinted": false,
+        "newInterfaces": false,
+        "rootLayoutChanges": false
+      },
+      "preservation": "Original execution bytes and full authority suffix preserved; previous35 manifest archived byte-for-byte. Old failures and historical independent receipts unchanged."
     }
   }
 }

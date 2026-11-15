@@ -308,7 +308,7 @@ func TestKnowledgeAccessSubsetUnitReadAndIdentityIsolation(t *testing.T) {
 	f.enable(t, f.Scope.Targets[:1], "read")
 	f.Store.gets = map[string]int{}
 	inspectReq := entity.KnowledgeAccessInspectRequest{ContractVersion: entity.KnowledgeAccessVersion, DomainID: knowledgeTestDomain, ModuleID: f.Module.ModuleID, Mode: "read", Delivery: "web_only"}
-	accessTestCall(t, f.Service, f.Owner, knowledgeTestOwner, "inspect", inspectReq, 403)
+	accessTestCall(t, f.Service, f.Owner, knowledgeTestOwner, "inspect", inspectReq, 404)
 	denied := inspectReq
 	denied.SourceIDs = &[]string{f.Scope.Targets[1].Source.SourceID}
 	accessTestCall(t, f.Service, f.Recipient, accessTestRecipient, "inspect", denied, 404)
@@ -621,5 +621,43 @@ func TestKnowledgeAccessConcurrentCommandRetryHasOneReceipt(t *testing.T) {
 	}
 	if count != 1 {
 		t.Fatal("concurrent duplicate receipt", count)
+	}
+}
+
+func TestKnowledgeAccessHiddenResourcesAndDeniedActions(t *testing.T) {
+	contentLexicalTokenizer(t)
+	f := accessTestSetup(t, false)
+	f.enable(t, f.Scope.Targets[:1], "read")
+	other := accessTestSession(t, accessTestOther)
+	f.Store.gets = map[string]int{}
+	inspect := entity.KnowledgeAccessInspectRequest{ContractVersion: entity.KnowledgeAccessVersion, DomainID: knowledgeTestDomain, ModuleID: f.Module.ModuleID, Mode: "read", Delivery: "web_only"}
+	admin := entity.KnowledgeAccessGetModuleAdminRequest{ContractVersion: entity.KnowledgeAccessVersion, DomainID: knowledgeTestDomain, ModuleID: f.Module.ModuleID}
+	hidden := func(ctx context.Context, actor, operation string, request any) {
+		t.Helper()
+		reply := accessTestCall(t, f.Service, ctx, actor, operation, request, 404)
+		if reply.Code != "not_found" || string(reply.Data) != "null" {
+			t.Fatal("hidden resource disclosed a different error", reply)
+		}
+	}
+	hidden(f.Recipient, accessTestRecipient, "getModuleAdmin", admin)
+	hidden(other, accessTestOther, "getModuleAdmin", admin)
+	hidden(other, accessTestOther, "inspect", inspect)
+	hidden(f.Owner, knowledgeTestOwner, "inspect", inspect)
+	missingAdmin := admin
+	missingAdmin.DomainID = strings.Repeat("e", 32)
+	hidden(other, accessTestOther, "getModuleAdmin", missingAdmin)
+	if err := dao.DB.Where("user_id = ? AND tenant_id = ?", accessTestOther, knowledgeTestOwner).Delete(&entity.UserTenant{}).Error; err != nil {
+		t.Fatal(err)
+	}
+	hidden(other, accessTestOther, "getModuleAdmin", admin)
+	escalation := inspect
+	escalation.Mode = "read_search"
+	if reply := accessTestCall(t, f.Service, f.Recipient, accessTestRecipient, "inspect", escalation, 403); reply.Code != "action_denied" || string(reply.Data) != "null" {
+		t.Fatal("existing read grant acquired search mode", reply)
+	}
+	accessTestCall(t, f.Service, f.Owner, knowledgeTestOwner, "revokeGrant", entity.KnowledgeAccessRevokeGrantRequest{ContractVersion: entity.KnowledgeAccessVersion, DomainID: knowledgeTestDomain, GrantID: f.Grant.GrantID, Confirmed: true, IdempotencyKey: "Synthetic_Hidden_Revoke"}, 200)
+	hidden(f.Recipient, accessTestRecipient, "inspect", inspect)
+	if len(f.Store.gets) != 0 || f.Engine.searches != 0 {
+		t.Fatal("denied access loaded source bytes or searched", f.Store.gets, f.Engine.searches)
 	}
 }

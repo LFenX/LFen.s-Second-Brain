@@ -257,7 +257,7 @@ func accessDomain(ctx context.Context, tx *gorm.DB, actor, domain string, manage
 		return nil, accessError(409, "scope_not_supported")
 	}
 	if management && kb.CreatedBy != actor {
-		return nil, accessError(403, "action_denied")
+		return nil, accessError(404, "not_found")
 	}
 	if err := accessTenant(ctx, tx, actor, kb.TenantID, lock); err != nil {
 		return nil, err
@@ -356,25 +356,33 @@ func accessCovers(grant entity.KnowledgeAccessGrantRecord, actor, mode, delivery
 }
 func accessPickGrant(tx *gorm.DB, kb *entity.Knowledgebase, module *entity.KnowledgeAccessModuleRecord, actor, mode, delivery string, now time.Time) (*entity.KnowledgeAccessGrantRecord, error) {
 	if !module.Enabled {
-		return nil, accessError(403, "action_denied")
+		return nil, accessError(404, "not_found")
 	}
 	policy, err := accessPolicy(tx, kb, true)
 	if err != nil {
 		return nil, err
 	}
 	if !policy.Enabled {
-		return nil, accessError(403, "action_denied")
+		return nil, accessError(404, "not_found")
 	}
 	rows, err := accessGrants(tx, kb, module, now)
 	if err != nil {
 		return nil, err
 	}
+	hasGrant := false
 	for _, row := range rows {
-		if row.IssuedBy == kb.CreatedBy && accessCovers(row, actor, mode, delivery) {
+		if row.IssuedBy != kb.CreatedBy || row.SubjectKind != "user" || row.SubjectID != actor {
+			continue
+		}
+		hasGrant = true
+		if accessCovers(row, actor, mode, delivery) {
 			return &row, nil
 		}
 	}
-	return nil, accessError(403, "action_denied")
+	if hasGrant {
+		return nil, accessError(403, "action_denied")
+	}
+	return nil, accessError(404, "not_found")
 }
 
 func accessCommandDigest(actor, operation string, request any) []byte {
