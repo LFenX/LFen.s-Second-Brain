@@ -148,6 +148,21 @@ func TestKnowledgeAccessRealESFilterAndDeniedFrequency(t *testing.T) {
 	if err := engine.PrepareKnowledgeLexical(ctx, index, domain, ""); err != nil {
 		t.Fatal("synthetic index preparation")
 	}
+	refresh := func() {
+		t.Helper()
+		response, err := client.Indices.Refresh(client.Indices.Refresh.WithContext(ctx), client.Indices.Refresh.WithIndex(index))
+		if err != nil {
+			t.Fatal("ES_REFRESH_TRANSPORT")
+		}
+		var result struct {
+			Shards struct {
+				Failed int `json:"failed"`
+			} `json:"_shards"`
+		}
+		if err := knowledgeDecode(response, &result); err != nil || result.Shards.Failed != 0 {
+			t.Fatal("ES_REFRESH_RESPONSE")
+		}
+	}
 	requestJSON := func(method, suffix string, body any) map[string]any {
 		t.Helper()
 		raw, err := json.Marshal(body)
@@ -204,7 +219,7 @@ func TestKnowledgeAccessRealESFilterAndDeniedFrequency(t *testing.T) {
 	if above, ok := idMapping["ignore_above"].(float64); ok && above < 64 {
 		t.Fatal("ACCESS_ES_ID_KEYWORD_MAPPING_REQUIRED")
 	}
-	requestJSON("POST", "/_refresh", map[string]any{})
+	refresh()
 	// A real relevance control proves that postfiltering the global top1
 	// would discard the denied row instead of finding the permitted A row.
 	control := requestJSON("POST", "/_search", map[string]any{"size": 3, "track_total_hits": true, "query": map[string]any{"term": map[string]any{"content_ltks": "lfenaclq"}}, "sort": []any{map[string]any{"_score": "desc"}}})
@@ -289,7 +304,7 @@ func TestKnowledgeAccessRealESFilterAndDeniedFrequency(t *testing.T) {
 	if err := engine.CreateKnowledgeLexicalRows(ctx, index, domain, moreDenied); err != nil {
 		t.Fatal("synthetic denied frequency perturbation")
 	}
-	requestJSON("POST", "/_refresh", map[string]any{})
+	refresh()
 	afterFrequency := countMatchingDocs()
 	if afterFrequency != beforeFrequency+float64(len(moreDenied)) {
 		t.Fatal("denied corpus term document frequency did not actually change")

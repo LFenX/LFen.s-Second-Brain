@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "lock_id": "KCRL-20261116-33",
+  "lock_id": "KCRL-20261116-34",
   "recorded_date": "2026-11-16",
   "coordinator_thread_id": "01a1a9a5-c724-7f52-8cbb-16d19d982ba4",
   "source_baseline_git_head": "f804b3737a8f69af14b1ff1c2d042e8ea7c2a9f1",
   "source_snapshot": {
     "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
     "file_count": 5141,
-    "sha256": "ae95f0e98b4d4025bbce514949246bc644794a4543f5a8d9ff611c736a9048fa"
+    "sha256": "4f689bab30324ae99fc60ff4239e53dac00adee7351a14f02d94ad0e4b591233"
   },
   "unlisted_policy": "DeniedAsCurrentGuidance_UntilCoordinatorReviewsAndAssigns",
   "authority_order": [
@@ -32,9 +32,9 @@
       },
       "integrity": {
         "mode": "file",
-        "sha256": "57dc26e1ab4a37580a010ffaf8cb03a473af0b840faaf56a0619c88e97445da7"
+        "sha256": "65006b3a3f9bcd9b99d9e726b529cb0da952602e1cefb274a4ee2d0d2299678c"
       },
-      "selection_sha256": "57dc26e1ab4a37580a010ffaf8cb03a473af0b840faaf56a0619c88e97445da7"
+      "selection_sha256": "65006b3a3f9bcd9b99d9e726b529cb0da952602e1cefb274a4ee2d0d2299678c"
     },
     {
       "id": "root-instructions",
@@ -1453,9 +1453,9 @@
       },
       "integrity": {
         "mode": "selection",
-        "sha256": "b2521c566f966d13ed840a425e4eca0f9b82b706d11e04311cc9598ce8d0ee9c"
+        "sha256": "1c608b518ae63019f7475f777064c4cefbe615871843aaa4cf899c1dea6d04b4"
       },
-      "selection_sha256": "b2521c566f966d13ed840a425e4eca0f9b82b706d11e04311cc9598ce8d0ee9c",
+      "selection_sha256": "1c608b518ae63019f7475f777064c4cefbe615871843aaa4cf899c1dea6d04b4",
       "limitation": "第三轮独立事实入口；仅在实际28源码及独立B回执核实、独审和总控精确四文件租约后机械生效。各运行/质量门按各自时点与版本保留，不批准新接口、模型、真实内容、最终验收或发布。 Ref27只追加shared_ordinal_followup；旧28和分层运行事实保留原时点，命名源码集合后续仅据实际应用与分层回执登记，未完成门不标Pass。"
     },
     {
@@ -4900,23 +4900,23 @@
     "Latest human stage commit+push instruction supersedes old time-scoped Git prohibitions;actual stage Git and production deployment/release remain separately coordinated actions."
   ],
   "update_rule": "仅主控在同范围内复核事实/差异/摘要并决定变更；最新真人规定总控不做实际工作，机械应用只能由具名执行者在唯一精确写窗中承担。保存旧锁原字节/摘要、原因、受影响条目和新校验；不得为未知漂移刷新摘要。接口/模型/真实内容/发布新范围仍需真人具体决定。",
-  "manifest_payload_sha256": "1d4fa15eb16843162dc04cf6fbb9456f2e643a759742ec15de8fa0b156e7e8d6",
+  "manifest_payload_sha256": "3c51c586206c65b1f585177f87cae23e9d89856b782091313f4de3c507039a8f",
   "previous_baseline": {
-    "lock_id": "KCRL-20261116-32",
-    "manifest_sha256": "25d278095468e2b004741e72dc2a1ae376e9ba53943316c1d42a31d02d9aa0c1",
-    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-32.json",
-    "archive_sha256": "25d278095468e2b004741e72dc2a1ae376e9ba53943316c1d42a31d02d9aa0c1",
+    "lock_id": "KCRL-20261116-33",
+    "manifest_sha256": "5edef47d69c6dabcea2ca54227aed657e54ed33d1ef6c1856b8a5a18dda9d64b",
+    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-33.json",
+    "archive_sha256": "5edef47d69c6dabcea2ca54227aed657e54ed33d1ef6c1856b8a5a18dda9d64b",
     "changed_files": [
-      "internal/service/dataset/knowledge_access_mysql_grant_integration_test.go",
+      "internal/engine/elasticsearch/knowledge_access_integration_test.go",
       "docs/knowledge-core-execution-record.json",
       "docs/knowledge-core-reference-authority.md",
-      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-32.json",
+      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-33.json",
       "docs/knowledge-core-reference-lock.json"
     ],
     "existing_entries_with_updated_selection_digests": [
       "reference-authority",
       "coordination-20261106-round3"
     ],
-    "reason": "Sole Root current steering; one standalone Go integration query-builder initialization, truthful commit/browser/acceptance followup. Original evidence preserved, formal S1 and later gates remain pending. No new product/model/deployment scope."
+    "reason": "Sole Root current steering; one typed ES refresh test request repair and truthful actual diagnostics/cleanup/Git evidence. Original evidence and all S1/later gates preserved. No product/model/deployment scope expansion."
   }
 }
