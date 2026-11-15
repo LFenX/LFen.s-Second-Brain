@@ -603,6 +603,12 @@ func fixturePreparationFloatField(op string, path []any) bool {
 		return ok && index >= 0
 	}
 
+	if op == "nativeUpload" && route.method == http.MethodPost && route.path == "/api/v1/datasets/{id}/documents" && route.family == "native" &&
+		len(path) == 5 && path[0] == "data" && path[2] == "parser_config" && path[3] == "Tokenizer:LegalReadersDecide" && path[4] == "filename_embd_weight" {
+		index, ok := path[1].(int)
+		return ok && index >= 0
+	}
+
 	if op == "dataset" && route.method == http.MethodPost && route.path == "/api/v1/datasets" && route.family == "native" &&
 		((len(path) == 2 && path[0] == "data" && (path[1] == "similarity_threshold" || path[1] == "keywords_similarity_weight")) ||
 			(len(path) == 4 && path[0] == "data" && path[1] == "parser_config" && path[2] == "Tokenizer:LegalReadersDecide" && path[3] == "filename_embd_weight")) {
@@ -771,6 +777,7 @@ func (c *fixtureHTTP) handoffSessions(actors map[string]actorFixture) error {
 func TestFixturePreparationReplyNumbers(t *testing.T) {
 	good := []struct{ op, body string }{
 		{"members", "{\"code\":0,\"data\":[{\"delta_seconds\":-0.125,\"epoch\":1}]}"},
+		{"nativeUpload", "{\"code\":0,\"data\":[{\"id\":\"11111111111111111111111111111111\",\"parser_config\":{\"Tokenizer:LegalReadersDecide\":{\"filename_embd_weight\":0.1}}}]}"},
 		{"ownerSearch", "{\"data\":{\"hits\":[{\"score\":1.25e1}],\"returned_count\":1}}"},
 		{"dataset", "{\"code\":0,\"data\":{\"similarity_threshold\":0.2,\"keywords_similarity_weight\":0.7,\"parser_config\":{\"Tokenizer:LegalReadersDecide\":{\"filename_embd_weight\":0.1}}}}"},
 	}
@@ -786,6 +793,11 @@ func TestFixturePreparationReplyNumbers(t *testing.T) {
 		})
 	}
 	bad := []struct{ op, body string }{
+		{"nativeUpload", "{\"data\":[{\"version\":0.125}]}"},
+		{"nativeUpload", "{\"code\":0.125,\"data\":[]}"},
+		{"nativeUpload", "{\"data\":{\"0\":{\"parser_config\":{\"Tokenizer:LegalReadersDecide\":{\"filename_embd_weight\":0.1}}}}}"},
+		{"nativeUpload", "{\"data\":[{\"parser_config\":{\"other\":{\"filename_embd_weight\":0.1}}}]}"},
+		{"sourceSnapshot", "{\"code\":0,\"data\":[{\"id\":\"11111111111111111111111111111111\",\"parser_config\":{\"Tokenizer:LegalReadersDecide\":{\"filename_embd_weight\":0.1}}}]}"},
 		{"members", "{\"code\":0.125,\"data\":[]}"},
 		{"members", "{\"data\":[{\"version\":0.125}]}"},
 		{"members", "{\"data\":{\"0\":{\"delta_seconds\":0.125}}}"},
@@ -851,7 +863,7 @@ func TestFixturePreparationReplyClosedDTO(t *testing.T) {
 }
 
 func TestFixturePreparationReplyExchange(t *testing.T) {
-	for _, op := range []string{"members", "ownerSearch", "dataset"} {
+	for _, op := range []string{"members", "ownerSearch", "dataset", "nativeUpload"} {
 		t.Run(op, func(t *testing.T) {
 			now := time.Now()
 			client := newFixtureHTTP(fixtureLease{Origin: "http://127.0.0.1:1", NotBefore: now.Add(-time.Second), Expires: now.Add(time.Minute)})
@@ -865,6 +877,9 @@ func TestFixturePreparationReplyExchange(t *testing.T) {
 				body := "{\"code\":0,\"data\":[{\"user_id\":\"" + strings.Repeat("2", 32) + "\",\"role\":\"normal\",\"delta_seconds\":0.125}]}"
 				if op == "dataset" {
 					body = "{\"code\":0,\"data\":{\"id\":\"" + strings.Repeat("3", 32) + "\",\"similarity_threshold\":0.2,\"keywords_similarity_weight\":0.7}}"
+				}
+				if op == "nativeUpload" {
+					body = "{\"code\":0,\"data\":[{\"id\":\"11111111111111111111111111111111\",\"parser_config\":{\"Tokenizer:LegalReadersDecide\":{\"filename_embd_weight\":0.1}}}]}"
 				}
 				if op == "ownerSearch" {
 					header.Set("X-Request-ID", request.Header.Get("X-Request-ID"))

@@ -8337,6 +8337,47 @@
         "S2S3": "Original sequence gates retained"
       },
       "preservation": "Original execution bytes and full authority suffix retained, previous Ref33 manifest archived exactly. Test-only candidate; no application deployment or final usability claim."
+    },
+    "native_upload_numeric_reader_followup": {
+      "state": "RootSolo_NativeUploadNumericReaderFix_WholeAcceptancePending",
+      "humanSteering": "现在暂停其他会话，后续所有任务由你一个人完成",
+      "coordination": "Root sole implementer/reviewer/executor; other chats remain paused.",
+      "git": {
+        "lastCommit": "de4e08fe12453fd76e4d37ae2f18e2f45885f8d7",
+        "pushedAndRemoteMatched": true,
+        "allElevenCommitChecksPassed": true,
+        "scope": "Typed ES refresh test request repair only."
+      },
+      "native": {
+        "MySQL": "Real base/preparation/grant barrier passed twice after the initialization fix.",
+        "ES": "Same named real permission-before-limit and denied-frequency stable-order test passed using the typed bodyless refresh. Exact synthetic index absent afterward; temporary helper removed and404 verified.",
+        "ESProof": ".local-data/coordination-20261108/review/root-solo-20261116/es-refresh02/real-es-component03/result.safe.json"
+      },
+      "HTTP": {
+        "actual31": "Original Go preparation exited1; all original calls and helpers closed.",
+        "actual32": "Joined-only static code fixture_c1_refused observed. Original failure retained, no acceptance promotion; helpers removed and original IO closed.",
+        "directC1": "Root direct synthetic registration -> empty models -> dataset -> domain -> native upload -> source snapshot passed twice. Snapshot201, exact original9600B andSHA verified. Root sessions/passwords stayed RAM-only and were closed; only synthetic rows/objects retained.",
+        "firstDirectAttempt": "Initial Node diagnosis used a wrong response field name for domain ID. It failed its own check after successful domain registration, then was corrected in a new run. No product bug claim from that failure.",
+        "numericCause": "Actual nativeUpload data[0].parser_config.Tokenizer:LegalReadersDecide.filename_embd_weight is fractional; old private Go preparation decoder permits this same configuration only on dataset creation and incorrectly rejects the upload DTO."
+      },
+      "GoCandidate": {
+        "target": "internal/handler/knowledgeaccess/fixture_scope_integration_test.go",
+        "change": "Allow finite bounded float only on the exact nativeUpload route and array-indexed parser configuration field. Add positive, wrong-route/shape/integer-field negatives and full exchange regression.",
+        "offlineCompile": "Three targeted top-level reply-number/closed-DTO/exchange tests and four startup listings passed withLLD20. All1787 Go/build inputs and six synthetic fixture inputs verified pre/post; helper removed and404.",
+        "compileProof": ".local-data/coordination-20261108/review/root-solo-20261116/native-upload-number03/compile04/result.safe.json",
+        "limits": "No product code, shared permission assertion, integer/version precision rule, private admission actor requirement or historical compiled fixture was changed. Offline candidate ELF has not been granted or executed as live fixture preparation."
+      },
+      "scope": {
+        "humanSubjectSHA256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3",
+        "syntheticOnly": true,
+        "newModelCalls": 0,
+        "SMTPCalls": 0,
+        "newProductInterfaces": false,
+        "rootLayoutChanged": false,
+        "S1": "Pending complete HTTP and synthetic Web acceptance. Component passes do not mean full S1.",
+        "S2S3": "Sequence gates retained"
+      },
+      "preservation": "Old execution bytes and full authority suffix retained; Ref34 raw manifest archived exactly. No application deployment or final usability claim in this candidate."
     }
   }
 }

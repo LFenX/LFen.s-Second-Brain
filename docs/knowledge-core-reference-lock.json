@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "lock_id": "KCRL-20261116-34",
+  "lock_id": "KCRL-20261116-35",
   "recorded_date": "2026-11-16",
   "coordinator_thread_id": "01a1a9a5-c724-7f52-8cbb-16d19d982ba4",
   "source_baseline_git_head": "f804b3737a8f69af14b1ff1c2d042e8ea7c2a9f1",
   "source_snapshot": {
     "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
     "file_count": 5141,
-    "sha256": "4f689bab30324ae99fc60ff4239e53dac00adee7351a14f02d94ad0e4b591233"
+    "sha256": "ec1599c848c4ed109c296aa684d01b5a2ddf882a8ddd9502c16cde64aebb6428"
   },
   "unlisted_policy": "DeniedAsCurrentGuidance_UntilCoordinatorReviewsAndAssigns",
   "authority_order": [
@@ -32,9 +32,9 @@
       },
       "integrity": {
         "mode": "file",
-        "sha256": "65006b3a3f9bcd9b99d9e726b529cb0da952602e1cefb274a4ee2d0d2299678c"
+        "sha256": "663a2a6cbe6a393919a524d13fbe91602171a8463769017a9a7522bb0e065d85"
       },
-      "selection_sha256": "65006b3a3f9bcd9b99d9e726b529cb0da952602e1cefb274a4ee2d0d2299678c"
+      "selection_sha256": "663a2a6cbe6a393919a524d13fbe91602171a8463769017a9a7522bb0e065d85"
     },
     {
       "id": "root-instructions",
@@ -1453,9 +1453,9 @@
       },
       "integrity": {
         "mode": "selection",
-        "sha256": "1c608b518ae63019f7475f777064c4cefbe615871843aaa4cf899c1dea6d04b4"
+        "sha256": "c338e29ca34acd2cd265ebee678d9126d94b1bb0a2b45e40429493476c95d7de"
       },
-      "selection_sha256": "1c608b518ae63019f7475f777064c4cefbe615871843aaa4cf899c1dea6d04b4",
+      "selection_sha256": "c338e29ca34acd2cd265ebee678d9126d94b1bb0a2b45e40429493476c95d7de",
       "limitation": "第三轮独立事实入口；仅在实际28源码及独立B回执核实、独审和总控精确四文件租约后机械生效。各运行/质量门按各自时点与版本保留，不批准新接口、模型、真实内容、最终验收或发布。 Ref27只追加shared_ordinal_followup；旧28和分层运行事实保留原时点，命名源码集合后续仅据实际应用与分层回执登记，未完成门不标Pass。"
     },
     {
@@ -4900,23 +4900,23 @@
     "Latest human stage commit+push instruction supersedes old time-scoped Git prohibitions;actual stage Git and production deployment/release remain separately coordinated actions."
   ],
   "update_rule": "仅主控在同范围内复核事实/差异/摘要并决定变更；最新真人规定总控不做实际工作，机械应用只能由具名执行者在唯一精确写窗中承担。保存旧锁原字节/摘要、原因、受影响条目和新校验；不得为未知漂移刷新摘要。接口/模型/真实内容/发布新范围仍需真人具体决定。",
-  "manifest_payload_sha256": "3c51c586206c65b1f585177f87cae23e9d89856b782091313f4de3c507039a8f",
+  "manifest_payload_sha256": "a5df454604015636acae6bbf58927635978dc0d89766c0fd2d514c1b82f901a0",
   "previous_baseline": {
-    "lock_id": "KCRL-20261116-33",
-    "manifest_sha256": "5edef47d69c6dabcea2ca54227aed657e54ed33d1ef6c1856b8a5a18dda9d64b",
-    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-33.json",
-    "archive_sha256": "5edef47d69c6dabcea2ca54227aed657e54ed33d1ef6c1856b8a5a18dda9d64b",
+    "lock_id": "KCRL-20261116-34",
+    "manifest_sha256": "555dbc8819a7827d0fba1cf9e83d51feaea79a95da0769bf00a2e80739571cd6",
+    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-34.json",
+    "archive_sha256": "555dbc8819a7827d0fba1cf9e83d51feaea79a95da0769bf00a2e80739571cd6",
     "changed_files": [
-      "internal/engine/elasticsearch/knowledge_access_integration_test.go",
+      "internal/handler/knowledgeaccess/fixture_scope_integration_test.go",
       "docs/knowledge-core-execution-record.json",
       "docs/knowledge-core-reference-authority.md",
-      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-33.json",
+      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-34.json",
       "docs/knowledge-core-reference-lock.json"
     ],
     "existing_entries_with_updated_selection_digests": [
       "reference-authority",
       "coordination-20261106-round3"
     ],
-    "reason": "Sole Root current steering; one typed ES refresh test request repair and truthful actual diagnostics/cleanup/Git evidence. Original evidence and all S1/later gates preserved. No product/model/deployment scope expansion."
+    "reason": "Sole Root; one exact native-upload DTO float reader and focused regressions. Actual component/C1/Git/cleanup facts preserved. Product code and private admission actors unchanged; whole acceptance remains pending."
   }
 }
