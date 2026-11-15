@@ -223,108 +223,93 @@ func (s *Service) CreateUser(ctx context.Context, username, password, role strin
 		IsSuperuser:     &isSuperuser,
 	}
 
-	// Start transaction for creating user and related data
-	tx := dao.DB.Begin()
-	if tx.Error != nil {
-		return nil, fmt.Errorf("failed to begin transaction: %w", tx.Error)
-	}
-
-	// Rollback helper function
-	rollbackTx := func() {
-		if rbErr := tx.Rollback(); rbErr.Error != nil {
-			common.Error("failed to rollback transaction", rbErr.Error)
+	err = nativeAdminMutation(ctx, "native_user_create", []string{userID}, []string{userID}, nil, func(tx *gorm.DB) error {
+		// 1. Create user
+		if err = tx.Create(user).Error; err != nil {
+			return fmt.Errorf("failed to create user: %w", err)
 		}
-	}
 
-	// 1. Create user
-	if err = tx.Create(user).Error; err != nil {
-		rollbackTx()
-		return nil, fmt.Errorf("failed to create user: %w", err)
-	}
+		// 2. Create tenant (tenant_id = user_id)
+		// tenant name = nickname + "'s Kingdom" (same as Python)
+		tenantName := user.Nickname + "'s Kingdom"
 
-	// 2. Create tenant (tenant_id = user_id)
-	// tenant name = nickname + "'s Kingdom" (same as Python)
-	tenantName := user.Nickname + "'s Kingdom"
+		// Get default model IDs from config
+		cfg := server.GetConfig()
+		chatModel := ""
+		embeddingModel := ""
+		asrModel := ""
+		vlmModel := ""
+		rerankModel := ""
+		var ttsModel *string = nil
+		var ocrModel *string = nil
+		parserIDs := "naive:General,qa:Q&A,manual:Manual,table:Table,paper:Paper,book:Book,laws:Laws,presentation:Presentation,picture:Picture,one:One,audio:Audio,email:Email"
 
-	// Get default model IDs from config
-	cfg := server.GetConfig()
-	chatModel := ""
-	embeddingModel := ""
-	asrModel := ""
-	vlmModel := ""
-	rerankModel := ""
-	var ttsModel *string = nil
-	var ocrModel *string = nil
-	parserIDs := "naive:General,qa:Q&A,manual:Manual,table:Table,paper:Paper,book:Book,laws:Laws,presentation:Presentation,picture:Picture,one:One,audio:Audio,email:Email"
+		if cfg != nil {
+			chatModel = cfg.GetDefaultChatModel().Name
+			embeddingModel = cfg.GetDefaultEmbeddingModel().Name
+			asrModel = cfg.GetDefaultASRModel().Name
+			vlmModel = cfg.GetDefaultVisionModel().Name
+			rerankModel = cfg.GetDefaultRerankModel().Name
+			ttsModelStr := cfg.GetDefaultTTSModel().Name
+			ttsModel = &ttsModelStr
+			ocrModelStr := cfg.GetDefaultOCRModel().Name
+			ocrModel = &ocrModelStr
+		}
 
-	if cfg != nil {
-		chatModel = cfg.GetDefaultChatModel().Name
-		embeddingModel = cfg.GetDefaultEmbeddingModel().Name
-		asrModel = cfg.GetDefaultASRModel().Name
-		vlmModel = cfg.GetDefaultVisionModel().Name
-		rerankModel = cfg.GetDefaultRerankModel().Name
-		ttsModelStr := cfg.GetDefaultTTSModel().Name
-		ttsModel = &ttsModelStr
-		ocrModelStr := cfg.GetDefaultOCRModel().Name
-		ocrModel = &ocrModelStr
-	}
+		tenantStatus := "1"
+		tenant := &entity.Tenant{
+			ID:        userID,
+			Name:      &tenantName,
+			LLMID:     chatModel,
+			EmbdID:    embeddingModel,
+			ASRID:     asrModel,
+			Img2TxtID: vlmModel,
+			RerankID:  rerankModel,
+			TTSID:     ttsModel,
+			OCRID:     ocrModel,
+			ParserIDs: parserIDs,
+			Credit:    512,
+			Status:    &tenantStatus,
+		}
+		if err = tx.Create(tenant).Error; err != nil {
+			return fmt.Errorf("failed to create tenant: %w", err)
+		}
 
-	tenantStatus := "1"
-	tenant := &entity.Tenant{
-		ID:        userID,
-		Name:      &tenantName,
-		LLMID:     chatModel,
-		EmbdID:    embeddingModel,
-		ASRID:     asrModel,
-		Img2TxtID: vlmModel,
-		RerankID:  rerankModel,
-		TTSID:     ttsModel,
-		OCRID:     ocrModel,
-		ParserIDs: parserIDs,
-		Credit:    512,
-		Status:    &tenantStatus,
-	}
-	if err = tx.Create(tenant).Error; err != nil {
-		rollbackTx()
-		return nil, fmt.Errorf("failed to create tenant: %w", err)
-	}
+		// 3. Create user-tenant relation
+		userTenantStatus := "1"
+		userTenant := &entity.UserTenant{
+			ID:        common.GenerateToken(),
+			UserID:    userID,
+			TenantID:  userID,
+			Role:      "owner",
+			InvitedBy: userID,
+			Status:    &userTenantStatus,
+		}
+		if err = tx.Create(userTenant).Error; err != nil {
+			return fmt.Errorf("failed to create user-tenant relation: %w", err)
+		}
 
-	// 3. Create user-tenant relation
-	userTenantStatus := "1"
-	userTenant := &entity.UserTenant{
-		ID:        common.GenerateToken(),
-		UserID:    userID,
-		TenantID:  userID,
-		Role:      "owner",
-		InvitedBy: userID,
-		Status:    &userTenantStatus,
-	}
-	if err = tx.Create(userTenant).Error; err != nil {
-		rollbackTx()
-		return nil, fmt.Errorf("failed to create user-tenant relation: %w", err)
-	}
+		// 4. Create root file folder
+		fileID := common.GenerateToken()
+		fileLocation := ""
+		file := &entity.File{
+			ID:        fileID,
+			ParentID:  fileID,
+			TenantID:  userID,
+			CreatedBy: userID,
+			Name:      "/",
+			Type:      "folder",
+			Size:      0,
+			Location:  &fileLocation,
+		}
+		if err = tx.Create(file).Error; err != nil {
+			return fmt.Errorf("failed to create root file folder: %w", err)
+		}
 
-	// 4. Create root file folder
-	fileID := common.GenerateToken()
-	fileLocation := ""
-	file := &entity.File{
-		ID:        fileID,
-		ParentID:  fileID,
-		TenantID:  userID,
-		CreatedBy: userID,
-		Name:      "/",
-		Type:      "folder",
-		Size:      0,
-		Location:  &fileLocation,
-	}
-	if err = tx.Create(file).Error; err != nil {
-		rollbackTx()
-		return nil, fmt.Errorf("failed to create root file folder: %w", err)
-	}
-
-	// Commit transaction
-	if err = tx.Commit().Error; err != nil {
-		return nil, fmt.Errorf("failed to commit transaction: %w", err)
+		return nil
+	})
+	if err != nil {
+		return nil, err
 	}
 
 	common.Info("Create user success with tenant and related data", zap.String("username", username))
@@ -418,38 +403,20 @@ func (s *Service) DeleteUser(ctx context.Context, username string) (*DeleteUserR
 // Returns:
 //   - error: error message
 func (s *Service) ChangePassword(ctx context.Context, username, newPassword string) error {
-	userList, err := s.userDAO.ListByEmail(ctx, dao.DB, username)
-	if err != nil || len(userList) == 0 {
-		return fmt.Errorf("user '%s' not found", username)
-	}
-
-	if len(userList) > 1 {
-		return fmt.Errorf("exist more than 1 user: %s", username)
-	}
-
-	user := userList[0]
-
 	decryptedPassword, err := common.DecryptPassword(newPassword)
 	if err != nil {
 		return fmt.Errorf("failed to decrypt password: %w", err)
 	}
-
-	if user.Password != nil && common.CheckWerkzeugPassword(decryptedPassword, *user.Password) {
-		return nil
-	}
-
-	hashedPassword, err := common.GenerateWerkzeugPasswordHash(decryptedPassword)
-	if err != nil {
-		return fmt.Errorf("failed to hash password: %w", err)
-	}
-
-	user.Password = &hashedPassword
-
-	if err = s.userDAO.Update(ctx, dao.DB, user); err != nil {
-		return fmt.Errorf("failed to update user: %w", err)
-	}
-
-	return nil
+	return s.mutateNativeUserAuthority(ctx, username, func(tx *gorm.DB, user *entity.User) error {
+		if user.Password != nil && common.CheckWerkzeugPassword(decryptedPassword, *user.Password) {
+			return nil
+		}
+		hashedPassword, err := common.GenerateWerkzeugPasswordHash(decryptedPassword)
+		if err != nil {
+			return fmt.Errorf("failed to hash password: %w", err)
+		}
+		return tx.Model(&entity.User{}).Where("id = ?", user.ID).Update("password", hashedPassword).Error
+	})
 }
 
 // UpdateUserActivateStatus update user activate status
@@ -460,37 +427,29 @@ func (s *Service) ChangePassword(ctx context.Context, username, newPassword stri
 // Returns:
 //   - error: error message
 func (s *Service) UpdateUserActivateStatus(ctx context.Context, username string, isActive bool) error {
-	userList, err := s.userDAO.ListByEmail(ctx, dao.DB, username)
-	if err != nil || len(userList) == 0 {
-		return fmt.Errorf("user '%s' not found", username)
-	}
+	return s.mutateNativeUserAuthority(ctx, username, func(tx *gorm.DB, user *entity.User) error {
+		targetStatus := "0"
+		if isActive {
+			targetStatus = "1"
+		}
 
-	if len(userList) > 1 {
-		return fmt.Errorf("exist more than 1 user: %s", username)
-	}
+		if user.IsActive == targetStatus {
+			return nil
+		}
 
-	user := userList[0]
+		user.IsActive = targetStatus
+		if !isActive {
+			invalidToken := "INVALID_" + common.GenerateToken()
+			user.AccessToken = &invalidToken
+		}
 
-	targetStatus := "0"
-	if isActive {
-		targetStatus = "1"
-	}
+		if err := tx.Model(&entity.User{}).Where("id = ?", user.ID).Updates(map[string]any{"is_active": user.IsActive, "access_token": user.AccessToken}).Error; err != nil {
+			return fmt.Errorf("failed to update user: %w", err)
+		}
 
-	if user.IsActive == targetStatus {
 		return nil
-	}
 
-	user.IsActive = targetStatus
-	if !isActive {
-		invalidToken := "INVALID_" + common.GenerateToken()
-		user.AccessToken = &invalidToken
-	}
-
-	if err = s.userDAO.Update(ctx, dao.DB, user); err != nil {
-		return fmt.Errorf("failed to update user: %w", err)
-	}
-
-	return nil
+	})
 }
 
 // GrantAdmin grant admin privileges
@@ -500,29 +459,21 @@ func (s *Service) UpdateUserActivateStatus(ctx context.Context, username string,
 // Returns:
 //   - error: error message
 func (s *Service) GrantAdmin(ctx context.Context, username string) error {
-	userList, err := s.userDAO.ListByEmail(ctx, dao.DB, username)
-	if err != nil || len(userList) == 0 {
-		return fmt.Errorf("user '%s' not found", username)
-	}
+	return s.mutateNativeUserAuthority(ctx, username, func(tx *gorm.DB, user *entity.User) error {
+		if user.IsSuperuser != nil && *user.IsSuperuser {
+			return nil
+		}
 
-	if len(userList) > 1 {
-		return fmt.Errorf("exist more than 1 user: %s", username)
-	}
+		isSuperuser := true
+		user.IsSuperuser = &isSuperuser
 
-	user := userList[0]
+		if err := tx.Model(&entity.User{}).Where("id = ?", user.ID).Updates(map[string]any{"is_superuser": user.IsSuperuser}).Error; err != nil {
+			return fmt.Errorf("failed to update user: %w", err)
+		}
 
-	if user.IsSuperuser != nil && *user.IsSuperuser {
 		return nil
-	}
 
-	isSuperuser := true
-	user.IsSuperuser = &isSuperuser
-
-	if err = s.userDAO.Update(ctx, dao.DB, user); err != nil {
-		return fmt.Errorf("failed to update user: %w", err)
-	}
-
-	return nil
+	})
 }
 
 // RevokeAdmin revoke admin privileges
@@ -532,29 +483,21 @@ func (s *Service) GrantAdmin(ctx context.Context, username string) error {
 // Returns:
 //   - error: error message
 func (s *Service) RevokeAdmin(ctx context.Context, username string) error {
-	userList, err := s.userDAO.ListByEmail(ctx, dao.DB, username)
-	if err != nil || len(userList) == 0 {
-		return fmt.Errorf("user '%s' not found", username)
-	}
+	return s.mutateNativeUserAuthority(ctx, username, func(tx *gorm.DB, user *entity.User) error {
+		if user.IsSuperuser == nil || !*user.IsSuperuser {
+			return nil
+		}
 
-	if len(userList) > 1 {
-		return fmt.Errorf("exist more than 1 user: %s", username)
-	}
+		isSuperuser := false
+		user.IsSuperuser = &isSuperuser
 
-	user := userList[0]
+		if err := tx.Model(&entity.User{}).Where("id = ?", user.ID).Updates(map[string]any{"is_superuser": user.IsSuperuser}).Error; err != nil {
+			return fmt.Errorf("failed to update user: %w", err)
+		}
 
-	if user.IsSuperuser == nil || !*user.IsSuperuser {
 		return nil
-	}
 
-	isSuperuser := false
-	user.IsSuperuser = &isSuperuser
-
-	if err = s.userDAO.Update(ctx, dao.DB, user); err != nil {
-		return fmt.Errorf("failed to update user: %w", err)
-	}
-
-	return nil
+	})
 }
 
 // API Key methods
@@ -1373,12 +1316,13 @@ func (s *Service) InitDefaultAdmin() error {
 			IsSuperuser:     &isSuperuser,
 		}
 
-		if err = dao.DB.Create(user).Error; err != nil {
-			return fmt.Errorf("can't init admin: %w", err)
-		}
-
-		if err = s.addTenantForAdmin(userID, defaultNickname); err != nil {
-			return fmt.Errorf("failed to add tenant for admin: %w", err)
+		if err = dao.WithKnowledgeAccessNativeMutation(context.Background(), dao.DB, dao.KnowledgeAccessNativeMutation{Action: "native_user_create", UserIDs: []string{userID}, TenantIDs: []string{userID}}, func(tx *gorm.DB) error {
+			if err := tx.Create(user).Error; err != nil {
+				return err
+			}
+			return s.addTenantForAdminTx(tx, userID, defaultNickname)
+		}); err != nil {
+			return fmt.Errorf("cannot initialize native admin: %w", err)
 		}
 
 		common.Info("Init default super user successfully")
@@ -1395,7 +1339,9 @@ func (s *Service) InitDefaultAdmin() error {
 		if user.Email == defaultEmail {
 			// Check if tenant exists
 			var count int64
-			dao.DB.Model(&entity.UserTenant{}).Where("user_id = ? AND status = ?", user.ID, "1").Count(&count)
+			if err := dao.DB.Model(&entity.UserTenant{}).Joins("JOIN tenant ON tenant.id = user_tenant.tenant_id").Where("user_tenant.user_id = ? AND user_tenant.role = ? AND user_tenant.status = ? AND tenant.status = ?", user.ID, "owner", "1", "1").Count(&count).Error; err != nil {
+				return err
+			}
 			if count == 0 {
 				nickname := defaultNickname
 				if user.Nickname != "" {
@@ -1415,28 +1361,7 @@ func (s *Service) InitDefaultAdmin() error {
 
 // addTenantForAdmin add tenant for admin user
 func (s *Service) addTenantForAdmin(userID, nickname string) error {
-	status := "1"
-	role := "owner"
-	tenantName := nickname + "'s Kingdom"
-
-	tenant := &entity.Tenant{
-		ID:   userID,
-		Name: &tenantName,
-	}
-
-	if err := dao.DB.Create(tenant).Error; err != nil {
-		return err
-	}
-
-	userTenant := &entity.UserTenant{
-		TenantID:  userID,
-		UserID:    userID,
-		InvitedBy: userID,
-		Role:      role,
-		Status:    &status,
-	}
-
-	return dao.DB.Create(userTenant).Error
+	return dao.WithKnowledgeAccessNativeMutation(context.Background(), dao.DB, dao.KnowledgeAccessNativeMutation{Action: "native_user_create", UserIDs: []string{userID}, TenantIDs: []string{userID}}, func(tx *gorm.DB) error { return s.addTenantForAdminTx(tx, userID, nickname) })
 }
 
 // ListAllModels list all models

@@ -1,0 +1,414 @@
+import { webcrypto as NodeWebCrypto } from 'node:crypto';
+
+type AccessInspectData =
+  import('@/interfaces/database/knowledge-access').AccessInspectData;
+import service, { AccessRequestError } from '../knowledge-access-service';
+import { registerNextServer } from '@/utils/register-server';
+import { KnowledgeAccessVersion } from '@/interfaces/database/knowledge-access';
+import {
+  accessSchemaValid,
+  accessTargetsValid,
+} from '@/utils/knowledge-access-schema';
+import { accessPublicationChoice } from '@/utils/knowledge-access-navigation';
+import {
+  Domain,
+  ModuleId,
+  Tenant,
+  User,
+  admin,
+  evidence,
+  example,
+  grant,
+  searchResult,
+  view,
+} from './knowledge-access-fixtures';
+
+jest.mock('@/utils/register-server', () => {
+  const post = jest.fn();
+  return { registerNextServer: jest.fn(() => ({ post })) };
+});
+const post = (
+  jest.mocked(registerNextServer).mock.results[0].value as { post: jest.Mock }
+).post;
+function response(
+  operation: string,
+  data: unknown,
+  status = 200,
+  extra: Record<string, unknown> = {},
+) {
+  return {
+    status,
+    headers: {
+      'content-type': 'application/json; charset=utf-8',
+      'cache-control': 'no-store',
+      'x-knowledge-access-version': KnowledgeAccessVersion,
+      'x-request-id': '0'.repeat(32),
+    } as Record<string, string>,
+    data: {
+      operation,
+      contract_version: KnowledgeAccessVersion,
+      request_id: '0'.repeat(32),
+      data,
+      ...extra,
+    },
+  };
+}
+const inspectBody = () => ({
+  contract_version: KnowledgeAccessVersion,
+  domain_id: Domain,
+  module_id: ModuleId,
+  mode: 'read' as const,
+  delivery: 'web_only' as const,
+  source_ids: null,
+});
+let cryptoGetterSpy: jest.SpyInstance<Crypto, []> | undefined;
+
+beforeEach(() => {
+  post.mockReset();
+  cryptoGetterSpy = jest
+    .spyOn(globalThis, 'crypto', 'get')
+    .mockReturnValue(NodeWebCrypto as unknown as Crypto);
+});
+
+afterEach(() => {
+  cryptoGetterSpy?.mockRestore();
+  cryptoGetterSpy = undefined;
+});
+
+it('posts only the new native read selector, with strict byte decoding and no owner fallback', async () => {
+  post.mockResolvedValue(response('read', evidence()));
+  await expect(service.read(example('EX04'), view())).resolves.toEqual(
+    evidence(),
+  );
+  expect(post).toHaveBeenCalledTimes(1);
+  const [config, native] = post.mock.calls[0];
+  expect(native).toBe(true);
+  expect(config.url).toBe('/api/v1/knowledge/access/read');
+  expect(JSON.parse(config.data)).toEqual(example('EX04'));
+  expect(config.responseType).toBe('arraybuffer');
+  expect(config.skipGlobalErrorNotification).toBe(true);
+  const decode = config.transformResponse[0];
+  expect(() => decode(new TextEncoder().encode('{"a":1,"a":2}'))).toThrow();
+  expect(() => decode(new Uint8Array([0xc0, 0xaf]))).toThrow();
+  expect(() => decode(new ArrayBuffer(1048577))).toThrow();
+  expect(() =>
+    decode(new TextEncoder().encode('{"n":9007199254740992}')),
+  ).toThrow();
+  expect(() => decode(new TextEncoder().encode('{"s":"\\ud800"}'))).toThrow();
+});
+
+it.each([
+  'extra field',
+  'wrong version',
+  'wrong request id',
+  'cacheable',
+  'wrong media type',
+  'wrong operation',
+  'bad target',
+  'bad total',
+  'bad order',
+])('refuses malformed inspect output: %s', async (problem) => {
+  const result = response('inspect', view());
+  const data = result.data.data as AccessInspectData;
+  if (problem === 'extra field')
+    Object.assign(data, { publication: 'PRIVATE-B-MARKER' });
+  if (problem === 'wrong version')
+    result.headers['x-knowledge-access-version'] = '0.2.0-candidate';
+  if (problem === 'wrong request id')
+    result.headers['x-request-id'] = '1'.repeat(32);
+  if (problem === 'cacheable') result.headers['cache-control'] = 'public';
+  if (problem === 'wrong media type')
+    result.headers['content-type'] = 'text/plain';
+  if (problem === 'wrong operation') result.data.operation = 'read';
+  if (problem === 'bad target')
+    data.targets[0].target.source.domain_id = '1'.repeat(32);
+  if (problem === 'bad total') data.unit_count += 1;
+  if (problem === 'bad order') {
+    const second = JSON.parse(JSON.stringify(data.targets[0]));
+    second.target.source.source_id = '0'.repeat(32);
+    data.targets.push(second);
+    data.source_count = 2;
+    data.unit_count = 2;
+  }
+  post.mockResolvedValue(result);
+  await expect(service.inspect(inspectBody())).rejects.toMatchObject({
+    code: 'invalid_response',
+  });
+});
+
+it.each([
+  'text SHA',
+  'byte length',
+  'locator',
+  'foreign citation',
+  'raw typed payload',
+  'empty member',
+  'member slice',
+])('rejects an invalid complete read: %s', async (problem) => {
+  const data = evidence();
+  if (problem === 'text SHA') data.text += 'B_ONLY_NOT_AUTHORIZED';
+  if (problem === 'byte length') data.byte_length += 1;
+  if (problem === 'locator') data.unit_locator.next_unit_ordinal = 1;
+  if (problem === 'foreign citation')
+    data.citation.target.source.source_id = '1'.repeat(32);
+  if (problem === 'raw typed payload')
+    Object.assign(data.typed_context.members[0], {
+      Attributes: { secret: 'PRIVATE-B' },
+    });
+  if (problem === 'empty member')
+    data.typed_context.members[1].range.sha256 = '0'.repeat(64);
+  if (problem === 'member slice')
+    data.typed_context.members[0].range.sha256 = '0'.repeat(64);
+  post.mockResolvedValue(response('read', data));
+  await expect(service.read(example('EX04'), view())).rejects.toMatchObject({
+    code: 'invalid_response',
+  });
+});
+
+it('binds search output to the same view, ordinal, query, limit and exact evidence reread', async () => {
+  const catalogue = view();
+  catalogue.mode = 'read_search';
+  const body = {
+    contract_version: KnowledgeAccessVersion,
+    view_id: catalogue.view_id,
+    query: '合成A',
+    limit: 20,
+  };
+  post.mockResolvedValue(response('search', searchResult(catalogue)));
+  await expect(service.search(body, catalogue)).resolves.toMatchObject({
+    returned_count: 1,
+  });
+  const wrong = searchResult(catalogue);
+  wrong.hits[0].rank_ordinal = 2;
+  post.mockResolvedValue(response('search', wrong));
+  await expect(service.search(body, catalogue)).rejects.toMatchObject({
+    code: 'invalid_response',
+  });
+  const selector = {
+    kind: 'evidence' as const,
+    evidence_ref: evidence().evidence_ref,
+  };
+  post.mockResolvedValue(response('read', evidence()));
+  await expect(
+    service.read(
+      { contract_version: KnowledgeAccessVersion, selector },
+      catalogue,
+    ),
+  ).resolves.toEqual(evidence());
+});
+
+it('read-only search, out-of-catalogue selectors, S2 subjects and S3 delivery never dispatch', async () => {
+  await expect(
+    service.search(
+      {
+        contract_version: KnowledgeAccessVersion,
+        view_id: view().view_id,
+        query: 'A',
+        limit: 20,
+      },
+      view(),
+    ),
+  ).rejects.toMatchObject({ status: 400, outcomeKnown: true });
+  const first = example('EX04');
+  first.selector.target_index = 1;
+  await expect(service.read(first, view())).rejects.toMatchObject({
+    status: 400,
+  });
+  await expect(service.createGrant(example('EX10'))).rejects.toMatchObject({
+    status: 400,
+  });
+  const inspect = inspectBody();
+  await expect(
+    service.inspect({ ...inspect, delivery: 'web_and_mcp' }),
+  ).rejects.toMatchObject({ status: 400 });
+  expect(post).not.toHaveBeenCalled();
+});
+
+it('keeps unknown commit and known CAS conflict distinct, including status validation', async () => {
+  const body = {
+    contract_version: KnowledgeAccessVersion,
+    domain_id: Domain,
+    expected_version: 0,
+    enabled: true,
+    confirmed: true as const,
+    idempotency_key: 'synthetic-policy-key-0001',
+  };
+  post.mockRejectedValue(new Error('lost response'));
+  await expect(service.setPolicy(body)).rejects.toMatchObject({
+    outcomeKnown: null,
+    retrySameKey: true,
+  });
+  const error = response('setPolicy', null, 409, {
+    code: 'version_conflict',
+    message: 'Knowledge access operation could not be completed',
+    outcome_known: true,
+    retry_same_key: false,
+  });
+  post.mockRejectedValue({ response: error });
+  await expect(service.setPolicy(body)).rejects.toMatchObject({
+    status: 409,
+    outcomeKnown: true,
+    retrySameKey: false,
+  });
+  error.status = 400;
+  await expect(service.setPolicy(body)).rejects.toBeInstanceOf(
+    AccessRequestError,
+  );
+});
+
+it('accepts all nine S1 operations, including a 200 create-grant receipt replay after expiry', async () => {
+  const module = admin();
+  const setModule = { ...example('EX01'), name: module.name };
+  const createGrant = {
+    ...example('EX10'),
+    subject: { kind: 'user' as const, id: User },
+    delivery: 'web_only' as const,
+  };
+  const cases: [string, unknown, () => Promise<unknown>][] = [
+    [
+      'setPolicy',
+      { domain_id: Domain, version: 1, enabled: true },
+      () =>
+        service.setPolicy({
+          contract_version: KnowledgeAccessVersion,
+          domain_id: Domain,
+          expected_version: 0,
+          enabled: true,
+          confirmed: true,
+          idempotency_key: 'synthetic-policy-key-0001',
+        }),
+    ],
+    ['setModule', module, () => service.setModule(setModule)],
+    [
+      'getModuleAdmin',
+      module,
+      () =>
+        service.getModuleAdmin({
+          contract_version: KnowledgeAccessVersion,
+          domain_id: Domain,
+          module_id: ModuleId,
+        }),
+    ],
+    [
+      'listModules',
+      {
+        items: [],
+        owned_domain_policies: [
+          { domain_id: Domain, version: 0, enabled: false },
+        ],
+        pagination: 'none',
+      },
+      () =>
+        service.listModules({
+          contract_version: KnowledgeAccessVersion,
+          tenant_id: Tenant,
+          domain_id: Domain,
+        }),
+    ],
+    ['createGrant', grant(), () => service.createGrant(createGrant)],
+    [
+      'revokeGrant',
+      { id: grant().grant_id, revoked_at: '2030-01-01T00:00:01Z' },
+      () =>
+        service.revokeGrant({
+          contract_version: KnowledgeAccessVersion,
+          domain_id: Domain,
+          grant_id: grant().grant_id,
+          confirmed: true,
+          idempotency_key: 'synthetic-revoke-key-0001',
+        }),
+    ],
+    ['inspect', view(), () => service.inspect(inspectBody())],
+    ['read', evidence(), () => service.read(example('EX04'), view())],
+    [
+      'search',
+      searchResult(),
+      () =>
+        service.search(
+          {
+            contract_version: KnowledgeAccessVersion,
+            view_id: view().view_id,
+            query: '合成A',
+            limit: 20,
+          },
+          { ...view(), mode: 'read_search' },
+        ),
+    ],
+  ];
+  for (const [operation, data, invoke] of cases) {
+    post.mockResolvedValue(response(operation, data));
+    const clock =
+      operation === 'createGrant'
+        ? jest
+            .spyOn(Date, 'now')
+            .mockReturnValue(Date.parse('2031-01-01T00:00:00Z'))
+        : null;
+    try {
+      if (operation === 'createGrant')
+        expect(Date.parse(createGrant.expires_at)).toBeLessThan(Date.now());
+      await invoke();
+    } finally {
+      clock?.mockRestore();
+    }
+  }
+  expect(post.mock.calls.map(([config]) => config.url)).toHaveLength(9);
+  expect(
+    post.mock.calls.every(([config]) =>
+      config.url.startsWith('/api/v1/knowledge/access/'),
+    ),
+  ).toBe(true);
+});
+
+it('applies UTF-8 request byte limits and refuses lone Unicode surrogates before dispatch', async () => {
+  await expect(
+    service.search(
+      {
+        contract_version: KnowledgeAccessVersion,
+        view_id: view().view_id,
+        query: '合'.repeat(2000),
+        limit: 20,
+      },
+      { ...view(), mode: 'read_search' },
+    ),
+  ).rejects.toMatchObject({ status: 400, outcomeKnown: true });
+  const module = example('EX01');
+  module.name = '\ud800';
+  await expect(service.setModule(module)).rejects.toMatchObject({
+    status: 400,
+    outcomeKnown: true,
+  });
+  expect(post).not.toHaveBeenCalled();
+});
+
+it('converts an existing whole source revision to the approved exact access target without latest inheritance', () => {
+  const scope = admin().scope;
+  const source = scope.targets[0].source;
+  const choice = accessPublicationChoice(
+    Domain,
+    {
+      kind: 'fixed_representations',
+      targets: [
+        {
+          source_ref: source,
+          representation_ref: {
+            kind: 'source_revision',
+            id: null,
+            producer_sha256: null,
+          },
+        },
+      ],
+    },
+    {
+      index_id: scope.publication.id,
+      manifest_sha256: scope.publication.manifest_sha256,
+    },
+    { [source.source_id]: 'A.txt' },
+  );
+  expect(choice?.scope.targets[0].representation).toEqual({
+    kind: 'source_revision',
+    id: source.source_revision_id,
+    producer_sha256: null,
+  });
+  expect(accessSchemaValid('ModuleScope', choice?.scope)).toBe(true);
+  expect(accessTargetsValid(choice!.scope.targets, Domain)).toBe(true);
+});

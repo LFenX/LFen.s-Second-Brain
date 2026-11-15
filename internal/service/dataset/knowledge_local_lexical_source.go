@@ -3,7 +3,6 @@ package dataset
 import (
 	"context"
 	"encoding/json"
-	"ragflow/internal/dao"
 	"ragflow/internal/entity"
 	"sort"
 	"unicode/utf8"
@@ -49,6 +48,10 @@ func (d *DatasetService) lexicalSource(ctx context.Context, user, domain string,
 	if _, _, err := d.lexicalContext(ctx, user, domain, false); err != nil {
 		return nil, nil, err
 	}
+	return d.lexicalStoredSource(ctx, domain, t)
+}
+
+func (d *DatasetService) lexicalStoredSource(ctx context.Context, domain string, t entity.KnowledgeLexicalTarget) (*entity.KnowledgeSourceRevision, []byte, error) {
 	s, err := d.knowledgeSource(ctx, domain, t.Source.RevisionID)
 	if err != nil {
 		return nil, nil, lexicalNormalize(err)
@@ -66,11 +69,25 @@ func (d *DatasetService) lexicalSource(ctx context.Context, user, domain string,
 	return s, b, nil
 }
 func (d *DatasetService) lexicalUnits(ctx context.Context, user, domain, language, producer string, s entity.KnowledgeLexicalSelection) ([]lexicalUnit, entity.KnowledgeLexicalCoverage, string, error) {
+	if _, _, err := d.lexicalContext(ctx, user, domain, false); err != nil {
+		return nil, entity.KnowledgeLexicalCoverage{}, "", err
+	}
+	units, coverage, current, err := d.lexicalStoredUnits(ctx, user, domain, language, producer, s)
+	if err != nil {
+		return nil, coverage, "", err
+	}
+	if _, _, err := d.lexicalContext(ctx, user, domain, false); err != nil {
+		return nil, coverage, "", err
+	}
+	return units, coverage, current, nil
+}
+
+func (d *DatasetService) lexicalStoredUnits(ctx context.Context, user, domain, language, producer string, s entity.KnowledgeLexicalSelection) ([]lexicalUnit, entity.KnowledgeLexicalCoverage, string, error) {
 	coverage := entity.KnowledgeLexicalCoverage{SelectedSources: len(s.Targets), Complete: true, Missing: []entity.KnowledgeLexicalMissingRange{}}
 	units := []lexicalUnit{}
 	current, historical := false, false
 	for _, target := range s.Targets {
-		source, body, err := d.lexicalSource(ctx, user, domain, target)
+		source, body, err := d.lexicalStoredSource(ctx, domain, target)
 		if err != nil {
 			return nil, coverage, "", err
 		}
@@ -93,7 +110,7 @@ func (d *DatasetService) lexicalUnits(ctx context.Context, user, domain, languag
 			members = append(members, lexicalStoredMember{Node: entity.KnowledgeLexicalNodeRef{Kind: "c1_node", ID: root.ID}, Range: lexicalStoredRange{Start: 0, End: int64(len(body)), SHA256: lexicalSHA(body)}})
 		} else {
 			strategy = "r1_existing_passage"
-			view, err := d.structureReadView(ctx, user, domain, target.Representation.ID)
+			view, err := d.structureStoredView(ctx, user, domain, target.Representation.ID)
 			if err != nil {
 				return nil, coverage, "", lexicalNormalize(err)
 			}
@@ -105,7 +122,7 @@ func (d *DatasetService) lexicalUnits(ctx context.Context, user, domain, languag
 				return nil, coverage, "", lexicalError(409, "integrity_error")
 			}
 			var nodes []entity.KnowledgeStructureNodeRecord
-			if err := dao.DB.WithContext(ctx).Where("owner_id = ? AND domain_id = ? AND view_id = ? AND source_id = ? AND kind = ?", user, domain, view.ViewID, source.DocumentID, "passage").Order("start_byte ASC, id ASC").Limit(32769).Find(&nodes).Error; err != nil {
+			if err := contentProofStore(ctx).Where("owner_id = ? AND domain_id = ? AND view_id = ? AND source_id = ? AND kind = ?", user, domain, view.ViewID, source.DocumentID, "passage").Order("start_byte ASC, id ASC").Limit(32769).Find(&nodes).Error; err != nil {
 				return nil, coverage, "", lexicalNormalize(err)
 			}
 			if len(nodes) > 32768 {

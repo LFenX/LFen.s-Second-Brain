@@ -601,18 +601,19 @@ func (s *RetrievalService) scoreSearchResult(ctx context.Context, req *Retrieval
 type RetrievalSearchRequest struct {
 	// KnowledgeLexical requests the trusted immutable row projection. Callers
 	// supply a published binding/row scope and a nil EmbeddingModel.
-	KnowledgeLexical    bool
-	Question            string
-	TenantIDs           []string
-	KbIDs               []string
-	DocIDs              []string
-	KNNTopK             int
-	KNNNumCandidates    int
-	Page                int
-	PageSize            int
-	Sort                bool
-	Highlight           *bool
-	SimilarityThreshold float64
+	KnowledgeLexical      bool
+	KnowledgeAccessStable bool
+	Question              string
+	TenantIDs             []string
+	KbIDs                 []string
+	DocIDs                []string
+	KNNTopK               int
+	KNNNumCandidates      int
+	Page                  int
+	PageSize              int
+	Sort                  bool
+	Highlight             *bool
+	SimilarityThreshold   float64
 	// VectorOnly runs the dense leg alone (see RetrievalRequest.VectorOnly):
 	// no text match expression and no fusion expression are sent, so the
 	// engine's kNN filter carries the scope conditions only.
@@ -750,14 +751,21 @@ func (s *RetrievalService) Search(ctx context.Context, req *RetrievalSearchReque
 		src = append(src, "id", "knowledge_ref", "knowledge_binding_kwd", "available_int")
 	}
 
+	if req.KnowledgeAccessStable {
+		if !req.KnowledgeLexical || s.docEngine.GetType() != "elasticsearch" || req.Page != 1 || req.PageSize < 1 || req.PageSize > 20 || len(req.RankFeature) != 0 || *req.Highlight || *req.AllowDenseFallback {
+			return nil, fmt.Errorf("invalid scoped lexical search")
+		}
+		src = []string{"id", "kb_id", "doc_id", "knowledge_ref", "knowledge_binding_kwd", "content_with_weight", "available_int"}
+	}
 	// Build base engine request with common fields.
 	searchRequest := &types.SearchRequest{
-		IndexNames:   buildIndexNames(req.TenantIDs),
-		KbIDs:        req.KbIDs,
-		Offset:       pg * pageSize,
-		Limit:        limit,
-		Filter:       filters,
-		SelectFields: src,
+		KnowledgeAccessStable: req.KnowledgeAccessStable,
+		IndexNames:            buildIndexNames(req.TenantIDs),
+		KbIDs:                 req.KbIDs,
+		Offset:                pg * pageSize,
+		Limit:                 limit,
+		Filter:                filters,
+		SelectFields:          src,
 	}
 
 	// queryVector tracks the query vector for reranking
@@ -936,6 +944,9 @@ func (s *RetrievalService) Search(ctx context.Context, req *RetrievalSearchReque
 	}
 
 	searchResult := engineResult
+	if req.KnowledgeAccessStable && searchResult == nil {
+		return nil, types.ErrKnowledgeAccessIntegrity
+	}
 	// The window the engine was asked for vs what it returned, together with what
 	// it was asked FOR: a shortfall is indistinguishable from a narrower query
 	// without both, and it is what a caller sees as a thin candidate pool (the ES
@@ -943,7 +954,7 @@ func (s *RetrievalService) Search(ctx context.Context, req *RetrievalSearchReque
 	// candidates"). The query is read off MatchExprs — the expressions that
 	// actually went to the engine — so the retries that re-ask with a lower
 	// minimum_should_match are reported as issued.
-	if searchResult != nil {
+	if searchResult != nil && !req.KnowledgeAccessStable {
 		engineQuery := ""
 		if len(searchRequest.MatchExprs) > 0 {
 			if mt, ok := searchRequest.MatchExprs[0].(*types.MatchTextExpr); ok && mt != nil {
@@ -966,6 +977,24 @@ func (s *RetrievalService) Search(ctx context.Context, req *RetrievalSearchReque
 			zap.Any("requestFilter", req.Filter),
 			zap.Strings("docIDs", req.DocIDs),
 			zap.Int("knnTopN", knnTopN), zap.Any("knnExtra", knnExtra))
+	}
+	if req.KnowledgeAccessStable {
+		ids := make([]string, 0, len(searchResult.Chunks))
+		fields := make(map[string]map[string]interface{}, len(searchResult.Chunks))
+		for _, chunk := range searchResult.Chunks {
+			id, ok := chunk["id"].(string)
+			if !ok || id == "" || fields[id] != nil {
+				return nil, types.ErrKnowledgeAccessIntegrity
+			}
+			ids = append(ids, id)
+			fields[id] = make(map[string]interface{}, len(src))
+			for _, name := range src {
+				if value, ok := chunk[name]; ok {
+					fields[id][name] = value
+				}
+			}
+		}
+		return &RetrievalSearchResult{Chunks: searchResult.Chunks, Field: fields, IDs: ids}, nil
 	}
 	ids := s.docEngine.GetChunkIDs(searchResult.Chunks)
 	common.Info("GetChunkIDs result", zap.Int("count", len(ids)), zap.Strings("ids", ids))

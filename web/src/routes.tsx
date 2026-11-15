@@ -24,6 +24,7 @@ import {
 import FallbackComponent from './components/fallback-component';
 import { IS_ENTERPRISE } from './pages/admin/utils';
 import authorizationUtil from './utils/authorization-util';
+import { KnowledgeAccessPaths } from './utils/knowledge-access-navigation';
 
 export enum Routes {
   Root = '/',
@@ -201,9 +202,17 @@ const routeConfigOptions = [
         Component: () => import('@/pages/datasets'),
       },
       {
+        path: KnowledgeAccessPaths.shared,
+        Component: () => import('@/pages/knowledge-shared'),
+      },
+      {
         path: Routes.DatasetBase,
         Component: () => import('@/pages/dataset'),
         children: [
+          {
+            path: KnowledgeAccessPaths.ownerPattern,
+            Component: () => import('@/pages/dataset/knowledge-access'),
+          },
           {
             path: `${Routes.DatasetBase}${Routes.KnowledgeCatalogue}/:id`,
             Component: () => import('@/pages/dataset/knowledge-catalogue'),

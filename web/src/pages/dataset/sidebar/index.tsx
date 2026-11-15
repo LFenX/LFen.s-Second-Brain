@@ -20,6 +20,7 @@ import { useSecondPathName } from '@/hooks/route-hook';
 import { cn, formatBytes } from '@/lib/utils';
 import { Routes } from '@/routes';
 import { formatPureDate } from '@/utils/date';
+import { KnowledgeAccessPaths } from '@/utils/knowledge-access-navigation';
 
 import { IDataset } from '@/interfaces/database/dataset';
 import { useParams } from 'react-router';
@@ -41,6 +42,11 @@ export function SideBar({ dataset: data }: PropType) {
         icon: <LucideBookText className="size-[1em]" />,
         label: t('knowledgeCatalogue.title'),
         key: Routes.KnowledgeCatalogue,
+      },
+      {
+        icon: <LucideBookText className="size-[1em]" />,
+        label: t('knowledgeAccess.ownerTitle'),
+        key: KnowledgeAccessPaths.ownerKey,
       },
       {
         icon: <LucideFolderOpen className="size-[1em]" />,

@@ -187,7 +187,9 @@ func (m *MinioStorage) Get(ctx context.Context, bucket, fnm string, tenantID ...
 			if ctxErr := ctx.Err(); ctxErr != nil {
 				return nil, ctxErr
 			}
-			common.Warn("failed to get object", zap.String("bucket", bucket), zap.String("key", fnm), zap.Error(err))
+			if !privateRead(ctx) {
+				common.Warn("failed to get object", zap.String("bucket", bucket), zap.String("key", fnm), zap.Error(err))
+			}
 			if sleepErr := sleepOrAbort(ctx, time.Second); sleepErr != nil {
 				return nil, sleepErr
 			}
@@ -205,7 +207,9 @@ func (m *MinioStorage) Get(ctx context.Context, bucket, fnm string, tenantID ...
 			if ctxErr := ctx.Err(); ctxErr != nil {
 				return nil, ctxErr
 			}
-			common.Error("failed to read object data", err, zap.String("bucket", bucket), zap.String("key", fnm))
+			if !privateRead(ctx) {
+				common.Error("failed to read object data", err, zap.String("bucket", bucket), zap.String("key", fnm))
+			}
 			if sleepErr := sleepOrAbort(ctx, time.Second); sleepErr != nil {
 				return nil, sleepErr
 			}
@@ -215,7 +219,7 @@ func (m *MinioStorage) Get(ctx context.Context, bucket, fnm string, tenantID ...
 		return buf.Bytes(), nil
 	}
 
-	return nil, lastErr
+	return nil, privateReadError(ctx, lastErr)
 }
 
 // Remove removes an object from MinIO

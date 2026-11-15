@@ -1,3 +1,4 @@
+import { AccessPublicationLink } from '../knowledge-access/publication-link';
 import {
   useEffect,
   useRef,
@@ -812,12 +813,14 @@ function SearchPanel({
 function FixedSelection({
   scope,
   selection,
+  names,
   policy,
   contentPolicy,
   actions,
 }: {
   scope: LocalLexicalScope;
   selection: LocalLexicalSelection;
+  names: Record<string, string>;
   contentPolicy: ContentPolicy;
   policy: LocalLexicalPolicy;
   actions: LocalLexicalActions;
@@ -963,6 +966,16 @@ function FixedSelection({
         </Button>
       </form>
       {!!error && <LocalLexicalFailure error={error} />}
+      {available &&
+        query.data?.readiness.kind === 'ready' &&
+        query.data.readiness.index_ref && (
+          <AccessPublicationLink
+            domain={scope.domain}
+            selection={selection}
+            publication={query.data.readiness.index_ref}
+            names={names}
+          />
+        )}
       {job && (
         <JobTracker key={job} scope={scope} job={job} onFinished={refresh} />
       )}
@@ -1166,6 +1179,12 @@ function LocalLexicalWorkspace({
           scope={scope}
           selection={selection}
           policy={policy.data}
+          names={Object.fromEntries(
+            choices.map((choice) => [
+              choice.target.source_ref.source_id,
+              choice.path,
+            ]),
+          )}
           contentPolicy={contentPolicy.data}
           actions={actions}
         />

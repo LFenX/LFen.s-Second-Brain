@@ -1113,43 +1113,7 @@ func (s *FileCommitService) buildHierarchicalTree(ctx context.Context, flat map[
 
 // GetCommitFileContent gets file content as it existed in a given commit
 func (s *FileCommitService) GetCommitFileContent(ctx context.Context, folderID, commitID, fileID string) ([]byte, error) {
-	_, err := s.commitDAO.GetByID(ctx, dao.DB, commitID)
-	if err != nil {
-		return nil, fmt.Errorf("commit not found: %w", err)
-	}
-
-	item, err := s.commitItemDAO.GetByCommitIDAndFileID(ctx, dao.DB, commitID, fileID)
-	if err != nil {
-		return nil, fmt.Errorf("file not found in commit: %w", err)
-	}
-	if (item.NewLocation != nil && strings.HasPrefix(*item.NewLocation, storage.KnowledgeOriginalObjectPrefix)) || (item.OldLocation != nil && strings.HasPrefix(*item.OldLocation, storage.KnowledgeOriginalObjectPrefix)) {
-		return nil, permission.ErrKnowledgeIngestionDenied
-	}
-
-	if item.NewHash == nil && item.OldHash == nil {
-		return nil, fmt.Errorf("file has no content in this commit")
-	}
-
-	hash := ""
-	if item.NewHash != nil {
-		hash = *item.NewHash
-	} else if item.OldHash != nil {
-		hash = *item.OldHash
-	}
-
-	objKey := ".objects/" + hash
-
-	storageImpl := storage.GetStorageFactory().GetStorage()
-	if storageImpl == nil {
-		return nil, fmt.Errorf("storage not initialized")
-	}
-
-	blob, err := storageImpl.Get(ctx, folderID, objKey)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read file content from storage: %w", err)
-	}
-
-	return blob, nil
+	return ReadCommitFileContent(ctx, dao.DB, folderID, commitID, fileID)
 }
 
 // GetFileVersionHistory gets version history for a specific file

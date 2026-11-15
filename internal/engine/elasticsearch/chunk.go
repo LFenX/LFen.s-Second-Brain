@@ -1203,6 +1203,11 @@ type SearchResponse struct {
 // Search executes a unified search across the requested indices. Ordinary
 // searches fail when any index request fails, without returning partial results.
 func (e *Engine) Search(ctx context.Context, req *types.SearchRequest) (*types.SearchResult, error) {
+	if req.KnowledgeAccessStable {
+		if err := e.verifyKnowledgeAccessSearch(ctx, req); err != nil {
+			return nil, err
+		}
+	}
 	types.LogSearchRequest("Elasticsearch", req)
 
 	// Validate inputs and set defaults
@@ -1389,6 +1394,10 @@ func (e *Engine) Search(ctx context.Context, req *types.SearchRequest) (*types.S
 		}
 	}
 
+	if req.KnowledgeAccessStable {
+		queryBody["sort"] = []map[string]interface{}{{"id": map[string]interface{}{"order": "asc"}}}
+	}
+
 	// Determine use_search_after for deep pagination
 	//
 	// ES rejects from + size combinations where from + size > index.max_result_window
@@ -1484,11 +1493,11 @@ func (e *Engine) Search(ctx context.Context, req *types.SearchRequest) (*types.S
 		// each iteration a fresh bytes.NewReader.
 		payload := append([]byte(nil), buf.Bytes()...)
 		for _, indexName := range req.IndexNames {
-			searchChunks, indexTotal, esErr := e.searchOneIndex(ctx, indexName, payload)
+			searchChunks, indexTotal, esErr := e.searchOneIndexPrivate(ctx, indexName, payload, req.KnowledgeAccessStable)
 			if esErr != nil {
 				return nil, fmt.Errorf("elasticsearch: search index %q: %w", indexName, esErr)
 			}
-			if hybrid {
+			if hybrid && !req.KnowledgeAccessStable {
 				// A window the backend could not fill is a candidate shortfall
 				// upstream; only then is the request body worth its size.
 				common.InfoCtx(ctx, "Elasticsearch hybrid response",
@@ -1512,7 +1521,7 @@ func (e *Engine) Search(ctx context.Context, req *types.SearchRequest) (*types.S
 	}
 
 	// Post-processing: Sort results by score
-	if len(allResults) > 0 && (matchText != nil || hasVectorMatch) {
+	if !req.KnowledgeAccessStable && len(allResults) > 0 && (matchText != nil || hasVectorMatch) {
 		// "_score" is the ES hit score. "SCORE" is Infinity's column and reads
 		// back empty here, which flattened every hybrid chunk's score to 0.
 		scoreColumn := "_score"
@@ -1746,19 +1755,29 @@ func sortByFields(chunks []map[string]interface{}, expr *types.OrderByExpr) []ma
 // searchOneIndex sends an ordinary search with a fresh request body. A valid
 // missing-index response is empty; other request and response failures propagate.
 func (e *Engine) searchOneIndex(ctx context.Context, indexName string, payload []byte) ([]map[string]interface{}, int64, error) {
+	return e.searchOneIndexPrivate(ctx, indexName, payload, false)
+}
+
+func (e *Engine) searchOneIndexPrivate(ctx context.Context, indexName string, payload []byte, private bool) ([]map[string]interface{}, int64, error) {
 	res, err := e.client.Search(
 		e.client.Search.WithContext(ctx),
 		e.client.Search.WithIndex(indexName),
 		e.client.Search.WithBody(bytes.NewReader(payload)),
-		e.client.Search.WithTrackTotalHits(true),
+		e.client.Search.WithTrackTotalHits(!private),
 	)
 	if err != nil {
+		if private {
+			return nil, 0, fmt.Errorf("scoped lexical search unavailable")
+		}
 		common.Warn("Elasticsearch query failed", zap.String("index", indexName), zap.Error(err))
 		return nil, 0, err
 	}
 	defer res.Body.Close()
 
 	if res.IsError() {
+		if private {
+			return nil, 0, fmt.Errorf("scoped lexical search unavailable")
+		}
 		bodyBytes, readErr := io.ReadAll(res.Body)
 		if readErr != nil {
 			return nil, 0, fmt.Errorf("read elasticsearch error response: %w", readErr)
@@ -1781,11 +1800,29 @@ func (e *Engine) searchOneIndex(ctx context.Context, indexName string, payload [
 
 	// Parse response and return results
 	var esResp SearchResponse
-	if err = json.NewDecoder(res.Body).Decode(&esResp); err != nil {
+	if err = json.NewDecoder(func() io.Reader {
+		if private {
+			return io.LimitReader(res.Body, 4<<20)
+		}
+		return res.Body
+	}()).Decode(&esResp); err != nil {
+		if private {
+			return nil, 0, fmt.Errorf("scoped lexical search unavailable")
+		}
 		common.Warn("Elasticsearch failed to parse response", zap.String("index", indexName), zap.Error(err))
 		return nil, 0, err
 	}
 
+	if private {
+		previous := ""
+		for _, hit := range esResp.Hits.Hits {
+			id, ok := hit.Source["id"].(string)
+			if !ok || id != hit.ID || id <= previous {
+				return nil, 0, types.ErrKnowledgeAccessIntegrity
+			}
+			previous = id
+		}
+	}
 	return convertESResponse(&esResp, ""), esResp.Hits.Total.Value, nil
 }
 

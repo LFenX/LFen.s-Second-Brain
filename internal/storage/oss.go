@@ -212,8 +212,12 @@ func (o *OSSStorage) Get(ctx context.Context, bucket, fnm string, tenantID ...st
 			if ctxErr := ctx.Err(); ctxErr != nil {
 				return nil, ctxErr
 			}
-			common.Error("Failed to get object", err, zap.String("bucket", bucket), zap.String("key", fnm))
-			o.reconnect(ctx)
+			if !privateRead(ctx) {
+				common.Error("Failed to get object", err, zap.String("bucket", bucket), zap.String("key", fnm))
+			}
+			if !privateRead(ctx) {
+				o.reconnect(ctx)
+			}
 			if sleepErr := sleepOrAbort(ctx, time.Second); sleepErr != nil {
 				return nil, sleepErr
 			}
@@ -231,8 +235,12 @@ func (o *OSSStorage) Get(ctx context.Context, bucket, fnm string, tenantID ...st
 			if ctxErr := ctx.Err(); ctxErr != nil {
 				return nil, ctxErr
 			}
-			common.Error("Failed to read object data", readErr, zap.String("bucket", bucket), zap.String("key", fnm))
-			o.reconnect(ctx)
+			if !privateRead(ctx) {
+				common.Error("Failed to read object data", readErr, zap.String("bucket", bucket), zap.String("key", fnm))
+			}
+			if !privateRead(ctx) {
+				o.reconnect(ctx)
+			}
 			if sleepErr := sleepOrAbort(ctx, time.Second); sleepErr != nil {
 				return nil, sleepErr
 			}
@@ -242,7 +250,7 @@ func (o *OSSStorage) Get(ctx context.Context, bucket, fnm string, tenantID ...st
 		return buf.Bytes(), nil
 	}
 
-	return nil, lastErr
+	return nil, privateReadError(ctx, lastErr)
 }
 
 // Remove removes an object from OSS

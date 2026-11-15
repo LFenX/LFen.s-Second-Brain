@@ -81,7 +81,14 @@ func (s *Service) deleteUserData(ctx context.Context, user *entity.User) (*Delet
 		Username:       user.Email,
 		DeletedDetails: []string{fmt.Sprintf("Drop user: %s", user.Email)},
 	}
-	if err := dao.DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+	if err := nativeAdminMutation(ctx, "native_user_delete", []string{user.ID}, []string{data.ownedTenantID}, data.datasetIDs, func(tx *gorm.DB) error {
+		var current entity.User
+		if err := tx.Where("id = ?", user.ID).Take(&current).Error; err != nil {
+			return err
+		}
+		if current.IsActive == "1" || current.IsSuperuser != nil && *current.IsSuperuser {
+			return fmt.Errorf("user authorization changed before deletion")
+		}
 		return data.deleteDatabaseRows(ctx, tx, user.ID, result)
 	}); err != nil {
 		return nil, fmt.Errorf("failed to delete user data: %w", err)

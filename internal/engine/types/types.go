@@ -23,6 +23,8 @@ import (
 	"ragflow/internal/common"
 )
 
+var ErrKnowledgeAccessIntegrity = errors.New("scoped lexical result integrity failure")
+
 var ErrDocumentNotFound = errors.New("document not found")
 
 // ErrIndexNotFound marks operations against a document-engine index that does
@@ -32,6 +34,8 @@ var ErrIndexNotFound = errors.New("index does not exist")
 
 // SearchRequest unified search request for all engines
 type SearchRequest struct {
+	// KnowledgeAccessStable is the private bounded sharing search path.
+	KnowledgeAccessStable bool
 	// Search target
 	IndexNames []string // For ES: index names; For Infinity: treated as table name prefixes
 	KbIDs      []string // Knowledge base IDs filter
@@ -168,7 +172,7 @@ type FusionExpr struct {
 
 // LogSearchRequest logs SearchRequest in debug mode
 func LogSearchRequest(engineName string, req *SearchRequest) {
-	if !common.IsDebugEnabled() {
+	if req.KnowledgeAccessStable || !common.IsDebugEnabled() {
 		return
 	}
 

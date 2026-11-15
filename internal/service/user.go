@@ -228,7 +228,7 @@ func (s *UserService) Register(ctx context.Context, req *RegisterRequest) (*enti
 	}
 
 	db := dao.GetDB()
-	if err = db.Transaction(func(tx *gorm.DB) error {
+	if err = dao.WithKnowledgeAccessNativeMutation(ctx, db, dao.KnowledgeAccessNativeMutation{Action: "native_user_create", UserIDs: []string{userID}, TenantIDs: []string{userID}}, func(tx *gorm.DB) error {
 		if err = tx.Create(user).Error; err != nil {
 			return fmt.Errorf("failed to create user: %w", err)
 		}
@@ -279,7 +279,7 @@ func (s *UserService) Login(ctx context.Context, req *LoginRequest) (*entity.Use
 	user.AccessToken = &token
 	now := time.Now().Truncate(time.Second)
 	user.LastLoginTime = &now
-	if err := s.userDAO.Update(ctx, dao.DB, user); err != nil {
+	if err := dao.DB.WithContext(ctx).Model(&entity.User{}).Where("id = ? AND status = ? AND is_active = ?", user.ID, "1", "1").Updates(map[string]any{"access_token": user.AccessToken, "last_login_time": user.LastLoginTime}).Error; err != nil {
 		return nil, common.CodeServerError, fmt.Errorf("failed to update user: %w", err)
 	}
 
@@ -317,7 +317,7 @@ func (s *UserService) LoginByEmail(ctx context.Context, req *EmailLoginRequest) 
 	now := time.Now().Truncate(time.Second)
 	user.LastLoginTime = &now
 
-	if err = s.userDAO.Update(ctx, dao.DB, user); err != nil {
+	if err = dao.DB.WithContext(ctx).Model(&entity.User{}).Where("id = ? AND status = ? AND is_active = ?", user.ID, "1", "1").Updates(map[string]any{"access_token": user.AccessToken, "last_login_time": user.LastLoginTime}).Error; err != nil {
 		return nil, common.CodeServerError, fmt.Errorf("failed to update user: %w", err)
 	}
 
@@ -630,6 +630,7 @@ func (s *UserService) GetUserProfile(ctx context.Context, user *entity.User) map
 
 // UpdateUserSettings updates user settings
 func (s *UserService) UpdateUserSettings(ctx context.Context, user *entity.User, req *UpdateSettingsRequest) (common.ErrorCode, error) {
+	snapshot := *user
 	// Update fields if provided
 	if req.Password != nil {
 		ciphertext, err := base64.StdEncoding.DecodeString(*req.Password)
@@ -691,37 +692,58 @@ func (s *UserService) UpdateUserSettings(ctx context.Context, user *entity.User,
 		user.Timezone = req.Timezone
 	}
 
-	// Save updated user
-	if err := s.userDAO.Update(ctx, dao.DB, user); err != nil {
-		return common.CodeServerError, err
+	updates := map[string]any{}
+	if req.Password != nil && req.NewPassword != nil {
+		updates["password"], updates["access_token"] = user.Password, user.AccessToken
+	}
+	if req.Nickname != nil {
+		updates["nickname"] = user.Nickname
+	}
+	if req.Avatar != nil {
+		updates["avatar"] = user.Avatar
+	}
+	if req.Language != nil {
+		updates["language"] = user.Language
+	}
+	if req.ColorSchema != nil {
+		updates["color_schema"] = user.ColorSchema
+	}
+	if req.Timezone != nil {
+		updates["timezone"] = user.Timezone
+	}
+	if len(updates) > 0 {
+		if err := updateCurrentNativeUser(ctx, &snapshot, updates); err != nil {
+			if errors.Is(err, errNativeUserSessionChanged) {
+				return common.CodeForbidden, err
+			}
+			return common.CodeServerError, err
+		}
 	}
 	return common.CodeSuccess, nil
 }
 
 // ChangePassword changes user password
 func (s *UserService) ChangePassword(ctx context.Context, user *entity.User, req *ChangePasswordRequest) (common.ErrorCode, error) {
-	// If password is provided, verify current password
 	if req.Password != nil {
 		if user.Password == nil || !s.VerifyPassword(*user.Password, *req.Password) {
 			return common.CodeBadRequest, fmt.Errorf("current password is incorrect")
 		}
 	}
-
-	// If new password is provided, update password
-	if req.NewPassword != nil {
-		hashedPassword, err := common.GenerateWerkzeugPasswordHash(*req.NewPassword)
-		if err != nil {
-			return common.CodeServerError, fmt.Errorf("failed to hash new password: %w", err)
-		}
-		user.Password = &hashedPassword
-		invalidToken := "INVALID_" + common.GenerateToken()
-		user.AccessToken = &invalidToken
+	if req.NewPassword == nil {
+		return common.CodeSuccess, nil
 	}
-
-	// Save updated user
-	if err := s.userDAO.Update(ctx, dao.DB, user); err != nil {
+	hashedPassword, err := common.GenerateWerkzeugPasswordHash(*req.NewPassword)
+	if err != nil {
+		return common.CodeServerError, fmt.Errorf("failed to hash new password: %w", err)
+	}
+	invalidToken := "INVALID_" + common.GenerateToken()
+	if err := updateCurrentNativeUser(ctx, user, map[string]any{"password": hashedPassword, "access_token": invalidToken}); err != nil {
+		if errors.Is(err, errNativeUserSessionChanged) {
+			return common.CodeForbidden, err
+		}
 		return common.CodeServerError, err
 	}
+	user.Password, user.AccessToken = &hashedPassword, &invalidToken
 	return common.CodeSuccess, nil
 }
 
@@ -739,29 +761,7 @@ type SetTenantInfoRequest struct {
 
 // SetTenantInfo updates tenant model configuration
 func (s *UserService) SetTenantInfo(ctx context.Context, userID string, req *SetTenantInfoRequest) (common.ErrorCode, error) {
-	_ = userID
-	tenantDAO := dao.NewTenantDAO()
-	updates := make(map[string]interface{})
-
-	for key, value := range req.Raw {
-		if key == "tenant_id" {
-			continue
-		}
-		updates[key] = value
-	}
-
-	tenantID := ""
-	if req.TenantID != nil {
-		tenantID = *req.TenantID
-	}
-
-	if len(updates) > 0 {
-		if err := tenantDAO.Update(ctx, dao.DB, tenantID, updates); err != nil {
-			return common.CodeExceptionError, err
-		}
-	}
-
-	return common.CodeSuccess, nil
+	return setNativeTenantInfo(ctx, userID, req)
 }
 
 // UserTenantService user tenant service
@@ -1192,7 +1192,7 @@ func (s *UserService) ForgotResetPassword(ctx context.Context, req *ForgotResetP
 	now := time.Now().Truncate(time.Second)
 	user.LastLoginTime = &now
 
-	if err = s.userDAO.Update(ctx, dao.DB, user); err != nil {
+	if err = dao.DB.WithContext(ctx).Model(&entity.User{}).Where("id = ? AND status = ? AND is_active = ?", user.ID, "1", "1").Updates(map[string]any{"password": user.Password, "access_token": user.AccessToken, "last_login_time": user.LastLoginTime}).Error; err != nil {
 		return nil, common.CodeServerError, fmt.Errorf("failed to reset password: %w", err)
 	}
 

@@ -39,6 +39,9 @@ func isKnowledgeImportPath(value string) bool {
 }
 
 func lockKnowledgeImportDomain(ctx context.Context, tx *gorm.DB, userID, domainID string) (*entity.Knowledgebase, error) {
+	if err := dao.LockKnowledgeAccessDomain(ctx, tx, domainID); err != nil {
+		return nil, err
+	}
 	var kb entity.Knowledgebase
 	if err := tx.WithContext(ctx).Clauses(clause.Locking{Strength: "UPDATE"}).Where("id = ? AND created_by = ? AND knowledge_enabled = ? AND permission = ? AND status = ?", domainID, userID, true, "me", "1").Take(&kb).Error; err != nil {
 		return nil, knowledgeDBError(err, "import domain")

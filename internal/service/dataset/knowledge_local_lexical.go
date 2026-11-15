@@ -137,6 +137,9 @@ func (d *DatasetService) lexicalContext(ctx context.Context, user, domain string
 // Lock the current foundation owner, membership and policy in the publication
 // transaction. The earlier native permission check is repeated at every entry.
 func lexicalLock(ctx context.Context, tx *gorm.DB, user, domain string) (*entity.Knowledgebase, entity.KnowledgeLexicalPolicyRecord, error) {
+	if err := dao.LockKnowledgeAccessDomain(ctx, tx, domain); err != nil {
+		return nil, entity.KnowledgeLexicalPolicyRecord{}, err
+	}
 	if err := lexicalVerifySession(ctx, tx, user, true); err != nil {
 		return nil, entity.KnowledgeLexicalPolicyRecord{}, err
 	}

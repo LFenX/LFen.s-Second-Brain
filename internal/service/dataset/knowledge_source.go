@@ -252,7 +252,7 @@ func publishKnowledgeSource(ctx context.Context, tx *gorm.DB, kb *entity.Knowled
 
 func (d *DatasetService) knowledgeSource(ctx context.Context, domainID, revisionID string) (*entity.KnowledgeSourceRevision, error) {
 	var source entity.KnowledgeSourceRevision
-	err := dao.DB.WithContext(ctx).Model(&entity.KnowledgeSourceRevision{}).
+	err := contentProofStore(ctx).Model(&entity.KnowledgeSourceRevision{}).
 		Joins("JOIN document ON document.id = knowledge_source_revision.document_id AND document.kb_id = knowledge_source_revision.domain_id").
 		Where("knowledge_source_revision.id = ? AND knowledge_source_revision.domain_id = ? AND document.status = ?", revisionID, domainID, string(entity.StatusValid)).
 		Take(&source).Error
@@ -318,7 +318,7 @@ func knowledgeLastLine(content []byte) int64 {
 
 func (d *DatasetService) knowledgeNode(ctx context.Context, domainID, nodeID string) (*entity.KnowledgeNode, *entity.KnowledgeSourceRevision, error) {
 	var node entity.KnowledgeNode
-	if err := dao.DB.WithContext(ctx).Where("id = ? AND domain_id = ?", nodeID, domainID).Take(&node).Error; err != nil {
+	if err := contentProofStore(ctx).Where("id = ? AND domain_id = ?", nodeID, domainID).Take(&node).Error; err != nil {
 		return nil, nil, knowledgeDBError(err, "node lookup")
 	}
 	source, err := d.knowledgeSource(ctx, domainID, node.SourceRevisionID)
@@ -332,7 +332,7 @@ func knowledgeSourceBytes(ctx context.Context, source *entity.KnowledgeSourceRev
 	if source.RepresentationKind == "original_only" || source.RepresentationKind == "web_capture" {
 		return nil, knowledgeError(415, "knowledge_source_unsupported", "This source has no C1 text representation")
 	}
-	content, err := file.NewFileCommitService().GetCommitFileContent(ctx, source.FolderID, source.CommitID, source.FileID)
+	content, err := file.ReadCommitFileContent(ctx, contentProofStore(ctx), source.FolderID, source.CommitID, source.FileID)
 	if err != nil {
 		return nil, knowledgeError(503, "knowledge_storage_unavailable", "Source revision could not be read")
 	}

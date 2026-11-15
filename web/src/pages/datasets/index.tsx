@@ -21,6 +21,7 @@ import { useSaveKnowledge } from './hooks';
 import { useRenameDataset } from './use-rename-dataset';
 import { useSelectOwners } from './use-select-owners';
 import { KnowledgeDomainEntry } from './knowledge-domain-entry';
+import { KnowledgeAccessPaths } from '@/utils/knowledge-access-navigation';
 
 export default function Datasets() {
   const { t } = useTranslation();
@@ -90,7 +91,10 @@ export default function Datasets() {
   return (
     <>
       <div className="flex h-full min-h-0 min-w-0 flex-col">
-        <div className="flex shrink-0 justify-end px-5 pt-3">
+        <div className="flex shrink-0 flex-wrap justify-end gap-2 px-5 pt-3">
+          <Button asLink to={KnowledgeAccessPaths.shared} variant="outline">
+            {t('knowledgeAccess.sharedWithMe')}
+          </Button>
           <KnowledgeDomainEntry refreshNative={handleRefreshDatasets} />
         </div>
         <div className="min-h-0 flex-1">

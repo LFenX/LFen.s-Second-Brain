@@ -102,8 +102,14 @@ func (d *DatasetService) RegisterKnowledgeDomain(ctx context.Context, userID, do
 	default:
 		return nil, knowledgeInvalid("Unsupported domain category")
 	}
-	err = dao.DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).Where("id = ? AND created_by = ?", kb.ID, userID).Take(kb).Error; err != nil {
+	err = dao.WithKnowledgeAccessNativeMutation(ctx, dao.DB, dao.KnowledgeAccessNativeMutation{ActorUserID: &userID, Action: "native_domain", UserIDs: []string{userID}, DomainIDs: []string{domainID}}, func(tx *gorm.DB) error {
+		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).Where("id = ? AND created_by = ? AND status = ?", kb.ID, userID, "1").Take(kb).Error; err != nil {
+			return err
+		}
+		if err := dao.CheckKnowledgeAccessNativeTenant(tx, kb.TenantID); err != nil {
+			return err
+		}
+		if err := permission.NewLockingDatabaseChecker(tx).CheckResource(ctx, permission.Subject{UserID: userID}, permission.ResourceRef{Kind: permission.ResourceKindDataset, ID: kb.ID}, permission.OperationUpdate); err != nil {
 			return err
 		}
 		if kb.KnowledgeEnabled {

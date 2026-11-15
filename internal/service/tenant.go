@@ -19,6 +19,7 @@ package service
 import (
 	"context"
 	"fmt"
+	"gorm.io/gorm"
 	"ragflow/internal/common"
 	"ragflow/internal/dao"
 	"ragflow/internal/engine"
@@ -698,9 +699,20 @@ func (s *TenantService) SetTenantDefaultModels(ctx context.Context, userID, mode
 		return fmt.Errorf("model provider, instance and name must be specified together")
 	}
 
-	err = s.tenantDAO.Update(ctx, dao.DB, ownedTenant.TenantID, map[string]interface{}{
-		modelTypeID:       defaultModel,
-		tenantModelTypeID: tenantModelID,
+	err = dao.WithKnowledgeAccessNativeMutation(ctx, dao.DB, dao.KnowledgeAccessNativeMutation{ActorUserID: &userID, Action: "native_tenant_settings", UserIDs: []string{userID}, TenantIDs: []string{ownedTenant.TenantID}}, func(tx *gorm.DB) error {
+		if err := dao.CheckKnowledgeAccessNativeUser(tx, userID); err != nil {
+			return err
+		}
+		if err := dao.CheckKnowledgeAccessNativeTenant(tx, ownedTenant.TenantID); err != nil {
+			return err
+		}
+		if err := permission.NewLockingDatabaseChecker(tx).CheckTenant(ctx, permission.Subject{UserID: userID}, ownedTenant.TenantID, permission.TenantOwner); err != nil {
+			return err
+		}
+		return s.tenantDAO.Update(ctx, tx, ownedTenant.TenantID, map[string]interface{}{
+			modelTypeID:       defaultModel,
+			tenantModelTypeID: tenantModelID,
+		})
 	})
 
 	return err
@@ -779,6 +791,34 @@ type AddMemberResponse struct {
 // AddMember invites a user (by email) to the tenant.
 func (s *TenantService) AddMember(ctx context.Context, userID, tenantID string, req *AddMemberRequest) (*AddMemberResponse, common.ErrorCode, error) {
 	if err := permission.NewDatabaseChecker(dao.DB).CheckTenant(ctx, permission.Subject{UserID: userID}, tenantID, permission.TenantOwner); err != nil {
+		code, normalized := permissionresponse.Normalize(err)
+		return nil, code, normalized
+	}
+	invitee, err := s.userDAO.GetByEmail(ctx, dao.DB, req.Email)
+	if err != nil {
+		return nil, common.CodeDataError, err
+	}
+	var result *AddMemberResponse
+	code := common.CodeServerError
+	err = dao.WithKnowledgeAccessNativeMutation(ctx, dao.DB, dao.KnowledgeAccessNativeMutation{ActorUserID: &userID, Action: "native_membership", UserIDs: []string{userID, invitee.ID}, TenantIDs: []string{tenantID}}, func(tx *gorm.DB) error {
+		var inner error
+		result, code, inner = s.addMemberLocked(ctx, tx, invitee.ID, userID, tenantID, req)
+		return inner
+	})
+	if err != nil && code == common.CodeSuccess {
+		code = common.CodeServerError
+	}
+	return result, code, err
+}
+
+func (s *TenantService) addMemberLocked(ctx context.Context, tx *gorm.DB, expectedInvitee string, userID, tenantID string, req *AddMemberRequest) (*AddMemberResponse, common.ErrorCode, error) {
+	if err := dao.CheckKnowledgeAccessNativeUser(tx, userID); err != nil {
+		return nil, common.CodeForbidden, err
+	}
+	if err := dao.CheckKnowledgeAccessNativeTenant(tx, tenantID); err != nil {
+		return nil, common.CodeForbidden, err
+	}
+	if err := permission.NewLockingDatabaseChecker(tx).CheckTenant(ctx, permission.Subject{UserID: userID}, tenantID, permission.TenantOwner); err != nil {
 		code, permissionErr := permissionresponse.Normalize(err)
 		return nil, code, permissionErr
 	}
@@ -786,7 +826,7 @@ func (s *TenantService) AddMember(ctx context.Context, userID, tenantID string, 
 		return nil, common.CodeArgumentError, fmt.Errorf("email is required")
 	}
 
-	invitee, err := s.userDAO.GetByEmail(ctx, dao.DB, req.Email)
+	invitee, err := s.userDAO.GetByEmail(ctx, tx, req.Email)
 	if err != nil {
 		if dao.IsNotFoundErr(err) {
 			return nil, common.CodeDataError, fmt.Errorf("user not found")
@@ -794,8 +834,15 @@ func (s *TenantService) AddMember(ctx context.Context, userID, tenantID string, 
 		return nil, common.CodeDataError, err
 	}
 
+	if invitee.ID != expectedInvitee {
+		return nil, common.CodeDataError, dao.ErrKnowledgeAccessScopeChanged
+	}
+	if err := dao.CheckKnowledgeAccessNativeUser(tx, invitee.ID); err != nil {
+		return nil, common.CodeDataError, err
+	}
+
 	// Reject if already a member or has a pending invitation.
-	userTenant, err := s.userTenantDAO.FilterByUserIDAndTenantID(ctx, dao.DB, invitee.ID, tenantID)
+	userTenant, err := s.userTenantDAO.FilterByUserIDAndTenantID(ctx, tx, invitee.ID, tenantID)
 	if err == nil {
 		if userTenant != nil {
 			switch userTenant.Role {
@@ -821,7 +868,7 @@ func (s *TenantService) AddMember(ctx context.Context, userID, tenantID string, 
 		InvitedBy: userID,
 		Status:    &status,
 	}
-	if err = s.userTenantDAO.Create(ctx, dao.DB, ut); err != nil {
+	if err = s.userTenantDAO.Create(ctx, tx, ut); err != nil {
 		return nil, common.CodeServerError, fmt.Errorf("failed to create invitation: %w", err)
 	}
 
@@ -841,11 +888,30 @@ func (s *TenantService) AddMember(ctx context.Context, userID, tenantID string, 
 // and a member may remove themselves. An invitee may decline their own pending
 // invitation. The tenant owner cannot be removed.
 func (s *TenantService) RemoveMember(ctx context.Context, userID, tenantID, targetUserID string) (common.ErrorCode, error) {
+	code := common.CodeServerError
+	err := dao.WithKnowledgeAccessNativeMutation(ctx, dao.DB, dao.KnowledgeAccessNativeMutation{ActorUserID: &userID, Action: "native_membership", UserIDs: []string{userID, targetUserID}, TenantIDs: []string{tenantID}}, func(tx *gorm.DB) error {
+		var inner error
+		code, inner = s.removeMemberLocked(ctx, tx, userID, tenantID, targetUserID)
+		return inner
+	})
+	if err != nil && code == common.CodeSuccess {
+		code = common.CodeServerError
+	}
+	return code, err
+}
+
+func (s *TenantService) removeMemberLocked(ctx context.Context, tx *gorm.DB, userID, tenantID, targetUserID string) (common.ErrorCode, error) {
+	if err := dao.CheckKnowledgeAccessNativeUser(tx, userID); err != nil {
+		return common.CodeForbidden, err
+	}
+	if err := dao.CheckKnowledgeAccessNativeTenant(tx, tenantID); err != nil {
+		return common.CodeForbidden, err
+	}
 	if s.userTenantDAO == nil {
 		return common.CodeServerError, fmt.Errorf("userTenantDAO not initialized")
 	}
 	if userID != "" && userID == targetUserID {
-		removed, err := s.userTenantDAO.DeleteByUserAndTenantAndRole(ctx, dao.DB, userID, tenantID, TenantRoleInvite)
+		removed, err := s.userTenantDAO.DeleteByUserAndTenantAndRole(ctx, tx, userID, tenantID, TenantRoleInvite)
 		if err != nil {
 			return common.CodeServerError, fmt.Errorf("failed to decline tenant invitation: %w", err)
 		}
@@ -858,11 +924,11 @@ func (s *TenantService) RemoveMember(ctx context.Context, userID, tenantID, targ
 	if userID == targetUserID {
 		requirement = permission.TenantMember
 	}
-	if err := permission.NewDatabaseChecker(dao.DB).CheckTenant(ctx, permission.Subject{UserID: userID}, tenantID, requirement); err != nil {
+	if err := permission.NewLockingDatabaseChecker(tx).CheckTenant(ctx, permission.Subject{UserID: userID}, tenantID, requirement); err != nil {
 		code, permissionErr := permissionresponse.Normalize(err)
 		return code, permissionErr
 	}
-	targetMembership, err := s.userTenantDAO.FilterByUserIDAndTenantID(ctx, dao.DB, targetUserID, tenantID)
+	targetMembership, err := s.userTenantDAO.FilterByUserIDAndTenantID(ctx, tx, targetUserID, tenantID)
 	if err != nil {
 		if dao.IsNotFoundErr(err) {
 			return common.CodeDataError, fmt.Errorf("user is not a tenant member")
@@ -872,7 +938,7 @@ func (s *TenantService) RemoveMember(ctx context.Context, userID, tenantID, targ
 	if targetMembership.Role == TenantRoleOwner {
 		return common.CodeArgumentError, fmt.Errorf("cannot remove the tenant owner")
 	}
-	if err := s.userTenantDAO.DeleteByUserAndTenant(ctx, dao.DB, targetUserID, tenantID); err != nil {
+	if err := s.userTenantDAO.DeleteByUserAndTenant(ctx, tx, targetUserID, tenantID); err != nil {
 		return common.CodeServerError, fmt.Errorf("failed to remove member: %w", err)
 	}
 	return common.CodeSuccess, nil
@@ -880,17 +946,36 @@ func (s *TenantService) RemoveMember(ctx context.Context, userID, tenantID, targ
 
 // AcceptInvite transitions the calling user's role from "invite" → "normal" for the given tenant.
 func (s *TenantService) AcceptInvite(ctx context.Context, userID, tenantID string) (common.ErrorCode, error) {
+	code := common.CodeServerError
+	err := dao.WithKnowledgeAccessNativeMutation(ctx, dao.DB, dao.KnowledgeAccessNativeMutation{ActorUserID: &userID, Action: "native_membership", UserIDs: []string{userID}, TenantIDs: []string{tenantID}}, func(tx *gorm.DB) error {
+		var inner error
+		code, inner = s.acceptInviteLocked(ctx, tx, userID, tenantID)
+		return inner
+	})
+	if err != nil && code == common.CodeSuccess {
+		code = common.CodeServerError
+	}
+	return code, err
+}
+
+func (s *TenantService) acceptInviteLocked(ctx context.Context, tx *gorm.DB, userID, tenantID string) (common.ErrorCode, error) {
+	if err := dao.CheckKnowledgeAccessNativeUser(tx, userID); err != nil {
+		return common.CodeForbidden, err
+	}
+	if err := dao.CheckKnowledgeAccessNativeTenant(tx, tenantID); err != nil {
+		return common.CodeForbidden, err
+	}
 	if s.userTenantDAO == nil {
 		return common.CodeServerError, fmt.Errorf("userTenantDAO not initialized")
 	}
-	existing, err := s.userTenantDAO.FilterByUserIDAndTenantID(ctx, dao.DB, userID, tenantID)
+	existing, err := s.userTenantDAO.FilterByUserIDAndTenantID(ctx, tx, userID, tenantID)
 	if err != nil || existing == nil {
 		return common.CodeDataError, fmt.Errorf("no pending invitation found")
 	}
-	if existing.Role != TenantRoleInvite {
+	if existing.Status == nil || *existing.Status != "1" || existing.Role != TenantRoleInvite {
 		return common.CodeArgumentError, fmt.Errorf("no pending invitation to accept")
 	}
-	if err := s.userTenantDAO.UpdateRoleByUserAndTenant(ctx, dao.DB, userID, tenantID, TenantRoleNormal); err != nil {
+	if err := updateAcceptedNativeInvite(ctx, tx, existing.ID, userID, tenantID); err != nil {
 		return common.CodeServerError, fmt.Errorf("failed to accept invitation: %w", err)
 	}
 	return common.CodeSuccess, nil

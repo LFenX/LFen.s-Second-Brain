@@ -1,5 +1,130 @@
 export default {
   translation: {
+    knowledgeAccess: {
+      revocationBoundary:
+        'After sharing or a module is disabled, or a grant is revoked, later requests are checked again. Text already delivered cannot be recalled; recipients may keep a copy.',
+      fixedRevision: 'Fixed revision details',
+      sourceRevision: 'Source revision',
+      sourceDigest: 'Source content digest',
+      representation: 'Content representation',
+      producerDigest: 'Producer digest',
+      tenantRenewalWarning:
+        'Sharing permission changes in this team invalidate current reading views. Reopen the content afterwards.',
+      sharedWithMe: 'Shared with me',
+      ownerTitle: 'Sharing management',
+      policy: 'Knowledge domain sharing',
+      policyOn: 'Sharing is enabled',
+      policyOff: 'Sharing is disabled by default',
+      policyHint:
+        'This switch controls sharing independently. Disabling it invalidates shared views; enabling it still requires a valid grant.',
+      confirmPolicy: 'I reviewed the scope and confirm this sharing change',
+      enablePolicy: 'Enable sharing',
+      disablePolicy: 'Disable sharing',
+      module: 'Shared module',
+      chooseModule: 'Choose a shared module',
+      newModule: 'New shared module',
+      editModule: 'Edit shared module',
+      moduleName: 'Module name',
+      moduleEnabled: 'Enable this module',
+      disabled: 'Disabled',
+      fixedSelectionHint:
+        'Use fixed revisions from the selected publication. Removing items never adds later revisions or other content.',
+      replaceSelection:
+        'Replace the module scope with this published selection',
+      selectionNumber: 'Fixed content {{index}}',
+      choosePublicationFirst:
+        'Choose and publish content in Knowledge catalogue → Unified content before managing sharing.',
+      choosePublication: 'Choose published content',
+      manageSelection: 'Manage sharing for this publication',
+      confirmModule: 'I reviewed the name, content scope and enabled state',
+      moduleChangeWarning:
+        'A module version change invalidates old grants and views. Grant access again and reopen the content.',
+      saveModule: 'Save module',
+      recipientID: 'Recipient account ID',
+      recipientIDHint:
+        'Ask the recipient to copy their account ID from Shared with me. On submission, the server checks active native membership in the same team. A valid ID format does not verify identity.',
+      invalidRecipientID:
+        'Enter the complete 32-character lowercase hexadecimal native account ID.',
+      grantReview: 'Review this grant',
+      grantScope:
+        'Domain {{domain}} · Module {{module}} · Fixed version {{version}}',
+      webOnly: 'Web access only',
+      ownAccountID: 'Your account ID',
+      ownAccountIDHint:
+        'Give this account ID to the sharer to receive an explicit personal grant.',
+      copyAccountID: 'Copy your account ID',
+      accountIDCopied: 'Account ID copied',
+      copyIDFailed:
+        'Could not copy the account ID. Select and copy it manually.',
+      personalGrants: 'Personal grants',
+      grantHint:
+        'Enter the native account ID supplied by the recipient. Grant web access to this fixed module version for up to 30 days.',
+      enableBeforeGrant:
+        'Enable domain sharing and the module before creating a grant.',
+      mode: 'Permission',
+      readOnly: 'Read only',
+      readSearch: 'Read and search',
+      expiry: 'Grant expiry',
+      invalidExpiry: 'Choose an expiry within the next 30 days.',
+      confirmGrant:
+        'I reviewed the account ID, fixed version, permission and expiry and confirm this grant',
+      createGrant: 'Create personal grant',
+      currentGrants: 'Current active grants',
+      noGrants: 'No active personal web grants.',
+      expires: 'Expires: {{time}}',
+      confirmRevoke: 'Confirm revoking this grant',
+      revokeGrant: 'Revoke grant',
+      team: 'Team',
+      refresh: 'Refresh status',
+      loading: 'Loading…',
+      noSharedModules: 'No shared modules are available in this team.',
+      ownerOnly:
+        'This account cannot manage sharing for this knowledge domain.',
+      fixedContent: 'Read authorized content at its fixed revision.',
+      openCatalogue: 'Open authorized catalogue',
+      closeContent: 'Close content',
+      catalogueCount: '{{sources}} content items, {{units}} reading units',
+      contentNumber: 'Content {{index}} ({{count}} units)',
+      readFirst: 'Read first unit',
+      applySubset: 'Reopen the selected content',
+      search: 'Search',
+      query: 'Search within the authorized scope',
+      searchResults: 'Search results',
+      hitCount: '{{count}} results returned',
+      readCitation: 'Read this citation',
+      evidence: 'Citation text',
+      reread: 'Reread this citation',
+      nextUnit: 'Read next unit',
+      structureSummary: 'Content structure summary',
+      structureItem: 'Structure item {{index}}',
+      emptyMember: 'Empty value',
+      textMember: 'Contains text',
+      summaryPartial: 'Only the available structure summary is shown.',
+      notVisible:
+        'This content is unavailable. Check your account, grant and sharing status.',
+      changed:
+        'The sharing scope or version changed. Refresh and reopen the content; review current state before editing.',
+      unsupportedScope:
+        'This selection cannot form a complete sharing scope. Choose published content again.',
+      invalidInput:
+        'Check required fields, the fixed content scope and expiry.',
+      unavailable:
+        'The request could not be completed. Refresh the status and try again.',
+      saving: 'Confirming the operation…',
+      unknown:
+        'The original result is unknown. Check the original operation before making another change.',
+      checkOriginal: 'Check original operation',
+      reviewLatest: 'Reload and review current state',
+      storageBlocked:
+        'The pending operation cannot be read or saved. Keep this page open and ask the manager to resolve it.',
+      saved: 'The operation is confirmed and management state refreshed.',
+      operation: {
+        setPolicy: 'Change sharing policy',
+        setModule: 'Save shared module',
+        createGrant: 'Create personal grant',
+        revokeGrant: 'Revoke personal grant',
+      },
+    },
     knowledgeDomain: {
       entry: 'Create or choose a knowledge domain',
       select: 'Choose an existing domain',
@@ -1105,6 +1230,8 @@ export default {
       },
     },
     knowledgeOriginal: {
+      unsupportedPathInput:
+        'This original-file entry does not support the path format (such as CSV). Use PDF, PPTX, DOCX or UTF-8 text/code files. For existing parsed results, use Knowledge catalogue → Unified content → Published parsed representation. Edit the paths and continue; no registration request was sent.',
       title: 'Document originals',
       textSources: 'Text sources',
       originals: 'Original files',

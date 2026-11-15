@@ -1,3 +1,48 @@
+# 第32基线候选：单会话执行与测试格式收尾（2026-11-16）
+
+拟议基线 `KCRL-20261116-32`。最新人类明确要求暂停其他会话，后续由 Root 一人完成；不再派发 A/B/C/D。当前窗口是 Root 对两个 Go 测试文件做标准 gofmt 格式修正并记录实际验证进展，不改变业务接口、许可、模型、真实资料或根布局范围。
+
+已实测：10 个 Web 文件175/175；67个 Go 定向单元及原生尾测通过；服务端与CLI构建、LLD20和五种help通过。仅随后两个测试文件的格式候选尚未落地；规范词法 token 完全一致，产品源码与既有构建产物不变。S1真实SQL/ES/HTTP/浏览器验收仍Pending，S2/S3门保持。登录已由用户确认；原管理容器自动重启改为unless-stopped并核实运行。
+
+Git仍Pending：首个Windows钩子因多行shell执行问题误改两件冻结内容，Root精确恢复后Ref31通过；全十一项只读重跑只剩两件gofmt失败。本候选保留冻结schema及旧authority全部字节，不通过格式化历史或改写旧失败求通过。后续须所有检查通过才正常commit/push，不把开发提交当成正式验收。
+
+只在既有current_context选择器追加 `sole_root_validation_and_format_followup`；旧执行记录全文以一次插入保留，下面Ref31全文为原字节后缀。Ref31 raw基线原样存入既有archive目录，旧previous链不丢失；97入口/102用途、47保护/26合同/11archive/28历史及所有选择器、角色与用途不变。候选须先经过未修改校验器的RAM叠加审阅，Root冻结精确六后像并机械应用后，才实测新锁。
+
+---
+
+# 第31基线候选：Web测试夹具与验证边界（2026-11-16）
+
+拟议基线 `KCRL-20261116-31`，总控仍为 Codex 会话 `01a1a9a5-c724-7f52-8cbb-16d19d982ba4`。本轮仅在既有 `coordination-20261106-round3/current_context` 选择器内追加独立 `test_harness_validation_followup`；Ref30 及更早全文保持原字节后缀、原事实时点。准备阶段 Main 仍为 Ref30，本段与新锁均为候选；独审、冻结和 Root 另授 exact6 窗后，须实测实际树及对应新锁，不能刷新旧锁强行通过。
+
+唯一预测源码差异是 `web/src/services/__tests__/knowledge-access-service.test.ts` 与 `web/src/pages/dataset/__tests__/narrow-navigation.test.tsx` 两件测试夹具。Source 仍为 5141 件，按未修改算法的 RAM overlay 预测 SHA-256 为 `06859d88b23cfff5fe74efe7d80e8253aba14508912c214d2f16de0c8c834503`。其余四件是 execution record、本文、reference lock 与 Ref30 原字节快照；引用仍为97入口/102用途，全部 IDs、selectors、roles、用途及47保护/26合同/11archive/28history不改。
+
+本轮 Web 实测为169/175、六败；production build exit0，公开 index descriptor 为3552B、SHA前缀 `665ee`（本次派发未给全摘要，不补造）。Root b7c090 的 corrected Ref30 check 为 Passed_ReferenceLockOnly。两件最小候选使用局部真实 Node WebCrypto/精确恢复，并保留七导航及 owner/文件跳转断言；两件实际 format/lint 通过，后续 Jest 为 NotRun，原六败和首次 NUL 解析/01格式失败均保留，不改称通过。
+
+真实登录用户的“已进入系统”由 Root 首次记录于2026-11-15T17:32:35Z（JST日历日期为2026-11-16）；时间来自Root clock回执，只表示Root首次记录时点，不是用户点击发生时间。A04 preflight exit124、unit执行0；Go21 actual24 首次 fresh_native_select 在work8000ms/host8500ms到期且物理关闭，形式结果仍 Unknown。新记录不补绿，也不扩展这些证据的原用途。
+
+KCA02 具体人类 subject、三个阶段范围、合成材料与无新模型边界不变。S1正式验收仍Pending，S2/S3门保留；中间开发commit仍须当前定向unit/build/diff合格并由Root另授。没有新增接口、模型、生产、凭据或根布局授权。Ref30 raw176623B/`560ec710b6b33c65bee3a0d659b407805013923a27d9d9f92f8114da4b9d2c5a` 仅逐字节保存在既有归档目录的 `docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261115-30.json`，供previous链追溯，不把旧正文升级为当前指导。
+
+---
+
+# 当前任务参考资料基线
+
+**2026-11-15 第30基线候选：exact138源码集成开发里程碑，S1真实验收仍Pending**
+
+拟议基线ID：`KCRL-20261115-30`；总控仍为Codex会话`01a1a9a5-c724-7f52-8cbb-16d19d982ba4`。事实入口仍为`coordination-20261106-round3/current_context`，只在原选择器内追加`source_integration_development_milestone_followup`。旧35根键、30子段及其原值/原始片段保留；以下Ref29及更早全文保留原字节、原时点。
+
+本次是Root在既有access02具体人类实施决定内的调度改排，不是新的人类批准：先准备并独审Ref30/exact138，冻结并另授具名有限单次写窗后实际集成，再取得该集成版定向单元/构建与差异/秘密检查证据，由另派Git执行者处理有证据的中间开发commit/push。该里程碑不得称S1完成；S1真实合成验收仍Pending，S1→S2→S3门及阶段完成且验收后的checkpoint保留。catalog/preflight旧先验收再落地安排不回填。
+
+唯一源码集合为已冻结delivery-catalog.safe.json的138件、2493188字节，99新/39改：67后端、35Web、9有效Go测试、21 Go21测试、6合成夹具；集合SHA `ded7ef763a3dc3637b14cbb5a06a6c0e05a229dcf3701f08ca39afc7a021ccbb`。主树/HEAD前像集合SHA `8397b020640fed785afc586b448f33ef3bcd864cdf5009b60450b54e6bf17563`。只涉及internal/web既有布局，不新增共享接口或扩大具体决定。D预检与B gate仅按原时点、原用途引用；B gate是Root调度参考，不是人类批准。
+
+准备时实际主树仍Ref29通过，HEAD `f804b3737a8f69af14b1ff1c2d042e8ea7c2a9f1`，源码5048/`2c786735cda277f5d02238a2c6086f4c1972c5ce12369ed51545c5afe2efa152`；138实际落地0，本任务新commit/push0。5141/`a50ffc5160792bc0eebc5293c3294faf61cd96a9905cfddffdcdbee9a99ba94d`只是在内存覆盖exact138所得预测，不是主树实测或正式新锁通过。未修改校验器的叠加结果只能称CandidateOnly；实际应用后须重新测量全树并执行exact新锁校验；不同即停止受影响工作并重审，不刷新旧锁求通过。
+
+既有源码接受及分层单元/构建仍限原版本/范围，不能替代新集成版验证。Native2 actual02仍Unknown（PS exit2/callerClosed不证明深层）；Go21 actual20失败后关闭、业务NotRun；WB03真人到登录页，但本工具browsers=[]，真实浏览器验收NotRun。S2/S3后续，合成材料范围不变，不续授模型、真实AICS、生产发布、凭据、根布局或模型资源变更。
+
+最小候选只涉及execution-record、authority、manifest及Ref29原始manifest基线快照四路径；仅两项既有内容摘要更新，97条/102用途、26正式契约、47保护件、11业务归档、28历史原路径及全部选择器/用途不变。旧Ref29原176178字节/SHA `ab12875dfc1e0385eb1df1c6b474b4439d8d0e811f57ccc1259497055ff1001e`只进入既有baseline链，不增加归档指导用途。
+
+本候选不授予正式写入。须C独审、Root冻结exact后像并另授有限单次机械权限；本准备仅写指定ignored候选目录，未写主树/源码/Git，未构建、调用服务或读取私有运行资料。新锁raw SHA在独立交接给出，不嵌入被锁内容。
+
+---
 # 当前任务参考资料基线
 
 **2026-11-08 第29基线候选：阶段2完成与已授权品牌差异闭环**

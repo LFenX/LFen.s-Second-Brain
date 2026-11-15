@@ -192,7 +192,7 @@ func (d *DatasetService) UpdateDataset(ctx context.Context, datasetID, userID st
 	var linkedConnectors []*dao.ConnectorDatasetListItem
 	var scheduledTaskIDs []string
 	var pagerankUpdate *datasetPagerankUpdate
-	err = dao.DB.Transaction(func(tx *gorm.DB) error {
+	err = dao.WithKnowledgeAccessNativeMutation(ctx, dao.DB, dao.KnowledgeAccessNativeMutation{ActorUserID: &userID, Action: "native_domain", UserIDs: []string{userID}, DomainIDs: []string{datasetID}}, func(tx *gorm.DB) error {
 		lockedKB, code, authErr := d.lockAccessibleDatasetForUpdate(ctx, tx, datasetID, userID)
 		if authErr != nil {
 			txCode = code

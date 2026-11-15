@@ -21,6 +21,7 @@ import {
   UserInfo,
 } from '@/constants/authorization';
 import { getSearchValue } from './common-util';
+import { notifyNativeSessionChanged } from './native-session-scope';
 const KeySet = [Authorization, Token, UserInfo];
 
 const storage = {
@@ -39,26 +40,33 @@ const storage = {
   },
   setAuthorization: (value: string) => {
     localStorage.setItem(Authorization, value);
+    notifyNativeSessionChanged();
   },
   setToken: (value: string) => {
     localStorage.setItem(Token, value);
+    notifyNativeSessionChanged();
   },
   setUserInfo: (value: string | Record<string, unknown>) => {
     const valueStr = typeof value !== 'string' ? JSON.stringify(value) : value;
     localStorage.setItem(UserInfo, valueStr);
+    notifyNativeSessionChanged();
   },
   setItems: (pairs: Record<string, string>) => {
     Object.entries(pairs).forEach(([key, value]) => {
       localStorage.setItem(key, value);
     });
+    if (Object.keys(pairs).some((key) => KeySet.includes(key)))
+      notifyNativeSessionChanged();
   },
   removeAuthorization: () => {
     localStorage.removeItem(Authorization);
+    notifyNativeSessionChanged();
   },
   removeAll: () => {
     KeySet.forEach((x) => {
       localStorage.removeItem(x);
     });
+    notifyNativeSessionChanged();
   },
   setLanguage: (lng: string) => {
     localStorage.setItem('lng', lng);

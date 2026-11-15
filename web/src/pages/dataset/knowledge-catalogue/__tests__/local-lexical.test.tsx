@@ -9,6 +9,7 @@ import {
   within,
 } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { MemoryRouter, useLocation } from 'react-router';
 import { webcrypto } from 'node:crypto';
 import { TextEncoder, TextDecoder } from 'node:util';
 import request from '@/utils/next-request';
@@ -3715,12 +3716,22 @@ function inspect(selection: LocalLexicalSelection): LocalLexicalReadinessData {
   });
   return value;
 }
+let publicationState: any = null;
+function PublicationLocation() {
+  publicationState = useLocation().state;
+  return null;
+}
 function wrapper({ children }: { children: ReactNode }) {
   const client = new QueryClient({
     defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
   });
   clients.push(client);
-  return <QueryClientProvider client={client}>{children}</QueryClientProvider>;
+  return (
+    <MemoryRouter>
+      <PublicationLocation />
+      <QueryClientProvider client={client}>{children}</QueryClientProvider>
+    </MemoryRouter>
+  );
 }
 function response(
   config: { transformResponse: Array<(raw: unknown) => unknown> },
@@ -4016,6 +4027,36 @@ test('解析结果加入后可复用实际R1/R2选择器形成四类混合集合
     localLexicalSelectionKey(Selection),
   );
   await screen.findByText('knowledgeLocalLexical.readiness_ready');
+  const share = screen.getByRole('link', {
+    name: 'knowledgeAccess.manageSelection',
+  });
+  expect(share).toHaveAttribute(
+    'href',
+    '/dataset/knowledge-access/' + Scope.domain,
+  );
+  fireEvent.click(share);
+  expect(publicationState.accessPublication.domain).toBe(Scope.domain);
+  expect(publicationState.accessPublication.scope.kind).toBe(
+    'fixed_published_targets',
+  );
+  expect(publicationState.accessPublication.scope.publication).toEqual({
+    id: Fixtures.ready.readiness.index_ref!.index_id,
+    manifest_sha256: Fixtures.ready.readiness.index_ref!.manifest_sha256,
+  });
+  expect(
+    publicationState.accessPublication.scope.targets
+      .map((target: any) => target.source.source_id)
+      .sort(),
+  ).toEqual(
+    Selection.targets.map((target) => target.source_ref.source_id).sort(),
+  );
+  const wholeSource = publicationState.accessPublication.scope.targets.find(
+    (target: any) => target.representation.kind === 'source_revision',
+  );
+  expect(wholeSource.representation.id).toBe(
+    wholeSource.source.source_revision_id,
+  );
+  expect(wholeSource.representation.producer_sha256).toBeNull();
 });
 test('固定表示切换需显式替换；重复添加同一固定表示不会增加来源', async () => {
   localEnabled = true;

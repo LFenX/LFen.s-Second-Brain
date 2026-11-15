@@ -230,9 +230,19 @@ func (s *S3Storage) Get(ctx context.Context, bucket, fnm string, tenantID ...str
 			Key:    aws.String(fnm),
 		})
 		if err != nil {
-			common.Error("Failed to get object", err, zap.String("bucket", bucket), zap.String("key", fnm), zap.Error(err))
-			s.reconnect(ctx)
-			time.Sleep(time.Second)
+			if !privateRead(ctx) {
+				common.Error("Failed to get object", err, zap.String("bucket", bucket), zap.String("key", fnm), zap.Error(err))
+			}
+			if !privateRead(ctx) {
+				s.reconnect(ctx)
+			}
+			if privateRead(ctx) {
+				if err := sleepOrAbort(ctx, time.Second); err != nil {
+					return nil, err
+				}
+			} else {
+				time.Sleep(time.Second)
+			}
 			continue
 		}
 		buf := new(bytes.Buffer)
@@ -243,9 +253,19 @@ func (s *S3Storage) Get(ctx context.Context, bucket, fnm string, tenantID ...str
 			return err
 		}()
 		if readErr != nil {
-			common.Error("Failed to read object data", readErr, zap.String("bucket", bucket), zap.String("key", fnm), zap.Error(readErr))
-			s.reconnect(ctx)
-			time.Sleep(time.Second)
+			if !privateRead(ctx) {
+				common.Error("Failed to read object data", readErr, zap.String("bucket", bucket), zap.String("key", fnm), zap.Error(readErr))
+			}
+			if !privateRead(ctx) {
+				s.reconnect(ctx)
+			}
+			if privateRead(ctx) {
+				if err := sleepOrAbort(ctx, time.Second); err != nil {
+					return nil, err
+				}
+			} else {
+				time.Sleep(time.Second)
+			}
 			continue
 		}
 

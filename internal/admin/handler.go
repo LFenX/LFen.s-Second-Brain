@@ -841,7 +841,7 @@ func (h *Handler) AuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		if !*user.IsSuperuser {
+		if user.IsSuperuser == nil || !*user.IsSuperuser {
 			common.ResponseWithHttpCodeData(c, http.StatusForbidden, common.CodeForbidden, nil, "Permission denied")
 			c.Abort()
 			return
@@ -850,6 +850,7 @@ func (h *Handler) AuthMiddleware() gin.HandlerFunc {
 		c.Set("user", user)
 		c.Set("user_id", user.ID)
 		c.Set("email", user.Email)
+		c.Request = c.Request.WithContext(nativeAdminContext(ctx, user))
 		c.Next()
 	}
 }

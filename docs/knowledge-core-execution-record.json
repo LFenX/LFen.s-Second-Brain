@@ -7832,6 +7832,383 @@
         "Human click/approval timestamp Unknown;only given turn metadata retained.",
         "Ref29 main activation and its actual check require separate Root exact4 lease after independent review."
       ]
+    },
+    "source_integration_development_milestone_followup": {
+      "status": "CandidateOnly_ActualApplyNotRun_S1RealAcceptancePending",
+      "prepared_at_utc": "2026-11-15T08:45:30.595Z",
+      "coordinator_thread_id": "01a1a9a5-c724-7f52-8cbb-16d19d982ba4",
+      "proposed_reference_lock_id": "KCRL-20261115-30",
+      "authority_and_order": {
+        "basis": "既有access02-implementation-decision/implementation_authority保持原具体人类决定；本次Root在已批准S1范围内改排开发顺序，不是新的人类批准或阶段验收。",
+        "root_coordination": "先准备并独审Ref30与exact138集成候选；Root冻结并另授具名有限单次机械写窗后才能实际应用。随后实测全树、执行exact新锁校验、定向单元/构建及差异/秘密检查；Root另派Git执行者处理有证据的中间开发commit/push。",
+        "milestone_label": "源码集成与定向验证的中间开发里程碑；不得称S1验收完成。",
+        "stage_acceptance_gate": "S1真实合成验收仍Pending；S1→S2→S3验收门、每阶段完成且验收后的commit/push checkpoint保留。",
+        "old_restriction_preservation": "catalog/preflight原先验收再落地字段保留原字节与原执行安排；当前改排只由本独立后续段记录，不回填旧件。"
+      },
+      "observed_main": {
+        "reference_lock_id": "KCRL-20261108-29",
+        "manifest_bytes": 176178,
+        "manifest_sha256": "ab12875dfc1e0385eb1df1c6b474b4439d8d0e811f57ccc1259497055ff1001e",
+        "reference_check": "Passed_ReferenceLockOnly",
+        "branch": "codex/stage3r2-document",
+        "HEAD": "f804b3737a8f69af14b1ff1c2d042e8ea7c2a9f1",
+        "source_snapshot": {
+          "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+          "file_count": 5048,
+          "sha256": "2c786735cda277f5d02238a2c6086f4c1972c5ce12369ed51545c5afe2efa152"
+        },
+        "source138_actual_applied": 0,
+        "new_git_commit_or_push": 0,
+        "observation_scope": "本准备任务所见主树；不外推其他任务的全局零操作。"
+      },
+      "exact_source_delivery": {
+        "catalog": {
+          "path": ".local-data/coordination-20261108/review/s1-delivery138-source02/delivery-catalog.safe.json",
+          "bytes": 288333,
+          "sha256": "759559bce592b11e0aeb7f3ed127fd08eaf18307ef417584f8085397540d5dff"
+        },
+        "counts": {
+          "files": 138,
+          "new": 99,
+          "modified": 39,
+          "bytes": 2493188
+        },
+        "groups": {
+          "backend67": {
+            "count": 67,
+            "bytes": 958429,
+            "collectionSHA256": "a609fc0b67af4e8a1dab61442fb9f34088716ffd31d2868899cdd7cbf9c48042",
+            "new": 38,
+            "modified": 29,
+            "byteAlreadySame": 0
+          },
+          "web35": {
+            "count": 35,
+            "bytes": 1044231,
+            "collectionSHA256": "96b01b192a4baa40520a38be59ed8f9ba1327d31c111a363e492f06fbce7bc3e",
+            "new": 25,
+            "modified": 10,
+            "byteAlreadySame": 0
+          },
+          "effectiveGoTests9": {
+            "count": 9,
+            "bytes": 220504,
+            "collectionSHA256": "22c5cdd8b4f3b65824cb4189f6d999c9bc282e454ccce5e4eacad81e24152ecc",
+            "new": 9,
+            "modified": 0,
+            "byteAlreadySame": 0
+          },
+          "Go21FrozenTests21": {
+            "count": 21,
+            "bytes": 258985,
+            "collectionSHA256": "7d4205a7d30ff298f5d5cad5dac38b8a20473ad65708f051c0ad1fa78de62087",
+            "new": 21,
+            "modified": 0,
+            "byteAlreadySame": 0
+          },
+          "syntheticFixtures6": {
+            "count": 6,
+            "bytes": 11039,
+            "collectionSHA256": "03c6dd562b22555220e40c0fcd93ecf59a84216d0d5ae25e25c180e318129a7f",
+            "new": 6,
+            "modified": 0,
+            "byteAlreadySame": 0
+          }
+        },
+        "source_collection_sha256": "ded7ef763a3dc3637b14cbb5a06a6c0e05a229dcf3701f08ca39afc7a021ccbb",
+        "main_and_HEAD_preimage_collection_sha256": "8397b020640fed785afc586b448f33ef3bcd864cdf5009b60450b54e6bf17563",
+        "root_layouts": [
+          "internal",
+          "web"
+        ],
+        "current_preparation_measurement": "138源码正文、主树/HEAD前像、路径边界及集合已按冻结pin重核；不重复或代替源码语义独审。"
+      },
+      "coordination_inputs": {
+        "D_preflight": {
+          "path": ".local-data/coordination-20261108/review/s1-delivery-application-preflight01/preflight.safe.json",
+          "bytes": 5385,
+          "sha256": "d6f572f30ac719eb4281fc6c715b3edaf1310e0b64a6342ce8f91f9d3288282d",
+          "audit": {
+            "path": ".local-data/coordination-20261108/review/s1-delivery-application-preflight01/audit.cjs",
+            "bytes": 13070,
+            "sha256": "6dbb24238319fff073620f4a79ee4f166f9a5b33268025b103865cb2c9c87bd9"
+          },
+          "use": "原时点机械预检及RAM预测，不授予应用，不冒充真实验收。"
+        },
+        "B_gate": {
+          "path": ".local-data/coordination-20261108/review/s1-source-integration-gate-check01/gate-check.safe.json",
+          "bytes": 3806,
+          "sha256": "79b7cba42105dbd54ad2ecf43b63627c1f685617a0d1495f1b0df1b07c121a0d",
+          "measurement": "本准备任务测量命名公共件；不是Root预给pin，也不是新的人类批准。",
+          "use": "只读条款核对及Root调度参考；不授予源码/Git写窗。"
+        }
+      },
+      "candidate_reference": {
+        "formal_paths": [
+          "docs/knowledge-core-execution-record.json",
+          "docs/knowledge-core-reference-authority.md",
+          "docs/knowledge-core-reference-lock.json",
+          "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261108-29.json"
+        ],
+        "source_snapshot": {
+          "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+          "file_count": 5141,
+          "sha256": "a50ffc5160792bc0eebc5293c3294faf61cd96a9905cfddffdcdbee9a99ba94d"
+        },
+        "source_snapshot_status": "RAM_PredictionOnly_NotMainMeasurement_NotApplied",
+        "method": "未修改的knowledge-reference-lock.cjs经有限RAM文件覆盖和只读git列表并集验证；不复制整库、不改校验器、不创建正式文件。",
+        "activation": "独审、Root冻结逐件/集合和另授exact机械写窗；实际exact138应用后必须重新实测全树并作exact新锁校验。若与候选不同，只停止受影响工作并重审，不刷新旧锁、不将预测改称实测。",
+        "prior_raw_snapshot": {
+          "path": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261108-29.json",
+          "bytes": 176178,
+          "sha256": "ab12875dfc1e0385eb1df1c6b474b4439d8d0e811f57ccc1259497055ff1001e",
+          "use": "仅existing previous_baseline链；不增加业务归档条目或指导用途。"
+        }
+      },
+      "evidence_limits": {
+        "accepted_source_and_layered_tests": "既有源码接受及分层单元/构建证据保留原版本、原范围；没有该138集成版的新验证。",
+        "Native2_actual02": "Unknown；PS exit2/callerClosed保留，深层执行及关闭事实仍Unknown。",
+        "Go21_actual20": "FailedThenClosed；businessNotRun；失败与关闭证据不回填为通过。",
+        "WB03": "真人登录页已到；本工具browser inventory=[]，浏览器真实验收NotRun。",
+        "S1_real_acceptance": "Pending",
+        "S2_S3": "LaterStages_NotStartedByThisPreparation",
+        "integrated_units_build": "NotRun",
+        "source_apply": "NotRun",
+        "new_git_commit_push": "NotRun"
+      },
+      "preservation": {
+        "existing_root_keys": 35,
+        "existing_round3_children": 30,
+        "method": "仅在round3尾部插入一个独立子段；删除插入片段即逐字节还原原执行记录。authority旧全文保留为逐字节后缀。",
+        "entries": 97,
+        "uses": 102,
+        "formal_contract_files": 26,
+        "protected_files": 47,
+        "archived_documents": 11,
+        "retained_historical_documents": 28,
+        "unchanged": "全部既有条目ID、用途、角色、选择器及95项摘要；既有历史字段、失败/Unknown/NotRun、冻结包及archive清单均保留。"
+      },
+      "scope_limits": {
+        "material": "SyntheticOnly",
+        "new_model_calls": 0,
+        "real_AICS_content": 0,
+        "production_publish": 0,
+        "credentials_or_private_runtime_reads": 0,
+        "root_layout_or_model_resource_changes": 0,
+        "new_shared_interfaces": "NoExpansionBeyondExistingExactDecision",
+        "main_source_lock_docs_or_git_writes": 0,
+        "service_build_test_browser_or_runtime_actions": 0
+      }
+    },
+    "test_harness_validation_followup": {
+      "status": "Web169Of175_FixtureFixCandidate_FormatLintPassed_JestNotRun_S1AcceptancePending",
+      "recorded_date": "2026-11-16",
+      "coordinator_thread_id": "01a1a9a5-c724-7f52-8cbb-16d19d982ba4",
+      "provenance": {
+        "kind": "Root-dispatched fixed public facts and frozen candidate descriptors",
+        "root_acknowledgements": [
+          "b7c090 corrected Ref30 check",
+          "a56646 formatted02 full-read"
+        ],
+        "new_raw_runtime_or_authorization_reads": 0,
+        "unknown_fields_are_not_passed": true
+      },
+      "web_actual_before_fix": {
+        "tests": {
+          "total": 175,
+          "passed": 169,
+          "failed": 6,
+          "status": "Failed"
+        },
+        "failures": [
+          {
+            "file": "web/src/services/__tests__/knowledge-access-service.test.ts",
+            "count": 5,
+            "cause": "Jest jsdom Crypto lacks subtle; read/search digest validation reaches real SHA-256 before the expected result."
+          },
+          {
+            "file": "web/src/pages/dataset/__tests__/narrow-navigation.test.tsx",
+            "count": 1,
+            "cause": "Sidebar has seven approved links; the old assertion expected six."
+          }
+        ],
+        "production_build": {
+          "exit_code": 0,
+          "index": {
+            "bytes": 3552,
+            "sha256_prefix": "665ee",
+            "descriptor_completeness": "Only bytes and the supplied SHA-256 prefix are recorded; no full digest is inferred."
+          }
+        },
+        "corrected_reference_check": {
+          "status": "Passed_ReferenceLockOnly",
+          "root_record": "b7c090",
+          "lock_id": "KCRL-20261115-30",
+          "manifest_sha256": "560ec710b6b33c65bee3a0d659b407805013923a27d9d9f92f8114da4b9d2c5a"
+        }
+      },
+      "minimal_test_fixture_candidate": {
+        "report": {
+          "path": ".local-data/coordination-20261108/review/web-test-failure-fix-formatted02/report.safe.json",
+          "bytes": 5965,
+          "sha256": "a86e4f83f2152abcc6b0878058795e13c9f40c01cfdf5bce4293acc804f14440"
+        },
+        "pins": {
+          "path": ".local-data/coordination-20261108/review/web-test-failure-fix-formatted02/before-after-pins.safe.json",
+          "bytes": 1202,
+          "sha256": "90277ac21e4e32634618dad5b5d4ba89ad0bee40c9c34e6469baf7312199a331"
+        },
+        "files": [
+          {
+            "path": "web/src/services/__tests__/knowledge-access-service.test.ts",
+            "bytes": 12859,
+            "sha256": "bd4c2a3e48c4d6338af79bedb9678cecb9f9c057b86003df5906e8b1a5cdd5ff"
+          },
+          {
+            "path": "web/src/pages/dataset/__tests__/narrow-navigation.test.tsx",
+            "bytes": 14773,
+            "sha256": "f1fef93fce29cf562e0b5def6a555c9326925ad3404236885ef515a971f0ccb2"
+          }
+        ],
+        "changes": [
+          "Test-local real Node WebCrypto getter spy with per-test restoration; production hash validation remains unchanged.",
+          "Keep all seven links and add owner href/destination/location assertions while retaining file-route assertions."
+        ],
+        "format": {
+          "status": "Passed",
+          "processed_files": 2
+        },
+        "lint": {
+          "status": "Passed",
+          "processed_files": 2,
+          "warnings": 0,
+          "errors": 0
+        },
+        "syntax_diagnostics": 0,
+        "formatting_AST_leaf_tokens_unchanged": true,
+        "prior_NUL_parse_and_original_format_failures_preserved_in_report": true,
+        "Jest_followup": "NotRun",
+        "original_six_failures_not_relabelled_as_passed": true
+      },
+      "login_observation": {
+        "subject": "real logged-in user",
+        "Root_recorded_text": "已进入系统",
+        "time_semantics": "Root clock-backed first record time supplied by Root; this is not the time when the user clicked or completed login.",
+        "first_Root_recorded_utc": "2026-11-15T17:32:35Z",
+        "JST_calendar_date": "2026-11-16"
+      },
+      "backend_validation_followup": {
+        "A04": {
+          "preflight_exit_code": 124,
+          "unit_tests_executed": 0,
+          "unit_result": "NotRun",
+          "formal_result": "Unknown"
+        },
+        "Go21_actual24": {
+          "first_fresh_native_select": {
+            "work_cap_ms": 8000,
+            "host_cap_ms": 8500,
+            "result": "DeadlineExpired",
+            "physically_closed": true
+          },
+          "formal_result": "Unknown"
+        }
+      },
+      "scope_preservation": {
+        "KCA02_specific_human_subject_and_three_stage_scopes": "Unchanged; existing subject, words and phase boundaries retained.",
+        "material": "SyntheticOnly",
+        "new_model_calls": 0,
+        "S1_formal_acceptance": "Pending",
+        "S2_S3_gates": "Preserved",
+        "intermediate_development_commit": "Requires current targeted unit/build/diff qualification and a separate exact Root grant.",
+        "new_interface_model_production_credential_or_root_layout_authority": false
+      },
+      "candidate_boundary": {
+        "next_lock_id": "KCRL-20261116-31",
+        "predicted_source_snapshot": {
+          "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+          "file_count": 5141,
+          "sha256": "06859d88b23cfff5fe74efe7d80e8253aba14508912c214d2f16de0c8c834503"
+        },
+        "unique_source_differences": [
+          "web/src/services/__tests__/knowledge-access-service.test.ts",
+          "web/src/pages/dataset/__tests__/narrow-navigation.test.tsx"
+        ],
+        "application": "CandidateOnly: no Main/official-lock/Git write. Actual six-file application, actual-tree check, independent review and later test/commit work require separate Root coordination."
+      }
+    },
+    "sole_root_validation_and_format_followup": {
+      "state": "RootSolo_ValidationPassed_GofmtCandidateOnly_GitPending_S1AcceptancePending",
+      "humanSteering": "现在暂停其他会话，后续所有任务由你一个人完成",
+      "coordination": "Other A/B/C/D chats paused; Root is sole implementer/reviewer/executor. No new delegation.",
+      "referenceBefore": {
+        "id": "KCRL-20261116-31",
+        "sha256": "b0e6051c08a1c401d90a19d3a960f1a0d9a67c03e5d6caada0cf2287a41c4eb5"
+      },
+      "validation": {
+        "web": {
+          "suites": 10,
+          "passed": 175,
+          "failed": 0,
+          "result": {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/web-tests01/result.safe.json",
+            "bytes": 615,
+            "sha256": "d3b23fc99a13543664468e4af8494d938cf580f585dd37fe13416e1a99288f4c"
+          }
+        },
+        "go": {
+          "passed": 67,
+          "failed": 0,
+          "nativeTailPassed": true,
+          "serverAndCLIBuilt": true,
+          "fiveHelpsPassed": true,
+          "LLD20Invoked": true,
+          "result": {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/linux-go03/result.safe.json",
+            "bytes": 2203,
+            "sha256": "55964020ef988167b61c9f886ef97c3e2e3bd7ee22c10d37162779b472cc524b"
+          }
+        },
+        "productionWebBuild": "Prior same product sources passed; two later Web edits are tests only.",
+        "limit": "Go validation preceded only the two gofmt-only test edits below; exact canonical lexical tokens match. No new product code or model calls."
+      },
+      "goFormatOnly": [
+        {
+          "path": "internal/engine/elasticsearch/knowledge_access_integration_test.go",
+          "semanticTokensEqual": true,
+          "canonicalTokenSHA256": "c9eb8229fd763d8056bf7cff5ef573b5a8f72b5c41fdb8566a889cc3604f011c",
+          "beforeSHA256": "9c572b9025a448c718f3d9c3d230829887fa4ffa850a847faa11047dca2d5d77",
+          "afterSHA256": "87ba2be81d9626ad8efa117173a0ec0fb9a7f898ef06ad1f68f4bb174ca10f73"
+        },
+        {
+          "path": "internal/service/dataset/knowledge_access_mysql_generation_test.go",
+          "semanticTokensEqual": true,
+          "canonicalTokenSHA256": "797e35c45f132b956006f8386ed0df183e3545fa1359104718f992740c7e60dd",
+          "beforeSHA256": "72867b72e57d04a4cfa3dad20042d2078215816101206033b8963b94a15cebc3",
+          "afterSHA256": "08491a64c6c715aa18fdfa8628675a13dd9814c2c93548106c6373dc10630381"
+        }
+      ],
+      "git": {
+        "state": "Pending",
+        "firstHookFailure": "Windows multiline shell execution altered two frozen files; exact preimages restored and Ref31 passed again.",
+        "readonlyRetry": "All eleven checks executed; only two gofmt failures remained. Future commit requires all checks to pass.",
+        "frozenBytes": "Schema and historical authority remain exact; no normalization of immutable contracts."
+      },
+      "runtime": {
+        "login": "Human previously confirmed entered system",
+        "adminRestartPolicy": "Existing exact admin changed from no to unless-stopped and verified running",
+        "realAcceptance": "Pending"
+      },
+      "scope": {
+        "sameKCA02Subject": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3",
+        "S1": "Pending",
+        "S2S3": "Existing gates retained",
+        "syntheticOnly": true,
+        "newModelCalls": 0,
+        "newInterfaces": false,
+        "rootLayoutChanged": false
+      },
+      "preservation": "All prior execution bytes and authority suffix retained; Ref31 raw snapshot preserves previous history. Not a final acceptance or publication claim."
     }
   }
 }

@@ -42,9 +42,23 @@ func contentSameSource(ref entity.KnowledgeContentSourceRef, source *entity.Know
 
 func (d *DatasetService) GetKnowledgeContentRepresentation(ctx context.Context, userID, domainID string, target entity.KnowledgeContentTarget) (value *entity.KnowledgeContentRepresentation, err error) {
 	defer func() { err = contentNormalize(err) }()
+	kb, err := d.knowledgeBase(ctx, userID, domainID, true)
+	if err != nil {
+		return nil, err
+	}
+	value, err = d.contentStoredRepresentation(ctx, kb, target)
+	if err != nil {
+		return nil, err
+	}
 	if _, err = d.knowledgeBase(ctx, userID, domainID, true); err != nil {
 		return nil, err
 	}
+	return value, nil
+}
+
+// contentStoredRepresentation verifies fixed storage identities. Its caller owns authorization.
+func (d *DatasetService) contentStoredRepresentation(ctx context.Context, kb *entity.Knowledgebase, target entity.KnowledgeContentTarget) (value *entity.KnowledgeContentRepresentation, err error) {
+	userID, domainID := kb.CreatedBy, kb.ID
 	if target.Validate(domainID) != nil {
 		return nil, contentError(400, "invalid_request")
 	}
@@ -52,17 +66,17 @@ func (d *DatasetService) GetKnowledgeContentRepresentation(ctx context.Context, 
 	value = &entity.KnowledgeContentRepresentation{Version: entity.KnowledgeContentVersion, Binding: "bound", Source: &target.Source, Ref: target.Representation, State: "ready"}
 	switch target.Representation.Kind {
 	case "source_revision":
-		source, readErr := d.GetKnowledgeSource(ctx, userID, domainID, target.Source.RevisionID)
+		source, readErr := d.knowledgeSource(ctx, domainID, target.Source.RevisionID)
 		if readErr != nil {
 			var public *KnowledgeError
 			if !errors.As(readErr, &public) || public.Status != 415 {
 				return nil, readErr
 			}
-			original, originalErr := d.GetKnowledgeOriginalRevision(ctx, userID, domainID, target.Source.RevisionID)
+			original, originalErr := loadOriginalRevision(contentProofStore(ctx), domainID, target.Source.RevisionID)
 			if originalErr != nil {
 				var missing *KnowledgeError
-				if errors.As(originalErr, &missing) && missing.Status == 404 {
-					source, parsedErr := d.parsedAuthorizedSource(ctx, userID, domainID, target.Source)
+				if errors.Is(originalErr, gorm.ErrRecordNotFound) || errors.As(originalErr, &missing) && missing.Status == 404 {
+					source, parsedErr := parsedSourceRow(contentProofStore(ctx), kb, target.Source)
 					if parsedErr == nil && source.RepresentationKind == "original_only" {
 						value.State, value.Reason, value.NodeCount = "unavailable", contentString("original_has_no_text_representation"), contentInt(0)
 						break
@@ -70,7 +84,7 @@ func (d *DatasetService) GetKnowledgeContentRepresentation(ctx context.Context, 
 				}
 				return nil, originalErr
 			}
-			if original.SourceID != target.Source.SourceID || original.SHA256 != target.Source.SHA256 {
+			if original.DocumentID != target.Source.SourceID || original.SHA256 != target.Source.SHA256 {
 				return nil, contentError(409, "content_integrity")
 			}
 			value.State, value.Reason, value.NodeCount = "unavailable", contentString("original_has_no_text_representation"), contentInt(0)
@@ -85,7 +99,7 @@ func (d *DatasetService) GetKnowledgeContentRepresentation(ctx context.Context, 
 		root := contentRef("c1_node", source.RootNodeID)
 		value.RootRef, value.CoordinateSpace = &root, "source_utf8"
 	case "structure_view":
-		view, readErr := d.GetKnowledgeStructureView(ctx, userID, domainID, *target.Representation.ID)
+		view, readErr := d.structureStoredView(ctx, userID, domainID, *target.Representation.ID)
 		if readErr != nil {
 			return nil, readErr
 		}
@@ -99,7 +113,7 @@ func (d *DatasetService) GetKnowledgeContentRepresentation(ctx context.Context, 
 		root := contentRef("r1_node", member.RootStructureNodeID)
 		value.RootRef, value.CoordinateSpace = &root, "source_utf8"
 	case "parsed_representation":
-		state, readErr := d.parsedReadRepresentation(ctx, userID, domainID, *target.Representation.ID)
+		state, readErr := d.parsedStoredRepresentation(ctx, kb, *target.Representation.ID)
 		if readErr != nil {
 			return nil, readErr
 		}
@@ -112,7 +126,7 @@ func (d *DatasetService) GetKnowledgeContentRepresentation(ctx context.Context, 
 			value.Reason = contentString("representation_contains_unsupported_content")
 		}
 	case "document_representation":
-		rep, readErr := d.GetKnowledgeDocumentRepresentation(ctx, userID, domainID, *target.Representation.ID)
+		rep, readErr := documentStoredRepresentation(contentProofStore(ctx), userID, domainID, *target.Representation.ID)
 		if readErr != nil {
 			return nil, readErr
 		}
@@ -124,9 +138,6 @@ func (d *DatasetService) GetKnowledgeContentRepresentation(ctx context.Context, 
 		if rep.Quality != "complete" || rep.UnsupportedBlockCount > 0 {
 			value.State, value.Reason = "partial", contentString("representation_contains_unsupported_content")
 		}
-	}
-	if _, err = d.knowledgeBase(ctx, userID, domainID, true); err != nil {
-		return nil, err
 	}
 	return value, nil
 }

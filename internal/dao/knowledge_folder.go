@@ -15,7 +15,7 @@ import (
 // Names are display values; subsequent renames do not change the binding.
 func (d *FileDAO) EnsureKnowledgeFolder(ctx context.Context, db *gorm.DB, domainID string) (*entity.File, error) {
 	var result entity.File
-	err := db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+	err := WithKnowledgeAccessNativeMutation(ctx, db, KnowledgeAccessNativeMutation{Action: "native_domain", DomainIDs: []string{domainID}}, func(tx *gorm.DB) error {
 		var kb entity.Knowledgebase
 		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).Where("id = ?", domainID).Take(&kb).Error; err != nil {
 			return err

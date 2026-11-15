@@ -14,14 +14,20 @@ type parsedReadState struct {
 }
 
 func (d *DatasetService) parsedReadRepresentation(ctx context.Context, owner, domain, id string) (*parsedReadState, error) {
-	if _, err := d.knowledgeBase(ctx, owner, domain, true); err != nil {
+	kb, err := d.knowledgeBase(ctx, owner, domain, true)
+	if err != nil {
 		return nil, err
 	}
+	return d.parsedStoredRepresentation(ctx, kb, id)
+}
+
+func (d *DatasetService) parsedStoredRepresentation(ctx context.Context, kb *entity.Knowledgebase, id string) (*parsedReadState, error) {
+	owner, domain := kb.CreatedBy, kb.ID
 	if !isKnowledgeID(id, 64) {
 		return nil, contentError(404, "not_found")
 	}
 	var row entity.KnowledgeDocumentRepresentationRecord
-	if err := dao.DB.WithContext(ctx).Omit("reading_text").Where("id = ? AND owner_id = ? AND domain_id = ? AND protocol = ?", id, owner, domain, entity.KnowledgeParsedProtocol).Take(&row).Error; err != nil {
+	if err := contentProofStore(ctx).Omit("reading_text").Where("id = ? AND owner_id = ? AND domain_id = ? AND protocol = ?", id, owner, domain, entity.KnowledgeParsedProtocol).Take(&row).Error; err != nil {
 		return nil, err
 	}
 	state := &parsedReadState{}
@@ -31,14 +37,14 @@ func (d *DatasetService) parsedReadRepresentation(ctx context.Context, owner, do
 	rep := state.Representation
 	calculated, err := entity.KnowledgeParsedRepresentationDigest(rep)
 	manifestSHA, manifestErr := entity.KnowledgeParsedManifestDigest(state.Manifest)
-	if err != nil || manifestErr != nil || calculated != id || rep.Ref.ID == nil || *rep.Ref.ID != id || manifestSHA != rep.ManifestSHA256 || rep.NodeCount != int64(len(state.Manifest)) || rep.Source.DomainID != domain || rep.Source.SourceID != row.SourceID || rep.Source.RevisionID != row.SourceRevisionID {
+	if err != nil || manifestErr != nil || calculated != id || rep.Ref.ID == nil || *rep.Ref.ID != id || manifestSHA != rep.ManifestSHA256 || len(state.Manifest) == 0 || rep.NodeCount != int64(len(state.Manifest)) || rep.Source.DomainID != domain || rep.Source.SourceID != row.SourceID || rep.Source.RevisionID != row.SourceRevisionID {
 		return nil, contentError(409, "content_integrity")
 	}
 	root, err := entity.KnowledgeParsedNodeDigest(id, 0, state.Manifest[0].PayloadSHA256)
 	if err != nil || rep.RootRef.Kind != "parsed_node" || rep.RootRef.ID == nil || *rep.RootRef.ID != root || rep.RootRef.ItemIndex != nil {
 		return nil, contentError(409, "content_integrity")
 	}
-	source, err := d.parsedAuthorizedSource(ctx, owner, domain, rep.Source)
+	source, err := parsedSourceRow(contentProofStore(ctx), kb, rep.Source)
 	if err != nil {
 		return nil, err
 	}
@@ -54,7 +60,7 @@ func parsedReadNode(ctx context.Context, owner, domain string, state *parsedRead
 	}
 	rep := state.Representation
 	var row entity.KnowledgeDocumentNodeRecord
-	if err := dao.DB.WithContext(ctx).Where("id = ? AND owner_id = ? AND domain_id = ? AND representation_id = ?", id, owner, domain, *rep.Ref.ID).Take(&row).Error; err != nil {
+	if err := contentProofStore(ctx).Where("id = ? AND owner_id = ? AND domain_id = ? AND representation_id = ?", id, owner, domain, *rep.Ref.ID).Take(&row).Error; err != nil {
 		return nil, err
 	}
 	var node entity.KnowledgeParsedNode

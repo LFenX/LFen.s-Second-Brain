@@ -227,6 +227,7 @@ async function renderCatalogue(entry = MockFixedPath) {
             element={<KnowledgeCatalogue />}
           />
           <Route path="files/:id" element={<p>文件列表目的页</p>} />
+          <Route path="knowledge-access/:id" element={<p>共享授权目的页</p>} />
         </Route>
       </Routes>
       <LocationProbe />
@@ -329,8 +330,22 @@ test('expanded dataset navigation keeps all normal links and routes to the selec
   await renderCatalogue();
   fireEvent.click(screen.getByRole('button', { name: /知识库:.*展开/ }));
   const navigation = screen.getByRole('navigation', { name: '知识库' });
-  expect(within(navigation).getAllByRole('link')).toHaveLength(6);
-  const files = within(navigation).getByRole('link', { name: '文件列表' });
+  expect(within(navigation).getAllByRole('link')).toHaveLength(7);
+  const ownerAccess = within(navigation).getByRole('link', {
+    name: mockTranslate('knowledgeAccess.ownerTitle'),
+  });
+  expect(ownerAccess).toHaveAttribute(
+    'href',
+    `/dataset/knowledge-access/${MockDomain}`,
+  );
+  fireEvent.click(ownerAccess);
+  expect(await screen.findByText('共享授权目的页')).toBeInTheDocument();
+  expect(screen.getByLabelText('当前位置')).toHaveTextContent(
+    `/dataset/knowledge-access/${MockDomain}`,
+  );
+  const files = within(
+    screen.getByRole('navigation', { name: '知识库' }),
+  ).getByRole('link', { name: '文件列表' });
   expect(files).toHaveAttribute('href', `/dataset/files/${MockDomain}`);
   fireEvent.click(files);
   expect(await screen.findByText('文件列表目的页')).toBeInTheDocument();

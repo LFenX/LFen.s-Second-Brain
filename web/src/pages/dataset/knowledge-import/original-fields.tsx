@@ -7,9 +7,13 @@ import { FileUploader } from '@/components/file-uploader';
 import { KnowledgeRequestError } from '@/services/knowledge-foundation-service';
 import type { OriginalClassification } from '@/interfaces/database/knowledge-original';
 import type { OriginalRegistrationRequest } from '@/interfaces/request/knowledge-original';
-import { compareDirectoryPaths } from '@/utils/knowledge-directory-schema';
+import {
+  compareDirectoryPaths,
+  validDirectoryPath,
+} from '@/utils/knowledge-directory-schema';
 import {
   OriginalMaxBytes,
+  originalFamily,
   validOriginalData,
 } from '@/utils/knowledge-original-schema';
 import { ClassificationFields } from './fields';
@@ -51,6 +55,11 @@ const InitialClassification: OriginalClassification = {
   component_side: 'non_code',
   language: '',
 };
+class UnsupportedOriginalPathsError extends KnowledgeRequestError {
+  constructor() {
+    super(400, 'knowledge_invalid_request');
+  }
+}
 export function OriginalFailure({
   error,
   onRetry,
@@ -60,6 +69,7 @@ export function OriginalFailure({
 }) {
   const { t } = useTranslation();
   const value = error instanceof KnowledgeRequestError ? error : null;
+  const unsupportedPaths = error instanceof UnsupportedOriginalPathsError;
   const label =
     value && [401, 403, 404].includes(value.status)
       ? 'notVisible'
@@ -81,8 +91,13 @@ export function OriginalFailure({
       role="alert"
       className="space-y-2 rounded-lg border border-border-button p-3"
     >
-      <p>{t('knowledgeOriginal.' + label)}</p>
-      {value && (
+      <p>
+        {t(
+          'knowledgeOriginal.' +
+            (unsupportedPaths ? 'unsupportedPathInput' : label),
+        )}
+      </p>
+      {value && !unsupportedPaths && (
         <p className="break-all text-xs text-text-secondary">
           {value.code}
           {value.requestId ? ' · ' + value.requestId : ''}
@@ -142,7 +157,14 @@ export function OriginalRegistrationForm({
       default_classification: classification,
     };
     if (!validOriginalData('CreateRegistration', input)) {
-      flow.fail(new KnowledgeRequestError(400, 'knowledge_invalid_request'));
+      const unsupported = input.include_paths.some(
+        (path) => validDirectoryPath(path) && !originalFamily(path),
+      );
+      flow.fail(
+        unsupported
+          ? new UnsupportedOriginalPathsError()
+          : new KnowledgeRequestError(400, 'knowledge_invalid_request'),
+      );
       return;
     }
     void flow.register(input);

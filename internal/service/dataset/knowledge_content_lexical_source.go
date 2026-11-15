@@ -6,7 +6,6 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"ragflow/internal/dao"
 	"ragflow/internal/entity"
 	parser "ragflow/internal/parser/parser"
 )
@@ -30,11 +29,27 @@ func (d *DatasetService) contentLexicalSnapshot(ctx context.Context, owner, doma
 	if err != nil {
 		return nil, contentLexicalNormalize(err)
 	}
+	kb, err := d.knowledgeBase(ctx, owner, domain, true)
+	if err != nil {
+		return nil, err
+	}
+	snapshot, err := d.contentLexicalStoredSnapshot(ctx, kb, target, meta, language, producer)
+	if err != nil {
+		return nil, err
+	}
+	if _, err := d.GetKnowledgeContentRepresentation(ctx, owner, domain, target); err != nil {
+		return nil, contentLexicalNormalize(err)
+	}
+	return snapshot, nil
+}
+
+func (d *DatasetService) contentLexicalStoredSnapshot(ctx context.Context, kb *entity.Knowledgebase, target entity.KnowledgeContentTarget, meta *entity.KnowledgeContentRepresentation, language, producer string) (*contentLexicalSnapshot, error) {
+	owner, domain := kb.CreatedBy, kb.ID
 	if meta.RootRef == nil || meta.Ref.ID == nil || meta.Source == nil {
 		return nil, lexicalError(415, "unsupported_representation")
 	}
 	if meta.Ref.Kind == "source_revision" || meta.Ref.Kind == "structure_view" {
-		return d.contentLexicalSourceText(ctx, owner, domain, target, meta, language, producer)
+		return d.contentLexicalStoredSourceText(ctx, owner, domain, target, meta, language, producer)
 	}
 	if meta.CoordinateSpace != "derived_utf8" {
 		return nil, lexicalError(415, "unsupported_representation")
@@ -46,49 +61,51 @@ func (d *DatasetService) contentLexicalSnapshot(ctx context.Context, owner, doma
 		return nil, lexicalError(415, "unsupported_representation")
 	}
 	var row entity.KnowledgeDocumentRepresentationRecord
-	if err := dao.DB.WithContext(ctx).Select("reading_text", "manifest").Where("id = ? AND owner_id = ? AND domain_id = ? AND protocol = ?", *meta.Ref.ID, owner, domain, protocol).Take(&row).Error; err != nil {
+	if err := contentProofStore(ctx).Select("reading_text", "manifest").Where("id = ? AND owner_id = ? AND domain_id = ? AND protocol = ?", *meta.Ref.ID, owner, domain, protocol).Take(&row).Error; err != nil {
 		return nil, contentLexicalNormalize(err)
 	}
 	if len(row.ReadingText) > 4<<20 || !utf8.ValidString(row.ReadingText) {
 		return nil, lexicalError(409, "integrity_error")
 	}
 	var nodes []entity.KnowledgeDocumentNodeRecord
-	if err := dao.DB.WithContext(ctx).Where("owner_id = ? AND domain_id = ? AND representation_id = ?", owner, domain, *meta.Ref.ID).Limit(maxNodes + 1).Find(&nodes).Error; err != nil {
+	if err := contentProofStore(ctx).Where("owner_id = ? AND domain_id = ? AND representation_id = ?", owner, domain, *meta.Ref.ID).Limit(maxNodes + 1).Find(&nodes).Error; err != nil {
 		return nil, contentLexicalNormalize(err)
 	}
 	if len(nodes) < 1 || len(nodes) > maxNodes || meta.NodeCount == nil || int64(len(nodes)) != *meta.NodeCount {
 		return nil, lexicalError(409, "integrity_error")
 	}
 	snapshot := &contentLexicalSnapshot{Representation: *meta, Body: row.ReadingText, ReadingSHA256: lexicalSHA([]byte(row.ReadingText)), Passages: []entity.KnowledgeContentNode{}}
+	var err error
 	if protocol == entity.KnowledgeParsedProtocol {
-		err = d.contentLexicalParsedNodes(ctx, owner, domain, snapshot, row.Manifest, nodes)
+		err = d.contentLexicalStoredParsedNodes(ctx, kb, snapshot, row.Manifest, nodes)
 	} else {
-		err = d.contentLexicalDocumentNodes(ctx, owner, domain, snapshot, row.Manifest, nodes)
+		err = d.contentLexicalStoredDocumentNodes(ctx, kb, snapshot, row.Manifest, nodes)
 	}
 	if err != nil {
-		return nil, contentLexicalNormalize(err)
-	}
-	if _, err := d.GetKnowledgeContentRepresentation(ctx, owner, domain, target); err != nil {
 		return nil, contentLexicalNormalize(err)
 	}
 	return snapshot, nil
 }
 
-func (d *DatasetService) contentLexicalSourceText(ctx context.Context, owner, domain string, target entity.KnowledgeContentTarget, meta *entity.KnowledgeContentRepresentation, language, producer string) (*contentLexicalSnapshot, error) {
+func (d *DatasetService) contentLexicalStoredSourceText(ctx context.Context, owner, domain string, target entity.KnowledgeContentTarget, meta *entity.KnowledgeContentRepresentation, language, producer string) (*contentLexicalSnapshot, error) {
 	old := entity.KnowledgeLexicalTarget{Source: entity.KnowledgeLexicalSourceRef{DomainID: target.Source.DomainID, SourceID: target.Source.SourceID, RevisionID: target.Source.RevisionID, SHA256: target.Source.SHA256}, Representation: entity.KnowledgeLexicalRepresentationRef{Kind: target.Representation.Kind, ID: *target.Representation.ID, ProducerSHA256: target.Representation.ProducerSHA256}}
 	snapshot := &contentLexicalSnapshot{Representation: *meta, ReadingSHA256: target.Source.SHA256, Passages: []entity.KnowledgeContentNode{}}
 	if target.Representation.Kind == "source_revision" {
-		source, body, err := d.lexicalSource(ctx, owner, domain, old)
+		source, body, err := d.lexicalStoredSource(ctx, domain, old)
 		if err != nil {
 			return nil, err
 		}
-		root, err := d.GetKnowledgeContentNode(ctx, owner, domain, entity.KnowledgeContentAddress{Target: target, Node: *meta.RootRef})
+		rawRoot, _, err := d.knowledgeNode(ctx, domain, *meta.RootRef.ID)
+		var root *entity.KnowledgeContentNode
+		if err == nil {
+			root, err = contentProjectC1(source, rawRoot)
+		}
 		if err != nil {
 			return nil, contentLexicalNormalize(err)
 		}
-		snapshot.Body, snapshot.Name, snapshot.Root = string(body), source.RelativePath, &root.Node
+		snapshot.Body, snapshot.Name, snapshot.Root = string(body), source.RelativePath, root
 	} else {
-		units, coverage, _, err := d.lexicalUnits(ctx, owner, domain, language, producer, entity.KnowledgeLexicalSelection{Kind: "fixed_revisions", Targets: []entity.KnowledgeLexicalTarget{old}})
+		units, coverage, _, err := d.lexicalStoredUnits(ctx, owner, domain, language, producer, entity.KnowledgeLexicalSelection{Kind: "fixed_revisions", Targets: []entity.KnowledgeLexicalTarget{old}})
 		if err != nil {
 			return nil, err
 		}
@@ -103,11 +120,23 @@ func (d *DatasetService) contentLexicalSourceText(ctx context.Context, owner, do
 			}
 			body.WriteString(unit.Text)
 			address := entity.KnowledgeContentAddress{Target: target, Node: contentRef("r1_node", unit.Row.Member.Node.ID)}
-			node, err := d.GetKnowledgeContentNode(ctx, owner, domain, address)
+			view, err := d.structureStoredView(ctx, owner, domain, *target.Representation.ID)
+			if err != nil {
+				return nil, err
+			}
+			rawNode, err := structureReadNode(ctx, owner, domain, view, *address.Node.ID)
+			var node *entity.KnowledgeContentNode
+			if err == nil {
+				source, loadErr := d.knowledgeSource(ctx, domain, target.Source.RevisionID)
+				err = loadErr
+				if err == nil {
+					node, err = contentProjectR1(source, view, rawNode)
+				}
+			}
 			if err != nil {
 				return nil, contentLexicalNormalize(err)
 			}
-			snapshot.Passages = append(snapshot.Passages, node.Node)
+			snapshot.Passages = append(snapshot.Passages, *node)
 			snapshot.Name = unit.Name
 		}
 		snapshot.Body = body.String()
@@ -118,20 +147,17 @@ func (d *DatasetService) contentLexicalSourceText(ctx context.Context, owner, do
 	if lexicalSHA([]byte(snapshot.Body)) != target.Source.SHA256 || !utf8.ValidString(snapshot.Body) {
 		return nil, lexicalError(409, "integrity_error")
 	}
-	if _, err := d.GetKnowledgeContentRepresentation(ctx, owner, domain, target); err != nil {
-		return nil, contentLexicalNormalize(err)
-	}
 	return snapshot, nil
 }
 
-func (d *DatasetService) contentLexicalParsedNodes(ctx context.Context, owner, domain string, snapshot *contentLexicalSnapshot, rawManifest string, rows []entity.KnowledgeDocumentNodeRecord) error {
-	state, err := d.parsedReadRepresentation(ctx, owner, domain, *snapshot.Representation.Ref.ID)
+func (d *DatasetService) contentLexicalStoredParsedNodes(ctx context.Context, kb *entity.Knowledgebase, snapshot *contentLexicalSnapshot, rawManifest string, rows []entity.KnowledgeDocumentNodeRecord) error {
+	state, err := d.parsedStoredRepresentation(ctx, kb, *snapshot.Representation.Ref.ID)
 	if err != nil {
 		return err
 	}
 	rep := state.Representation
 	snapshot.ManifestSHA256 = contentString(rep.ManifestSHA256)
-	source, err := d.parsedAuthorizedSource(ctx, owner, domain, rep.Source)
+	source, err := parsedSourceRow(contentProofStore(ctx), kb, rep.Source)
 	if err != nil {
 		return err
 	}
@@ -182,8 +208,9 @@ func (d *DatasetService) contentLexicalParsedNodes(ctx context.Context, owner, d
 	return nil
 }
 
-func (d *DatasetService) contentLexicalDocumentNodes(ctx context.Context, owner, domain string, snapshot *contentLexicalSnapshot, rawManifest string, rows []entity.KnowledgeDocumentNodeRecord) error {
-	rep, err := d.documentReadRepresentation(ctx, owner, domain, *snapshot.Representation.Ref.ID)
+func (d *DatasetService) contentLexicalStoredDocumentNodes(ctx context.Context, kb *entity.Knowledgebase, snapshot *contentLexicalSnapshot, rawManifest string, rows []entity.KnowledgeDocumentNodeRecord) error {
+	owner, domain := kb.CreatedBy, kb.ID
+	rep, err := documentStoredRepresentation(contentProofStore(ctx), owner, domain, *snapshot.Representation.Ref.ID)
 	if err != nil {
 		return err
 	}

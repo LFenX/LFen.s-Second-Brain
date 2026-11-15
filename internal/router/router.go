@@ -242,6 +242,7 @@ func (r *Router) Setup(engine *gin.Engine) {
 	r.setupKnowledgeStructureRoutes(engine)
 	r.setupKnowledgeDocumentRoutes(engine)
 	r.setupKnowledgeContentRoutes(engine)
+	r.setupKnowledgeAccessRoutes(engine)
 	r.setupKnowledgeLocalLexicalRoutes(engine)
 	engine.POST("/api/v1/knowledge/mcp", r.datasetsHandler.KnowledgeMCP)
 	engine.POST("/api/v1/knowledge/content/mcp", r.datasetsHandler.KnowledgeContentMCP)

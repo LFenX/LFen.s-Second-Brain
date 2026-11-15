@@ -105,16 +105,11 @@ func (dao *UserDAO) GetByEmail(ctx context.Context, db *gorm.DB, email string) (
 // GetByAccessToken get user by access token
 func (dao *UserDAO) GetByAccessToken(ctx context.Context, db *gorm.DB, token string) (*entity.User, error) {
 	var user entity.User
-	err := db.WithContext(ctx).Where("access_token = ?", token).First(&user).Error
+	err := KnowledgeAccessReadDB(ctx, db).Where("access_token = ?", token).First(&user).Error
 	if err != nil {
 		return nil, err
 	}
 	return &user, nil
-}
-
-// Update update user
-func (dao *UserDAO) Update(ctx context.Context, db *gorm.DB, user *entity.User) error {
-	return db.WithContext(ctx).Save(user).Error
 }
 
 // UpdateAccessToken update user's access token

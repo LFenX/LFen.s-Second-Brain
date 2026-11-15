@@ -17,35 +17,40 @@ import (
 func (d *DatasetService) documentReadRepresentation(ctx context.Context, owner, domain, id string) (*entity.KnowledgeDocumentRepresentation, error) {
 	var value *entity.KnowledgeDocumentRepresentation
 	err := d.documentTransaction(ctx, owner, domain, func(tx *gorm.DB, _ *entity.Knowledgebase, _ time.Time) error {
-		if !isKnowledgeID(id, 64) {
-			return documentError(404, "not_found")
-		}
-		var row entity.KnowledgeDocumentRepresentationRecord
-		if err := tx.Omit("reading_text", "manifest").Where("id = ? AND owner_id = ? AND domain_id = ? AND protocol = ?", id, owner, domain, documentTaskProtocol).Take(&row).Error; err != nil {
-			return err
-		}
-		rep, err := documentDecode[entity.KnowledgeDocumentRepresentation](row.Payload)
-		if err != nil {
-			return err
-		}
-		if rep.RepresentationID != id || rep.OwnerID != owner || rep.DomainID != domain || rep.Original.SourceID != row.SourceID || rep.Original.SourceRevisionID != row.SourceRevisionID {
-			return documentError(409, "document_integrity")
-		}
-		source, err := loadOriginalRevision(tx, domain, rep.Original.SourceRevisionID)
-		if err != nil {
-			return err
-		}
-		if source.DocumentID != rep.Original.SourceID || source.SHA256 != rep.Original.SHA256 || source.ByteLength != rep.Original.ByteLength || source.OriginalRegistrationID != rep.Original.RegistrationID {
-			return documentError(409, "document_integrity")
-		}
-		digest, err := entity.KnowledgeDocumentRepresentationDigest(*rep)
-		if err != nil || digest != id {
-			return documentError(409, "document_integrity")
-		}
-		value = rep
-		return nil
+		var err error
+		value, err = documentStoredRepresentation(tx, owner, domain, id)
+		return err
 	})
 	return value, err
+}
+
+func documentStoredRepresentation(tx *gorm.DB, owner, domain, id string) (*entity.KnowledgeDocumentRepresentation, error) {
+	if !isKnowledgeID(id, 64) {
+		return nil, documentError(404, "not_found")
+	}
+	var row entity.KnowledgeDocumentRepresentationRecord
+	if err := tx.Omit("reading_text", "manifest").Where("id = ? AND owner_id = ? AND domain_id = ? AND protocol = ?", id, owner, domain, documentTaskProtocol).Take(&row).Error; err != nil {
+		return nil, err
+	}
+	rep, err := documentDecode[entity.KnowledgeDocumentRepresentation](row.Payload)
+	if err != nil {
+		return nil, err
+	}
+	if rep.RepresentationID != id || rep.OwnerID != owner || rep.DomainID != domain || rep.Original.SourceID != row.SourceID || rep.Original.SourceRevisionID != row.SourceRevisionID {
+		return nil, documentError(409, "document_integrity")
+	}
+	source, err := loadOriginalRevision(tx, domain, rep.Original.SourceRevisionID)
+	if err != nil {
+		return nil, err
+	}
+	if source.DocumentID != rep.Original.SourceID || source.SHA256 != rep.Original.SHA256 || source.ByteLength != rep.Original.ByteLength || source.OriginalRegistrationID != rep.Original.RegistrationID {
+		return nil, documentError(409, "document_integrity")
+	}
+	digest, err := entity.KnowledgeDocumentRepresentationDigest(*rep)
+	if err != nil || digest != id {
+		return nil, documentError(409, "document_integrity")
+	}
+	return rep, nil
 }
 
 func (d *DatasetService) GetKnowledgeDocumentRepresentation(ctx context.Context, owner, domain, id string) (*entity.KnowledgeDocumentRepresentation, error) {

@@ -51,11 +51,16 @@ func (d *DatasetService) structureReadView(ctx context.Context, user, domain, id
 	if err := d.AuthorizeKnowledgeStructure(ctx, user, domain); err != nil {
 		return nil, err
 	}
+	return d.structureStoredView(ctx, user, domain, id)
+}
+
+// structureStoredView verifies immutable storage metadata without conferring authority.
+func (d *DatasetService) structureStoredView(ctx context.Context, user, domain, id string) (*entity.KnowledgeStructureView, error) {
 	if !isKnowledgeID(id, 64) {
 		return nil, structureReadError(404, "not_found")
 	}
 	var row entity.KnowledgeStructureViewRecord
-	if err := dao.DB.WithContext(ctx).Where("id = ? AND owner_id = ? AND domain_id = ? AND published = ?", id, user, domain, true).Take(&row).Error; err != nil {
+	if err := contentProofStore(ctx).Where("id = ? AND owner_id = ? AND domain_id = ? AND published = ?", id, user, domain, true).Take(&row).Error; err != nil {
 		return nil, structureReadNormalize(err)
 	}
 	var view entity.KnowledgeStructureView
@@ -94,7 +99,7 @@ func structureReadNode(ctx context.Context, user, domain string, view *entity.Kn
 		return nil, structureReadError(404, "not_found")
 	}
 	var row entity.KnowledgeStructureNodeRecord
-	if err := dao.DB.WithContext(ctx).Where("id = ? AND owner_id = ? AND domain_id = ? AND view_id = ?", id, user, domain, view.ViewID).Take(&row).Error; err != nil {
+	if err := contentProofStore(ctx).Where("id = ? AND owner_id = ? AND domain_id = ? AND view_id = ?", id, user, domain, view.ViewID).Take(&row).Error; err != nil {
 		return nil, structureReadNormalize(err)
 	}
 	var node entity.KnowledgeStructureNode

@@ -11,7 +11,7 @@ import (
 	"ragflow/internal/dao"
 	"ragflow/internal/entity"
 	pipelinepkg "ragflow/internal/ingestion/pipeline"
-	"ragflow/internal/permission"
+	permissionpkg "ragflow/internal/permission"
 	permissionresponse "ragflow/internal/permission/response"
 	"ragflow/internal/service"
 	"ragflow/internal/storage"
@@ -21,7 +21,7 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-func (d *DatasetService) CreateDataset(ctx context.Context, req *service.CreateDatasetRequest, subject permission.Subject) (map[string]interface{}, common.ErrorCode, error) {
+func (d *DatasetService) CreateDataset(ctx context.Context, req *service.CreateDatasetRequest, subject permissionpkg.Subject) (map[string]interface{}, common.ErrorCode, error) {
 	tenantID := strings.TrimSpace(subject.TenantID)
 	userID := strings.TrimSpace(subject.UserID)
 	if tenantID == "" || userID == "" {
@@ -43,7 +43,7 @@ func (d *DatasetService) CreateDataset(ctx context.Context, req *service.CreateD
 	if err != nil || tenant == nil {
 		return nil, common.CodeDataError, errors.New("tenant not found")
 	}
-	if err := permission.NewDatabaseChecker(dao.DB).CheckTenant(ctx, subject, tenantID, permission.TenantMember); err != nil {
+	if err := permissionpkg.NewDatabaseChecker(dao.DB).CheckTenant(ctx, subject, tenantID, permissionpkg.TenantMember); err != nil {
 		code, permissionErr := permissionresponse.Normalize(err)
 		return nil, code, permissionErr
 	}
@@ -229,7 +229,18 @@ func (d *DatasetService) CreateDataset(ctx context.Context, req *service.CreateD
 		Status:       &status,
 	}
 
-	if err = d.kbDAO.Create(ctx, dao.DB, kb); err != nil {
+	if err = dao.WithKnowledgeAccessNativeMutation(ctx, dao.DB, dao.KnowledgeAccessNativeMutation{ActorUserID: &userID, Action: "native_domain", UserIDs: []string{userID}, TenantIDs: []string{tenantID}, DomainIDs: []string{kbID}}, func(tx *gorm.DB) error {
+		if err := dao.CheckKnowledgeAccessNativeUser(tx, userID); err != nil {
+			return err
+		}
+		if err := dao.CheckKnowledgeAccessNativeTenant(tx, tenantID); err != nil {
+			return err
+		}
+		if err := permissionpkg.NewLockingDatabaseChecker(tx).CheckTenant(ctx, subject, tenantID, permissionpkg.TenantMember); err != nil {
+			return err
+		}
+		return d.kbDAO.Create(ctx, tx, kb)
+	}); err != nil {
 		if dao.IsDuplicateKeyErr(err) {
 			return nil, common.CodeDataError, fmt.Errorf("dataset name '%s' already exists", name)
 		}
@@ -266,19 +277,19 @@ func (d *DatasetService) GetDataset(ctx context.Context, datasetID, userID strin
 	// or malformed id simply fails the permission check.
 	normalizedID, err := normalizeDatasetID(datasetID)
 	if err != nil {
-		code, permissionErr := permissionresponse.NormalizeHidden(permission.ErrResourceNotFound)
+		code, permissionErr := permissionresponse.NormalizeHidden(permissionpkg.ErrResourceNotFound)
 		return nil, code, permissionErr
 	}
 	datasetID = normalizedID
 
-	if err := d.CheckAccess(ctx, permission.Subject{UserID: userID}, datasetID, permission.OperationRead); err != nil {
+	if err := d.CheckAccess(ctx, permissionpkg.Subject{UserID: userID}, datasetID, permissionpkg.OperationRead); err != nil {
 		code, permissionErr := permissionresponse.NormalizeHidden(err)
 		return nil, code, permissionErr
 	}
 
 	kb, err := d.kbDAO.GetByID(ctx, dao.DB, datasetID)
 	if err != nil || kb == nil {
-		code, permissionErr := permissionresponse.NormalizeHidden(permission.ErrResourceNotFound)
+		code, permissionErr := permissionresponse.NormalizeHidden(permissionpkg.ErrResourceNotFound)
 		return nil, code, permissionErr
 	}
 
@@ -299,7 +310,7 @@ func (d *DatasetService) GetDataset(ctx context.Context, datasetID, userID strin
 	return data, common.CodeSuccess, nil
 }
 
-func (d *DatasetService) DeleteDatasets(ctx context.Context, ids []string, deleteAll bool, subject permission.Subject) (map[string]interface{}, common.ErrorCode, error) {
+func (d *DatasetService) DeleteDatasets(ctx context.Context, ids []string, deleteAll bool, subject permissionpkg.Subject) (map[string]interface{}, common.ErrorCode, error) {
 	subject.UserID = strings.TrimSpace(subject.UserID)
 	subject.TenantID = strings.TrimSpace(subject.TenantID)
 	if subject.UserID == "" {
@@ -320,7 +331,7 @@ func (d *DatasetService) DeleteDatasets(ctx context.Context, ids []string, delet
 		normalizedIDs = append(normalizedIDs, normalizedID)
 	}
 
-	checker := permission.NewDatabaseChecker(dao.DB)
+	checker := permissionpkg.NewDatabaseChecker(dao.DB)
 	// Delete-all is tenant-scoped and remains an owner-only operation.
 	if len(normalizedIDs) == 0 {
 		if !deleteAll {
@@ -329,7 +340,7 @@ func (d *DatasetService) DeleteDatasets(ctx context.Context, ids []string, delet
 		if subject.TenantID == "" {
 			return nil, common.CodeUnauthorized, errors.New("tenant id is required to delete all datasets")
 		}
-		if err := checker.CheckTenant(ctx, subject, subject.TenantID, permission.TenantOwner); err != nil {
+		if err := checker.CheckTenant(ctx, subject, subject.TenantID, permissionpkg.TenantOwner); err != nil {
 			code, permissionErr := permissionresponse.Normalize(err)
 			return nil, code, permissionErr
 		}
@@ -342,11 +353,11 @@ func (d *DatasetService) DeleteDatasets(ctx context.Context, ids []string, delet
 		}
 	}
 
-	refs := make([]permission.ResourceRef, 0, len(normalizedIDs))
+	refs := make([]permissionpkg.ResourceRef, 0, len(normalizedIDs))
 	for _, id := range normalizedIDs {
-		refs = append(refs, permission.ResourceRef{Kind: permission.ResourceKindDataset, ID: id})
+		refs = append(refs, permissionpkg.ResourceRef{Kind: permissionpkg.ResourceKindDataset, ID: id})
 	}
-	accessible, err := checker.FilterResources(ctx, subject, refs, permission.OperationDelete)
+	accessible, err := checker.FilterResources(ctx, subject, refs, permissionpkg.OperationDelete)
 	if err != nil {
 		code, permissionErr := permissionresponse.Normalize(err)
 		return nil, code, permissionErr
@@ -371,7 +382,7 @@ func (d *DatasetService) DeleteDatasets(ctx context.Context, ids []string, delet
 		kbs = append(kbs, kb)
 	}
 	if len(unauthorizedIDs) > 0 {
-		_, permissionErr := permissionresponse.Normalize(permission.ErrPermissionDenied)
+		_, permissionErr := permissionresponse.Normalize(permissionpkg.ErrPermissionDenied)
 		return nil, common.CodeForbidden, permissionErr
 	}
 
@@ -401,14 +412,20 @@ func (d *DatasetService) deleteDataset(ctx context.Context, kb *entity.Knowledge
 // deleteDatasetAuthorized serializes retirement with domain registration and
 // catalogue publication. Re-read and authorize under the same lock: a native
 // dataset can become a private knowledge domain after the caller's first read.
-func (d *DatasetService) deleteDatasetAuthorized(ctx context.Context, kb *entity.Knowledgebase, subject *permission.Subject) error {
-	return dao.DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+func (d *DatasetService) deleteDatasetAuthorized(ctx context.Context, kb *entity.Knowledgebase, subject *permissionpkg.Subject) error {
+	var actor *string
+	var users []string
+	if subject != nil {
+		actor = &subject.UserID
+		users = []string{subject.UserID}
+	}
+	return dao.WithKnowledgeAccessNativeMutation(ctx, dao.DB, dao.KnowledgeAccessNativeMutation{ActorUserID: actor, UserIDs: users, Action: "native_domain", DomainIDs: []string{kb.ID}}, func(tx *gorm.DB) error {
 		var current entity.Knowledgebase
 		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).Where("id = ?", kb.ID).Take(&current).Error; err != nil {
 			return err
 		}
 		if subject != nil {
-			if err := permission.NewLockingDatabaseChecker(tx).CheckResource(ctx, *subject, permission.ResourceRef{Kind: permission.ResourceKindDataset, ID: current.ID}, permission.OperationDelete); err != nil {
+			if err := permissionpkg.NewLockingDatabaseChecker(tx).CheckResource(ctx, *subject, permissionpkg.ResourceRef{Kind: permissionpkg.ResourceKindDataset, ID: current.ID}, permissionpkg.OperationDelete); err != nil {
 				return err
 			}
 		}
@@ -436,7 +453,7 @@ func (d *DatasetService) deleteNativeDataset(ctx context.Context, db *gorm.DB, k
 	}
 	ownedFolderIDs := make([]string, 0, len(folders))
 	for _, folder := range folders {
-		if err := permission.CheckKnowledgeFileTreeMutation(ctx, db, &folder); err != nil {
+		if err := permissionpkg.CheckKnowledgeFileTreeMutation(ctx, db, &folder); err != nil {
 			return err
 		}
 		if folder.Name == dao.DatasetFolderName {
@@ -446,7 +463,7 @@ func (d *DatasetService) deleteNativeDataset(ctx context.Context, db *gorm.DB, k
 				return err
 			}
 			if roots > 0 {
-				return permission.ErrKnowledgeIngestionDenied
+				return permissionpkg.ErrKnowledgeIngestionDenied
 			}
 		}
 		ownedFolderIDs = append(ownedFolderIDs, folder.ID)
@@ -610,20 +627,20 @@ func (d *DatasetService) ListDatasets(ctx context.Context, id, name string, page
 	var total int64
 	var deniedIDs []string
 	err := dao.DB.Transaction(func(tx *gorm.DB) error {
-		checker := permission.NewDatabaseChecker(tx)
-		subject := permission.Subject{UserID: userID}
-		operation := permission.OperationRead
-		var entry *permission.ResourceRef
+		checker := permissionpkg.NewDatabaseChecker(tx)
+		subject := permissionpkg.Subject{UserID: userID}
+		operation := permissionpkg.OperationRead
+		var entry *permissionpkg.ResourceRef
 		if canvasID != "" {
-			operation = permission.OperationUse
-			entry = &permission.ResourceRef{Kind: permission.ResourceKindCanvas, ID: canvasID}
+			operation = permissionpkg.OperationUse
+			entry = &permissionpkg.ResourceRef{Kind: permissionpkg.ResourceKindCanvas, ID: canvasID}
 		}
 		checkAccess := func(datasetID string) error {
-			dependency := permission.ResourceRef{Kind: permission.ResourceKindDataset, ID: datasetID}
+			dependency := permissionpkg.ResourceRef{Kind: permissionpkg.ResourceKindDataset, ID: datasetID}
 			if entry == nil {
 				return checker.CheckResource(ctx, subject, dependency, operation)
 			}
-			return checker.CheckDependency(ctx, subject, *entry, dependency, permission.OperationRun, operation)
+			return checker.CheckDependency(ctx, subject, *entry, dependency, permissionpkg.OperationRun, operation)
 		}
 		listQuery := tx.WithContext(ctx).Model(&entity.Knowledgebase{})
 		var resourceIDs []string
@@ -643,9 +660,9 @@ func (d *DatasetService) ListDatasets(ctx context.Context, id, name string, page
 					resourceIDs = append(resourceIDs, datasetID)
 					continue
 				}
-				if errors.Is(checkErr, permission.ErrPermissionDenied) ||
-					errors.Is(checkErr, permission.ErrMembershipNotFound) ||
-					errors.Is(checkErr, permission.ErrResourceNotFound) {
+				if errors.Is(checkErr, permissionpkg.ErrPermissionDenied) ||
+					errors.Is(checkErr, permissionpkg.ErrMembershipNotFound) ||
+					errors.Is(checkErr, permissionpkg.ErrResourceNotFound) {
 					deniedIDs = append(deniedIDs, datasetID)
 					continue
 				}
@@ -657,10 +674,10 @@ func (d *DatasetService) ListDatasets(ctx context.Context, id, name string, page
 				listQuery = listQuery.Where("knowledgebase.id IN ?", resourceIDs)
 			}
 		default:
-			scopeQuery := permission.ScopeQuery{Kind: permission.ResourceKindDataset, Operation: operation}
+			scopeQuery := permissionpkg.ScopeQuery{Kind: permissionpkg.ResourceKindDataset, Operation: operation}
 			if entry != nil {
 				scopeQuery.Entry = entry
-				scopeQuery.EntryOp = permission.OperationRun
+				scopeQuery.EntryOp = permissionpkg.OperationRun
 			}
 			scope, checkErr := checker.QueryScope(ctx, subject, scopeQuery)
 			if checkErr != nil {
@@ -676,8 +693,8 @@ func (d *DatasetService) ListDatasets(ctx context.Context, id, name string, page
 		return nil
 	})
 	if err != nil {
-		if errors.Is(err, permission.ErrUnauthenticated) || errors.Is(err, permission.ErrPermissionDenied) ||
-			errors.Is(err, permission.ErrMembershipNotFound) || errors.Is(err, permission.ErrResourceNotFound) {
+		if errors.Is(err, permissionpkg.ErrUnauthenticated) || errors.Is(err, permissionpkg.ErrPermissionDenied) ||
+			errors.Is(err, permissionpkg.ErrMembershipNotFound) || errors.Is(err, permissionpkg.ErrResourceNotFound) {
 			code, permissionErr := permissionresponse.Normalize(err)
 			return nil, 0, code, permissionErr
 		}
@@ -713,25 +730,25 @@ func (d *DatasetService) ListDatasets(ctx context.Context, id, name string, page
 func (d *DatasetService) ListDatasetFilters(ctx context.Context, userID, canvasID string) (map[string]interface{}, common.ErrorCode, error) {
 	owners := make([]*entity.DatasetOwnerFilter, 0)
 	err := dao.DB.Transaction(func(tx *gorm.DB) error {
-		query := permission.ScopeQuery{Kind: permission.ResourceKindDataset, Operation: permission.OperationRead}
+		query := permissionpkg.ScopeQuery{Kind: permissionpkg.ResourceKindDataset, Operation: permissionpkg.OperationRead}
 		if canvasID = strings.TrimSpace(canvasID); canvasID != "" {
-			query.Operation = permission.OperationUse
-			query.Entry = &permission.ResourceRef{Kind: permission.ResourceKindCanvas, ID: canvasID}
-			query.EntryOp = permission.OperationRun
+			query.Operation = permissionpkg.OperationUse
+			query.Entry = &permissionpkg.ResourceRef{Kind: permissionpkg.ResourceKindCanvas, ID: canvasID}
+			query.EntryOp = permissionpkg.OperationRun
 		}
-		scope, err := permission.NewDatabaseChecker(tx).Scope(ctx, permission.Subject{UserID: userID}, query)
+		scope, err := permissionpkg.NewDatabaseChecker(tx).Scope(ctx, permissionpkg.Subject{UserID: userID}, query)
 		if err != nil {
 			return err
 		}
-		if scope.Mode == permission.ScopeNone {
+		if scope.Mode == permissionpkg.ScopeNone {
 			return nil
 		}
 		owners, err = d.kbDAO.GetOwnerFilterByResourceIDs(ctx, tx, scope.ResourceIDs)
 		return err
 	})
 	if err != nil {
-		if errors.Is(err, permission.ErrUnauthenticated) || errors.Is(err, permission.ErrPermissionDenied) ||
-			errors.Is(err, permission.ErrMembershipNotFound) || errors.Is(err, permission.ErrResourceNotFound) {
+		if errors.Is(err, permissionpkg.ErrUnauthenticated) || errors.Is(err, permissionpkg.ErrPermissionDenied) ||
+			errors.Is(err, permissionpkg.ErrMembershipNotFound) || errors.Is(err, permissionpkg.ErrResourceNotFound) {
 			code, permissionErr := permissionresponse.Normalize(err)
 			return nil, code, permissionErr
 		}

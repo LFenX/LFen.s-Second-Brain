@@ -1352,7 +1352,10 @@ it('B28 regression: rejects unsupported CSV registration locally with accurate i
     ) as HTMLInputElement
   ).value;
   fireEvent.submit(form);
-  await screen.findByText('knowledgeOriginal.invalidInput');
+  await screen.findByText('knowledgeOriginal.unsupportedPathInput');
+  expect(
+    screen.queryByText('knowledge_invalid_request'),
+  ).not.toBeInTheDocument();
   expect(
     screen.queryByText('knowledgeOriginal.unconfirmed'),
   ).not.toBeInTheDocument();

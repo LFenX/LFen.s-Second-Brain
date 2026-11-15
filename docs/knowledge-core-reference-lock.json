@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "lock_id": "KCRL-20261108-29",
-  "recorded_date": "2026-11-08",
+  "lock_id": "KCRL-20261116-32",
+  "recorded_date": "2026-11-16",
   "coordinator_thread_id": "01a1a9a5-c724-7f52-8cbb-16d19d982ba4",
-  "source_baseline_git_head": "bae0c516b1966b904657cb69f0a23121f3bf0991",
+  "source_baseline_git_head": "f804b3737a8f69af14b1ff1c2d042e8ea7c2a9f1",
   "source_snapshot": {
     "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
-    "file_count": 5048,
-    "sha256": "2c786735cda277f5d02238a2c6086f4c1972c5ce12369ed51545c5afe2efa152"
+    "file_count": 5141,
+    "sha256": "25ed32e49d7bfd2ccb5ecb8476ed8ef80e233052682e3df71d85cdc58f20a9d6"
   },
   "unlisted_policy": "DeniedAsCurrentGuidance_UntilCoordinatorReviewsAndAssigns",
   "authority_order": [
@@ -32,9 +32,9 @@
       },
       "integrity": {
         "mode": "file",
-        "sha256": "424079bcbb8e85e7bc9962312180be92eae69c8f3419851756eecfe502e5f526"
+        "sha256": "1d8de3427cab51b969a7a3b40bbb55845ba597ef3055d2dfb7b668357287864c"
       },
-      "selection_sha256": "424079bcbb8e85e7bc9962312180be92eae69c8f3419851756eecfe502e5f526"
+      "selection_sha256": "1d8de3427cab51b969a7a3b40bbb55845ba597ef3055d2dfb7b668357287864c"
     },
     {
       "id": "root-instructions",
@@ -1453,9 +1453,9 @@
       },
       "integrity": {
         "mode": "selection",
-        "sha256": "00a34fe4439a352a19a36e256d65c91c36b3298390f9d77e43d2f782117de2de"
+        "sha256": "1d42d2b45c4cf994c8583584544315d565eeccc3703067330eaff9d74dce2d42"
       },
-      "selection_sha256": "00a34fe4439a352a19a36e256d65c91c36b3298390f9d77e43d2f782117de2de",
+      "selection_sha256": "1d42d2b45c4cf994c8583584544315d565eeccc3703067330eaff9d74dce2d42",
       "limitation": "第三轮独立事实入口；仅在实际28源码及独立B回执核实、独审和总控精确四文件租约后机械生效。各运行/质量门按各自时点与版本保留，不批准新接口、模型、真实内容、最终验收或发布。 Ref27只追加shared_ordinal_followup；旧28和分层运行事实保留原时点，命名源码集合后续仅据实际应用与分层回执登记，未完成门不标Pass。"
     },
     {
@@ -4900,50 +4900,24 @@
     "Latest human stage commit+push instruction supersedes old time-scoped Git prohibitions;actual stage Git and production deployment/release remain separately coordinated actions."
   ],
   "update_rule": "仅主控在同范围内复核事实/差异/摘要并决定变更；最新真人规定总控不做实际工作，机械应用只能由具名执行者在唯一精确写窗中承担。保存旧锁原字节/摘要、原因、受影响条目和新校验；不得为未知漂移刷新摘要。接口/模型/真实内容/发布新范围仍需真人具体决定。",
-  "manifest_payload_sha256": "1c8ff36e4b508210625a8255de0c6812fd0fe1f5d4a1f9ff6fe3755c6983a298",
+  "manifest_payload_sha256": "f620edcf8fa0575c02a42238e3ccee33d392f008b8b1fed5b65d42834d5b805e",
   "previous_baseline": {
-    "lock_id": "KCRL-20261108-28",
-    "manifest_sha256": "57ceba610d02b05e4340fcda302607abd2bda9d12e5214c4e8c6b338203276c2",
-    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261108-28.json",
-    "archive_sha256": "57ceba610d02b05e4340fcda302607abd2bda9d12e5214c4e8c6b338203276c2",
+    "lock_id": "KCRL-20261116-31",
+    "manifest_sha256": "b0e6051c08a1c401d90a19d3a960f1a0d9a67c03e5d6caada0cf2287a41c4eb5",
+    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-31.json",
+    "archive_sha256": "b0e6051c08a1c401d90a19d3a960f1a0d9a67c03e5d6caada0cf2287a41c4eb5",
     "changed_files": [
+      "internal/engine/elasticsearch/knowledge_access_integration_test.go",
+      "internal/service/dataset/knowledge_access_mysql_generation_test.go",
       "docs/knowledge-core-execution-record.json",
       "docs/knowledge-core-reference-authority.md",
-      "docs/knowledge-core-reference-lock.json",
-      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261108-28.json"
+      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-31.json",
+      "docs/knowledge-core-reference-lock.json"
     ],
     "existing_entries_with_updated_selection_digests": [
       "reference-authority",
       "coordination-20261106-round3"
     ],
-    "actual_source_delta": {
-      "paths": [
-        {
-          "path": "web/public/logo-mascot.png",
-          "bytes": 814909,
-          "sha256": "dbcc3d91d13299d16af74f49683e7bf13204d39ba2239db03c18f18cef9b8cb2",
-          "headBytes": 1656895,
-          "headSha256": "7310601a99a9276db778bc72ab9022bcc6b6355ebf3e0505294fc7724a252543",
-          "mtime": "2026-11-07T21:46:24.387Z"
-        },
-        {
-          "path": "web/src/conf.json",
-          "bytes": 140,
-          "sha256": "55144749eaf93d04d23433941d434a72c0639b0bd3086a4455da475a8a8337ee",
-          "headBytes": 140,
-          "headSha256": "e33d058fb9c7b953f680d0f281439cfa7e6520d767505e71f2100d547546effe",
-          "mtime": "2026-11-07T21:47:40.589Z"
-        }
-      ],
-      "source_snapshot": {
-        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
-        "file_count": 5048,
-        "sha256": "2c786735cda277f5d02238a2c6086f4c1972c5ce12369ed51545c5afe2efa152"
-      },
-      "source_algorithm_inclusion": "PNG excluded;conf.json included;only authorized brand changes,independently measured."
-    },
-    "stage02_commit": "bae0c516b1966b904657cb69f0a23121f3bf0991",
-    "stage02_parent": "78f0337dcda1cd2240797564f0176debba22c843",
-    "reason": "Close already completed normal stage2 commit/push and fixed API/Web bounded evidence,then the separately human-authorized exact two-file brand source change. Preserve all prior raw prefixes/values,97entries/102uses,access17/original14/humanA,formal26/protected47/archive11/history28. No interface/model/real-content/production/acceptance expansion."
+    "reason": "Latest human sole-Root steering; exact two standard gofmt-only test fixes and truthful validation followup. Existing frozen contracts and all previous bytes retained; formal S1 acceptance and normal Git remain pending. No renewed model/interface/deployment scope."
   }
 }
