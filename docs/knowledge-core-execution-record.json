@@ -8209,6 +8209,96 @@
         "rootLayoutChanged": false
       },
       "preservation": "All prior execution bytes and authority suffix retained; Ref31 raw snapshot preserves previous history. Not a final acceptance or publication claim."
+    },
+    "standalone_integration_bootstrap_followup": {
+      "state": "RootSolo_StandaloneIntegrationSetupCandidate_RealAcceptancePending",
+      "humanSteering": "现在暂停其他会话，后续所有任务由你一个人完成",
+      "coordination": "Root remains sole implementer/reviewer/executor; no delegation or resumed chats.",
+      "referenceBefore": {
+        "id": "KCRL-20261116-32",
+        "sha256": "25d278095468e2b004741e72dc2a1ae376e9ba53943316c1d42a31d02d9aa0c1"
+      },
+      "gitMilestone": {
+        "commit": "411867524b9841ea957e92e9a7ef72b237ca96f2",
+        "branch": "codex/stage3r2-document",
+        "files": 145,
+        "pushedAndRemoteMatched": true,
+        "allElevenCommitChecksPassed": true,
+        "evidence": {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/git-milestone01/push-result.safe.json",
+          "bytes": 471,
+          "sha256": "fee144d023ffe00ab913f62644a595e42fa3e2f769568690ea64d18881ad4e27"
+        }
+      },
+      "browser": {
+        "state": "Existing signed-in shared page showed correct empty state; no credentials/cookies read or product mutations.",
+        "evidence": {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/browser-shared-knowledge01.safe.json",
+          "bytes": 466,
+          "sha256": "9c428fe9f3c9cf2b5f00d999c689a006411b58c5a9dabc87abd24d67d8c79b24"
+        }
+      },
+      "nativeAcceptance": {
+        "actual12": "Real schema/identity/seed/base/prepare reached; barrier remote exit2; all inner owners joined and wiped; not passed.",
+        "actual13": "Registered static diagnostic observed BARRIER_GO_NIL_POINTER at barrier. Inner caller/resources joined; stopped helper and original grant required Root-only exact cleanup, completed. Original outcome remains Unknown.",
+        "diagnostic": {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/native2-barrier13-regression.safe.json",
+          "bytes": 1798,
+          "sha256": "d39c10e4f151c12b58c10c2ff910dd28ce95a2f7597fbe94c1ab60d47de15427"
+        },
+        "helperCleanup": {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/native2-helper13-cleanup.safe.json",
+          "bytes": 321,
+          "sha256": "110bcd2c28893e27aac3cd777c06d68cf9ede5a7f6009fbbd7a52b9d6387765f"
+        },
+        "grantCleanup": {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/native2-orphan13-cleanup.safe.json",
+          "bytes": 771,
+          "sha256": "e9221f6f4e9cb72ad67bb4d3fcb9c1068e6b3d40a54d815e0bd039de128b5331"
+        }
+      },
+      "GoCandidate": {
+        "target": "internal/service/dataset/knowledge_access_mysql_grant_integration_test.go",
+        "beforeSHA256": "174acc2d24602581753c172b1224ba344689235edfb3af7de64ec892ca597448",
+        "afterSHA256": "daf456b9deefcbd5c7d3bce67c2a9931ee8f7a62f5f2cde19632aed6e218b2be",
+        "change": "After tokenizer setup, initialize the same NLP query builder used by production bootstrap and existing lexical test helper. No product source or permission assertions changed.",
+        "compile": {
+          "result": {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/mysql-query-init01/compile/result.safe.json",
+            "bytes": 1244,
+            "sha256": "5a35260a4d0cb5cd8851574fd09179f20df7f696a6e47a04fd50ec5f1deef620"
+          },
+          "sourceCount": 1787,
+          "ELFs": 2,
+          "listedTargets": 4,
+          "actualTests": 0,
+          "network": "none",
+          "LLD20": true
+        },
+        "limit": "Candidate compilation and test enumeration are verified. The repaired standalone real SQL/ES flow still needs a new actual run; do not infer full pass from linking."
+      },
+      "HTTP": {
+        "actual25": "Fresh native producer passed; setup reference mismatch, closed.",
+        "actual26": "Setup completed and helpers removed; shorter-work/original-expiry adapter mismatch, closed.",
+        "actual27": "Reached original Go fixture, child exit1; physical closure complete.",
+        "actual28": "No progress beyond initial lifetime status, temporary next status remained. Root cancelled exact original native CLI after417s and exact capture after native absence; original outer streams fully closed. Outcome remains Unknown, no upgrade.",
+        "outerClosure": {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/go21-actual28-outer.safe.json",
+          "bytes": 455,
+          "sha256": "ec0ce57e0e358bb7ef0a05893d191b89ccedec1e11322ff3109d7ea1daaa52f7"
+        },
+        "scope": "Original compiled fixture reference is artifact data only; live Root checker and authorization remain current. No new model scope or old-authority renewal."
+      },
+      "scope": {
+        "humanSubjectSHA256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3",
+        "S1": "Pending real SQL/ES/HTTP and full synthetic Web acceptance",
+        "S2S3": "Sequencing gates retained",
+        "syntheticOnly": true,
+        "newModelCalls": 0,
+        "newProductInterfaces": false,
+        "rootLayoutChanged": false
+      },
+      "preservation": "Old execution record bytes and full authority suffix retained. Ref32 manifest archived exactly. This is a single test setup candidate, not final acceptance or deployment."
     }
   }
 }

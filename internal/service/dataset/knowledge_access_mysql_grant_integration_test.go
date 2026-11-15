@@ -23,6 +23,7 @@ import (
 	"ragflow/internal/dao"
 	"ragflow/internal/engine/types"
 	"ragflow/internal/entity"
+	"ragflow/internal/service/nlp"
 	"ragflow/internal/storage"
 	"ragflow/internal/tokenizer"
 )
@@ -91,6 +92,7 @@ func TestKnowledgeAccessMySQLGrantBarriersAndCommandConstraints(t *testing.T) {
 	verifyMySQLAccessResources(t, lease)
 	requireMySQLAccess(t, tokenizer.Init(&tokenizer.PoolConfig{DictPath: lease.DictPath, MinSize: 1, MaxSize: 1, IdleTimeout: time.Minute, AcquireTimeout: time.Second}) == nil, "GRANT_TOKENIZER_INIT")
 	defer tokenizer.Close()
+	requireMySQLAccess(t, nlp.InitQueryBuilderFromTokenizer(lease.DictPath) == nil, "GRANT_QUERY_BUILDER_INIT")
 	producer, err := tokenizer.ProducerSHA256()
 	requireMySQLAccess(t, err == nil && producer == fixture.ProducerSHA, "GRANT_PRODUCER_EXACT")
 	cfg, err := mysqlDriver.ParseDSN(input.DSN)
