@@ -44,7 +44,7 @@ func contentCandidateServeBytes(t *testing.T, wire []byte) *httptest.ResponseRec
 	if response.Header().Get("Cache-Control") != "no-store" {
 		t.Fatal("private result is cacheable")
 	}
-	if response.Body.Len() > contentKnowledgeMaxResponseBytes || response.Header().Get("Content-Length") != strconv.Itoa(response.Body.Len()) {
+	if response.Body.Len() > knowledgeMaxResponseBytes || response.Header().Get("Content-Length") != strconv.Itoa(response.Body.Len()) {
 		t.Fatal("actual HTTP body length is not bounded and accurate")
 	}
 	return response
@@ -73,26 +73,26 @@ func contentCandidateAssertCapacityHTTP(t *testing.T, wire []byte) {
 
 func TestContentKnowledgeCandidateActualHTTPBudget(t *testing.T) {
 	for _, test := range []struct{ name, text string }{
-		{"double copy exceeds wire budget", strings.Repeat("a", contentKnowledgeMaxResponseBytes*3/5)},
-		{"JSON text escaping exceeds wire budget", strings.Repeat(`"`, contentKnowledgeMaxResponseBytes/4)},
+		{"double copy exceeds wire budget", strings.Repeat("a", knowledgeMaxResponseBytes*3/5)},
+		{"JSON text escaping exceeds wire budget", strings.Repeat(`"`, knowledgeMaxResponseBytes/4)},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			semantic, err := json.Marshal(map[string]string{"text": test.text})
-			if err != nil || len(semantic) >= contentKnowledgeMaxResponseBytes {
+			if err != nil || len(semantic) >= knowledgeMaxResponseBytes {
 				t.Fatal("test must have semantic body below budget")
 			}
 			wire := contentCandidateRPC(t, 1, contentKnowledgeEncodedResult(semantic, false))
-			if len(wire) <= contentKnowledgeMaxResponseBytes {
+			if len(wire) <= knowledgeMaxResponseBytes {
 				t.Fatal("test must exceed the actual full HTTP JSON-RPC budget")
 			}
 			contentCandidateAssertCapacityHTTP(t, wire)
 		})
 	}
 	// A valid CallToolResult below 1 MiB still overflows after JSON-RPC id/framing.
-	result := &sdk.CallToolResult{Content: []sdk.Content{&sdk.TextContent{Text: strings.Repeat("x", contentKnowledgeMaxResponseBytes-200)}}}
+	result := &sdk.CallToolResult{Content: []sdk.Content{&sdk.TextContent{Text: strings.Repeat("x", knowledgeMaxResponseBytes-200)}}}
 	encoded, _ := json.Marshal(result)
 	wire := contentCandidateRPC(t, strings.Repeat("id", 512), result)
-	if len(encoded) >= contentKnowledgeMaxResponseBytes || len(wire) <= contentKnowledgeMaxResponseBytes {
+	if len(encoded) >= knowledgeMaxResponseBytes || len(wire) <= knowledgeMaxResponseBytes {
 		t.Fatal("invalid JSON-RPC-overhead boundary fixture")
 	}
 	contentCandidateAssertCapacityHTTP(t, wire)
@@ -110,7 +110,7 @@ func TestContentKnowledgeCandidateHTTPBudgetBoundaryAndNormalData(t *testing.T) 
 	if response.Code != http.StatusOK || !bytes.Equal(response.Body.Bytes(), wire) {
 		t.Fatal("normal complete serialized data changed")
 	}
-	padding := append(append([]byte(nil), wire...), bytes.Repeat([]byte(" "), contentKnowledgeMaxResponseBytes-len(wire))...)
+	padding := append(append([]byte(nil), wire...), bytes.Repeat([]byte(" "), knowledgeMaxResponseBytes-len(wire))...)
 	atLimit := contentCandidateServeBytes(t, padding)
 	if atLimit.Code != http.StatusOK || !bytes.Equal(atLimit.Body.Bytes(), padding) {
 		t.Fatal("exact 1 MiB response not preserved")
@@ -142,7 +142,7 @@ func TestContentKnowledgeCandidateToolResultBudget(t *testing.T) {
 		t.Fatal("size fixture must satisfy the closed output shape")
 	}
 	encoded, _ := json.Marshal(contentKnowledgeEncodedResult(body, false))
-	if len(body) >= contentKnowledgeMaxResponseBytes || len(encoded) <= contentKnowledgeMaxResponseBytes {
+	if len(body) >= knowledgeMaxResponseBytes || len(encoded) <= knowledgeMaxResponseBytes {
 		t.Fatal("size fixture must overflow only after full SDK result encoding")
 	}
 	result := contentKnowledgeResult(tool, "search", &search, nil)
@@ -151,7 +151,7 @@ func TestContentKnowledgeCandidateToolResultBudget(t *testing.T) {
 	if !result.IsError || json.Unmarshal(raw, &controlled) != nil || controlled["data"] != nil || controlled["code"] != "capacity_exceeded" {
 		t.Fatal("tool result overflow did not become controlled null-data capacity error")
 	}
-	if bytes, _ := json.Marshal(result); len(bytes) > contentKnowledgeMaxResponseBytes {
+	if bytes, _ := json.Marshal(result); len(bytes) > knowledgeMaxResponseBytes {
 		t.Fatal("controlled tool result exceeds budget")
 	}
 }

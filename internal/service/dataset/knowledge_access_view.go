@@ -10,9 +10,22 @@ import (
 	"ragflow/internal/entity"
 )
 
-func accessReserveRequest(tx *gorm.DB, actor, operation, requestID string, kb *entity.Knowledgebase, module string, now time.Time) (string, error) {
+func accessReserveRequest(ctx context.Context, tx *gorm.DB, actor, operation, requestID string, kb *entity.Knowledgebase, module string, now time.Time) (string, error) {
+	if identity := accessCredential(ctx); identity != nil {
+		if identity.UserID != actor || identity.DomainID != kb.ID || identity.TenantID != kb.TenantID || identity.ModuleID != module || identity.RequestID != requestID {
+			return "", accessError(401, "unauthenticated")
+		}
+		result := tx.Model(&entity.KnowledgeAccessAuditRecord{}).Where("id = ? AND tenant_id = ? AND actor_user_id = ? AND credential_id = ? AND domain_id = ? AND request_id = ? AND action = ? AND outcome = ?", identity.ReservationID, kb.TenantID, actor, identity.ID, kb.ID, requestID, "mcpTransport", "denied").Updates(map[string]any{"action": operation, "module_id": module})
+		if result.Error != nil {
+			return "", result.Error
+		}
+		if result.RowsAffected != 1 {
+			return "", accessError(409, "integrity_error")
+		}
+		return identity.ReservationID, nil
+	}
 	var count int64
-	if err := tx.Model(&entity.KnowledgeAccessAuditRecord{}).Where("actor_user_id = ? AND domain_id = ? AND action IN ? AND occurred_at > ?", actor, kb.ID, []string{"inspect", "search", "read"}, now.Add(-time.Minute)).Count(&count).Error; err != nil {
+	if err := tx.Model(&entity.KnowledgeAccessAuditRecord{}).Where("actor_user_id = ? AND domain_id = ? AND action IN ? AND occurred_at > ?", actor, kb.ID, []string{"inspect", "search", "read", "mcpTransport"}, now.Add(-time.Minute)).Count(&count).Error; err != nil {
 		return "", err
 	}
 	if count >= 60 {
@@ -51,9 +64,26 @@ func (d *DatasetService) accessInspect(ctx context.Context, actor, requestID str
 		if err != nil {
 			return err
 		}
-		grant, err := accessPickGrant(tx, kb, module, actor, req.Mode, req.Delivery, now)
-		if err != nil {
-			return err
+		var parent *verifiedAccessActor
+		var grant *entity.KnowledgeAccessGrantRecord
+		if identity := accessCredential(ctx); identity != nil {
+			if req.DomainID != identity.DomainID || req.ModuleID != identity.ModuleID {
+				return accessError(404, "not_found")
+			}
+			if req.Delivery != "web_and_mcp" || !(req.Mode == identity.Mode || identity.Mode == "read_search" && req.Mode == "read") {
+				return accessError(403, "action_denied")
+			}
+			_, parent, err = d.accessCurrentCredential(ctx, tx, epochs[tenant], now, false)
+			if err != nil {
+				return err
+			}
+			grant = parent.Grant
+			scope = parent.Scope
+		} else {
+			grant, err = accessPickGrant(tx, kb, module, actor, req.Mode, req.Delivery, now)
+			if err != nil {
+				return err
+			}
 		}
 		if req.SourceIDs != nil {
 			requested := map[string]bool{}
@@ -92,6 +122,11 @@ func (d *DatasetService) accessInspect(ctx context.Context, actor, requestID str
 		}
 		private := accessJSON(scope)
 		capture := accessCapture{OwnerID: kb.CreatedBy, Mode: req.Mode, Delivery: req.Delivery, ScopeSHA256: module.ScopeSHA256, SelectedSHA256: lexicalSHA([]byte(private)), ShareVersion: policy.Version, Policies: manifest.Policies, Fences: fences}
+		if parent != nil {
+			if err = accessCaptureSubset(parent, scope, capture); err != nil {
+				return err
+			}
+		}
 		captureJSON := accessJSON(capture)
 		if len(private)+len(captureJSON) > 65536 {
 			return accessError(413, "capacity_exceeded")
@@ -100,13 +135,17 @@ func (d *DatasetService) accessInspect(ctx context.Context, actor, requestID str
 		if grant.ExpiresAt.Before(expires) {
 			expires = grant.ExpiresAt
 		}
+		if parent != nil && parent.View.ExpiresAt.Before(expires) {
+			expires = parent.View.ExpiresAt
+		}
+		credentialID := accessCurrentCredentialID(ctx)
 		var existing []entity.KnowledgeAccessViewRecord
-		if err = tx.Where("subject_user_id = ? AND domain_id = ? AND credential_id IS NULL AND tenant_epoch = ? AND expires_at > ?", actor, kb.ID, epochs[tenant], now).Order("issued_at DESC, id ASC").Limit(21).Find(&existing).Error; err != nil {
+		if err = tx.Where("subject_user_id = ? AND domain_id = ? AND tenant_epoch = ? AND expires_at > ?", actor, kb.ID, epochs[tenant], now).Order("issued_at DESC, id ASC").Limit(21).Find(&existing).Error; err != nil {
 			return err
 		}
 		var view entity.KnowledgeAccessViewRecord
 		for _, row := range existing {
-			if row.TenantID == tenant && row.GrantID == grant.ID && row.ModuleID == module.ID && row.ModuleVersion == module.Version && row.TenantEpoch == epochs[tenant] && row.PrivateManifestJSON == private && row.CaptureJSON == captureJSON && !row.ExpiresAt.After(expires) {
+			if accessSameCredential(row.CredentialID, credentialID) && row.TenantID == tenant && row.GrantID == grant.ID && row.ModuleID == module.ID && row.ModuleVersion == module.Version && row.TenantEpoch == epochs[tenant] && row.PrivateManifestJSON == private && row.CaptureJSON == captureJSON && !row.ExpiresAt.After(expires) {
 				view = row
 				break
 			}
@@ -115,7 +154,7 @@ func (d *DatasetService) accessInspect(ctx context.Context, actor, requestID str
 			if len(existing) >= 20 {
 				return accessError(429, "rate_limited")
 			}
-			view = entity.KnowledgeAccessViewRecord{ID: common.GenerateUUID(), TenantID: tenant, SubjectUserID: actor, GrantID: grant.ID, DomainID: kb.ID, ModuleID: module.ID, ModuleVersion: module.Version, TenantEpoch: epochs[tenant], PrivateManifestJSON: private, CaptureJSON: captureJSON, IssuedAt: now, ExpiresAt: expires}
+			view = entity.KnowledgeAccessViewRecord{ID: common.GenerateUUID(), TenantID: tenant, SubjectUserID: actor, CredentialID: credentialID, GrantID: grant.ID, DomainID: kb.ID, ModuleID: module.ID, ModuleVersion: module.Version, TenantEpoch: epochs[tenant], PrivateManifestJSON: private, CaptureJSON: captureJSON, IssuedAt: now, ExpiresAt: expires}
 			if err = tx.Create(&view).Error; err != nil {
 				return err
 			}
@@ -124,11 +163,11 @@ func (d *DatasetService) accessInspect(ctx context.Context, actor, requestID str
 		if err != nil {
 			return err
 		}
-		auditID, err := accessReserveRequest(tx, actor, "inspect", requestID, kb, module.ID, now)
+		auditID, err := accessReserveRequest(ctx, tx, actor, "inspect", requestID, kb, module.ID, now)
 		if err != nil {
 			return err
 		}
-		verified = &verifiedAccessActor{UserID: actor, View: view, KB: kb, Scope: scope, Capture: capture, Manifest: manifest, Rows: rows, ByTarget: byTarget, AuditID: auditID}
+		verified = &verifiedAccessActor{UserID: actor, View: view, KB: kb, Scope: scope, Capture: capture, Manifest: manifest, Rows: rows, ByTarget: byTarget, AuditID: auditID, Grant: grant}
 		return nil
 	})
 	if err != nil {
@@ -151,7 +190,7 @@ func (d *DatasetService) accessInspect(ctx context.Context, actor, requestID str
 
 func (d *DatasetService) accessOpenView(ctx context.Context, actor, viewID, operation, requestID string) (*verifiedAccessActor, error) {
 	var locator entity.KnowledgeAccessViewRecord
-	if err := accessDB(ctx).Select("id", "tenant_id").Where("id = ? AND subject_user_id = ? AND credential_id IS NULL", viewID, actor).Take(&locator).Error; err != nil {
+	if err := accessViewQuery(ctx, accessDB(ctx)).Select("id", "tenant_id").Where("id = ? AND subject_user_id = ?", viewID, actor).Take(&locator).Error; err != nil {
 		return nil, err
 	}
 	var verified *verifiedAccessActor
@@ -161,7 +200,7 @@ func (d *DatasetService) accessOpenView(ctx context.Context, actor, viewID, oper
 			return err
 		}
 		var view entity.KnowledgeAccessViewRecord
-		if err = accessLocked(tx, true).Where("id = ? AND subject_user_id = ? AND credential_id IS NULL", viewID, actor).Take(&view).Error; err != nil {
+		if err = accessViewQuery(ctx, accessLocked(tx, true)).Where("id = ? AND subject_user_id = ?", viewID, actor).Take(&view).Error; err != nil {
 			return err
 		}
 		if view.TenantID != locator.TenantID {
@@ -178,7 +217,7 @@ func (d *DatasetService) accessOpenView(ctx context.Context, actor, viewID, oper
 		if operation == "search" && verified.Capture.Mode != "read_search" {
 			return accessError(403, "action_denied")
 		}
-		verified.AuditID, err = accessReserveRequest(tx, actor, operation, requestID, verified.KB, view.ModuleID, now)
+		verified.AuditID, err = accessReserveRequest(ctx, tx, actor, operation, requestID, verified.KB, view.ModuleID, now)
 		return err
 	})
 	return verified, err
@@ -195,7 +234,7 @@ func (d *DatasetService) accessFinalPermit(ctx context.Context, verified *verifi
 			return err
 		}
 		var view entity.KnowledgeAccessViewRecord
-		if err = accessLocked(tx, true).Where("id = ? AND subject_user_id = ? AND credential_id IS NULL", verified.View.ID, verified.UserID).Take(&view).Error; err != nil {
+		if err = accessViewQuery(ctx, accessLocked(tx, true)).Where("id = ? AND subject_user_id = ?", verified.View.ID, verified.UserID).Take(&view).Error; err != nil {
 			return err
 		}
 		if view.TenantID != verified.View.TenantID || view.GrantID != verified.View.GrantID || view.ModuleID != verified.View.ModuleID || view.PrivateManifestJSON != verified.View.PrivateManifestJSON || view.CaptureJSON != verified.View.CaptureJSON {

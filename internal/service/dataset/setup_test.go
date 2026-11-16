@@ -47,7 +47,7 @@ func setupServiceTestDB(t *testing.T) *gorm.DB {
 		&entity.TenantModelInstance{},
 		&entity.TenantModel{},
 		&entity.UserCanvas{},
-		&entity.KnowledgeAccessTenantStateRecord{}, &entity.KnowledgeAccessDepartmentRecord{}, &entity.KnowledgeAccessDepartmentMemberRecord{}, &entity.KnowledgeAccessDomainPolicyRecord{}, &entity.KnowledgeAccessModuleRecord{}, &entity.KnowledgeAccessAuditRecord{}, &entity.KnowledgeAccessGrantRecord{}, &entity.KnowledgeAccessViewRecord{},
+		&entity.KnowledgeAccessTenantStateRecord{}, &entity.KnowledgeAccessDepartmentRecord{}, &entity.KnowledgeAccessDepartmentMemberRecord{}, &entity.KnowledgeAccessDomainPolicyRecord{}, &entity.KnowledgeAccessModuleRecord{}, &entity.KnowledgeAccessAuditRecord{}, &entity.KnowledgeAccessGrantRecord{}, &entity.KnowledgeAccessCredentialRecord{}, &entity.KnowledgeAccessViewRecord{},
 	); err != nil {
 		t.Fatalf("failed to migrate: %v", err)
 	}

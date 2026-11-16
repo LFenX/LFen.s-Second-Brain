@@ -1,6 +1,8 @@
 package dao
 
 import (
+	"bytes"
+	"encoding/json"
 	"errors"
 	"net/url"
 	"strings"
@@ -12,6 +14,40 @@ import (
 	"gorm.io/gorm/logger"
 	"ragflow/internal/entity"
 )
+
+func TestKnowledgeAccessCredentialReceiptRestrictAndPrivateRecord(t *testing.T) {
+	db := knowledgeAccessTestDB(t)
+	if err := migrateKnowledgeAccess(t.Context(), db); err != nil {
+		t.Fatal("repeat migration failed")
+	}
+	for _, name := range []string{"idx_ka_credential_subject_domain_revoked", "idx_ka_credential_expiry"} {
+		if !db.Migrator().HasIndex(&entity.KnowledgeAccessCredentialRecord{}, name) {
+			t.Fatal("credential index missing")
+		}
+	}
+	if err := db.Exec("PRAGMA foreign_keys = ON").Error; err != nil {
+		t.Fatal("foreign key activation failed")
+	}
+	row := entity.KnowledgeAccessCredentialRecord{ID: strings.Repeat("a", 32), TenantID: "tenant", SubjectUserID: "user", GrantID: "grant", DomainID: "domain", ModuleID: "module", ModuleVersion: 1, TenantEpoch: 1, CaptureJSON: "Synthetic_Private_Capture", Mode: "read", Audience: "http://localhost/api/v1/knowledge/access/mcp", VerifierSHA256: bytes.Repeat([]byte{42}, 32), ClientLabel: "Synthetic Client", IssuedAt: time.Now().UTC(), ExpiresAt: time.Now().UTC().Add(time.Hour), CreateCommandID: strings.Repeat("b", 32)}
+	if db.Create(&row).Error == nil {
+		t.Fatal("orphan credential receipt was accepted")
+	}
+	receipt := entity.KnowledgeAccessAuditRecord{ID: row.CreateCommandID, TenantID: row.TenantID, Action: "createCredential", Outcome: "changed", RequestID: strings.Repeat("c", 32), OccurredAt: row.IssuedAt}
+	if db.Create(&receipt).Error != nil || db.Create(&row).Error != nil {
+		t.Fatal("receipt-bound credential insertion failed")
+	}
+	if db.Where("id = ?", receipt.ID).Delete(&entity.KnowledgeAccessAuditRecord{}).Error == nil {
+		t.Fatal("live credential receipt was deleted")
+	}
+	raw, err := json.Marshal(row)
+	if err != nil || bytes.Contains(raw, []byte("Synthetic_Private_Capture")) || bytes.Contains(raw, []byte("VerifierSHA256")) || bytes.Contains(raw, []byte("CaptureJSON")) {
+		t.Fatal("private credential record fields escaped JSON")
+	}
+	probe := db.Session(&gorm.Session{DryRun: true}).Where("id = ? AND subject_user_id = ?", row.ID, row.SubjectUserID).Take(&entity.KnowledgeAccessCredentialRecord{})
+	if len(probe.Statement.Vars) < 2 || strings.Contains(probe.Statement.SQL.String(), row.ID) || !strings.Contains(probe.Statement.SQL.String(), "id = ?") {
+		t.Fatal("credential lookup does not bind identifiers")
+	}
+}
 
 func knowledgeAccessTestDB(t *testing.T) *gorm.DB {
 	t.Helper()

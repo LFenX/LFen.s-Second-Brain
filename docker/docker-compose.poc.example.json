@@ -1111,7 +1111,8 @@
         "DEFAULT_SUPERUSER_EMAIL": "admin@ragflow.io",
         "RAGFLOW_MCP_ENABLED": "false",
         "LLM_DEBUG": "false",
-        "RAGFLOW_DEV_MODE": "false"
+        "RAGFLOW_DEV_MODE": "false",
+        "KNOWLEDGE_ACCESS_MCP_AUDIENCE": "${KNOWLEDGE_ACCESS_MCP_AUDIENCE:-http://127.0.0.1:18080/api/v1/knowledge/access/mcp}"
       },
       "extra_hosts": [
         "host.docker.internal=host-gateway"

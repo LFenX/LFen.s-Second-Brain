@@ -67,7 +67,7 @@ func accessNormalize(err error) *KnowledgeAccessError {
 	return &KnowledgeAccessError{Status: 503, Code: "unavailable", RetrySameKey: true}
 }
 
-var accessRequestDefinitions = map[string]string{"setDepartment": "SetDepartmentRequest", "listDepartments": "ListDepartmentsRequest", "setPolicy": "SetPolicyRequest", "setModule": "SetModuleRequest", "getModuleAdmin": "GetModuleAdminRequest", "listModules": "ListModulesRequest", "createGrant": "CreateGrantRequest", "revokeGrant": "RevokeGrantRequest", "inspect": "InspectRequest", "search": "SearchRequest", "read": "ReadRequest"}
+var accessRequestDefinitions = map[string]string{"createCredential": "CreateCredentialRequest", "revokeCredential": "RevokeCredentialRequest", "listCredentials": "ListCredentialsRequest", "setDepartment": "SetDepartmentRequest", "listDepartments": "ListDepartmentsRequest", "setPolicy": "SetPolicyRequest", "setModule": "SetModuleRequest", "getModuleAdmin": "GetModuleAdminRequest", "listModules": "ListModulesRequest", "createGrant": "CreateGrantRequest", "revokeGrant": "RevokeGrantRequest", "inspect": "InspectRequest", "search": "SearchRequest", "read": "ReadRequest"}
 
 func accessDefinition(operation string) string {
 	name := accessRequestDefinitions[operation]
@@ -132,6 +132,12 @@ func (d *DatasetService) knowledgeAccess(ctx context.Context, actor, operation, 
 	}
 	var request any
 	switch operation {
+	case "createCredential":
+		request = &entity.KnowledgeAccessCreateCredentialRequest{}
+	case "revokeCredential":
+		request = &entity.KnowledgeAccessRevokeCredentialRequest{}
+	case "listCredentials":
+		request = &entity.KnowledgeAccessListCredentialsRequest{}
 	case "setDepartment":
 		request = &entity.KnowledgeAccessSetDepartmentRequest{}
 	case "listDepartments":
@@ -170,10 +176,22 @@ func (d *DatasetService) knowledgeAccess(ctx context.Context, actor, operation, 
 	if entity.KnowledgeAccessDecode(raw, definition, request) != nil {
 		return 0, nil, accessError(400, "invalid_request")
 	}
+	if inspect, ok := request.(*entity.KnowledgeAccessInspectRequest); ok && accessCredential(ctx) != nil && inspect.Delivery != "web_and_mcp" {
+		return 0, nil, accessError(400, "invalid_request")
+	}
+	if accessCredential(ctx) != nil && operation != "inspect" && operation != "search" && operation != "read" {
+		return 0, nil, accessError(403, "action_denied")
+	}
 	if err := accessSession(ctx, accessDB(ctx), actor, false); err != nil {
 		return 0, nil, err
 	}
 	switch value := request.(type) {
+	case *entity.KnowledgeAccessCreateCredentialRequest:
+		return d.accessCommand(ctx, actor, operation, requestID, "", value.IdempotencyKey, value)
+	case *entity.KnowledgeAccessRevokeCredentialRequest:
+		return d.accessCommand(ctx, actor, operation, requestID, "", value.IdempotencyKey, value)
+	case *entity.KnowledgeAccessListCredentialsRequest:
+		return d.accessListCredentials(ctx, actor, requestID, *value)
 	case *entity.KnowledgeAccessSetDepartmentRequest:
 		return d.accessCommand(ctx, actor, operation, requestID, value.TenantID, value.IdempotencyKey, value)
 	case *entity.KnowledgeAccessListDepartmentsRequest:
@@ -207,6 +225,9 @@ func accessLocked(tx *gorm.DB, lock bool) *gorm.DB {
 	return tx.Session(&gorm.Session{})
 }
 func accessSession(ctx context.Context, tx *gorm.DB, actor string, lock bool) error {
+	if accessCredential(ctx) != nil {
+		return accessCredentialUser(ctx, tx, actor, lock)
+	}
 	if !isKnowledgeID(actor, 32) {
 		return accessError(401, "unauthenticated")
 	}

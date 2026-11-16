@@ -230,7 +230,7 @@ func contentKnowledgeResult(tool knowledgeTool, operation string, data any, fail
 	if err != nil {
 		return contentKnowledgeFailureResult(operation, requestID, "integrity_error")
 	}
-	if len(raw) > contentKnowledgeMaxResponseBytes {
+	if len(raw) > knowledgeMaxResponseBytes {
 		return contentKnowledgeFailureResult(operation, requestID, "capacity_exceeded")
 	}
 	var value any
@@ -242,7 +242,7 @@ func contentKnowledgeResult(tool knowledgeTool, operation string, data any, fail
 	if err != nil {
 		return contentKnowledgeFailureResult(operation, requestID, "integrity_error")
 	}
-	if len(encoded) > contentKnowledgeMaxResponseBytes {
+	if len(encoded) > knowledgeMaxResponseBytes {
 		return contentKnowledgeFailureResult(operation, requestID, "capacity_exceeded")
 	}
 	return result

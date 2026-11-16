@@ -280,10 +280,11 @@ type verifiedAccessActor struct {
 	Rows     []contentLexicalManifestRow
 	ByTarget [][]contentLexicalManifestRow
 	AuditID  string
+	Grant    *entity.KnowledgeAccessGrantRecord
 }
 
-func (d *DatasetService) accessValidateView(ctx context.Context, tx *gorm.DB, actor string, view entity.KnowledgeAccessViewRecord, epoch int64, now time.Time) (*verifiedAccessActor, error) {
-	if view.SubjectUserID != actor || view.CredentialID != nil {
+func (d *DatasetService) accessAuthorizeView(ctx context.Context, tx *gorm.DB, actor string, view entity.KnowledgeAccessViewRecord, epoch int64, now time.Time) (*verifiedAccessActor, error) {
+	if view.SubjectUserID != actor || !accessViewCredentialMatches(ctx, view) {
 		return nil, accessError(404, "not_found")
 	}
 	if !now.Before(view.ExpiresAt) || view.TenantEpoch != epoch {
@@ -295,6 +296,10 @@ func (d *DatasetService) accessValidateView(ctx context.Context, tx *gorm.DB, ac
 	}
 	if kb.TenantID != view.TenantID {
 		return nil, accessError(409, "scope_changed")
+	}
+	policy, err := accessPolicy(tx, kb, true)
+	if err != nil {
+		return nil, err
 	}
 	module, whole, err := accessModule(tx, kb, view.ModuleID, true)
 	if err != nil {
@@ -334,13 +339,34 @@ func (d *DatasetService) accessValidateView(ctx context.Context, tx *gorm.DB, ac
 	if grant.IssuedBy != kb.CreatedBy || !matches || !accessCovers(grant, capture.Mode, capture.Delivery) || view.ExpiresAt.After(grant.ExpiresAt) {
 		return nil, accessError(409, "view_stale")
 	}
-	policy, err := accessPolicy(tx, kb, true)
-	if err != nil {
-		return nil, err
-	}
 	if !policy.Enabled || policy.Version != capture.ShareVersion {
 		return nil, accessError(409, "view_stale")
 	}
+	return &verifiedAccessActor{UserID: actor, View: view, KB: kb, Scope: scope, Capture: capture, Grant: &grant}, nil
+}
+
+func (d *DatasetService) accessValidateView(ctx context.Context, tx *gorm.DB, actor string, view entity.KnowledgeAccessViewRecord, epoch int64, now time.Time) (*verifiedAccessActor, error) {
+	var parent *verifiedAccessActor
+	if accessCredential(ctx) != nil {
+		_, verified, err := d.accessCurrentCredential(ctx, tx, epoch, now, false)
+		if err != nil {
+			return nil, err
+		}
+		parent = verified
+	}
+	metadata, err := d.accessAuthorizeView(ctx, tx, actor, view, epoch, now)
+	if err != nil {
+		return nil, err
+	}
+	if parent != nil {
+		if view.ExpiresAt.After(parent.View.ExpiresAt) {
+			return nil, accessError(409, "view_stale")
+		}
+		if err = accessCaptureSubset(parent, metadata.Scope, metadata.Capture); err != nil {
+			return nil, err
+		}
+	}
+	kb, scope, capture := metadata.KB, metadata.Scope, metadata.Capture
 	proofCtx := accessProofContext(ctx, tx)
 	manifest, err := d.accessPublication(proofCtx, tx, kb, scope, true)
 	if err != nil {
@@ -364,5 +390,5 @@ func (d *DatasetService) accessValidateView(ctx context.Context, tx *gorm.DB, ac
 	if err != nil {
 		return nil, err
 	}
-	return &verifiedAccessActor{UserID: actor, View: view, KB: kb, Scope: scope, Capture: capture, Manifest: manifest, Rows: rows, ByTarget: byTarget}, nil
+	return &verifiedAccessActor{UserID: actor, View: view, KB: kb, Scope: scope, Capture: capture, Manifest: manifest, Rows: rows, ByTarget: byTarget, Grant: metadata.Grant}, nil
 }

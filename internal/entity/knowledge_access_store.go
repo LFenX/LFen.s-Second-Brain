@@ -131,3 +131,27 @@ type KnowledgeAccessAuditRecord struct {
 }
 
 func (KnowledgeAccessAuditRecord) TableName() string { return "knowledge_access_audit" }
+
+type KnowledgeAccessCredentialRecord struct {
+	ID              string     `gorm:"size:32;primaryKey"`
+	TenantID        string     `gorm:"size:32;not null"`
+	SubjectUserID   string     `gorm:"size:32;not null;index:idx_ka_credential_subject_domain_revoked,priority:1"`
+	GrantID         string     `gorm:"size:32;not null"`
+	DomainID        string     `gorm:"size:32;not null;index:idx_ka_credential_subject_domain_revoked,priority:2"`
+	ModuleID        string     `gorm:"size:32;not null"`
+	ModuleVersion   int64      `gorm:"not null"`
+	TenantEpoch     int64      `gorm:"not null"`
+	CaptureJSON     string     `gorm:"type:text;not null" json:"-"`
+	Mode            string     `gorm:"size:16;not null"`
+	Audience        string     `gorm:"size:2048;not null"`
+	VerifierSHA256  []byte     `gorm:"type:binary(32);not null" json:"-"`
+	ClientLabel     string     `gorm:"size:128;not null"`
+	IssuedAt        time.Time  `gorm:"not null"`
+	ExpiresAt       time.Time  `gorm:"not null;index:idx_ka_credential_expiry"`
+	RevokedAt       *time.Time `gorm:"index:idx_ka_credential_subject_domain_revoked,priority:3"`
+	LastUsedAt      *time.Time
+	CreateCommandID string                      `gorm:"size:32;not null"`
+	CreationReceipt *KnowledgeAccessAuditRecord `gorm:"foreignKey:CreateCommandID;references:ID;constraint:OnDelete:RESTRICT"`
+}
+
+func (KnowledgeAccessCredentialRecord) TableName() string { return "knowledge_access_credential" }

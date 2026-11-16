@@ -19,7 +19,16 @@ func (d *DatasetService) accessCommand(ctx context.Context, actor, operation, re
 		return 0, nil, err
 	}
 	if receipt != nil {
+		if accessCredentialCommand(operation) && receipt.CommandScopeID != nil {
+			scopeID = *receipt.CommandScopeID
+		}
 		return d.accessReplay(ctx, actor, operation, requestID, scopeID, digest, receipt)
+	}
+	if accessCredentialCommand(operation) {
+		scopeID, err = accessCredentialCommandDomain(ctx, actor, request)
+		if err != nil {
+			return 0, nil, err
+		}
 	}
 	tenant, scopeKind, err := accessCommandTenant(ctx, operation, scopeID)
 	if err != nil {
@@ -68,12 +77,26 @@ func (d *DatasetService) accessCommand(ctx context.Context, actor, operation, re
 		return 0, nil, err
 	}
 	proofCtx := accessProofContext(ctx, tx)
+	var mint *accessCredentialMint
 	var data, before, after any
 	var resource, module string
 	changed := true
 	status := 200
 	outcome := "changed"
 	switch value := request.(type) {
+	case *entity.KnowledgeAccessCreateCredentialRequest:
+		mint, err = d.accessMintCredential(proofCtx, tx, actor, commandID, kb, *value)
+		if err != nil {
+			return 0, nil, err
+		}
+		data, after, resource, module, status, changed = mint.Data, accessCredentialDefinition(mint.Row), mint.Row.ID, mint.Row.ModuleID, 201, false
+	case *entity.KnowledgeAccessRevokeCredentialRequest:
+		row, revokeErr := accessRevokeCredential(tx, actor, kb, *value, now)
+		if revokeErr != nil {
+			return 0, nil, revokeErr
+		}
+		data = entity.KnowledgeAccessRevoked{ID: row.ID, RevokedAt: accessTime(*row.RevokedAt)}
+		before, after, resource, module, outcome, changed = accessCredentialDefinition(*row), accessCredentialDefinition(*row), row.ID, row.ModuleID, "revoked", false
 	case *entity.KnowledgeAccessSetDepartmentRequest:
 		department, old, wasChanged, setErr := accessSetDepartment(tx, actor, now, value)
 		if setErr != nil {
@@ -258,6 +281,9 @@ func (d *DatasetService) accessCommand(ctx context.Context, actor, operation, re
 			return 0, nil, accessError(400, "invalid_request")
 		}
 	}
+	if mint != nil && (!now.Before(mint.ViewExpiresAt) || !now.Before(mint.Row.ExpiresAt)) {
+		return 0, nil, accessError(409, "view_stale")
+	}
 	encoded, err := accessEncode(operation, requestID, data)
 	if err != nil {
 		return 0, nil, err
@@ -267,9 +293,16 @@ func (d *DatasetService) accessCommand(ctx context.Context, actor, operation, re
 			return 0, nil, err
 		}
 	}
-	safeResult := accessJSON(data)
+	safeData := data
+	if mint != nil {
+		safeData = entity.KnowledgeAccessCredentialMintData{Credential: mint.Data.Credential, Token: nil, Delivery: "unavailable_after_first_response"}
+	}
+	safeResult := accessJSON(safeData)
 	completed := "completed"
 	updates := map[string]any{"tenant_id": tenant, "domain_id": domain, "outcome": outcome, "command_state": completed, "command_resource_id": resource, "command_http_status": status, "command_result_json": safeResult, "command_committed_at": now, "occurred_at": now}
+	if accessCredentialCommand(operation) {
+		updates["credential_id"] = resource
+	}
 	if scopeKind == "tenant" {
 		updates["domain_id"] = nil
 	}
@@ -455,6 +488,9 @@ func accessCommandTenant(ctx context.Context, operation, scopeID string) (string
 }
 
 func accessCommandAuthority(ctx context.Context, tx *gorm.DB, actor, operation, scopeID, tenant string) (*entity.Knowledgebase, error) {
+	if accessCredentialCommand(operation) {
+		return accessCredentialMetadataAuthority(ctx, tx, actor, scopeID, tenant, operation)
+	}
 	if operation == "setDepartment" {
 		return nil, accessTenantOwner(ctx, tx, actor, tenant)
 	}

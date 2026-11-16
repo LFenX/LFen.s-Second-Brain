@@ -319,3 +319,50 @@ type KnowledgeAccessUnitLocator struct {
 	TargetUnitCount int64  `json:"target_unit_count"`
 	NextUnitOrdinal *int64 `json:"next_unit_ordinal"`
 }
+
+type KnowledgeAccessCredential struct {
+	CredentialID  string  `json:"credential_id"`
+	DomainID      string  `json:"domain_id"`
+	ModuleID      string  `json:"module_id"`
+	ModuleVersion int64   `json:"module_version"`
+	Mode          string  `json:"mode"`
+	ClientLabel   string  `json:"client_label"`
+	IssuedAt      string  `json:"issued_at"`
+	ExpiresAt     string  `json:"expires_at"`
+	RevokedAt     *string `json:"revoked_at"`
+	LastUsedAt    *string `json:"last_used_at"`
+}
+
+type KnowledgeAccessCredentialMintData struct {
+	Credential KnowledgeAccessCredential `json:"credential"`
+	Token      *string                   `json:"token"`
+	Delivery   string                    `json:"delivery"`
+}
+
+type KnowledgeAccessCreateCredentialRequest struct {
+	ContractVersion string `json:"contract_version"`
+	ViewID          string `json:"view_id"`
+	Mode            string `json:"mode"`
+	TTLSeconds      *int64 `json:"ttl_seconds"`
+	ClientLabel     string `json:"client_label"`
+	Confirmed       bool   `json:"confirmed"`
+	IdempotencyKey  string `json:"idempotency_key"`
+}
+
+type KnowledgeAccessRevokeCredentialRequest struct {
+	ContractVersion string `json:"contract_version"`
+	CredentialID    string `json:"credential_id"`
+	Confirmed       bool   `json:"confirmed"`
+	IdempotencyKey  string `json:"idempotency_key"`
+}
+
+type KnowledgeAccessListCredentialsRequest struct {
+	ContractVersion string  `json:"contract_version"`
+	DomainID        string  `json:"domain_id"`
+	IdempotencyKey  *string `json:"idempotency_key"`
+}
+
+type KnowledgeAccessListCredentialsData struct {
+	Items      []KnowledgeAccessCredential `json:"items"`
+	Pagination string                      `json:"pagination"`
+}

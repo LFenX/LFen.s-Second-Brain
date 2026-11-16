@@ -8780,6 +8780,60 @@
         "finalRelease": "Pending chosen final stage and separate rollout checks."
       },
       "preservation": "Append only inside existing current_context,old execution and authority bytes exact suffix. RawRef40 archive;97entries/102uses,47protected/26contracts/11businessarchive/28history and selectors/roles/uses unchanged. No source file changes."
+    },
+    "managed_credential_backend_implementation_followup": {
+      "state": "RootSolo_S3ManagedCredentialBackendImplemented_RealAcceptancePending",
+      "humanInstruction": "现在暂停其他会话，后续所有任务由你一个人完成",
+      "coordination": "Root is sole implementer,reviewer,executor; other chats remain paused. No independent D/C receipt fabricated.",
+      "subject": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3",
+      "acceptedS2": {
+        "commit": "840f7b9222fd5d8cc39a959f4d4f16416e0d4fa3",
+        "normalElevenChecks": true,
+        "pushedRemoteVerified": true
+      },
+      "implementation": {
+        "files": 31,
+        "newSourceFiles": 11,
+        "tables": "One credential table in addition to accepted S2 eight access tables. One configured canonical audience; high-entropy opaque credential with length-delimited SHA256 verifier,constant-time comparison and current parent checks. No raw token or recoverable secret in persistence.",
+        "native": "Add exactly createCredential,revokeCredential,listCredentials native-self operations to the existing command/audit core:14 native operations total. Safe same-key receipt returns original metadata/token:null even after view GC. Mint TTL defaults1h,max8h,parent cap; per-user/domain and cross-domain rate limits. Self metadata/revoke survive lost content authority. Mint/revoke do not change tenant epoch.",
+        "transport": "One managed bearer endpoint,three scoped readonly tools; read-only registry omits search and official SDK returns -32602 for attempted calls. Existing Go SDKv1.8.0 and protocols2025-11-25/2025-06-18 only. Sessionless JSON,explicit isError and equal closed carriers,full encoded1MiB guard,fresh primary final auth overriding success or error. Explicitly reject unadvertised SDK discovery/resources/prompts/completion/subscription/logging methods. Native session/API/model tokens are never borrowed.",
+        "packaging": "Public proxy preserves Host including port; new MCP path disables request buffering/access logging. HTTPS recipe refuses HTTP MCP without redirect. Public minimal recipe has explicit loopback canonical audience variable. No private deployment config changed."
+      },
+      "validation": {
+        "core85": "Initial output guard rejected2151219B after commandExit0; no coverage credit then. Corrected safe-control-frame collection separately passed85 core units/native tail. Original failure and incorrect static planned count interpretation retained.",
+        "backendInitial": "First125 expected-list candidate actually ran/passed124; renamed old S2 route assertion remained in expected list. Original gate failure retained. Corrected list passed124/build/five help; unadvertised SDK method guard then added and retested.",
+        "final": "125 exact top-level units,including actual official Go SDK over httptest for both selected versions,old MCP regressions,credential lifecycle/safe replay/nonsecret user reads,source/view binding,final auth,error/wire/size gates. Native tail,server+CLI,actualLLD20 and five help passed.1807 public input pins reverified; original IO closed,compiler removed/fullID404.",
+        "proof": ".local-data/coordination-20261108/review/root-solo-20261116/s3-backend03/compile/result.safe.json",
+        "proxy": "Exact frozen HTTP/HTTPS configs passed actual nginx -t in network-none helper. Only an ephemeral synthetic tmpfs certificate/key used; helper removed/fullID404.",
+        "proxyProof": ".local-data/coordination-20261108/review/root-solo-20261116/s3-proxy01/result.safe.json",
+        "web": "Separate ignored Web candidate146 checks/10 suites passed via preserved first run and two test-only repairs. Production build running. No Web source is applied by this checkpoint."
+      },
+      "gates": {
+        "S1": "Accepted bounded isolated synthetic slice,unchanged.",
+        "S2": "Accepted bounded isolated department slice,unchanged.",
+        "S3": "Backend implementation checkpoint only,not stage acceptance. Real MySQL credential barriers,isolated actual service HTTP/SDK Go+TS and actual Web delivery/revocation remain Pending.",
+        "finalRelease": "Pending. Original user29395/29396 and private credentials/config/volumes unchanged. No new models,real AICS,SMTP,OAuth or root layout scope."
+      },
+      "preservation": "Exact31 implementation/test/public packaging plus4 baseline/evidence postimages. Preserve prior execution bytes,full authority suffix,rawRef41 and original failures/NotRun/Unknown.97entries/102uses,47protected/26contracts/11businessarchive/28history,roles/selectors/uses unchanged."
+    },
+    "managed_proxy_eof_hook_followup": {
+      "state": "RootSolo_BackendCheckpointHookEOFRepair",
+      "humanInstruction": "现在暂停其他会话，后续所有任务由你一个人完成",
+      "parentAppliedReference": "KCRL-20261116-42",
+      "git": "First S3 backend commit attempt stopped normally:10 of11 jobs passed; only public docker/nginx/proxy.conf lacked final LF. HEAD remains840f7b9,no push,no bypass. Frozen prior35 postimages and failed attempt preserved.",
+      "change": "One final LF only in the public proxy config. No directive,Go/schema/Web/credential/authorization semantics changed. New candidate and official baseline review precede source correction; old manifest is not refreshed to force a failing lock.",
+      "validation": "Previously final125 Go units,native tail,LLD20 server/CLI/five help and HTTP/HTTPS syntax remain original. All Go and business source bytes unchanged. Corrected proxy syntax and normal11 commit jobs are required before push.",
+      "gates": "S3 actual MySQL/isolated real Go+TS SDK/Web and final rollout pending. Web146 candidate production build running,not included in this backend checkpoint.",
+      "scope": {
+        "RootOnly": true,
+        "models": 0,
+        "SMTP": 0,
+        "realAICS": 0,
+        "OAuth": false,
+        "originalUserServicesUntouched": true,
+        "privateConfigCredentialsVolumesUntouched": true
+      },
+      "preservation": "Preserve prior42 raw manifest,prior execution bytes,full authority suffix and prior failed commit.97entries/102uses,47protected/26contracts/11businessarchive/28history and all selectors/roles/uses unchanged."
     }
   }
 }

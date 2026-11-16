@@ -29,7 +29,7 @@ func KnowledgeAccessReadDB(ctx context.Context, db *gorm.DB) *gorm.DB {
 }
 
 func migrateKnowledgeAccess(ctx context.Context, db *gorm.DB) error {
-	for _, model := range []any{&entity.KnowledgeAccessTenantStateRecord{}, &entity.KnowledgeAccessDepartmentRecord{}, &entity.KnowledgeAccessDepartmentMemberRecord{}, &entity.KnowledgeAccessDomainPolicyRecord{}, &entity.KnowledgeAccessModuleRecord{}, &entity.KnowledgeAccessAuditRecord{}, &entity.KnowledgeAccessGrantRecord{}, &entity.KnowledgeAccessViewRecord{}} {
+	for _, model := range []any{&entity.KnowledgeAccessTenantStateRecord{}, &entity.KnowledgeAccessDepartmentRecord{}, &entity.KnowledgeAccessDepartmentMemberRecord{}, &entity.KnowledgeAccessDomainPolicyRecord{}, &entity.KnowledgeAccessModuleRecord{}, &entity.KnowledgeAccessAuditRecord{}, &entity.KnowledgeAccessGrantRecord{}, &entity.KnowledgeAccessCredentialRecord{}, &entity.KnowledgeAccessViewRecord{}} {
 		if err := autoMigrateSafely(ctx, db, model); err != nil {
 			return fmt.Errorf("migrate knowledge access: %w", err)
 		}

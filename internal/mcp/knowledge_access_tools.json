@@ -1,0 +1,1685 @@
+[
+  {
+    "name": "knowledge_access_inspect",
+    "description": "Prepare a current authorized module view without content or global counts.",
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "domain_id",
+        "module_id",
+        "mode",
+        "delivery",
+        "source_ids"
+      ],
+      "properties": {
+        "contract_version": {
+          "$ref": "#/$defs/Version"
+        },
+        "domain_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "module_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "mode": {
+          "$ref": "#/$defs/Mode"
+        },
+        "delivery": {
+          "const": "web_and_mcp"
+        },
+        "source_ids": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ID"
+              },
+              "minItems": 1,
+              "maxItems": 32,
+              "uniqueItems": true
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "$defs": {
+        "InspectRequest": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "contract_version",
+            "domain_id",
+            "module_id",
+            "mode",
+            "delivery",
+            "source_ids"
+          ],
+          "properties": {
+            "contract_version": {
+              "$ref": "#/$defs/Version"
+            },
+            "domain_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "module_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "mode": {
+              "$ref": "#/$defs/Mode"
+            },
+            "delivery": {
+              "$ref": "#/$defs/Delivery"
+            },
+            "source_ids": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/ID"
+                  },
+                  "minItems": 1,
+                  "maxItems": 32,
+                  "uniqueItems": true
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        },
+        "ID": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{32}$"
+        },
+        "Delivery": {
+          "enum": [
+            "web_only",
+            "web_and_mcp"
+          ]
+        },
+        "Mode": {
+          "enum": [
+            "read",
+            "read_search"
+          ]
+        },
+        "Version": {
+          "const": "0.3.0-candidate"
+        }
+      }
+    },
+    "outputSchema": {
+      "type": "object",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "contract_version",
+            "request_id",
+            "data"
+          ],
+          "properties": {
+            "operation": {
+              "const": "inspect"
+            },
+            "contract_version": {
+              "$ref": "#/$defs/Version"
+            },
+            "request_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "data": {
+              "$ref": "#/$defs/InspectData"
+            }
+          }
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Error"
+            },
+            {
+              "properties": {
+                "operation": {
+                  "const": "inspect"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "$defs": {
+        "InspectResponse": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "operation",
+                "contract_version",
+                "request_id",
+                "data"
+              ],
+              "properties": {
+                "operation": {
+                  "const": "inspect"
+                },
+                "contract_version": {
+                  "$ref": "#/$defs/Version"
+                },
+                "request_id": {
+                  "$ref": "#/$defs/ID"
+                },
+                "data": {
+                  "$ref": "#/$defs/InspectData"
+                }
+              }
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/Error"
+                },
+                {
+                  "properties": {
+                    "operation": {
+                      "const": "inspect"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "Error": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "contract_version",
+            "request_id",
+            "data",
+            "code",
+            "message",
+            "outcome_known",
+            "retry_same_key"
+          ],
+          "properties": {
+            "operation": {
+              "enum": [
+                "setDepartment",
+                "listDepartments",
+                "setPolicy",
+                "setModule",
+                "getModuleAdmin",
+                "listModules",
+                "createGrant",
+                "revokeGrant",
+                "createCredential",
+                "revokeCredential",
+                "listCredentials",
+                "inspect",
+                "search",
+                "read",
+                "mcpTransport"
+              ]
+            },
+            "contract_version": {
+              "$ref": "#/$defs/Version"
+            },
+            "request_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "data": {
+              "type": "null"
+            },
+            "code": {
+              "enum": [
+                "invalid_request",
+                "unauthenticated",
+                "action_denied",
+                "not_found",
+                "version_conflict",
+                "scope_changed",
+                "view_stale",
+                "index_stale",
+                "index_unindexed",
+                "scope_not_supported",
+                "idempotency_conflict",
+                "contract_mismatch",
+                "capacity_exceeded",
+                "rate_limited",
+                "integrity_error",
+                "unavailable"
+              ]
+            },
+            "message": {
+              "const": "Knowledge access operation could not be completed"
+            },
+            "outcome_known": {
+              "type": "boolean"
+            },
+            "retry_same_key": {
+              "type": "boolean"
+            }
+          }
+        },
+        "ID": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{32}$"
+        },
+        "Version": {
+          "const": "0.3.0-candidate"
+        },
+        "InspectData": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "view_id",
+            "domain_id",
+            "module_id",
+            "module_version",
+            "mode",
+            "delivery",
+            "expires_at",
+            "targets",
+            "source_count",
+            "unit_count",
+            "readiness",
+            "pagination"
+          ],
+          "properties": {
+            "view_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "domain_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "module_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "module_version": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "mode": {
+              "$ref": "#/$defs/Mode"
+            },
+            "delivery": {
+              "$ref": "#/$defs/Delivery"
+            },
+            "expires_at": {
+              "$ref": "#/$defs/Time"
+            },
+            "targets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TargetCatalogEntry"
+              },
+              "minItems": 1,
+              "maxItems": 32,
+              "uniqueItems": true
+            },
+            "source_count": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 32
+            },
+            "unit_count": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 32768
+            },
+            "readiness": {
+              "const": "ready"
+            },
+            "pagination": {
+              "const": "none"
+            }
+          }
+        },
+        "TargetCatalogEntry": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "target",
+            "unit_count"
+          ],
+          "properties": {
+            "target": {
+              "$ref": "#/$defs/Target"
+            },
+            "unit_count": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 32768
+            }
+          }
+        },
+        "Target": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "source",
+            "representation"
+          ],
+          "properties": {
+            "source": {
+              "$ref": "#/$defs/Source"
+            },
+            "representation": {
+              "$ref": "#/$defs/Representation"
+            }
+          }
+        },
+        "Representation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id",
+            "producer_sha256"
+          ],
+          "properties": {
+            "kind": {
+              "enum": [
+                "source_revision",
+                "structure_view",
+                "document_representation",
+                "parsed_representation"
+              ]
+            },
+            "id": {
+              "$ref": "#/$defs/OwningNodeID"
+            },
+            "producer_sha256": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Hash"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "kind": {
+                    "const": "source_revision"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "producer_sha256": {
+                    "type": "null"
+                  }
+                }
+              },
+              "else": {
+                "properties": {
+                  "producer_sha256": {
+                    "$ref": "#/$defs/Hash"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "Hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "OwningNodeID": {
+          "type": "string",
+          "pattern": "^(?:[a-f0-9]{32}|[a-f0-9]{64})$"
+        },
+        "Source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "domain_id",
+            "source_id",
+            "source_revision_id",
+            "source_sha256"
+          ],
+          "properties": {
+            "domain_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "source_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "source_revision_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "source_sha256": {
+              "$ref": "#/$defs/Hash"
+            }
+          }
+        },
+        "Time": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,9})?Z$"
+        },
+        "Delivery": {
+          "enum": [
+            "web_only",
+            "web_and_mcp"
+          ]
+        },
+        "Mode": {
+          "enum": [
+            "read",
+            "read_search"
+          ]
+        }
+      }
+    },
+    "x-mode-required": "read",
+    "x-operation": "inspect"
+  },
+  {
+    "name": "knowledge_access_search",
+    "description": "Match only rows of the current authorized view; no model, total counts or parent expansion.",
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "view_id",
+        "query",
+        "limit"
+      ],
+      "properties": {
+        "contract_version": {
+          "$ref": "#/$defs/Version"
+        },
+        "view_id": {
+          "$ref": "#/$defs/ID"
+        },
+        "query": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        }
+      },
+      "$defs": {
+        "SearchRequest": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "contract_version",
+            "view_id",
+            "query",
+            "limit"
+          ],
+          "properties": {
+            "contract_version": {
+              "$ref": "#/$defs/Version"
+            },
+            "view_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "query": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 20
+            }
+          }
+        },
+        "ID": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{32}$"
+        },
+        "Version": {
+          "const": "0.3.0-candidate"
+        }
+      }
+    },
+    "outputSchema": {
+      "type": "object",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "contract_version",
+            "request_id",
+            "data"
+          ],
+          "properties": {
+            "operation": {
+              "const": "search"
+            },
+            "contract_version": {
+              "$ref": "#/$defs/Version"
+            },
+            "request_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "data": {
+              "$ref": "#/$defs/SearchData"
+            }
+          }
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Error"
+            },
+            {
+              "properties": {
+                "operation": {
+                  "const": "search"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "$defs": {
+        "SearchResponse": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "operation",
+                "contract_version",
+                "request_id",
+                "data"
+              ],
+              "properties": {
+                "operation": {
+                  "const": "search"
+                },
+                "contract_version": {
+                  "$ref": "#/$defs/Version"
+                },
+                "request_id": {
+                  "$ref": "#/$defs/ID"
+                },
+                "data": {
+                  "$ref": "#/$defs/SearchData"
+                }
+              }
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/Error"
+                },
+                {
+                  "properties": {
+                    "operation": {
+                      "const": "search"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "Error": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "contract_version",
+            "request_id",
+            "data",
+            "code",
+            "message",
+            "outcome_known",
+            "retry_same_key"
+          ],
+          "properties": {
+            "operation": {
+              "enum": [
+                "setDepartment",
+                "listDepartments",
+                "setPolicy",
+                "setModule",
+                "getModuleAdmin",
+                "listModules",
+                "createGrant",
+                "revokeGrant",
+                "createCredential",
+                "revokeCredential",
+                "listCredentials",
+                "inspect",
+                "search",
+                "read",
+                "mcpTransport"
+              ]
+            },
+            "contract_version": {
+              "$ref": "#/$defs/Version"
+            },
+            "request_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "data": {
+              "type": "null"
+            },
+            "code": {
+              "enum": [
+                "invalid_request",
+                "unauthenticated",
+                "action_denied",
+                "not_found",
+                "version_conflict",
+                "scope_changed",
+                "view_stale",
+                "index_stale",
+                "index_unindexed",
+                "scope_not_supported",
+                "idempotency_conflict",
+                "contract_mismatch",
+                "capacity_exceeded",
+                "rate_limited",
+                "integrity_error",
+                "unavailable"
+              ]
+            },
+            "message": {
+              "const": "Knowledge access operation could not be completed"
+            },
+            "outcome_known": {
+              "type": "boolean"
+            },
+            "retry_same_key": {
+              "type": "boolean"
+            }
+          }
+        },
+        "ID": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{32}$"
+        },
+        "Version": {
+          "const": "0.3.0-candidate"
+        },
+        "SearchData": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "view_id",
+            "query",
+            "requested_limit",
+            "returned_count",
+            "hits",
+            "total_matches",
+            "pagination",
+            "ranking",
+            "parent_expansion"
+          ],
+          "properties": {
+            "view_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "query": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "requested_limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 20
+            },
+            "returned_count": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 20
+            },
+            "hits": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Hit"
+              },
+              "minItems": 0,
+              "maxItems": 20,
+              "uniqueItems": true
+            },
+            "total_matches": {
+              "type": "null"
+            },
+            "pagination": {
+              "const": "none"
+            },
+            "ranking": {
+              "const": "scoped_lexical_stable_id"
+            },
+            "parent_expansion": {
+              "const": "disabled"
+            }
+          }
+        },
+        "Hit": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "evidence_ref",
+            "citation",
+            "text",
+            "byte_length",
+            "rank_ordinal"
+          ],
+          "properties": {
+            "evidence_ref": {
+              "$ref": "#/$defs/EvidenceRef"
+            },
+            "citation": {
+              "$ref": "#/$defs/Citation"
+            },
+            "text": {
+              "type": "string",
+              "maxLength": 8192
+            },
+            "byte_length": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 8192
+            },
+            "rank_ordinal": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 20
+            }
+          }
+        },
+        "Citation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "target",
+            "node_id",
+            "coordinate_space",
+            "range",
+            "display_name",
+            "position_label",
+            "revision_binding"
+          ],
+          "properties": {
+            "target": {
+              "$ref": "#/$defs/Target"
+            },
+            "node_id": {
+              "$ref": "#/$defs/OwningNodeID"
+            },
+            "coordinate_space": {
+              "enum": [
+                "source_utf8",
+                "derived_utf8"
+              ]
+            },
+            "range": {
+              "$ref": "#/$defs/Range"
+            },
+            "display_name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "position_label": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            },
+            "revision_binding": {
+              "const": "fixed"
+            }
+          }
+        },
+        "Range": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "start_byte",
+            "end_byte",
+            "sha256"
+          ],
+          "properties": {
+            "start_byte": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "end_byte": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "sha256": {
+              "$ref": "#/$defs/Hash"
+            }
+          },
+          "$comment": "Go semantic validation also requires end>=start, exact UTF-8 boundaries and SHA over that exact interval."
+        },
+        "Hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "OwningNodeID": {
+          "type": "string",
+          "pattern": "^(?:[a-f0-9]{32}|[a-f0-9]{64})$"
+        },
+        "Target": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "source",
+            "representation"
+          ],
+          "properties": {
+            "source": {
+              "$ref": "#/$defs/Source"
+            },
+            "representation": {
+              "$ref": "#/$defs/Representation"
+            }
+          }
+        },
+        "Representation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id",
+            "producer_sha256"
+          ],
+          "properties": {
+            "kind": {
+              "enum": [
+                "source_revision",
+                "structure_view",
+                "document_representation",
+                "parsed_representation"
+              ]
+            },
+            "id": {
+              "$ref": "#/$defs/OwningNodeID"
+            },
+            "producer_sha256": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Hash"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "kind": {
+                    "const": "source_revision"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "producer_sha256": {
+                    "type": "null"
+                  }
+                }
+              },
+              "else": {
+                "properties": {
+                  "producer_sha256": {
+                    "$ref": "#/$defs/Hash"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "Source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "domain_id",
+            "source_id",
+            "source_revision_id",
+            "source_sha256"
+          ],
+          "properties": {
+            "domain_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "source_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "source_revision_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "source_sha256": {
+              "$ref": "#/$defs/Hash"
+            }
+          }
+        },
+        "EvidenceRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "contract_version",
+            "view_id",
+            "evidence_id"
+          ],
+          "properties": {
+            "contract_version": {
+              "$ref": "#/$defs/Version"
+            },
+            "view_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "evidence_id": {
+              "$ref": "#/$defs/Hash"
+            }
+          }
+        }
+      }
+    },
+    "x-mode-required": "read_search",
+    "x-operation": "search"
+  },
+  {
+    "name": "knowledge_access_read",
+    "description": "Read one current authorized whole unit by view target/unit ordinal,or reread its exact evidence ref; no search required.",
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "selector"
+      ],
+      "properties": {
+        "contract_version": {
+          "$ref": "#/$defs/Version"
+        },
+        "selector": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/UnitReadSelector"
+            },
+            {
+              "$ref": "#/$defs/EvidenceReadSelector"
+            }
+          ]
+        }
+      },
+      "$defs": {
+        "ReadRequest": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "contract_version",
+            "selector"
+          ],
+          "properties": {
+            "contract_version": {
+              "$ref": "#/$defs/Version"
+            },
+            "selector": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/UnitReadSelector"
+                },
+                {
+                  "$ref": "#/$defs/EvidenceReadSelector"
+                }
+              ]
+            }
+          }
+        },
+        "EvidenceReadSelector": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "evidence_ref"
+          ],
+          "properties": {
+            "kind": {
+              "const": "evidence"
+            },
+            "evidence_ref": {
+              "$ref": "#/$defs/EvidenceRef"
+            }
+          }
+        },
+        "EvidenceRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "contract_version",
+            "view_id",
+            "evidence_id"
+          ],
+          "properties": {
+            "contract_version": {
+              "$ref": "#/$defs/Version"
+            },
+            "view_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "evidence_id": {
+              "$ref": "#/$defs/Hash"
+            }
+          }
+        },
+        "Hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "ID": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{32}$"
+        },
+        "Version": {
+          "const": "0.3.0-candidate"
+        },
+        "UnitReadSelector": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "view_id",
+            "target_index",
+            "unit_ordinal"
+          ],
+          "properties": {
+            "kind": {
+              "const": "unit"
+            },
+            "view_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "target_index": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 31
+            },
+            "unit_ordinal": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 32767
+            }
+          }
+        }
+      }
+    },
+    "outputSchema": {
+      "type": "object",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "contract_version",
+            "request_id",
+            "data"
+          ],
+          "properties": {
+            "operation": {
+              "const": "read"
+            },
+            "contract_version": {
+              "$ref": "#/$defs/Version"
+            },
+            "request_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "data": {
+              "$ref": "#/$defs/ReadData"
+            }
+          }
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Error"
+            },
+            {
+              "properties": {
+                "operation": {
+                  "const": "read"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "$defs": {
+        "ReadResponse": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "operation",
+                "contract_version",
+                "request_id",
+                "data"
+              ],
+              "properties": {
+                "operation": {
+                  "const": "read"
+                },
+                "contract_version": {
+                  "$ref": "#/$defs/Version"
+                },
+                "request_id": {
+                  "$ref": "#/$defs/ID"
+                },
+                "data": {
+                  "$ref": "#/$defs/ReadData"
+                }
+              }
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/Error"
+                },
+                {
+                  "properties": {
+                    "operation": {
+                      "const": "read"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "Error": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "contract_version",
+            "request_id",
+            "data",
+            "code",
+            "message",
+            "outcome_known",
+            "retry_same_key"
+          ],
+          "properties": {
+            "operation": {
+              "enum": [
+                "setDepartment",
+                "listDepartments",
+                "setPolicy",
+                "setModule",
+                "getModuleAdmin",
+                "listModules",
+                "createGrant",
+                "revokeGrant",
+                "createCredential",
+                "revokeCredential",
+                "listCredentials",
+                "inspect",
+                "search",
+                "read",
+                "mcpTransport"
+              ]
+            },
+            "contract_version": {
+              "$ref": "#/$defs/Version"
+            },
+            "request_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "data": {
+              "type": "null"
+            },
+            "code": {
+              "enum": [
+                "invalid_request",
+                "unauthenticated",
+                "action_denied",
+                "not_found",
+                "version_conflict",
+                "scope_changed",
+                "view_stale",
+                "index_stale",
+                "index_unindexed",
+                "scope_not_supported",
+                "idempotency_conflict",
+                "contract_mismatch",
+                "capacity_exceeded",
+                "rate_limited",
+                "integrity_error",
+                "unavailable"
+              ]
+            },
+            "message": {
+              "const": "Knowledge access operation could not be completed"
+            },
+            "outcome_known": {
+              "type": "boolean"
+            },
+            "retry_same_key": {
+              "type": "boolean"
+            }
+          }
+        },
+        "ID": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{32}$"
+        },
+        "Version": {
+          "const": "0.3.0-candidate"
+        },
+        "ReadData": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "evidence_ref",
+            "citation",
+            "text",
+            "byte_length",
+            "encoding",
+            "complete",
+            "typed_context",
+            "attachments",
+            "parent_expansion",
+            "unit_locator"
+          ],
+          "properties": {
+            "evidence_ref": {
+              "$ref": "#/$defs/EvidenceRef"
+            },
+            "citation": {
+              "$ref": "#/$defs/Citation"
+            },
+            "text": {
+              "type": "string",
+              "maxLength": 8192
+            },
+            "byte_length": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 8192
+            },
+            "encoding": {
+              "const": "utf-8"
+            },
+            "complete": {
+              "const": true
+            },
+            "typed_context": {
+              "$ref": "#/$defs/TypedContext"
+            },
+            "attachments": {
+              "const": "not_exposed"
+            },
+            "parent_expansion": {
+              "const": "disabled"
+            },
+            "unit_locator": {
+              "$ref": "#/$defs/UnitLocator"
+            }
+          }
+        },
+        "UnitLocator": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "view_id",
+            "target_index",
+            "unit_ordinal",
+            "target_unit_count",
+            "next_unit_ordinal"
+          ],
+          "properties": {
+            "view_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "target_index": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 31
+            },
+            "unit_ordinal": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 32767
+            },
+            "target_unit_count": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 32768
+            },
+            "next_unit_ordinal": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 32767
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        },
+        "TypedContext": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "members",
+            "members_complete",
+            "omission_reasons"
+          ],
+          "properties": {
+            "members": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TypedMember"
+              },
+              "minItems": 0,
+              "maxItems": 32,
+              "uniqueItems": true
+            },
+            "members_complete": {
+              "type": "boolean"
+            },
+            "omission_reasons": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "typed_payload_not_exposed_in_access_v03",
+                  "whole_member_outside_evidence",
+                  "unsearchable_member",
+                  "member_budget",
+                  "metadata_budget"
+                ]
+              },
+              "minItems": 0,
+              "maxItems": 5,
+              "uniqueItems": true
+            }
+          }
+        },
+        "TypedMember": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "node_id",
+            "kind",
+            "range",
+            "text_status",
+            "payload_sha256"
+          ],
+          "properties": {
+            "node_id": {
+              "$ref": "#/$defs/OwningNodeID"
+            },
+            "kind": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{0,63}$"
+            },
+            "range": {
+              "$ref": "#/$defs/Range"
+            },
+            "text_status": {
+              "enum": [
+                "available",
+                "empty"
+              ]
+            },
+            "payload_sha256": {
+              "$ref": "#/$defs/Hash"
+            }
+          }
+        },
+        "Hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "Range": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "start_byte",
+            "end_byte",
+            "sha256"
+          ],
+          "properties": {
+            "start_byte": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "end_byte": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "sha256": {
+              "$ref": "#/$defs/Hash"
+            }
+          },
+          "$comment": "Go semantic validation also requires end>=start, exact UTF-8 boundaries and SHA over that exact interval."
+        },
+        "OwningNodeID": {
+          "type": "string",
+          "pattern": "^(?:[a-f0-9]{32}|[a-f0-9]{64})$"
+        },
+        "Citation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "target",
+            "node_id",
+            "coordinate_space",
+            "range",
+            "display_name",
+            "position_label",
+            "revision_binding"
+          ],
+          "properties": {
+            "target": {
+              "$ref": "#/$defs/Target"
+            },
+            "node_id": {
+              "$ref": "#/$defs/OwningNodeID"
+            },
+            "coordinate_space": {
+              "enum": [
+                "source_utf8",
+                "derived_utf8"
+              ]
+            },
+            "range": {
+              "$ref": "#/$defs/Range"
+            },
+            "display_name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "position_label": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            },
+            "revision_binding": {
+              "const": "fixed"
+            }
+          }
+        },
+        "Target": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "source",
+            "representation"
+          ],
+          "properties": {
+            "source": {
+              "$ref": "#/$defs/Source"
+            },
+            "representation": {
+              "$ref": "#/$defs/Representation"
+            }
+          }
+        },
+        "Representation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id",
+            "producer_sha256"
+          ],
+          "properties": {
+            "kind": {
+              "enum": [
+                "source_revision",
+                "structure_view",
+                "document_representation",
+                "parsed_representation"
+              ]
+            },
+            "id": {
+              "$ref": "#/$defs/OwningNodeID"
+            },
+            "producer_sha256": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Hash"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "kind": {
+                    "const": "source_revision"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "producer_sha256": {
+                    "type": "null"
+                  }
+                }
+              },
+              "else": {
+                "properties": {
+                  "producer_sha256": {
+                    "$ref": "#/$defs/Hash"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "Source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "domain_id",
+            "source_id",
+            "source_revision_id",
+            "source_sha256"
+          ],
+          "properties": {
+            "domain_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "source_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "source_revision_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "source_sha256": {
+              "$ref": "#/$defs/Hash"
+            }
+          }
+        },
+        "EvidenceRef": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "contract_version",
+            "view_id",
+            "evidence_id"
+          ],
+          "properties": {
+            "contract_version": {
+              "$ref": "#/$defs/Version"
+            },
+            "view_id": {
+              "$ref": "#/$defs/ID"
+            },
+            "evidence_id": {
+              "$ref": "#/$defs/Hash"
+            }
+          }
+        }
+      }
+    },
+    "x-mode-required": "read",
+    "x-operation": "read"
+  }
+]

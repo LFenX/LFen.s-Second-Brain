@@ -1,47 +1,14 @@
 package mcp
 
 import (
-	"bytes"
 	"net/http"
 	"strconv"
 )
 
-const contentKnowledgeMaxResponseBytes = 1 << 20
-
-type contentKnowledgeResponseBuffer struct {
-	header   http.Header
-	status   int
-	body     bytes.Buffer
-	overflow bool
-}
-
-func (b *contentKnowledgeResponseBuffer) Header() http.Header { return b.header }
-
-func (b *contentKnowledgeResponseBuffer) WriteHeader(status int) {
-	if b.status == 0 {
-		b.status = status
-	}
-}
-
-func (b *contentKnowledgeResponseBuffer) Write(data []byte) (int, error) {
-	if b.status == 0 {
-		b.status = http.StatusOK
-	}
-	if b.overflow || len(data) > contentKnowledgeMaxResponseBytes-b.body.Len() {
-		b.overflow = true
-		return len(data), nil
-	}
-	return b.body.Write(data)
-}
-
-// This profile uses finite JSON responses. Keep SDK flushes buffered so no
-// private fragment escapes before the complete serialized response is bounded.
-func (*contentKnowledgeResponseBuffer) Flush() {}
-
 func contentKnowledgeBoundedHTTP(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Cache-Control", "no-store")
-		buffer := &contentKnowledgeResponseBuffer{header: make(http.Header)}
+		buffer := &knowledgeResponseBuffer{header: make(http.Header)}
 		next.ServeHTTP(buffer, r)
 		if buffer.overflow {
 			// HTTP 413 is a transport capacity refusal, not partial tool success.

@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func TestKnowledgeAccessRegistersOnlyElevenS2Operations(t *testing.T) {
+func TestKnowledgeAccessRegistersFourteenNativeAndOneManagedMCPRoute(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	engine := gin.New()
 	r := &Router{}
@@ -15,16 +15,16 @@ func TestKnowledgeAccessRegistersOnlyElevenS2Operations(t *testing.T) {
 	paths := map[string]bool{}
 	for _, route := range engine.Routes() {
 		paths[route.Path] = true
-		if strings.Contains(route.Path, "credential") || strings.Contains(route.Path, "mcp") {
-			t.Fatal("later-stage route registered", route.Path)
+		if !strings.HasPrefix(route.Path, "/api/v1/knowledge/access/") {
+			t.Fatal("unexpected access route", route.Path)
 		}
 	}
-	if len(paths) != 11 {
-		t.Fatal("S2 route count", len(paths))
+	if len(paths) != 15 {
+		t.Fatal("S3 route count", len(paths))
 	}
-	for _, path := range []string{"/api/v1/knowledge/access/admin/departments/set", "/api/v1/knowledge/access/departments/list"} {
+	for _, path := range []string{"/api/v1/knowledge/access/admin/departments/set", "/api/v1/knowledge/access/departments/list", "/api/v1/knowledge/access/credentials/create", "/api/v1/knowledge/access/credentials/revoke", "/api/v1/knowledge/access/credentials/list", "/api/v1/knowledge/access/mcp"} {
 		if !paths[path] {
-			t.Fatal("missing department route", path)
+			t.Fatal("missing access route", path)
 		}
 	}
 }
