@@ -8,6 +8,7 @@ import { KnowledgeAccessVersion } from '@/interfaces/database/knowledge-access';
 import {
   accessSchemaValid,
   accessTargetsValid,
+  parseAccessJSON,
 } from '@/utils/knowledge-access-schema';
 import { accessPublicationChoice } from '@/utils/knowledge-access-navigation';
 import {
@@ -411,4 +412,72 @@ it('converts an existing whole source revision to the approved exact access targ
   });
   expect(accessSchemaValid('ModuleScope', choice?.scope)).toBe(true);
   expect(accessTargetsValid(choice!.scope.targets, Domain)).toBe(true);
+});
+
+it('accepts multiple distinct search hits through the actual strict byte decoder', async () => {
+  const catalogue = view();
+  catalogue.mode = 'read_search';
+  const result = searchResult(catalogue);
+  const second = JSON.parse(JSON.stringify(result.hits[0]));
+  second.evidence_ref.evidence_id = 'f'.repeat(64);
+  second.rank_ordinal = 2;
+  result.hits.push(second);
+  result.returned_count = 2;
+  post.mockImplementation(async (config) => {
+    const reply = response('search', result);
+    reply.data = config.transformResponse[0](
+      new TextEncoder().encode(JSON.stringify(reply.data)),
+    );
+    return reply;
+  });
+  await expect(
+    service.search(
+      {
+        contract_version: KnowledgeAccessVersion,
+        view_id: catalogue.view_id,
+        query: result.query,
+        limit: result.requested_limit,
+      },
+      catalogue,
+    ),
+  ).resolves.toMatchObject({ returned_count: 2, hits: result.hits });
+});
+
+it('rejects duplicate decoded search hits as an invalid response', async () => {
+  const catalogue = view();
+  catalogue.mode = 'read_search';
+  const result = searchResult(catalogue);
+  result.hits.push(JSON.parse(JSON.stringify(result.hits[0])));
+  result.returned_count = 2;
+  post.mockImplementation(async (config) => {
+    const reply = response('search', result);
+    reply.data = config.transformResponse[0](
+      new TextEncoder().encode(JSON.stringify(reply.data)),
+    );
+    return reply;
+  });
+  await expect(
+    service.search(
+      {
+        contract_version: KnowledgeAccessVersion,
+        view_id: catalogue.view_id,
+        query: result.query,
+        limit: result.requested_limit,
+      },
+      catalogue,
+    ),
+  ).rejects.toMatchObject({ code: 'invalid_response', status: 502 });
+});
+
+it('decodes special property names as inert JSON data and still rejects duplicates', () => {
+  const value = parseAccessJSON(
+    '{"__proto__":{"polluted":true},"constructor":{"prototype":{"polluted":true}},"valueOf":"inert"}',
+  ) as Record<string, unknown>;
+  expect(Object.hasOwn(value, '__proto__')).toBe(true);
+  expect(value.__proto__).toEqual({ polluted: true });
+  expect(({} as { polluted?: boolean }).polluted).toBeUndefined();
+  expect(value.valueOf).toBe('inert');
+  expect(() =>
+    parseAccessJSON('{"__proto__":1,"\\u005f_proto__":2}'),
+  ).toThrow();
 });

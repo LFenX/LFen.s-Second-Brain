@@ -8420,6 +8420,57 @@
         "rootLayoutChanges": false
       },
       "preservation": "Original execution bytes and full authority suffix preserved; previous35 manifest archived byte-for-byte. Old failures and historical independent receipts unchanged."
+    },
+    "multi_result_strict_json_followup": {
+      "state": "RootSolo_MultiResultStrictJSONRepair_WebSearchPendingRecheck",
+      "humanSteering": "现在暂停其他会话，后续所有任务由你一个人完成",
+      "coordination": "Root sole implementer/reviewer/executor; other chats remain paused.",
+      "git": {
+        "commit": "64a367220e9bed3a3bbeb1f9e7eba46bce845b7b",
+        "pushedAndRemoteMatched": true,
+        "allElevenChecksPassed": true
+      },
+      "backend": {
+        "serverBytes": 246754984,
+        "serverSHA256": "5894a08485fed9c82de9a7c8ba98b8b68d9a06bacc0242e5a460a0224cf6b3cc",
+        "offline": "68 units,native tail,server/CLI and five help passed; compiler removed404 and original IO closed.",
+        "actualHTTP": "DirectS1HTTP06 passed all14 phases and58 actual requests. Covered native signup/team/source/index/policy/module/grant/replay,read-only first/next/evidence,total9600B exact reconstruction,denied search/target,outside tenant,revoke and native membership removal. All session credentials RAM-only and closed.",
+        "focusedSearch": "Fresh isolated synthetic search limits1,2,20 all returned200 with exact target,byte/SHA andrank checks. This was separate actual43-request preparation/component work,not an added whole-acceptance count.",
+        "isolation": "New API07 on29397 and Web02 on29398 use second_brain_s1_acceptance_20261116. Original userAPI29396/Web29395,config/credentials/volumes unchanged. Old temporaryWeb01 lacked compose project label; ownership guard refused rebind without mutation. It was explicitly retired; replacementWeb02 carries verified lfen-ragflow-poc project label."
+      },
+      "browser": {
+        "nativeFlow": "Fresh independent synthetic owner127.0.0.1:29398 and recipientlocalhost:29398 sessions. Signup/login,domain creation,registered path,C1 filechooser upload,previewSHA c18397c612a08773e373ffc2a56544363c1ab9430206e794a2766056cd12c6f7/9600B,explicit import201,owner fixed read,local/content lexical switches,index publication2units and fixed sharing module succeeded.",
+        "authorization": "Native invite and recipient acceptance succeeded. Beforegrant no modules; aftergrant only expected module andread mode. Unit0[0,8184) and unit1[8184,9600),last has no next; exact evidence reread succeeded.",
+        "revocation": "Owner revoked read grant,confirmed no active grants. Recipient old-ref reread denied withscope-change notice; source text,citation andreread controls removed. Refresh gave empty module state. No owner fallback observed.",
+        "searchFailure": "New read_search grant and view succeeded,but UI query with two matching units gave generic failure. Isolated API search and own audit outcomeallowed confirmed backend success. Browser logs printed only fixed classifications; no rawlogs/credentials read or exported.",
+        "newUnusedVector": "A9200B LF synthetic vector was reviewed as potential manual-text input but never submitted. Browser actually uploaded unchanged pinned9600B CRLF file.",
+        "scope": "Current browser full S1 stillPending after fixing multi-result parser issue; no S2/S3/token/realcontent/model expansion."
+      },
+      "repair": {
+        "targets": [
+          "web/src/utils/knowledge-consumption.ts",
+          "web/src/services/__tests__/knowledge-access-service.test.ts"
+        ],
+        "cause": "Strict parser returned null-prototype objects. AJV uniqueItems deep equality throws TypeError for arrays of2 object results. Real strict-decoder service tests reproduce valueOf is not a function; old single-hit mocks missed it.",
+        "change": "Construct normal JSON objects while using explicit own data properties for each parsed key,so __proto__/constructor remain inert data. Keepduplicate-key,UTF8,safe-integer,depth/byte and schema uniqueness checks. No relaxation of hit/hash/scope/ref or permission guards.",
+        "red": "Original parser plus3 new tests:2 expected search failures withvalueOf TypeError,1 prototype safety pass,23 unrelated cases intentionallyskipped. Original nativeexit1 retained; allIOclosed.",
+        "green": "166 targeted tests passed,0failed/0pending; include real byte decoder multi-hit success,duplicate response refusal,special-key safety,existing0.2 content/lexical and shared reader/hook cases. Format,format-check andlint passed.",
+        "build": "Fresh offline filtered public Vite build succeeded from2061 pinned inputs with2 candidate overlays. Root/private dotenv/npmrc/key files excluded,no inherited private env andno network. No application deployment claimed yet.",
+        "evidence": ".local-data/coordination-20261108/review/root-solo-20261116/web-json-objects01/"
+      },
+      "scope": {
+        "S1": "Pending corrected production browser search and membership-removal checks",
+        "S2S3": "Gates retained",
+        "subject": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3",
+        "RootOnly": true,
+        "syntheticOnly": true,
+        "models": 0,
+        "SMTP": 0,
+        "secretsPrinted": false,
+        "newProductInterfaces": false,
+        "rootLayoutChanges": false
+      },
+      "preservation": "Original records and full authority suffix retained byte-for-byte; raw Ref36 archived. Historical D/C receipts,oldfailed/Unknown runs and original frozen contracts unchanged."
     }
   }
 }

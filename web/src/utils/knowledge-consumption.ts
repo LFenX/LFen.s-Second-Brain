@@ -461,7 +461,7 @@ export function parseContentJSON(text: string, lexicalScores = false): unknown {
     if (text[at] === '"') return string();
     if (text[at] === '{') {
       const start = at++;
-      const result: Record<string, unknown> = Object.create(null);
+      const result: Record<string, unknown> = {};
       const complete = () => {
         if (names.join('/') === 'data/context')
           ContentWireSizes.set(result, contentBytes(text.slice(start, at)));
@@ -479,7 +479,12 @@ export function parseContentJSON(text: string, lexicalScores = false): unknown {
         whitespace();
         if (Object.hasOwn(result, key) || text[at++] !== ':')
           throw Error('content_invalid_json');
-        result[key] = value(depth + 1, [...names, key]);
+        Object.defineProperty(result, key, {
+          value: value(depth + 1, [...names, key]),
+          enumerable: true,
+          configurable: true,
+          writable: true,
+        });
         whitespace();
         if (text[at] === '}') {
           at++;
