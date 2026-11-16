@@ -101,7 +101,7 @@ func TestKnowledgeAccessCredentialMySQLPrimaryFailures(t *testing.T) {
 	var row entity.KnowledgeAccessCredentialRecord
 	query := db.WithContext(ctx).Where("id = ?", identity.ID)
 	dry := query.Session(&gorm.Session{DryRun: true}).Take(&entity.KnowledgeAccessCredentialRecord{})
-	if dry.Error != nil || !strings.Contains(dry.Statement.SQL.String(), "id = ?") || strings.Contains(dry.Statement.SQL.String(), identity.ID) || len(dry.Statement.Vars) != 1 {
+	if dry.Error != nil || !strings.Contains(dry.Statement.SQL.String(), "id = ?") || strings.Contains(dry.Statement.SQL.String(), identity.ID) || len(dry.Statement.Vars) != 2 || dry.Statement.Vars[0] != identity.ID || dry.Statement.Vars[1] != 1 {
 		t.Fatal("credential integration UUID SQL is not bound")
 	}
 	if query.Take(&row).Error != nil || row.SubjectUserID != input.UserID || row.DomainID != input.DomainID || row.Audience != audience || len(row.VerifierSHA256) != 32 || subtle.ConstantTimeCompare(row.VerifierSHA256, identity.VerifierSHA256) != 1 || row.RevokedAt != nil || !time.Now().Before(row.ExpiresAt) || accessCredentialIntegrity(db.WithContext(ctx), row) != nil {

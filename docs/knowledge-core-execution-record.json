@@ -8938,6 +8938,107 @@
         "modelCallsAuthorized": 0
       },
       "preservation": "Four source/test deltas plus four baseline/evidence postimages. New source files2;97entries/102uses,47protected/26contracts/11businessarchive/28history and every selector/use retained. Original70 NotRun and all failures remain unchanged. No independent D/C proof fabricated."
+    },
+    "managed_credential_final_acceptance_followup": {
+      "state": "RootSolo_S3BoundedSyntheticAcceptance_ReadyForLocalRollout",
+      "humanInstruction": "现在暂停其他会话，后续所有任务由你一个人完成",
+      "subject": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3",
+      "sourceCheckpoint": "1efc8fe66fe7c661b3a7264b0f472f17fc86d518",
+      "serverSHA256": "2a51741f57ff19fe256e54efc34e0c51cea82371c632c02183991d3bd45b0311",
+      "testCorrection": {
+        "path": "internal/service/dataset/knowledge_access_credential_integration_test.go",
+        "reason": "MySQL GORM Take binds both the UUID and LIMIT1. Check both actual bound values instead of the mistaken one-variable expectation.",
+        "productionChange": false,
+        "buildEntry": "bash build.sh --test-integration-go ... -c ... ./internal/service/dataset",
+        "scope": "Generic integration compile/list only avoids the native model/fetch tail. Actual primary execution is separately recorded.",
+        "artifactRelationship": "All1809 server build inputs match before application. This candidate changes only one tagged test file;all non-test production inputs and server/CLI artifacts remain exact. No server rebuild required for the test-only correction."
+      },
+      "acceptance": {
+        "HTTP": "17 phases against actual post-fixAPI14 and acceptanceWeb29398. Native synthetic fixtures,explicit grants and mint/replay;both readonly and read_search actual pinned SDK flows;closed protocol;revocation,parent and native membership loss;own metadata and explicit self revocation.",
+        "Go": "github.com/modelcontextprotocol/go-sdk@v1.8.0 actual readonly 2025-11-25 and2025-06-18 plus read_search. Exact1-source/2-unit C1 traversal/reassembly/reference reread;no deniedB IDs.",
+        "TypeScript": "@modelcontextprotocol/sdk@1.32.2 actual readonly and read_search with protocol2025-11-25. Explicit transport bounds,reference and equal-carrier checks.",
+        "database": "Actual MySQL8 primary identity/verifier/creation-receipt checks,wrong-secret401,unknown-ID401,no rejected-auth reservation;closing only the test process own SQL pool gives503/no result. Shared MySQL stays running,noDDL/fixture writes in tagged client.",
+        "expiry": "Actual one-credential-only final-write barrier crosses stored60-second expiry:401 after7856ms,no MCP result,last_used remainsNULL,allowed reservation0 and denied reservation1. Trigger always dropped;original pre-fix200/7589ms retained.",
+        "business": "One owned synthetic audit-write failure returns200 isError/unavailable with equal carriers and data:null. Expired owned ephemeral view returnsview_stale;credential itself stays valid and explicit fresh inspect/read recovers.",
+        "protocol": "Unknown write/malformed CallToolParams -32602;invalid DTO200isError;malformed outer400;unadvertised method400;validGET405AllowPOST;missing/native/changed/revoked bearer401. One credential revoke leaves another valid and does not change tenant epoch.",
+        "Web": "Actual first hidden one-time delivery,close,parent revoke,own metadata and self revoke at pre-fixAPI12;unchanged Web sources. Fresh known-domain own metadata at post-fixAPI14 preserves revoked timestamp after content loss,revoked module absent. Raw token never revealed/copied;copy/storage assertions remain source/unit only.",
+        "proofs": [
+          "s3-http-direct09/result-02.safe.json",
+          "s3-http-direct09/midcall-expiry-1.safe.json",
+          "s3-http-direct09/real-mysql-primary.safe.json",
+          "s3-web-live01/result.safe.json",
+          "s3-web-postfix-api14.safe.json",
+          "s3-credential-mysql-build04/compile/result.safe.json"
+        ],
+        "priorUnitBuild": "126 top-level Go unit groups,native tail,LLD20 server/CLI,fivehelp;146 Web unit checks,9 touched-production type checks,production bundle. Those exact earlier records are retained.",
+        "proofPins": [
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/s3-http-direct09/result-02.safe.json",
+            "bytes": 38690,
+            "sha256": "5e2f42f1b789f8165940058d2060fb35f83eae1774a9f9e09f1232cc8949b5b4"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/s3-http-direct09/midcall-expiry-1.safe.json",
+            "bytes": 885,
+            "sha256": "49e1799bfc610a2a2f14e5203a47c2306d60516a1b852977dfb5370cb4158979"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/s3-http-direct09/real-mysql-primary.safe.json",
+            "bytes": 1503,
+            "sha256": "69b51f9cb39ff582300479e5c63300727e923435125d73c587f545f686aef070"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/s3-web-live01/result.safe.json",
+            "bytes": 2314,
+            "sha256": "21e58c17911c50fe697799288b7234fb3d967beaf634494a6e2979518c449068"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/s3-web-postfix-api14.safe.json",
+            "bytes": 940,
+            "sha256": "a177b103ac598400c7e2190c87923ebcad2d88d3cbdbded7af0a4cd1fa4d55fb"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/s3-credential-mysql-build04/compile/result.safe.json",
+            "bytes": 1271,
+            "sha256": "90f19fcd2b7a7964186ae5f2be33768ca0ecd04e9f9eae289df62d139a016d38"
+          }
+        ]
+      },
+      "gates": {
+        "S1": "Accepted bounded synthetic slice,unchanged.",
+        "S2": "Accepted bounded synthetic slice,unchanged.",
+        "S3": "Accepted bounded synthetic fixed-module managed-Bearer slice with exact evidence and Web limitations above. Not a claim that original70 planned groups ran or all libraries/formats/models were accepted.",
+        "localRollout": "Ready to execute separately. This checkpoint still leaves original29395/29396/private configuration/credentials/volumes unchanged. Rollout needs actual schema/index checks,exact artifacts,health and reboot persistence.",
+        "externalRelease": "No internet exposure orOAuth/generalAgent/model scope."
+      },
+      "preservation": {
+        "RootOnly": true,
+        "otherChatsPaused": true,
+        "original70NotRunUnchanged": true,
+        "oldGo21AndCompositeFailuresUnchanged": true,
+        "originalCompoundNativeTailFailureUnchanged": true,
+        "noFabricatedIndependentProof": true,
+        "modelsAuthorized": 0,
+        "SMTP": 0,
+        "realAICS": false,
+        "rootLayout": false,
+        "volumeDeletion": false,
+        "credentialRecreation": false
+      },
+      "baseline": {
+        "postimages": 5,
+        "testFiles": 1,
+        "baselineEvidenceFiles": 4,
+        "newSourceFiles": 0,
+        "entries": 97,
+        "uses": 102,
+        "protected": 47,
+        "contracts": 26,
+        "businessArchive": 11,
+        "history": 28,
+        "selectorsAndUsesUnchanged": true,
+        "oldManifestArchivedExact": true
+      }
     }
   }
 }
