@@ -1,6 +1,35 @@
 export default {
   translation: {
     knowledgeAccess: {
+      departmentEnabled: 'Enable this department',
+      departments: 'Departments',
+      department: 'Department',
+      newDepartment: 'New department',
+      departmentName: 'Department name',
+      departmentMembers: 'Department members',
+      departmentHint:
+        'A department is an exact list of current team members. Department membership grants no content access by itself.',
+      departmentOwnerOnly:
+        'Only the current team owner can manage departments.',
+      departmentRosterWarning:
+        'Saving replaces this department’s complete roster. This team authorization change invalidates existing reading views and temporary credentials; reopen content or renew credentials.',
+      confirmDepartment:
+        'I reviewed the complete roster and confirm this change',
+      saveDepartment: 'Save department',
+      currentAccount: 'Current account',
+      inactiveDepartmentMember: 'No longer an active team member',
+      removeInactiveMembers: 'Remove inactive members before saving.',
+      recipientKind: 'Grant audience',
+      individual: 'Individual',
+      departmentGrants: 'Department grants',
+      departmentGrantHint:
+        'Grant the selected fixed module to current members of one enabled department. Membership is checked on every request.',
+      chooseDepartment: 'Choose a department',
+      confirmDepartmentGrant:
+        'I reviewed the department, fixed version, permission and expiry and confirm this grant',
+      createDepartmentGrant: 'Create department grant',
+      noDepartmentGrants: 'No active department web grants.',
+      emptyDepartments: 'No departments in this team.',
       revocationBoundary:
         'After sharing or a module is disabled, or a grant is revoked, later requests are checked again. Text already delivered cannot be recalled; recipients may keep a copy.',
       fixedRevision: 'Fixed revision details',
@@ -119,6 +148,7 @@ export default {
         'The pending operation cannot be read or saved. Keep this page open and ask the manager to resolve it.',
       saved: 'The operation is confirmed and management state refreshed.',
       operation: {
+        setDepartment: 'Save department and roster',
         setPolicy: 'Change sharing policy',
         setModule: 'Save shared module',
         createGrant: 'Create personal grant',

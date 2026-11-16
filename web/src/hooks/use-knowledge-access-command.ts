@@ -34,6 +34,7 @@ type CommandState = {
   storageBlocked: boolean;
 };
 const Operations: AccessWriteOperation[] = [
+  'setDepartment',
   'setPolicy',
   'setModule',
   'createGrant',
@@ -46,13 +47,18 @@ function frozen<T>(value: T): T {
   }
   return value;
 }
-export function accessCommandKey(actor: AccessActor, domain: string) {
+export function accessCommandKey(actor: AccessActor, scopeID: string) {
   return (
     'knowledge-access-command:' +
-    accessCanonical([actor.auth, actor.user, actor.tenant, domain])
+    accessCanonical([actor.auth, actor.user, actor.tenant, scopeID])
   );
 }
-function savedCommand(key: string, domain: string): AccessCommand | null {
+function commandScope(command: AccessCommand) {
+  return command.operation === 'setDepartment'
+    ? 'tenant:' + command.body.tenant_id
+    : command.body.domain_id;
+}
+function savedCommand(key: string, scopeID: string): AccessCommand | null {
   const raw = sessionStorage.getItem(key);
   if (raw === null) return null;
   if (accessBytes(raw) > 65536) throw new Error('invalid_command_storage');
@@ -61,7 +67,7 @@ function savedCommand(key: string, domain: string): AccessCommand | null {
     !value ||
     Object.keys(value).sort().join(',') !== 'body,operation' ||
     !Operations.includes(value.operation) ||
-    value.body?.domain_id !== domain ||
+    commandScope(value) !== scopeID ||
     !accessRequestValid(value.operation, value.body)
   )
     throw new Error('invalid_command_storage');
@@ -71,6 +77,8 @@ async function execute(
   command: AccessCommand,
 ): Promise<AccessResults[AccessWriteOperation]> {
   switch (command.operation) {
+    case 'setDepartment':
+      return service.setDepartment(command.body);
     case 'setPolicy':
       return service.setPolicy(command.body);
     case 'setModule':
@@ -82,9 +90,9 @@ async function execute(
   }
 }
 
-export function useAccessCommand(actor: AccessActor, domain: string) {
+export function useAccessCommand(actor: AccessActor, scopeID: string) {
   const client = useQueryClient();
-  const storageKey = accessCommandKey(actor, domain);
+  const storageKey = accessCommandKey(actor, scopeID);
   const boundary = accessCanonical([storageKey, actor.session]);
   const current = useRef({ boundary, mounted: true, busy: false });
   current.current.boundary = boundary;
@@ -92,7 +100,7 @@ export function useAccessCommand(actor: AccessActor, domain: string) {
     try {
       return {
         scope: boundary,
-        pending: savedCommand(storageKey, domain),
+        pending: savedCommand(storageKey, scopeID),
         busy: false,
         error: null,
         completed: false,
@@ -120,7 +128,7 @@ export function useAccessCommand(actor: AccessActor, domain: string) {
     return () => {
       lifetime.mounted = false;
     };
-    // The boundary includes identity, tenant, domain and native session generation.
+    // The boundary includes identity, tenant, command scope and native session generation.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [boundary]);
   const visible = state.scope === boundary ? state : initial();
@@ -131,7 +139,7 @@ export function useAccessCommand(actor: AccessActor, domain: string) {
   async function send(command: AccessCommand) {
     if (current.current.busy || !live(boundary)) return false;
     const sameSaved = () =>
-      accessCanonical(savedCommand(storageKey, domain)) ===
+      accessCanonical(savedCommand(storageKey, scopeID)) ===
       accessCanonical(command);
     try {
       if (!sameSaved()) throw new Error('command_storage_changed');
@@ -211,7 +219,7 @@ export function useAccessCommand(actor: AccessActor, domain: string) {
       return false;
     let immutable: AccessCommand;
     try {
-      if (savedCommand(storageKey, domain)) {
+      if (savedCommand(storageKey, scopeID)) {
         setState({ ...visible, storageBlocked: true });
         return false;
       }
@@ -219,7 +227,7 @@ export function useAccessCommand(actor: AccessActor, domain: string) {
         parseAccessJSON(JSON.stringify(command)) as AccessCommand,
       );
       if (
-        immutable.body.domain_id !== domain ||
+        commandScope(immutable) !== scopeID ||
         !accessRequestValid(immutable.operation, immutable.body)
       )
         throw new AccessRequestError(400, 'invalid_request', true);

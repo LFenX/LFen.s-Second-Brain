@@ -47,11 +47,11 @@ func setupServiceTestDB(t *testing.T) *gorm.DB {
 		&entity.TenantModelInstance{},
 		&entity.TenantModel{},
 		&entity.UserCanvas{},
-		&entity.KnowledgeAccessTenantStateRecord{}, &entity.KnowledgeAccessDomainPolicyRecord{}, &entity.KnowledgeAccessModuleRecord{}, &entity.KnowledgeAccessAuditRecord{}, &entity.KnowledgeAccessGrantRecord{}, &entity.KnowledgeAccessViewRecord{},
+		&entity.KnowledgeAccessTenantStateRecord{}, &entity.KnowledgeAccessDepartmentRecord{}, &entity.KnowledgeAccessDepartmentMemberRecord{}, &entity.KnowledgeAccessDomainPolicyRecord{}, &entity.KnowledgeAccessModuleRecord{}, &entity.KnowledgeAccessAuditRecord{}, &entity.KnowledgeAccessGrantRecord{}, &entity.KnowledgeAccessViewRecord{},
 	); err != nil {
 		t.Fatalf("failed to migrate: %v", err)
 	}
-	for _, query := range []string{"CREATE UNIQUE INDEX IF NOT EXISTS idx_ka_module_1 ON knowledge_access_module(domain_id,id)", "CREATE UNIQUE INDEX IF NOT EXISTS idx_ka_audit_command_key ON knowledge_access_audit(actor_user_id,command_operation,command_key)"} {
+	for _, query := range []string{"CREATE UNIQUE INDEX IF NOT EXISTS idx_ka_department_1 ON knowledge_access_department(tenant_id,id)", "CREATE UNIQUE INDEX IF NOT EXISTS idx_ka_department_member_1 ON knowledge_access_department_member(department_id,user_id)", "CREATE UNIQUE INDEX IF NOT EXISTS idx_ka_module_1 ON knowledge_access_module(domain_id,id)", "CREATE UNIQUE INDEX IF NOT EXISTS idx_ka_audit_command_key ON knowledge_access_audit(actor_user_id,command_operation,command_key)"} {
 		if err := db.Exec(query).Error; err != nil {
 			t.Fatal(err)
 		}

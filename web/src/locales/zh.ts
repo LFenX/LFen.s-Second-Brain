@@ -1,6 +1,33 @@
 export default {
   translation: {
     knowledgeAccess: {
+      departmentEnabled: '启用部门',
+      departments: '部门管理',
+      department: '部门',
+      newDepartment: '新建部门',
+      departmentName: '部门名称',
+      departmentMembers: '部门成员',
+      departmentHint:
+        '部门是当前团队成员的精确名单。加入部门本身不获得知识内容权限。',
+      departmentOwnerOnly: '只有当前团队所有者可以管理部门。',
+      departmentRosterWarning:
+        '保存会完整替换本部门名单。此团队的权限修改会使现有阅读视图和临时凭据失效；需要重新打开内容或续签凭据。',
+      confirmDepartment: '我已核对完整名单，确认修改',
+      saveDepartment: '保存部门',
+      currentAccount: '当前账号',
+      inactiveDepartmentMember: '已不再是有效团队成员',
+      removeInactiveMembers: '请先移除无效成员再保存。',
+      recipientKind: '授权对象',
+      individual: '个人',
+      departmentGrants: '部门授权',
+      departmentGrantHint:
+        '将选定的固定模块授权给一个启用部门的当前成员。每次请求都会重新核对成员关系。',
+      chooseDepartment: '选择部门',
+      confirmDepartmentGrant:
+        '我已核对部门、固定版本、权限和到期时间，确认授权',
+      createDepartmentGrant: '新增部门授权',
+      noDepartmentGrants: '暂无有效的部门网页授权。',
+      emptyDepartments: '当前团队暂无部门。',
       revocationBoundary:
         '停用共享或模块、撤销授权后，后续请求会重新核验权限。已交付的正文无法追回，接收者可能已经保存。',
       fixedRevision: '固定修订详情',
@@ -107,6 +134,7 @@ export default {
         '无法读取或保存待确认操作。请保留当前页面，由负责人处理后再继续。',
       saved: '操作已确认，管理状态已刷新。',
       operation: {
+        setDepartment: '保存部门和名单',
         setPolicy: '修改共享开关',
         setModule: '保存共享模块',
         createGrant: '新增个人授权',

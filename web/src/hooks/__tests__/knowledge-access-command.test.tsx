@@ -31,6 +31,7 @@ jest.mock('@/services/knowledge-access-service', () => {
     __esModule: true,
     ...actual,
     default: {
+      setDepartment: jest.fn(),
       setPolicy: jest.fn(),
       setModule: jest.fn(),
       createGrant: jest.fn(),
@@ -261,5 +262,49 @@ it('a changed pending slot cannot delete or replay a different command', async (
   expect(
     JSON.parse(sessionStorage.getItem(accessCommandKey(user, Domain))!),
   ).toEqual(replacement);
+  hook.unmount();
+});
+
+it('recovers the exact department tenant command without confusing a domain command', async () => {
+  const user = actor(),
+    scope = 'tenant:' + user.tenant,
+    { Wrapper } = wrapper();
+  const original: AccessCommand = {
+    operation: 'setDepartment',
+    body: {
+      contract_version: KnowledgeAccessVersion,
+      tenant_id: user.tenant,
+      department_id: null,
+      expected_version: 0,
+      name: 'Synthetic department',
+      enabled: true,
+      user_ids: [],
+      confirmed: true,
+      idempotency_key: 'synthetic-department-command-001',
+    },
+  };
+  api.setDepartment.mockRejectedValueOnce(
+    new AccessRequestError(503, 'unavailable', false, true),
+  );
+  let hook = renderHook(() => useAccessCommand(user, scope), {
+    wrapper: Wrapper,
+  });
+  await act(async () => {
+    await hook.result.current.start(original);
+  });
+  expect(hook.result.current.pending).toEqual(original);
+  hook.unmount();
+  hook = renderHook(() => useAccessCommand(user, scope), { wrapper: Wrapper });
+  expect(hook.result.current.pending).toEqual(original);
+  api.setDepartment.mockResolvedValueOnce({} as any);
+  await act(async () => {
+    await hook.result.current.recover();
+  });
+  expect(api.setDepartment.mock.calls[1][0]).toEqual(original.body);
+  expect(hook.result.current.completed).toBe(true);
+  expect(sessionStorage.getItem(accessCommandKey(user, scope))).toBeNull();
+  expect(accessCommandKey(user, scope)).not.toBe(
+    accessCommandKey(user, user.tenant),
+  );
   hook.unmount();
 });

@@ -66,6 +66,19 @@ export type AccessEvidenceRef = {
 };
 
 export type AccessGeneration = number;
+export type AccessDepartment = {
+  department_id: AccessID;
+  tenant_id: AccessID;
+  name: string;
+  version: AccessGeneration;
+  enabled: boolean;
+  member_count: number | null;
+  user_ids: AccessID[] | null;
+};
+export type AccessListDepartmentsData = {
+  items: AccessDepartment[];
+  pagination: 'none';
+};
 
 export type AccessGrant = {
   grant_id: AccessID;
@@ -269,6 +282,8 @@ export interface AccessActor {
   auth: 'native';
 }
 export interface AccessResults {
+  setDepartment: AccessDepartment;
+  listDepartments: AccessListDepartmentsData;
   setPolicy: AccessPolicy;
   setModule: AccessModuleAdmin;
   getModuleAdmin: AccessModuleAdmin;

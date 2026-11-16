@@ -84,6 +84,27 @@ export function useAccessIdentity(enabled = true) {
   });
   return { ...query, session };
 }
+export function useAccessDepartments(actor: AccessActor) {
+  return useQuery({
+    ...Options,
+    queryKey: Keys.departments(actor),
+    queryFn: ({ signal }) =>
+      metadata(actor, signal, () =>
+        service.listDepartments(
+          { contract_version: KnowledgeAccessVersion, tenant_id: actor.tenant },
+          signal,
+        ),
+      ),
+  });
+}
+export function useAccessDepartmentMembers(actor: AccessActor) {
+  return useQuery({
+    ...Options,
+    queryKey: Keys.members(actor),
+    queryFn: ({ signal }) =>
+      metadata(actor, signal, () => nativeService.members(actor, signal)),
+  });
+}
 export function useAccessModules(actor: AccessActor, domain: string | null) {
   return useQuery({
     ...Options,

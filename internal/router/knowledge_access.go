@@ -6,6 +6,8 @@ import (
 
 func (r *Router) setupKnowledgeAccessRoutes(engine *gin.Engine) {
 	for _, route := range []struct{ path, operation string }{
+		{"/admin/departments/set", "setDepartment"},
+		{"/departments/list", "listDepartments"},
 		{"/admin/domains/policy/set", "setPolicy"},
 		{"/admin/modules/set", "setModule"},
 		{"/admin/modules/get", "getModuleAdmin"},

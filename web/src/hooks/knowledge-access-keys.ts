@@ -13,6 +13,10 @@ export const KnowledgeAccessKeys = {
   identity: (session: number) =>
     ['knowledge-access', 'identity', session] as const,
   actor,
+  departments: (value: AccessActor) =>
+    [...actor(value), 'departments'] as const,
+  members: (value: AccessActor) =>
+    [...actor(value), 'department-members'] as const,
   modules: (value: AccessActor, domain: string | null) =>
     [...actor(value), 'modules', domain] as const,
   admin: (value: AccessActor, domain: string, module: string) =>

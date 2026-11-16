@@ -4,11 +4,14 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { AccessRevocationWarning } from './revocation-warning';
+import { AccessFailure } from '@/components/knowledge-access-feedback';
+import { useAccessDepartments } from '@/hooks/use-knowledge-access';
 import { accessSchemaValid } from '@/utils/knowledge-access-schema';
 import type { AccessCommandController } from '@/hooks/use-knowledge-access-command';
 import {
   KnowledgeAccessVersion,
   type AccessActor,
+  type AccessDepartment,
   type AccessGrant,
   type AccessMode,
   type AccessModuleAdmin,
@@ -45,8 +48,12 @@ function RevokeGrant({
   return (
     <li className="space-y-2 rounded border border-border-button p-3">
       <p>
-        {t('knowledgeAccess.recipientID')}:{' '}
-        <code className="break-all">{grant.subject.id}</code>
+        {t(
+          grant.subject.kind === 'department'
+            ? 'knowledgeAccess.department'
+            : 'knowledgeAccess.recipientID',
+        )}
+        : <code className="break-all">{grant.subject.id}</code>
       </p>
       <p>
         {t(
@@ -84,9 +91,13 @@ function RevokeGrant({
 function GrantForm({
   module,
   command,
+  kind,
+  departments,
 }: {
   module: AccessModuleAdmin;
   command: AccessCommandController;
+  kind: 'user' | 'department';
+  departments: AccessDepartment[];
 }) {
   const { t } = useTranslation();
   const [user, setUser] = useState('');
@@ -98,7 +109,10 @@ function GrantForm({
   const [invalid, setInvalid] = useState(false);
   const [invalidUser, setInvalidUser] = useState(false);
   const available = module.enabled && module.policy.enabled;
-  const validUser = accessSchemaValid('ID', user);
+  const validUser =
+    accessSchemaValid('ID', user) &&
+    (kind === 'user' ||
+      departments.some((item) => item.department_id === user && item.enabled));
   function handleUser(event: ChangeEvent<HTMLInputElement>) {
     setUser(event.target.value);
     setConfirmed(false);
@@ -140,7 +154,7 @@ function GrantForm({
         domain_id: module.domain_id,
         module_id: module.module_id,
         expected_module_version: module.version,
-        subject: { kind: 'user', id: user },
+        subject: { kind, id: user },
         mode,
         delivery: 'web_only',
         expires_at: expiry.toISOString(),
@@ -152,43 +166,91 @@ function GrantForm({
   }
   const grants = module.grants.filter(
     (grant) =>
-      grant.subject.kind === 'user' &&
+      grant.subject.kind === kind &&
       grant.delivery === 'web_only' &&
       grant.revoked_at === null,
   );
   return (
     <section
       className="space-y-4 rounded border border-border-button p-4"
-      aria-label={t('knowledgeAccess.personalGrants')}
+      aria-label={t(
+        kind === 'department'
+          ? 'knowledgeAccess.departmentGrants'
+          : 'knowledgeAccess.personalGrants',
+      )}
     >
       <h2 className="text-lg font-medium">
-        {t('knowledgeAccess.personalGrants')}
+        {t(
+          kind === 'department'
+            ? 'knowledgeAccess.departmentGrants'
+            : 'knowledgeAccess.personalGrants',
+        )}
       </h2>
       <p className="text-sm text-text-secondary">
-        {t('knowledgeAccess.grantHint')}
+        {t(
+          kind === 'department'
+            ? 'knowledgeAccess.departmentGrantHint'
+            : 'knowledgeAccess.grantHint',
+        )}
       </p>
-      <p className="text-sm text-text-secondary" id="access-recipient-id-help">
-        {t('knowledgeAccess.recipientIDHint')}
-      </p>
+      {kind === 'user' && (
+        <p
+          className="text-sm text-text-secondary"
+          id="access-recipient-id-help"
+        >
+          {t('knowledgeAccess.recipientIDHint')}
+        </p>
+      )}
       {!available && <p>{t('knowledgeAccess.enableBeforeGrant')}</p>}
       <form
         onSubmit={handleCreate}
         className="space-y-3"
-        aria-label={t('knowledgeAccess.createGrant')}
+        aria-label={t(
+          kind === 'department'
+            ? 'knowledgeAccess.createDepartmentGrant'
+            : 'knowledgeAccess.createGrant',
+        )}
       >
         <label className="block space-y-1">
-          <span>{t('knowledgeAccess.recipientID')}</span>
-          <Input
-            type="text"
-            autoComplete="off"
-            spellCheck={false}
-            value={user}
-            onChange={handleUser}
-            disabled={!available || command.locked}
-            required
-            aria-describedby="access-recipient-id-help"
-            aria-invalid={invalidUser}
-          />
+          <span>
+            {t(
+              kind === 'department'
+                ? 'knowledgeAccess.department'
+                : 'knowledgeAccess.recipientID',
+            )}
+          </span>
+          {kind === 'user' ? (
+            <Input
+              type="text"
+              autoComplete="off"
+              spellCheck={false}
+              value={user}
+              onChange={handleUser}
+              disabled={!available || command.locked}
+              required
+              aria-describedby="access-recipient-id-help"
+              aria-invalid={invalidUser}
+            />
+          ) : (
+            <select
+              className="w-full rounded border border-border-button bg-bg-base p-2"
+              value={user}
+              onChange={(event) => {
+                setUser(event.target.value);
+                setConfirmed(false);
+                setInvalidUser(false);
+              }}
+              disabled={!available || command.locked}
+              required
+            >
+              <option value="">{t('knowledgeAccess.chooseDepartment')}</option>
+              {departments.map((item) => (
+                <option key={item.department_id} value={item.department_id}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
+          )}
         </label>
         {invalidUser && (
           <p role="alert">{t('knowledgeAccess.invalidRecipientID')}</p>
@@ -224,8 +286,12 @@ function GrantForm({
           aria-label={t('knowledgeAccess.grantReview')}
         >
           <p>
-            {t('knowledgeAccess.recipientID')}:{' '}
-            <code className="break-all">{user}</code>
+            {t(
+              kind === 'department'
+                ? 'knowledgeAccess.department'
+                : 'knowledgeAccess.recipientID',
+            )}
+            : <code className="break-all">{user}</code>
           </p>
           <p className="break-all">
             {t('knowledgeAccess.grantScope', {
@@ -254,17 +320,35 @@ function GrantForm({
             onChange={handleConfirm}
             disabled={!available || command.locked || !validUser}
           />
-          <span>{t('knowledgeAccess.confirmGrant')}</span>
+          <span>
+            {t(
+              kind === 'department'
+                ? 'knowledgeAccess.confirmDepartmentGrant'
+                : 'knowledgeAccess.confirmGrant',
+            )}
+          </span>
         </label>
         <Button
           type="submit"
           disabled={!available || command.locked || !confirmed || !validUser}
         >
-          {t('knowledgeAccess.createGrant')}
+          {t(
+            kind === 'department'
+              ? 'knowledgeAccess.createDepartmentGrant'
+              : 'knowledgeAccess.createGrant',
+          )}
         </Button>
       </form>
       <h3>{t('knowledgeAccess.currentGrants')}</h3>
-      {grants.length === 0 && <p>{t('knowledgeAccess.noGrants')}</p>}
+      {grants.length === 0 && (
+        <p>
+          {t(
+            kind === 'department'
+              ? 'knowledgeAccess.noDepartmentGrants'
+              : 'knowledgeAccess.noGrants',
+          )}
+        </p>
+      )}
       <ul className="space-y-3">
         {grants.map((grant) => (
           <RevokeGrant
@@ -288,6 +372,8 @@ export function AccessGrants({
   module: AccessModuleAdmin;
   command: AccessCommandController;
 }) {
+  const { t } = useTranslation();
+  const [kind, setKind] = useState<'user' | 'department'>('user');
   const boundary = [
     actor.user,
     actor.tenant,
@@ -299,5 +385,63 @@ export function AccessGrants({
     module.policy.version,
     module.policy.enabled,
   ].join(':');
-  return <GrantForm key={boundary} module={module} command={command} />;
+  return (
+    <div className="space-y-4">
+      <label className="block space-y-1">
+        <span>{t('knowledgeAccess.recipientKind')}</span>
+        <select
+          className="rounded border border-border-button bg-bg-base p-2"
+          value={kind}
+          disabled={command.locked}
+          onChange={(event) =>
+            setKind(event.target.value as 'user' | 'department')
+          }
+        >
+          <option value="user">{t('knowledgeAccess.individual')}</option>
+          <option value="department">{t('knowledgeAccess.department')}</option>
+        </select>
+      </label>
+      {kind === 'user' ? (
+        <GrantForm
+          key={boundary + ':user'}
+          module={module}
+          command={command}
+          kind="user"
+          departments={[]}
+        />
+      ) : (
+        <DepartmentGrantForm
+          key={boundary + ':department'}
+          actor={actor}
+          module={module}
+          command={command}
+        />
+      )}
+    </div>
+  );
+}
+
+function DepartmentGrantForm({
+  actor,
+  module,
+  command,
+}: {
+  actor: AccessActor;
+  module: AccessModuleAdmin;
+  command: AccessCommandController;
+}) {
+  const { t } = useTranslation(),
+    query = useAccessDepartments(actor);
+  if (query.isFetching)
+    return <p role="status">{t('knowledgeAccess.loading')}</p>;
+  if (query.isError || !query.data)
+    return <AccessFailure error={query.error} />;
+  return (
+    <GrantForm
+      module={module}
+      command={command}
+      kind="department"
+      departments={query.data.items.filter((item) => item.enabled)}
+    />
+  );
 }

@@ -12,16 +12,16 @@ import (
 	"ragflow/internal/entity"
 )
 
-func (d *DatasetService) accessCommand(ctx context.Context, actor, operation, requestID, domain, key string, request any) (int, []byte, error) {
+func (d *DatasetService) accessCommand(ctx context.Context, actor, operation, requestID, scopeID, key string, request any) (int, []byte, error) {
 	digest := accessCommandDigest(actor, operation, request)
 	receipt, err := accessReceipt(ctx, actor, operation, key)
 	if err != nil {
 		return 0, nil, err
 	}
 	if receipt != nil {
-		return d.accessReplay(ctx, actor, operation, requestID, domain, digest, receipt)
+		return d.accessReplay(ctx, actor, operation, requestID, scopeID, digest, receipt)
 	}
-	tenant, err := accessTenantLocator(ctx, domain)
+	tenant, scopeKind, err := accessCommandTenant(ctx, operation, scopeID)
 	if err != nil {
 		return 0, nil, err
 	}
@@ -40,8 +40,11 @@ func (d *DatasetService) accessCommand(ctx context.Context, actor, operation, re
 	}
 	commandID := common.GenerateUUID()
 	pending := "pending"
-	scopeKind := "domain"
-	journal := entity.KnowledgeAccessAuditRecord{ID: commandID, ActorUserID: &actor, Action: operation, Outcome: "changed", RequestID: requestID, OccurredAt: now, CommandOperation: &operation, CommandKey: &key, CommandRequestSHA256: digest, CommandScopeKind: &scopeKind, CommandScopeID: &domain, CommandState: &pending}
+	domain := scopeID
+	if scopeKind == "tenant" {
+		domain = ""
+	}
+	journal := entity.KnowledgeAccessAuditRecord{ID: commandID, ActorUserID: &actor, Action: operation, Outcome: "changed", RequestID: requestID, OccurredAt: now, CommandOperation: &operation, CommandKey: &key, CommandRequestSHA256: digest, CommandScopeKind: &scopeKind, CommandScopeID: &scopeID, CommandState: &pending}
 	if err = tx.Create(&journal).Error; err != nil {
 		tx.Rollback()
 		winner, readErr := accessReceipt(ctx, actor, operation, key)
@@ -49,19 +52,16 @@ func (d *DatasetService) accessCommand(ctx context.Context, actor, operation, re
 			return 0, nil, readErr
 		}
 		if winner != nil {
-			return d.accessReplay(ctx, actor, operation, requestID, domain, digest, winner)
+			return d.accessReplay(ctx, actor, operation, requestID, scopeID, digest, winner)
 		}
 		return 0, nil, err
 	}
 	if _, err = dao.LockKnowledgeAccessTenants(tx, []string{tenant}, false); err != nil {
 		return 0, nil, err
 	}
-	kb, err := accessDomain(ctx, tx, actor, domain, true, true)
+	kb, err := accessCommandAuthority(ctx, tx, actor, operation, scopeID, tenant)
 	if err != nil {
 		return 0, nil, err
-	}
-	if kb.TenantID != tenant {
-		return 0, nil, accessError(409, "scope_changed")
 	}
 	now, err = accessNow(tx)
 	if err != nil {
@@ -74,6 +74,15 @@ func (d *DatasetService) accessCommand(ctx context.Context, actor, operation, re
 	status := 200
 	outcome := "changed"
 	switch value := request.(type) {
+	case *entity.KnowledgeAccessSetDepartmentRequest:
+		department, old, wasChanged, setErr := accessSetDepartment(tx, actor, now, value)
+		if setErr != nil {
+			return 0, nil, setErr
+		}
+		data, after, resource, changed = department, department, department.DepartmentID, wasChanged
+		if old != nil {
+			before = old
+		}
 	case *entity.KnowledgeAccessSetPolicyRequest:
 		old, readErr := accessPolicy(tx, kb, true)
 		if readErr != nil {
@@ -169,15 +178,18 @@ func (d *DatasetService) accessCommand(ctx context.Context, actor, operation, re
 		after = accessModuleDefinition(&row, value.Scope)
 		resource, module = row.ID, row.ID
 	case *entity.KnowledgeAccessCreateGrantRequest:
-		if value.Subject.Kind != "user" {
-			return 0, nil, accessError(409, "scope_not_supported")
-		}
-		var user entity.User
-		if err = accessLocked(tx, true).Select("id").Where("id = ? AND status = ? AND is_active = ? AND is_authenticated = ? AND is_anonymous = ?", value.Subject.ID, "1", "1", "1", "0").Take(&user).Error; err != nil {
-			return 0, nil, err
-		}
-		if err = accessMembership(tx, value.Subject.ID, tenant, true); err != nil {
-			return 0, nil, err
+		if value.Subject.Kind == "user" {
+			if err = accessLiveMember(tx, value.Subject.ID, tenant); err != nil {
+				return 0, nil, err
+			}
+		} else {
+			department, readErr := accessDepartment(tx, tenant, value.Subject.ID)
+			if readErr != nil {
+				return 0, nil, readErr
+			}
+			if !department.Enabled {
+				return 0, nil, accessError(404, "not_found")
+			}
 		}
 		row, scope, readErr := accessModule(tx, kb, value.ModuleID, true)
 		if readErr != nil {
@@ -201,11 +213,11 @@ func (d *DatasetService) accessCommand(ctx context.Context, actor, operation, re
 			return 0, nil, accessError(413, "capacity_exceeded")
 		}
 		for _, grant := range grants {
-			if grant.SubjectKind == "user" && grant.SubjectID == value.Subject.ID {
+			if grant.SubjectKind == value.Subject.Kind && grant.SubjectID == value.Subject.ID {
 				return 0, nil, accessError(409, "version_conflict")
 			}
 		}
-		grant := entity.KnowledgeAccessGrantRecord{ID: common.GenerateUUID(), TenantID: tenant, DomainID: domain, ModuleID: row.ID, SubjectKind: "user", SubjectID: value.Subject.ID, Mode: value.Mode, Delivery: value.Delivery, IssuedBy: actor, DefinitionJSON: accessJSON(value), IssuedAt: now, ExpiresAt: expires.UTC().Truncate(time.Millisecond), ModuleVersion: row.Version, CreateCommandID: commandID}
+		grant := entity.KnowledgeAccessGrantRecord{ID: common.GenerateUUID(), TenantID: tenant, DomainID: domain, ModuleID: row.ID, SubjectKind: value.Subject.Kind, SubjectID: value.Subject.ID, Mode: value.Mode, Delivery: value.Delivery, IssuedBy: actor, DefinitionJSON: accessJSON(value), IssuedAt: now, ExpiresAt: expires.UTC().Truncate(time.Millisecond), ModuleVersion: row.Version, CreateCommandID: commandID}
 		if err = tx.Omit("CreationReceipt").Create(&grant).Error; err != nil {
 			return 0, nil, err
 		}
@@ -258,6 +270,9 @@ func (d *DatasetService) accessCommand(ctx context.Context, actor, operation, re
 	safeResult := accessJSON(data)
 	completed := "completed"
 	updates := map[string]any{"tenant_id": tenant, "domain_id": domain, "outcome": outcome, "command_state": completed, "command_resource_id": resource, "command_http_status": status, "command_result_json": safeResult, "command_committed_at": now, "occurred_at": now}
+	if scopeKind == "tenant" {
+		updates["domain_id"] = nil
+	}
 	if module != "" {
 		updates["module_id"] = module
 	}
@@ -396,7 +411,11 @@ func (d *DatasetService) accessListModules(ctx context.Context, actor, requestID
 					}
 					read, search := false, false
 					for _, grant := range grants {
-						if grant.IssuedBy == kb.CreatedBy && accessCovers(grant, actor, "read", "web_only") {
+						matches, err := accessGrantSubject(tx, grant, actor)
+						if err != nil {
+							return err
+						}
+						if grant.IssuedBy == kb.CreatedBy && matches && accessCovers(grant, "read", "web_only") {
 							read = true
 							search = search || grant.Mode == "read_search"
 							mcp = mcp || grant.Delivery == "web_and_mcp"
@@ -425,4 +444,26 @@ func (d *DatasetService) accessListModules(ctx context.Context, actor, requestID
 		return tx.Create(&entity.KnowledgeAccessAuditRecord{ID: common.GenerateUUID(), TenantID: req.TenantID, ActorUserID: &actor, Action: "listModules", Outcome: "allowed", RequestID: requestID, OccurredAt: now}).Error
 	})
 	return 200, encoded, err
+}
+
+func accessCommandTenant(ctx context.Context, operation, scopeID string) (string, string, error) {
+	if operation == "setDepartment" {
+		return scopeID, "tenant", nil
+	}
+	tenant, err := accessTenantLocator(ctx, scopeID)
+	return tenant, "domain", err
+}
+
+func accessCommandAuthority(ctx context.Context, tx *gorm.DB, actor, operation, scopeID, tenant string) (*entity.Knowledgebase, error) {
+	if operation == "setDepartment" {
+		return nil, accessTenantOwner(ctx, tx, actor, tenant)
+	}
+	kb, err := accessDomain(ctx, tx, actor, scopeID, true, true)
+	if err != nil {
+		return nil, err
+	}
+	if kb.TenantID != tenant {
+		return nil, accessError(409, "scope_changed")
+	}
+	return kb, nil
 }

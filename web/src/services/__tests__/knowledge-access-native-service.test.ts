@@ -60,3 +60,51 @@ it('rejects an aborted or late identity response', async () => {
   await expect(reading).rejects.toMatchObject({ code: 'scope_changed' });
   expect(listTenantUser).not.toHaveBeenCalled();
 });
+
+it('uses the exact native tenant roster and projects only active member labels', async () => {
+  const member = (userID: string, role = 'normal', active = '1') => ({
+    user_id: userID,
+    nickname: 'Synthetic member',
+    role,
+    status: '1',
+    is_active: active,
+    is_authenticated: '1',
+    is_anonymous: '0',
+    get password() {
+      throw Error('secret accessed');
+    },
+    get access_token() {
+      throw Error('secret accessed');
+    },
+  });
+  const rosterResponse = {
+    data: {
+      code: 0,
+      data: [
+        member('b'.repeat(32)),
+        member('c'.repeat(32), 'invite'),
+        member('d'.repeat(32), 'normal', '0'),
+      ],
+    },
+  } as any;
+  jest.mocked(listTenantUser).mockResolvedValueOnce(rosterResponse);
+  await expect(
+    nativeService.members({ user: User, tenant: Tenant }),
+  ).resolves.toEqual([
+    { id: User, name: '' },
+    { id: 'b'.repeat(32), name: 'Synthetic member' },
+  ]);
+  expect(listTenantUser).toHaveBeenCalledWith(Tenant);
+});
+it('discards a late native roster after cancellation', async () => {
+  const pending = deferred<any>(),
+    abort = new AbortController();
+  jest.mocked(listTenantUser).mockReturnValueOnce(pending.promise);
+  const request = nativeService.members(
+    { user: User, tenant: Tenant },
+    abort.signal,
+  );
+  abort.abort();
+  pending.resolve({ data: { code: 0, data: [] } });
+  await expect(request).rejects.toMatchObject({ code: 'scope_changed' });
+});

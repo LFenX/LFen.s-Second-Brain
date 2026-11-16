@@ -67,7 +67,7 @@ func accessNormalize(err error) *KnowledgeAccessError {
 	return &KnowledgeAccessError{Status: 503, Code: "unavailable", RetrySameKey: true}
 }
 
-var accessRequestDefinitions = map[string]string{"setPolicy": "SetPolicyRequest", "setModule": "SetModuleRequest", "getModuleAdmin": "GetModuleAdminRequest", "listModules": "ListModulesRequest", "createGrant": "CreateGrantRequest", "revokeGrant": "RevokeGrantRequest", "inspect": "InspectRequest", "search": "SearchRequest", "read": "ReadRequest"}
+var accessRequestDefinitions = map[string]string{"setDepartment": "SetDepartmentRequest", "listDepartments": "ListDepartmentsRequest", "setPolicy": "SetPolicyRequest", "setModule": "SetModuleRequest", "getModuleAdmin": "GetModuleAdminRequest", "listModules": "ListModulesRequest", "createGrant": "CreateGrantRequest", "revokeGrant": "RevokeGrantRequest", "inspect": "InspectRequest", "search": "SearchRequest", "read": "ReadRequest"}
 
 func accessDefinition(operation string) string {
 	name := accessRequestDefinitions[operation]
@@ -132,6 +132,10 @@ func (d *DatasetService) knowledgeAccess(ctx context.Context, actor, operation, 
 	}
 	var request any
 	switch operation {
+	case "setDepartment":
+		request = &entity.KnowledgeAccessSetDepartmentRequest{}
+	case "listDepartments":
+		request = &entity.KnowledgeAccessListDepartmentsRequest{}
 	case "setPolicy":
 		request = &entity.KnowledgeAccessSetPolicyRequest{}
 	case "setModule":
@@ -170,6 +174,10 @@ func (d *DatasetService) knowledgeAccess(ctx context.Context, actor, operation, 
 		return 0, nil, err
 	}
 	switch value := request.(type) {
+	case *entity.KnowledgeAccessSetDepartmentRequest:
+		return d.accessCommand(ctx, actor, operation, requestID, value.TenantID, value.IdempotencyKey, value)
+	case *entity.KnowledgeAccessListDepartmentsRequest:
+		return d.accessListDepartments(ctx, actor, requestID, *value)
 	case *entity.KnowledgeAccessSetPolicyRequest:
 		return d.accessCommand(ctx, actor, operation, requestID, value.DomainID, value.IdempotencyKey, value)
 	case *entity.KnowledgeAccessSetModuleRequest:
@@ -351,8 +359,8 @@ func accessAdmin(tx *gorm.DB, kb *entity.Knowledgebase, module *entity.Knowledge
 	}
 	return &entity.KnowledgeAccessModuleAdmin{ModuleID: module.ID, DomainID: kb.ID, Name: module.Name, Version: module.Version, Enabled: module.Enabled, Scope: scope, Grants: grants, Policy: policy}, nil
 }
-func accessCovers(grant entity.KnowledgeAccessGrantRecord, actor, mode, delivery string) bool {
-	return grant.SubjectKind == "user" && grant.SubjectID == actor && (grant.Mode == mode || grant.Mode == "read_search" && mode == "read") && (grant.Delivery == delivery || grant.Delivery == "web_and_mcp" && delivery == "web_only")
+func accessCovers(grant entity.KnowledgeAccessGrantRecord, mode, delivery string) bool {
+	return (grant.Mode == mode || grant.Mode == "read_search" && mode == "read") && (grant.Delivery == delivery || grant.Delivery == "web_and_mcp" && delivery == "web_only")
 }
 func accessPickGrant(tx *gorm.DB, kb *entity.Knowledgebase, module *entity.KnowledgeAccessModuleRecord, actor, mode, delivery string, now time.Time) (*entity.KnowledgeAccessGrantRecord, error) {
 	if !module.Enabled {
@@ -371,11 +379,15 @@ func accessPickGrant(tx *gorm.DB, kb *entity.Knowledgebase, module *entity.Knowl
 	}
 	hasGrant := false
 	for _, row := range rows {
-		if row.IssuedBy != kb.CreatedBy || row.SubjectKind != "user" || row.SubjectID != actor {
+		matches, err := accessGrantSubject(tx, row, actor)
+		if err != nil {
+			return nil, err
+		}
+		if row.IssuedBy != kb.CreatedBy || !matches {
 			continue
 		}
 		hasGrant = true
-		if accessCovers(row, actor, mode, delivery) {
+		if accessCovers(row, mode, delivery) {
 			return &row, nil
 		}
 	}
@@ -398,11 +410,11 @@ func accessReceipt(ctx context.Context, actor, operation, key string) (*entity.K
 	}
 	return &row, err
 }
-func (d *DatasetService) accessReplay(ctx context.Context, actor, operation, requestID, domain string, digest []byte, row *entity.KnowledgeAccessAuditRecord) (int, []byte, error) {
-	if row.CommandScopeID == nil || *row.CommandScopeID != domain || !bytes.Equal(digest, row.CommandRequestSHA256) {
+func (d *DatasetService) accessReplay(ctx context.Context, actor, operation, requestID, scopeID string, digest []byte, row *entity.KnowledgeAccessAuditRecord) (int, []byte, error) {
+	if row.CommandScopeID == nil || *row.CommandScopeID != scopeID || !bytes.Equal(digest, row.CommandRequestSHA256) {
 		return 0, nil, accessError(409, "idempotency_conflict")
 	}
-	tenant, err := accessTenantLocator(ctx, domain)
+	tenant, scopeKind, err := accessCommandTenant(ctx, operation, scopeID)
 	if err != nil {
 		return 0, nil, err
 	}
@@ -411,11 +423,11 @@ func (d *DatasetService) accessReplay(ctx context.Context, actor, operation, req
 		if _, err := dao.LockKnowledgeAccessTenants(tx, []string{tenant}, true); err != nil {
 			return err
 		}
-		kb, err := accessDomain(ctx, tx, actor, domain, true, true)
+		_, err := accessCommandAuthority(ctx, tx, actor, operation, scopeID, tenant)
 		if err != nil {
 			return err
 		}
-		if kb.TenantID != tenant || row.TenantID != tenant {
+		if row.TenantID != tenant || row.CommandScopeKind == nil || *row.CommandScopeKind != scopeKind {
 			return accessError(409, "scope_changed")
 		}
 		if row.CommandCompactedAt != nil || row.CommandState == nil || *row.CommandState != "completed" || row.CommandResultJSON == nil || row.CommandHTTPStatus == nil {

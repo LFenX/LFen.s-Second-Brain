@@ -2,6 +2,7 @@ import type { AxiosResponse } from 'axios';
 import { registerNextServer } from '@/utils/register-server';
 import { KnowledgeAccessVersion } from '@/interfaces/database/knowledge-access';
 import type {
+  AccessDepartment,
   AccessError,
   AccessInspectData,
   AccessResults,
@@ -26,6 +27,16 @@ const Server = registerNextServer({
   post: { url: (config: { url: string }) => config.url, method: 'post' },
 });
 const Operations = {
+  setDepartment: [
+    'admin/departments/set',
+    'SetDepartmentRequest',
+    'SetDepartmentResponse',
+  ],
+  listDepartments: [
+    'departments/list',
+    'ListDepartmentsRequest',
+    'ListDepartmentsResponse',
+  ],
   setPolicy: [
     'admin/domains/policy/set',
     'SetPolicyRequest',
@@ -105,6 +116,12 @@ export function accessRequestValid<O extends AccessOperation>(
     accessBytes(JSON.stringify(body)) > 32768
   )
     return false;
+  if (operation === 'setDepartment') {
+    const value = body as AccessRequests['setDepartment'];
+    return value.department_id === null
+      ? value.expected_version === 0
+      : value.expected_version >= 1;
+  }
   if (operation === 'setModule') {
     const value = body as AccessRequests['setModule'];
     return (
@@ -117,7 +134,7 @@ export function accessRequestValid<O extends AccessOperation>(
   }
   if (operation === 'createGrant') {
     const value = body as AccessRequests['createGrant'];
-    return value.subject.kind === 'user' && value.delivery === 'web_only';
+    return value.delivery === 'web_only';
   }
   if (operation === 'inspect')
     return (body as AccessRequests['inspect']).delivery === 'web_only';
@@ -220,7 +237,46 @@ async function call<O extends AccessOperation>(
   return envelope.data as AccessResults[O];
 }
 
+function departmentValid(value: AccessDepartment, tenant: string) {
+  return (
+    value.tenant_id === tenant &&
+    (value.user_ids === null
+      ? value.member_count === null && value.enabled
+      : value.member_count === value.user_ids.length)
+  );
+}
 const service = {
+  async listDepartments(
+    body: AccessRequests['listDepartments'],
+    signal?: AbortSignal,
+  ) {
+    const value = await call('listDepartments', body, signal);
+    if (
+      !value.items.every((item) => departmentValid(item, body.tenant_id)) ||
+      new Set(value.items.map((item) => item.department_id)).size !==
+        value.items.length
+    )
+      throw invalid();
+    return value;
+  },
+  async setDepartment(body: AccessRequests['setDepartment']) {
+    const value = await call('setDepartment', body);
+    if (
+      value.tenant_id !== body.tenant_id ||
+      (body.department_id !== null &&
+        value.department_id !== body.department_id) ||
+      value.name !== body.name ||
+      value.enabled !== body.enabled ||
+      ![body.expected_version, body.expected_version + 1].includes(
+        value.version,
+      ) ||
+      value.user_ids === null ||
+      value.member_count !== value.user_ids.length ||
+      !accessSame([...value.user_ids].sort(), [...body.user_ids].sort())
+    )
+      throw invalid();
+    return value;
+  },
   async listModules(body: AccessRequests['listModules'], signal?: AbortSignal) {
     const value = await call('listModules', body, signal);
     if (

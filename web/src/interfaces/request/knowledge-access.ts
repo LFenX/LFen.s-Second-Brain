@@ -12,6 +12,21 @@ import type {
   AccessVersion,
 } from '@/interfaces/database/knowledge-access';
 
+export type AccessSetDepartmentRequest = {
+  contract_version: AccessVersion;
+  tenant_id: AccessID;
+  department_id: AccessID | null;
+  expected_version: AccessGeneration;
+  name: string;
+  enabled: boolean;
+  user_ids: AccessID[];
+  confirmed: true;
+  idempotency_key: AccessKey;
+};
+export type AccessListDepartmentsRequest = {
+  contract_version: AccessVersion;
+  tenant_id: AccessID;
+};
 export type AccessSetPolicyRequest = {
   contract_version: AccessVersion;
   domain_id: AccessID;
@@ -88,6 +103,8 @@ export type AccessReadRequest = {
 };
 
 export interface AccessRequests {
+  setDepartment: AccessSetDepartmentRequest;
+  listDepartments: AccessListDepartmentsRequest;
   setPolicy: AccessSetPolicyRequest;
   setModule: AccessSetModuleRequest;
   getModuleAdmin: AccessGetModuleAdminRequest;
@@ -100,6 +117,7 @@ export interface AccessRequests {
 }
 export type AccessOperation = keyof AccessRequests;
 export type AccessWriteOperation =
+  | 'setDepartment'
   | 'setPolicy'
   | 'setModule'
   | 'createGrant'

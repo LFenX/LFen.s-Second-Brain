@@ -29,7 +29,7 @@ func KnowledgeAccessReadDB(ctx context.Context, db *gorm.DB) *gorm.DB {
 }
 
 func migrateKnowledgeAccess(ctx context.Context, db *gorm.DB) error {
-	for _, model := range []any{&entity.KnowledgeAccessTenantStateRecord{}, &entity.KnowledgeAccessDomainPolicyRecord{}, &entity.KnowledgeAccessModuleRecord{}, &entity.KnowledgeAccessAuditRecord{}, &entity.KnowledgeAccessGrantRecord{}, &entity.KnowledgeAccessViewRecord{}} {
+	for _, model := range []any{&entity.KnowledgeAccessTenantStateRecord{}, &entity.KnowledgeAccessDepartmentRecord{}, &entity.KnowledgeAccessDepartmentMemberRecord{}, &entity.KnowledgeAccessDomainPolicyRecord{}, &entity.KnowledgeAccessModuleRecord{}, &entity.KnowledgeAccessAuditRecord{}, &entity.KnowledgeAccessGrantRecord{}, &entity.KnowledgeAccessViewRecord{}} {
 		if err := autoMigrateSafely(ctx, db, model); err != nil {
 			return fmt.Errorf("migrate knowledge access: %w", err)
 		}
@@ -37,7 +37,7 @@ func migrateKnowledgeAccess(ctx context.Context, db *gorm.DB) error {
 	for _, index := range []struct {
 		table, name string
 		columns     []string
-	}{{"knowledge_access_module", "idx_ka_module_1", []string{"domain_id", "id"}}, {"knowledge_access_audit", "idx_ka_audit_command_key", []string{"actor_user_id", "command_operation", "command_key"}}} {
+	}{{"knowledge_access_department", "idx_ka_department_1", []string{"tenant_id", "id"}}, {"knowledge_access_department_member", "idx_ka_department_member_1", []string{"department_id", "user_id"}}, {"knowledge_access_module", "idx_ka_module_1", []string{"domain_id", "id"}}, {"knowledge_access_audit", "idx_ka_audit_command_key", []string{"actor_user_id", "command_operation", "command_key"}}} {
 		if err := ensureKnowledgeAccessUnique(ctx, db, index.table, index.name, index.columns); err != nil {
 			return err
 		}

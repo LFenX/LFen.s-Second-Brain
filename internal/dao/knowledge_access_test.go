@@ -32,6 +32,34 @@ func knowledgeAccessTestDB(t *testing.T) *gorm.DB {
 	}
 	return db
 }
+
+func TestKnowledgeAccessDepartmentNamedIndexesAndUniqueness(t *testing.T) {
+	db := knowledgeAccessTestDB(t)
+	if err := migrateKnowledgeAccess(t.Context(), db); err != nil {
+		t.Fatal(err)
+	}
+	for _, index := range []struct{ table, name string }{{"knowledge_access_department", "idx_ka_department_1"}, {"knowledge_access_department_member", "idx_ka_department_member_1"}} {
+		if !db.Migrator().HasIndex(index.table, index.name) {
+			t.Fatal("missing named department index", index.name)
+		}
+	}
+	department := entity.KnowledgeAccessDepartmentRecord{ID: strings.Repeat("a", 32), TenantID: strings.Repeat("b", 32), Name: "Synthetic department", Version: 1, Enabled: true, CreatedBy: strings.Repeat("c", 32)}
+	if err := db.Create(&department).Error; err != nil {
+		t.Fatal(err)
+	}
+	member := entity.KnowledgeAccessDepartmentMemberRecord{ID: strings.Repeat("d", 32), DepartmentID: department.ID, UserID: strings.Repeat("e", 32)}
+	if err := db.Create(&member).Error; err != nil {
+		t.Fatal(err)
+	}
+	member.ID = strings.Repeat("f", 32)
+	if db.Create(&member).Error == nil {
+		t.Fatal("department membership duplicate accepted")
+	}
+	probe := db.Session(&gorm.Session{DryRun: true}).Where("department_id = ? AND user_id = ?", department.ID, member.UserID).Take(&entity.KnowledgeAccessDepartmentMemberRecord{})
+	if len(probe.Statement.Vars) < 2 || strings.Contains(probe.Statement.SQL.String(), department.ID) || !strings.Contains(probe.Statement.SQL.String(), "department_id = ?") {
+		t.Fatal("unbound department query")
+	}
+}
 func knowledgeAccessSeed(t *testing.T, db *gorm.DB) {
 	t.Helper()
 	valid := "1"

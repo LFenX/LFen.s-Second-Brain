@@ -5,6 +5,38 @@ import "encoding/json"
 const KnowledgeAccessVersion = "0.3.0-candidate"
 const KnowledgeAccessMaxGeneration int64 = 9007199254740991
 
+type KnowledgeAccessSetDepartmentRequest struct {
+	ContractVersion string   `json:"contract_version"`
+	TenantID        string   `json:"tenant_id"`
+	DepartmentID    *string  `json:"department_id"`
+	ExpectedVersion int64    `json:"expected_version"`
+	Name            string   `json:"name"`
+	Enabled         bool     `json:"enabled"`
+	UserIDs         []string `json:"user_ids"`
+	Confirmed       bool     `json:"confirmed"`
+	IdempotencyKey  string   `json:"idempotency_key"`
+}
+
+type KnowledgeAccessDepartment struct {
+	DepartmentID string   `json:"department_id"`
+	TenantID     string   `json:"tenant_id"`
+	Name         string   `json:"name"`
+	Version      int64    `json:"version"`
+	Enabled      bool     `json:"enabled"`
+	MemberCount  *int64   `json:"member_count"`
+	UserIDs      []string `json:"user_ids"`
+}
+
+type KnowledgeAccessListDepartmentsRequest struct {
+	ContractVersion string `json:"contract_version"`
+	TenantID        string `json:"tenant_id"`
+}
+
+type KnowledgeAccessListDepartmentsData struct {
+	Items      []KnowledgeAccessDepartment `json:"items"`
+	Pagination string                      `json:"pagination"`
+}
+
 type KnowledgeAccessSetPolicyRequest struct {
 	ContractVersion string `json:"contract_version"`
 	DomainID        string `json:"domain_id"`

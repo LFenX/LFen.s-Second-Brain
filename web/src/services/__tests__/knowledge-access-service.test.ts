@@ -198,7 +198,7 @@ it('binds search output to the same view, ordinal, query, limit and exact eviden
   ).resolves.toEqual(evidence());
 });
 
-it('read-only search, out-of-catalogue selectors, S2 subjects and S3 delivery never dispatch', async () => {
+it('read-only search, out-of-catalogue selectors and S3 delivery never dispatch', async () => {
   await expect(
     service.search(
       {
@@ -215,7 +215,9 @@ it('read-only search, out-of-catalogue selectors, S2 subjects and S3 delivery ne
   await expect(service.read(first, view())).rejects.toMatchObject({
     status: 400,
   });
-  await expect(service.createGrant(example('EX10'))).rejects.toMatchObject({
+  await expect(
+    service.createGrant({ ...example('EX10'), delivery: 'web_and_mcp' }),
+  ).rejects.toMatchObject({
     status: 400,
   });
   const inspect = inspectBody();
@@ -480,4 +482,120 @@ it('decodes special property names as inert JSON data and still rejects duplicat
   expect(() =>
     parseAccessJSON('{"__proto__":1,"\\u005f_proto__":2}'),
   ).toThrow();
+});
+
+const departmentRequest = () => ({
+  contract_version: KnowledgeAccessVersion,
+  tenant_id: Tenant,
+  department_id: null,
+  expected_version: 0,
+  name: 'Synthetic department',
+  enabled: true,
+  user_ids: [User],
+  confirmed: true as const,
+  idempotency_key: 'synthetic-department-create-001',
+});
+const departmentData = () => ({
+  department_id: 'a'.repeat(32),
+  tenant_id: Tenant,
+  name: 'Synthetic department',
+  version: 1,
+  enabled: true,
+  member_count: 1,
+  user_ids: [User],
+});
+it('dispatches the approved tenant-scoped department mutation and preserves its original receipt', async () => {
+  const body = departmentRequest(),
+    value = departmentData();
+  post.mockResolvedValue(response('setDepartment', value));
+  await expect(service.setDepartment(body)).resolves.toEqual(value);
+  expect(post.mock.calls[0][0].url).toBe(
+    '/api/v1/knowledge/access/admin/departments/set',
+  );
+  expect(JSON.parse(post.mock.calls[0][0].data)).toEqual(body);
+});
+it('accepts multiple department catalog entries through the actual strict byte decoder', async () => {
+  const data = {
+    items: [
+      { ...departmentData(), member_count: null, user_ids: null },
+      {
+        ...departmentData(),
+        department_id: 'b'.repeat(32),
+        name: 'Synthetic department B',
+        member_count: null,
+        user_ids: null,
+      },
+    ],
+    pagination: 'none',
+  };
+  post.mockImplementationOnce(({ transformResponse }: any) => {
+    const reply = response('listDepartments', data);
+    return Promise.resolve({
+      ...reply,
+      data: transformResponse[0](
+        new TextEncoder().encode(JSON.stringify(reply.data)),
+      ),
+    });
+  });
+  await expect(
+    service.listDepartments({
+      contract_version: KnowledgeAccessVersion,
+      tenant_id: Tenant,
+    }),
+  ).resolves.toEqual(data);
+});
+it.each([
+  'foreign tenant',
+  'wrong count',
+  'partial null',
+  'duplicate id',
+  'disabled public catalog',
+])('rejects department metadata with %s', async (problem) => {
+  const item = departmentData(),
+    items: any[] = [item];
+  if (problem === 'foreign tenant') item.tenant_id = 'c'.repeat(32);
+  if (problem === 'wrong count') item.member_count = 2;
+  if (problem === 'partial null') (item as any).user_ids = null;
+  if (problem === 'duplicate id')
+    items.push({ ...item, name: 'Different name' });
+  if (problem === 'disabled public catalog')
+    Object.assign(item, { enabled: false, member_count: null, user_ids: null });
+  post.mockResolvedValue(
+    response('listDepartments', { items, pagination: 'none' }),
+  );
+  await expect(
+    service.listDepartments({
+      contract_version: KnowledgeAccessVersion,
+      tenant_id: Tenant,
+    }),
+  ).rejects.toMatchObject({ status: 502 });
+});
+it('rejects invalid department creation/CAS and duplicate roster before transport', async () => {
+  const body = departmentRequest();
+  await expect(
+    service.setDepartment({ ...body, expected_version: 1 }),
+  ).rejects.toMatchObject({ status: 400 });
+  await expect(
+    service.setDepartment({ ...body, user_ids: [User, User] }),
+  ).rejects.toMatchObject({ status: 400 });
+  expect(post).not.toHaveBeenCalled();
+});
+it('creates a fixed department web grant without enabling later MCP delivery', async () => {
+  const item = {
+    ...grant(),
+    subject: { kind: 'department' as const, id: 'a'.repeat(32) },
+  };
+  const body = {
+    ...example('EX10'),
+    subject: item.subject,
+    domain_id: item.domain_id,
+    module_id: item.module_id,
+    expected_module_version: item.module_version,
+    mode: item.mode,
+    delivery: 'web_only' as const,
+    expires_at: item.expires_at,
+  };
+  post.mockResolvedValue(response('createGrant', item, 201));
+  await expect(service.createGrant(body)).resolves.toEqual(item);
+  expect(JSON.parse(post.mock.calls[0][0].data).subject).toEqual(item.subject);
 });

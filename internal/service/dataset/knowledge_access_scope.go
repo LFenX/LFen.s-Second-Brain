@@ -327,7 +327,11 @@ func (d *DatasetService) accessValidateView(ctx context.Context, tx *gorm.DB, ac
 	if err := accessGrantIntegrity(tx, grant); err != nil {
 		return nil, err
 	}
-	if grant.IssuedBy != kb.CreatedBy || !accessCovers(grant, actor, capture.Mode, capture.Delivery) || view.ExpiresAt.After(grant.ExpiresAt) {
+	matches, err := accessGrantSubject(tx, grant, actor)
+	if err != nil {
+		return nil, err
+	}
+	if grant.IssuedBy != kb.CreatedBy || !matches || !accessCovers(grant, capture.Mode, capture.Delivery) || view.ExpiresAt.After(grant.ExpiresAt) {
 		return nil, accessError(409, "view_stale")
 	}
 	policy, err := accessPolicy(tx, kb, true)

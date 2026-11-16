@@ -1,5 +1,5 @@
-import userService, { listTenant } from './user-service';
-import type { ITenant } from '@/interfaces/database/user-setting';
+import userService, { listTenant, listTenantUser } from './user-service';
+import type { ITenant, ITenantUser } from '@/interfaces/database/user-setting';
 import { AccessRequestError } from './knowledge-access-service';
 
 export interface AccessIdentity {
@@ -12,6 +12,36 @@ function check(signal?: AbortSignal) {
   if (signal?.aborted) throw new AccessRequestError(0, 'scope_changed', true);
 }
 const nativeService = {
+  async members(
+    actor: { user: string; tenant: string },
+    signal?: AbortSignal,
+  ): Promise<{ id: string; name: string }[]> {
+    check(signal);
+    if (!id.test(actor.user) || !id.test(actor.tenant))
+      throw new AccessRequestError(400, 'invalid_request', true);
+    const response = await listTenantUser(actor.tenant);
+    check(signal);
+    if (response.data?.code !== 0 || !Array.isArray(response.data.data))
+      throw new AccessRequestError(0, 'unavailable', true);
+    const values = (response.data.data as ITenantUser[]).filter(
+      (item) =>
+        id.test(item.user_id) &&
+        ['owner', 'admin', 'normal'].includes(item.role) &&
+        item.status === '1' &&
+        item.is_active === '1' &&
+        item.is_authenticated === '1' &&
+        item.is_anonymous === '0',
+    );
+    const members = values
+      .filter((item) => item.user_id !== actor.user)
+      .map((item) => ({
+        id: item.user_id,
+        name: typeof item.nickname === 'string' ? item.nickname : '',
+      }));
+    if (new Set(members.map((item) => item.id)).size !== members.length)
+      throw new AccessRequestError(502, 'invalid_response', true);
+    return [{ id: actor.user, name: '' }, ...members];
+  },
   async identity(signal?: AbortSignal): Promise<AccessIdentity> {
     check(signal);
     const [userResponse, tenantResponse] = await Promise.all([

@@ -9,6 +9,31 @@ type KnowledgeAccessTenantStateRecord struct {
 
 func (KnowledgeAccessTenantStateRecord) TableName() string { return "knowledge_access_tenant_state" }
 
+type KnowledgeAccessDepartmentRecord struct {
+	ID        string    `gorm:"size:32;primaryKey"`
+	TenantID  string    `gorm:"size:32;not null;index:idx_ka_department_tenant"`
+	Name      string    `gorm:"size:128;not null"`
+	Version   int64     `gorm:"not null"`
+	Enabled   bool      `gorm:"not null"`
+	CreatedBy string    `gorm:"size:32;not null"`
+	CreatedAt time.Time `gorm:"not null"`
+	UpdatedAt time.Time `gorm:"not null"`
+}
+
+func (KnowledgeAccessDepartmentRecord) TableName() string { return "knowledge_access_department" }
+
+type KnowledgeAccessDepartmentMemberRecord struct {
+	ID           string                           `gorm:"size:32;primaryKey"`
+	DepartmentID string                           `gorm:"size:32;not null"`
+	UserID       string                           `gorm:"size:32;not null"`
+	CreatedAt    time.Time                        `gorm:"not null"`
+	Department   *KnowledgeAccessDepartmentRecord `gorm:"foreignKey:DepartmentID;references:ID;constraint:OnDelete:RESTRICT"`
+}
+
+func (KnowledgeAccessDepartmentMemberRecord) TableName() string {
+	return "knowledge_access_department_member"
+}
+
 type KnowledgeAccessDomainPolicyRecord struct {
 	DomainID  string    `gorm:"size:32;primaryKey"`
 	TenantID  string    `gorm:"size:32;not null;index:idx_ka_policy_tenant"`
