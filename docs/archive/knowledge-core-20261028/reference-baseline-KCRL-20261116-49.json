@@ -1,0 +1,4921 @@
+{
+  "schema_version": 1,
+  "lock_id": "KCRL-20261116-49",
+  "recorded_date": "2026-11-16",
+  "coordinator_thread_id": "01a1a9a5-c724-7f52-8cbb-16d19d982ba4",
+  "source_baseline_git_head": "f804b3737a8f69af14b1ff1c2d042e8ea7c2a9f1",
+  "source_snapshot": {
+    "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+    "file_count": 5165,
+    "sha256": "32a82f8fcfbb25fabccb395622a0eb6f66c887dd5ad0a945f92b2795b036c9df"
+  },
+  "unlisted_policy": "DeniedAsCurrentGuidance_UntilCoordinatorReviewsAndAssigns",
+  "authority_order": [
+    "最新真人/平台约束及适用AGENTS",
+    "当前原始产品方向与锁定要求",
+    "当前工作计划（非人的验收）",
+    "当前源码快照的事实",
+    "既有版本formal契约（仅原范围）",
+    "未批准设计草稿/合成输入/历史证据（分别限定用途）"
+  ],
+  "entries": [
+    {
+      "id": "reference-authority",
+      "path": "docs/knowledge-core-reference-authority.md",
+      "role": "reference_policy",
+      "allowed_uses": [
+        "reference_policy"
+      ],
+      "limitation": "资料用途/入口规则；不批准产品接口、模型或发布。 Ref27仅登记同一round3选择器内受控命名源码集合后续，不续授模型、业务、部署或产品验收范围。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "8f00a432765697f1cfc616bcc36295301c3b5d8f4f24a758696766eecda11d53"
+      },
+      "selection_sha256": "8f00a432765697f1cfc616bcc36295301c3b5d8f4f24a758696766eecda11d53"
+    },
+    {
+      "id": "root-instructions",
+      "path": "AGENTS.md",
+      "role": "engineering_rule",
+      "allowed_uses": [
+        "engineering_rules"
+      ],
+      "limitation": "最新真人指令优先；上游Go-only不构成整包删除授权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "01a6a501727ef48f251a45d2be0531e4da62e096ffddaf07b69689957acc05aa"
+      },
+      "selection_sha256": "01a6a501727ef48f251a45d2be0531e4da62e096ffddaf07b69689957acc05aa"
+    },
+    {
+      "id": "web-instructions",
+      "path": "web/AGENTS.md",
+      "role": "engineering_rule",
+      "allowed_uses": [
+        "engineering_rules"
+      ],
+      "limitation": "仅Web任务适用；根目录和真人的路径/写窗限制优先。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "e224c14e8c505f77d62ce3636396e556a2b6ffdef5755c8f3d65638452ac3b56"
+      },
+      "selection_sha256": "e224c14e8c505f77d62ce3636396e556a2b6ffdef5755c8f3d65638452ac3b56"
+    },
+    {
+      "id": "reference-reader",
+      "path": "tools/scripts/knowledge-reference-lock.cjs",
+      "role": "reference_reader",
+      "allowed_uses": [
+        "tooling_reference"
+      ],
+      "limitation": "只读校验器实现，不是产品业务接口。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "9ca4aa10cd84d44d0c7a48fd6050a707e9344ebbe6bc509ce75ed3d2f765bf0b"
+      },
+      "selection_sha256": "9ca4aa10cd84d44d0c7a48fd6050a707e9344ebbe6bc509ce75ed3d2f765bf0b"
+    },
+    {
+      "id": "product-request",
+      "path": "docs/knowledge-core-realignment-record.json",
+      "role": "request",
+      "allowed_uses": [
+        "product_requirements"
+      ],
+      "limitation": "已保存真人原始愿景；不从旧“现在开始”推导新的模型/部署/接口许可。",
+      "selector": {
+        "type": "json_pointer",
+        "pointer": "/request_snapshot"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "e88e588e0429c4788b6789b2746823e04004946344fd07f5602baaab20a6b339"
+      },
+      "selection_sha256": "c3a5c65e7ca79312a77d140c8625f5f3c908cfa2c4c7ad946749da7514c7b0b2"
+    },
+    {
+      "id": "reference-lock-request",
+      "path": "docs/knowledge-core-reference-lock-verification.json",
+      "role": "request",
+      "allowed_uses": [
+        "reference_requirements"
+      ],
+      "limitation": "本轮真人直接要求及归档补充；仅锁定/归档范围，工程结果字段不在此选择器内。",
+      "selector": {
+        "type": "json_pointer",
+        "pointer": "/request_snapshot"
+      },
+      "integrity": {
+        "mode": "selection",
+        "sha256": "0763620f9ba663ba14618498366abe1dce0eb8a412d6ca629be424e92f35b6b0"
+      },
+      "selection_sha256": "0763620f9ba663ba14618498366abe1dce0eb8a412d6ca629be424e92f35b6b0"
+    },
+    {
+      "id": "current-plan",
+      "path": "docs/knowledge-core-realignment-plan.md",
+      "role": "current_working_plan",
+      "allowed_uses": [
+        "execution_plan"
+      ],
+      "limitation": "当前Agent工作计划；user_decision未因此变为Approved，共享接口仍须具体决定。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "7bafc156e3448b256968ca4eb06bfc2017fb42afbe75c2499482f56112f66d6a"
+      },
+      "selection_sha256": "7bafc156e3448b256968ca4eb06bfc2017fb42afbe75c2499482f56112f66d6a"
+    },
+    {
+      "id": "code-inventory",
+      "path": "docs/knowledge-core-inventory.md",
+      "role": "implementation_fact",
+      "allowed_uses": [
+        "implementation_facts"
+      ],
+      "limitation": "已接入源码及同版合成HTTP/MinIO/Web/具名SDK事实；质量/规模/取消及最终人的验收未证明。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "49b75d977b162daf68a69af308d42f7d7a8a64f4740ab3c769307bfc4cd3d87f"
+      },
+      "selection_sha256": "49b75d977b162daf68a69af308d42f7d7a8a64f4740ab3c769307bfc4cd3d87f"
+    },
+    {
+      "id": "model-research",
+      "path": "docs/knowledge-core-model-research.md",
+      "role": "implementation_fact",
+      "allowed_uses": [
+        "implementation_facts",
+        "model_research"
+      ],
+      "limitation": "3个官方固定提交对照；外部schema与Agent建议不是新产品冻结接口。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "ea68933ee081be45999c5639b4bb7ee14465ce766b831d05f5fadaef75cfe156"
+      },
+      "selection_sha256": "ea68933ee081be45999c5639b4bb7ee14465ce766b831d05f5fadaef75cfe156"
+    },
+    {
+      "id": "retrieval-mcp",
+      "path": "docs/knowledge-core-retrieval-mcp.md",
+      "role": "implementation_fact",
+      "allowed_uses": [
+        "implementation_facts"
+      ],
+      "limitation": "已接入源码及同版合成HTTP/MinIO/Web/具名SDK事实；质量/规模/取消及最终人的验收未证明。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "b91ddbd9faa5f73eca023c6d952f3e5e73bf4086017b2f90eb0a9830714a255e"
+      },
+      "selection_sha256": "b91ddbd9faa5f73eca023c6d952f3e5e73bf4086017b2f90eb0a9830714a255e"
+    },
+    {
+      "id": "unified-model-draft",
+      "path": "docs/knowledge-core-unified-model.candidate.md",
+      "role": "candidate_design",
+      "allowed_uses": [
+        "design_reference"
+      ],
+      "limitation": "当前统一模型、存储与已实现工程状态；已区分C1/R1/R2旧运行证据和新parsed工程证据，未冻结、未完成新检索/MCP和质量。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "51ebf91cddb5269576e5c25987c007c36fb2f033cedd68ea31b2b4b30c445d7d"
+      },
+      "selection_sha256": "51ebf91cddb5269576e5c25987c007c36fb2f033cedd68ea31b2b4b30c445d7d"
+    },
+    {
+      "id": "local-access-draft",
+      "path": "docs/knowledge-core-local-access.candidate.md",
+      "role": "candidate_design",
+      "allowed_uses": [
+        "design_reference"
+      ],
+      "limitation": "Draft_NotFreezeReady；部门共享/Grant/MCP工具尚未批准或实现。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "a42cdefb772385bb5e3ef27baf15a946b564e15845452fb6608fdfa6ef33b36e"
+      },
+      "selection_sha256": "a42cdefb772385bb5e3ef27baf15a946b564e15845452fb6608fdfa6ef33b36e"
+    },
+    {
+      "id": "synthetic-fixtures",
+      "path": "docs/knowledge-core-synthetic-fixtures.json",
+      "role": "synthetic_input",
+      "allowed_uses": [
+        "synthetic_input"
+      ],
+      "limitation": "人工真值/输入准备；Parser/Chunk/索引/检索/权限NotRun。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "7fd508b5086ca80ecac8b003ebd1bc03d6e2f457297d8fc1362a253c4b4ce100"
+      },
+      "selection_sha256": "7fd508b5086ca80ecac8b003ebd1bc03d6e2f457297d8fc1362a253c4b4ce100"
+    },
+    {
+      "id": "readme-current",
+      "path": "README.md",
+      "role": "current_context",
+      "allowed_uses": [
+        "current_context"
+      ],
+      "limitation": "只读2026-10-28前缀；后文旧版本不授执行权。",
+      "selector": {
+        "type": "prefix_before",
+        "marker": "**v0.62 当前执行（2026-10-27）**"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "acb919b43ddef6beaa259f821fd71a1f9d640404d09cf407f8b9323f65ca3983"
+      },
+      "selection_sha256": "200bf0c5387bd376e36c3239d6c2b78a6a30c14c2a22326481f81c3a44b2ab9a"
+    },
+    {
+      "id": "session-current",
+      "path": "会话接续说明.md",
+      "role": "current_context",
+      "allowed_uses": [
+        "current_context"
+      ],
+      "limitation": "只读v0.62之前的接续前缀；最新真人暂停优先，旧主/客户端写窗不恢复。",
+      "selector": {
+        "type": "prefix_before",
+        "marker": "**v0.62 当前执行（2026-10-27）**"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "111f27fafc2b7ccbdc7454c7297a93957610db62dfbb0198e3c80b144c63d775"
+      },
+      "selection_sha256": "6dde4a84c3abdfd32a3d49d446ac5e8095ab4f04b7c29284c458aab6f4fa64a1"
+    },
+    {
+      "id": "technical-current",
+      "path": "本地第二大脑知识库技术方案.md",
+      "role": "current_context",
+      "allowed_uses": [
+        "current_context"
+      ],
+      "limitation": "只读第41章；第1—40章历史计划不纳入当前执行。",
+      "selector": {
+        "type": "markdown_section",
+        "heading": "## 41. 2026-10-28 知识库主线纠偏与新主协调"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "73c0203a6d44a50152554303a0957a0e6f4236e383c7edcfc5f1839051ca9920"
+      },
+      "selection_sha256": "2ca3a91658f12bc25a71f1411cb020054bc920ee3218683d2e3c119441557761"
+    },
+    {
+      "id": "coordination-current",
+      "path": "docs/stage2-local-coordination.md",
+      "role": "current_context",
+      "allowed_uses": [
+        "current_context"
+      ],
+      "limitation": "仅2026-10-28写权覆盖提示，后续v0.61及更早均历史。",
+      "selector": {
+        "type": "prefix_before",
+        "marker": "**v0.61准备补充**"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "f0a3822c88049e101f06032ca333b2504a1e1d38e7c9a5ed92b43e1d62a46f4b"
+      },
+      "selection_sha256": "d9e12f2cdb6d20530e01769be3605e84abe0981a7eb38f6c9ce1c6d69a0bd0c3"
+    },
+    {
+      "id": "bootstrap-result",
+      "path": "docs/knowledge-core-realignment-record.json",
+      "role": "historical_evidence",
+      "allowed_uses": [
+        "evidence_scope"
+      ],
+      "limitation": "上一轮计划/样本交付快照；不是此次归档后文件摘要或当前批准。",
+      "selector": {
+        "type": "json_fields",
+        "fields": [
+          "status",
+          "acceptance",
+          "verification",
+          "incomplete_items",
+          "publication"
+        ]
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "e88e588e0429c4788b6789b2746823e04004946344fd07f5602baaab20a6b339"
+      },
+      "selection_sha256": "36fd131840af5569245a6b032ab235d095bbba941905f2ac6541a5c8b9462084"
+    },
+    {
+      "id": "r1-engineering",
+      "path": "docs/stage3r1-structure-verification.json",
+      "role": "historical_evidence",
+      "allowed_uses": [
+        "evidence_scope"
+      ],
+      "limitation": "R1合成工程证据；人的决定按原字段，不推定整阶段/真实资料通过。",
+      "selector": {
+        "type": "json_fields",
+        "fields": [
+          "status",
+          "source",
+          "implementation",
+          "verification",
+          "incomplete_items",
+          "user_decision"
+        ]
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "8acb0458cc5bf55c7df57b0140b7c0e59cd1a52f129519001dca0dfa94c35a87"
+      },
+      "selection_sha256": "ef8541762f74e2c714ae65ac033e8ec1fdb822990b30f4a8db833ba2ba991dbb"
+    },
+    {
+      "id": "r2-backend-evidence",
+      "path": "docs/stage3r2-document-backend-verification.json",
+      "role": "historical_evidence",
+      "allowed_uses": [
+        "evidence_scope"
+      ],
+      "limitation": "旧R2后端中间报告；不能由其旧Pending否认后续Web/故障证据，也不能冒充最终退出。",
+      "selector": {
+        "type": "json_fields",
+        "fields": [
+          "status",
+          "scope",
+          "implementation",
+          "verification",
+          "incomplete_items",
+          "acceptance",
+          "model_calls",
+          "local_inference"
+        ]
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "edae34fac9e37a3c503fa93f22d30fb8eb4a5a02232622bdd3ef437dbcf18e79"
+      },
+      "selection_sha256": "31b57a42fcb9f485f657c2c0599f018a55bff019e95bd39da2a8579261a8a0c1"
+    },
+    {
+      "id": "r2-client-evidence",
+      "path": "docs/stage3r2-document-client-verification.json",
+      "role": "historical_evidence",
+      "allowed_uses": [
+        "evidence_scope"
+      ],
+      "limitation": "R2正式客户端Mock交付，不能冒充最终真实浏览器验收。",
+      "selector": {
+        "type": "json_fields",
+        "fields": [
+          "status",
+          "source",
+          "verification",
+          "incomplete_items",
+          "user_decision"
+        ]
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "2c2fba83882a490038c97d9fcd25b41a617d265a583bad63bbbd03e4c432894f"
+      },
+      "selection_sha256": "248ed8ddff012d57cef5acbd566ff1aa71cb0e71fb07f1c06e6be0e5fd003829"
+    },
+    {
+      "id": "stage1-evidence",
+      "path": "docs/stage1ab-runtime-verification.json",
+      "role": "historical_evidence",
+      "allowed_uses": [
+        "evidence_scope"
+      ],
+      "limitation": "阶段1原范围工程/人的决定，仅解释既有交付。",
+      "selector": {
+        "type": "json_fields",
+        "fields": [
+          "status",
+          "user_decision",
+          "fixture",
+          "validation",
+          "incomplete_items"
+        ]
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "90c73d189c053bf104cf6b2204e30de0a85cecc799db083ddf5b156b7d44932c"
+      },
+      "selection_sha256": "d1767fdfd3b4eaf83a430817db4e073d2e3e5ff2296bb3440a3b20f19b3d7969"
+    },
+    {
+      "id": "stage2-synthetic-evidence",
+      "path": "docs/stage2r7-synthetic-exit-verification.json",
+      "role": "historical_evidence",
+      "allowed_uses": [
+        "evidence_scope"
+      ],
+      "limitation": "阶段2合成退出证据，不表示真实资料整体退出。",
+      "selector": {
+        "type": "json_fields",
+        "fields": [
+          "objective",
+          "engineering",
+          "verification",
+          "incomplete_items",
+          "acceptance"
+        ]
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "9f9fb6a4cd79e24f7985262f2e293ac024b6eb4b99bd0df5f2fb65d9c308bc04"
+      },
+      "selection_sha256": "ece463ed2b71fef2446c78856d18dacc40ee09c13c3e7b062220a8b82b430691"
+    },
+    {
+      "id": "archive-index",
+      "path": "docs/archive/README.md",
+      "role": "history_index",
+      "allowed_uses": [
+        "history_locator"
+      ],
+      "limitation": "仅定位历史资料及保留路径原因；归档内容不作开发指引。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "5d34626e22eae645e519507e40694c6d865792cfc34a12211039ec767d5bc438"
+      },
+      "selection_sha256": "5d34626e22eae645e519507e40694c6d865792cfc34a12211039ec767d5bc438"
+    },
+    {
+      "id": "archive-manifest",
+      "path": "docs/archive/knowledge-core-archive-manifest.json",
+      "role": "history_index",
+      "allowed_uses": [
+        "history_locator"
+      ],
+      "limitation": "原/新路径、摘要和链接迁移证明；不恢复旧任务。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "38017348629f0f517c7343777068961b04984c712108a865ba0d148918a896e9"
+      },
+      "selection_sha256": "38017348629f0f517c7343777068961b04984c712108a865ba0d148918a896e9"
+    },
+    {
+      "id": "contract-knowledge-batch-import-v1-examples-json",
+      "path": "docs/knowledge-batch-import-v1.examples.json",
+      "role": "existing_contract",
+      "allowed_uses": [
+        "existing_contract"
+      ],
+      "limitation": "仅约束既有版本的请求/响应/批准边界；冻结记录里的旧写窗/发布安排不能作为本次执行授权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "5249cdf57da0313346b7b30db0743079a175aaa8480604120b1bf92e4bdfdc53"
+      },
+      "selection_sha256": "5249cdf57da0313346b7b30db0743079a175aaa8480604120b1bf92e4bdfdc53"
+    },
+    {
+      "id": "contract-knowledge-batch-import-v1-freeze-json",
+      "path": "docs/knowledge-batch-import-v1.freeze.json",
+      "role": "existing_contract",
+      "allowed_uses": [
+        "existing_contract"
+      ],
+      "limitation": "仅约束既有版本的请求/响应/批准边界；冻结记录里的旧写窗/发布安排不能作为本次执行授权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "1d589290db4b1fe4ab4005dae0ebf1918efdeac9cd57d7c810305087c180f631"
+      },
+      "selection_sha256": "1d589290db4b1fe4ab4005dae0ebf1918efdeac9cd57d7c810305087c180f631"
+    },
+    {
+      "id": "contract-knowledge-batch-import-v1-openapi-json",
+      "path": "docs/knowledge-batch-import-v1.openapi.json",
+      "role": "existing_contract",
+      "allowed_uses": [
+        "existing_contract"
+      ],
+      "limitation": "仅约束既有版本的请求/响应/批准边界；冻结记录里的旧写窗/发布安排不能作为本次执行授权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "bd13fc400fc2a84f490b92ee865db75f76d89bf79a176658312ac3bea17d0fb8"
+      },
+      "selection_sha256": "bd13fc400fc2a84f490b92ee865db75f76d89bf79a176658312ac3bea17d0fb8"
+    },
+    {
+      "id": "contract-knowledge-directory-import-v1-examples-json",
+      "path": "docs/knowledge-directory-import-v1.examples.json",
+      "role": "existing_contract",
+      "allowed_uses": [
+        "existing_contract"
+      ],
+      "limitation": "仅约束既有版本的请求/响应/批准边界；冻结记录里的旧写窗/发布安排不能作为本次执行授权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "73618dd78419bb9027520b3dd8b3ef83b1794d3ad1c4d17d904ce7637c54ea72"
+      },
+      "selection_sha256": "73618dd78419bb9027520b3dd8b3ef83b1794d3ad1c4d17d904ce7637c54ea72"
+    },
+    {
+      "id": "contract-knowledge-directory-import-v1-freeze-json",
+      "path": "docs/knowledge-directory-import-v1.freeze.json",
+      "role": "existing_contract",
+      "allowed_uses": [
+        "existing_contract"
+      ],
+      "limitation": "仅约束既有版本的请求/响应/批准边界；冻结记录里的旧写窗/发布安排不能作为本次执行授权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "2af7575cfbc24510550a0b495e18aa30f94decf5f102c23d259d4f3135dbf5f1"
+      },
+      "selection_sha256": "2af7575cfbc24510550a0b495e18aa30f94decf5f102c23d259d4f3135dbf5f1"
+    },
+    {
+      "id": "contract-knowledge-directory-import-v1-openapi-json",
+      "path": "docs/knowledge-directory-import-v1.openapi.json",
+      "role": "existing_contract",
+      "allowed_uses": [
+        "existing_contract"
+      ],
+      "limitation": "仅约束既有版本的请求/响应/批准边界；冻结记录里的旧写窗/发布安排不能作为本次执行授权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "6144c08d4cfe7ac98374dc51829c98290e2c88e3441dd38d250a3cd9cb4492e6"
+      },
+      "selection_sha256": "6144c08d4cfe7ac98374dc51829c98290e2c88e3441dd38d250a3cd9cb4492e6"
+    },
+    {
+      "id": "contract-knowledge-document-structure-v1-examples-json",
+      "path": "docs/knowledge-document-structure-v1.examples.json",
+      "role": "existing_contract",
+      "allowed_uses": [
+        "existing_contract"
+      ],
+      "limitation": "仅约束既有版本的请求/响应/批准边界；冻结记录里的旧写窗/发布安排不能作为本次执行授权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "b28d1b4f2ddee9626bd38596488db86a41926a4a8988b2691360eb259c8eb072"
+      },
+      "selection_sha256": "b28d1b4f2ddee9626bd38596488db86a41926a4a8988b2691360eb259c8eb072"
+    },
+    {
+      "id": "contract-knowledge-document-structure-v1-freeze-json",
+      "path": "docs/knowledge-document-structure-v1.freeze.json",
+      "role": "existing_contract",
+      "allowed_uses": [
+        "existing_contract"
+      ],
+      "limitation": "仅约束既有版本的请求/响应/批准边界；冻结记录里的旧写窗/发布安排不能作为本次执行授权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "b40448106735d90299d19300abd1e643cc6ad5b79bad11e55404be9a34001b2e"
+      },
+      "selection_sha256": "b40448106735d90299d19300abd1e643cc6ad5b79bad11e55404be9a34001b2e"
+    },
+    {
+      "id": "contract-knowledge-document-structure-v1-openapi-json",
+      "path": "docs/knowledge-document-structure-v1.openapi.json",
+      "role": "existing_contract",
+      "allowed_uses": [
+        "existing_contract"
+      ],
+      "limitation": "仅约束既有版本的请求/响应/批准边界；冻结记录里的旧写窗/发布安排不能作为本次执行授权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "a471b376d64c0736216cfe1184bbd31d19c03af1d41dd823e883a86603c4133f"
+      },
+      "selection_sha256": "a471b376d64c0736216cfe1184bbd31d19c03af1d41dd823e883a86603c4133f"
+    },
+    {
+      "id": "contract-knowledge-foundation-v1-example-json",
+      "path": "docs/knowledge-foundation-v1.example.json",
+      "role": "existing_contract",
+      "allowed_uses": [
+        "existing_contract"
+      ],
+      "limitation": "仅约束既有版本的请求/响应/批准边界；冻结记录里的旧写窗/发布安排不能作为本次执行授权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343"
+      },
+      "selection_sha256": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343"
+    },
+    {
+      "id": "contract-knowledge-foundation-v1-openapi-json",
+      "path": "docs/knowledge-foundation-v1.openapi.json",
+      "role": "existing_contract",
+      "allowed_uses": [
+        "existing_contract"
+      ],
+      "limitation": "仅约束既有版本的请求/响应/批准边界；冻结记录里的旧写窗/发布安排不能作为本次执行授权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4"
+      },
+      "selection_sha256": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4"
+    },
+    {
+      "id": "contract-knowledge-original-import-v1-examples-json",
+      "path": "docs/knowledge-original-import-v1.examples.json",
+      "role": "existing_contract",
+      "allowed_uses": [
+        "existing_contract"
+      ],
+      "limitation": "仅约束既有版本的请求/响应/批准边界；冻结记录里的旧写窗/发布安排不能作为本次执行授权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "550f7be69c506a02cc2798d2196e17ca06c73b06f08d934ea3cbf823551d5cb1"
+      },
+      "selection_sha256": "550f7be69c506a02cc2798d2196e17ca06c73b06f08d934ea3cbf823551d5cb1"
+    },
+    {
+      "id": "contract-knowledge-original-import-v1-freeze-json",
+      "path": "docs/knowledge-original-import-v1.freeze.json",
+      "role": "existing_contract",
+      "allowed_uses": [
+        "existing_contract"
+      ],
+      "limitation": "仅约束既有版本的请求/响应/批准边界；冻结记录里的旧写窗/发布安排不能作为本次执行授权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "116ddc4161001c0fdb440b45b227952978ca3d291197d712830a92d5aaaca3b9"
+      },
+      "selection_sha256": "116ddc4161001c0fdb440b45b227952978ca3d291197d712830a92d5aaaca3b9"
+    },
+    {
+      "id": "contract-knowledge-original-import-v1-openapi-json",
+      "path": "docs/knowledge-original-import-v1.openapi.json",
+      "role": "existing_contract",
+      "allowed_uses": [
+        "existing_contract"
+      ],
+      "limitation": "仅约束既有版本的请求/响应/批准边界；冻结记录里的旧写窗/发布安排不能作为本次执行授权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "3c48ebe0a2bfc8b3078262ce6c1a8258b312f6111bd9ed2b07b7b4fb433a5efd"
+      },
+      "selection_sha256": "3c48ebe0a2bfc8b3078262ce6c1a8258b312f6111bd9ed2b07b7b4fb433a5efd"
+    },
+    {
+      "id": "contract-knowledge-source-lifecycle-v1-examples-json",
+      "path": "docs/knowledge-source-lifecycle-v1.examples.json",
+      "role": "existing_contract",
+      "allowed_uses": [
+        "existing_contract"
+      ],
+      "limitation": "仅约束既有版本的请求/响应/批准边界；冻结记录里的旧写窗/发布安排不能作为本次执行授权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "cfe6c24c3f3a24907220c4e2ead993867c33053c6b2d197b70d93c03f168fb3c"
+      },
+      "selection_sha256": "cfe6c24c3f3a24907220c4e2ead993867c33053c6b2d197b70d93c03f168fb3c"
+    },
+    {
+      "id": "contract-knowledge-source-lifecycle-v1-freeze-json",
+      "path": "docs/knowledge-source-lifecycle-v1.freeze.json",
+      "role": "existing_contract",
+      "allowed_uses": [
+        "existing_contract"
+      ],
+      "limitation": "仅约束既有版本的请求/响应/批准边界；冻结记录里的旧写窗/发布安排不能作为本次执行授权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "f6545f908a802d0d326fe73dfb3f8e5b2860abf67306b8a1e022c572bbd984c3"
+      },
+      "selection_sha256": "f6545f908a802d0d326fe73dfb3f8e5b2860abf67306b8a1e022c572bbd984c3"
+    },
+    {
+      "id": "contract-knowledge-source-lifecycle-v1-openapi-json",
+      "path": "docs/knowledge-source-lifecycle-v1.openapi.json",
+      "role": "existing_contract",
+      "allowed_uses": [
+        "existing_contract"
+      ],
+      "limitation": "仅约束既有版本的请求/响应/批准边界；冻结记录里的旧写窗/发布安排不能作为本次执行授权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "526685f1ab09e07f87f3f9c8cee3cf44347d6bdcf9efed94c356ef32b22725db"
+      },
+      "selection_sha256": "526685f1ab09e07f87f3f9c8cee3cf44347d6bdcf9efed94c356ef32b22725db"
+    },
+    {
+      "id": "contract-knowledge-sources-v1-example-json",
+      "path": "docs/knowledge-sources-v1.example.json",
+      "role": "existing_contract",
+      "allowed_uses": [
+        "existing_contract"
+      ],
+      "limitation": "仅约束既有版本的请求/响应/批准边界；冻结记录里的旧写窗/发布安排不能作为本次执行授权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a"
+      },
+      "selection_sha256": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a"
+    },
+    {
+      "id": "contract-knowledge-sources-v1-freeze-json",
+      "path": "docs/knowledge-sources-v1.freeze.json",
+      "role": "existing_contract",
+      "allowed_uses": [
+        "existing_contract"
+      ],
+      "limitation": "仅约束既有版本的请求/响应/批准边界；冻结记录里的旧写窗/发布安排不能作为本次执行授权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "114bbfa2b4dd51eafc426716032486f666ace8a1a1284f4c1f4c9baf1f1b35c6"
+      },
+      "selection_sha256": "114bbfa2b4dd51eafc426716032486f666ace8a1a1284f4c1f4c9baf1f1b35c6"
+    },
+    {
+      "id": "contract-knowledge-sources-v1-openapi-json",
+      "path": "docs/knowledge-sources-v1.openapi.json",
+      "role": "existing_contract",
+      "allowed_uses": [
+        "existing_contract"
+      ],
+      "limitation": "仅约束既有版本的请求/响应/批准边界；冻结记录里的旧写窗/发布安排不能作为本次执行授权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091"
+      },
+      "selection_sha256": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091"
+    },
+    {
+      "id": "contract-knowledge-structure-v1-examples-json",
+      "path": "docs/knowledge-structure-v1.examples.json",
+      "role": "existing_contract",
+      "allowed_uses": [
+        "existing_contract"
+      ],
+      "limitation": "仅约束既有版本的请求/响应/批准边界；冻结记录里的旧写窗/发布安排不能作为本次执行授权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "3515b728dca1e75c65d463c54729539cd35ff9e341c7a424c0126a00bd4c2a65"
+      },
+      "selection_sha256": "3515b728dca1e75c65d463c54729539cd35ff9e341c7a424c0126a00bd4c2a65"
+    },
+    {
+      "id": "contract-knowledge-structure-v1-freeze-json",
+      "path": "docs/knowledge-structure-v1.freeze.json",
+      "role": "existing_contract",
+      "allowed_uses": [
+        "existing_contract"
+      ],
+      "limitation": "仅约束既有版本的请求/响应/批准边界；冻结记录里的旧写窗/发布安排不能作为本次执行授权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "921c33ca5093cda8194bef3bfeaa1521ac3515a3a073aae927dcac49580f8a84"
+      },
+      "selection_sha256": "921c33ca5093cda8194bef3bfeaa1521ac3515a3a073aae927dcac49580f8a84"
+    },
+    {
+      "id": "contract-knowledge-structure-v1-openapi-json",
+      "path": "docs/knowledge-structure-v1.openapi.json",
+      "role": "existing_contract",
+      "allowed_uses": [
+        "existing_contract"
+      ],
+      "limitation": "仅约束既有版本的请求/响应/批准边界；冻结记录里的旧写窗/发布安排不能作为本次执行授权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "a3de720c493e3c1189dc1dde58dfdf04c8e694de09ae0b5470c30b4b84a4b134"
+      },
+      "selection_sha256": "a3de720c493e3c1189dc1dde58dfdf04c8e694de09ae0b5470c30b4b84a4b134"
+    },
+    {
+      "id": "contract-knowledge-web-import-v1-examples-json",
+      "path": "docs/knowledge-web-import-v1.examples.json",
+      "role": "existing_contract",
+      "allowed_uses": [
+        "existing_contract"
+      ],
+      "limitation": "仅约束既有版本的请求/响应/批准边界；冻结记录里的旧写窗/发布安排不能作为本次执行授权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "71019ae8645ad0fd4527565c42f6f80f93924c26266ffe08696de5e9b1c5671d"
+      },
+      "selection_sha256": "71019ae8645ad0fd4527565c42f6f80f93924c26266ffe08696de5e9b1c5671d"
+    },
+    {
+      "id": "contract-knowledge-web-import-v1-freeze-json",
+      "path": "docs/knowledge-web-import-v1.freeze.json",
+      "role": "existing_contract",
+      "allowed_uses": [
+        "existing_contract"
+      ],
+      "limitation": "仅约束既有版本的请求/响应/批准边界；冻结记录里的旧写窗/发布安排不能作为本次执行授权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "bba4e9f0c2341658ac69741d57f5a4a9032ac74b6ec848f13a195e4ab96c66c2"
+      },
+      "selection_sha256": "bba4e9f0c2341658ac69741d57f5a4a9032ac74b6ec848f13a195e4ab96c66c2"
+    },
+    {
+      "id": "contract-knowledge-web-import-v1-openapi-json",
+      "path": "docs/knowledge-web-import-v1.openapi.json",
+      "role": "existing_contract",
+      "allowed_uses": [
+        "existing_contract"
+      ],
+      "limitation": "仅约束既有版本的请求/响应/批准边界；冻结记录里的旧写窗/发布安排不能作为本次执行授权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "673092ab81263bdf7b79e85e06206bb02f8eb8996b476c8643dbafed17e259ed"
+      },
+      "selection_sha256": "673092ab81263bdf7b79e85e06206bb02f8eb8996b476c8643dbafed17e259ed"
+    },
+    {
+      "id": "lexical-slice-draft",
+      "path": "docs/knowledge-core-lexical-slice.candidate.md",
+      "role": "approved_design",
+      "allowed_uses": [
+        "design_reference",
+        "implementation_design"
+      ],
+      "limitation": "真人绑定KCLS-20261028-01/subject SHA已批准本片业务实现与合成验证；原字节保留批准前Pending文字，当前权力读implementation-decision。不是最终Acceptance/模型/部门Grant/部署批准。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "cd70e6dc9f05bc2524d6da9148caadd332ed45870da2d2bed708e5f397361173"
+      },
+      "selection_sha256": "cd70e6dc9f05bc2524d6da9148caadd332ed45870da2d2bed708e5f397361173",
+      "approval": {
+        "entry": "implementation-decision",
+        "subject_sha256": "12ffb86169d187cd57b4c137ad32e543ac8bb86fa3b8130e2c348a62c3e7063e"
+      }
+    },
+    {
+      "id": "lexical-api-draft",
+      "path": "docs/knowledge-core-local-lexical-v0.1.candidate.schema.json",
+      "role": "approved_design",
+      "allowed_uses": [
+        "design_reference",
+        "implementation_design"
+      ],
+      "limitation": "真人绑定KCLS-20261028-01/subject SHA已批准本片业务实现与合成验证；原字节保留批准前Pending文字，当前权力读implementation-decision。不是最终Acceptance/模型/部门Grant/部署批准。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "745458939041900e265f55f1ff2b048314898e89747dc215d2085051ed4eb8d6"
+      },
+      "selection_sha256": "745458939041900e265f55f1ff2b048314898e89747dc215d2085051ed4eb8d6",
+      "approval": {
+        "entry": "implementation-decision",
+        "subject_sha256": "12ffb86169d187cd57b4c137ad32e543ac8bb86fa3b8130e2c348a62c3e7063e"
+      }
+    },
+    {
+      "id": "lexical-slice-bundle",
+      "path": "docs/knowledge-core-lexical-slice.candidate.json",
+      "role": "approved_design",
+      "allowed_uses": [
+        "design_reference",
+        "implementation_design"
+      ],
+      "limitation": "真人绑定KCLS-20261028-01/subject SHA已批准本片业务实现与合成验证；原字节保留批准前Pending文字，当前权力读implementation-decision。不是最终Acceptance/模型/部门Grant/部署批准。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "60abb0327fb1aa27e9b57b3c52c58e3979fe85a01aeebd0732fb62db78a5ab94"
+      },
+      "selection_sha256": "60abb0327fb1aa27e9b57b3c52c58e3979fe85a01aeebd0732fb62db78a5ab94",
+      "approval": {
+        "entry": "implementation-decision",
+        "subject_sha256": "12ffb86169d187cd57b4c137ad32e543ac8bb86fa3b8130e2c348a62c3e7063e"
+      }
+    },
+    {
+      "id": "execution-request",
+      "path": "docs/knowledge-core-execution-record.json",
+      "role": "request",
+      "allowed_uses": [
+        "execution_requirements"
+      ],
+      "limitation": "本轮真人启动及子代理/会话澄清原话；不从启动推导新接口批准。",
+      "selector": {
+        "type": "json_pointer",
+        "pointer": "/request_snapshot"
+      },
+      "integrity": {
+        "mode": "selection",
+        "sha256": "bbc72e41f9be8878d5554e844e9ce1620fde3080229908eb7d8738abd82c6202"
+      },
+      "selection_sha256": "bbc72e41f9be8878d5554e844e9ce1620fde3080229908eb7d8738abd82c6202"
+    },
+    {
+      "id": "execution-current",
+      "path": "docs/knowledge-core-execution-record.json",
+      "role": "current_context",
+      "allowed_uses": [
+        "current_context"
+      ],
+      "limitation": "当前基础续作与未完成项；首片实证保留，不等于原始产品主线已完成。",
+      "selector": {
+        "type": "json_fields",
+        "fields": [
+          "status",
+          "objective",
+          "dispatch",
+          "coordination",
+          "incomplete_items"
+        ]
+      },
+      "integrity": {
+        "mode": "selection",
+        "sha256": "e46a62fa86344b67adc72d7247b0c033031f511986403187e02e2474be970ad0"
+      },
+      "selection_sha256": "e46a62fa86344b67adc72d7247b0c033031f511986403187e02e2474be970ad0"
+    },
+    {
+      "id": "execution-evidence",
+      "path": "docs/knowledge-core-execution-record.json",
+      "role": "historical_evidence",
+      "allowed_uses": [
+        "evidence_scope"
+      ],
+      "limitation": "按版本/方法分层的组件和真实服务证据；原失败与未验边界保留，不代表人的批准。",
+      "selector": {
+        "type": "json_pointer",
+        "pointer": "/verification"
+      },
+      "integrity": {
+        "mode": "selection",
+        "sha256": "7c9f1001bd4533659156a4fec0fb5630561ed7bc8b1599dcb63db4a9cd04fd5d"
+      },
+      "selection_sha256": "7c9f1001bd4533659156a4fec0fb5630561ed7bc8b1599dcb63db4a9cd04fd5d"
+    },
+    {
+      "id": "implementation-decision",
+      "path": "docs/knowledge-core-execution-record.json",
+      "role": "human_implementation_authority",
+      "allowed_uses": [
+        "implementation_authority"
+      ],
+      "limitation": "真人原问题/原答复与批准对象；仅首片实现与创建三会话，不是最终工程Acceptance或部署。",
+      "selector": {
+        "type": "json_pointer",
+        "pointer": "/implementation_decision"
+      },
+      "integrity": {
+        "mode": "selection",
+        "sha256": "4b07a4d639177a93708962bb7b0bbc22dcff8075a389870377f494a3d2fc29d2"
+      },
+      "selection_sha256": "4b07a4d639177a93708962bb7b0bbc22dcff8075a389870377f494a3d2fc29d2"
+    },
+    {
+      "id": "implementation-handoff",
+      "path": "docs/knowledge-core-implementation-handoff.md",
+      "role": "current_working_plan",
+      "allowed_uses": [
+        "implementation_plan"
+      ],
+      "limitation": "当前批准设计的正式分工/单写窗交接；具体开发会话还须取得其明确写窗。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "ecff228c4c926907332c95cc66d2f53d058f87b25090731a1660de9ffa7c2823"
+      },
+      "selection_sha256": "ecff228c4c926907332c95cc66d2f53d058f87b25090731a1660de9ffa7c2823"
+    },
+    {
+      "id": "backend-current",
+      "path": "docs/knowledge-core-execution-record.json",
+      "role": "implementation_facts",
+      "allowed_uses": [
+        "implementation_facts"
+      ],
+      "limitation": "首片0.1组件/运行观察时点保留；当前0.2基础实施另读foundation-current，不继承旧阶段通过结果。",
+      "selector": {
+        "type": "json_pointer",
+        "pointer": "/backend_component"
+      },
+      "integrity": {
+        "mode": "selection",
+        "sha256": "9951576f562cc9490406f3e4c27af7cfd247d460740fafea1dd77db935b7377f"
+      },
+      "selection_sha256": "9951576f562cc9490406f3e4c27af7cfd247d460740fafea1dd77db935b7377f"
+    },
+    {
+      "id": "web-current",
+      "path": "docs/knowledge-core-execution-record.json",
+      "role": "implementation_facts",
+      "allowed_uses": [
+        "implementation_facts"
+      ],
+      "limitation": "首片0.1组件/运行观察时点保留；当前0.2基础实施另读foundation-current，不继承旧阶段通过结果。",
+      "selector": {
+        "type": "json_pointer",
+        "pointer": "/web_component"
+      },
+      "integrity": {
+        "mode": "selection",
+        "sha256": "a255bb5f9191d292406c58fdb30dac1ccdc150c3a620d38953e26d0ba8c9a31c"
+      },
+      "selection_sha256": "a255bb5f9191d292406c58fdb30dac1ccdc150c3a620d38953e26d0ba8c9a31c"
+    },
+    {
+      "id": "mcp-current",
+      "path": "docs/knowledge-core-execution-record.json",
+      "role": "implementation_facts",
+      "allowed_uses": [
+        "implementation_facts"
+      ],
+      "limitation": "首片0.1组件/运行观察时点保留；当前0.2基础实施另读foundation-current，不继承旧阶段通过结果。",
+      "selector": {
+        "type": "json_pointer",
+        "pointer": "/mcp_component"
+      },
+      "integrity": {
+        "mode": "selection",
+        "sha256": "45ff09d782a3f6ecb7e9b3963da0dcd08f54dfeea263948a95e1e728373f5486"
+      },
+      "selection_sha256": "45ff09d782a3f6ecb7e9b3963da0dcd08f54dfeea263948a95e1e728373f5486"
+    },
+    {
+      "id": "live-current",
+      "path": "docs/knowledge-core-execution-record.json",
+      "role": "implementation_facts",
+      "allowed_uses": [
+        "implementation_facts"
+      ],
+      "limitation": "首片0.1组件/运行观察时点保留；当前0.2基础实施另读foundation-current，不继承旧阶段通过结果。",
+      "selector": {
+        "type": "json_pointer",
+        "pointer": "/live_integration"
+      },
+      "integrity": {
+        "mode": "selection",
+        "sha256": "af43d5b4a24f6ca5f4eaa1d86954283b09c34033df5b1a80c45873352eb4c5e3"
+      },
+      "selection_sha256": "af43d5b4a24f6ca5f4eaa1d86954283b09c34033df5b1a80c45873352eb4c5e3"
+    },
+    {
+      "id": "foundation-current",
+      "path": "docs/knowledge-core-execution-record.json",
+      "role": "execution_plan",
+      "allowed_uses": [
+        "implementation_plan",
+        "product_requirements"
+      ],
+      "limitation": "最新真人续作原话与先基础后质量顺序；内部基础继续授权，不自动批准模型/真实内容/部门Grant/部署或最终验收。",
+      "selector": {
+        "type": "json_pointer",
+        "pointer": "/foundation_continuation"
+      },
+      "integrity": {
+        "mode": "selection",
+        "sha256": "1624c97f0be60f0c1975cdc57ecaff7c4332ba316d3306d344f6af0acc668e51"
+      },
+      "selection_sha256": "1624c97f0be60f0c1975cdc57ecaff7c4332ba316d3306d344f6af0acc668e51"
+    },
+    {
+      "id": "content-schema-draft",
+      "path": "docs/knowledge-core-content-v0.2.parsed.candidate.schema.json",
+      "role": "candidate_design",
+      "allowed_uses": [
+        "design_reference"
+      ],
+      "limitation": "同0.2 parsed/upload设计候选85adc，424离线+64实际GoHTTP验证；未冻结，不是当前旧Web的构建依赖。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "85adc864e54d2fa564b5e1ccb398c24644cc995cb25d36ed29fbfa3c882a5948"
+      },
+      "selection_sha256": "85adc864e54d2fa564b5e1ccb398c24644cc995cb25d36ed29fbfa3c882a5948"
+    },
+    {
+      "id": "content-schema-consumer-baseline",
+      "path": "docs/knowledge-core-content-v0.2.candidate.schema.json",
+      "role": "engineering_dependency",
+      "allowed_uses": [
+        "code_dependency"
+      ],
+      "limitation": "现有Web直接导入的b0构建依赖；仅维持既有消费者，不能当作新parsed协议或开发指引。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "b0b6a92fd0525da7b64776fef48f58f7a839a7165f05d1831b2a9b1d88729d56"
+      },
+      "selection_sha256": "b0b6a92fd0525da7b64776fef48f58f7a839a7165f05d1831b2a9b1d88729d56"
+    },
+    {
+      "id": "foundation-interface-decision",
+      "path": "docs/knowledge-core-execution-record.json",
+      "role": "human_implementation_authority",
+      "allowed_uses": [
+        "implementation_authority"
+      ],
+      "limitation": "真人具体0.2问题/原答复/subject SHA；限固定接口和独立合成实施实测，不是最终验收、模型或发布。",
+      "selector": {
+        "type": "json_pointer",
+        "pointer": "/foundation_continuation/interface_decision"
+      },
+      "integrity": {
+        "mode": "selection",
+        "sha256": "5ec8b5f2e36355adb5addc996aef2177469e0c24c023c7c0f6a3293b99b0e3cc"
+      },
+      "selection_sha256": "5ec8b5f2e36355adb5addc996aef2177469e0c24c023c7c0f6a3293b99b0e3cc",
+      "approval": {
+        "entry": "foundation-interface-decision",
+        "subject_sha256": "2495953aec14e4a62d0a703d05759a81e599716a0fd9d09e554b302f109d795b"
+      }
+    },
+    {
+      "id": "foundation-interface-subject",
+      "path": "docs/knowledge-core-execution-record.json",
+      "role": "approved_design",
+      "allowed_uses": [
+        "implementation_design"
+      ],
+      "limitation": "具体决定对象原字节语义及逐件SHA；其Pending是写成时状态，真实批准读取foundation-interface-decision。",
+      "selector": {
+        "type": "json_pointer",
+        "pointer": "/foundation_continuation/interface_decision/subject"
+      },
+      "integrity": {
+        "mode": "selection",
+        "sha256": "2495953aec14e4a62d0a703d05759a81e599716a0fd9d09e554b302f109d795b"
+      },
+      "selection_sha256": "2495953aec14e4a62d0a703d05759a81e599716a0fd9d09e554b302f109d795b",
+      "approval": {
+        "entry": "foundation-interface-decision",
+        "subject_sha256": "2495953aec14e4a62d0a703d05759a81e599716a0fd9d09e554b302f109d795b"
+      }
+    },
+    {
+      "id": "foundation-interface-review",
+      "path": "docs/knowledge-core-unified-foundation-v0.2.candidate.md",
+      "role": "approved_design",
+      "allowed_uses": [
+        "implementation_design"
+      ],
+      "limitation": "固定具体范围说明，批准事实以foundation-interface-decision为准；未完成检查不得写成通过。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "8cbedd89604ed9f1327fed21e5c2fc26565d4351047d708af03e40ca56e4d308"
+      },
+      "selection_sha256": "8cbedd89604ed9f1327fed21e5c2fc26565d4351047d708af03e40ca56e4d308",
+      "approval": {
+        "entry": "foundation-interface-decision",
+        "subject_sha256": "2495953aec14e4a62d0a703d05759a81e599716a0fd9d09e554b302f109d795b"
+      }
+    },
+    {
+      "id": "foundation-parsed-schema",
+      "path": "docs/knowledge-core-content-v0.2.parsed.candidate.schema.json",
+      "role": "approved_design",
+      "allowed_uses": [
+        "implementation_design"
+      ],
+      "limitation": "仅真人KCF-020-20261030-01/subject绑定的具体统一0.2实施对象，原Pending文字保留；不升级广义模型草稿或批准外部发布。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "85adc864e54d2fa564b5e1ccb398c24644cc995cb25d36ed29fbfa3c882a5948"
+      },
+      "selection_sha256": "85adc864e54d2fa564b5e1ccb398c24644cc995cb25d36ed29fbfa3c882a5948",
+      "approval": {
+        "entry": "foundation-interface-decision",
+        "subject_sha256": "2495953aec14e4a62d0a703d05759a81e599716a0fd9d09e554b302f109d795b"
+      }
+    },
+    {
+      "id": "foundation-lexical-protocol",
+      "path": "docs/knowledge-core-content-lexical-v0.2.candidate.protocol.json",
+      "role": "approved_design",
+      "allowed_uses": [
+        "implementation_design"
+      ],
+      "limitation": "仅真人KCF-020-20261030-01/subject绑定的具体统一0.2实施对象，原Pending文字保留；不升级广义模型草稿或批准外部发布。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "811b507e69e6751d17b28ebcd777acdb50c50c47ceb8ae11accdbe8bfc704a6f"
+      },
+      "selection_sha256": "811b507e69e6751d17b28ebcd777acdb50c50c47ceb8ae11accdbe8bfc704a6f",
+      "approval": {
+        "entry": "foundation-interface-decision",
+        "subject_sha256": "2495953aec14e4a62d0a703d05759a81e599716a0fd9d09e554b302f109d795b"
+      }
+    },
+    {
+      "id": "foundation-lexical-schema",
+      "path": "docs/knowledge-core-content-lexical-v0.2.candidate.schema.json",
+      "role": "approved_design",
+      "allowed_uses": [
+        "implementation_design"
+      ],
+      "limitation": "仅真人KCF-020-20261030-01/subject绑定的具体统一0.2实施对象，原Pending文字保留；不升级广义模型草稿或批准外部发布。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "91772befbd71652977127002148a9a1e0065beb79be4a06f30f5e79f947eefb8"
+      },
+      "selection_sha256": "91772befbd71652977127002148a9a1e0065beb79be4a06f30f5e79f947eefb8",
+      "approval": {
+        "entry": "foundation-interface-decision",
+        "subject_sha256": "2495953aec14e4a62d0a703d05759a81e599716a0fd9d09e554b302f109d795b"
+      }
+    },
+    {
+      "id": "pause-checkpoint-20261030",
+      "path": "docs/knowledge-core-pause-checkpoint-20261030.md",
+      "role": "current_context",
+      "allowed_uses": [
+        "pause_recovery_context"
+      ],
+      "limitation": "仅当前暂停、未完成项与恢复定位；不授予恢复、候选实施或验收/发布权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "1e8fc6a46c48bc4d92d0b8e4194fed71ae28a9362bf976d3c784f3711b9d81e3"
+      },
+      "selection_sha256": "1e8fc6a46c48bc4d92d0b8e4194fed71ae28a9362bf976d3c784f3711b9d81e3"
+    },
+    {
+      "id": "coordination-20261105-current",
+      "path": "docs/knowledge-core-execution-record.json",
+      "role": "current_context",
+      "allowed_uses": [
+        "current_context"
+      ],
+      "limitation": "2026-11-05最新真人协调分工与分层截止事实；foundation-current只保留原需求/批准对象范围，旧Paused/主控/source不作本轮进度。旧coordination-current ID保留其历史前缀范围，无新契约冻结、模型、真实内容、发布或最终验收授权。",
+      "selector": {
+        "type": "json_pointer",
+        "pointer": "/coordination_20261105"
+      },
+      "integrity": {
+        "mode": "selection",
+        "sha256": "e62a3af68c2d70c0e5abf8fe063e9a310d986cef2dc05ae62b6c5da73ec4201a"
+      },
+      "selection_sha256": "e62a3af68c2d70c0e5abf8fe063e9a310d986cef2dc05ae62b6c5da73ec4201a"
+    },
+    {
+      "id": "reference-lock-23-history",
+      "path": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261030-23.json",
+      "role": "historical_evidence",
+      "allowed_uses": [
+        "historical_baseline"
+      ],
+      "limitation": "23锁原字节历史配置，仅供追溯；不继承其中旧主控、写窗或当前资料授权。",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "4c863ce7bed90587b687294a7e06b489c04bbab090fcf590c8444a35cf205976"
+      },
+      "selection_sha256": "4c863ce7bed90587b687294a7e06b489c04bbab090fcf590c8444a35cf205976"
+    },
+    {
+      "id": "coordination-20261105-round2",
+      "path": "docs/knowledge-core-execution-record.json",
+      "role": "current_context",
+      "allowed_uses": [
+        "current_context"
+      ],
+      "selector": {
+        "type": "json_pointer",
+        "pointer": "/coordination_20261105_round2"
+      },
+      "integrity": {
+        "mode": "selection",
+        "sha256": "67c57c14fcc3c4af405645cb02056f658f6253a01c6abc4f2fca5655a429a683"
+      },
+      "selection_sha256": "67c57c14fcc3c4af405645cb02056f658f6253a01c6abc4f2fca5655a429a683",
+      "limitation": "最新独立闭窗事实；旧24快照不改，不批准新接口/模型/真实内容/最终验收/发布。"
+    },
+    {
+      "id": "reference-lock-24-history",
+      "path": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261105-24.json",
+      "role": "historical_evidence",
+      "allowed_uses": [
+        "historical_baseline"
+      ],
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "4e034c76731e74c4d927dd97bd1b4fd7e35de734fc28145d866cd9aad961d2e7"
+      },
+      "selection_sha256": "4e034c76731e74c4d927dd97bd1b4fd7e35de734fc28145d866cd9aad961d2e7",
+      "limitation": "24原字节历史配置，仅供追溯；不继承旧写窗和当前进度。"
+    },
+    {
+      "id": "coordination-20261106-round3",
+      "path": "docs/knowledge-core-execution-record.json",
+      "role": "current_context",
+      "allowed_uses": [
+        "current_context"
+      ],
+      "selector": {
+        "type": "json_pointer",
+        "pointer": "/coordination_20261106_round3"
+      },
+      "integrity": {
+        "mode": "selection",
+        "sha256": "86813e5db7f00136599319b404ae99bb3832db0c4da469fae3812183643f39cf"
+      },
+      "selection_sha256": "86813e5db7f00136599319b404ae99bb3832db0c4da469fae3812183643f39cf",
+      "limitation": "第三轮独立事实入口；仅在实际28源码及独立B回执核实、独审和总控精确四文件租约后机械生效。各运行/质量门按各自时点与版本保留，不批准新接口、模型、真实内容、最终验收或发布。 Ref27只追加shared_ordinal_followup；旧28和分层运行事实保留原时点，命名源码集合后续仅据实际应用与分层回执登记，未完成门不标Pass。"
+    },
+    {
+      "id": "reference-lock-25-history",
+      "path": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261105-25.json",
+      "role": "historical_evidence",
+      "allowed_uses": [
+        "historical_baseline"
+      ],
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "834794de4d8823e65abe2898bae50a785a32b172c14f37d41895ffdd7cb6e7a6"
+      },
+      "selection_sha256": "834794de4d8823e65abe2898bae50a785a32b172c14f37d41895ffdd7cb6e7a6",
+      "limitation": "25锁151884字节原始快照，仅追溯，不恢复旧主控、写窗、进度或额外资料授权。"
+    },
+    {
+      "id": "reference-lock-26-history",
+      "path": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261106-26.json",
+      "role": "historical_evidence",
+      "allowed_uses": [
+        "historical_baseline"
+      ],
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "5ffa4579e9061c052ad9afa9a1b9895c9cb7e2a9cab7887651592430b3e4f6c6"
+      },
+      "selection_sha256": "5ffa4579e9061c052ad9afa9a1b9895c9cb7e2a9cab7887651592430b3e4f6c6",
+      "limitation": "26锁154916字节原始快照，仅追溯，不恢复旧写窗、运行验收或额外资料授权。"
+    },
+    {
+      "id": "access02-implementation-decision",
+      "path": "docs/knowledge-access-20261108-02/implementation-decision.json",
+      "role": "human_implementation_authority",
+      "allowed_uses": [
+        "implementation_authority"
+      ],
+      "limitation": "Verbatim specific human Option A for exact KCA-20261108-02;registration pending when written,not implementation/product/security acceptance.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "1e8a25531d5a6804acb3ac5cc40b77655076217ecc2ea0f663bad76f45c92571"
+      },
+      "selection_sha256": "1e8a25531d5a6804acb3ac5cc40b77655076217ecc2ea0f663bad76f45c92571",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-subject",
+      "path": "docs/knowledge-access-20261108-02/subject-manifest.safe.json",
+      "role": "approved_design",
+      "allowed_uses": [
+        "implementation_design"
+      ],
+      "limitation": "Exact approved original manifest bytes;its Draft fields and .local-data provenance paths remain. Resolve14 exact members only through access02-copy-map.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      },
+      "selection_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-copy-map",
+      "path": "docs/knowledge-access-20261108-02/public-copy-map.json",
+      "role": "engineering_dependency",
+      "allowed_uses": [
+        "reference_resolution"
+      ],
+      "limitation": "Exact one-to-one original-to-public raw copy resolution;does not change subject bytes or expand business scope.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "d90531766b8f6c73e82c66c1e58c60447310fae43ff4702bfece0272254c1150"
+      },
+      "selection_sha256": "d90531766b8f6c73e82c66c1e58c60447310fae43ff4702bfece0272254c1150",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-summary",
+      "path": "docs/knowledge-access-20261108-02/decision-summary.zh-CN.txt",
+      "role": "approved_design",
+      "allowed_uses": [
+        "implementation_design"
+      ],
+      "limitation": "Human-facing exact design summary;original Draft text is writing-time state;approval is only the separate exact decision.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "43050b978062eb7be23b6bb59fe4716a4bb4d0b3424570116b8ee78b1ba01e1b"
+      },
+      "selection_sha256": "43050b978062eb7be23b6bb59fe4716a4bb4d0b3424570116b8ee78b1ba01e1b",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-authorization",
+      "path": "docs/knowledge-access-20261108-02/authorization-model.candidate.json",
+      "role": "approved_design",
+      "allowed_uses": [
+        "implementation_design"
+      ],
+      "limitation": "Exact approved access semantics;does not widen old owner-only0.2 or authorize models.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "297f769d5ec7d7e360217ff732e4d1980236ec0645e62aad572f1f88c649f509"
+      },
+      "selection_sha256": "297f769d5ec7d7e360217ff732e4d1980236ec0645e62aad572f1f88c649f509",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-stages",
+      "path": "docs/knowledge-access-20261108-02/operation-rationale-and-stages.candidate.json",
+      "role": "execution_plan",
+      "allowed_uses": [
+        "execution_plan"
+      ],
+      "limitation": "Approved S1/S2/S3 sequencing and operation budget;original tests remain NotRun.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "abd35bafb5f856d7b23fd597016de7fc2eb41e107f3ee57da96cbbdaabf9f1cb"
+      },
+      "selection_sha256": "abd35bafb5f856d7b23fd597016de7fc2eb41e107f3ee57da96cbbdaabf9f1cb",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-protocol",
+      "path": "docs/knowledge-access-20261108-02/protocol.candidate.json",
+      "role": "approved_design",
+      "allowed_uses": [
+        "implementation_design"
+      ],
+      "limitation": "Exact shared read/closure/receipt/native/MCP wire design;not observed runtime.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "04191b440e165aa38e9d35ef2e800111516410de5efa025edccc258f6713f060"
+      },
+      "selection_sha256": "04191b440e165aa38e9d35ef2e800111516410de5efa025edccc258f6713f060",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-schema",
+      "path": "docs/knowledge-access-20261108-02/access.schema.candidate.json",
+      "role": "approved_design",
+      "allowed_uses": [
+        "implementation_design"
+      ],
+      "limitation": "New approved DTO design only;not a running or released existing_contract.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "805eed9e6b9bdb9472bd18ad627b8ae619b34c6757b4b454162c1a5687618d5a"
+      },
+      "selection_sha256": "805eed9e6b9bdb9472bd18ad627b8ae619b34c6757b4b454162c1a5687618d5a",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-openapi",
+      "path": "docs/knowledge-access-20261108-02/access.openapi.candidate.json",
+      "role": "approved_design",
+      "allowed_uses": [
+        "implementation_design"
+      ],
+      "limitation": "Fourteen native operations plus MCP transport design;preserve relative schema paths and staged registration.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "cf9d31417af65ae85814ef3427d0b49718442d0ed2fae3508785058bcd1afe4f"
+      },
+      "selection_sha256": "cf9d31417af65ae85814ef3427d0b49718442d0ed2fae3508785058bcd1afe4f",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-mcp",
+      "path": "docs/knowledge-access-20261108-02/mcp-tools.candidate.json",
+      "role": "approved_design",
+      "allowed_uses": [
+        "implementation_design"
+      ],
+      "limitation": "Three scoped readonly tools and precise wire mapping;named configurable Bearer clients only,no OAuth invention.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "c413e9c91233962bfd2abb4a64e83fff8d64bbb90d30a6d548a20c5b861b6c55"
+      },
+      "selection_sha256": "c413e9c91233962bfd2abb4a64e83fff8d64bbb90d30a6d548a20c5b861b6c55",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-persistence",
+      "path": "docs/knowledge-access-20261108-02/persistence-and-migration.candidate.json",
+      "role": "execution_plan",
+      "allowed_uses": [
+        "implementation_plan"
+      ],
+      "limitation": "Nine-table and migration/transaction plan;no SQL executed or current database claim.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "dc62d32ed4d3080d940240c23d254e425e4eb72fcc9760804581f56be379c976"
+      },
+      "selection_sha256": "dc62d32ed4d3080d940240c23d254e425e4eb72fcc9760804581f56be379c976",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-owning-impact",
+      "path": "docs/knowledge-access-20261108-02/owning-impact.safe.json",
+      "role": "implementation_fact",
+      "allowed_uses": [
+        "implementation_impact"
+      ],
+      "limitation": "Static source pins at approval snapshot and proposed owning changes;reverify current actual code after source closure,without rewriting original approved bytes.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "071d4584f3e17075b3f7fc474c063bda120438823f95b1c35de0f5593371532f"
+      },
+      "selection_sha256": "071d4584f3e17075b3f7fc474c063bda120438823f95b1c35de0f5593371532f",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-web-plan",
+      "path": "docs/knowledge-access-20261108-02/web-delivery.candidate.json",
+      "role": "execution_plan",
+      "allowed_uses": [
+        "implementation_plan"
+      ],
+      "limitation": "Planned Web flow and cache behavior;not a browser acceptance report or exact Web source write lease.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "17ac555a39b298d5cd6f7c043d7f44f05eb42ce65287cf0adeca72aa39de35e6"
+      },
+      "selection_sha256": "17ac555a39b298d5cd6f7c043d7f44f05eb42ce65287cf0adeca72aa39de35e6",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-acceptance-plan",
+      "path": "docs/knowledge-access-20261108-02/acceptance-matrix.candidate.json",
+      "role": "execution_plan",
+      "allowed_uses": [
+        "acceptance_plan"
+      ],
+      "limitation": "Seventy planned acceptance groups:61unit,4integration,5e2e;allNotRun.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "e0ec0e6a458e9437c743724b04c5797a52503b28520a7284115626ef0c2b6515"
+      },
+      "selection_sha256": "e0ec0e6a458e9437c743724b04c5797a52503b28520a7284115626ef0c2b6515",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-examples",
+      "path": "docs/knowledge-access-20261108-02/examples.candidate.json",
+      "role": "synthetic_input",
+      "allowed_uses": [
+        "synthetic_input"
+      ],
+      "limitation": "Fourteen illustrative request/response objects;offline schema validity is not business execution.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "bbe3b2011389afe8c149c85602ccfcd54fc03ed1ed025865a873f723fc891939"
+      },
+      "selection_sha256": "bbe3b2011389afe8c149c85602ccfcd54fc03ed1ed025865a873f723fc891939",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-fixtures",
+      "path": "docs/knowledge-access-20261108-02/synthetic-fixtures.candidate.json",
+      "role": "synthetic_input",
+      "allowed_uses": [
+        "synthetic_input"
+      ],
+      "limitation": "Original synthetic inputs only;no real AICS,accounts,credentials or test execution.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "d913e459d269f9fdbf79c9103d26b99ca2386fc9b9630732184b86446f2306ee"
+      },
+      "selection_sha256": "d913e459d269f9fdbf79c9103d26b99ca2386fc9b9630732184b86446f2306ee",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    },
+    {
+      "id": "access02-source-research",
+      "path": "docs/knowledge-access-20261108-02/official-sources.safe.json",
+      "role": "implementation_fact",
+      "allowed_uses": [
+        "evidence_scope"
+      ],
+      "limitation": "Fixed primary-source research and original observation time;source references do not supply new product scope or runtime proof.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "b20a9f8e4e6b385fcf61291e49e6159ab31fe1c4d1d07dc650b5643b0e57d0d2"
+      },
+      "selection_sha256": "b20a9f8e4e6b385fcf61291e49e6159ab31fe1c4d1d07dc650b5643b0e57d0d2",
+      "approval": {
+        "entry": "access02-implementation-decision",
+        "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
+      }
+    }
+  ],
+  "protected_files": {
+    "docs/knowledge-sources-v1.openapi.json": "98b2ad05730cd392b0ce88cb591ba5191cbf071b22df8b39bbdc33bd76c45091",
+    "docs/knowledge-sources-v1.example.json": "6610bfe45ac8430087058f73f9e84603043ca1d71914dfa515ada61f2d7dcf4a",
+    "docs/knowledge-sources-v1.freeze.json": "114bbfa2b4dd51eafc426716032486f666ace8a1a1284f4c1f4c9baf1f1b35c6",
+    "docs/knowledge-foundation-v1.openapi.json": "2260e34cf6fae1faf4cbb4e241e6e7ef32f9012e7ecc5f693d43db706a0c9cb4",
+    "docs/knowledge-foundation-v1.example.json": "0eef06f21e25786c0a7a0caff603dde30463f10e555574333049a184a9310343",
+    "docs/knowledge-directory-import-v1.openapi.json": "6144c08d4cfe7ac98374dc51829c98290e2c88e3441dd38d250a3cd9cb4492e6",
+    "docs/knowledge-directory-import-v1.examples.json": "73618dd78419bb9027520b3dd8b3ef83b1794d3ad1c4d17d904ce7637c54ea72",
+    "docs/knowledge-directory-import-v1.freeze.json": "2af7575cfbc24510550a0b495e18aa30f94decf5f102c23d259d4f3135dbf5f1",
+    "docs/knowledge-directory-import-v0.3.candidate.md": "80eb846a81b6ade430012b585739fe6405ef8a7de5855f27941fe66a31e2cbfa",
+    "docs/knowledge-directory-import-v0.3.candidate.openapi.json": "da2c320b3c3fd8f6af2b566b40507a5b09c55791236b49b224347c8b9a457f3d",
+    "docs/knowledge-directory-import-v0.3.candidate.examples.json": "2680f9786a19cc49a0330ecfcda84249ef36aac20293341a18e17cbdfd132d4e",
+    "docs/knowledge-batch-import-v0.4.candidate.md": "3a3beec92e8bc0baae1c820a18e078717163988277aa9d304d762ff97d027b1f",
+    "docs/knowledge-batch-import-v0.4.candidate.openapi.json": "d57ca240df19a985341c25d60ce18590dacdcf221b5599b8223f558a7c379fc5",
+    "docs/knowledge-batch-import-v0.4.candidate.examples.json": "fe8bde9d99b8aaa7250a40a1adc86c6bee9ecf474cbf01af55253274f2e2e304",
+    "docs/knowledge-batch-import-v1.openapi.json": "bd13fc400fc2a84f490b92ee865db75f76d89bf79a176658312ac3bea17d0fb8",
+    "docs/knowledge-batch-import-v1.examples.json": "5249cdf57da0313346b7b30db0743079a175aaa8480604120b1bf92e4bdfdc53",
+    "docs/knowledge-batch-import-v1.freeze.json": "1d589290db4b1fe4ab4005dae0ebf1918efdeac9cd57d7c810305087c180f631",
+    "docs/knowledge-original-import-v0.5.candidate.md": "8a1079fe4745b84d178f50939ac25e1ac1fa51bc3f61ed2340ef1f6d9e1638d6",
+    "docs/knowledge-original-import-v0.5.candidate.openapi.json": "b4905ab840c64f26a25a6017dc7454393fd3b974b0e2199edffe2cc5e725a0aa",
+    "docs/knowledge-original-import-v0.5.candidate.examples.json": "16aa77d948f857f93dcc96e0c812d4bee2a8f3ad91205e54b9c0457f78ea8815",
+    "docs/knowledge-original-import-v1.openapi.json": "3c48ebe0a2bfc8b3078262ce6c1a8258b312f6111bd9ed2b07b7b4fb433a5efd",
+    "docs/knowledge-original-import-v1.examples.json": "550f7be69c506a02cc2798d2196e17ca06c73b06f08d934ea3cbf823551d5cb1",
+    "docs/knowledge-original-import-v1.freeze.json": "116ddc4161001c0fdb440b45b227952978ca3d291197d712830a92d5aaaca3b9",
+    "docs/knowledge-web-import-v0.6.candidate.md": "577a76624d8b43e26dde890df49140f0b5a2c458dc493dbecd7f5467e13175fb",
+    "docs/knowledge-web-import-v0.6.candidate.openapi.json": "a167a1977f1f0a313061b093d21f035631dd5fafaea95cd8545601e17af35a88",
+    "docs/knowledge-web-import-v0.6.candidate.examples.json": "81372c6270c3e2b3989b4e088bd029883326f75fe6e254d651b93f951e0b7573",
+    "docs/knowledge-web-import-v1.freeze.json": "bba4e9f0c2341658ac69741d57f5a4a9032ac74b6ec848f13a195e4ab96c66c2",
+    "docs/knowledge-web-import-v1.openapi.json": "673092ab81263bdf7b79e85e06206bb02f8eb8996b476c8643dbafed17e259ed",
+    "docs/knowledge-web-import-v1.examples.json": "71019ae8645ad0fd4527565c42f6f80f93924c26266ffe08696de5e9b1c5671d",
+    "docs/knowledge-source-lifecycle-v0.7.candidate.md": "53b78e36a127c6c0f35048bf0ac511417639aba7cca90a418c007caa1b7f39f9",
+    "docs/knowledge-source-lifecycle-v0.7.candidate.openapi.json": "47d159cfee61708a79475879f5371cb97a38b41eb768e759ff802e1ebd0cdd0d",
+    "docs/knowledge-source-lifecycle-v0.7.candidate.examples.json": "a20bf10a7ac93ce36a8d3cd04cd95b035d8e6f2a1f3301accfdd711d86eb2f41",
+    "docs/knowledge-source-lifecycle-v1.freeze.json": "f6545f908a802d0d326fe73dfb3f8e5b2860abf67306b8a1e022c572bbd984c3",
+    "docs/knowledge-source-lifecycle-v1.openapi.json": "526685f1ab09e07f87f3f9c8cee3cf44347d6bdcf9efed94c356ef32b22725db",
+    "docs/knowledge-source-lifecycle-v1.examples.json": "cfe6c24c3f3a24907220c4e2ead993867c33053c6b2d197b70d93c03f168fb3c",
+    "docs/knowledge-structure-v0.1.candidate.md": "5c61af1a3a6be72337895b665d26cef29a711518f184bdb77a822800df0256d1",
+    "docs/knowledge-structure-v0.1.candidate.openapi.json": "0db14cc46e86e42e6ca5a6ffff3050968644372a76f5091bb380f50dff1c4630",
+    "docs/knowledge-structure-v0.1.candidate.examples.json": "195f83957c6b06ff2fb67b5dc61353c82abee92870b551f9ff14bb02217c9bea",
+    "docs/knowledge-structure-v1.freeze.json": "921c33ca5093cda8194bef3bfeaa1521ac3515a3a073aae927dcac49580f8a84",
+    "docs/knowledge-structure-v1.openapi.json": "a3de720c493e3c1189dc1dde58dfdf04c8e694de09ae0b5470c30b4b84a4b134",
+    "docs/knowledge-structure-v1.examples.json": "3515b728dca1e75c65d463c54729539cd35ff9e341c7a424c0126a00bd4c2a65",
+    "docs/knowledge-document-structure-v0.1.candidate.md": "0ea3c83a7cf8a33a1c65c0ecff8535f37fe6c080fdf4965503f8252ef5e5829f",
+    "docs/knowledge-document-structure-v0.1.candidate.openapi.json": "57f87a1331c588ad9601d51313ea7ae0811a297ecd117bc47ac7e7332e7d4d53",
+    "docs/knowledge-document-structure-v0.1.candidate.examples.json": "ae15b5f1a85de61aea885c0a758390629f78b82ad82b3c8c26cfd666f4ebbeb7",
+    "docs/knowledge-document-structure-v1.openapi.json": "a471b376d64c0736216cfe1184bbd31d19c03af1d41dd823e883a86603c4133f",
+    "docs/knowledge-document-structure-v1.examples.json": "b28d1b4f2ddee9626bd38596488db86a41926a4a8988b2691360eb259c8eb072",
+    "docs/knowledge-document-structure-v1.freeze.json": "b40448106735d90299d19300abd1e643cc6ad5b79bad11e55404be9a34001b2e"
+  },
+  "request_checks": [
+    {
+      "path": "docs/knowledge-core-realignment-record.json",
+      "pointer": "/request_snapshot/original_text",
+      "sha256": "463b29f75ae5befe10fbb26dc16d9a6189860f32a5f6b936739cd46479a4d492"
+    },
+    {
+      "path": "docs/knowledge-core-reference-lock-verification.json",
+      "pointer": "/request_snapshot/original_text",
+      "sha256": "dc0b06f9a3c2860af63d5ac6f7f96cef7a7f21ed6f403f1d521c2deb3455b84f"
+    },
+    {
+      "path": "docs/knowledge-core-reference-lock-verification.json",
+      "pointer": "/request_snapshot/steering_original_text",
+      "sha256": "542063c4474f9c5ea91bbe9c869f08b4d73efe12b6303c00071fed98f3d08dc4"
+    },
+    {
+      "path": "docs/knowledge-core-execution-record.json",
+      "pointer": "/request_snapshot/original_text",
+      "sha256": "addad0e524ffbf57069a1565d3684e846911134f05e081b38a2f0470595f78e5"
+    },
+    {
+      "path": "docs/knowledge-core-execution-record.json",
+      "pointer": "/request_snapshot/steering/0",
+      "sha256": "7752705885e3470a401e04b53a70d5d817931ff4611cfb5a97df5221ac035ddb"
+    },
+    {
+      "path": "docs/knowledge-core-execution-record.json",
+      "pointer": "/request_snapshot/steering/1",
+      "sha256": "8e7f2b3bb3d3af2addb8f4119f5387a659e14d1b6ee39fb84f373b71008f3825"
+    },
+    {
+      "path": "docs/knowledge-core-execution-record.json",
+      "pointer": "/implementation_decision/question_original",
+      "sha256": "f0ff7c445ac61e8b3bb461f6540cba0115f52c43b064b075cfbf2312c242e182"
+    },
+    {
+      "path": "docs/knowledge-core-execution-record.json",
+      "pointer": "/implementation_decision/answer_original",
+      "sha256": "7079a0521c400f40e209be865cbdbcd793f68da24bd2c58b31d5787c0833f5d0"
+    },
+    {
+      "path": "docs/knowledge-core-execution-record.json",
+      "pointer": "/foundation_continuation/interface_decision/answer_original",
+      "sha256": "916dc1c3fc0286856ed9764178dce877c943c529c6e1d8936779a5fbef676b0e"
+    },
+    {
+      "path": "docs/knowledge-core-execution-record.json",
+      "pointer": "/coordination_20261105/request_snapshot/original",
+      "sha256": "a483d5687e3147f567be4be9f819bd2cd7adaa321b2ec1a53410f944b97dacf9"
+    }
+  ],
+  "archive": {
+    "manifest": "docs/archive/knowledge-core-archive-manifest.json",
+    "archived": [
+      {
+        "source": "docs/stage1a-review-round-10-interrupted.md",
+        "destination": "docs/archive/knowledge-core-20261028/stage1a-review-round-10-interrupted.md",
+        "original_sha256": "a2eb96375a4abe7f965285cd05bb79b417818f5b6c34e5dbb1f8b0e97a97bbb4",
+        "archive_sha256": "37917a4b10804c396f5e72ce1090d70ae5e647a34b6beda6b3f3e8dafe65df63"
+      },
+      {
+        "source": "docs/stage1a-review-round-6.md",
+        "destination": "docs/archive/knowledge-core-20261028/stage1a-review-round-6.md",
+        "original_sha256": "3941248b310c14601282bad3a86818cae7c7a87c2a791a09f6056e06be0f9b87",
+        "archive_sha256": "664889afba363520debdd52067a5131dad02ae47762f74e7569121e747d99627"
+      },
+      {
+        "source": "docs/stage1a-review-round-7.md",
+        "destination": "docs/archive/knowledge-core-20261028/stage1a-review-round-7.md",
+        "original_sha256": "81101fcca22bdc49c814aab931f301b70ccb8f66eca149792f58e320825361cc",
+        "archive_sha256": "5b57dc5d21071d82bd927f5653e079086d358b44b1bb3d715c8c405724ba8522"
+      },
+      {
+        "source": "docs/stage1a-review-round-8.md",
+        "destination": "docs/archive/knowledge-core-20261028/stage1a-review-round-8.md",
+        "original_sha256": "f22982afdda19b8aa5ea9d0b2f139301ad7a2f25d93710a68b72706efd0d69b9",
+        "archive_sha256": "28cd2d3b384ba023c09bf4658bbb3dd8a89a0cc88acb5defad920efde06b4e66"
+      },
+      {
+        "source": "docs/stage1a-review-round-9.md",
+        "destination": "docs/archive/knowledge-core-20261028/stage1a-review-round-9.md",
+        "original_sha256": "efe1b1272e6c203b810016c0633aa90359790b00af9148e504a67f7401da4c4c",
+        "archive_sha256": "739a5df9b862e79de8871611fd3096a97f3ecbe274daa3d1da1533a4f855aa28"
+      },
+      {
+        "source": "docs/stage1a-two-fixes-verification.md",
+        "destination": "docs/archive/knowledge-core-20261028/stage1a-two-fixes-verification.md",
+        "original_sha256": "a9d2853a4237d21dfbb2318cf6e7d31ba8b58dce845c6c9379bd561388d43e6a",
+        "archive_sha256": "6117d5fd69697a0b233955092cc2710b09efe32a4536fe600b7364ed95e861e9"
+      },
+      {
+        "source": "docs/stage2r2-directory-handoff.md",
+        "destination": "docs/archive/knowledge-core-20261028/stage2r2-directory-handoff.md",
+        "original_sha256": "19c5784442d423966d3f14bf124a0234e16c08257088af0fda01d91801bb4e33",
+        "archive_sha256": "95ef2d5aa2ea8d1181e209b85122cca4a355552ec8679db1df9d51c6cd0ceb16"
+      },
+      {
+        "source": "docs/stage2r3-batch-handoff.md",
+        "destination": "docs/archive/knowledge-core-20261028/stage2r3-batch-handoff.md",
+        "original_sha256": "4a3695de98310a0483f2e6294d8dcdf5ccbf798994c87f5f7b4ebeac2d906925",
+        "archive_sha256": "a659e534306d1b69cf80c9d68c417c7760e795c375575b640616f9ee50b4ceb1"
+      },
+      {
+        "source": "docs/stage2r7-execution-plan.md",
+        "destination": "docs/archive/knowledge-core-20261028/stage2r7-execution-plan.md",
+        "original_sha256": "d2bd7dc85e34e59f87eb1dbc20ade3e31f82d261e57b9833785d164fd6876a6a",
+        "archive_sha256": "e431c8884963dcf66b848e06dc2fde49abc619672f8c2f3b7248fb25e64d247c"
+      },
+      {
+        "source": "docs/stage2r7-synthetic-handoff.md",
+        "destination": "docs/archive/knowledge-core-20261028/stage2r7-synthetic-handoff.md",
+        "original_sha256": "f589cad5cc69e05b1e049e08d866f8e444352a5ada70f2039b9ac498249e81ac",
+        "archive_sha256": "176cd65d8943423df4fa5a601eea193dd3168bc4f0b8f8cb1ca9a9ed3b6f00ef"
+      },
+      {
+        "source": "docs/stage3r2-document-runtime.md",
+        "destination": "docs/archive/knowledge-core-20261028/stage3r2-document-runtime.md",
+        "original_sha256": "6fcf127ece3d164b30ab651dc7169ac8473a2ba4a628c3942d94b2d2bf06f4cd",
+        "archive_sha256": "a1b448da1be285c75c042ee7ab8411204471e48e6bc047affcb9f5a5470d36c4"
+      }
+    ],
+    "retained_historical": [
+      {
+        "source": "docs/stage1ab-handoff.md",
+        "original_sha256": "b8f1b892c7758ca45c90da7b0380bd3e46097669ecd844706985461dfb909690"
+      },
+      {
+        "source": "docs/stage1b-delivery.md",
+        "original_sha256": "b2d6ad95199e21690f3d673260a6079608a4f42ffa562a2469352f900fed2d22"
+      },
+      {
+        "source": "docs/stage2a-c2-handoff.md",
+        "original_sha256": "a39ab74480b88c05780f1f9ba490d9bb0495e7fabcfc0ca7356c9e96992cc24e"
+      },
+      {
+        "source": "docs/stage2a-source-preparation.md",
+        "original_sha256": "a74227e27879520dce07a0ca45cd68c041438cdfcf13c181289e800b87a84031"
+      },
+      {
+        "source": "docs/stage2ab-integration-handoff.md",
+        "original_sha256": "3a2d6886c03457cfd20d5e0a1df6e4405d123064b44e3aa7cf87200d61d1f5c2"
+      },
+      {
+        "source": "docs/stage2b-import-ui-handoff.md",
+        "original_sha256": "a18017cbfb5ac58922f88ced2551b8314556dac5d2af0134e20a925d14e6b599"
+      },
+      {
+        "source": "docs/stage2r3-batch-consumer-handoff.md",
+        "original_sha256": "c08e85c152051dbc48f4e81403e29566a69734ff7365fa5d30fca34d062486c6"
+      },
+      {
+        "source": "docs/stage2r4-original-handoff.md",
+        "original_sha256": "bd0842391a29dd082032d4695344674bd97179111dcd785cf2aa98f92232065b"
+      },
+      {
+        "source": "docs/stage2r5-consumer-contract-input.md",
+        "original_sha256": "02b235056136f8e8a7006548139b3730c17760ad9cf89c839840b58aeda64616"
+      },
+      {
+        "source": "docs/stage2r5-web-client-delivery.md",
+        "original_sha256": "242eab1fb6b30329ca9dd8c6cccff057ff243afebc5598937b20939a8cd08058"
+      },
+      {
+        "source": "docs/stage2r5-web-client-handoff.md",
+        "original_sha256": "21b6efdcd102285f675b1fba8802357b201a309e5249645ef5c6d3cd263545e6"
+      },
+      {
+        "source": "docs/stage2r5-web-handoff.md",
+        "original_sha256": "cdcd6acdda97654ec927835b01e138ddd8a09d40a5d50e7ba463922dabce554c"
+      },
+      {
+        "source": "docs/stage2r5-web-rss-preparation.md",
+        "original_sha256": "0c6881208776dfcdc06f24a6bf6367579d283d5f5f7d5f01a0c0a379d7d37cf1"
+      },
+      {
+        "source": "docs/stage2r6-lifecycle-client-handoff.md",
+        "original_sha256": "b52ec4a7eb89f9f25c6e7a607248d2cf98288ceb4f1ce2d16c3f49fa3e8ac19d"
+      },
+      {
+        "source": "docs/stage2r6-lifecycle-client-notes.md",
+        "original_sha256": "98d232bd8c5c9ce39fff95a676fdf1374e65e906619cd2cc5e799f48dbae390e"
+      },
+      {
+        "source": "docs/stage2r6-lifecycle-design-input.md",
+        "original_sha256": "f887ca7cb410498e5d2cc5ee961b035209a173a7cfe68d5b807ca931d863a40b"
+      },
+      {
+        "source": "docs/stage2r6-lifecycle-handoff.md",
+        "original_sha256": "ce512e43987275992e19f02f13ef5bbb05a47f687c432acf67982900f31a4a34"
+      },
+      {
+        "source": "docs/stage2r6-lifecycle-preparation.md",
+        "original_sha256": "94bff45203896f6396ee158d3011600e3b07d00c4b136deb85df7e5f7f3067b8"
+      },
+      {
+        "source": "docs/stage2r7-exit-readiness.md",
+        "original_sha256": "9606c0d241ed9a0f4c9577413ad161e81b1f4981ec0a58303053f64637a0d52c"
+      },
+      {
+        "source": "docs/stage3-document-readiness.md",
+        "original_sha256": "dc1800ed96e197781a96759064c9b3b442c634f295b43ebe4538e843850ecb38"
+      },
+      {
+        "source": "docs/stage3-structure-preparation.md",
+        "original_sha256": "9895ec4183d85195114ffe17765a0bd5493b8a4b8550ab9318ae95c7d06add8b"
+      },
+      {
+        "source": "docs/stage3r1-structure-client-handoff.md",
+        "original_sha256": "4119cf03f436d38ca852524ad876d35df1d45b2a07fc4082f0468b3cfe8e10c7"
+      },
+      {
+        "source": "docs/stage3r1-structure-client-notes.md",
+        "original_sha256": "0ffaef25532435f45daf2511d06a7537bca2871962a328bdf015b0366603798c"
+      },
+      {
+        "source": "docs/stage3r1-structure-handoff.md",
+        "original_sha256": "0c60451ac3fa673cb67f940940a66cd389555013f2312561dbe2f632d0a704b4"
+      },
+      {
+        "source": "docs/stage3r2-document-client-handoff.md",
+        "original_sha256": "68c505ec11d68fc503e0bf618928d932c1e821fc9c5d046ee92cc94cd9413e26"
+      },
+      {
+        "source": "docs/stage3r2-document-client-notes.md",
+        "original_sha256": "63427bef79c774541a1d6f3be36c8710b779cf52ce16284c75640352db0921be"
+      },
+      {
+        "source": "docs/stage3r2-document-handoff.md",
+        "original_sha256": "7858f2092133016dba0a12173e48ca5787da069b5880d74c637eba2fded855e8"
+      },
+      {
+        "source": "docs/stage3r2-input-readiness.md",
+        "original_sha256": "cd538287814746d8759a380f153db77e82bbf30d71bc4e3418141eb35b8cea80"
+      }
+    ]
+  },
+  "inventory": [
+    {
+      "path": ".agents/rules/named.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": ".agents/skills/go-naming/SKILL.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": ".github/copilot-instructions.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": ".github/pull_request_template.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "AGENTS.md",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "root-instructions",
+          "role": "engineering_rule",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "POC-首轮原生闭环验证.json",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "README.md",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "readme-current",
+          "role": "current_context",
+          "selector": {
+            "type": "prefix_before",
+            "marker": "**v0.62 当前执行（2026-10-27）**"
+          }
+        }
+      ]
+    },
+    {
+      "path": "README_ar.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "README_fr.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "README_id.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "README_ja.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "README_ko.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "README_pt_br.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "README_ru.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "README_tr.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "README_tzh.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "README_zh.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "conf/model.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docker/README.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docker/vastbase/license/README.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/_category_.json",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/administrator/_category_.json",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/administrator/admin/_category_.json",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/administrator/admin/admin_service.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/administrator/admin/admin_ui/_category_.json",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/administrator/admin/admin_ui/before_you_begin.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/administrator/admin/admin_ui/check_system_status.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/administrator/admin/admin_ui/configure_code_execution_sandbox.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/administrator/admin/admin_ui/manage_user_accounts.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/administrator/admin/ragflow_cli.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/administrator/configurations/_category_.json",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/administrator/configurations/config_ssl_cert.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/administrator/configurations/configurations.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/administrator/migration/_category_.json",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/administrator/migration/backup_and_restore_v0.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/administrator/migration/backup_and_restore_v1.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/administrator/migration/database_change_log.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/administrator/migration/migration_overview.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/administrator/migration/upgrade_from_v0_to_v1.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/administrator/migration/upgrade_from_v1_to_later_releases.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/administrator/sandbox/_category_.json",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/administrator/sandbox/configure_ssh_and_cloud_providers.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/administrator/sandbox/faq.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/administrator/sandbox/manage_self_managed_sandbox.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/administrator/sandbox/overview.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/administrator/sandbox/quickstart_with_self_managed.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/administrator/tracing.mdx",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/administrator/upgrade_ragflow.mdx",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/archive/README.md",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "archive-index",
+          "role": "history_index",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261028-01.json",
+      "category": "ArchivedHistory_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261028-02.json",
+      "category": "ArchivedHistory_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/archive/knowledge-core-20261028/stage1a-review-round-10-interrupted.md",
+      "category": "ArchivedHistory_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/archive/knowledge-core-20261028/stage1a-review-round-6.md",
+      "category": "ArchivedHistory_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/archive/knowledge-core-20261028/stage1a-review-round-7.md",
+      "category": "ArchivedHistory_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/archive/knowledge-core-20261028/stage1a-review-round-8.md",
+      "category": "ArchivedHistory_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/archive/knowledge-core-20261028/stage1a-review-round-9.md",
+      "category": "ArchivedHistory_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/archive/knowledge-core-20261028/stage1a-two-fixes-verification.md",
+      "category": "ArchivedHistory_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/archive/knowledge-core-20261028/stage2r2-directory-handoff.md",
+      "category": "ArchivedHistory_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/archive/knowledge-core-20261028/stage2r3-batch-handoff.md",
+      "category": "ArchivedHistory_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/archive/knowledge-core-20261028/stage2r7-execution-plan.md",
+      "category": "ArchivedHistory_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/archive/knowledge-core-20261028/stage2r7-synthetic-handoff.md",
+      "category": "ArchivedHistory_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/archive/knowledge-core-20261028/stage3r2-document-runtime.md",
+      "category": "ArchivedHistory_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/archive/knowledge-core-archive-manifest.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "archive-manifest",
+          "role": "history_index",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/basics/_category_.json",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/basics/agent_context_engine.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/basics/rag.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/develop/_category_.json",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/develop/acquire_ragflow_api_key.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/develop/build_docker_image.mdx",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/develop/contributing.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/develop/deepwiki.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/develop/launch_ragflow_from_source.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/develop/mcp/_category_.json",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/develop/mcp/connect_an_external_mcp_to_ragflow.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/develop/mcp/connect_external_mcp_servers.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/develop/mcp/launch_mcp_server.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/develop/mcp/mcp_client_example.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/develop/mcp/mcp_tools.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/develop/mcp/native_go_mcp.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/develop/mcp/overview.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/develop/mcp/use_ragflow_as_mcp_server.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/develop/switch_doc_engine.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/faq.mdx",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/_category_.json",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/agent/_category_.json",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/agent/agent_overview.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/agent/agent_workflow/_category_.json",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/agent/agent_workflow/basic_component.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/agent/agent_workflow/data_manipulation_components.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/agent/agent_workflow/dialogue_component.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/agent/agent_workflow/flow_components.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/agent/agent_workflow/tool_components.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/agent/creation_and_management.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/agent/embed_into_web_pages.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/agent/import_and_export_agents.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/agent/ingestion_pipeline/_category_.json",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/agent/ingestion_pipeline/configure_chunker_component.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/agent/ingestion_pipeline/configure_indexer_component.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/agent/ingestion_pipeline/configure_parser_component.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/agent/ingestion_pipeline/configure_transformer_component.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/agent/ingestion_pipeline/connect_the_pipeline_to_a_knowledge_base.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/agent/ingestion_pipeline/create_ingestion_pipeline.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/agent/ingestion_pipeline/test_run.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/agent/ingestion_pipeline/understand_core_ingestion_pipeline_components.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/agent/understand_the_canvas.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/chat/Mutimodel_comparison_and_FAQ.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/chat/_category_.json",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/chat/chat_configuration.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/chat/feature_overview_and_creation.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/chat/using_chat_sessions.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/chatchannel/_category_.json",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/chatchannel/channel_access_and_configuration.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/chatchannel/chat_channels_overview.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/chatchannel/connect_chat.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/chatchannel/faq.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/data_source/_category_.json",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/data_source/add_to_knowledge_base_and_sync.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/data_source/data_source_categories_and_selection.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/data_source/data_source_configuration.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/data_source/overview_and_page_management.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/dataset/_category_.json",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/dataset/artifacts_knowledge_artifact_generation_and_management.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/dataset/best_practices/_category_.json",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/dataset/best_practices/accelerate_doc_indexing.mdx",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/dataset/chunk_parsing_results_and_knowledge_fragment_management.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/dataset/configuration.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/dataset/dataset_list_and_creation.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/dataset/dataset_overview.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/dataset/files_dataset_document_management.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/dataset/logs.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/dataset/metadata_management.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/dataset/notes_and_faqs.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/dataset/retrieval_testing.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/file/_category_.json",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/file/batch_move_and_delete.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/file/file.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/file/file_operations.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/file/link_dataset.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/knowledge_compilation/_category_.json",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/knowledge_compilation/apply_knowledge_compilation_template.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/knowledge_compilation/basic_information_configuration.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/knowledge_compilation/built_in_templates_and_dedicated_configuration.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/knowledge_compilation/faq.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/knowledge_compilation/overview.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/memory/_category_.json",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/memory/configure_memory.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/memory/connect_to_an_agent.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/memory/create_memory.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/memory/message_page.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/models/_category_.json",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/models/deploy_local_llm.mdx",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/models/llm_api_key_setup.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/search/_category_.json",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/search/create_search.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/search/faq.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/search/search_settings.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/team/_category_.json",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/team/permission_system_overview/_category_.json",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/team/permission_system_overview/index.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/team/permission_system_overview/permission_effective_rules.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/team/permission_system_overview/resource_operation_permissions.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/team/permission_system_overview/resource_sharing_scope.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/team/permission_system_overview/team_and_resource_permissions.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/team/permission_system_overview/team_member_management.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/team/sharing_scope_configuration/_category_.json",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/team/sharing_scope_configuration/index.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/team/sharing_scope_configuration/open_source_edition_sharing_scope_configuration.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/team/sharing_scope_configuration/share_agents.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/team/sharing_scope_configuration/share_knowledge_bases.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/team/sharing_scope_configuration/share_memories.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/team/team_management/_category_.json",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/team/team_management/accept_or_decline_an_invitation.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/team/team_management/enter_the_team_page.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/team/team_management/faq.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/team/team_management/index.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/team/team_management/invite_members.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/team/team_management/leave_a_joined_team.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/team/team_management/remove_members.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/team/team_management/resource_sharing_from_the_team_perspective.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/team/team_management/view_current_workspace_members.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/guides/team/team_management/view_joined_teams.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/knowledge-batch-import-v0.4.candidate.examples.json",
+      "category": "ProtectedHistoricalCandidate_NotCurrentContract",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/knowledge-batch-import-v0.4.candidate.md",
+      "category": "ProtectedHistoricalCandidate_NotCurrentContract",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/knowledge-batch-import-v0.4.candidate.openapi.json",
+      "category": "ProtectedHistoricalCandidate_NotCurrentContract",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/knowledge-batch-import-v1.examples.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "contract-knowledge-batch-import-v1-examples-json",
+          "role": "existing_contract",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-batch-import-v1.freeze.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "contract-knowledge-batch-import-v1-freeze-json",
+          "role": "existing_contract",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-batch-import-v1.openapi.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "contract-knowledge-batch-import-v1-openapi-json",
+          "role": "existing_contract",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-core-execution-record.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "execution-request",
+          "role": "request",
+          "selector": {
+            "type": "json_pointer",
+            "pointer": "/request_snapshot"
+          }
+        },
+        {
+          "id": "execution-current",
+          "role": "current_context",
+          "selector": {
+            "type": "json_fields",
+            "fields": [
+              "status",
+              "objective",
+              "dispatch",
+              "coordination",
+              "incomplete_items"
+            ]
+          }
+        },
+        {
+          "id": "execution-evidence",
+          "role": "historical_evidence",
+          "selector": {
+            "type": "json_pointer",
+            "pointer": "/verification"
+          }
+        },
+        {
+          "id": "implementation-decision",
+          "role": "human_implementation_authority",
+          "selector": {
+            "type": "json_pointer",
+            "pointer": "/implementation_decision"
+          }
+        },
+        {
+          "id": "coordination-20261105-current",
+          "role": "current_context",
+          "selector": {
+            "type": "json_pointer",
+            "pointer": "/coordination_20261105"
+          }
+        },
+        {
+          "id": "coordination-20261105-round2",
+          "role": "current_context",
+          "selector": {
+            "type": "json_pointer",
+            "pointer": "/coordination_20261105_round2"
+          }
+        },
+        {
+          "id": "coordination-20261106-round3",
+          "role": "current_context",
+          "selector": {
+            "type": "json_pointer",
+            "pointer": "/coordination_20261106_round3"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-core-implementation-handoff.md",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "implementation-handoff",
+          "role": "current_working_plan",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-core-inventory.md",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "code-inventory",
+          "role": "implementation_fact",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-core-lexical-slice.candidate.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "lexical-slice-bundle",
+          "role": "approved_design",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-core-lexical-slice.candidate.md",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "lexical-slice-draft",
+          "role": "approved_design",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-core-local-access.candidate.md",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "local-access-draft",
+          "role": "candidate_design",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-core-local-lexical-v0.1.candidate.schema.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "lexical-api-draft",
+          "role": "approved_design",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-core-model-research.md",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "model-research",
+          "role": "implementation_fact",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-core-realignment-plan.md",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "current-plan",
+          "role": "current_working_plan",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-core-realignment-record.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "product-request",
+          "role": "request",
+          "selector": {
+            "type": "json_pointer",
+            "pointer": "/request_snapshot"
+          }
+        },
+        {
+          "id": "bootstrap-result",
+          "role": "historical_evidence",
+          "selector": {
+            "type": "json_fields",
+            "fields": [
+              "status",
+              "acceptance",
+              "verification",
+              "incomplete_items",
+              "publication"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-core-reference-authority.md",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "reference-authority",
+          "role": "reference_policy",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-core-reference-lock-verification.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "reference-lock-request",
+          "role": "request",
+          "selector": {
+            "type": "json_pointer",
+            "pointer": "/request_snapshot"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-core-reference-lock.json",
+      "category": "ReferenceLockManifest",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/knowledge-core-retrieval-mcp.md",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "retrieval-mcp",
+          "role": "implementation_fact",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-core-synthetic-fixtures.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "synthetic-fixtures",
+          "role": "synthetic_input",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-core-unified-model.candidate.md",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "unified-model-draft",
+          "role": "candidate_design",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-directory-import-v0.3.candidate.examples.json",
+      "category": "ProtectedHistoricalCandidate_NotCurrentContract",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/knowledge-directory-import-v0.3.candidate.md",
+      "category": "ProtectedHistoricalCandidate_NotCurrentContract",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/knowledge-directory-import-v0.3.candidate.openapi.json",
+      "category": "ProtectedHistoricalCandidate_NotCurrentContract",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/knowledge-directory-import-v1.examples.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "contract-knowledge-directory-import-v1-examples-json",
+          "role": "existing_contract",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-directory-import-v1.freeze.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "contract-knowledge-directory-import-v1-freeze-json",
+          "role": "existing_contract",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-directory-import-v1.openapi.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "contract-knowledge-directory-import-v1-openapi-json",
+          "role": "existing_contract",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-document-structure-v0.1.candidate.examples.json",
+      "category": "ProtectedHistoricalCandidate_NotCurrentContract",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/knowledge-document-structure-v0.1.candidate.md",
+      "category": "ProtectedHistoricalCandidate_NotCurrentContract",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/knowledge-document-structure-v0.1.candidate.openapi.json",
+      "category": "ProtectedHistoricalCandidate_NotCurrentContract",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/knowledge-document-structure-v1.examples.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "contract-knowledge-document-structure-v1-examples-json",
+          "role": "existing_contract",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-document-structure-v1.freeze.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "contract-knowledge-document-structure-v1-freeze-json",
+          "role": "existing_contract",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-document-structure-v1.openapi.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "contract-knowledge-document-structure-v1-openapi-json",
+          "role": "existing_contract",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-foundation-v1.example.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "contract-knowledge-foundation-v1-example-json",
+          "role": "existing_contract",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-foundation-v1.openapi.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "contract-knowledge-foundation-v1-openapi-json",
+          "role": "existing_contract",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-original-import-v0.5.candidate.examples.json",
+      "category": "ProtectedHistoricalCandidate_NotCurrentContract",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/knowledge-original-import-v0.5.candidate.md",
+      "category": "ProtectedHistoricalCandidate_NotCurrentContract",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/knowledge-original-import-v0.5.candidate.openapi.json",
+      "category": "ProtectedHistoricalCandidate_NotCurrentContract",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/knowledge-original-import-v1.examples.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "contract-knowledge-original-import-v1-examples-json",
+          "role": "existing_contract",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-original-import-v1.freeze.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "contract-knowledge-original-import-v1-freeze-json",
+          "role": "existing_contract",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-original-import-v1.openapi.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "contract-knowledge-original-import-v1-openapi-json",
+          "role": "existing_contract",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-source-lifecycle-v0.7.candidate.examples.json",
+      "category": "ProtectedHistoricalCandidate_NotCurrentContract",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/knowledge-source-lifecycle-v0.7.candidate.md",
+      "category": "ProtectedHistoricalCandidate_NotCurrentContract",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/knowledge-source-lifecycle-v0.7.candidate.openapi.json",
+      "category": "ProtectedHistoricalCandidate_NotCurrentContract",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/knowledge-source-lifecycle-v1.examples.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "contract-knowledge-source-lifecycle-v1-examples-json",
+          "role": "existing_contract",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-source-lifecycle-v1.freeze.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "contract-knowledge-source-lifecycle-v1-freeze-json",
+          "role": "existing_contract",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-source-lifecycle-v1.openapi.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "contract-knowledge-source-lifecycle-v1-openapi-json",
+          "role": "existing_contract",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-sources-v1.draft.example.json",
+      "category": "OldDraftOrCandidate_NotCurrentContract",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/knowledge-sources-v1.draft.schema.json",
+      "category": "OldDraftOrCandidate_NotCurrentContract",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/knowledge-sources-v1.example.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "contract-knowledge-sources-v1-example-json",
+          "role": "existing_contract",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-sources-v1.freeze.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "contract-knowledge-sources-v1-freeze-json",
+          "role": "existing_contract",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-sources-v1.openapi.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "contract-knowledge-sources-v1-openapi-json",
+          "role": "existing_contract",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-structure-v0.1.candidate.examples.json",
+      "category": "ProtectedHistoricalCandidate_NotCurrentContract",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/knowledge-structure-v0.1.candidate.md",
+      "category": "ProtectedHistoricalCandidate_NotCurrentContract",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/knowledge-structure-v0.1.candidate.openapi.json",
+      "category": "ProtectedHistoricalCandidate_NotCurrentContract",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/knowledge-structure-v1.examples.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "contract-knowledge-structure-v1-examples-json",
+          "role": "existing_contract",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-structure-v1.freeze.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "contract-knowledge-structure-v1-freeze-json",
+          "role": "existing_contract",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-structure-v1.openapi.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "contract-knowledge-structure-v1-openapi-json",
+          "role": "existing_contract",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-web-import-v0.6.candidate.examples.json",
+      "category": "ProtectedHistoricalCandidate_NotCurrentContract",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/knowledge-web-import-v0.6.candidate.md",
+      "category": "ProtectedHistoricalCandidate_NotCurrentContract",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/knowledge-web-import-v0.6.candidate.openapi.json",
+      "category": "ProtectedHistoricalCandidate_NotCurrentContract",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/knowledge-web-import-v1.examples.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "contract-knowledge-web-import-v1-examples-json",
+          "role": "existing_contract",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-web-import-v1.freeze.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "contract-knowledge-web-import-v1-freeze-json",
+          "role": "existing_contract",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-web-import-v1.openapi.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "contract-knowledge-web-import-v1-openapi-json",
+          "role": "existing_contract",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/quickstart.mdx",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/references/_category_.json",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/references/glossary.mdx",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/references/http_api_reference.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/references/python_api_reference.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/release_notes.md",
+      "category": "UpstreamBackground_NotCurrentProductPlan",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage1ab-handoff.md",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage1ab-receipt.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage1ab-runtime-http.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage1ab-runtime-verification.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "stage1-evidence",
+          "role": "historical_evidence",
+          "selector": {
+            "type": "json_fields",
+            "fields": [
+              "status",
+              "user_decision",
+              "fixture",
+              "validation",
+              "incomplete_items"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/stage1b-delivery.md",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage1b-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2-directory-contract-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2-local-coordination.md",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "coordination-current",
+          "role": "current_context",
+          "selector": {
+            "type": "prefix_before",
+            "marker": "**v0.61准备补充**"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/stage2-main-integration.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2a-c2-handoff.md",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2a-c2-http.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2a-c2-performance.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2a-c2-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2a-source-preparation-performance.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2a-source-preparation.md",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2ab-integration-handoff.md",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2ab-runtime-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2b-import-ui-handoff.md",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2b-import-ui-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r2-directory-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r3-batch-consumer-handoff.md",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r3-batch-contract-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r3-batch-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r4-backend-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r4-original-contract-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r4-original-handoff.md",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r4-original-preparation-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r4-original-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r4-preimplementation-preparation.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r4-snapshot-preparation-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r4-stream-integration-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r4-stream-preparation-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r5-backend-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r5-consumer-contract-input.md",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r5-main-integration.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r5-reading-preparation-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r5-web-client-delivery.md",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r5-web-client-handoff.md",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r5-web-client-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r5-web-contract-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r5-web-handoff.md",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r5-web-rss-preparation.md",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r5-web-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r6-lifecycle-client-handoff.md",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r6-lifecycle-client-notes.md",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r6-lifecycle-client-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r6-lifecycle-contract-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r6-lifecycle-design-input.md",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r6-lifecycle-handoff.md",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r6-lifecycle-preparation.md",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r6-lifecycle-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r6-main-integration.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r7-exit-readiness.md",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r7-main-integration.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage2r7-synthetic-exit-verification.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "stage2-synthetic-evidence",
+          "role": "historical_evidence",
+          "selector": {
+            "type": "json_fields",
+            "fields": [
+              "objective",
+              "engineering",
+              "verification",
+              "incomplete_items",
+              "acceptance"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/stage2r7-synthetic-preparation.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage3-document-readiness-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage3-document-readiness.md",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage3-structure-preparation.md",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage3r1-main-integration.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage3r1-structure-backend-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage3r1-structure-candidate-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage3r1-structure-client-handoff.md",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage3r1-structure-client-notes.md",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage3r1-structure-client-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage3r1-structure-handoff.md",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage3r1-structure-ui-fix-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage3r1-structure-verification.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "r1-engineering",
+          "role": "historical_evidence",
+          "selector": {
+            "type": "json_fields",
+            "fields": [
+              "status",
+              "source",
+              "implementation",
+              "verification",
+              "incomplete_items",
+              "user_decision"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/stage3r2-document-backend-verification.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "r2-backend-evidence",
+          "role": "historical_evidence",
+          "selector": {
+            "type": "json_fields",
+            "fields": [
+              "status",
+              "scope",
+              "implementation",
+              "verification",
+              "incomplete_items",
+              "acceptance",
+              "model_calls",
+              "local_inference"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/stage3r2-document-candidate-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage3r2-document-client-handoff.md",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage3r2-document-client-notes.md",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage3r2-document-client-verification.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "r2-client-evidence",
+          "role": "historical_evidence",
+          "selector": {
+            "type": "json_fields",
+            "fields": [
+              "status",
+              "source",
+              "verification",
+              "incomplete_items",
+              "user_decision"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/stage3r2-document-execution.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage3r2-document-handoff.md",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage3r2-input-readiness-verification.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/stage3r2-input-readiness.md",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "internal/agent/audio/tts_design.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "internal/channels/whatsapp-gateway/README.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "internal/cli/README.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "internal/cli/filesystem/README.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "internal/development.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "internal/harness/README.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "internal/ingestion/component/chunker/testdata/parity/README.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "internal/ingestion/knowledge_compile/storage.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "internal/parser/parser/testdata/markdown.sample.en.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "internal/parser/parser/testdata/markdown.sample.zh.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "internal/rag/prompts/ask_summary.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "internal/rag/prompts/citation_prompt.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "internal/rag/prompts/cross_languages_sys_prompt.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "internal/rag/prompts/cross_languages_user_prompt.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "internal/rag/prompts/keyword_prompt.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "internal/rag/prompts/meta_filter.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "internal/rag/prompts/related_question.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "internal/rag/prompts/vision_llm_describe_prompt.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "internal/rag/prompts/vision_llm_figure_describe_prompt.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "internal/syncer/README.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "internal/tokenizer/embedding_token_limits.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "test/README.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "test/benchmark/README.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "test/playwright/README.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "tools/chatgpt-on-wechat/plugins/README.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "tools/es-to-oceanbase-migration/README.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "tools/firecrawl/INSTALLATION.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "tools/firecrawl/README.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "tools/scripts/INSTALL_SCRIPTS_README.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "web/AGENTS.md",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "web-instructions",
+          "role": "engineering_rule",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "web/README.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "会话副本.md",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "会话接续说明.md",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "session-current",
+          "role": "current_context",
+          "selector": {
+            "type": "prefix_before",
+            "marker": "**v0.62 当前执行（2026-10-27）**"
+          }
+        }
+      ]
+    },
+    {
+      "path": "本地第二大脑知识库技术方案.md",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "technical-current",
+          "role": "current_context",
+          "selector": {
+            "type": "markdown_section",
+            "heading": "## 41. 2026-10-28 知识库主线纠偏与新主协调"
+          }
+        }
+      ]
+    },
+    {
+      "path": "阶段0-API接入验证.json",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "阶段0-RAGFlow环境启动验证.json",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "阶段0-主仓库同步验证.json",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "阶段0-百炼API接入验证.json",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "阶段1-A-B交接说明.md",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "阶段1-A对抗性审查报告.json",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "阶段1-A底座验证报告.json",
+      "category": "UnreviewedBackground_NotCurrentGuidance",
+      "allowed_entries": []
+    },
+    {
+      "path": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261030-23.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "reference-lock-23-history",
+          "role": "historical_evidence",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261105-24.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "reference-lock-24-history",
+          "role": "historical_evidence",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261105-25.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "reference-lock-25-history",
+          "role": "historical_evidence",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261106-26.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "reference-lock-26-history",
+          "role": "historical_evidence",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/implementation-decision.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-implementation-decision",
+          "role": "human_implementation_authority",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/subject-manifest.safe.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-subject",
+          "role": "approved_design",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/public-copy-map.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-copy-map",
+          "role": "engineering_dependency",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/decision-summary.zh-CN.txt",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-summary",
+          "role": "approved_design",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/authorization-model.candidate.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-authorization",
+          "role": "approved_design",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/operation-rationale-and-stages.candidate.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-stages",
+          "role": "execution_plan",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/protocol.candidate.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-protocol",
+          "role": "approved_design",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/access.schema.candidate.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-schema",
+          "role": "approved_design",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/access.openapi.candidate.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-openapi",
+          "role": "approved_design",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/mcp-tools.candidate.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-mcp",
+          "role": "approved_design",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/persistence-and-migration.candidate.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-persistence",
+          "role": "execution_plan",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/owning-impact.safe.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-owning-impact",
+          "role": "implementation_fact",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/web-delivery.candidate.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-web-plan",
+          "role": "execution_plan",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/acceptance-matrix.candidate.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-acceptance-plan",
+          "role": "execution_plan",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/examples.candidate.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-examples",
+          "role": "synthetic_input",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/synthetic-fixtures.candidate.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-fixtures",
+          "role": "synthetic_input",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/knowledge-access-20261108-02/official-sources.safe.json",
+      "category": "Registered_SelectedUsesOnly",
+      "allowed_entries": [
+        {
+          "id": "access02-source-research",
+          "role": "implementation_fact",
+          "selector": {
+            "type": "whole"
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261107-27.json",
+      "category": "HistoricalReference_NotDevelopmentGuidance",
+      "allowed_entries": []
+    }
+  ],
+  "external_sources": [
+    {
+      "url": "https://github.com/docling-project/docling-core/blob/55829160b6eb17b6796fb6649e9b43bcce94cb01/docling_core/types/doc/document.py#L172",
+      "locking": "OfficialRepositoryPinnedCommit",
+      "use": "技术事实对照，不是产品授权；本轮不进行网络抓取"
+    },
+    {
+      "url": "https://github.com/docling-project/docling-core/blob/55829160b6eb17b6796fb6649e9b43bcce94cb01/docling_core/types/doc/items/node.py#L20",
+      "locking": "OfficialRepositoryPinnedCommit",
+      "use": "技术事实对照，不是产品授权；本轮不进行网络抓取"
+    },
+    {
+      "url": "https://github.com/docling-project/docling-core/blob/55829160b6eb17b6796fb6649e9b43bcce94cb01/docling_core/types/doc/items/text.py#L18",
+      "locking": "OfficialRepositoryPinnedCommit",
+      "use": "技术事实对照，不是产品授权；本轮不进行网络抓取"
+    },
+    {
+      "url": "https://github.com/docling-project/docling-core/blob/55829160b6eb17b6796fb6649e9b43bcce94cb01/docling_core/types/doc/common/reference.py#L189",
+      "locking": "OfficialRepositoryPinnedCommit",
+      "use": "技术事实对照，不是产品授权；本轮不进行网络抓取"
+    },
+    {
+      "url": "https://github.com/docling-project/docling-core/blob/55829160b6eb17b6796fb6649e9b43bcce94cb01/docling_core/types/doc/items/table/table_data.py#L20",
+      "locking": "OfficialRepositoryPinnedCommit",
+      "use": "技术事实对照，不是产品授权；本轮不进行网络抓取"
+    },
+    {
+      "url": "https://github.com/docling-project/docling-core/blob/55829160b6eb17b6796fb6649e9b43bcce94cb01/docling_core/transforms/chunker/doc_chunk.py#L26",
+      "locking": "OfficialRepositoryPinnedCommit",
+      "use": "技术事实对照，不是产品授权；本轮不进行网络抓取"
+    },
+    {
+      "url": "https://github.com/docling-project/docling-core/blob/55829160b6eb17b6796fb6649e9b43bcce94cb01/docling_core/types/doc/common/origin.py#L12",
+      "locking": "OfficialRepositoryPinnedCommit",
+      "use": "技术事实对照，不是产品授权；本轮不进行网络抓取"
+    },
+    {
+      "url": "https://github.com/run-llama/llama_index/blob/619d74664e8404612038bc15a1a40c686037277c/llama-index-core/llama_index/core/schema.py#L191",
+      "locking": "OfficialRepositoryPinnedCommit",
+      "use": "技术事实对照，不是产品授权；本轮不进行网络抓取"
+    },
+    {
+      "url": "https://github.com/run-llama/llama_index/blob/619d74664e8404612038bc15a1a40c686037277c/llama-index-core/llama_index/core/node_parser/interface.py#L78",
+      "locking": "OfficialRepositoryPinnedCommit",
+      "use": "技术事实对照，不是产品授权；本轮不进行网络抓取"
+    },
+    {
+      "url": "https://github.com/deepset-ai/haystack/blob/71a9a7eb212a671e9b68a27c65374b692a294ab1/haystack/dataclasses/document.py#L30",
+      "locking": "OfficialRepositoryPinnedCommit",
+      "use": "技术事实对照，不是产品授权；本轮不进行网络抓取"
+    },
+    {
+      "url": "https://github.com/deepset-ai/haystack/blob/71a9a7eb212a671e9b68a27c65374b692a294ab1/haystack/components/preprocessors/document_splitter.py#L306",
+      "locking": "OfficialRepositoryPinnedCommit",
+      "use": "技术事实对照，不是产品授权；本轮不进行网络抓取"
+    },
+    {
+      "url": "https://github.com/deepset-ai/haystack/blob/71a9a7eb212a671e9b68a27c65374b692a294ab1/haystack/components/preprocessors/hierarchical_document_splitter.py#L98",
+      "locking": "OfficialRepositoryPinnedCommit",
+      "use": "技术事实对照，不是产品授权；本轮不进行网络抓取"
+    },
+    {
+      "url": "https://modelcontextprotocol.io/specification/2025-11-25/basic/transports",
+      "locking": "OfficialVersionedURL_NotRemoteByteLock",
+      "use": "技术事实对照，不是产品授权；本轮不进行网络抓取"
+    },
+    {
+      "url": "https://modelcontextprotocol.io/specification/2025-11-25/basic/lifecycle",
+      "locking": "OfficialVersionedURL_NotRemoteByteLock",
+      "use": "技术事实对照，不是产品授权；本轮不进行网络抓取"
+    },
+    {
+      "url": "https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization",
+      "locking": "OfficialVersionedURL_NotRemoteByteLock",
+      "use": "技术事实对照，不是产品授权；本轮不进行网络抓取"
+    }
+  ],
+  "boundaries": [
+    "资料可信不等于人的验收/新契约冻结/模型或部署授权",
+    "选择器外的混合历史内容不可作当前指引",
+    "历史归档和保留原路径历史文件均不作正式开发指引",
+    "引用锁是工程工作流约束，不是OS文件权限隔离",
+    "无自动refresh/approve或网络访问；子任务不得自改摘要以求通过",
+    "Specific human KCA-20261108-02 OptionA authorizes only exact S1/S2/S3 synthetic implementation scope;original Draft fields are immutable writing-time status,not absence of that later approval.",
+    "New approved-design/schema/OpenAPI/MCP plans are not existing_contract or runtime/product acceptance;old26 formal contracts and47 protected bindings remain unchanged.",
+    "Latest human stage commit+push instruction supersedes old time-scoped Git prohibitions;actual stage Git and production deployment/release remain separately coordinated actions."
+  ],
+  "update_rule": "仅主控在同范围内复核事实/差异/摘要并决定变更；最新真人规定总控不做实际工作，机械应用只能由具名执行者在唯一精确写窗中承担。保存旧锁原字节/摘要、原因、受影响条目和新校验；不得为未知漂移刷新摘要。接口/模型/真实内容/发布新范围仍需真人具体决定。",
+  "manifest_payload_sha256": "6ce5bb2ad4d4178c8c933015b380a6ed10a35b6c10586a13ab27abe617130575",
+  "previous_baseline": {
+    "lock_id": "KCRL-20261116-48",
+    "manifest_sha256": "381607d79361753fc3d5ede7ab2693ed921b06e9dd545fbac949f5ae034ceef1",
+    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-48.json",
+    "archive_sha256": "381607d79361753fc3d5ede7ab2693ed921b06e9dd545fbac949f5ae034ceef1",
+    "changed_files": [
+      "docs/knowledge-core-execution-record.json",
+      "docs/knowledge-core-reference-authority.md",
+      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-48.json",
+      "docs/knowledge-core-reference-lock.json"
+    ],
+    "existing_entries_with_updated_selection_digests": [
+      "reference-authority",
+      "coordination-20261106-round3"
+    ],
+    "reason": "Root alone;accept exact14-format synthetic HTTP/index/fixed-reference matrix. Known-keyword top1 only;real models and formal rollout remain separate. All original failures preserved."
+  }
+}

@@ -9535,6 +9535,159 @@
         "oldTestAPI": "Old88a6 retired only after zero active structure/index jobs and zero owned children;all volumes retained."
       },
       "next": "Normally commit/push this bounded matrix stage;deploy the same qualified artifact to existing formal API/admin with schema/credential/volume preservation,actual restart/login/static checks. Continue real model QA after private configuration."
+    },
+    "worker_fix_formal_rollout_followup": {
+      "state": "RootSolo_FormalWorkerFixReleased_RealModelAcceptanceWaitingConfiguration",
+      "humanInstruction": "继续推进，把模型问答和复杂格式的验收也完成，后续由你一个人做，每完成一个阶段就提交并推送远端。",
+      "sourceCheckpoint": "4ba08f4e58174f778c9618005103a0f7ba2ab796",
+      "previousStages": {
+        "workerFix": "7b0f4e124d031164a9ac94b1826f3bc354843cc8",
+        "boundedFourteenFormats": "4ba08f4e58174f778c9618005103a0f7ba2ab796",
+        "Git": "Both stages normally passed all11 checks,committed,nonforce-pushed and remotely verified."
+      },
+      "runtime": {
+        "Web": "http://127.0.0.1:29395",
+        "API": "http://127.0.0.1:29396",
+        "managedMCP": "http://127.0.0.1:29395/api/v1/knowledge/access/mcp",
+        "serverSHA256": "67f5399ac924567d6f621dbf72416d7f1f383e4c7ac7741fad03203dad6a5550",
+        "newAPI": "aeea01224d3538119f7b5cc7ae7d2b4bef743f997366118c7544d7cf7ae24e0c",
+        "newAdmin": "ac88dba48d38be4e685e339ef9c782716ce009bff404cb61bb9866e9c3fac5dd",
+        "unchangedWeb": "afd6c960535be173f54d1e38a7815558105329285db6347266a3ea8afea71c7d",
+        "release": "Same tested artifact now serves formal API/admin. Original Web bundle/config/container unchanged;syntax-check and reload only. No fake claim of Web restart.",
+        "privateState": "Original runtime environment,private mounts/configuration,credentials and all volumes retained. Only public executable mount/size guard and ownership labels changed. No account credential reset.",
+        "recovery": "New API/admin both actually restarted and their running process ELF hashes rechecked. All3 application services have unless-stopped;Windows/Docker Desktop auto-start policy unchanged."
+      },
+      "acceptance": {
+        "proofs": [
+          "formal-worker-rollout02/result.safe.json",
+          "formal-worker-rollout02/after-start.schema.safe.json",
+          "formal-worker-rollout02/after-restart.schema.safe.json",
+          "formal-worker-rollout02/after-start.assets.safe.json",
+          "formal-worker-rollout02/after-restart.assets.safe.json",
+          "formal-worker-rollout02/after-restart.smoke.safe.json",
+          "formal-worker-rollout02/synthetic-login.safe.json",
+          "formal-worker-cleanup01/result.safe.json",
+          "model-format01/model-configuration-final.safe.json",
+          "formal-worker-rollout01/failure.safe.json",
+          "formal-worker-rollout01/correction.safe.json",
+          "formal-worker-assets-probe01.safe.json"
+        ],
+        "formal": "Actual API/admin running-process bytes before and after restart,114 tables/1281 columns exactly unchanged with complete column-set indexes,42 asset HEADs and lengths,exact HTML,API and Web ping,unauthenticated shared/credential/MCP401/no-store/data:null passed.",
+        "login": "Fresh clearly named @fixtures.invalid synthetic account registered and logged in through actual29395/api/v1/auth/login after restarts. Own model settings and modules empty. Secret/native session RAM-only;real user accounts/content not inspected.",
+        "format": "Prior source-identical 14-format isolated matrix remains accepted in its bounded scope:18 phases/514 requests,14 known-keyword rank1 facts,all-hit byte-identical rereads,typed cells/order/coordinates/exclusions. No extra format or semantic/model quality credit inferred from deployment.",
+        "failurePreserved": "First formal rollout failed before the first asset HEAD because raw logo URL?v=5 did not match manifest filesystem path. Both new containers removed,both originals restored and Web readiness recovered. Independent42 HEADs passed with pathname lookup/full request URL. Corrected preflight and second formal rollout passed;no product/artifact change for this probe correction.",
+        "proofPins": [
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/formal-worker-rollout02/result.safe.json",
+            "bytes": 2929,
+            "sha256": "a0e6bcc872cca1c44125890b9187b0b033cdcc68380a674709a11beeb4e7c82a"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/formal-worker-rollout02/after-start.schema.safe.json",
+            "bytes": 190,
+            "sha256": "9394606a933471dc88fee5ca9417d4000eedbf7b624220c31dd2d6107fa534c9"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/formal-worker-rollout02/after-restart.schema.safe.json",
+            "bytes": 190,
+            "sha256": "9394606a933471dc88fee5ca9417d4000eedbf7b624220c31dd2d6107fa534c9"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/formal-worker-rollout02/after-start.assets.safe.json",
+            "bytes": 4661,
+            "sha256": "a3ef92f3030c3f4447f70540752d9a852862c4988a103eba592ff32c46ef4410"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/formal-worker-rollout02/after-restart.assets.safe.json",
+            "bytes": 4661,
+            "sha256": "a3ef92f3030c3f4447f70540752d9a852862c4988a103eba592ff32c46ef4410"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/formal-worker-rollout02/after-restart.smoke.safe.json",
+            "bytes": 1969,
+            "sha256": "592d0519ebcca620d803335b20415119aacd7ee57a87340b87d2a3c7d3a15312"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/formal-worker-rollout02/synthetic-login.safe.json",
+            "bytes": 819,
+            "sha256": "d6ecf8b14fbe5ec8120dcf2b0a2acff159bea4e9470d9d05280b7244507303fe"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/formal-worker-cleanup01/result.safe.json",
+            "bytes": 2405,
+            "sha256": "be4cf79769d849647af846596b7d944020f58251241dc336546c90023055df2b"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/model-configuration-final.safe.json",
+            "bytes": 760,
+            "sha256": "ad3fb792191fe8a6d88d8506ee9d44d5195739182f54ba9785080ea42e3f6535"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/formal-worker-rollout01/failure.safe.json",
+            "bytes": 1211,
+            "sha256": "f4d89b58914e238826af9bd92e86d30681b5bb7c965da2fb7edcd7c77f5ae8be"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/formal-worker-rollout01/correction.safe.json",
+            "bytes": 473,
+            "sha256": "62e30bb53791cd8d2e673940dc3f9ee353cd7ca8d929eba5a01a75a8f59b04ba"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/formal-worker-assets-probe01.safe.json",
+            "bytes": 8252,
+            "sha256": "48da1b16b19e7f76649d945d9e3aaa209526370737eeedb5a23af0c7aded4c3a"
+          }
+        ]
+      },
+      "containers": {
+        "retired": 3,
+        "retiredKinds": [
+          "Two stopped previous API/admin rollback containers",
+          "Completed isolated format-test API,only after zero jobs and zero owned children"
+        ],
+        "volumesDeleted": 0,
+        "volumeSetUnchanged": true,
+        "formalProjectRunning": 8,
+        "foreignPreservedRunning": 3,
+        "totalRunning": 11,
+        "naming": "Readable second-brain-* service names and project/purpose labels retained. Original NATS and active lfenink project unchanged."
+      },
+      "model": {
+        "state": "BlockedByMissingPrivateProviderConfiguration_NotModelQualityPass",
+        "presenceCheckUTC": "2026-11-16T13:24:36.369Z",
+        "actual": "Main tenant_model_instance and tenant_llm each have0 total rows and0 configured keys. Root.env.local absent,known model environment names all absent,local Ollama11434 unavailable. Only presence/count metadata inspected;no secret values printed or copied.",
+        "userInput": "Earlier private configuration request remains pending. User should configure a usable chat model in the application or ignored.env.local;never send keys into chat.",
+        "prepared": "16 original synthetic answer/citation/unknown/injection cases;initial16-call cap and1024 output tokens/call,no unbounded retries.0 real model calls executed,not a mock or handshake promoted to answer quality."
+      },
+      "limits": {
+        "accepted": "Current bounded knowledge-core/sharing/managed-Bearer features plus repaired manual structured-format chain available at formal local entry.",
+        "notAccepted": "Real model QA;blind/cross-language semantic recall;all scanned/image-only PDF OCR,images/audio,visual layout,encrypted and universal document coverage;OAuth/general Agent/personality/memory or internet deployment.",
+        "historical": "Original70 planned NotRun,old Go21/compound and all historical failed receipts unchanged. Native registered-domain model guard and frozen interfaces not silently widened."
+      },
+      "preservation": {
+        "RootOnly": true,
+        "otherChatsPaused": true,
+        "realAICS": false,
+        "realUserContentRead": false,
+        "modelCalls": 0,
+        "SMTP": 0,
+        "volumeDeletes": 0,
+        "rootLayoutChanges": false,
+        "PythonBulkDeletion": false,
+        "independentReviewerNotInvented": true
+      },
+      "baseline": {
+        "postimages": 4,
+        "sourceFiles": 5165,
+        "sourceSHA256": "32a82f8fcfbb25fabccb395622a0eb6f66c887dd5ad0a945f92b2795b036c9df",
+        "entries": 97,
+        "uses": 102,
+        "protected": 47,
+        "contracts": 26,
+        "businessArchive": 11,
+        "historicalDocuments": 28,
+        "selectorsAndUsesUnchanged": true
+      }
     }
   }
 }
