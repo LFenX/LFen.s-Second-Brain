@@ -275,3 +275,44 @@ func TestKnowledgeAccessCredentialRejectsMalformedSecretAudienceAndScopeWidening
 		t.Fatal("credential used at a different service audience")
 	}
 }
+
+func TestKnowledgeAccessCredentialFinalWriteExpiryRollsBack(t *testing.T) {
+	for _, table := range []string{"knowledge_access_credential", "knowledge_access_audit"} {
+		t.Run(table, func(t *testing.T) {
+			f, _ := credentialTestFixture(t)
+			credentialTestCall(t, f, f.Owner, knowledgeTestOwner, "revokeGrant", entity.KnowledgeAccessRevokeGrantRequest{ContractVersion: entity.KnowledgeAccessVersion, DomainID: knowledgeTestDomain, GrantID: f.Grant.GrantID, Confirmed: true, IdempotencyKey: "Synthetic_FinalExpiry_Revoke"}, 200)
+			f.Grant = credentialTestData[entity.KnowledgeAccessGrant](t, credentialTestCall(t, f, f.Owner, knowledgeTestOwner, "createGrant", entity.KnowledgeAccessCreateGrantRequest{ContractVersion: entity.KnowledgeAccessVersion, DomainID: knowledgeTestDomain, ModuleID: f.Module.ModuleID, ExpectedModuleVersion: f.Module.Version, Subject: entity.KnowledgeAccessSubject{Kind: "user", ID: accessTestRecipient}, Mode: "read", Delivery: "web_and_mcp", ExpiresAt: accessTime(time.Now().Add(3 * time.Second)), Confirmed: true, IdempotencyKey: "Synthetic_FinalExpiry_ShortGrant"}, 201))
+			view := credentialTestData[entity.KnowledgeAccessInspectData](t, credentialTestCall(t, f, f.Recipient, accessTestRecipient, "inspect", credentialTestInspect(f, "read"), 200))
+			minted := credentialTestMint(t, f, view.ViewID, "Synthetic_FinalExpiry_Mint")
+			expiry := mustCredentialTime(t, minted.Credential.ExpiresAt)
+			if expiry.After(time.Now().Add(3*time.Second)) || !expiry.Equal(mustCredentialTime(t, f.Grant.ExpiresAt)) {
+				t.Fatal("short parent grant did not cap credential expiry")
+			}
+			ctx, _ := credentialTestAuth(t, f, *minted.Token)
+			const callback = "synthetic:credential-final-write-expiry"
+			delayed := false
+			if err := dao.DB.Callback().Update().After("gorm:update").Register(callback, func(tx *gorm.DB) {
+				if tx.Statement.Table == table && !delayed {
+					delayed = true
+					if wait := time.Until(expiry.Add(20 * time.Millisecond)); wait > 0 {
+						time.Sleep(wait)
+					}
+				}
+			}); err != nil {
+				t.Fatal("final write delay installation failed")
+			}
+			t.Cleanup(func() { dao.DB.Callback().Update().Remove(callback) })
+			err := f.Service.FinalizeKnowledgeAccessMCP(ctx)
+			var public *KnowledgeAccessError
+			if !delayed || !errors.As(err, &public) || public.Status != 401 || public.Code != "unauthenticated" {
+				t.Fatal("credential expiry during final durable writes did not deny release")
+			}
+			var credential entity.KnowledgeAccessCredentialRecord
+			var audit entity.KnowledgeAccessAuditRecord
+			identity := accessCredential(ctx)
+			if dao.DB.Where("id = ?", minted.Credential.CredentialID).Take(&credential).Error != nil || credential.LastUsedAt != nil || dao.DB.Where("id = ?", identity.ReservationID).Take(&audit).Error != nil || audit.Outcome != "denied" || audit.Action != "mcpTransport" {
+				t.Fatal("expired final permit left committed use or allowed audit")
+			}
+		})
+	}
+}

@@ -8881,6 +8881,63 @@
         "rootLayoutChanges": false
       },
       "preservation": "Exact13 Web files plus4 baseline/evidence. Preserve old authority suffix/execution bytes/rawRef43,all original failures/NotRun/Unknown,97entries/102uses,47protected/26contracts/11businessarchive/28history and roles/selectors/uses."
+    },
+    "managed_credential_final_write_fix_followup": {
+      "state": "RootSolo_S3FinalWriteExpiryFixed_ActualFinalAcceptancePending",
+      "humanInstruction": "现在暂停其他会话，后续所有任务由你一个人完成",
+      "subject": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3",
+      "priorCheckpoints": {
+        "backend": "899e2dbf2b07d24d2caf3efeb1f3888e26a86c5c",
+        "Web": "21027f67505154aba62e6dbbe325b8aae1255293",
+        "bothNormalElevenChecksAndRemoteVerified": true
+      },
+      "finding": {
+        "evidence": "s3-http-direct06/midcall-expiry-1.safe.json",
+        "server": "7b648825e4b4c6e9cd21cfb9660ee5582df0f5831ab7902e206402dd60041d44",
+        "description": "A narrowly scoped real MySQL BEFORE UPDATE delay crossed the60-second credential expiry during final last-use writing. The old implementation still returned200 and a tools/list result after7589ms. The trigger was dropped and all three disposable credentials were revoked;original failed result retained.",
+        "fix": "Read trusted primary time again after both durable last-use/audit writes while credential/grant locks remain held. Expired credential or parent denies401 and rolls back final-write changes.",
+        "regression": "One new unit group with two genuine short-parent-grant cases delays credential and audit updates;requires401 and unchanged last-use/denied audit."
+      },
+      "validation": {
+        "backend": "126 exact top-level unit groups,native tail,actualLLD20 server/CLI and all five help commands. Source1809 inputs verified before/after,helper removed/full404 and originalIO closed.",
+        "backendProof": "s3-backend04/slice-qualification/result.safe.json",
+        "tagged": "The produced integration ELF was independently hashed,executed only with -test.list and qualified0555. No actual integration test credit. Source1809 host pins rechecked after the failed compound run. Server/CLI bytes and prior126 unit/native/five-help evidence remain qualified;original failure is not promoted.",
+        "cache": "A22-minute integration compile timeout preserved. Offline compiler-only SIGQUIT snapshots showed cache.FileHash reading old Go cache archives. Existing cache volume retained and unmounted;one ephemeral5GiB scratch cache used within existing8GiB/12GiB memory bounds,2GiB Go heap limit. No shared service was stopped or signalled. An attempted RAM-cache archive retention produced no copied data and was classified failed. The now-unneeded empty keeper was stopped/removed;the temporary volume definition and original disk cache are retained.",
+        "originalCompound": {
+          "state": "Failed",
+          "proof": "s3-backend04/compile/result.safe.json",
+          "cause": "The requested integration Go package compiled an ELF,but --test-integration then appends native model/fetch-testdata work. The compound gate failed and is unchanged. Use --test-integration-go for future generic database compilation.",
+          "MODEL_DIRUnsetInCompiler": true,
+          "network": "none",
+          "modelTestCredit": 0,
+          "actualModelCounters": "Not instrumented;do not extrapolate global zeros."
+        }
+      },
+      "priorActualEvidence": {
+        "scope": "These ran against pre-fix API12,not final new binary. Preserve exact evidence;do not promote to final verification.",
+        "Go": "Pinned github.com/modelcontextprotocol/go-sdk@v1.8.0:both2025-11-25/2025-06-18 fresh readonly native-view separation,scoped catalog,two units/reconstruction/reference reread,bounds and search -32602. Source/raw-operation traces contain only pinned synthetic response material.",
+        "TypeScript": "Pinned @modelcontextprotocol/sdk@1.32.2 actual readonly flow passed after correcting test-only object identity comparison to structural reference equality. First failed attempt retained;no production Web/SDK patch.",
+        "protocol": "Live unknown write tool and malformed CallToolParams -32602,invalid DTO200 isError with equal carriers,malformed outer400,unadvertised method400,validGET405 AllowPOST,missing/native/changed bearer401.",
+        "database": "Actual primary persisted32-byte verifiers,no plaintext prefix in captures,safe same-key token:null replay,changed-body409,durable last-use,one credential revoke without tenant epoch change and another credential still valid.",
+        "Web": "Actual new profile publication,new fixed module/personal web_and_mcp readonly grant,fresh1-source/2-unit review,default3600s self mint with explicit consent,default hidden first token,close removes delivery. Parent grant revoked ->module absent;known-domain own metadata and self revoke still work,explicit revoked timestamp. Raw token never revealed/copied;storage/copy assertions remain source/unit-only.",
+        "WebProof": "s3-web-live01/result.safe.json",
+        "screenshot": "s3-web-credential-revoked01.jpg"
+      },
+      "gates": {
+        "S1": "Accepted bounded slice,unchanged.",
+        "S2": "Accepted bounded slice,unchanged.",
+        "S3": "Development correction checkpoint only. Actual new-binary MySQL failures/final-write barrier,Go+TS read_search/revocation and final Web compatibility still Pending.",
+        "finalRelease": "Pending. Original29395/29396/private configuration/credentials/volumes remain untouched."
+      },
+      "scope": {
+        "RootOnly": true,
+        "SMTP": 0,
+        "realAICS": false,
+        "OAuth": false,
+        "rootLayoutChanges": false,
+        "modelCallsAuthorized": 0
+      },
+      "preservation": "Four source/test deltas plus four baseline/evidence postimages. New source files2;97entries/102uses,47protected/26contracts/11businessarchive/28history and every selector/use retained. Original70 NotRun and all failures remain unchanged. No independent D/C proof fabricated."
     }
   }
 }

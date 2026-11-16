@@ -274,7 +274,19 @@ func (d *DatasetService) accessCheckCredential(ctx context.Context, used bool) e
 				return accessError(503, "unavailable")
 			}
 		}
-		return tx.Model(&entity.KnowledgeAccessAuditRecord{}).Where("id = ? AND actor_user_id = ? AND credential_id = ? AND request_id = ? AND action = ? AND outcome = ?", identity.ReservationID, identity.UserID, identity.ID, identity.RequestID, "mcpTransport", "denied").Updates(map[string]any{"outcome": "allowed", "occurred_at": now}).Error
+		if err = tx.Model(&entity.KnowledgeAccessAuditRecord{}).Where("id = ? AND actor_user_id = ? AND credential_id = ? AND request_id = ? AND action = ? AND outcome = ?", identity.ReservationID, identity.UserID, identity.ID, identity.RequestID, "mcpTransport", "denied").Updates(map[string]any{"outcome": "allowed", "occurred_at": now}).Error; err != nil {
+			return err
+		}
+		// Durable writes can wait past the captured expiry. Check primary time
+		// again while the credential and parent grant locks are still held.
+		now, err = accessNow(tx)
+		if err != nil {
+			return err
+		}
+		if !now.Before(row.ExpiresAt) || !now.Before(verified.Grant.ExpiresAt) {
+			return accessError(401, "unauthenticated")
+		}
+		return nil
 	})
 	return accessCredentialAuthError(err)
 }

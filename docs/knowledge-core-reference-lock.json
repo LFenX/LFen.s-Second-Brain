@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "lock_id": "KCRL-20261116-44",
+  "lock_id": "KCRL-20261116-45",
   "recorded_date": "2026-11-16",
   "coordinator_thread_id": "01a1a9a5-c724-7f52-8cbb-16d19d982ba4",
   "source_baseline_git_head": "f804b3737a8f69af14b1ff1c2d042e8ea7c2a9f1",
   "source_snapshot": {
     "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
-    "file_count": 5161,
-    "sha256": "3c43bf527d6f21f7d045a54fb515e99bdff69cd97b21051748d963c3f2c4915a"
+    "file_count": 5163,
+    "sha256": "60ccc18ab9dfc38f9ca6ab8433473099b5e53513abae85236f4a189bacd32e4e"
   },
   "unlisted_policy": "DeniedAsCurrentGuidance_UntilCoordinatorReviewsAndAssigns",
   "authority_order": [
@@ -32,9 +32,9 @@
       },
       "integrity": {
         "mode": "file",
-        "sha256": "3538aa8216023f571349fd99edefe5576e2a594329d21bdd8f39e924516aa36b"
+        "sha256": "b43ad8ada86ce12ab2922d203faf2b484c4a5e27c67304c83d9dfd4278e2b7dc"
       },
-      "selection_sha256": "3538aa8216023f571349fd99edefe5576e2a594329d21bdd8f39e924516aa36b"
+      "selection_sha256": "b43ad8ada86ce12ab2922d203faf2b484c4a5e27c67304c83d9dfd4278e2b7dc"
     },
     {
       "id": "root-instructions",
@@ -1453,9 +1453,9 @@
       },
       "integrity": {
         "mode": "selection",
-        "sha256": "93455ce7f2d7486d36c744c1541acdde138c1728cf7a4a3dc306a452ea24ea24"
+        "sha256": "3cd59f29308b8749af796830be3d99db04cea6cdc26d2ac0823f59f35ade862c"
       },
-      "selection_sha256": "93455ce7f2d7486d36c744c1541acdde138c1728cf7a4a3dc306a452ea24ea24",
+      "selection_sha256": "3cd59f29308b8749af796830be3d99db04cea6cdc26d2ac0823f59f35ade862c",
       "limitation": "第三轮独立事实入口；仅在实际28源码及独立B回执核实、独审和总控精确四文件租约后机械生效。各运行/质量门按各自时点与版本保留，不批准新接口、模型、真实内容、最终验收或发布。 Ref27只追加shared_ordinal_followup；旧28和分层运行事实保留原时点，命名源码集合后续仅据实际应用与分层回执登记，未完成门不标Pass。"
     },
     {
@@ -4900,35 +4900,26 @@
     "Latest human stage commit+push instruction supersedes old time-scoped Git prohibitions;actual stage Git and production deployment/release remain separately coordinated actions."
   ],
   "update_rule": "仅主控在同范围内复核事实/差异/摘要并决定变更；最新真人规定总控不做实际工作，机械应用只能由具名执行者在唯一精确写窗中承担。保存旧锁原字节/摘要、原因、受影响条目和新校验；不得为未知漂移刷新摘要。接口/模型/真实内容/发布新范围仍需真人具体决定。",
-  "manifest_payload_sha256": "e24d1b892e9c78e461bc7945616fd847f03d3b7a48707ae78b35f76eb80d1e0d",
+  "manifest_payload_sha256": "ed3205779d20eb80a974623c6aa727ba8bd5f8ddbf62cd8ea58c33d29a7f689f",
   "previous_baseline": {
-    "lock_id": "KCRL-20261116-43",
-    "manifest_sha256": "cc5912405d299512fc59245755bcc74378f7ac1c83c2ee55d291f9f851a5d0ed",
-    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-43.json",
-    "archive_sha256": "cc5912405d299512fc59245755bcc74378f7ac1c83c2ee55d291f9f851a5d0ed",
+    "lock_id": "KCRL-20261116-44",
+    "manifest_sha256": "df9a53d5bbbf483bc76ce72bda9e4643e937c6bd5b1a4f2e866b9a65745b8547",
+    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-44.json",
+    "archive_sha256": "df9a53d5bbbf483bc76ce72bda9e4643e937c6bd5b1a4f2e866b9a65745b8547",
     "changed_files": [
-      "web/src/interfaces/database/knowledge-access.ts",
-      "web/src/interfaces/request/knowledge-access.ts",
-      "web/src/services/knowledge-access-service.ts",
-      "web/src/services/__tests__/knowledge-access-service.test.ts",
-      "web/src/pages/dataset/knowledge-access/grants.tsx",
-      "web/src/pages/dataset/knowledge-access/department-grants.test.tsx",
-      "web/src/pages/knowledge-shared/index.tsx",
-      "web/src/pages/knowledge-shared/temporary-mcp.tsx",
-      "web/src/pages/knowledge-shared/__tests__/temporary-mcp.test.tsx",
-      "web/src/hooks/use-knowledge-credential-command.ts",
-      "web/src/hooks/__tests__/knowledge-credential-command.test.tsx",
-      "web/src/locales/zh.ts",
-      "web/src/locales/en.ts",
+      "internal/service/dataset/knowledge_access_credential_auth.go",
+      "internal/service/dataset/knowledge_access_credential_test.go",
+      "internal/service/dataset/knowledge_access_credential_integration_test.go",
+      "internal/handler/knowledgeaccess/managed_mcp_e2e_test.go",
       "docs/knowledge-core-execution-record.json",
       "docs/knowledge-core-reference-authority.md",
-      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-43.json",
+      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-44.json",
       "docs/knowledge-core-reference-lock.json"
     ],
     "existing_entries_with_updated_selection_digests": [
       "reference-authority",
       "coordination-20261106-round3"
     ],
-    "reason": "Root solo;S3 credential Web checkpoint with146 checks,9 touched production typechecks and public2068-input build/artifact qualification. Actual MySQL/Go+TS SDK/Web acceptance remains pending."
+    "reason": "Root solo;fix real final-write expiry release and add tagged actual-client tests.126 units/native/build/five-help and tagged compile;final deployed acceptance and rollout remain pending."
   }
 }
