@@ -9039,6 +9039,145 @@
         "selectorsAndUsesUnchanged": true,
         "oldManifestArchivedExact": true
       }
+    },
+    "managed_credential_local_release_followup": {
+      "state": "RootSolo_LocalApprovedFeaturesReleasedAndAccepted",
+      "humanInstruction": "现在暂停其他会话，后续所有任务由你一个人完成",
+      "subject": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3",
+      "sourceCheckpoint": "7d1aecf9f537a2e4a5f5b49683c19971a4260a47",
+      "stageCheckpoint": "Normal11checks,commit/nonforcepush/remoteverification passed for S3 acceptance.",
+      "runtime": {
+        "Web": "http://127.0.0.1:29395",
+        "API": "http://127.0.0.1:29396",
+        "managedMCP": "http://127.0.0.1:29395/api/v1/knowledge/access/mcp",
+        "canonicalAddress": "Use this exact127.0.0.1 address and port. localhost is not interchangeable for managed credentials;different Host/Origin403 is expected.",
+        "project": "lfen-ragflow-poc",
+        "serverSHA256": "2a51741f57ff19fe256e54efc34e0c51cea82371c632c02183991d3bd45b0311",
+        "WebCollection": "813dc8ba1d000f3cb5bf322ca3dff4ea1a827a2540ba9140548cd2164646be78",
+        "deployment": "Exact prior qualified server and1080-file bundle. API and admin actual running-process ELF hashes checked before and after restart. Main differs from server build only by the separately accepted tagged SQL test;all production inputs identical.",
+        "privateState": "Same existing private mounts/env/secret pins. Only public MCP audience added. No user credential reset,no volume deletion or private config/hash publication.",
+        "restart": "All three formal containers individually restarted and ready. unless-stopped means they recover when Docker starts;Windows/Docker Desktop auto-start policy was not changed."
+      },
+      "database": {
+        "actualSchema": "lfen_kc_20261105",
+        "syntheticSchema": "second_brain_s1_acceptance_20261116",
+        "actualCounts": "Formal schema111->114 tables,1251->1281 columns. Acceptance schema actually114 tables;earlier shorthand111 described the copied starting schema,not final9-access-table schema.",
+        "addedTables": [
+          "knowledge_access_credential",
+          "knowledge_access_department",
+          "knowledge_access_department_member"
+        ],
+        "verification": "All existing column definitions and complete index column sets retained. Result equals accepted114-table schema. Names not used to justify index renaming. Three new tables empty,no policy/module/grant/credential backfill or implicit sharing."
+      },
+      "acceptance": {
+        "proofs": [
+          "formal-local-rollout04/result.safe.json",
+          "formal-local-rollout04/after-start.schema.safe.json",
+          "formal-local-rollout04/after-restart.schema.safe.json",
+          "formal-local-rollout04/after-start.smoke.safe.json",
+          "formal-local-rollout04/after-restart.smoke.safe.json",
+          "formal-local-rollout04/synthetic-login.safe.json",
+          "formal-local-cleanup01/result.safe.json",
+          "formal-local-final01/result.safe.json"
+        ],
+        "actualLogin": "One fresh explicitly named @fixtures.invalid synthetic account registered and successfully used at actual Web auth/login endpoint through29395 after all three restarts. Own model settings empty,own shared modules empty. No real account/password/token inspected or printed;synthetic secret RAM-only,account retained for evidence.",
+        "assets": "Exact current HTML and42 referenced asset HEAD statuses/content lengths passed. Native unauthenticated shared/credential routes401,no-store,data:null. Exact-canonical valid outer MCP without bearer401;wrong Host and foreign Origin403,no result/no redirect.",
+        "S3": "Detailed prior accepted17 phases,87 actual requests,76 assertions and11 bounded SQL operations plus exact Go/TS/expiry/database/Web evidence retained in managed_credential_final_acceptance_followup. No new broad/model/format tests claimed.",
+        "proofPins": [
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/formal-local-rollout04/result.safe.json",
+            "bytes": 3201,
+            "sha256": "a961998fba207fed61780d7a8c61a8e23fbc0d3f948c1b4e995c97e209dac19a"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/formal-local-rollout04/after-start.schema.safe.json",
+            "bytes": 503,
+            "sha256": "83acdaf0072dac81f31535aebee58c543e029a3fb91f4510049e7479dc493788"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/formal-local-rollout04/after-restart.schema.safe.json",
+            "bytes": 503,
+            "sha256": "83acdaf0072dac81f31535aebee58c543e029a3fb91f4510049e7479dc493788"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/formal-local-rollout04/after-start.smoke.safe.json",
+            "bytes": 1969,
+            "sha256": "592d0519ebcca620d803335b20415119aacd7ee57a87340b87d2a3c7d3a15312"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/formal-local-rollout04/after-restart.smoke.safe.json",
+            "bytes": 1969,
+            "sha256": "592d0519ebcca620d803335b20415119aacd7ee57a87340b87d2a3c7d3a15312"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/formal-local-rollout04/synthetic-login.safe.json",
+            "bytes": 819,
+            "sha256": "68b540f35594cb401561e74c55696286e0fab87acb3f65072e54a44cb74d17c4"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/formal-local-cleanup01/result.safe.json",
+            "bytes": 13249,
+            "sha256": "f7d6da85cdedb3cfc8474ad81c173549640778a884609cdc51c76ecafa457e81"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/formal-local-final01/result.safe.json",
+            "bytes": 9056,
+            "sha256": "7583e5939c0e7316b74cf6309a8cd2cae80936a82a2af444d862bf0158aed1f4"
+          }
+        ]
+      },
+      "containers": {
+        "removedCompletedOrObsolete": 10,
+        "volumesDeleted": 0,
+        "formalServices": 8,
+        "foreignRunningPreserved": 3,
+        "roles": {
+          "second-brain-web": "本项目网页与同源API代理",
+          "second-brain-api": "本项目知识库、共享与临时MCP API",
+          "second-brain-admin": "本项目管理与登录状态服务",
+          "second-brain-mysql": "本项目关系数据库",
+          "second-brain-elasticsearch": "本项目本地词法索引",
+          "second-brain-minio": "本项目原文对象存储",
+          "second-brain-kvrocks": "本项目缓存与运行状态",
+          "second-brain-nats": "本项目任务队列"
+        },
+        "attribution": "New formal app containers explicitly labelled lfen-ragflow-poc with Chinese purposes. Existing NATS keeps its clear second-brain name and existing configuration;foreign lfenink-knowledge services untouched. No helper/acceptance/old duplicate remains running."
+      },
+      "failuresPreserved": {
+        "first": "Docker stop timed out after actually stopping original API. Initial recovery list missed the unknown partial outcome;Root reinspection restarted it and explicitly reloaded old Nginx. Fixed by recording original before stop,allowing120s control responses,and reinspecting/restoring on unknown outcomes.",
+        "second": "After-start actual process ELF and schema passed. Own smoke incorrectly used invalid MCP outer{} while expecting401. Source plus actual isolated canonical probes show400 invalid_request versus valid tools/list401;original failing route was not instrumented and is not invented.",
+        "third": "After-start public static/API/MCP gates passed. LocalHTTPUnavailable after restart before after-restart report. Root added actual Web-proxied readiness wait and admin port readiness before API initialization. Exact failing route was not instrumented;not invented.",
+        "final": "Attempt04 all gates passed. Every failed receipt/correction preserved;no product change or relabelled original success."
+      },
+      "operatingScope": {
+        "localUse": "Approved knowledge-core and bounded S1 personal sharing/S2 exact department roster/S3 temporary managed-Bearer features now available at formal local entry.",
+        "defaultSharing": "Owner explicitly enables sharing,fixes module version/sources and issues exact grants. No automatic grants. Credential default1hour,max8hours,parent-bound and revocable;only named configurable-Bearer clients,not OAuth.",
+        "existingIndexes": "Executable-bound old lexical profiles may correctly require explicit refresh/republication. Real-content reindexing/publication was not triggered automatically.",
+        "limits": "Acceptance used synthetic data only. No new real AICS/model/SMTP calls,complex-format/Wiki expansion,general Agent/personality/memory work,OAuth or internet-facing deployment. Original70 planned NotRun groups,old Go21/composite failures and all historical scopes remain unchanged.",
+        "humanUse": "Original user can open29395 and use existing account;user-specific real-data/model quality and user-owned account login are not substituted by synthetic acceptance."
+      },
+      "preservation": {
+        "RootOnly": true,
+        "otherChatsPaused": true,
+        "independentProofFabricated": false,
+        "rootLayoutChanged": false,
+        "PythonBulkDeletion": false,
+        "originalHistoryAndAttributionRetained": true
+      },
+      "baseline": {
+        "postimages": 4,
+        "codeChanges": 0,
+        "sourceFiles": 5163,
+        "sourceSHA256": "f66b5513f7a30a425bdc222e2933d21059b214ac5bf7b71825d8429f135e2501",
+        "entries": 97,
+        "uses": 102,
+        "protected": 47,
+        "contracts": 26,
+        "businessArchive": 11,
+        "history": 28,
+        "selectorsAndUsesUnchanged": true,
+        "Ref46ArchivedExact": true
+      }
     }
   }
 }
