@@ -9275,6 +9275,266 @@
         "selectorsAndUsesUnchanged": true
       },
       "serverSHA256": "67f5399ac924567d6f621dbf72416d7f1f383e4c7ac7741fad03203dad6a5550"
+    },
+    "fourteen_format_acceptance_followup": {
+      "state": "RootSolo_AcceptedBoundedFourteenFormatSyntheticPipeline",
+      "humanInstruction": "继续推进，把模型问答和复杂格式的验收也完成，后续由你一个人做，每完成一个阶段就提交并推送远端。",
+      "sourceCheckpoint": "7b0f4e124d031164a9ac94b1826f3bc354843cc8",
+      "previousStage": "Worker epoch/domain lock order fix normally checked,committed,pushed and remotely verified.",
+      "serverSHA256": "67f5399ac924567d6f621dbf72416d7f1f383e4c7ac7741fad03203dad6a5550",
+      "runtime": {
+        "kind": "Isolated actual Go API",
+        "schema": "second_brain_s1_acceptance_20261116",
+        "API": "http://127.0.0.1:29397",
+        "cid": "e862e54a94e233fdc429b326d167b77c9692666dc2dc41465ae2d41f5e85eeb6",
+        "reference": "KCRL-20261116-48",
+        "modelSettings": "Two fresh @fixtures.invalid users;all native model selections empty;SMTP guard empty.",
+        "formalEntry": "Still previous artifact during this matrix stage;separate formal rollout follows."
+      },
+      "acceptance": {
+        "phases": 18,
+        "actualHTTPRequests": 514,
+        "explicitAssertionGroups": 24,
+        "formats": [
+          {
+            "format": "pdf",
+            "sourceSHA256": "974d711ea3bdb0c97e676fa13cdfc413e76e2f097322ff7311df76e77af3d42c",
+            "nodes": 7,
+            "readingBytes": 113,
+            "goldFacts": 3,
+            "state": "Passed_OriginalParseFixedRead"
+          },
+          {
+            "format": "docx",
+            "sourceSHA256": "ac9528dae35a15b8d6e54191c2e3b34ea86a839491193da25a5bafdb96521cca",
+            "nodes": 24,
+            "readingBytes": 219,
+            "goldFacts": 3,
+            "state": "Passed_OriginalParseFixedRead"
+          },
+          {
+            "format": "pptx",
+            "sourceSHA256": "6ae0cd60506a7b42e3aac91be05aec98a15e75e8bd72b17d4457c974162c2162",
+            "nodes": 11,
+            "readingBytes": 124,
+            "goldFacts": 3,
+            "state": "Passed_OriginalParseFixedRead"
+          },
+          {
+            "format": "xlsx",
+            "sourceSHA256": "22f8b453ac2a82e7023931ff85f00a2ade96ffeddf861478ccef59b8a70805d9",
+            "nodes": 5,
+            "readingBytes": 106,
+            "goldFacts": 2,
+            "state": "Passed_OriginalParseFixedRead"
+          },
+          {
+            "format": "csv",
+            "sourceSHA256": "8b9a9ca95f1ef1f585445b3a8242112114d8cd327b2b70fcb9e33c958adf41e2",
+            "nodes": 3,
+            "readingBytes": 69,
+            "goldFacts": 2,
+            "state": "Passed_OriginalParseFixedRead"
+          },
+          {
+            "format": "html",
+            "sourceSHA256": "c89beeea71eb06ab140ca48b33e00d333feeb04ec7fb9b94f12c2d88d46ab888",
+            "nodes": 7,
+            "readingBytes": 97,
+            "goldFacts": 2,
+            "state": "Passed_OriginalParseFixedRead"
+          },
+          {
+            "format": "md",
+            "sourceSHA256": "64770d84d0f310e1015d44a9e9e1c4565e329160850d8f53f751faba84cb2e3b",
+            "nodes": 9,
+            "readingBytes": 117,
+            "goldFacts": 3,
+            "state": "Passed_OriginalParseFixedRead"
+          },
+          {
+            "format": "json",
+            "sourceSHA256": "3b13526f20a95dd9acdedb901263d5266d7802ebf324c05c1b906ce8caf5b53d",
+            "nodes": 3,
+            "readingBytes": 121,
+            "goldFacts": 3,
+            "state": "Passed_OriginalParseFixedRead"
+          },
+          {
+            "format": "eml",
+            "sourceSHA256": "b7bac9f903ac6c0a4c05027021b17dacb95854c274f9cc65d9a91d7ffa9773df",
+            "nodes": 3,
+            "readingBytes": 183,
+            "goldFacts": 2,
+            "state": "Passed_OriginalParseFixedRead"
+          },
+          {
+            "format": "txt",
+            "sourceSHA256": "427fb953ce702939e6b6cca71f97ca84685168c08951ba43bd3daeeb30db3030",
+            "nodes": 3,
+            "readingBytes": 88,
+            "goldFacts": 3,
+            "state": "Passed_OriginalParseFixedRead"
+          },
+          {
+            "format": "epub",
+            "sourceSHA256": "6db102b1aa795f0838298fbdfdb8dfebca073a03c37f485ac43267b57980489c",
+            "nodes": 5,
+            "readingBytes": 118,
+            "goldFacts": 2,
+            "state": "Passed_OriginalParseFixedRead"
+          },
+          {
+            "format": "doc",
+            "sourceSHA256": "6643f7c6b2260e351af6623376c031d835898d30cfe44818af47133c36b105ac",
+            "nodes": 3,
+            "readingBytes": 76,
+            "goldFacts": 3,
+            "state": "Passed_OriginalParseFixedRead"
+          },
+          {
+            "format": "xls",
+            "sourceSHA256": "da9c4dc1de4cc690027919a99da0b0dbc8a6f2bdb04d3fb526e041c5114943ce",
+            "nodes": 5,
+            "readingBytes": 76,
+            "goldFacts": 3,
+            "state": "Passed_OriginalParseFixedRead"
+          },
+          {
+            "format": "ppt",
+            "sourceSHA256": "4f3c0692b62a80bc5ffd80e49916ec4b619d0d7c3710df3787ee7b7a074581af",
+            "nodes": 5,
+            "readingBytes": 93,
+            "goldFacts": 3,
+            "state": "Passed_OriginalParseFixedRead"
+          }
+        ],
+        "originals": "Three R2 originals had actual original-byte readback equality. All parsed-source uploads used exact fixture byte/SHA checks and owning worker original integrity fences.",
+        "fidelity": "Bound representations,root text SHA,all typed node range hashes and UTF8 boundaries,recursive tree reads;DOCX exact cell values/empty position and no invented physical page;XLS/XLSX sheet order/emptyB2 and cached formula42 only;PDF3 physical pages/unsupported empty middle/unknown classification;PPTX source logical part order;binary PPT persist-order and stale-text exclusion;EPUB spine order;CSV quoted comma/newline;HTML script and email attachment exclusion.",
+        "binaryScope": "Authentic synthetic CFB WordDocument/CLX,DOC;BIFF8 XLS;PowerPoint Document/CurrentUser/PersistDirectory PPT. No OOXML rename counted as legacy binary evidence. Not a claim that Microsoft Office rendered them or every historical variant is covered.",
+        "mixedLexical": "One actual ES-backed index over14 fixed R2/C3 representations,published. All14 known-keyword queries found the expected source and fact at rank1. Every returned hit was reread by fixed evidence reference and matched both text and byte SHA;not only the chosen positive.",
+        "recallAt1": "14/14 for the frozen known-keyword corpus",
+        "outsider": "Fresh unrelated synthetic native user gets404/not_found and no content.",
+        "proofPins": [
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/fixtures02.safe.json",
+            "bytes": 11370,
+            "sha256": "c7c534477123de98de870fb1f65d9a3536bfab880c5e002f88840156a9e1d51b"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/runtime-fixed03/result.safe.json",
+            "bytes": 14219,
+            "sha256": "df3382d8852e3d676fbdfb411b6b07e38cf66962430349cd37c36e89760c245e"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/live05/result-01.safe.json",
+            "bytes": 146850,
+            "sha256": "13092704587f4c9c04723c698188f5aac120e4f118d0504117b440b74f189e44"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/live05/mixed-recall.safe.json",
+            "bytes": 3570196,
+            "sha256": "055795e2e0da4c6635572b622fea67672dc237ed1039cc94046788dc8608e0ee"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/live05/known-keyword-ranking.safe.json",
+            "bytes": 1360,
+            "sha256": "c16f9ee1cb195b58527d0cd6331bea2dd675408c70ba40e5599c9390de258c52"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/live05/pdf.projection.safe.json",
+            "bytes": 15841,
+            "sha256": "97c097e9dad8b82ce4fc771f8844c26f6dc6b2bfbacbb4a8fc3e82b6aaf6e109"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/live05/docx.projection.safe.json",
+            "bytes": 64663,
+            "sha256": "b10c51036cc4939f1dbb01d2dc61f777f1dd2d9783881df3e2950965ceabcca6"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/live05/pptx.projection.safe.json",
+            "bytes": 28538,
+            "sha256": "2ca57bf17bfb25bb1623faf60c9b76bb0eaf8f59c1440d1068fe279665c92ae4"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/live05/xlsx.projection.safe.json",
+            "bytes": 14023,
+            "sha256": "d7c26716774a8e65d1bd52cabccebca009fb1c7f3b76f84494b59e1a37d48b1e"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/live05/csv.projection.safe.json",
+            "bytes": 9671,
+            "sha256": "f8a6db1f0624c0d4afc6843331447c2e7ef7920dd053ca494c23fc69089d0721"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/live05/html.projection.safe.json",
+            "bytes": 15976,
+            "sha256": "4774edd6eb002991f25f3e3170e57ea4238a2cdd9f27229d5106729f1330aad2"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/live05/md.projection.safe.json",
+            "bytes": 19396,
+            "sha256": "9d05b1498fdb8801442e0320f920eeb28e3d7aea78e4aa78abc16cba13a3374e"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/live05/json.projection.safe.json",
+            "bytes": 8450,
+            "sha256": "0551377b85c5680172ee55e54e7a4daa4dc2d30b27649c3789f4a1ecceba1b07"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/live05/eml.projection.safe.json",
+            "bytes": 8563,
+            "sha256": "cfed6786856a070c411cac245c549d3aff1d1a5477dfdd1ddc8db5a54c60abd3"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/live05/txt.projection.safe.json",
+            "bytes": 8457,
+            "sha256": "a6c4afe46a636769123b5f7314f5131aeab954ad0aacc02f27a9a3091dd79909"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/live05/epub.projection.safe.json",
+            "bytes": 11878,
+            "sha256": "69435d3855d6f9e17197c4933798f46dabaed5ea583cdd9c1c5422f118024394"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/live05/doc.projection.safe.json",
+            "bytes": 8581,
+            "sha256": "1be42e834597b061f0203245b4bd2a82c6ad9f868e16b3b9eb8d9007692f4c79"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/live05/xls.projection.safe.json",
+            "bytes": 13798,
+            "sha256": "5a262a3bcd3bc33e2e61ac93f728d9479596d4e7a95af94922704f582ad40560"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/live05/ppt.projection.safe.json",
+            "bytes": 12326,
+            "sha256": "4764137e78e1d2b1a2c905c513a90259269ca6e9ad0fa1cd575305d68dc130a1"
+          }
+        ]
+      },
+      "limits": {
+        "model": "Real model answer/citation acceptance Pending usable private provider configuration;16-case plan prepared,zero actual model calls in this workflow.",
+        "semantic": "Known-keyword lexical retrieval only;blind/cross-language semantic recall was not measured or credited.",
+        "formats": "One bounded original synthetic case per supported structured format. Scanned/image-only PDF OCR,image/audio,complex drawings/visual layout,encrypted formats and a universal all-document guarantee are not accepted. Empty PDF page is explicitly unsupported_or_requires_ocr/no_extractable_text,not fabricated empty text.",
+        "historical": "Original70 planned NotRun and old Go21/compound failures remain historical at their own time;this fresh matrix does not rename or relabel them.",
+        "UIAndMCP": "This stage validates owning HTTP/content/index/fixed-reference paths. It does not invent a new Web native-generation permission or claim that the model/provider is configured."
+      },
+      "preservation": {
+        "RootOnly": true,
+        "otherChatsPaused": true,
+        "modelGuardUnchanged": true,
+        "contractsUnchanged": true,
+        "realUserContentRead": false,
+        "realAICS": false,
+        "SMTP": 0,
+        "modelCalls": 0,
+        "volumeDeletes": 0,
+        "credentialsReset": false,
+        "formalServicesUnchanged": true,
+        "oldTestAPI": "Old88a6 retired only after zero active structure/index jobs and zero owned children;all volumes retained."
+      },
+      "next": "Normally commit/push this bounded matrix stage;deploy the same qualified artifact to existing formal API/admin with schema/credential/volume preservation,actual restart/login/static checks. Continue real model QA after private configuration."
     }
   }
 }
