@@ -109,3 +109,40 @@ it('loads department names only when selected and submits one exact department g
     screen.queryByText(/member count|user_ids|temporary credential/i),
   ).toBeNull();
 });
+
+it('selects the MCP delivery channel separately and resets consent before granting it', () => {
+  const module = {
+    ...admin(),
+    enabled: true,
+    policy: { ...admin().policy, enabled: true },
+  };
+  render(
+    <AccessGrants
+      actor={actor()}
+      module={module}
+      command={{ start, locked: false } as any}
+    />,
+  );
+  fireEvent.change(screen.getByLabelText('Recipient account ID'), {
+    target: { value: 'c'.repeat(32) },
+  });
+  const confirmation = screen.getByRole('checkbox', {
+    name: /I reviewed the account ID/,
+  });
+  fireEvent.click(confirmation);
+  fireEvent.change(screen.getByLabelText('Delivery channel'), {
+    target: { value: 'web_and_mcp' },
+  });
+  expect(confirmation).not.toBeChecked();
+  expect(
+    screen.getByRole('button', { name: 'Create personal grant' }),
+  ).toBeDisabled();
+  fireEvent.click(confirmation);
+  fireEvent.click(
+    screen.getByRole('button', { name: 'Create personal grant' }),
+  );
+  expect(start).toHaveBeenCalledWith({
+    operation: 'createGrant',
+    body: expect.objectContaining({ delivery: 'web_and_mcp', confirmed: true }),
+  });
+});

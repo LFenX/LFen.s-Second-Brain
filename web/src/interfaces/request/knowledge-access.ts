@@ -103,6 +103,26 @@ export type AccessReadRequest = {
 };
 
 export interface AccessRequests {
+  createCredential: {
+    contract_version: AccessVersion;
+    view_id: AccessID;
+    mode: AccessMode;
+    ttl_seconds: number | null;
+    client_label: string;
+    confirmed: true;
+    idempotency_key: AccessKey;
+  };
+  revokeCredential: {
+    contract_version: AccessVersion;
+    credential_id: AccessID;
+    confirmed: true;
+    idempotency_key: AccessKey;
+  };
+  listCredentials: {
+    contract_version: AccessVersion;
+    domain_id: AccessID;
+    idempotency_key: AccessKey | null;
+  };
   setDepartment: AccessSetDepartmentRequest;
   listDepartments: AccessListDepartmentsRequest;
   setPolicy: AccessSetPolicyRequest;

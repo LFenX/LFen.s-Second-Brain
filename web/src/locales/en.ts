@@ -1,6 +1,50 @@
 export default {
   translation: {
     knowledgeAccess: {
+      delivery: 'Delivery channel',
+      webAndMCP: 'Web and temporary MCP',
+      temporaryMCP: 'Temporary MCP credential',
+      credentialOwner: 'Credential holder account',
+      mcpEndpoint: 'MCP endpoint',
+      mcpClientHint:
+        'This address must match the configured canonical endpoint. Use a client with configurable Bearer tokens, pin the complete URL, reject redirects and use client secret storage. OAuth-only clients are not supported.',
+      noMCPGrant: 'This module has no current temporary MCP delivery grant.',
+      credentialSources:
+        'Select fixed sources (review the scope again after changes)',
+      prepareMCP: 'Review temporary MCP scope',
+      credentialReview: 'Fixed scope for this credential',
+      credentialScopeCount:
+        '{{sources}} permitted sources, {{units}} readable units',
+      clientLabel: 'Client label',
+      clientLabelHint:
+        'A descriptive label does not bind a client identity. Do not enter passwords or keys.',
+      credentialTTL: 'Credential lifetime (seconds)',
+      credentialTTLHint:
+        'Default 3600 seconds, maximum 28800; capped by the parent grant expiry. Reading views last only 5 minutes.',
+      confirmCredential:
+        'I reviewed the account, fixed version, sources, permission and lifetime, understand that external clients can retain or forward delivered text, and confirm this self credential',
+      createCredential: 'Create self temporary credential',
+      credentialID: 'Credential ID',
+      credentialUnknown:
+        'The outcome is unresolved. Check the original operation; do not reissue with a new request before resolving its receipt or revoking it.',
+      tokenUnavailable:
+        'The token cannot be retrieved again. Resolve the original receipt first; explicitly revoke the old credential before creating a replacement.',
+      tokenOnce:
+        'The token is available only in this delivery. Copy only to a trusted client secret store; closing, refreshing or changing identity removes this display.',
+      showToken: 'Reveal this token',
+      copyToken: 'Copy this token',
+      closeToken: 'Close token display',
+      tokenCopied: 'Token copied',
+      ownCredentials: 'Manage my temporary credentials',
+      ownCredentialsHint:
+        'Enter a known domain ID to list up to 20 own live or recent credential metadata records and revoke them. Self management remains available after content access is lost; it reveals no token and grants no content access.',
+      credentialDomain: 'Credential domain ID',
+      listCredentials: 'List own credentials',
+      credentialLastUse: 'Last used',
+      credentialRevoked: 'Revoked',
+      confirmRevokeCredential:
+        'I confirm revoking only this self credential; subsequent requests will be denied and previously delivered text cannot be recalled',
+      revokeCredential: 'Revoke self credential',
       departmentEnabled: 'Enable this department',
       departments: 'Departments',
       department: 'Department',
@@ -151,8 +195,8 @@ export default {
         setDepartment: 'Save department and roster',
         setPolicy: 'Change sharing policy',
         setModule: 'Save shared module',
-        createGrant: 'Create personal grant',
-        revokeGrant: 'Revoke personal grant',
+        createGrant: 'Create grant',
+        revokeGrant: 'Revoke grant',
       },
     },
     knowledgeDomain: {

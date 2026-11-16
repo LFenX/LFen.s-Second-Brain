@@ -198,7 +198,7 @@ it('binds search output to the same view, ordinal, query, limit and exact eviden
   ).resolves.toEqual(evidence());
 });
 
-it('read-only search, out-of-catalogue selectors and S3 delivery never dispatch', async () => {
+it('read-only search and out-of-catalogue selectors never dispatch', async () => {
   await expect(
     service.search(
       {
@@ -215,15 +215,6 @@ it('read-only search, out-of-catalogue selectors and S3 delivery never dispatch'
   await expect(service.read(first, view())).rejects.toMatchObject({
     status: 400,
   });
-  await expect(
-    service.createGrant({ ...example('EX10'), delivery: 'web_and_mcp' }),
-  ).rejects.toMatchObject({
-    status: 400,
-  });
-  const inspect = inspectBody();
-  await expect(
-    service.inspect({ ...inspect, delivery: 'web_and_mcp' }),
-  ).rejects.toMatchObject({ status: 400 });
   expect(post).not.toHaveBeenCalled();
 });
 
@@ -580,7 +571,7 @@ it('rejects invalid department creation/CAS and duplicate roster before transpor
   ).rejects.toMatchObject({ status: 400 });
   expect(post).not.toHaveBeenCalled();
 });
-it('creates a fixed department web grant without enabling later MCP delivery', async () => {
+it('creates a fixed department web grant with its explicitly selected delivery', async () => {
   const item = {
     ...grant(),
     subject: { kind: 'department' as const, id: 'a'.repeat(32) },
@@ -598,4 +589,172 @@ it('creates a fixed department web grant without enabling later MCP delivery', a
   post.mockResolvedValue(response('createGrant', item, 201));
   await expect(service.createGrant(body)).resolves.toEqual(item);
   expect(JSON.parse(post.mock.calls[0][0].data).subject).toEqual(item.subject);
+});
+
+function credentialMetadata() {
+  return {
+    credential_id: '6'.repeat(32),
+    domain_id: Domain,
+    module_id: ModuleId,
+    module_version: 1,
+    mode: 'read' as const,
+    client_label: 'Synthetic SDK',
+    issued_at: '2030-01-01T00:00:00Z',
+    expires_at: '2030-01-01T01:00:00Z',
+    revoked_at: null,
+    last_used_at: null,
+  };
+}
+function credentialRequest() {
+  return {
+    contract_version: KnowledgeAccessVersion,
+    view_id: view().view_id,
+    mode: 'read' as const,
+    ttl_seconds: null,
+    client_label: 'Synthetic SDK',
+    confirmed: true as const,
+    idempotency_key: 'Synthetic_Credential_Request01',
+  };
+}
+const syntheticCredentialToken = () =>
+  'kac1_' + '6'.repeat(32) + '.' + 'A'.repeat(43);
+
+it('allows explicitly selected MCP grant delivery and a separate native MCP inspect', async () => {
+  const item = { ...grant(), delivery: 'web_and_mcp' as const };
+  post.mockResolvedValueOnce(response('createGrant', item, 201));
+  await service.createGrant({
+    ...example('EX10'),
+    subject: item.subject,
+    mode: item.mode,
+    expires_at: item.expires_at,
+    delivery: item.delivery,
+  });
+  post.mockResolvedValueOnce(
+    response('inspect', { ...view(), delivery: 'web_and_mcp' }),
+  );
+  await service.inspect({ ...inspectBody(), delivery: 'web_and_mcp' });
+  expect(
+    post.mock.calls.map((call) => JSON.parse(call[0].data).delivery),
+  ).toEqual(['web_and_mcp', 'web_and_mcp']);
+});
+it('accepts first-response credentials and safe replay without recovering a token', async () => {
+  const first = {
+    credential: credentialMetadata(),
+    token: syntheticCredentialToken(),
+    delivery: 'issued_once',
+  };
+  post.mockResolvedValueOnce(response('createCredential', first, 201));
+  await expect(service.createCredential(credentialRequest())).resolves.toEqual(
+    first,
+  );
+  const replay = {
+    ...first,
+    token: null,
+    delivery: 'unavailable_after_first_response',
+  };
+  post.mockResolvedValueOnce(response('createCredential', replay));
+  await expect(service.createCredential(credentialRequest())).resolves.toEqual(
+    replay,
+  );
+  expect(JSON.parse(post.mock.calls[0][0].data)).toEqual(
+    JSON.parse(post.mock.calls[1][0].data),
+  );
+  expect(post.mock.calls[0][0].url).toBe(
+    '/api/v1/knowledge/access/credentials/create',
+  );
+});
+it.each([
+  'token replay',
+  'null first token',
+  'wrong token ID',
+  'overlong lifetime',
+  'wrong label',
+  'private metadata',
+])('rejects unsafe credential output: %s', async (problem) => {
+  const data: any = {
+    credential: credentialMetadata(),
+    token: syntheticCredentialToken(),
+    delivery: 'issued_once',
+  };
+  let status = 201;
+  if (problem === 'token replay') status = 200;
+  if (problem === 'null first token') {
+    data.token = null;
+    data.delivery = 'unavailable_after_first_response';
+  }
+  if (problem === 'wrong token ID')
+    data.token = 'kac1_' + '7'.repeat(32) + '.' + 'A'.repeat(43);
+  if (problem === 'overlong lifetime')
+    data.credential.expires_at = '2030-01-01T09:00:00Z';
+  if (problem === 'wrong label') data.credential.client_label = 'Other client';
+  if (problem === 'private metadata')
+    data.credential.verifier_sha256 = 'Synthetic_Private_Verifier';
+  post.mockResolvedValueOnce(response('createCredential', data, status));
+  await expect(
+    service.createCredential(credentialRequest()),
+  ).rejects.toMatchObject({ status: 502, retrySameKey: true });
+});
+it('lists only own safe domain-bound metadata and revokes one exact credential', async () => {
+  const item = credentialMetadata();
+  post.mockResolvedValueOnce(
+    response('listCredentials', { items: [item], pagination: 'none' }),
+  );
+  await expect(
+    service.listCredentials({
+      contract_version: KnowledgeAccessVersion,
+      domain_id: Domain,
+      idempotency_key: null,
+    }),
+  ).resolves.toEqual({ items: [item], pagination: 'none' });
+  post.mockResolvedValueOnce(
+    response('revokeCredential', {
+      id: item.credential_id,
+      revoked_at: '2030-01-01T00:30:00Z',
+    }),
+  );
+  await service.revokeCredential({
+    contract_version: KnowledgeAccessVersion,
+    credential_id: item.credential_id,
+    confirmed: true,
+    idempotency_key: 'Synthetic_Credential_Revoke01',
+  });
+  expect(post.mock.calls[1][0].url).toBe(
+    '/api/v1/knowledge/access/credentials/revoke',
+  );
+  expect(JSON.parse(post.mock.calls[1][0].data)).not.toHaveProperty(
+    'domain_id',
+  );
+});
+it.each(['foreign domain', 'duplicate ID', 'secret token'])(
+  'rejects a credential metadata list containing %s',
+  async (problem) => {
+    const item: any = credentialMetadata(),
+      items = [item];
+    if (problem === 'foreign domain') item.domain_id = '8'.repeat(32);
+    if (problem === 'duplicate ID')
+      items.push({ ...item, client_label: 'Other label' });
+    if (problem === 'secret token') item.token = syntheticCredentialToken();
+    post.mockResolvedValueOnce(
+      response('listCredentials', { items, pagination: 'none' }),
+    );
+    await expect(
+      service.listCredentials({
+        contract_version: KnowledgeAccessVersion,
+        domain_id: Domain,
+        idempotency_key: null,
+      }),
+    ).rejects.toMatchObject({ status: 502 });
+  },
+);
+it('rejects invalid lifetime, consent and UTF8 client label length before mint transport', async () => {
+  for (const patch of [
+    { ttl_seconds: 59 },
+    { ttl_seconds: 28801 },
+    { confirmed: false },
+    { client_label: '合'.repeat(43) },
+  ])
+    await expect(
+      service.createCredential({ ...credentialRequest(), ...patch } as any),
+    ).rejects.toMatchObject({ status: 400 });
+  expect(post).not.toHaveBeenCalled();
 });

@@ -1,5 +1,27 @@
 export const KnowledgeAccessVersion = '0.3.0-candidate' as const;
 
+export type AccessCredential = {
+  credential_id: AccessID;
+  domain_id: AccessID;
+  module_id: AccessID;
+  module_version: number;
+  mode: AccessMode;
+  client_label: string;
+  issued_at: AccessTime;
+  expires_at: AccessTime;
+  revoked_at: AccessTime | null;
+  last_used_at: AccessTime | null;
+};
+export type AccessCredentialMintData = {
+  credential: AccessCredential;
+  token: string | null;
+  delivery: 'issued_once' | 'unavailable_after_first_response';
+};
+export type AccessListCredentialsData = {
+  items: AccessCredential[];
+  pagination: 'none';
+};
+
 export type AccessCitation = {
   target: AccessTarget;
   node_id: AccessOwningNodeID;
@@ -282,6 +304,9 @@ export interface AccessActor {
   auth: 'native';
 }
 export interface AccessResults {
+  createCredential: AccessCredentialMintData;
+  revokeCredential: AccessRevoked;
+  listCredentials: AccessListCredentialsData;
   setDepartment: AccessDepartment;
   listDepartments: AccessListDepartmentsData;
   setPolicy: AccessPolicy;

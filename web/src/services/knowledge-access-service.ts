@@ -2,6 +2,7 @@ import type { AxiosResponse } from 'axios';
 import { registerNextServer } from '@/utils/register-server';
 import { KnowledgeAccessVersion } from '@/interfaces/database/knowledge-access';
 import type {
+  AccessCredential,
   AccessDepartment,
   AccessError,
   AccessInspectData,
@@ -27,6 +28,21 @@ const Server = registerNextServer({
   post: { url: (config: { url: string }) => config.url, method: 'post' },
 });
 const Operations = {
+  createCredential: [
+    'credentials/create',
+    'CreateCredentialRequest',
+    'CreateCredentialResponse',
+  ],
+  revokeCredential: [
+    'credentials/revoke',
+    'RevokeCredentialRequest',
+    'RevokeCredentialResponse',
+  ],
+  listCredentials: [
+    'credentials/list',
+    'ListCredentialsRequest',
+    'ListCredentialsResponse',
+  ],
   setDepartment: [
     'admin/departments/set',
     'SetDepartmentRequest',
@@ -132,12 +148,11 @@ export function accessRequestValid<O extends AccessOperation>(
       accessTargetsValid(value.scope.targets, value.domain_id)
     );
   }
-  if (operation === 'createGrant') {
-    const value = body as AccessRequests['createGrant'];
-    return value.delivery === 'web_only';
-  }
-  if (operation === 'inspect')
-    return (body as AccessRequests['inspect']).delivery === 'web_only';
+  if (operation === 'createCredential')
+    return (
+      accessBytes((body as AccessRequests['createCredential']).client_label) <=
+      128
+    );
   if (operation === 'search')
     return accessBytes((body as AccessRequests['search']).query) <= 4096;
   return true;
@@ -231,9 +246,22 @@ async function call<O extends AccessOperation>(
   }
   if (
     response.status !== 200 &&
-    !(operation === 'createGrant' && response.status === 201)
+    !(
+      ['createGrant', 'createCredential'].includes(operation) &&
+      response.status === 201
+    )
   )
     throw invalid();
+  if (operation === 'createCredential') {
+    const minted = envelope.data as AccessResults['createCredential'];
+    if (
+      response.status === 201
+        ? minted.delivery !== 'issued_once' || minted.token === null
+        : minted.delivery !== 'unavailable_after_first_response' ||
+          minted.token !== null
+    )
+      throw invalid();
+  }
   return envelope.data as AccessResults[O];
 }
 
@@ -245,7 +273,58 @@ function departmentValid(value: AccessDepartment, tenant: string) {
       : value.member_count === value.user_ids.length)
   );
 }
+function credentialValid(value: AccessCredential) {
+  const issued = Date.parse(value.issued_at),
+    expires = Date.parse(value.expires_at);
+  return (
+    Number.isFinite(issued) &&
+    Number.isFinite(expires) &&
+    expires > issued &&
+    expires - issued <= 28800000 &&
+    accessBytes(value.client_label) <= 128 &&
+    [value.revoked_at, value.last_used_at].every(
+      (time) =>
+        time === null ||
+        (Number.isFinite(Date.parse(time)) && Date.parse(time) >= issued),
+    )
+  );
+}
 const service = {
+  async createCredential(body: AccessRequests['createCredential']) {
+    const value = await call('createCredential', body),
+      item = value.credential;
+    const lifetime = Date.parse(item.expires_at) - Date.parse(item.issued_at);
+    if (
+      !credentialValid(item) ||
+      item.mode !== body.mode ||
+      item.client_label !== body.client_label ||
+      lifetime > (body.ttl_seconds ?? 3600) * 1000 ||
+      (value.token !== null &&
+        !value.token.startsWith('kac1_' + item.credential_id + '.'))
+    )
+      throw invalid();
+    return value;
+  },
+  async revokeCredential(body: AccessRequests['revokeCredential']) {
+    const value = await call('revokeCredential', body);
+    if (value.id !== body.credential_id) throw invalid();
+    return value;
+  },
+  async listCredentials(
+    body: AccessRequests['listCredentials'],
+    signal?: AbortSignal,
+  ) {
+    const value = await call('listCredentials', body, signal);
+    if (
+      new Set(value.items.map((item) => item.credential_id)).size !==
+        value.items.length ||
+      !value.items.every(
+        (item) => item.domain_id === body.domain_id && credentialValid(item),
+      )
+    )
+      throw invalid();
+    return value;
+  },
   async listDepartments(
     body: AccessRequests['listDepartments'],
     signal?: AbortSignal,

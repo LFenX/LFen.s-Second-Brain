@@ -1,6 +1,48 @@
 export default {
   translation: {
     knowledgeAccess: {
+      delivery: '访问渠道',
+      webAndMCP: '网页及临时 MCP',
+      temporaryMCP: '临时 MCP 凭据',
+      credentialOwner: '凭据持有人账号',
+      mcpEndpoint: 'MCP 服务地址',
+      mcpClientHint:
+        '此地址需与服务配置的唯一地址一致。仅支持可配置 Bearer 令牌的客户端；请固定完整地址、拒绝重定向并使用客户端的秘密存储。仅支持 OAuth 的客户端暂不可用。',
+      noMCPGrant: '此模块当前未授予临时 MCP 渠道。',
+      credentialSources: '选择固定来源（变更后需重新核对范围）',
+      prepareMCP: '核对临时 MCP 范围',
+      credentialReview: '本次凭据固定范围',
+      credentialScopeCount: '{{sources}} 份已授权来源，{{units}} 个可读单元',
+      clientLabel: '客户端名称',
+      clientLabelHint:
+        '名称仅用于辨识用途，不绑定客户端身份；请勿填写密码或密钥。',
+      credentialTTL: '凭据有效期（秒）',
+      credentialTTLHint:
+        '默认 3600 秒，最多 28800 秒；可能受原授权到期时间限制。阅读视图仅有效 5 分钟。',
+      confirmCredential:
+        '我已核对账号、固定版本、来源、权限和有效期，理解外部客户端可以保存或转发已收到的正文，并确认创建本人凭据',
+      createCredential: '创建本人临时凭据',
+      credentialID: '凭据 ID',
+      credentialUnknown:
+        '结果尚未确认。请只核实原操作；确认回执或撤销前不要用新请求重建。',
+      tokenUnavailable:
+        '本次令牌已不可再次取得。请先核实原回执；需要替换时，明确撤销旧凭据后再创建。',
+      tokenOnce:
+        '令牌仅在本次交付中可见。请仅复制到可信客户端的秘密存储；关闭面板、刷新或身份切换后无法重新显示。',
+      showToken: '显示本次令牌',
+      copyToken: '复制本次令牌',
+      closeToken: '关闭令牌显示',
+      tokenCopied: '已复制本次令牌',
+      ownCredentials: '管理我的临时凭据',
+      ownCredentialsHint:
+        '输入已知知识域 ID，仅查看本人的最多 20 条有效或近期凭据元数据并撤销。原内容授权失效后仍可管理本人凭据；这里不会显示令牌或恢复正文权限。',
+      credentialDomain: '要管理的知识域 ID',
+      listCredentials: '查询本人凭据',
+      credentialLastUse: '最近使用',
+      credentialRevoked: '已撤销',
+      confirmRevokeCredential:
+        '我确认仅撤销这一条本人凭据，后续请求将被拒绝；已经交付的正文无法收回',
+      revokeCredential: '撤销本人凭据',
       departmentEnabled: '启用部门',
       departments: '部门管理',
       department: '部门',
@@ -137,8 +179,8 @@ export default {
         setDepartment: '保存部门和名单',
         setPolicy: '修改共享开关',
         setModule: '保存共享模块',
-        createGrant: '新增个人授权',
-        revokeGrant: '撤销个人授权',
+        createGrant: '新增授权',
+        revokeGrant: '撤销授权',
       },
     },
     knowledgeDomain: {

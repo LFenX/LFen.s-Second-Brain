@@ -9,6 +9,7 @@ import {
 import type { AccessActor } from '@/interfaces/database/knowledge-access';
 import type { AccessIdentity } from '@/services/knowledge-access-native-service';
 import { SharedKnowledgeReader } from './reader';
+import { MintMCPCredential, OwnMCPCredentials } from './temporary-mcp';
 import { accessSchemaValid } from '@/utils/knowledge-access-schema';
 import notification from '@/utils/notification';
 
@@ -113,6 +114,13 @@ function SharedModules({ actor }: { actor: AccessActor }) {
             </label>
           )}
           {module && (
+            <MintMCPCredential
+              key={'mint:' + module.module_id + ':' + module.version}
+              actor={actor}
+              module={module}
+            />
+          )}
+          {module && (
             <SharedKnowledgeReader
               key={module.module_id + ':' + module.version}
               actor={actor}
@@ -188,6 +196,17 @@ export default function SharedKnowledgePage() {
             <OwnAccountID
               key={'own-account:' + identity.data.user + ':' + identity.session}
               user={identity.data.user}
+            />
+            <OwnMCPCredentials
+              key={
+                'own-credentials:' + identity.data.user + ':' + identity.session
+              }
+              actor={{
+                user: identity.data.user,
+                tenant: identity.data.user,
+                session: identity.session,
+                auth: 'native',
+              }}
             />
             <SharedTenants
               key={

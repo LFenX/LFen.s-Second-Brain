@@ -12,6 +12,7 @@ import {
   KnowledgeAccessVersion,
   type AccessActor,
   type AccessDepartment,
+  type AccessDelivery,
   type AccessGrant,
   type AccessMode,
   type AccessModuleAdmin,
@@ -67,6 +68,13 @@ function RevokeGrant({
           time: dayjs(grant.expires_at).format('YYYY-MM-DD HH:mm'),
         })}
       </p>
+      <p>
+        {t(
+          grant.delivery === 'web_only'
+            ? 'knowledgeAccess.webOnly'
+            : 'knowledgeAccess.webAndMCP',
+        )}
+      </p>
       <AccessRevocationWarning />
       <label className="block space-x-2">
         <input
@@ -102,6 +110,7 @@ function GrantForm({
   const { t } = useTranslation();
   const [user, setUser] = useState('');
   const [mode, setMode] = useState<AccessMode>('read');
+  const [delivery, setDelivery] = useState<AccessDelivery>('web_only');
   const [expires, setExpires] = useState(() =>
     dayjs().add(7, 'day').format('YYYY-MM-DDTHH:mm'),
   );
@@ -156,7 +165,7 @@ function GrantForm({
         expected_module_version: module.version,
         subject: { kind, id: user },
         mode,
-        delivery: 'web_only',
+        delivery,
         expires_at: expiry.toISOString(),
         confirmed: true,
         idempotency_key: crypto.randomUUID(),
@@ -165,10 +174,7 @@ function GrantForm({
     setConfirmed(false);
   }
   const grants = module.grants.filter(
-    (grant) =>
-      grant.subject.kind === kind &&
-      grant.delivery === 'web_only' &&
-      grant.revoked_at === null,
+    (grant) => grant.subject.kind === kind && grant.revoked_at === null,
   );
   return (
     <section
@@ -270,6 +276,23 @@ function GrantForm({
           </select>
         </label>
         <label className="block space-y-1">
+          <span>{t('knowledgeAccess.delivery')}</span>
+          <select
+            className="rounded border border-border-button bg-bg-base p-2"
+            value={delivery}
+            disabled={!available || command.locked}
+            onChange={(event) => {
+              setDelivery(event.target.value as AccessDelivery);
+              setConfirmed(false);
+            }}
+          >
+            <option value="web_only">{t('knowledgeAccess.webOnly')}</option>
+            <option value="web_and_mcp">
+              {t('knowledgeAccess.webAndMCP')}
+            </option>
+          </select>
+        </label>
+        <label className="block space-y-1">
           <span>{t('knowledgeAccess.expiry')}</span>
           <Input
             type="datetime-local"
@@ -308,7 +331,13 @@ function GrantForm({
                 : 'knowledgeAccess.readSearch',
             )}
           </p>
-          <p>{t('knowledgeAccess.webOnly')}</p>
+          <p>
+            {t(
+              delivery === 'web_only'
+                ? 'knowledgeAccess.webOnly'
+                : 'knowledgeAccess.webAndMCP',
+            )}
+          </p>
           <p>
             {t('knowledgeAccess.expiry')}: {expires}
           </p>

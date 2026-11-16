@@ -8834,6 +8834,53 @@
         "privateConfigCredentialsVolumesUntouched": true
       },
       "preservation": "Preserve prior42 raw manifest,prior execution bytes,full authority suffix and prior failed commit.97entries/102uses,47protected/26contracts/11businessarchive/28history and all selectors/roles/uses unchanged."
+    },
+    "managed_credential_web_implementation_followup": {
+      "state": "RootSolo_S3CredentialWebImplemented_ActualAcceptancePending",
+      "humanInstruction": "现在暂停其他会话，后续所有任务由你一个人完成",
+      "subject": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3",
+      "backendCheckpoint": {
+        "commit": "899e2dbf2b07d24d2caf3efeb1f3888e26a86c5c",
+        "normalElevenChecks": true,
+        "pushedRemoteVerified": true,
+        "reference": "KCRL-20261116-43",
+        "Go125AndBuildFiveHelp": true
+      },
+      "implementation": {
+        "files": 13,
+        "newFiles": 4,
+        "grantDelivery": "Separate web_only/web_and_mcp selection with consent reset and exact fixed module review; list/revoke both channels in the existing form. Correct generic create/revoke feedback labels for department grants.",
+        "mint": "Prepare a fresh native web_and_mcp inspect view,select exact source subset,review self account/domain/module version/source revision/SHA/permission/TTL and external-delivery consent. Default1h,max8h;parent grant may cap lifetime. Owner still needs a self grant.",
+        "secret": "First token is handed directly into mounted component memory/ref only,with explicit reveal/copy. Never QueryClient/mutation cache,localStorage/sessionStorage,URL/QR/export/log or generic notifications. Drop local references on close,scope/user/session change,view expiry/unmount;no physical-erasure claim.",
+        "recovery": "Safe pending request/scope/key only in native-user/domain session storage. Unknown outcome blocks blind new key; exact same operation/body/key recovers only metadata. Explicit revoke/reissue after resolution. Native authorization errors clear shared consumer views/text/ref caches.",
+        "selfMetadata": "A separate known-domain input exposes own live/recent metadata(max20) and revoke even without a visible content module or current membership;no token/verifier fragment and no content authority.",
+        "endpoint": "Fixed same-origin MCP path for the current deployment. Configure backend canonical audience to that exact exposed origin; clients pin the whole endpoint and reject redirects. Local loopback HTTP is development-only;external endpoint requires HTTPS. No configurable target URL or OAuth-host support."
+      },
+      "validation": {
+        "tests": "146 current checks across10 suites. First137 passed,one personal-grant selector failed and one hook suite failed to transform before tests. Only2 test files repaired(precise checkbox selector and type-only alias);focused10 passed. Runtime product sources unchanged between runs and original failed bytes/results retained.",
+        "testProof": ".local-data/coordination-20261108/review/root-solo-20261116/s3-web03/validation.safe.json",
+        "formatLint": "All13 files format/check/lint;2 test-only fixes separately rechecked.",
+        "types": "Nine changed production files checked using the real TypeScript config/dependency resolution,zero diagnostics. Not a full-repository typecheck claim.",
+        "typesProof": ".local-data/coordination-20261108/review/root-solo-20261116/s3-web03/typecheck/result.safe.json",
+        "build": "2068 public inputs,offline production build passed.1080 files/54656125B,collection813dc8ba1d000f3cb5bf322ca3dff4ea1a827a2540ba9140548cd2164646be78,index6d003cb3c1811947b14ea9a0a40244cfe34095cd8ec0372251a2ad65b0469f97,42 references verified. No private dotenv/npmrc/key or inherited private environment.",
+        "artifactProof": ".local-data/coordination-20261108/review/root-solo-20261116/s3-web03/artifact-manifest.safe.json",
+        "SDKPreparation": "Official TS SDK1.32.2 independently pinned/installed in ignored test workspace with lock/integrity and source hashes;no root dependency change or install scripts. This is preparation,not actual interoperability credit."
+      },
+      "gates": {
+        "S1": "Accepted bounded slice,unchanged.",
+        "S2": "Accepted bounded slice,unchanged.",
+        "S3": "Implementation checkpoints only. Real MySQL credential barriers,actual isolated service Go+TS SDK and actual Web delivery/revocation remain Pending.",
+        "finalRelease": "Pending. Original29395/29396/private config/credentials/volumes unchanged."
+      },
+      "scope": {
+        "RootOnly": true,
+        "models": 0,
+        "SMTP": 0,
+        "realAICS": 0,
+        "OAuth": false,
+        "rootLayoutChanges": false
+      },
+      "preservation": "Exact13 Web files plus4 baseline/evidence. Preserve old authority suffix/execution bytes/rawRef43,all original failures/NotRun/Unknown,97entries/102uses,47protected/26contracts/11businessarchive/28history and roles/selectors/uses."
     }
   }
 }
