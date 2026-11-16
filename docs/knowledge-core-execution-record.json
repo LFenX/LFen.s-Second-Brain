@@ -9178,6 +9178,103 @@
         "selectorsAndUsesUnchanged": true,
         "Ref46ArchivedExact": true
       }
+    },
+    "worker_lock_order_format_model_followup": {
+      "state": "RootSolo_WorkerLockOrderFixQualified_FormatModelAcceptanceContinues",
+      "humanInstruction": "继续推进，把模型问答和复杂格式的验收也完成，后续由你一个人做，每完成一个阶段就提交并推送远端。",
+      "previousCheckpoint": "c647efbbc29482f9cc5ad619b3d4379bf6331b3e",
+      "scope": "Latest human request authorizes bounded actual model QA and complex-format acceptance using synthetic inputs. Older no-new-model/no-format-expansion progress facts do not veto this task. Existing frozen contracts,model-use guard,source provenance and permissions stay unchanged;no real AICS,SMTP,OAuth,general Agent,personality/memory,root layout or bulk Python removal.",
+      "rootCause": {
+        "observed": "Current-run original synthetic domain and owner appear in actual MySQL8 latest deadlock. Background structure transaction acquired knowledgebase before permission epoch;native source/parsed-task HTTP operations acquired epoch before knowledgebase. Failed tasks were incorrectly surfaced as generic integrity failures.",
+        "affectedOwners": [
+          "structureInternalTransaction",
+          "batchInternalTransaction"
+        ],
+        "fix": "Enter existing dao.LockKnowledgeAccessDomain before domain row lock in both shared worker transactions. Admission/publication authority and cleanup-after-revocation semantics remain on their existing paths.",
+        "review": "Owning structure,document,parsed,batch and lexical publication paths reviewed. lexicalLock already enters epoch first;no extra API,protocol,schema,model permission or retry workaround added."
+      },
+      "validation": {
+        "units": "49 exact default dataset tests selected and counted independently from tagged tests;real CSV/HTML/JSON and DOCX owned-child paths included. Run from helper-owned writable tmpfs for proof output. No skips and no external-service/model credentials supplied to the unit process.",
+        "build": "Existing build.sh generic integration-go compile,actual LLD20 link,server/CLI and all five help modes verified.1811 public source inputs checked before and after. Full production tests are not inferred from a successful link.",
+        "MySQL": "Both actual shared worker transactions pass concurrent epoch barriers. A second transaction holds the epoch;knowledgebase NOWAIT remains obtainable while the worker waits. Release epoch,worker completes under existing owner recheck,and both transactions roll back. No shared database stopped or persistent content/grant/schema changes.",
+        "proofs": [
+          "model-format01/lock-order-fix01/candidate.safe.json",
+          "model-format01/lock-order-fix01/qualification01/result.safe.json",
+          "model-format01/lock-order-fix01/compile-server03/body.stdout.log",
+          "model-format01/lock-mysql02/result.safe.json",
+          "model-format01/live04/deadlock-binding.safe.json",
+          "model-format01/worker-units04/result.safe.json",
+          "model-format01/child02/result.safe.json"
+        ],
+        "proofPins": [
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/lock-order-fix01/candidate.safe.json",
+            "bytes": 340164,
+            "sha256": "03e2a10dbeb7b505c9bdacb8b8370f04d9619e9a0f6c24949282ed3cb8ac8b58"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/lock-order-fix01/qualification01/result.safe.json",
+            "bytes": 1782,
+            "sha256": "361bdd7a740c2c2ff0008f535701ada191626de77034aa9c48f61fa9b20b6248"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/lock-order-fix01/compile-server03/body.stdout.log",
+            "bytes": 5516,
+            "sha256": "9c26eb9a04d7c321067eb7139d7354883ba0f3d232d515cdcbc0eb493695066c"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/lock-mysql02/result.safe.json",
+            "bytes": 595,
+            "sha256": "7e32e3052fc9b27b11d4c3946fac8de2ba0fbe3d96f184ca54a60cd33ef54b24"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/live04/deadlock-binding.safe.json",
+            "bytes": 868,
+            "sha256": "6368d8b169a9473ce98e0c7a3d6e2eda8aa49c12b12cb6d91844144d32773d88"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/worker-units04/result.safe.json",
+            "bytes": 616,
+            "sha256": "76b1f65708b46631f3b87c0e7b529afe35cdf33b82ad5faa38b893e1f063adde"
+          },
+          {
+            "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/child02/result.safe.json",
+            "bytes": 777,
+            "sha256": "e69e040d0ac185f00a1e7e6cf659bab420563b05774bd1e538ff03ca8af24560"
+          }
+        ]
+      },
+      "acceptance": {
+        "format": "Fourteen original synthetic inputs prepared. Existing old server actual child extraction passed plain PDF and authentic CFB DOC/BIFF8 XLS/binary PPT;this is not full HTTP/index/UI acceptance. Original live02 and live04 failures retained. Full matrix must rerun on the repaired artifact.",
+        "model": "Actual model QA remains Pending usable provider configuration;no key in root .env.local,no configured tenant keys or local Ollama at initial inspection. User has been asked to configure privately. No mocked response counted as real inference. Initial synthetic scope capped at16 calls and1024 output tokens per call.",
+        "formalRuntime": "Formal29395/29396 remains the previously accepted2a5174 artifact during this code checkpoint. New artifact still needs isolated format acceptance and separate formal rollout. Existing user configuration,credentials and volumes retained."
+      },
+      "preservation": {
+        "RootOnly": true,
+        "otherChatsPaused": true,
+        "old70NotRunUnchanged": true,
+        "oldGo21AndCompoundFailuresUnchanged": true,
+        "independentReviewerNotInvented": true,
+        "allOriginalFailuresPreserved": true,
+        "modelCallsThisStage": 0,
+        "realAICS": false,
+        "volumeDeletes": 0,
+        "credentialsReset": false
+      },
+      "baseline": {
+        "postimages": 8,
+        "GoFiles": 4,
+        "newGoFiles": 2,
+        "referenceEvidenceFiles": 4,
+        "entries": 97,
+        "uses": 102,
+        "protected": 47,
+        "contracts": 26,
+        "businessArchive": 11,
+        "historicalDocuments": 28,
+        "selectorsAndUsesUnchanged": true
+      },
+      "serverSHA256": "67f5399ac924567d6f621dbf72416d7f1f383e4c7ac7741fad03203dad6a5550"
     }
   }
 }

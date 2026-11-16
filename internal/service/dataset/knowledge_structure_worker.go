@@ -31,6 +31,9 @@ type structureClaim struct {
 // revocation. Admission and publication separately require the current owner.
 func structureInternalTransaction(ctx context.Context, domain string, fn func(*gorm.DB) error) error {
 	return dao.DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		if err := dao.LockKnowledgeAccessDomain(ctx, tx, domain); err != nil {
+			return err
+		}
 		var kb entity.Knowledgebase
 		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).Where("id = ?", domain).Take(&kb).Error; err != nil {
 			return err

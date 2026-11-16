@@ -18,6 +18,9 @@ import (
 // grants admission: every source publish separately checks the original owner.
 func batchInternalTransaction(ctx context.Context, domain string, fn func(*gorm.DB) error) error {
 	return dao.DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		if err := dao.LockKnowledgeAccessDomain(ctx, tx, domain); err != nil {
+			return err
+		}
 		var kb entity.Knowledgebase
 		if e := tx.Clauses(clause.Locking{Strength: "UPDATE"}).Where("id = ?", domain).Take(&kb).Error; e != nil {
 			return e

@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "lock_id": "KCRL-20261116-47",
+  "lock_id": "KCRL-20261116-48",
   "recorded_date": "2026-11-16",
   "coordinator_thread_id": "01a1a9a5-c724-7f52-8cbb-16d19d982ba4",
   "source_baseline_git_head": "f804b3737a8f69af14b1ff1c2d042e8ea7c2a9f1",
   "source_snapshot": {
     "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
-    "file_count": 5163,
-    "sha256": "f66b5513f7a30a425bdc222e2933d21059b214ac5bf7b71825d8429f135e2501"
+    "file_count": 5165,
+    "sha256": "32a82f8fcfbb25fabccb395622a0eb6f66c887dd5ad0a945f92b2795b036c9df"
   },
   "unlisted_policy": "DeniedAsCurrentGuidance_UntilCoordinatorReviewsAndAssigns",
   "authority_order": [
@@ -32,9 +32,9 @@
       },
       "integrity": {
         "mode": "file",
-        "sha256": "de1fce105dd4921051b1db7ec00d4554ba2ece23e61b4774576e71a4da41f077"
+        "sha256": "2f580871b1045a0d4043d511024d47613bda843e231551f0b3b6dcb0f9dfe679"
       },
-      "selection_sha256": "de1fce105dd4921051b1db7ec00d4554ba2ece23e61b4774576e71a4da41f077"
+      "selection_sha256": "2f580871b1045a0d4043d511024d47613bda843e231551f0b3b6dcb0f9dfe679"
     },
     {
       "id": "root-instructions",
@@ -1453,9 +1453,9 @@
       },
       "integrity": {
         "mode": "selection",
-        "sha256": "2f7695954d8d0be9b213c8b717087e34a2eb59f10406fae49f6f93b3d2f9baf9"
+        "sha256": "d467c8c9aa5b4dda40124c6f2f76604f801f59a90dc34492c7bc8aeef3dcf7de"
       },
-      "selection_sha256": "2f7695954d8d0be9b213c8b717087e34a2eb59f10406fae49f6f93b3d2f9baf9",
+      "selection_sha256": "d467c8c9aa5b4dda40124c6f2f76604f801f59a90dc34492c7bc8aeef3dcf7de",
       "limitation": "第三轮独立事实入口；仅在实际28源码及独立B回执核实、独审和总控精确四文件租约后机械生效。各运行/质量门按各自时点与版本保留，不批准新接口、模型、真实内容、最终验收或发布。 Ref27只追加shared_ordinal_followup；旧28和分层运行事实保留原时点，命名源码集合后续仅据实际应用与分层回执登记，未完成门不标Pass。"
     },
     {
@@ -4900,22 +4900,26 @@
     "Latest human stage commit+push instruction supersedes old time-scoped Git prohibitions;actual stage Git and production deployment/release remain separately coordinated actions."
   ],
   "update_rule": "仅主控在同范围内复核事实/差异/摘要并决定变更；最新真人规定总控不做实际工作，机械应用只能由具名执行者在唯一精确写窗中承担。保存旧锁原字节/摘要、原因、受影响条目和新校验；不得为未知漂移刷新摘要。接口/模型/真实内容/发布新范围仍需真人具体决定。",
-  "manifest_payload_sha256": "40c6da318559e1e7a6f32f1e9016c099254fae6d6ed8e377348b3d1f72ec8e47",
+  "manifest_payload_sha256": "98b23563698bc8f9d655022fde01467dbe441473eba51cb9e7f1a3fb13b7b8da",
   "previous_baseline": {
-    "lock_id": "KCRL-20261116-46",
-    "manifest_sha256": "6dd6e46d0fbe06c9996ed40dd71789848e821a09b5ca11508cf0034269d4394b",
-    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-46.json",
-    "archive_sha256": "6dd6e46d0fbe06c9996ed40dd71789848e821a09b5ca11508cf0034269d4394b",
+    "lock_id": "KCRL-20261116-47",
+    "manifest_sha256": "e6be440ac6c42f020737fcac7dfa822888f1fff51f35d7c9b321436a0bfd9816",
+    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-47.json",
+    "archive_sha256": "e6be440ac6c42f020737fcac7dfa822888f1fff51f35d7c9b321436a0bfd9816",
     "changed_files": [
+      "internal/service/dataset/knowledge_structure_worker.go",
+      "internal/service/dataset/knowledge_batch_worker.go",
+      "internal/service/dataset/knowledge_worker_lock_order_test.go",
+      "internal/service/dataset/knowledge_worker_lock_order_integration_test.go",
       "docs/knowledge-core-execution-record.json",
       "docs/knowledge-core-reference-authority.md",
-      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-46.json",
+      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-47.json",
       "docs/knowledge-core-reference-lock.json"
     ],
     "existing_entries_with_updated_selection_digests": [
       "reference-authority",
       "coordination-20261106-round3"
     ],
-    "reason": "Root alone;release exact accepted artifacts to existing formal local entry,verify nondestructive schema,restart,actual synthetic login and assets;retire10 completed containers preserving all volumes and active foreign services. No source change."
+    "reason": "Root alone;fix observed worker/HTTP epoch-domain lock inversion.49 default tests,build,fivehelp and two real MySQL barriers passed. Format/model acceptance and formal rollout continue separately."
   }
 }
