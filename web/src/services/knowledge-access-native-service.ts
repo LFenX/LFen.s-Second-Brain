@@ -29,8 +29,8 @@ const nativeService = {
         ['owner', 'admin', 'normal'].includes(item.role) &&
         item.status === '1' &&
         item.is_active === '1' &&
-        item.is_authenticated === '1' &&
-        item.is_anonymous === '0',
+        item.is_authenticated === true &&
+        item.is_anonymous === false,
     );
     const members = values
       .filter((item) => item.user_id !== actor.user)

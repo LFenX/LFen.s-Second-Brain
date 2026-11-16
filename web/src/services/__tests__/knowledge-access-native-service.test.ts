@@ -62,14 +62,24 @@ it('rejects an aborted or late identity response', async () => {
 });
 
 it('uses the exact native tenant roster and projects only active member labels', async () => {
-  const member = (userID: string, role = 'normal', active = '1') => ({
+  const member = (
+    userID: string,
+    role = 'normal',
+    active = '1',
+    flags: Partial<{
+      is_authenticated: unknown;
+      is_anonymous: unknown;
+      status: string;
+    }> = {},
+  ) => ({
     user_id: userID,
     nickname: 'Synthetic member',
     role,
     status: '1',
     is_active: active,
-    is_authenticated: '1',
-    is_anonymous: '0',
+    is_authenticated: true,
+    is_anonymous: false,
+    ...flags,
     get password() {
       throw Error('secret accessed');
     },
@@ -84,6 +94,14 @@ it('uses the exact native tenant roster and projects only active member labels',
         member('b'.repeat(32)),
         member('c'.repeat(32), 'invite'),
         member('d'.repeat(32), 'normal', '0'),
+        member('e'.repeat(32), 'normal', '1', { is_authenticated: false }),
+        member('f'.repeat(32), 'normal', '1', { is_anonymous: true }),
+        member('1'.repeat(32), 'normal', '1', { status: '0' }),
+        member('2'.repeat(32), 'normal', '1', {
+          is_authenticated: '1',
+          is_anonymous: '0',
+        }),
+        member('3'.repeat(32), 'admin'),
       ],
     },
   } as any;
@@ -93,6 +111,7 @@ it('uses the exact native tenant roster and projects only active member labels',
   ).resolves.toEqual([
     { id: User, name: '' },
     { id: 'b'.repeat(32), name: 'Synthetic member' },
+    { id: '3'.repeat(32), name: 'Synthetic member' },
   ]);
   expect(listTenantUser).toHaveBeenCalledWith(Tenant);
 });

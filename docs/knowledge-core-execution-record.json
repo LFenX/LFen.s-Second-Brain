@@ -8637,6 +8637,47 @@
         "bulkPythonDeletion": false
       },
       "preservation": "Append within existing current_context and preserve prior execution/authority bytes. RawRef38 exact archive;97 entries/102uses,47protected/26contracts/11businessarchive/28history and selectors/roles/uses unchanged."
+    },
+    "native_member_boolean_wire_followup": {
+      "state": "RootSolo_NativeMemberBooleanWireFix_S2BrowserPending",
+      "humanInstruction": "现在暂停其他会话，后续所有任务由你一个人完成",
+      "subject": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3",
+      "git": {
+        "priorS2ImplementationCommit": "c9597d71a3c7bcd1effad1ca05e77060b973674c",
+        "normalElevenChecks": true,
+        "pushedRemoteMatched": true
+      },
+      "diagnosis": "Actual S2 owner Team UI and recipient native acceptance confirmed recipient is a current Member. Department picker incorrectly excluded it. Native Go TenantMemberResponse/DAO declare is_authenticated and is_anonymous as booleans; ITenantUser and the new picker incorrectly treated these as strings.",
+      "change": "Exactly three existing Web files: correct only ITenantUser boolean fields and strict native roster flag checks; use real boolean response fixtures with accepted normal/admin plus rejected invite,inactive,unauthenticated,anonymous,inactive membership and string-flag rows. No Go/schema/permission algorithm change and no dual string/bool fallback.",
+      "validation": {
+        "red": "Initial fixture spread invoked deliberately throwing secret getters before the service: retained and explicitly reclassified Failed_TestFixtureSetup_NotProductRed. Corrected fixture red02 genuinely failed expected native-member projection (3passed/1failed), then fix applied.",
+        "green": "116 checks across8 related suites passed; three files format/check/lint passed.",
+        "publicBuild": "2064 exact public inputs; isolated offline production build and artifact qualification passed. No private environment/config copied or network/model calls.",
+        "realHTTP": "S2 direct02 passed21 phases/140 requests, including native publication,flat department isolation,owner/names-only catalogs,roster revocation,different-key CAS200/409,same-key singleton replay,no-op view stability,disable/reenable and native membership removal. Original first direct01 failed before any HTTP on private config read and remains failed.",
+        "browser": "Current actual Team UI created Synthetic UI Dept A with owner-only roster,explicit complete-replacement confirmation and confirmed refreshed receipt. Owner reloaded native Team list shows recipient Member but old picker still excludes it. Full department grant/read/revoke browser workflow remains pending updated artifact."
+      },
+      "proof": {
+        "red": ".local-data/coordination-20261108/review/root-solo-20261116/member-wire01/red02/result.safe.json",
+        "green": ".local-data/coordination-20261108/review/root-solo-20261116/member-wire01/green/result.safe.json",
+        "build": ".local-data/coordination-20261108/review/root-solo-20261116/member-wire01/build/result.safe.json",
+        "HTTP": ".local-data/coordination-20261108/review/root-solo-20261116/s2-http-direct02/result-01.safe.json"
+      },
+      "gates": {
+        "S1": "Bounded slice accepted inRef38,unchanged.",
+        "S2": "Real HTTP/concurrency passed; actual browser workflow still pending. This fix commit is not stage acceptance.",
+        "S3": "No managed temporary credential/MCP implementation or activation; still gated.",
+        "finalRelease": "Not claimed."
+      },
+      "scope": {
+        "models": 0,
+        "SMTP": 0,
+        "realAICS": 0,
+        "OAuth": false,
+        "rootLayoutChanges": false,
+        "userOriginal29395And29396Untouched": true,
+        "privateCredentialsAndVolumesUntouched": true
+      },
+      "preservation": "Root only; other chats paused. Existing selectors/roles/uses,97entries/102uses,47protected/26contracts/11businessarchive/28history unchanged. Preserve rawRef39,full authority suffix and prior execution bytes. Historical failures/Unknown/NotRun remain original."
     }
   }
 }

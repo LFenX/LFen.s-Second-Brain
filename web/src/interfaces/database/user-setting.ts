@@ -75,8 +75,8 @@ export interface ITenantUser {
   delta_seconds: number;
   email: string;
   is_active: string;
-  is_anonymous: string;
-  is_authenticated: string;
+  is_anonymous: boolean;
+  is_authenticated: boolean;
   is_superuser: boolean;
   nickname: string;
   role: string;

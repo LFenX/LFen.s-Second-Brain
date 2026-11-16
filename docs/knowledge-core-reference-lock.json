@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "lock_id": "KCRL-20261116-39",
+  "lock_id": "KCRL-20261116-40",
   "recorded_date": "2026-11-16",
   "coordinator_thread_id": "01a1a9a5-c724-7f52-8cbb-16d19d982ba4",
   "source_baseline_git_head": "f804b3737a8f69af14b1ff1c2d042e8ea7c2a9f1",
   "source_snapshot": {
     "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
     "file_count": 5146,
-    "sha256": "b9d3e2ea0ceec20aa882c191db3f899315f69780941ad6a09bc2546ac15617bc"
+    "sha256": "69e1008e3cd5cbe1ced0c2137d18783ebd7b2b32aedd2c69b289d42eccd3356d"
   },
   "unlisted_policy": "DeniedAsCurrentGuidance_UntilCoordinatorReviewsAndAssigns",
   "authority_order": [
@@ -32,9 +32,9 @@
       },
       "integrity": {
         "mode": "file",
-        "sha256": "3735e28e82f38ee21ec4fc3edb9d9cdd8613b0daa96374d2e6973879046ad0e7"
+        "sha256": "41974b705203486f5379c25cb79a10151aa26560d1892d9d1bc77183b69dd7de"
       },
-      "selection_sha256": "3735e28e82f38ee21ec4fc3edb9d9cdd8613b0daa96374d2e6973879046ad0e7"
+      "selection_sha256": "41974b705203486f5379c25cb79a10151aa26560d1892d9d1bc77183b69dd7de"
     },
     {
       "id": "root-instructions",
@@ -1453,9 +1453,9 @@
       },
       "integrity": {
         "mode": "selection",
-        "sha256": "f0b8b692a1d64f9214686eb7548370352352a7b884a61fe903a5fb84c5fba7f1"
+        "sha256": "0b569fa7b669c8118e9c31f9aff78c2c105ef327207349525386df18328cefcc"
       },
-      "selection_sha256": "f0b8b692a1d64f9214686eb7548370352352a7b884a61fe903a5fb84c5fba7f1",
+      "selection_sha256": "0b569fa7b669c8118e9c31f9aff78c2c105ef327207349525386df18328cefcc",
       "limitation": "第三轮独立事实入口；仅在实际28源码及独立B回执核实、独审和总控精确四文件租约后机械生效。各运行/质量门按各自时点与版本保留，不批准新接口、模型、真实内容、最终验收或发布。 Ref27只追加shared_ordinal_followup；旧28和分层运行事实保留原时点，命名源码集合后续仅据实际应用与分层回执登记，未完成门不标Pass。"
     },
     {
@@ -4900,52 +4900,25 @@
     "Latest human stage commit+push instruction supersedes old time-scoped Git prohibitions;actual stage Git and production deployment/release remain separately coordinated actions."
   ],
   "update_rule": "仅主控在同范围内复核事实/差异/摘要并决定变更；最新真人规定总控不做实际工作，机械应用只能由具名执行者在唯一精确写窗中承担。保存旧锁原字节/摘要、原因、受影响条目和新校验；不得为未知漂移刷新摘要。接口/模型/真实内容/发布新范围仍需真人具体决定。",
-  "manifest_payload_sha256": "f2f6dfaddd4fbd7458d6b5afc36d35013f14ebb5802de415b3c2803627c11389",
+  "manifest_payload_sha256": "4cad84ac65c492c81a32d5a23656be203ffe5ccefcb75227d159ece00e738dfa",
   "previous_baseline": {
-    "lock_id": "KCRL-20261116-38",
-    "manifest_sha256": "ddbd8b8bde7a76ea1755dfb1ca6f0313052733b688e8bc5af8003704fd9cecf9",
-    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-38.json",
-    "archive_sha256": "ddbd8b8bde7a76ea1755dfb1ca6f0313052733b688e8bc5af8003704fd9cecf9",
+    "lock_id": "KCRL-20261116-39",
+    "manifest_sha256": "749eba18defb439ddb6054a894f9844ac1b941071525caca2a9aa178df3bde89",
+    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-39.json",
+    "archive_sha256": "749eba18defb439ddb6054a894f9844ac1b941071525caca2a9aa178df3bde89",
     "changed_files": [
-      "internal/entity/knowledge_access.go",
-      "internal/entity/knowledge_access_store.go",
-      "internal/dao/knowledge_access.go",
-      "internal/dao/knowledge_access_test.go",
-      "internal/service/dataset/knowledge_access.go",
-      "internal/service/dataset/knowledge_access_commands.go",
-      "internal/service/dataset/knowledge_access_scope.go",
-      "internal/service/dataset/setup_test.go",
-      "internal/router/knowledge_access.go",
-      "internal/router/knowledge_access_test.go",
-      "internal/service/dataset/knowledge_access_department.go",
-      "internal/service/dataset/knowledge_access_department_test.go",
-      "internal/entity/knowledge_access_schema.json",
-      "web/src/locales/en.ts",
-      "web/src/locales/zh.ts",
-      "web/src/pages/user-setting/setting-team/index.tsx",
-      "web/src/hooks/__tests__/knowledge-access-command.test.tsx",
-      "web/src/hooks/knowledge-access-keys.ts",
-      "web/src/hooks/use-knowledge-access-command.ts",
-      "web/src/hooks/use-knowledge-access.ts",
-      "web/src/interfaces/database/knowledge-access.ts",
-      "web/src/interfaces/request/knowledge-access.ts",
-      "web/src/pages/dataset/knowledge-access/grants.tsx",
+      "web/src/interfaces/database/user-setting.ts",
       "web/src/services/__tests__/knowledge-access-native-service.test.ts",
-      "web/src/services/__tests__/knowledge-access-service.test.ts",
       "web/src/services/knowledge-access-native-service.ts",
-      "web/src/services/knowledge-access-service.ts",
-      "web/src/pages/user-setting/setting-team/knowledge-departments.tsx",
-      "web/src/pages/user-setting/setting-team/knowledge-departments.test.tsx",
-      "web/src/pages/dataset/knowledge-access/department-grants.test.tsx",
       "docs/knowledge-core-execution-record.json",
       "docs/knowledge-core-reference-authority.md",
-      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-38.json",
+      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-39.json",
       "docs/knowledge-core-reference-lock.json"
     ],
     "existing_entries_with_updated_selection_digests": [
       "reference-authority",
       "coordination-20261106-round3"
     ],
-    "reason": "Root sole executor;S2 exact department implementation with76 Go units,116 Web checks and public build. Real SQL/Web acceptance pending;original failures and S3/finalrelease gates preserved."
+    "reason": "Root sole executor;native tenant-member bool wire fix with real red and116 Web checks/public build. S2 real HTTP21 phases passed, browser pending; original failures and later gates preserved."
   }
 }
