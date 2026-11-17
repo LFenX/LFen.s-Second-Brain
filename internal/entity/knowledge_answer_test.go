@@ -1,9 +1,25 @@
 package entity
 
 import (
+	"encoding/json"
 	"strings"
 	"testing"
 )
+
+func TestKnowledgeAnswerUsageUsesApprovedWireFields(t *testing.T) {
+	usage := KnowledgeAnswerUsage{Input: 804, Output: 59, Total: 863}
+	raw, err := json.Marshal(usage)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var decoded KnowledgeAnswerUsage
+	if err := KnowledgeAnswerDecode(raw, "Usage", &decoded); err != nil || decoded != usage {
+		t.Fatal("usage must match the approved input/output token contract", err)
+	}
+	if KnowledgeAnswerDecode([]byte(`{"prompt_tokens":804,"completion_tokens":59,"total_tokens":863}`), "Usage", nil) == nil {
+		t.Fatal("provider field names escaped into the public answer contract")
+	}
+}
 
 func TestKnowledgeAnswerRejectsMalformedWireAndUnsupportedCitations(t *testing.T) {
 	valid := `{"answer":"47","insufficient_evidence":false,"evidence_ids":["E1"]}`

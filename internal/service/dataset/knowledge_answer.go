@@ -257,6 +257,10 @@ func (r *answerRunner) setPolicy(ctx context.Context, owner, domain string, req 
 		if err := tx.Save(&row).Error; err != nil {
 			return err
 		}
+		row, err = answerPolicyRow(tx, domain)
+		if err != nil {
+			return err
+		}
 		result, err = answerPolicy(row)
 		if err != nil {
 			return err

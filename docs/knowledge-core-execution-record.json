@@ -10642,6 +10642,89 @@
         "realAICSExternalUse": false,
         "privateFilesHashed": false
       }
+    },
+    "owner_web_answer_sql_time_fix_20261117": {
+      "state": "RootSolo_RealSQLAndFirstNativeCallFoundTwoDefects_FixesBuilt_NotYetReleased",
+      "approval": "KQA-20261117-02 exact human OptionA",
+      "subject_sha256": "88c6a4fbcc3ad293c73a015ea28cfebefed2e7332881fa4b4c554dba88d173fb",
+      "sourceParent": "2c9eb92ef1d33b7ba0bd865a44c2ae6c2cfcaaa4",
+      "findings": [
+        {
+          "finding": "Actual MySQL first setPolicy response used in-memory nanoseconds;replay read datetime3 precision.",
+          "fix": "Read saved policy back in the same owner/epoch-first transaction before encoding."
+        },
+        {
+          "finding": "First actual native model result failed closed with503/unavailable;Usage DTO used provider prompt/completion names but exact approved schema requires input_tokens/output_tokens.",
+          "fix": "Map existing native provider usage to approved answer wire fields;align erased Web type;add explicit Go codec and non-null usage response tests without changing approved schema."
+        }
+      ],
+      "verification": {
+        "Go": "Owning entity/dataset answer tests passed including database-precision simulation and non-null usage replies;LLD20 build and five actual help modes passed.18 exact Go source checks before and after build.",
+        "Web": "14service tests passed;scoped oxfmt/oxlint;213pre-existing TypeScript diagnostics,no new/touched diagnostics. Only production TypeScript type names changed;transpiled JavaScript identical,existing released Web bundle retained.",
+        "runtimeBeforeFix": "Source2c9/0d2c backend and1082-file new Web deployed. Actual process ELF,start/restart,synthetic registration/login,42static asset heads,MCP401 and old schema preservation passed.2additive tables24columns only,zero policies auto-enabled.",
+        "formats": "14formats plus original untrusted and excluded conflict fixtures parsed and fixed read;15-target mixed recall and exact reread passed.",
+        "retainedFailures": "First admin readiness deadline rolled back;actual runtime-image diagnostic bind0.0.0.0 passed and qualified second rollout passed. Driver success-envelope code0 mistake repaired locally without product change. Precision simulation12 wrongly skipped GORM Save fallback;rejected.13and14interrupted after new usage defect and3141mount performance issue;not passed. First Web58test timeout retained,58b14tests passed."
+      },
+      "remaining": {
+        "fixDeployment": "NotRun",
+        "nativeModelAcceptance": "First reservation1failed closed;16fresh known gold/refusal/injection cases stillpending. No automatic retry;future attempt uses a deliberate new key.",
+        "browser": "NotRun",
+        "MCPGenerationToggleRegression": "NotRun"
+      },
+      "budget": {
+        "newCallsReserved": 1,
+        "max20": true,
+        "realAICS": false
+      },
+      "preserved": {
+        "protected47": true,
+        "oldFormalContracts26": true,
+        "realCredentialsUnchanged": true,
+        "volumeDeletes": 0,
+        "otherChatsPaused": true
+      },
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 5188,
+        "sha256": "41d43c137b863fd525ce15fedf934998ce023d94ce00ece55e2d0325b061f931"
+      },
+      "files": [
+        {
+          "path": "internal/entity/knowledge_answer.go",
+          "sha256": "74481748f64a66603723fee50362fa127b52a81eda96d7222dca8c048e6671a3",
+          "bytes": 4908
+        },
+        {
+          "path": "internal/entity/knowledge_answer_test.go",
+          "sha256": "e143bc3c5ba069b7c64a2a3052fe6a11595d6f1e9da8ed2d08a047b25f438de7",
+          "bytes": 2677
+        },
+        {
+          "path": "internal/service/dataset/knowledge_answer.go",
+          "sha256": "072540db441f16f4e94d150f929b00fe5790c3983c5ee0c2b19726c056574e53",
+          "bytes": 15666
+        },
+        {
+          "path": "internal/service/dataset/knowledge_answer_test.go",
+          "sha256": "78a71c84f53732634536035367e46ca2ab7a78f6d5aa486ed809d8f4b6ada150",
+          "bytes": 15421
+        },
+        {
+          "path": "internal/service/knowledge_answer_model.go",
+          "sha256": "d68065577280c4a1ea50a71d401284c1b09572e10c212ab00671207b29989cb4",
+          "bytes": 5570
+        },
+        {
+          "path": "web/src/interfaces/database/knowledge-answer.ts",
+          "sha256": "394fb2b65674ddab9e6880f0e7a551fde67c95b4915485fe1caba808885298bb",
+          "bytes": 1921
+        },
+        {
+          "path": "web/src/services/__tests__/knowledge-answer-service.test.ts",
+          "sha256": "a29f8a599e0164495447aa6c4f946faeedcf1e8e908a6f052b1808ccab7a8ec3",
+          "bytes": 7680
+        }
+      ]
     }
   }
 }

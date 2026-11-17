@@ -25,7 +25,7 @@ func answerTestRunner(t *testing.T) (*answerRunner, context.Context, *atomic.Int
 	calls := &atomic.Int32{}
 	m := &answerModel{ref: entity.KnowledgeAnswerModelRef{ID: strings.Repeat("b", 32), SHA256: strings.Repeat("c", 64)}, name: "synthetic model", destination: "https://api.deepseek.com", generate: func(context.Context, string, []entity.KnowledgeAnswerCitation) (string, *entity.KnowledgeAnswerUsage, error) {
 		calls.Add(1)
-		return `{"answer":"47","insufficient_evidence":false,"evidence_ids":["E1"]}`, nil, nil
+		return `{"answer":"47","insufficient_evidence":false,"evidence_ids":["E1"]}`, &entity.KnowledgeAnswerUsage{Input: 120, Output: 18, Total: 138}, nil
 	}}
 	r.resolve = func(context.Context, string) (*answerModel, error) { return m, nil }
 	r.checkScope = func(context.Context, string, string, entity.KnowledgeAnswerScope) error { return nil }
@@ -59,6 +59,71 @@ func enableAnswerTest(t *testing.T, r *answerRunner, ctx context.Context, scope 
 
 func answerTestRequest() entity.KnowledgeAnswerRequest {
 	return entity.KnowledgeAnswerRequest{Version: entity.KnowledgeAnswerVersion, ExpectedVersion: 1, Question: "ORION project quota?", Key: "one-request"}
+}
+
+func TestKnowledgeAnswerPolicyUsesPersistedTimestamp(t *testing.T) {
+	r, ctx, calls, scope := answerTestRunner(t)
+	now := time.Date(2026, 11, 17, 10, 0, 0, 123456789, time.UTC)
+	originalNow := dao.DB.NowFunc
+	dao.DB.NowFunc = func() time.Time { return now }
+	t.Cleanup(func() { dao.DB.NowFunc = originalNow })
+	// Model a database column that stores milliseconds while the ORM keeps
+	// nanoseconds in its in-memory record after the write.
+	truncate := func(tx *gorm.DB) {
+		if tx.Statement.Table != "knowledge_answer_policy" {
+			return
+		}
+		row, ok := tx.Statement.Dest.(*entity.KnowledgeAnswerPolicyRecord)
+		if !ok {
+			return
+		}
+		err := tx.Session(&gorm.Session{NewDB: true, SkipHooks: true}).
+			Table(row.TableName()).Where("domain_id = ?", row.DomainID).
+			UpdateColumn("updated_at", row.UpdatedAt.Truncate(time.Millisecond)).Error
+		tx.AddError(err)
+	}
+	const callback = "test:answer_timestamp_precision"
+	if err := dao.DB.Callback().Create().After("gorm:create").Register(callback, truncate); err != nil {
+		t.Fatal(err)
+	}
+	if err := dao.DB.Callback().Update().After("gorm:update").Register(callback, truncate); err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() {
+		dao.DB.Callback().Create().Remove(callback)
+		dao.DB.Callback().Update().Remove(callback)
+	})
+	m, err := r.resolve(ctx, knowledgeTestOwner)
+	if err != nil {
+		t.Fatal(err)
+	}
+	req := entity.KnowledgeAnswerPolicySetRequest{Version: entity.KnowledgeAnswerVersion, Enabled: true, Scope: &scope, Model: &m.ref, Confirmed: true, ExternalSendConfirmed: true, Key: "timestamp-enable"}
+	for _, enabled := range []bool{true, false} {
+		if !enabled {
+			req.ExpectedVersion, req.Enabled = 1, false
+			req.Scope, req.Model = nil, nil
+			req.ExternalSendConfirmed, req.Key = false, "timestamp-disable"
+			now = now.Add(time.Second)
+		}
+		first, err := r.setPolicy(ctx, knowledgeTestOwner, knowledgeTestDomain, req)
+		if err != nil {
+			t.Fatal(err)
+		}
+		replay, err := r.setPolicy(ctx, knowledgeTestOwner, knowledgeTestDomain, req)
+		if err != nil {
+			t.Fatal(err)
+		}
+		current, err := r.current(ctx, knowledgeTestOwner, knowledgeTestDomain)
+		if err != nil || lexicalJSON(first) != lexicalJSON(replay) || lexicalJSON(first) != lexicalJSON(current) {
+			t.Fatal("initial policy differs from persisted replay/current policy", err)
+		}
+		if first.ConsentTime == nil || *first.ConsentTime != accessTime(now.Truncate(time.Millisecond)) || first.Enabled != enabled {
+			t.Fatal("policy did not use persisted time/enable state")
+		}
+	}
+	if calls.Load() != 0 {
+		t.Fatal("policy changes called the model")
+	}
 }
 
 func TestKnowledgeAnswerDefaultsConsentReplayAndOldGuard(t *testing.T) {

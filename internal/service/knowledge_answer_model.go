@@ -94,7 +94,7 @@ func (m *KnowledgeAnswerModel) Generate(ctx context.Context, question string, ev
 	}
 	var usage *entity.KnowledgeAnswerUsage
 	if response.Usage != nil && response.Usage.PromptTokens >= 0 && response.Usage.CompletionTokens >= 0 && response.Usage.TotalTokens >= 0 {
-		usage = &entity.KnowledgeAnswerUsage{Prompt: response.Usage.PromptTokens, Completion: response.Usage.CompletionTokens, Total: response.Usage.TotalTokens}
+		usage = &entity.KnowledgeAnswerUsage{Input: response.Usage.PromptTokens, Output: response.Usage.CompletionTokens, Total: response.Usage.TotalTokens}
 	}
 	return *response.Answer, usage, nil
 }

@@ -146,107 +146,113 @@ it('rejects an enabling request without fixed scope or consent before sending HT
   expect(Http).not.toHaveBeenCalled();
 });
 
-it.each(['valid', 'changed-text', 'foreign-source', 'wrong-model'] as const)(
-  'checks fixed citation bytes and bindings: %s',
-  async (change) => {
-    const text = 'SYNTHETIC ORION quota 47',
-      sha = createHash('sha256').update(text).digest('hex');
-    const target = {
-      source_ref: {
-        domain_id: Scope.domain,
-        source_id: 'e'.repeat(32),
-        source_revision_id: 'd'.repeat(32),
-        source_sha256: sha,
-      },
-      representation_ref: {
-        kind: 'source_revision' as const,
-        id: 'd'.repeat(32),
-        producer_sha256: null,
-      },
-    };
-    const index = { index_id: '1'.repeat(64), manifest_sha256: '2'.repeat(64) };
-    const permit: AnswerPolicy = {
-      ...Disabled,
-      version: 1,
-      enabled: true,
-      scope: {
-        index_ref: index,
-        selection: { kind: 'fixed_representations', targets: [target] },
-      },
-      scope_sha256: '3'.repeat(64),
-      model_ref: {
-        model_id: 'b'.repeat(32),
-        configuration_sha256: 'c'.repeat(64),
-      },
-      consent_actor: Scope.owner,
-      consent_time: '2026-11-17T00:00:00Z',
-    };
-    const evidence = {
-      evidence_version: '0.2.0-candidate',
+it.each([
+  'valid',
+  'changed-text',
+  'foreign-source',
+  'wrong-model',
+  'native-usage-fields',
+] as const)('checks fixed citation bytes and bindings: %s', async (change) => {
+  const text = 'SYNTHETIC ORION quota 47',
+    sha = createHash('sha256').update(text).digest('hex');
+  const target = {
+    source_ref: {
+      domain_id: Scope.domain,
+      source_id: 'e'.repeat(32),
+      source_revision_id: 'd'.repeat(32),
+      source_sha256: sha,
+    },
+    representation_ref: {
+      kind: 'source_revision' as const,
+      id: 'd'.repeat(32),
+      producer_sha256: null,
+    },
+  };
+  const index = { index_id: '1'.repeat(64), manifest_sha256: '2'.repeat(64) };
+  const permit: AnswerPolicy = {
+    ...Disabled,
+    version: 1,
+    enabled: true,
+    scope: {
       index_ref: index,
-      index_row_id: '5'.repeat(64),
-      address: {
-        target: JSON.parse(JSON.stringify(target)),
-        node_ref: { kind: 'c1_node', id: '4'.repeat(64), item_index: null },
+      selection: { kind: 'fixed_representations', targets: [target] },
+    },
+    scope_sha256: '3'.repeat(64),
+    model_ref: {
+      model_id: 'b'.repeat(32),
+      configuration_sha256: 'c'.repeat(64),
+    },
+    consent_actor: Scope.owner,
+    consent_time: '2026-11-17T00:00:00Z',
+  };
+  const evidence = {
+    evidence_version: '0.2.0-candidate',
+    index_ref: index,
+    index_row_id: '5'.repeat(64),
+    address: {
+      target: JSON.parse(JSON.stringify(target)),
+      node_ref: { kind: 'c1_node', id: '4'.repeat(64), item_index: null },
+    },
+    coordinate_space: 'source_utf8',
+    reading_text_sha256: sha,
+    range: { start_byte: 0, end_byte: text.length, sha256: sha },
+    locator: {
+      kind: 'source_utf8',
+      source_utf8: {
+        start_byte: 0,
+        end_byte: text.length,
+        start_line: 1,
+        end_line: 1,
       },
-      coordinate_space: 'source_utf8',
-      reading_text_sha256: sha,
-      range: { start_byte: 0, end_byte: text.length, sha256: sha },
-      locator: {
-        kind: 'source_utf8',
-        source_utf8: {
-          start_byte: 0,
-          end_byte: text.length,
-          start_line: 1,
-          end_line: 1,
-        },
-        document: null,
-        item_index: null,
-      },
-      original_position: null,
-      coordinate_precision: 'source_bytes',
-      assembly: 'c1_root_subrange_exact_bytes',
-    };
-    const citation = {
-      id: 'E1',
-      evidence_ref: evidence,
-      text,
-      byte_length: text.length,
-      sha256: sha,
-    };
-    const result = {
-      answer_id: '6'.repeat(32),
-      state: 'completed',
-      policy_version: 1,
-      scope_sha256: permit.scope_sha256,
-      model_ref: { ...permit.model_ref },
-      answer: '47',
-      insufficient_evidence: false,
-      citations: [citation],
-      usage: null,
-      provider_calls: 1,
-      replayed: false,
-    };
-    if (change === 'changed-text') citation.text = 'PRIVATE-MUTATED-CITATION';
-    if (change === 'foreign-source')
-      evidence.address.target.source_ref.source_id = '7'.repeat(32);
-    if (change === 'wrong-model') result.model_ref.model_id = '8'.repeat(32);
-    Http.mockImplementation(async (config) =>
-      response(config, { ...envelope(result), operation: 'answer' }),
-    );
-    const reading = service.answer(
-      Scope,
-      {
-        contract_version: KnowledgeAnswerVersion,
-        expected_policy_version: 1,
-        question: 'ORION quota?',
-        retrieval_query: null,
-        idempotency_key: 'one-answer',
-      },
-      permit,
-    );
-    if (change === 'valid') await expect(reading).resolves.toEqual(result);
-    else await expect(reading).rejects.toBeDefined();
-    expect(Http).toHaveBeenCalledTimes(1);
-  },
-);
+      document: null,
+      item_index: null,
+    },
+    original_position: null,
+    coordinate_precision: 'source_bytes',
+    assembly: 'c1_root_subrange_exact_bytes',
+  };
+  const citation = {
+    id: 'E1',
+    evidence_ref: evidence,
+    text,
+    byte_length: text.length,
+    sha256: sha,
+  };
+  const result = {
+    answer_id: '6'.repeat(32),
+    state: 'completed',
+    policy_version: 1,
+    scope_sha256: permit.scope_sha256,
+    model_ref: { ...permit.model_ref },
+    answer: '47',
+    insufficient_evidence: false,
+    citations: [citation],
+    usage:
+      change === 'native-usage-fields'
+        ? { prompt_tokens: 150, completion_tokens: 12, total_tokens: 162 }
+        : { input_tokens: 150, output_tokens: 12, total_tokens: 162 },
+    provider_calls: 1,
+    replayed: false,
+  };
+  if (change === 'changed-text') citation.text = 'PRIVATE-MUTATED-CITATION';
+  if (change === 'foreign-source')
+    evidence.address.target.source_ref.source_id = '7'.repeat(32);
+  if (change === 'wrong-model') result.model_ref.model_id = '8'.repeat(32);
+  Http.mockImplementation(async (config) =>
+    response(config, { ...envelope(result), operation: 'answer' }),
+  );
+  const reading = service.answer(
+    Scope,
+    {
+      contract_version: KnowledgeAnswerVersion,
+      expected_policy_version: 1,
+      question: 'ORION quota?',
+      retrieval_query: null,
+      idempotency_key: 'one-answer',
+    },
+    permit,
+  );
+  if (change === 'valid') await expect(reading).resolves.toEqual(result);
+  else await expect(reading).rejects.toBeDefined();
+  expect(Http).toHaveBeenCalledTimes(1);
+});

@@ -86,9 +86,9 @@ type KnowledgeAnswerCitation struct {
 }
 
 type KnowledgeAnswerUsage struct {
-	Prompt     int `json:"prompt_tokens"`
-	Completion int `json:"completion_tokens"`
-	Total      int `json:"total_tokens"`
+	Input  int `json:"input_tokens"`
+	Output int `json:"output_tokens"`
+	Total  int `json:"total_tokens"`
 }
 
 type KnowledgeAnswerResult struct {

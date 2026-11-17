@@ -60,8 +60,8 @@ export type AnswerCompleted = Omit<AnswerRunning, 'state'> & {
   insufficient_evidence: boolean;
   citations: AnswerCitation[];
   usage: {
-    prompt_tokens: number;
-    completion_tokens: number;
+    input_tokens: number;
+    output_tokens: number;
     total_tokens: number;
   } | null;
 };
