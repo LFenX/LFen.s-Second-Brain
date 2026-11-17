@@ -41,6 +41,7 @@ import {
 const StructureBrowser = lazy(() => import('./structure'));
 const DocumentBrowser = lazy(() => import('./document-browser'));
 const LocalLexicalBrowser = lazy(() => import('./local-lexical'));
+const KnowledgeAnswer = lazy(() => import('./answer'));
 const KnowledgeCapabilities = lazy(() => import('./knowledge-capabilities'));
 const KnowledgeRepresentation = lazy(
   () => import('./knowledge-representation'),
@@ -402,22 +403,29 @@ function DomainCatalogue({
     | 'lifecycle'
     | 'structure'
     | 'document'
+    | 'answer'
     | 'local-lexical'
     | 'content'
   >(
-    params.has('content') ||
-      [...params.keys()].some((key) => key.startsWith('content_'))
-      ? 'content'
-      : params.has('document_structure') ||
-          [...params.keys()].some((key) => key.startsWith('document_'))
-        ? 'document'
-        : params.get('structure') === '1'
-          ? 'structure'
-          : params.has('lifecycle_source') ||
-              params.get('lifecycle_view') === '1'
-            ? 'lifecycle'
-            : 'text',
+    params.get('knowledge_answer') === '1'
+      ? 'answer'
+      : params.has('content') ||
+          [...params.keys()].some((key) => key.startsWith('content_'))
+        ? 'content'
+        : params.has('document_structure') ||
+            [...params.keys()].some((key) => key.startsWith('document_'))
+          ? 'document'
+          : params.get('structure') === '1'
+            ? 'structure'
+            : params.has('lifecycle_source') ||
+                params.get('lifecycle_view') === '1'
+              ? 'lifecycle'
+              : 'text',
   );
+  const showAnswer = () => {
+    setSourceView('answer');
+    setParams({ knowledge_answer: '1' });
+  };
   const showContent = () => {
     setSourceView('content');
     setParams({ content: '1' });
@@ -428,6 +436,7 @@ function DomainCatalogue({
   };
   const clearContentLocation = () => {
     if (
+      params.has('knowledge_answer') ||
       params.has('content') ||
       [...params.keys()].some((key) => key.startsWith('content_'))
     )
@@ -476,6 +485,7 @@ function DomainCatalogue({
       [...params.keys()].some((key) => key.startsWith('document_'))
     )
       setSourceView('document');
+    else if (params.get('knowledge_answer') === '1') setSourceView('answer');
     else if (params.get('structure') === '1') setSourceView('structure');
   }, [params]);
   const [generation, setGeneration] = useState(0);
@@ -534,6 +544,9 @@ function DomainCatalogue({
           <h1 className="break-all text-lg font-semibold sm:text-2xl">
             {domain.data.name} · {t('knowledgeCatalogue.title')}
           </h1>
+          <Button onClick={showAnswer} aria-pressed={sourceView === 'answer'}>
+            知识库问答
+          </Button>
           <Button variant="outline" onClick={handleRefresh}>
             {t('knowledgeCatalogue.refresh')}
           </Button>
@@ -735,7 +748,16 @@ function DomainCatalogue({
           aria-label={t('knowledgeCatalogue.original')}
           className="min-h-0 min-w-0 flex-1 overflow-auto"
         >
-          {sourceView === 'content' ? (
+          {sourceView === 'answer' ? (
+            <Suspense fallback={<CatalogueLoading />}>
+              <KnowledgeAnswer
+                key={domainId + ':' + domain.data.owner_id}
+                domain={domainId}
+                owner={domain.data.owner_id}
+                group={path.at(-1)?.id}
+              />
+            </Suspense>
+          ) : sourceView === 'content' ? (
             <Suspense fallback={<CatalogueLoading />}>
               <KnowledgeRepresentation
                 key={

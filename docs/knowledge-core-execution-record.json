@@ -10554,6 +10554,94 @@
         "realAICSExternalUse": false,
         "privateFilesHashed": false
       }
+    },
+    "owner_web_answer_web_20261117": {
+      "state": "RootSolo_OwnerWebAnswerWebImplemented_BuildAndScopedTestsVerified_NotReleased",
+      "approval": "KQA-20261117-02 exact human OptionA",
+      "subject_sha256": "88c6a4fbcc3ad293c73a015ea28cfebefed2e7332881fa4b4c554dba88d173fb",
+      "sourceParent": "85f6d2b80fa4a2d495fd50b5d845a4dc2a52f6a8",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 5188,
+        "sha256": "db11d6586919fae50d331558afa9732926d52102901c62642b2d9ff9d7743346"
+      },
+      "files": [
+        {
+          "path": "web/src/pages/dataset/knowledge-catalogue/index.tsx",
+          "sha256": "6173888313f6343aaabe228cd4b22558ae1d2b7655b4b1edc9a8c8e2d610895f",
+          "bytes": 27711
+        },
+        {
+          "path": "web/src/hooks/use-knowledge-answer.ts",
+          "sha256": "e7f47b0b738e802854885c77dbacc31b3822f23bf40d9ff8e9fad5e935239c33",
+          "bytes": 2752
+        },
+        {
+          "path": "web/src/interfaces/database/knowledge-answer.ts",
+          "sha256": "27afa0b050411a06a864f8cf0435f20b083b462de337e8a15b8fe6af04afe19e",
+          "bytes": 1926
+        },
+        {
+          "path": "web/src/interfaces/request/knowledge-answer.ts",
+          "sha256": "8f0e953bcb294bccb2e3cc5a42071ce23c8f5624881c05c9b42d19ef6461f2a2",
+          "bytes": 887
+        },
+        {
+          "path": "web/src/pages/dataset/knowledge-catalogue/__tests__/answer.test.tsx",
+          "sha256": "35546f730de6d5296c4c900d2aeae88d1e00e6bff9d61ee0cf3571d37ee304e0",
+          "bytes": 6804
+        },
+        {
+          "path": "web/src/pages/dataset/knowledge-catalogue/answer.tsx",
+          "sha256": "9a7425d8ce83240a505a1eae3c6eb262b185180efec3ff0b2cf0f8b5c00c66cc",
+          "bytes": 16768
+        },
+        {
+          "path": "web/src/services/__tests__/knowledge-answer-service.test.ts",
+          "sha256": "94cf6937542ffd0d4b39ccf235a9da4d9b99cfc94e1283d76edd2f6823b0d18e",
+          "bytes": 7672
+        },
+        {
+          "path": "web/src/services/knowledge-answer-service.ts",
+          "sha256": "0f2df8fa3b8e650f99b9ae78a8f47549c6d53d54136125d79f385fdbd267b720",
+          "bytes": 8013
+        }
+      ],
+      "implemented": {
+        "entry": "Knowledge catalogue visible owner answer button and ?knowledge_answer=1",
+        "defaultOff": "Explicit fixed source selection,ready existing C3 index,official model destination preview,checkbox external consent",
+        "answer": "No automatic retry;manual same-key polling;fixed citation text and source links;clear answer on hide,version change or disable",
+        "network": "Existing native server registration,closed schema validation and fixed scope/model/citation byte/SHA checks;owner/session query-key factory;no shared UI changes"
+      },
+      "verification": {
+        "serviceTests": 13,
+        "answerUITests": 3,
+        "existingCatalogueTests": 17,
+        "lint": "All8files oxfmt --check and oxlint passed",
+        "productionBuild": "npm run build exit0;immutable ignored artifact manifest;large-chunk warning retained",
+        "typeCheck": {
+          "globalPassed": false,
+          "currentDiagnostics": 213,
+          "baselineDiagnostics": 213,
+          "newDiagnostics": 0,
+          "touchedDiagnostics": 0
+        },
+        "harnessFailures": "Original Babel imported AnswerPolicy type transform,jsdom missing structuredClone and cross-realm ArrayBuffer fixture errors corrected in local tests;initial custom type host missing configFilePath explicitly rejected,correct comparison used. Failed runs retained."
+      },
+      "remaining": {
+        "realSQL": "NotRun for new two-table route",
+        "realModel": "NotRun;0 of20 calls used",
+        "browser": "NotRun",
+        "formalRuntime": "Unchanged old67f539 binary and old Web;new backend/Web not deployed"
+      },
+      "preserved": {
+        "protected47": true,
+        "oldFormalContracts26": true,
+        "sourceDirectoriesAndNativeResourcesUnchanged": true,
+        "otherChatsPaused": true,
+        "realAICSExternalUse": false,
+        "privateFilesHashed": false
+      }
     }
   }
 }

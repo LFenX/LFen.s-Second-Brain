@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "lock_id": "KCRL-20261117-56",
+  "lock_id": "KCRL-20261117-57",
   "recorded_date": "2026-11-17",
   "coordinator_thread_id": "01a1a9a5-c724-7f52-8cbb-16d19d982ba4",
-  "source_baseline_git_head": "b361f28c8836a98109510937add87e7aa5e070a3",
+  "source_baseline_git_head": "85f6d2b80fa4a2d495fd50b5d845a4dc2a52f6a8",
   "source_snapshot": {
     "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
-    "file_count": 5181,
-    "sha256": "74e031bfda05bda7ec3ec17e96dd0922942029aca8f1d3bb16b89074ea3ab2c8"
+    "file_count": 5188,
+    "sha256": "db11d6586919fae50d331558afa9732926d52102901c62642b2d9ff9d7743346"
   },
   "unlisted_policy": "DeniedAsCurrentGuidance_UntilCoordinatorReviewsAndAssigns",
   "authority_order": [
@@ -32,9 +32,9 @@
       },
       "integrity": {
         "mode": "file",
-        "sha256": "d19ff207bead5192f091e1425bb03d0dc644c6bc5d3d9ecbd044fda7be14745f"
+        "sha256": "6af22cc8342e782717a187186c9ddc6d073a59af446ca31f11229432b7ed76c2"
       },
-      "selection_sha256": "d19ff207bead5192f091e1425bb03d0dc644c6bc5d3d9ecbd044fda7be14745f"
+      "selection_sha256": "6af22cc8342e782717a187186c9ddc6d073a59af446ca31f11229432b7ed76c2"
     },
     {
       "id": "root-instructions",
@@ -1453,9 +1453,9 @@
       },
       "integrity": {
         "mode": "selection",
-        "sha256": "eae769f8a02a993c5ae4ab0f0c6cc137bb2f39e1a4342e1f5f6403db71de417a"
+        "sha256": "c8123b48ae1e6301de5fe25c0e54a9295941bea0eed2501e719d64b26a9127c8"
       },
-      "selection_sha256": "eae769f8a02a993c5ae4ab0f0c6cc137bb2f39e1a4342e1f5f6403db71de417a",
+      "selection_sha256": "c8123b48ae1e6301de5fe25c0e54a9295941bea0eed2501e719d64b26a9127c8",
       "limitation": "第三轮独立事实入口；仅在实际28源码及独立B回执核实、独审和总控精确四文件租约后机械生效。各运行/质量门按各自时点与版本保留，不批准新接口、模型、真实内容、最终验收或发布。 Ref27只追加shared_ordinal_followup；旧28和分层运行事实保留原时点，命名源码集合后续仅据实际应用与分层回执登记，未完成门不标Pass。"
     },
     {
@@ -5093,37 +5093,26 @@
     "Specific human KQA-20261117-02 OptionA authorizes exact owner-only web generation implementation and at most20 synthetic acceptance calls;not real AICS or shared/department model egress. Root sole executor;old guards remain."
   ],
   "update_rule": "Only Root coordinates and executes the latest human-approved bounded work. Review exact changes before source reseal;archive prior raw lock and retain failures. No unknown-drift hash refresh or unapproved interface/model expansion.",
-  "manifest_payload_sha256": "147a69a3cff0dc9369b25a0e1bd3f4caa77384c90c576a468403446c664a00df",
+  "manifest_payload_sha256": "804f7e10f5de0e1669963c1da47a26deae2f25c1150ee2d311882596c26cc1b2",
   "previous_baseline": {
-    "lock_id": "KCRL-20261117-55",
-    "manifest_sha256": "7996a20de01c71476ae421c09e16afa9f91ff61364f3e618bf01d0df50623da8",
-    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261117-55.json",
-    "archive_sha256": "7996a20de01c71476ae421c09e16afa9f91ff61364f3e618bf01d0df50623da8",
+    "lock_id": "KCRL-20261117-56",
+    "manifest_sha256": "00085430dd48db0bbbd8f37908d6347e7d86cfab6b8dc7ab28e2ad301784e2bf",
+    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261117-56.json",
+    "archive_sha256": "00085430dd48db0bbbd8f37908d6347e7d86cfab6b8dc7ab28e2ad301784e2bf",
     "changed_files": [
-      "docs/knowledge-answer-20261117-02/root-write-window.json",
-      "internal/dao/database.go",
-      "internal/router/knowledge_content.go",
-      "internal/common/knowledge_answer_http.go",
-      "internal/common/knowledge_answer_http_test.go",
-      "internal/entity/knowledge_answer.go",
-      "internal/entity/knowledge_answer_schema.json",
-      "internal/entity/knowledge_answer_store.go",
-      "internal/entity/knowledge_answer_test.go",
-      "internal/entity/knowledge_answer_validation.go",
-      "internal/entity/models/knowledge_answer.go",
-      "internal/entity/models/knowledge_answer_test.go",
-      "internal/handler/knowledge_answer.go",
-      "internal/handler/knowledge_answer_test.go",
-      "internal/router/knowledge_answer.go",
-      "internal/service/dataset/knowledge_answer.go",
-      "internal/service/dataset/knowledge_answer_run.go",
-      "internal/service/dataset/knowledge_answer_test.go",
-      "internal/service/knowledge_answer_model.go",
+      "web/src/pages/dataset/knowledge-catalogue/index.tsx",
+      "web/src/hooks/use-knowledge-answer.ts",
+      "web/src/interfaces/database/knowledge-answer.ts",
+      "web/src/interfaces/request/knowledge-answer.ts",
+      "web/src/pages/dataset/knowledge-catalogue/__tests__/answer.test.tsx",
+      "web/src/pages/dataset/knowledge-catalogue/answer.tsx",
+      "web/src/services/__tests__/knowledge-answer-service.test.ts",
+      "web/src/services/knowledge-answer-service.ts",
       "docs/knowledge-core-execution-record.json",
       "docs/knowledge-core-reference-authority.md",
-      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261117-55.json",
+      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261117-56.json",
       "docs/knowledge-core-reference-lock.json"
     ],
-    "reason": "Root-reviewed exact approved KQA02 backend implementation and bounded private-client owning extension. Unit/native build/help verified;new Web,real SQL/models/browser/release remain NotRun."
+    "reason": "Root-reviewed exact approved KQA02 eight-file owner Web implementation. Production build,scoped tests/lint and baseline type diagnostic comparison verified. Real SQL/models/browser/release remain NotRun."
   }
 }
