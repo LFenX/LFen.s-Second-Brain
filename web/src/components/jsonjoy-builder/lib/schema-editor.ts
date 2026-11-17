@@ -45,7 +45,7 @@ export function removeObjectProperty(
   if (!isObjectSchema(schema) || !schema.properties) return schema;
 
   const newSchema = copySchema(schema);
-  const { [propertyName]: _, ...remainingProps } = newSchema.properties;
+  const { [propertyName]: _, ...remainingProps } = newSchema.properties ?? {};
   newSchema.properties = remainingProps;
 
   // Also remove from required array if present
@@ -109,14 +109,7 @@ export function updateArrayItems(
  */
 export function createFieldSchema(field: NewField): JSONSchema {
   const { type, description, validation } = field;
-  if (isObjectSchema(validation)) {
-    return {
-      type,
-      description,
-      ...validation,
-    };
-  }
-  return validation;
+  return { type, description, ...validation };
 }
 
 /**
@@ -154,7 +147,7 @@ export function getArrayItemsSchema(schema: JSONSchema): JSONSchema | null {
   if (isBooleanSchema(schema)) return null;
   if (schema.type !== 'array') return null;
 
-  return schema.items || null;
+  return schema.items ?? null;
 }
 
 /**

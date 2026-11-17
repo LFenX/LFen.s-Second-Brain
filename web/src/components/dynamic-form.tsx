@@ -24,8 +24,10 @@ import {
   useState,
 } from 'react';
 import {
+  Controller,
   ControllerRenderProps,
   DefaultValues,
+  FieldErrors,
   FieldValues,
   SubmitHandler,
   UseFormTrigger,
@@ -172,7 +174,10 @@ export interface DynamicFormRef {
 // Generate Zod validation schema based on field configurations
 export const generateSchema = (fields: FormFieldConfig[]): ZodSchema<any> => {
   const schema: Record<string, ZodSchema> = {};
-  const nestedSchemas: Record<string, Record<string, ZodSchema>> = {};
+  interface NestedSchema {
+    [key: string]: ZodSchema | NestedSchema;
+  }
+  const nestedSchemas: Record<string, NestedSchema> = {};
 
   fields.forEach((field) => {
     let fieldSchema: ZodSchema;
@@ -303,10 +308,15 @@ export const generateSchema = (fields: FormFieldConfig[]): ZodSchema<any> => {
       let currentSchema = nestedSchemas[firstKey];
       for (let i = 1; i < keys.length - 1; i++) {
         const key = keys[i];
-        if (!currentSchema[key]) {
-          currentSchema[key] = {};
+        let child = currentSchema[key];
+        if (child instanceof z.ZodType) {
+          throw new Error(`Conflicting nested field path: ${field.name}`);
         }
-        currentSchema = currentSchema[key];
+        if (!child) {
+          child = {};
+          currentSchema[key] = child;
+        }
+        currentSchema = child;
       }
 
       const lastKey = keys[keys.length - 1];
@@ -317,17 +327,12 @@ export const generateSchema = (fields: FormFieldConfig[]): ZodSchema<any> => {
   });
 
   Object.keys(nestedSchemas).forEach((key) => {
-    const buildNestedSchema = (obj: Record<string, any>): ZodSchema => {
+    const buildNestedSchema = (obj: NestedSchema): ZodSchema => {
       const nestedSchema: Record<string, ZodSchema> = {};
       Object.keys(obj).forEach((subKey) => {
-        if (
-          typeof obj[subKey] === 'object' &&
-          !(obj[subKey] instanceof z.ZodType)
-        ) {
-          nestedSchema[subKey] = buildNestedSchema(obj[subKey]);
-        } else {
-          nestedSchema[subKey] = obj[subKey];
-        }
+        const child = obj[subKey];
+        nestedSchema[subKey] =
+          child instanceof z.ZodType ? child : buildNestedSchema(child);
       });
       return z.object(nestedSchema);
     };
@@ -400,7 +405,16 @@ export const RenderField = ({
 }) => {
   if (field.render) {
     if (field.type === FormFieldType.Custom && field.hideLabel) {
-      return <div className="w-full">{field.render({})}</div>;
+      return (
+        <div className="w-full">
+          <Controller
+            name={field.name}
+            render={({ field: controllerField }) => (
+              <>{field.render?.(controllerField)}</>
+            )}
+          />
+        </div>
+      );
     }
     return (
       <RAGFlowFormItem
@@ -712,7 +726,9 @@ const DynamicForm = {
             options,
           );
 
-          let combinedErrors = { ...zodResult.errors };
+          let combinedErrors: FieldErrors<FieldValues> = {
+            ...zodResult.errors,
+          };
 
           const fieldErrors: Record<string, { type: string; message: string }> =
             {};
@@ -754,7 +770,7 @@ const DynamicForm = {
           combinedErrors = {
             ...combinedErrors,
             ...fieldErrors,
-          } as any;
+          };
 
           for (const key in combinedErrors) {
             if (Array.isArray(combinedErrors[key])) {
@@ -784,7 +800,7 @@ const DynamicForm = {
         });
 
         const subscriptions = Object.keys(dependencyMap).map((depField) => {
-          return form.watch((values: any, { name }) => {
+          return form.watch((_values, { name }) => {
             if (name === depField && dependencyMap[depField]) {
               dependencyMap[depField].forEach((dependentField) => {
                 form.trigger(dependentField as any);
@@ -964,9 +980,12 @@ const DynamicForm = {
         </Form>
       );
     },
-  ) as <T extends FieldValues>(
-    props: DynamicFormProps<T> & { ref?: React.Ref<DynamicFormRef> },
-  ) => React.ReactElement,
+  ) as {
+    <T extends FieldValues>(
+      props: DynamicFormProps<T> & { ref?: React.Ref<DynamicFormRef> },
+    ): React.ReactElement;
+    displayName?: string;
+  },
   SavingButton: ({
     submitLoading,
     buttonText,

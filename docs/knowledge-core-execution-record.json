@@ -10880,6 +10880,140 @@
         "sha256": "b6f1a15b6f7ac31246670be37f7391cfcc5f1c19e48af8ec72c03baee25d3cf3"
       },
       "files": []
+    },
+    "web_typecheck_phase61_20261118": {
+      "state": "RootSolo_TypecheckPhase1_CommonComponents_213To161_NotComplete",
+      "before": 213,
+      "remaining": 161,
+      "resolved": 52,
+      "verification": "Direct configured tsc strict213baseline,then161;no remaining diagnostics in19changed paths.9actual focused Jest cases passed;formatcheck/lint exit0 with existing warnings. Pure test-only display mocks added to avoid loading unrelated UI import graph after interrupted slow initial run.",
+      "changes": [
+        "Initialized mutable lazy ref keeps upload cache/store nonnull and supports null values without repeated initialization",
+        "Recursive nested form schema types,controller props for custom fields,typed mutable error map and generic component displayName",
+        "Use actual installed/local packaged Monaco0.55.1 json API and current Zod3 issue types",
+        "Guard optional schema/bound fields,always-present validation error arrays,preserve false array item schema",
+        "Only necessary sidebar button event/props correction and remove unused private voice UI/timers/state;no microphone/model calls"
+      ],
+      "strictConfigurationUnchanged": true,
+      "newIgnoresOrAnyCasts": false,
+      "productionBuildAndDeployment": "Deferred until remaining161type errors fixed;current released services unchanged",
+      "remainingWork": "Page/hooks/test fixtures and full configured typecheck/build;do not claim whole task complete.",
+      "preserved": {
+        "protected47": true,
+        "formalContracts26": true,
+        "rootLayout": true,
+        "privateConfiguration": true,
+        "containers": true
+      },
+      "humanScope": "继续把剩下的213项类型检查报错修好",
+      "date": "2026-11-18",
+      "rootAlone": true,
+      "newModelCalls": 0,
+      "previousKQA20CallBudgetStillClosed": true,
+      "owningWriteWindow": "Latest explicit whole213 correction request;Root reviewed exact Web-only owning paths and focused regressions. No old KQA window reopens and no new business interface or root layout is authorized.",
+      "sourceParent": "f95fc9b02257933ae6e03f1252c9700141ff5626",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 5191,
+        "sha256": "85fa6fbfd97679e009ab60a9ea883b68fa77d9b067c6a03dd83f31993cecd831"
+      },
+      "files": [
+        {
+          "path": "web/src/components/dynamic-form.tsx",
+          "bytes": 31574,
+          "sha256": "22887ec8ea08088cca750f1fdc4f245b318e8ed861cf158c5f19cc83a1fa6f05"
+        },
+        {
+          "path": "web/src/components/edit-tag/index.tsx",
+          "bytes": 4760,
+          "sha256": "79f2e747d16d97f0c1ded5a132cc6f6363c8fca0e1fbd5b4fd61eff6737e4674"
+        },
+        {
+          "path": "web/src/components/file-upload.tsx",
+          "bytes": 37799,
+          "sha256": "5dedea044c1e6d3a5c5db279f4d164b0ae077486cc87c087619b02d99efceb34"
+        },
+        {
+          "path": "web/src/components/jsonjoy-builder/components/features/json-validator.tsx",
+          "bytes": 10145,
+          "sha256": "4de69e15af0dcbd618cc10ad3d0d44a9a4c4fc3792a1906a1eabc6d122d2a108"
+        },
+        {
+          "path": "web/src/components/jsonjoy-builder/components/schema-editor/json-schema-editor.tsx",
+          "bytes": 5730,
+          "sha256": "515a3b0f02f12281a9a64bcf627d6767c10071e72a8301985f1db290b582412c"
+        },
+        {
+          "path": "web/src/components/jsonjoy-builder/components/schema-editor/schema-property-editor.tsx",
+          "bytes": 8694,
+          "sha256": "70274955607bc73dfcaa3bd9cfa62d32cfef92a020939f74b69663435bae52c5"
+        },
+        {
+          "path": "web/src/components/jsonjoy-builder/components/schema-editor/types/array-editor.tsx",
+          "bytes": 6435,
+          "sha256": "639c224c818f543289361fda430af7eef2261e8814e0c27693eb8bc86725c452"
+        },
+        {
+          "path": "web/src/components/jsonjoy-builder/components/schema-editor/types/number-editor.tsx",
+          "bytes": 13787,
+          "sha256": "975a0cd6daaa0efa9476f400fb120a231ed9e3b91609131acecbe92f2c216246"
+        },
+        {
+          "path": "web/src/components/jsonjoy-builder/components/schema-editor/types/string-editor.tsx",
+          "bytes": 9654,
+          "sha256": "c1a3477eb194734a1394cf5b2e5ff5c3e5345856526c5ac0350eff8622bd53c1"
+        },
+        {
+          "path": "web/src/components/jsonjoy-builder/hooks/use-monaco-theme.ts",
+          "bytes": 7333,
+          "sha256": "b8e6a0191e020bb7d1618a7680e650622b6706e9dea8d43f5cf739178f1f5489"
+        },
+        {
+          "path": "web/src/components/jsonjoy-builder/lib/schema-editor.ts",
+          "bytes": 4050,
+          "sha256": "53b8f613bba46a3ccd3587b3315cd9a88fde1a3a973e7634f078b40370ba4e0f"
+        },
+        {
+          "path": "web/src/components/jsonjoy-builder/lib/schema-inference.ts",
+          "bytes": 12000,
+          "sha256": "b85cb85e1c49afe6445a9050bc44c48adc2b58ea2fd2d5f9b3d3eb78cf6f621b"
+        },
+        {
+          "path": "web/src/components/jsonjoy-builder/types/validation.ts",
+          "bytes": 11867,
+          "sha256": "101a5776bbae628dfd82fb246a08e09c6842ce98ab9a3824eb95f56619ed788d"
+        },
+        {
+          "path": "web/src/components/jsonjoy-builder/utils/json-validator.ts",
+          "bytes": 6013,
+          "sha256": "0b08113d05c4844695040e7e329763f12b3d4b8916db8df82c10cb7706ccb59d"
+        },
+        {
+          "path": "web/src/components/ui/audio-button.tsx",
+          "bytes": 9610,
+          "sha256": "4d7018796cdd956d3abecec176eef05476ab785c7c766520afea5f10e944341f"
+        },
+        {
+          "path": "web/src/components/ui/sidebar.tsx",
+          "bytes": 23722,
+          "sha256": "a2b1e44768d6ddf3ad0b38be662261a5e29e72def70632502daa9ed81641d8fc"
+        },
+        {
+          "path": "web/src/components/__tests__/dynamic-form.test.tsx",
+          "bytes": 2713,
+          "sha256": "d9891ddf49644aa1188252a96e0aff29ce9b5778126d05218fcbed4b9d821cb0"
+        },
+        {
+          "path": "web/src/components/__tests__/file-upload.test.tsx",
+          "bytes": 1025,
+          "sha256": "ae6b04940fda01fdd36afd16d3e564dfb0c24ec7b291a2b408b0cd2be1fc3591"
+        },
+        {
+          "path": "web/src/components/jsonjoy-builder/__tests__/schema-validation.test.ts",
+          "bytes": 2165,
+          "sha256": "40872cccd69e32ba8debc80930faef893d5292b2da408554d965558fe09f7dca"
+        }
+      ]
     }
   }
 }

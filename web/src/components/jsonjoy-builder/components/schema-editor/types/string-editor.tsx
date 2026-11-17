@@ -140,9 +140,9 @@ const StringEditor: React.FC<TypeEditorProps> = ({
         <div className="space-y-2">
           <Label
             htmlFor={minLengthId}
-            className={
-              (!!minMaxError || !!minLengthError) && 'text-destructive'
-            }
+            className={cn(
+              (!!minMaxError || !!minLengthError) && 'text-destructive',
+            )}
           >
             {t.stringMinimumLengthLabel}
           </Label>
@@ -166,9 +166,9 @@ const StringEditor: React.FC<TypeEditorProps> = ({
         <div className="space-y-2">
           <Label
             htmlFor={maxLengthId}
-            className={
-              (!!minMaxError || !!maxLengthError) && 'text-destructive'
-            }
+            className={cn(
+              (!!minMaxError || !!maxLengthError) && 'text-destructive',
+            )}
           >
             {t.stringMaximumLengthLabel}
           </Label>
@@ -200,7 +200,7 @@ const StringEditor: React.FC<TypeEditorProps> = ({
       <div className="space-y-2">
         <Label
           htmlFor={patternId}
-          className={!!patternError && 'text-destructive'}
+          className={cn(!!patternError && 'text-destructive')}
         >
           {t.stringPatternLabel}
         </Label>
@@ -220,7 +220,7 @@ const StringEditor: React.FC<TypeEditorProps> = ({
       <div className="space-y-2">
         <Label
           htmlFor={formatId}
-          className={!!formatError && 'text-destructive'}
+          className={cn(!!formatError && 'text-destructive')}
         >
           {t.stringFormatLabel}
         </Label>

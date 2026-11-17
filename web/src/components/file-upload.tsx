@@ -27,13 +27,13 @@ const ITEM_DELETE_NAME = 'FileUploadItemDelete';
 const CLEAR_NAME = 'FileUploadClear';
 
 function useLazyRef<T>(fn: () => T) {
-  const ref = React.useRef<T | null>(null);
+  const ref = React.useRef<{ current: T } | null>(null);
 
   if (ref.current === null) {
-    ref.current = fn();
+    ref.current = { current: fn() };
   }
 
-  return ref as React.RefObject<T>;
+  return ref.current;
 }
 
 type Direction = 'ltr' | 'rtl';
