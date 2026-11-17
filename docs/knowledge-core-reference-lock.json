@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "lock_id": "KCRL-20261118-63",
+  "lock_id": "KCRL-20261118-64",
   "recorded_date": "2026-11-18",
   "coordinator_thread_id": "01a1a9a5-c724-7f52-8cbb-16d19d982ba4",
-  "source_baseline_git_head": "02051074b11de979113ad2139049d830197f453a",
+  "source_baseline_git_head": "1831ea67177cde9511a1c1523717da4ed40466f5",
   "source_snapshot": {
     "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
     "file_count": 5198,
@@ -32,9 +32,9 @@
       },
       "integrity": {
         "mode": "file",
-        "sha256": "962b9a3329f72a4e3a8d68b53fcf21812a0712a0502a3e02e7b45a42bb8a6f33"
+        "sha256": "5ddd9fa1c35b40becc9e4e40a6c695807bf9b6e33851c6021ecb837bd7d4f9e8"
       },
-      "selection_sha256": "962b9a3329f72a4e3a8d68b53fcf21812a0712a0502a3e02e7b45a42bb8a6f33"
+      "selection_sha256": "5ddd9fa1c35b40becc9e4e40a6c695807bf9b6e33851c6021ecb837bd7d4f9e8"
     },
     {
       "id": "root-instructions",
@@ -1453,9 +1453,9 @@
       },
       "integrity": {
         "mode": "selection",
-        "sha256": "5e5f296209b5f3b66d99ac1c5668a86bac511f84efec55d5fd3e2164f77c79f4"
+        "sha256": "c326f6b1a41cda638f006e56a7407f48a6685a0a8c46b524cfaeb48333457dfd"
       },
-      "selection_sha256": "5e5f296209b5f3b66d99ac1c5668a86bac511f84efec55d5fd3e2164f77c79f4",
+      "selection_sha256": "c326f6b1a41cda638f006e56a7407f48a6685a0a8c46b524cfaeb48333457dfd",
       "limitation": "第三轮独立事实入口；仅在实际28源码及独立B回执核实、独审和总控精确四文件租约后机械生效。各运行/质量门按各自时点与版本保留，不批准新接口、模型、真实内容、最终验收或发布。 Ref27只追加shared_ordinal_followup；旧28和分层运行事实保留原时点，命名源码集合后续仅据实际应用与分层回执登记，未完成门不标Pass。"
     },
     {
@@ -5093,78 +5093,18 @@
     "Specific human KQA-20261117-02 OptionA authorizes exact owner-only web generation implementation and at most20 synthetic acceptance calls;not real AICS or shared/department model egress. Root sole executor;old guards remain."
   ],
   "update_rule": "Only Root coordinates and executes the latest human-approved bounded work. Review exact changes before source reseal;archive prior raw lock and retain failures. No unknown-drift hash refresh or unapproved interface/model expansion.",
-  "manifest_payload_sha256": "27d321255daa9c75676344c25f0843aa5daab81b17e331b5122b300823af7d81",
+  "manifest_payload_sha256": "fec643dabf759510c09a3ba52ca9b4315b8bf17055e159a314bc97492fcde325",
   "previous_baseline": {
-    "lock_id": "KCRL-20261118-62",
-    "manifest_sha256": "eab988a006db266dc6bd5867bbdb37a4f3dd78db16e431f30a1aa68e75fd9d48",
-    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261118-62.json",
-    "archive_sha256": "eab988a006db266dc6bd5867bbdb37a4f3dd78db16e431f30a1aa68e75fd9d48",
+    "lock_id": "KCRL-20261118-63",
+    "manifest_sha256": "f904709ca41b8040b740f1f3a608004e259abc9a519853f639a8eb66951d2da6",
+    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261118-63.json",
+    "archive_sha256": "f904709ca41b8040b740f1f3a608004e259abc9a519853f639a8eb66951d2da6",
     "changed_files": [
-      "web/src/components/bool-segmented.tsx",
-      "web/src/components/knowledge-base-item.tsx",
-      "web/src/hooks/use-chunk-request.ts",
-      "web/src/hooks/use-file-request.ts",
-      "web/src/hooks/use-knowledge-request.ts",
-      "web/src/pages/agent/chat/use-send-agent-message.ts",
-      "web/src/pages/agent/constant/index.tsx",
-      "web/src/pages/agent/explore/components/session-list.tsx",
-      "web/src/pages/agent/explore/hooks/use-select-derived-session-list.ts",
-      "web/src/pages/agent/form-sheet/form-config-map.tsx",
-      "web/src/pages/agent/form/categorize-form/use-form-schema.ts",
-      "web/src/pages/agent/form/components/select-with-secondary-menu.tsx",
-      "web/src/pages/agent/form/components/structured-output-secondary-menu.tsx",
-      "web/src/pages/agent/form/invoke-form/index.tsx",
-      "web/src/pages/agent/form/rewrite-question-form/index.tsx",
-      "web/src/pages/agent/form/user-fill-up-form/index.tsx",
-      "web/src/pages/agent/gobal-variable-sheet/component/add-variable-modal.tsx",
-      "web/src/pages/agent/gobal-variable-sheet/hooks/use-object-fields.tsx",
-      "web/src/pages/agent/gobal-variable-sheet/index.tsx",
-      "web/src/pages/agent/hooks.tsx",
-      "web/src/pages/agent/hooks/use-agent-tool-initial-values.ts",
-      "web/src/pages/agent/hooks/use-build-options.tsx",
-      "web/src/pages/agent/hooks/use-get-begin-query.tsx",
-      "web/src/pages/agent/setting-dialog/index.tsx",
-      "web/src/pages/agents/agent-log-page.tsx",
-      "web/src/pages/agents/builtin-pipeline-list.ts",
-      "web/src/pages/agents/builtin-pipeline-section.test.tsx",
-      "web/src/pages/agents/builtin-pipeline-section.tsx",
-      "web/src/pages/agents/template-retrieval-binding.test.ts",
-      "web/src/pages/agents/template-retrieval-binding.ts",
-      "web/src/pages/dataflow-result/components/parse-editer/hook.ts",
-      "web/src/pages/dataflow-result/components/parse-editer/index.tsx",
-      "web/src/pages/dataflow-result/components/parse-editer/interface.ts",
-      "web/src/pages/dataflow-result/components/parse-editer/json-parser.tsx",
-      "web/src/pages/dataflow-result/parser.tsx",
-      "web/src/pages/dataset/__tests__/narrow-navigation.test.tsx",
-      "web/src/pages/dataset/compilation/skills-view.tsx",
-      "web/src/pages/dataset/dataset/dataset-table.tsx",
-      "web/src/pages/dataset/dataset/parsing-status-cell.tsx",
-      "web/src/pages/dataset/knowledge-catalogue/__tests__/document-head-refresh.test.tsx",
-      "web/src/pages/dataset/knowledge-catalogue/__tests__/knowledge-consumption.test.tsx",
-      "web/src/pages/dataset/knowledge-import/__tests__/original-fixture.ts",
-      "web/src/pages/dataset/knowledge-import/__tests__/original-new-registration.test.tsx",
-      "web/src/pages/home/chat-list.tsx",
-      "web/src/pages/home/datasets.tsx",
-      "web/src/pages/login-next/index.tsx",
-      "web/src/pages/memories/hooks.ts",
-      "web/src/pages/next-chats/hooks/use-upload-file.ts",
-      "web/src/pages/next-chats/index.tsx",
-      "web/src/pages/skills/types.ts",
-      "web/src/pages/user-setting/data-source/interface.ts",
-      "web/src/pages/user-setting/data-source/log-columns.tsx",
-      "web/src/pages/user-setting/data-source/log-summary.tsx",
-      "web/src/services/admin-service.ts",
-      "web/src/services/knowledge-service.ts",
-      "web/src/components/__tests__/bool-segmented.test.tsx",
-      "web/src/hooks/__tests__/use-upload-file.test.tsx",
-      "web/src/pages/dataflow-result/components/parse-editer/value.test.ts",
-      "web/src/pages/dataflow-result/components/parse-editer/value.ts",
-      "web/src/pages/user-setting/data-source/log-summary.test.tsx",
       "docs/knowledge-core-execution-record.json",
       "docs/knowledge-core-reference-authority.md",
-      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261118-62.json",
+      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261118-63.json",
       "docs/knowledge-core-reference-lock.json"
     ],
-    "reason": "Root-reviewed exact owning Web-only paths eliminate remaining66 of the explicit213 diagnostics. Strict configuration and public contracts preserved;focused263 regressions pass. Source checkpoint before final build/release verification."
+    "reason": "Docs-only closure of the explicit213-type-error task after the source phase was pushed. Production build and exact static Web release/restart verified;0diagnostics and263focused cases, no new backend/model/interface scope."
   }
 }

@@ -11608,6 +11608,57 @@
           "sha256": "7cc9e19612e6029f08465eefbe392147a420d6420d475229323d2b9293e854d7"
         }
       ]
+    },
+    "web_typecheck_phase64_20261118": {
+      "state": "RootSolo_All213TypeErrorsResolved_ProductionBuiltAndLocalWebVerified",
+      "baseline": 213,
+      "remaining": 0,
+      "cumulativeResolved": 213,
+      "sourceCommit": "1831ea67177cde9511a1c1523717da4ed40466f5",
+      "qualifiedSuites": 19,
+      "qualifiedTests": 263,
+      "verification": "Configured npm type-check exits0 with0diagnostics;19focused suites263cases;format/check/lint exit0. Production Vite build uses unchanged production configuration, frozen tracked Web inputs, public environment only and an outbound-network guard. No compiler/dependency weakening.",
+      "build": {
+        "exit": 0,
+        "files": 1082,
+        "indexSHA256": "3e64e640a7cc13e593d16e21f9bf76428be473f467ef46cee1d80f667a79f68b",
+        "evidence": ".local-data/coordination-20261118/typecheck/production-build03/artifact-manifest.safe.json",
+        "sourceCommit": "1831ea67177cde9511a1c1523717da4ed40466f5"
+      },
+      "runtime": {
+        "state": "Passed_OwnerAnswerWebRollout_Restart_ActualAssets",
+        "web": "4adf118b445caa8b0218941c96e33197fc90ec1e32d184dee8f1d8d01caffd2f",
+        "preservedRunning": 10,
+        "evidence": ".local-data/coordination-20261108/review/root-solo-20261116/formal-typecheck-web64/result.safe.json",
+        "checks": "Exact index and HTML-linked resources, actual owner-answer chunk SHA, API pings through29395and29396, MCP401/data:null/no-store, nginx configuration and a real Web restart. Actual new Env/Cmd/Entrypoint/private mounts/port bindings equal old values. Only public /srv/web readonly bundle and descriptive labels changed.",
+        "oldStoppedWebRemoved": true,
+        "volumeDeletes": 0,
+        "privateConfigurationPreserved": true
+      },
+      "buildQualification": "The npm Windows launcher failed before Vite; a CLI attempt generated the bundle but exceeded its process timeout. Both receipts are retained. Awaiting the same production build API and preserving the optional Node compile cache in the ignored build directory allowed a normal exit0. The resulting index exactly matches the completed CLI bundle; project production configuration is unchanged. The earlier slow broader parser test attempt remains excluded from263; no full repository suite or new live-model/browser acceptance is claimed.",
+      "completed": true,
+      "preserved": {
+        "strictConfiguration": true,
+        "dependencyVersions": true,
+        "protected47": true,
+        "contracts26": true,
+        "privateConfiguration": true,
+        "existingBackend": true,
+        "foreignInUseContainers": true
+      },
+      "humanScope": "继续把剩下的213项类型检查报错修好",
+      "date": "2026-11-18",
+      "rootAlone": true,
+      "newModelCalls": 0,
+      "previousKQA20CallBudgetStillClosed": true,
+      "owningWriteWindow": "Latest explicit whole213 correction request;Root reviewed exact Web-only owning paths and focused regressions. No old KQA window reopens and no new business interface or root layout is authorized.",
+      "sourceParent": "1831ea67177cde9511a1c1523717da4ed40466f5",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 5198,
+        "sha256": "da855ee7f5756299e6392f5269348f19ccf9c1629e4e117d92f66afde3546392"
+      },
+      "files": []
     }
   }
 }
