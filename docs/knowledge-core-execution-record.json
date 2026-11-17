@@ -9926,6 +9926,193 @@
         "original70NotRunUnchanged": true,
         "generationCalls": 17
       }
+    },
+    "model_settings_opaque_fields_20261117": {
+      "state": "RootSolo_CurrentAccountThreeModelsConfigured_Verified_DefaultsPersisted",
+      "sourceCheckpoint": "65ac9e87a6df6de555c57886826d99023a8301d0",
+      "humanScope": "Existing sole-executor synthetic model/format QA and formal-use task;user supplied ignored.env.local and correctly challenged Root credential extraction.",
+      "configuration": {
+        "through": "Existing authenticated in-app-browser model settings forms",
+        "privateInput": ".env.local",
+        "privateFileUnchanged": true,
+        "providers": [
+          {
+            "provider": "Tongyi-Qianwen",
+            "storedMatchesEntirePrivateField": true
+          },
+          {
+            "provider": "DeepSeek",
+            "storedMatchesEntirePrivateField": true
+          }
+        ],
+        "selectedDefaults": {
+          "llm": "deepseek-flash@SecondBrain@DeepSeek",
+          "rerank": "qwen3.7-text-rerank@models@Tongyi-Qianwen",
+          "embedding": "qwen3.7-text-embedding@models@Tongyi-Qianwen"
+        },
+        "models": [
+          {
+            "type": 1,
+            "model": "deepseek-flash",
+            "verify": "success",
+            "instance": "SecondBrain",
+            "provider": "DeepSeek"
+          },
+          {
+            "type": 1,
+            "model": "deepseek-v4-flash",
+            "verify": null,
+            "instance": "SecondBrain",
+            "provider": "DeepSeek"
+          },
+          {
+            "type": 9,
+            "model": "deepseek-v4-flash-vision-exp",
+            "verify": null,
+            "instance": "SecondBrain",
+            "provider": "DeepSeek"
+          },
+          {
+            "type": 1,
+            "model": "deepseek-v4-pro",
+            "verify": null,
+            "instance": "SecondBrain",
+            "provider": "DeepSeek"
+          },
+          {
+            "type": 2,
+            "model": "qwen3.7-text-embedding",
+            "verify": "success",
+            "instance": "models",
+            "provider": "Tongyi-Qianwen"
+          },
+          {
+            "type": 16,
+            "model": "qwen3.7-text-rerank",
+            "verify": "success",
+            "instance": "models",
+            "provider": "Tongyi-Qianwen"
+          }
+        ]
+      },
+      "verification": {
+        "nativeGoProbeRequests": 5,
+        "finalSelectedModelsPassed": 3,
+        "initialBailianFailures": 2,
+        "initialFailureCause": "Root extracted only a regex-matching prefix from the opaque private value;the same truncated prefix was saved and failed verification. Original user file and endpoint were not at fault.",
+        "correction": "Read entire field verbatim after whitespace/paired-quote parsing;no token-substring extraction. Existing saved key corrected through UI,then two targeted native verifications passed.",
+        "nativeProbeInputs": [
+          "Chat: Hi",
+          "Embedding: test",
+          "Rerank: query test and document test"
+        ],
+        "nativeGenerationRequests": 1,
+        "nativeEmbeddingProbeRequests": 2,
+        "nativeRerankProbeRequests": 2,
+        "nonInferenceCatalogRequests": 4,
+        "catalogAudit": [
+          {
+            "region": "Beijing",
+            "truncatedCredential": true,
+            "status": 401
+          },
+          {
+            "region": "Singapore",
+            "truncatedCredential": true,
+            "status": 401
+          },
+          {
+            "region": "Virginia",
+            "truncatedCredential": true,
+            "status": 401
+          },
+          {
+            "region": "Beijing",
+            "entireCredential": true,
+            "status": 200,
+            "listedModels": 182,
+            "embeddingListed": true,
+            "rerankListed": true
+          }
+        ],
+        "oldHostQAValidity": "Prior17 DeepSeek answer/citation calls used the complete DeepSeek field and remain valid. Prior Bailian presence checks did not establish availability.",
+        "readerSyntheticRegressions": 6,
+        "automaticModelRetries": false
+      },
+      "visual": {
+        "reloadedAfterChanges": true,
+        "threeDefaultsVisible": true,
+        "credentialFieldsAbsentFromProofImage": true,
+        "image": {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-defaults-confirmed-20261117.jpg",
+          "bytes": 74236,
+          "sha256": "f113b076c38a9daf7ee2e65ef952998c0e3dfc13af4332703eafc8fbee1fc2b8"
+        }
+      },
+      "health": [
+        {
+          "port": 29395,
+          "path": "/login",
+          "status": 200
+        },
+        {
+          "port": 29395,
+          "path": "/api/v1/system/ping",
+          "status": 200
+        },
+        {
+          "port": 29396,
+          "path": "/api/v1/system/ping",
+          "status": 200
+        }
+      ],
+      "proofPins": [
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-settings52/result.safe.json",
+          "bytes": 4812,
+          "sha256": "7718695750eed1fbf62201067f689bc849177de471e85ac4f9a6c0791b029f28"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/private-provider-fields02.cjs",
+          "bytes": 922,
+          "sha256": "210a87cfed9b68d45bd19fbcdcfcccf20543ed6b3fd96c83a236ac00603e1ebc"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/qualify-model-settings52.cjs",
+          "bytes": 6516,
+          "sha256": "97377623a9aeaf8053b0c4243d672fc73a5f6fd33629b6d69d996fd779a5596f"
+        }
+      ],
+      "correction": {
+        "owner": "Root diagnostic/client reader,not the native Go credential storage/parser or the user file.",
+        "cause": "The ad-hoc sk-token regex extracted only a prefix from the opaque Bailian field. The complete value was present all along;the default Beijing endpoint was correct.",
+        "resolution": "Read whole trimmed/paired-quoted field without token substring extraction. Correct stored value via existing authenticated UI;compare whole values in RAM only. Six original synthetic reader regressions include punctuation and terminal characters.",
+        "historical": "Three401 catalog probes and two native failures used the truncated value. They do not establish that the original credential or region was wrong. Original17 DeepSeek QA remains valid because that field had been read in full.",
+        "userFileChanged": false,
+        "providerKeysRecreated": false
+      },
+      "account": {
+        "through": "Existing logged-in in-app-browser model settings",
+        "defaultsReloaded": true,
+        "selectedModels": 3,
+        "otherDefaultTypes": "VLM,ASR,TTS remain unset;no unused type verified.",
+        "factoryMetadata": "Three factory DeepSeek alternatives remain available but unverified;only the recorded deepseek-flash is the selected verified default."
+      },
+      "limits": "Provider connection/default-model persistence only. Combined with prior external-client QA,does not establish native web knowledge-grounded QA,MCP model-client or vector quality acceptance.",
+      "preservation": {
+        "sourceChanged": false,
+        "modelGuardsChanged": false,
+        "frozenInterfacesChanged": false,
+        "realUserDocumentContentRead": false,
+        "realAICS": false,
+        "secretValuesPrinted": false,
+        "secretFileHashed": false,
+        "secretValuesCommitted": false,
+        "credentialsReset": false,
+        "newContainers": 0,
+        "volumeDeletes": 0,
+        "otherChatsResumed": false
+      }
     }
   }
 }

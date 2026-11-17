@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "lock_id": "KCRL-20261117-51",
+  "lock_id": "KCRL-20261117-52",
   "recorded_date": "2026-11-17",
   "coordinator_thread_id": "01a1a9a5-c724-7f52-8cbb-16d19d982ba4",
   "source_baseline_git_head": "f804b3737a8f69af14b1ff1c2d042e8ea7c2a9f1",
@@ -32,9 +32,9 @@
       },
       "integrity": {
         "mode": "file",
-        "sha256": "b880a1fa7e4d88f703eca6fb30c2733ef591507736409c9a4036e81eec9dbc2a"
+        "sha256": "a9015a441fe844d32750db068753c49b6d7e4c7fe221a987f0ee131c945a0da0"
       },
-      "selection_sha256": "b880a1fa7e4d88f703eca6fb30c2733ef591507736409c9a4036e81eec9dbc2a"
+      "selection_sha256": "a9015a441fe844d32750db068753c49b6d7e4c7fe221a987f0ee131c945a0da0"
     },
     {
       "id": "root-instructions",
@@ -1453,9 +1453,9 @@
       },
       "integrity": {
         "mode": "selection",
-        "sha256": "3aac7837cfb8043771ff59c299480ad712dc95db1e3e1505c2587bd2f049a376"
+        "sha256": "c47ee5adf7e1f9412dae42e35e8226c225baa9b2f7a1725dac6943933e48daab"
       },
-      "selection_sha256": "3aac7837cfb8043771ff59c299480ad712dc95db1e3e1505c2587bd2f049a376",
+      "selection_sha256": "c47ee5adf7e1f9412dae42e35e8226c225baa9b2f7a1725dac6943933e48daab",
       "limitation": "第三轮独立事实入口；仅在实际28源码及独立B回执核实、独审和总控精确四文件租约后机械生效。各运行/质量门按各自时点与版本保留，不批准新接口、模型、真实内容、最终验收或发布。 Ref27只追加shared_ordinal_followup；旧28和分层运行事实保留原时点，命名源码集合后续仅据实际应用与分层回执登记，未完成门不标Pass。"
     },
     {
@@ -4900,22 +4900,22 @@
     "Latest human stage commit+push instruction supersedes old time-scoped Git prohibitions;actual stage Git and production deployment/release remain separately coordinated actions."
   ],
   "update_rule": "仅主控在同范围内复核事实/差异/摘要并决定变更；最新真人规定总控不做实际工作，机械应用只能由具名执行者在唯一精确写窗中承担。保存旧锁原字节/摘要、原因、受影响条目和新校验；不得为未知漂移刷新摘要。接口/模型/真实内容/发布新范围仍需真人具体决定。",
-  "manifest_payload_sha256": "3db997f98477aebf3bb5cc1d435ab7e4e5d5574e5c8d72f21d585f24f1984fd4",
+  "manifest_payload_sha256": "7c92a3725113e710f8a3db7174962ceab7f6d35cb0331a9bc8af6b9b20faaa49",
   "previous_baseline": {
-    "lock_id": "KCRL-20261116-50",
-    "manifest_sha256": "97bd0de54d8fcfe9f6441fc2ca7fc88097420eba29935a8092793644347e8a40",
-    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-50.json",
-    "archive_sha256": "97bd0de54d8fcfe9f6441fc2ca7fc88097420eba29935a8092793644347e8a40",
+    "lock_id": "KCRL-20261117-51",
+    "manifest_sha256": "032800bf12268a327b9e24b00d4a94640cd2489c6cd8cb67c5d585a623f2b2b7",
+    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261117-51.json",
+    "archive_sha256": "032800bf12268a327b9e24b00d4a94640cd2489c6cd8cb67c5d585a623f2b2b7",
     "changed_files": [
       "docs/knowledge-core-execution-record.json",
       "docs/knowledge-core-reference-authority.md",
-      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-50.json",
+      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261117-51.json",
       "docs/knowledge-core-reference-lock.json"
     ],
     "existing_entries_with_updated_selection_digests": [
       "reference-authority",
       "coordination-20261106-round3"
     ],
-    "reason": "Root-only17 actual synthetic DeepSeek calls:16 questions plus one targeted semantic citation correction. Preserve the initial unrelated-source citation finding and raw receipts. No source,guard or interface change."
+    "reason": "Root alone;configure the three recorded models through the existing authenticated UI,verify native connections and reload defaults. Correct the Root opaque-field extraction error,preserving its failed probes. No source,guard or frozen interface change."
   }
 }
