@@ -10298,6 +10298,106 @@
         "rootLayoutChanged": false,
         "independentReviewNotInvented": true
       }
+    },
+    "owner_web_answer_candidate_20261117": {
+      "state": "RootSolo_OwnerWebKnowledgeAnswerCandidatePrepared_HumanDecisionRequired",
+      "sourceCheckpoint": "87d2a34624cd02a947126a0afbf66e0750effe7e",
+      "completedAcceptance": {
+        "directQuestions": "16 cases,17 real calls including targeted citation correction",
+        "configuredModels": "Three selected defaults,native connections verified and reload persisted",
+        "managedMCP": "14 formats plus adversarial note,24 shared units,four real questions,current citations and actual Grant/credential revocation;source-identical formal runtime."
+      },
+      "remainingVerifiedGap": {
+        "file": "internal/permission/knowledge.go",
+        "behavior": "Every registered knowledge-domain model purpose remains denied in the existing generic path;chat_pipeline generation checks it before retrieval. Provider connectivity does not enable unified-knowledge webpage QA.",
+        "specificRule": "AGENTS.md: new shared interfaces require a specific candidate decision before business integration."
+      },
+      "candidate": {
+        "id": "KQA-20261117-02",
+        "status": "CandidateReadyForSpecificHumanDecision_NotImplementationContract",
+        "subject": {
+          "path": ".local-data/coordination-20261108/design/knowledge-answer-candidate02/subject-manifest.safe.json",
+          "bytes": 1955,
+          "sha256": "88c6a4fbcc3ad293c73a015ea28cfebefed2e7332881fa4b4c554dba88d173fb"
+        },
+        "summary": ".local-data/coordination-20261108/design/knowledge-answer-candidate02/decision-summary.zh-CN.txt",
+        "members": [
+          {
+            "path": "decision-summary.zh-CN.txt",
+            "bytes": 1736,
+            "sha256": "17707d4ded60532743e0fe9049fc3832ebcd2b9d46ac6628d4de10871f06c000"
+          },
+          {
+            "path": "answer.schema.candidate.json",
+            "bytes": 21572,
+            "sha256": "43717548f20c4ac0d2c4079d5dc71653bc7a69f27b978e2bf3f2035af74a099b"
+          },
+          {
+            "path": "answer.openapi.candidate.json",
+            "bytes": 8036,
+            "sha256": "6fcba52335a47d8ba4b29a1c0fe85bace962400434ff60f47fa6818279ba5487"
+          },
+          {
+            "path": "protocol.candidate.json",
+            "bytes": 6768,
+            "sha256": "18160012c08cbf6da36ebb576ac0a47f4f62d7a37b088c7668f4906d6b6d124f"
+          },
+          {
+            "path": "acceptance.candidate.json",
+            "bytes": 1849,
+            "sha256": "3a4b6d8ff1d2493abf36827fadf048128c834076c7f376b1d65ffe4916aa0b77"
+          },
+          {
+            "path": "owning-impact.safe.json",
+            "bytes": 1776,
+            "sha256": "fea9b4cd41cd5bd4d292f240e9089bb6e9383e3cef645100be2c57fdfc677671"
+          },
+          {
+            "path": "root-review.safe.json",
+            "bytes": 955,
+            "sha256": "c845f9af79508617877cc7d40423247db868685c5881d7167449e6ad84015d4b"
+          }
+        ],
+        "decision": "PendingSpecificHumanDecision",
+        "implementationAuthorized": false,
+        "existingInterfacePermissionNotInferred": true,
+        "proposal": "Owner-only,generation-only web answer over an explicitly confirmed fixed C3 scope and the caller configured official DeepSeek default. Four separately versioned HTTP operations,two additive metadata tables. Existing retrieval/provider/identity reused;no new container.",
+        "limits": {
+          "targets": 32,
+          "retrievalCandidates": 5,
+          "contextUTF8Bytes": 32768,
+          "outputTokens": 1024,
+          "automaticRetries": 0,
+          "implementationAcceptanceModelCallCap": 20
+        },
+        "excluded": "Shared/department model egress,embedding/rerank/OCR/query-rewrite/generalAgent/personality/memory,arbitrary model endpoints,real AICS and root-layout changes.",
+        "oldGuards": "No global model guard removed. No old native chat/MCP operation silently gains new model authority.",
+        "review": {
+          "RootSelfReviewed": true,
+          "independent": false,
+          "compiledDefinitions": 24,
+          "meaningfulStaticCases": 13,
+          "correctedBeforeDecision": [
+            "Explicit native1.0/profile0.1 headers",
+            "Closed raw model-output and insufficient-evidence citation invariants",
+            "Unique fixed targets and enabled-policy version constraints",
+            "Official first-provider destination and separate generation/read epochs"
+          ],
+          "supersedesUnapproved": "KQA-20261117-01"
+        },
+        "nextIfApproved": "Record exact human decision,formally map/register the approved immutable subject with a new exact reference lock,then assign Root-only bounded source windows. Do not implement from this current_context fact or an unapproved draft."
+      },
+      "preservation": {
+        "newModelCalls": 0,
+        "sourceChanged": false,
+        "interfacesImplemented": 0,
+        "runtimeChanged": false,
+        "secretValuesIncluded": false,
+        "secretFilesHashed": false,
+        "existingContractsAndProtectedFilesUnchanged": true,
+        "otherChatsPaused": true,
+        "realUserDocumentContentRead": false
+      }
     }
   }
 }

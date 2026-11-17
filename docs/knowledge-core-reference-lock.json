@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "lock_id": "KCRL-20261117-53",
+  "lock_id": "KCRL-20261117-54",
   "recorded_date": "2026-11-17",
   "coordinator_thread_id": "01a1a9a5-c724-7f52-8cbb-16d19d982ba4",
   "source_baseline_git_head": "f804b3737a8f69af14b1ff1c2d042e8ea7c2a9f1",
@@ -32,9 +32,9 @@
       },
       "integrity": {
         "mode": "file",
-        "sha256": "abbe865fbc599ae303982d1211f31214f9d5b97d37c2a94ba1f4307e42a1dc2f"
+        "sha256": "fc15ea4d6c8d448d2d34300babe169b7f37fdb65142ca0eb1e6ad2a1e5ba9596"
       },
-      "selection_sha256": "abbe865fbc599ae303982d1211f31214f9d5b97d37c2a94ba1f4307e42a1dc2f"
+      "selection_sha256": "fc15ea4d6c8d448d2d34300babe169b7f37fdb65142ca0eb1e6ad2a1e5ba9596"
     },
     {
       "id": "root-instructions",
@@ -1453,9 +1453,9 @@
       },
       "integrity": {
         "mode": "selection",
-        "sha256": "6c08b2eaa6a55c537d0399533b80da11ce45fe3b6f4864fba225367457971b6d"
+        "sha256": "a36495486daed820afe606f4ca580134bef067907764bc894c478cf2f2c97b04"
       },
-      "selection_sha256": "6c08b2eaa6a55c537d0399533b80da11ce45fe3b6f4864fba225367457971b6d",
+      "selection_sha256": "a36495486daed820afe606f4ca580134bef067907764bc894c478cf2f2c97b04",
       "limitation": "第三轮独立事实入口；仅在实际28源码及独立B回执核实、独审和总控精确四文件租约后机械生效。各运行/质量门按各自时点与版本保留，不批准新接口、模型、真实内容、最终验收或发布。 Ref27只追加shared_ordinal_followup；旧28和分层运行事实保留原时点，命名源码集合后续仅据实际应用与分层回执登记，未完成门不标Pass。"
     },
     {
@@ -4900,22 +4900,22 @@
     "Latest human stage commit+push instruction supersedes old time-scoped Git prohibitions;actual stage Git and production deployment/release remain separately coordinated actions."
   ],
   "update_rule": "仅主控在同范围内复核事实/差异/摘要并决定变更；最新真人规定总控不做实际工作，机械应用只能由具名执行者在唯一精确写窗中承担。保存旧锁原字节/摘要、原因、受影响条目和新校验；不得为未知漂移刷新摘要。接口/模型/真实内容/发布新范围仍需真人具体决定。",
-  "manifest_payload_sha256": "a9bb9a367258fd6b00600e5dc0f6d5d72612bb31943b62f53c9180e6762d284e",
+  "manifest_payload_sha256": "8f07f642af1732b84971a6a4e105ee904fcffb6b3c8156bb92ec6c7319255a7b",
   "previous_baseline": {
-    "lock_id": "KCRL-20261117-52",
-    "manifest_sha256": "4b34ef0ef5f0e1269038ad4a91550797ff89a0de67c56122c45e67b6d6bc987f",
-    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261117-52.json",
-    "archive_sha256": "4b34ef0ef5f0e1269038ad4a91550797ff89a0de67c56122c45e67b6d6bc987f",
+    "lock_id": "KCRL-20261117-53",
+    "manifest_sha256": "f93ca6ce8effff681f128ab93e06378a70bbab1edbc83317b1ade76abc51a5f9",
+    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261117-53.json",
+    "archive_sha256": "f93ca6ce8effff681f128ab93e06378a70bbab1edbc83317b1ade76abc51a5f9",
     "changed_files": [
       "docs/knowledge-core-execution-record.json",
       "docs/knowledge-core-reference-authority.md",
-      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261117-52.json",
+      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261117-53.json",
       "docs/knowledge-core-reference-lock.json"
     ],
     "existing_entries_with_updated_selection_digests": [
       "reference-authority",
       "coordination-20261106-round3"
     ],
-    "reason": "Root-only actual official SDK managed-MCP read/search on14 formats plus an adversarial note,excluding one conflicting private fixture;four real model answers,current citation rereads,parent revocation and explicit credential cleanup. No source,guard or frozen-interface change."
+    "reason": "Root-only reviewable owner-web-answer candidate preparation after completed bounded model/format/MCP QA. Specific human decision remains pending;this is not implementation authority or a new source/interface/model scope."
   }
 }
