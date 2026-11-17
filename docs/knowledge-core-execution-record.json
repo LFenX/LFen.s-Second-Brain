@@ -10792,6 +10792,94 @@
         "newPermanentContainers": 0,
         "volumeDeletes": 0
       }
+    },
+    "owner_web_answer_release_closure_20261117": {
+      "state": "RootSolo_ApprovedOwnerWebQuestionAnswering_Released_BoundedAcceptanceComplete",
+      "approval": "KQA-20261117-02 exact human OptionA",
+      "subject_sha256": "88c6a4fbcc3ad293c73a015ea28cfebefed2e7332881fa4b4c554dba88d173fb",
+      "scope": "Owner-only,default-off,fixed C3 snapshot,explicit official DeepSeek consent;4operations/2additive tables;synthetic-only development,no realAICS egress.",
+      "provenance": {
+        "backendBuildSource": "4435945a5ebbe3be0de4e1687fd466f8cc228a73",
+        "backendSHA256": "d9ae8334a8ae5d1dd029e9ae519d1ab74246f51575f55f36fd5d6d9da5dc8853",
+        "webSource": "8f6e71e2baa12e7cb47aca48bc5c30147c9c71e8",
+        "webIndexSHA256": "ba861f409bd5a6339cb379e96642391afc3fa42cdeec972a14ba36d347199a4e",
+        "finalClosure": "Documentation only;source snapshot unchanged from59."
+      },
+      "released": {
+        "web": "1082 public static files,actual indexSHA/42assetheads/answer chunk/API/MCP401 verified after start AND actual restart;only one public static mount plus public labels changed.10other running containers preserved.",
+        "browser": "Existing synthetic localhost browser reload authenticated;owner-only/default-off/current-off text present,unrelated foundation badge absent,prior answer absent. No extra model call. Earlier paid UI question explicitly remains qualified as Web57+current backend58.",
+        "backend": "API/admin actual ELF,start/restart and synthetic login already passed on d9ae;canonical adminDNS/9381 still reachable.",
+        "schema": "All116tables,1305columns and full index column sets unchanged from previous post-restart snapshot. Original114tables/1281columns retained;only approved2tables/24fields previously added."
+      },
+      "acceptance": {
+        "formats": 14,
+        "actualNativeModelCases": 16,
+        "actualBrowserModelQuestions": 1,
+        "actualInflightDisableChecks": 1,
+        "officialMCPRequests": 12,
+        "budget": "Closed19/20;retained first failed closed1,success native16,browser1,inflight withheld1. No automatic retry. Unknown first/inflight usage remains unknown,count retained.",
+        "coverage": [
+          "Default-off and owner-only boundaries",
+          "Explicit fixed source/model/destination confirmation",
+          "Actual gold answers and every current fixed citation byte/SHA reread",
+          "Missing-fact refusal and untrusted instruction ignored",
+          "Unselected conflicting source excluded",
+          "Concurrent same key/202orcache/replay one dispatch;changed body409",
+          "No-hit local refusal no model call",
+          "Actual in-flight disable403/noanswer/noevidence,failedledger1call/0responsebytes",
+          "Generation policy toggle preserves existing read_search credential;parentGrant and credentialrevocation deny",
+          "Browser expanded citation,fixednode/read,leaveclear,disable/refresh",
+          "Actual runtime start/restart,login,static resources/schema preservation"
+        ],
+        "focusedTests": "Final owning Go/entity/modelwrapper units,LLD20 build and five actual help modes passed;Web14service+3answerUI+17catalogue cases passed in respective qualified runs. Last header-only change repeated17catalogue,scopedformat/lint,andproduction build.",
+        "typecheck": "213existing global diagnostics,new0/touched0;global typecheck stillfails. Do not claim a green full typecheck."
+      },
+      "cleanup": {
+        "necessaryProjectServices": 8,
+        "otherProjectServicesPreserved": 3,
+        "ownTemporaryBuildContainers": 0,
+        "stoppedApplicationRollbackContainersDeleted": 3,
+        "privateSyntheticBrowserBridgesRemoved": true,
+        "volumeDeletes": 0,
+        "credentialResets": 0,
+        "knownMetadataQualification": "Existing second-brain-nats lacks a Compose project label;exact reviewed ID/name identifies membership. Do not infer all8from project-label filter7."
+      },
+      "use": {
+        "url": "http://127.0.0.1:29395",
+        "path": "自己的知识库 → 知识目录 → 选择固定资料；在本地检索为同范围发布索引，再进入知识库问答预览、明确确认后提问。",
+        "model": "Existing configured official DeepSeek default;no automatic business-data opt-in.",
+        "default": "All test-owner policies left disabled. Existing real user defaults/passwords/127session preserved."
+      },
+      "limits": [
+        "Only approved owner/fixed-scope first release is closed;not a blanket assertion of all upstream/project capabilities.",
+        "No scannedOCR,audio,image understanding,vector/rerank quality certification,blind semantic retrieval,Agent runtime or shared-consumer model egress.",
+        "No realAICS data was used or sent.",
+        "Live process-kill and clock-expiry scenarios were not newly repeated;unit/older evidence remains separate.",
+        "Historical failed runs,rollbacks,fixture and validator qualifications retained."
+      ],
+      "nextRequiredWithinApprovedScope": [],
+      "preserved": {
+        "protected47": true,
+        "oldFormalContracts26": true,
+        "rootLayoutUnchanged": true,
+        "otherChatsPaused": true,
+        "RootAlone": true
+      },
+      "localEvidence": {
+        "release": "formal-answer-web60/result.safe.json",
+        "browser": "answer-browser-postrelease60.safe.json",
+        "native": "answer-native58/run01/final-native-trace.safe.json",
+        "budget": "answer-native58/model-budget.safe.json",
+        "healthAndSchema": "final-runtime60.safe.json",
+        "cleanup": "retired-answer-rollbacks60.safe.json"
+      },
+      "sourceParent": "8f6e71e2baa12e7cb47aca48bc5c30147c9c71e8",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 5188,
+        "sha256": "b6f1a15b6f7ac31246670be37f7391cfcc5f1c19e48af8ec72c03baee25d3cf3"
+      },
+      "files": []
     }
   }
 }
