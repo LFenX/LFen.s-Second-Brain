@@ -1,6 +1,7 @@
 import { webcrypto, createHash, randomUUID } from 'node:crypto';
 import Examples from '../../../../../../docs/knowledge-original-import-v1.examples.json';
 import type {
+  OriginalCapabilities,
   OriginalUpload,
   OriginalUploadState,
   OriginalRevision,
@@ -11,6 +12,7 @@ import type {
   CreateOriginalUpload,
   ConfirmOriginalImport,
 } from '@/interfaces/request/knowledge-original';
+import { validOriginalData } from '@/utils/knowledge-original-schema';
 import {
   originalDigest,
   originalRegistrationRequest,
@@ -35,10 +37,17 @@ export const Classification = {
   component_side: 'non_code' as const,
   language: '',
 };
-export const Capabilities = {
+const ExampleCapabilities: unknown = {
   ...Examples.samples.capabilities,
   runtime_ready: true,
 };
+function isCapabilities(value: unknown): value is OriginalCapabilities {
+  return validOriginalData('Capabilities', value);
+}
+if (!isCapabilities(ExampleCapabilities)) {
+  throw new Error('Invalid original import capabilities fixture');
+}
+export const Capabilities = ExampleCapabilities;
 export function blob(bytes: Uint8Array = Bytes, type = 'application/pdf') {
   const data = new Blob([bytes as BlobPart], { type });
   Object.defineProperty(data, 'arrayBuffer', {

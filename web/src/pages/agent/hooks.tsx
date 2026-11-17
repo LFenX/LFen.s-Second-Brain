@@ -201,7 +201,7 @@ export const useValidateConnection = () => {
             getOperatorTypeFromId(connection.source) as Operator,
             getOperatorTypeFromId(connection.target) as Operator,
           ));
-      return ret;
+      return ret === true;
     },
     [
       getOperatorTypeFromId,

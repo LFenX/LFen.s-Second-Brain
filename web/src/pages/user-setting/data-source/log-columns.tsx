@@ -1,12 +1,11 @@
 import FileStatusBadge from '@/components/file-status-badge';
 import { RAGFlowAvatar } from '@/components/ragflow-avatar';
 import { RunningStatusMap } from '@/constants/knowledge';
-import { RunningStatus } from '@/pages/dataset/dataset/constant';
 import { formatDate } from '@/utils/date';
 import { ColumnDef } from '@tanstack/react-table';
 import { t } from 'i18next';
 import { IDataSourceLog } from './interface';
-import { getSummary } from './log-summary';
+import { dataSourceLogStatus, getSummary } from './log-summary';
 
 // The data source sync log table is shared by the data source detail page and
 // the dataset logs page. The dataset page already scopes every row to one
@@ -39,8 +38,8 @@ export const getDataSourceLogsTableColumns = ({
       meta: { headerClassName: 'w-28' },
       cell: ({ row }) => (
         <FileStatusBadge
-          status={row.original.status as RunningStatus}
-          name={RunningStatusMap[row.original.status as RunningStatus]}
+          status={dataSourceLogStatus(row.original.status)}
+          name={RunningStatusMap[dataSourceLogStatus(row.original.status)]}
           className="!w-20"
         />
       ),

@@ -1,7 +1,32 @@
 import {
+  bindUnboundModel,
   bindUnboundRetrieval,
   collectUnboundRetrievalBindings,
 } from './template-retrieval-binding';
+
+it('binds only empty model settings in a copy while preserving the template shape', () => {
+  const template = {
+    graph: {
+      nodes: [
+        { id: 'new', data: { label: 'Agent', form: { llm_id: '' } } },
+        {
+          id: 'configured',
+          data: { label: 'Agent', form: { llm_id: 'existing' } },
+        },
+      ],
+    },
+    components: {
+      new: { obj: { component_name: 'Agent', params: { llm_id: '' } } },
+    },
+  };
+  const bound = bindUnboundModel(template, 'selected');
+  expect(bound.graph.nodes[0].data.form.llm_id).toBe('selected');
+  expect(bound.components.new.obj.params.llm_id).toBe('selected');
+  expect(bound.graph.nodes[1].data.form.llm_id).toBe('existing');
+  expect(template.graph.nodes[0].data.form.llm_id).toBe('');
+  expect(bindUnboundModel(undefined, 'selected')).toBeUndefined();
+  expect(bindUnboundModel(template, '')).toBe(template);
+});
 
 // Mirrors the "Your starter dataset chatbot" template shape: the Retrieval
 // tool is embedded in an Agent node and appears in BOTH DSL views.

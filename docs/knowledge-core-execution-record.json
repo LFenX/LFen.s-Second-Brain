@@ -11268,6 +11268,346 @@
           "sha256": "40bc4beabca99c979974ccea0c15995a0b0ae3f062af93cf0d4d1f76f334cb88"
         }
       ]
+    },
+    "web_typecheck_phase63_20261118": {
+      "state": "RootSolo_TypecheckPhase3_All213Resolved_FocusedRegressionsPassed",
+      "baseline": 213,
+      "before": 66,
+      "remaining": 0,
+      "resolved": 66,
+      "cumulativeResolved": 213,
+      "changes": [
+        "Preserve group/option metadata with generic filter and flatten types; partial operator maps reflect missing entries and connection validator returns boolean",
+        "Initialize rewrite question form from the selected node; align boolean inputs, button events, optional query data and session/upload fields with their owning types",
+        "Parser editor uses a discriminated string/row union, validates selected output shape and preserves mixed row metadata; folder upload preserves base filenames and separate relative paths",
+        "Remove only no-consumer hooks for nonexistent service members; actual active Go service responses, pagination and exported skill types are declared accurately",
+        "Typed frozen-contract fixtures and refresh digest scopes retain business assertions; Go connector numeric states remain supported and normalized consistently for summary and badge"
+      ],
+      "verification": "npm --prefix web run type-check -- --pretty false exits0 with0diagnostics;19focused suites263cases passed across final15-suite220case run and4original-dependent suites43cases;local oxfmt/check/oxlint exit0,existing warnings retained. Compiler/dependency/Jest configuration unchanged.",
+      "testQualification": "Earlier two assertion failures were corrected and full affected suites rerun successfully. An additional broader parser-dialog/status-cell group was interrupted during slow unrelated import loading and is not included in the263 qualified cases; no whole-repository test-suite claim.",
+      "production": "Current Web/API unchanged at this source checkpoint;production build and static Web rollout are the next verification phase.",
+      "preserved": {
+        "strictConfiguration": true,
+        "dependencyVersions": true,
+        "protected47": true,
+        "contracts26": true,
+        "privateConfiguration": true,
+        "containers": true
+      },
+      "humanScope": "继续把剩下的213项类型检查报错修好",
+      "date": "2026-11-18",
+      "rootAlone": true,
+      "newModelCalls": 0,
+      "previousKQA20CallBudgetStillClosed": true,
+      "owningWriteWindow": "Latest explicit whole213 correction request;Root reviewed exact Web-only owning paths and focused regressions. No old KQA window reopens and no new business interface or root layout is authorized.",
+      "sourceParent": "02051074b11de979113ad2139049d830197f453a",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 5198,
+        "sha256": "da855ee7f5756299e6392f5269348f19ccf9c1629e4e117d92f66afde3546392"
+      },
+      "files": [
+        {
+          "path": "web/src/components/bool-segmented.tsx",
+          "bytes": 1479,
+          "sha256": "872964cde6f6dd677a57e71cbabe5f4bcfee8799fc9a023927d68d067fdca887"
+        },
+        {
+          "path": "web/src/components/knowledge-base-item.tsx",
+          "bytes": 7188,
+          "sha256": "9c2496af7eabec73dfc0ea853658b2f7d1c380e438990eab7ce44ef4861e48de"
+        },
+        {
+          "path": "web/src/hooks/use-chunk-request.ts",
+          "bytes": 7938,
+          "sha256": "bc1a7d9d1854e9d2c97abd9bf4e053157ab97b13a5621f735b828a45c3230c02"
+        },
+        {
+          "path": "web/src/hooks/use-file-request.ts",
+          "bytes": 13807,
+          "sha256": "8318aec82f090b8b234b8ee39522f2a776638451bee3be5132649c6ea9270081"
+        },
+        {
+          "path": "web/src/hooks/use-knowledge-request.ts",
+          "bytes": 38526,
+          "sha256": "17a20687fc6dbb8d22e6fa7d6416596060e010d140a3b117acb5973db261534d"
+        },
+        {
+          "path": "web/src/pages/agent/chat/use-send-agent-message.ts",
+          "bytes": 17624,
+          "sha256": "5a1201da1bb4c92e8a636dc34b33f899621177f3954ebcdaf9506d4eadb6c553"
+        },
+        {
+          "path": "web/src/pages/agent/constant/index.tsx",
+          "bytes": 29210,
+          "sha256": "755e56c8b756ceb27320b227ad71bce2dfacf64fd275cd5114fd3783b5855bae"
+        },
+        {
+          "path": "web/src/pages/agent/explore/components/session-list.tsx",
+          "bytes": 2297,
+          "sha256": "91e03e6655ae162ee2215fb3dcabce83f570e611d311df2d9228ed527543feb4"
+        },
+        {
+          "path": "web/src/pages/agent/explore/hooks/use-select-derived-session-list.ts",
+          "bytes": 1503,
+          "sha256": "9418209f7d90408c9493a19234e38c2c774abbd5777497a92e51e5709ff0b16a"
+        },
+        {
+          "path": "web/src/pages/agent/form-sheet/form-config-map.tsx",
+          "bytes": 6761,
+          "sha256": "0b64a51e5347f97953d31d419b2ba5b51dd5a5902c14e3cdb405092c9e696b4c"
+        },
+        {
+          "path": "web/src/pages/agent/form/categorize-form/use-form-schema.ts",
+          "bytes": 883,
+          "sha256": "d89bc2bafe591fc93993593065ba153c10d48a2ec2554b4fc0ba264f08c37b6f"
+        },
+        {
+          "path": "web/src/pages/agent/form/components/select-with-secondary-menu.tsx",
+          "bytes": 8040,
+          "sha256": "6ad396007983eb18b49c291a709e5cdc95401306a3259f3607b68127c9c2c71f"
+        },
+        {
+          "path": "web/src/pages/agent/form/components/structured-output-secondary-menu.tsx",
+          "bytes": 5492,
+          "sha256": "30c7d0cceed030e61ebdc29e02fa171dc5253a4863617107a4414de4efebaa88"
+        },
+        {
+          "path": "web/src/pages/agent/form/invoke-form/index.tsx",
+          "bytes": 7043,
+          "sha256": "7af83a965d43006d396430f924da232d1147fd288542e3aa0d3baee92f1bc19f"
+        },
+        {
+          "path": "web/src/pages/agent/form/rewrite-question-form/index.tsx",
+          "bytes": 2174,
+          "sha256": "88d18fa493a84cce767c636cd393001c30bfaf2bc30f7f8fc5eeb4ee9db729f4"
+        },
+        {
+          "path": "web/src/pages/agent/form/user-fill-up-form/index.tsx",
+          "bytes": 5119,
+          "sha256": "9fdc5deaa9c11c66a9cf40c66517ff241b5307e28aa8564102430aa10bb477c5"
+        },
+        {
+          "path": "web/src/pages/agent/gobal-variable-sheet/component/add-variable-modal.tsx",
+          "bytes": 3875,
+          "sha256": "1590e666b568b2e5643c06591e6f7e10ba3c0a9632aad1bdd1adc61e59aee689"
+        },
+        {
+          "path": "web/src/pages/agent/gobal-variable-sheet/hooks/use-object-fields.tsx",
+          "bytes": 9193,
+          "sha256": "f0185373a8af400954da620e7fc41d2b454ef315771215f6f3a4328b31e6d949"
+        },
+        {
+          "path": "web/src/pages/agent/gobal-variable-sheet/index.tsx",
+          "bytes": 6114,
+          "sha256": "95e0667f8c013d53e0a8a1c057b8b6d266de6b2cceef1711c89234aeb20ea44d"
+        },
+        {
+          "path": "web/src/pages/agent/hooks.tsx",
+          "bytes": 9249,
+          "sha256": "51f147898d344f9a4b56a8f5617880c9fcc4334c7452aedb76e23e955b753007"
+        },
+        {
+          "path": "web/src/pages/agent/hooks/use-agent-tool-initial-values.ts",
+          "bytes": 3328,
+          "sha256": "deb7cf83c6f74c4a7020df89c1dd28044073dc2dc2adfdaabe88dbdf4aa5ef83"
+        },
+        {
+          "path": "web/src/pages/agent/hooks/use-build-options.tsx",
+          "bytes": 463,
+          "sha256": "d532f243f6fe14b8e8ea1b1a7c69065dcf52f16deb419eb7df8ca24910904221"
+        },
+        {
+          "path": "web/src/pages/agent/hooks/use-get-begin-query.tsx",
+          "bytes": 15356,
+          "sha256": "136d5e55edfee9621501ecbf3cbfbce170282542effbc6b89a0480ba69df53d4"
+        },
+        {
+          "path": "web/src/pages/agent/setting-dialog/index.tsx",
+          "bytes": 1309,
+          "sha256": "66e1613919834c478c989a1f7e34b5978879ae45a8a5567df10031e422d0fdb2"
+        },
+        {
+          "path": "web/src/pages/agents/agent-log-page.tsx",
+          "bytes": 13181,
+          "sha256": "9eca3254ddf142da1dfbd8a7b77e0927c279d2afc2a8475f13315c6954f3260a"
+        },
+        {
+          "path": "web/src/pages/agents/builtin-pipeline-list.ts",
+          "bytes": 4796,
+          "sha256": "f4afd45b54febb14e296b896e05d179dd9e16dcf43881e57789396aaa69e8ffd"
+        },
+        {
+          "path": "web/src/pages/agents/builtin-pipeline-section.test.tsx",
+          "bytes": 5174,
+          "sha256": "317049a4e6a1ac7acb13acb6f33b079fe68bf820140198f6d983aa94e07324e0"
+        },
+        {
+          "path": "web/src/pages/agents/builtin-pipeline-section.tsx",
+          "bytes": 1762,
+          "sha256": "f3509700fa77ea74b227cfbe4914670e36b185441566c7df2986b877528c2057"
+        },
+        {
+          "path": "web/src/pages/agents/template-retrieval-binding.test.ts",
+          "bytes": 7996,
+          "sha256": "d2534472c04079cc8ee1ccdbd1ececcacbab4c114757ceb6b0096b63a56356c1"
+        },
+        {
+          "path": "web/src/pages/agents/template-retrieval-binding.ts",
+          "bytes": 8931,
+          "sha256": "2f030fc7e2ecd894e2d6d5268773d9b1f55dd07b56267958b3b51f091a43fa52"
+        },
+        {
+          "path": "web/src/pages/dataflow-result/components/parse-editer/hook.ts",
+          "bytes": 751,
+          "sha256": "50d4884f4cbe12dab67f284a0441f0dce30a7c668a988b8d1715b4d02555bd4c"
+        },
+        {
+          "path": "web/src/pages/dataflow-result/components/parse-editer/index.tsx",
+          "bytes": 1974,
+          "sha256": "4fe5803aa24cf315bbee04a3199f6fbfec0d3e8350b49a46be1cef9c19b07e03"
+        },
+        {
+          "path": "web/src/pages/dataflow-result/components/parse-editer/interface.ts",
+          "bytes": 1856,
+          "sha256": "366015a1539ff6bc43bd6bbacd3df33b1fce579defc712abb3760aaae81ff3be"
+        },
+        {
+          "path": "web/src/pages/dataflow-result/components/parse-editer/json-parser.tsx",
+          "bytes": 5895,
+          "sha256": "381c2dd1907f8c6fd977da1b03b90b76780bd57e34b6b3676be85b779988d00f"
+        },
+        {
+          "path": "web/src/pages/dataflow-result/parser.tsx",
+          "bytes": 4375,
+          "sha256": "5fef9d96434dfcebd7b8bd774afba048d29fe66f74a690b518b42f0b99fdb7a9"
+        },
+        {
+          "path": "web/src/pages/dataset/__tests__/narrow-navigation.test.tsx",
+          "bytes": 14894,
+          "sha256": "a23d31b484be11ef4242f9c01450b435f1f9f900416ce64f3b671b168c33f550"
+        },
+        {
+          "path": "web/src/pages/dataset/compilation/skills-view.tsx",
+          "bytes": 2440,
+          "sha256": "212cb25afab7f8623286a9eb30b414fc2b3abdccaa64ebf3558207f3789c9c69"
+        },
+        {
+          "path": "web/src/pages/dataset/dataset/dataset-table.tsx",
+          "bytes": 6583,
+          "sha256": "0574ea16f2a46bb21b0375f817109807c76fbd1424784627d7f8cc08379a6915"
+        },
+        {
+          "path": "web/src/pages/dataset/dataset/parsing-status-cell.tsx",
+          "bytes": 9526,
+          "sha256": "1e2f60db3da46e0b298744b360851da6e316d3f327fc65dec177bf2e31108ea9"
+        },
+        {
+          "path": "web/src/pages/dataset/knowledge-catalogue/__tests__/document-head-refresh.test.tsx",
+          "bytes": 19497,
+          "sha256": "e3b9610c8df29f176e6117b536a4277d0ced46bdc21cf49d92675b7714da3da7"
+        },
+        {
+          "path": "web/src/pages/dataset/knowledge-catalogue/__tests__/knowledge-consumption.test.tsx",
+          "bytes": 122349,
+          "sha256": "96c1b1d0d665213c9913ec3e7df7dc6cb56a254f37f50c28e9088cd888a8f2e9"
+        },
+        {
+          "path": "web/src/pages/dataset/knowledge-import/__tests__/original-fixture.ts",
+          "bytes": 7399,
+          "sha256": "9b4dcea02b82c6b84981d8718fdc1bfed2071ffd856a6ad5873bc4e0676bdee4"
+        },
+        {
+          "path": "web/src/pages/dataset/knowledge-import/__tests__/original-new-registration.test.tsx",
+          "bytes": 47199,
+          "sha256": "7e6d86f83864fb40e5d055e61bbb49f3e2061694ac3ba64d6366abc81589fa9f"
+        },
+        {
+          "path": "web/src/pages/home/chat-list.tsx",
+          "bytes": 1860,
+          "sha256": "45830546501d758c45c53a3001b0fe84121f134c0725c69d014bfdbf23c143e1"
+        },
+        {
+          "path": "web/src/pages/home/datasets.tsx",
+          "bytes": 2769,
+          "sha256": "52a3f44fc93e3fdbce750b637ba4c974310502953eb0c938953db51bb51e7430"
+        },
+        {
+          "path": "web/src/pages/login-next/index.tsx",
+          "bytes": 13763,
+          "sha256": "05694a1db5baa61ccde18ce91163dac957d96b6e0e111bc25733e0bc9a59d3c7"
+        },
+        {
+          "path": "web/src/pages/memories/hooks.ts",
+          "bytes": 10172,
+          "sha256": "7fe346b8fcd38086f3b4754e8ec912a8c0134fc6969b4dd13c5b4297d5681e2d"
+        },
+        {
+          "path": "web/src/pages/next-chats/hooks/use-upload-file.ts",
+          "bytes": 2935,
+          "sha256": "54d78a67b05ffcd8926375b29273f09f2667c29b3912cf597444a597562212cb"
+        },
+        {
+          "path": "web/src/pages/next-chats/index.tsx",
+          "bytes": 5996,
+          "sha256": "f8a5b44b4c4c1a85fda61c57300e354e12afa133cdb7e2a154d6fe47155aa759"
+        },
+        {
+          "path": "web/src/pages/skills/types.ts",
+          "bytes": 4940,
+          "sha256": "80c52de9ac1d3b1a8d5274a1c13e90eb70970d6a404abe5e52f63161fb8be0ca"
+        },
+        {
+          "path": "web/src/pages/user-setting/data-source/interface.ts",
+          "bytes": 1833,
+          "sha256": "fc8bbf64f81f0f712d5c5fdf888c824b1709ab49cd0ca655d1b30cf95c20c9e5"
+        },
+        {
+          "path": "web/src/pages/user-setting/data-source/log-columns.tsx",
+          "bytes": 2754,
+          "sha256": "5d21908b47c4c26b10ebb2192e04b50f1edc67fee82263ed1d892c7ab3c9c3d0"
+        },
+        {
+          "path": "web/src/pages/user-setting/data-source/log-summary.tsx",
+          "bytes": 2766,
+          "sha256": "e51613d1d917e7d1fcb417e5b025f8de10c263273945ec313e161d47cf8d267a"
+        },
+        {
+          "path": "web/src/services/admin-service.ts",
+          "bytes": 10767,
+          "sha256": "38e11d6e7057975ffb7c9fa30cee6fcd2bfafe600ac7703d6d3a9c10cb2b4512"
+        },
+        {
+          "path": "web/src/services/knowledge-service.ts",
+          "bytes": 18535,
+          "sha256": "47064dc88d1820abec08194bb1b4136929eb9b978d79d52b6f8fc3f3e73beed1"
+        },
+        {
+          "path": "web/src/components/__tests__/bool-segmented.test.tsx",
+          "bytes": 1171,
+          "sha256": "64191c9ed149c6692be6db41d7ccf41baa42a715c2f97de49b290a93645f2304"
+        },
+        {
+          "path": "web/src/hooks/__tests__/use-upload-file.test.tsx",
+          "bytes": 2345,
+          "sha256": "790cb4e55c07ebe135264a22c69e2c81aef2be179965a826aba9d253c1bcc4cc"
+        },
+        {
+          "path": "web/src/pages/dataflow-result/components/parse-editer/value.test.ts",
+          "bytes": 2157,
+          "sha256": "1dea65877265b2870b62b18fd800bfb2d96f0485fb768d2fb05792f04c447168"
+        },
+        {
+          "path": "web/src/pages/dataflow-result/components/parse-editer/value.ts",
+          "bytes": 1324,
+          "sha256": "4d5589635407860b248db7b9a745fd3b910d92e8f531ccda2f42cf965d625b3e"
+        },
+        {
+          "path": "web/src/pages/user-setting/data-source/log-summary.test.tsx",
+          "bytes": 1937,
+          "sha256": "7cc9e19612e6029f08465eefbe392147a420d6420d475229323d2b9293e854d7"
+        }
+      ]
     }
   }
 }

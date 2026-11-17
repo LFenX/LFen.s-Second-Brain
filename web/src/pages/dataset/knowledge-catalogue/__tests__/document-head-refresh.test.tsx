@@ -463,7 +463,7 @@ it('V3: does not install another task obsolete slot from a full snapshot capture
   other.original_request.idempotency_key = 'synthetic_task_docx_other';
   other.request_sha256 = await documentRequestDigest(
     'task',
-    { ...Scope, source: OtherSource },
+    Scope,
     other.original_request,
   );
   const terminal: DocumentTask = {

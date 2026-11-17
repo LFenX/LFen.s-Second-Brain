@@ -15,7 +15,7 @@ export function BuiltinPipelineSection({
   searchString,
   showDivider,
 }: {
-  rawCategory?: string | string[] | Record<string, string[]>;
+  rawCategory?: unknown;
   searchString?: string;
   showDivider?: boolean;
 }) {

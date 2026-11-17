@@ -51,8 +51,11 @@ import WenCaiForm from '../form/wencai-form';
 import WikipediaForm from '../form/wikipedia-form';
 import YahooFinanceForm from '../form/yahoo-finance-form';
 import type { INextOperatorForm } from '../interface';
+import type { ComponentType } from 'react';
 
-export const FormConfigMap = {
+export const FormConfigMap: Partial<
+  Record<Operator, { component: ComponentType<INextOperatorForm> }>
+> = {
   [Operator.Begin]: {
     component: BeginForm,
   },

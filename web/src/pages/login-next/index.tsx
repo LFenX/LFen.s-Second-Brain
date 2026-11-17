@@ -344,7 +344,7 @@ const Login = () => {
         }
       } else {
         const code = await register({
-          nickname: params.nickname,
+          nickname: params.nickname ?? '',
           email: params.email,
           password: rsaPassWord,
         });

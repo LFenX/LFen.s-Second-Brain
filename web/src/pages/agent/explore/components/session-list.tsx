@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { SearchInput } from '@/components/ui/input';
 import { useClientSearch } from '@/hooks/use-client-search';
-import { IAgentLogResponse } from '@/interfaces/database/agent';
 import { Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useSelectDerivedSessionList } from '../hooks/use-select-derived-session-list';
@@ -21,11 +20,10 @@ export function SessionList({
   const { sessions, loading, addTemporarySession, removeTemporarySession } =
     useSelectDerivedSessionList();
 
-  const { filteredData, handleSearchChange, searchKeyword } =
-    useClientSearch<IAgentLogResponse>({
-      data: sessions,
-      searchFields: ['name'],
-    });
+  const { filteredData, handleSearchChange, searchKeyword } = useClientSearch({
+    data: sessions,
+    searchFields: ['name'],
+  });
 
   return (
     <section className="p-5 flex flex-col h-full">

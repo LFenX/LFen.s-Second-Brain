@@ -1,5 +1,26 @@
-import { RunningStatus } from '@/pages/dataset/dataset/constant';
+import { RunningStatus, RunningStatusOld } from '@/constants/knowledge';
 import { IDataSourceLog } from './interface';
+
+export function dataSourceLogStatus(
+  status: IDataSourceLog['status'],
+): RunningStatus {
+  switch (status) {
+    case RunningStatusOld.UNSTART:
+      return RunningStatus.UNSTART;
+    case RunningStatusOld.RUNNING:
+      return RunningStatus.RUNNING;
+    case RunningStatusOld.CANCEL:
+      return RunningStatus.CANCEL;
+    case RunningStatusOld.DONE:
+      return RunningStatus.DONE;
+    case RunningStatusOld.FAIL:
+      return RunningStatus.FAIL;
+    case RunningStatusOld.SCHEDULE:
+      return RunningStatus.SCHEDULE;
+    default:
+      return status;
+  }
+}
 
 export const formatDuration = (seconds: number) => {
   const safeSeconds = Math.max(0, seconds);
@@ -54,19 +75,20 @@ export const TaskCountdown = ({
 };
 
 export const getSummary = (row: IDataSourceLog, now: number) => {
-  if (row.status === RunningStatus.SCHEDULE || row.status === '5') {
+  const status = dataSourceLogStatus(row.status);
+  if (status === RunningStatus.SCHEDULE) {
     return <TaskCountdown row={row} now={now} />;
   }
 
-  if (row.status === RunningStatus.RUNNING || row.status === '1') {
+  if (status === RunningStatus.RUNNING) {
     return row.task_type === 'prune' ? 'Prune in progress' : 'Sync in progress';
   }
 
-  if (row.status === RunningStatus.FAIL || row.status === '4') {
+  if (status === RunningStatus.FAIL) {
     return row.error_msg || 'Task failed';
   }
 
-  if (row.status === RunningStatus.CANCEL || row.status === '2') {
+  if (status === RunningStatus.CANCEL) {
     return '';
   }
 

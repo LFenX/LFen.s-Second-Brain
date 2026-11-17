@@ -828,6 +828,7 @@ it('ignores the old transfer progress and cancel callback after a completed uplo
   jest
     .spyOn(service, 'put')
     .mockImplementation(async (_domain, _reg, _upload, _file, progress) => {
+      if (!progress) throw new Error('Expected upload progress callback');
       transferProgress = progress;
       const input = loadOriginalRecovery(
         StorageKey,

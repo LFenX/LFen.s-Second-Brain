@@ -14,6 +14,7 @@
  *  limitations under the License.
  */
 
+import type { UploadFormSchemaType } from '@/components/file-upload-dialog';
 import message from '@/components/ui/message';
 import { ListDeletionKey } from '@/constants/list-deletion';
 import { PaginationProps } from '@/interfaces/antd-compat';
@@ -77,19 +78,22 @@ export const useUploadFile = () => {
     mutateAsync,
   } = useMutation({
     mutationKey: [FileApiAction.UploadFile],
-    mutationFn: async (params: { fileList: File[]; parentId: string }) => {
-      const fileList = params.fileList;
-      const pathList = params.fileList.map(
-        (file) => (file as any).webkitRelativePath,
-      );
+    mutationFn: async (params: {
+      fileList: UploadFormSchemaType['fileList'];
+      parentId: string;
+    }) => {
       const formData = new FormData();
       formData.append('parent_id', params.parentId);
-      fileList.forEach((file: any, index: number) => {
+      params.fileList.forEach((entry) => {
+        const { file, path } =
+          entry instanceof File
+            ? { file: entry, path: entry.webkitRelativePath }
+            : entry;
         // Explicitly set filename to file.name (base name) to prevent the
         // browser from using webkitRelativePath (e.g. "folder/file.txt")
         // which would cause the backend to create an extra folder.
         formData.append('file', file, file.name);
-        formData.append('path', pathList[index]);
+        formData.append('path', path);
       });
       try {
         const ret = await fileManagerService.uploadFile(formData);

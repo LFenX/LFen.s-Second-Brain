@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { IJsonContainerProps, IObjContainerProps } from './interface';
 
-export const useParserInit = ({
+export const useParserInit = <
+  T extends
+    | IJsonContainerProps['initialValue']
+    | IObjContainerProps['initialValue'],
+>({
   initialValue,
 }: {
-  initialValue:
-    | IJsonContainerProps['initialValue']
-    | IObjContainerProps['initialValue'];
+  initialValue: T;
 }) => {
   const [content, setContent] = useState(initialValue);
 

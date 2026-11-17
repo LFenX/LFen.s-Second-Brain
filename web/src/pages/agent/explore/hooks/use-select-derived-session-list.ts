@@ -17,6 +17,8 @@ export const useSelectDerivedSessionList = () => {
 
     const tempSession: IAgentLogResponse & { is_new?: boolean } = {
       id: '',
+      name: '',
+      version_title: '',
       message: [],
       create_date: '',
       create_time: now,
@@ -28,7 +30,7 @@ export const useSelectDerivedSessionList = () => {
       source: '',
       user_id: '',
       dsl: '',
-      reference: {},
+      reference: [],
       is_new: true,
     };
 

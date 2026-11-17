@@ -8,6 +8,8 @@ import FormatPreserEditor from './components/parse-editer';
 import { TimelineNodeType } from './constant';
 import { useChangeChunkTextMode } from './hooks';
 import { IChunk, IDslComponent } from './interface';
+import { editorValue } from './components/parse-editer/value';
+import type { FormatPreserveEditorProps } from './components/parse-editer/interface';
 interface IProps {
   isReadonly: boolean;
   step?: TimelineNode;
@@ -22,23 +24,7 @@ const ParserContainer = (props: IProps) => {
   const [newChunkIndex, setNewChunkIndex] = useState<number | undefined>();
   const { textMode } = useChangeChunkTextMode();
   const initialValue = useMemo(() => {
-    const outputs = data?.value?.obj?.params?.outputs;
-    const key = outputs?.output_format?.value;
-    if (!outputs || !key)
-      return {
-        key: '' as 'text' | 'html' | 'json' | 'chunks',
-        type: '',
-        value: [],
-      };
-    const value = outputs[key as keyof typeof outputs]?.value;
-    const type = outputs[key as keyof typeof outputs]?.type;
-    console.log('outputs-->', outputs, data, key, value);
-    return {
-      key: key as 'text' | 'html' | 'json' | 'chunks',
-      type,
-      value,
-      params: data?.value?.obj?.params,
-    };
+    return editorValue(data.value.obj.params);
   }, [data]);
 
   const [initialText, setInitialText] = useState(initialValue);
@@ -46,7 +32,9 @@ const ParserContainer = (props: IProps) => {
   useEffect(() => {
     setInitialText(initialValue);
   }, [initialValue]);
-  const handleSave = (newContent: any) => {
+  const handleSave = (
+    newContent: FormatPreserveEditorProps['initialValue'],
+  ) => {
     console.log('newContent-change-->', newContent, initialValue);
     if (JSON.stringify(newContent) !== JSON.stringify(initialValue)) {
       setInitialText(newContent);

@@ -21,17 +21,22 @@ const MockDataset = {
   create_time: 0,
   size: 1024,
 } as IDataset;
-const MockSource = {
+const MockSource: KnowledgeSource = {
   domain_id: MockDomain,
   source_id: 'c'.repeat(32),
   source_revision_id: 'd'.repeat(32),
   root_node_id: 'e'.repeat(64),
   relative_path: 'synthetic-note.txt',
   component_side: 'non_code',
-  language: null,
+  language: '',
+  native_file_id: '1'.repeat(32),
+  native_commit_id: '2'.repeat(32),
+  group_id: null,
+  line_count: 3,
+  is_current: true,
   byte_length: 143,
   sha256: 'f'.repeat(64),
-} as KnowledgeSource;
+};
 const mockRefetchDomain = jest.fn();
 const mockRefetchContract = jest.fn();
 const mockConsumerMount = jest.fn();

@@ -7,6 +7,7 @@ import styles from '../../index.module.less';
 import { IChunk } from '../../interface';
 import { useParserInit } from './hook';
 import { IJsonContainerProps } from './interface';
+import { rowText } from './value';
 export const parserKeyMap = {
   json: 'text',
   chunks: 'text',
@@ -62,7 +63,7 @@ export const ArrayContainer = (props: IJsonContainerProps) => {
             }
           }),
         };
-        onSave(saveData as any);
+        onSave(saveData);
       }
       setActiveEditIndex(undefined);
     },
@@ -73,8 +74,10 @@ export const ArrayContainer = (props: IJsonContainerProps) => {
     if (activeEditIndex !== undefined && editDivRef.current) {
       editDivRef.current.focus();
       if (typeof content.value !== 'string') {
-        editDivRef.current.textContent =
-          content.value[activeEditIndex][parserKey];
+        editDivRef.current.textContent = rowText(
+          content.value[activeEditIndex],
+          parserKey,
+        );
       }
     }
   }, [editDivRef, activeEditIndex, content, parserKey]);
@@ -172,7 +175,7 @@ export const ArrayContainer = (props: IJsonContainerProps) => {
                     }
                   }}
                 >
-                  {item[parserKey]}
+                  {rowText(item, parserKey)}
                 </div>
               )}
             </section>

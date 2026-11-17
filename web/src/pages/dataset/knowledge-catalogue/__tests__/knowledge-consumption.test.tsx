@@ -3351,14 +3351,14 @@ describe('UR-001 explicit unified read refresh', () => {
           source_node_id: NodeId,
           root_structure_node_id: '7'.repeat(64),
           lifecycle_version: 1,
-          parser: 'text',
+          parser: 'markdown',
           sha256: Sha,
           byte_length: 9,
-          relative_path: 'old-r1.txt',
+          relative_path: 'old-r1.md',
           classification: {
             group_id: null,
             component_side: 'non_code',
-            language: 'text',
+            language: 'markdown',
           },
         },
       ],
@@ -3376,7 +3376,7 @@ describe('UR-001 explicit unified read refresh', () => {
       ...oldView,
       view_id: '8'.repeat(64),
       manifest_id: '9'.repeat(32),
-      members: [{ ...oldView.members[0], relative_path: 'new-r1.txt' }],
+      members: [{ ...oldView.members[0], relative_path: 'new-r1.md' }],
     };
     let head: StructureHead = {
       domain_id: Domain,
@@ -3415,7 +3415,7 @@ describe('UR-001 explicit unified read refresh', () => {
           name: 'knowledgeConsumption.fixCurrentView',
         }),
       );
-      await screen.findByRole('button', { name: 'old-r1.txt' });
+      await screen.findByRole('button', { name: 'old-r1.md' });
       expect(heads).toHaveBeenCalledTimes(1);
       moreProjects = true;
       head = {
@@ -3431,17 +3431,17 @@ describe('UR-001 explicit unified read refresh', () => {
         oldView.view_id,
       ]);
       expect(
-        screen.getByRole('button', { name: 'old-r1.txt' }),
+        screen.getByRole('button', { name: 'old-r1.md' }),
       ).toBeInTheDocument();
       expect(
-        screen.queryByRole('button', { name: 'new-r1.txt' }),
+        screen.queryByRole('button', { name: 'new-r1.md' }),
       ).not.toBeInTheDocument();
       fireEvent.click(
         screen.getByRole('button', {
           name: 'knowledgeConsumption.fixCurrentView',
         }),
       );
-      await screen.findByRole('button', { name: 'new-r1.txt' });
+      await screen.findByRole('button', { name: 'new-r1.md' });
       expect(views.mock.calls.map(([scope]) => scope.view)).toEqual([
         oldView.view_id,
         nextView.view_id,
@@ -3481,6 +3481,7 @@ describe('UR-001 explicit unified read refresh', () => {
       .spyOn(documentService, 'originals')
       .mockImplementation(async () => ({
         data: {
+          domain_id: scope.domain,
           items: expanded ? [original, nextOriginal] : [original],
           next_cursor: null,
         },
