@@ -1,0 +1,45 @@
+{
+  "subject_sha256": "88c6a4fbcc3ad293c73a015ea28cfebefed2e7332881fa4b4c554dba88d173fb",
+  "copies": [
+    {
+      "original": ".local-data/coordination-20261108/design/knowledge-answer-candidate02/subject-manifest.safe.json",
+      "public": "docs/knowledge-answer-20261117-02/subject-manifest.safe.json",
+      "sha256": "88c6a4fbcc3ad293c73a015ea28cfebefed2e7332881fa4b4c554dba88d173fb"
+    },
+    {
+      "original": ".local-data/coordination-20261108/design/knowledge-answer-candidate02/decision-summary.zh-CN.txt",
+      "public": "docs/knowledge-answer-20261117-02/decision-summary.zh-CN.txt",
+      "sha256": "17707d4ded60532743e0fe9049fc3832ebcd2b9d46ac6628d4de10871f06c000"
+    },
+    {
+      "original": ".local-data/coordination-20261108/design/knowledge-answer-candidate02/answer.schema.candidate.json",
+      "public": "docs/knowledge-answer-20261117-02/answer.schema.candidate.json",
+      "sha256": "43717548f20c4ac0d2c4079d5dc71653bc7a69f27b978e2bf3f2035af74a099b"
+    },
+    {
+      "original": ".local-data/coordination-20261108/design/knowledge-answer-candidate02/answer.openapi.candidate.json",
+      "public": "docs/knowledge-answer-20261117-02/answer.openapi.candidate.json",
+      "sha256": "6fcba52335a47d8ba4b29a1c0fe85bace962400434ff60f47fa6818279ba5487"
+    },
+    {
+      "original": ".local-data/coordination-20261108/design/knowledge-answer-candidate02/protocol.candidate.json",
+      "public": "docs/knowledge-answer-20261117-02/protocol.candidate.json",
+      "sha256": "18160012c08cbf6da36ebb576ac0a47f4f62d7a37b088c7668f4906d6b6d124f"
+    },
+    {
+      "original": ".local-data/coordination-20261108/design/knowledge-answer-candidate02/acceptance.candidate.json",
+      "public": "docs/knowledge-answer-20261117-02/acceptance.candidate.json",
+      "sha256": "3a4b6d8ff1d2493abf36827fadf048128c834076c7f376b1d65ffe4916aa0b77"
+    },
+    {
+      "original": ".local-data/coordination-20261108/design/knowledge-answer-candidate02/owning-impact.safe.json",
+      "public": "docs/knowledge-answer-20261117-02/owning-impact.safe.json",
+      "sha256": "fea9b4cd41cd5bd4d292f240e9089bb6e9383e3cef645100be2c57fdfc677671"
+    },
+    {
+      "original": ".local-data/coordination-20261108/design/knowledge-answer-candidate02/root-review.safe.json",
+      "public": "docs/knowledge-answer-20261117-02/root-review.safe.json",
+      "sha256": "c845f9af79508617877cc7d40423247db868685c5881d7167449e6ad84015d4b"
+    }
+  ]
+}

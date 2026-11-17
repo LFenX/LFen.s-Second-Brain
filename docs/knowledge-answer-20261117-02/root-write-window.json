@@ -1,0 +1,51 @@
+{
+  "executor": "Root",
+  "basis": "Specific human KQA-20261117-02 OptionA;no other agents",
+  "source_baseline": {
+    "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+    "file_count": 5165,
+    "sha256": "32a82f8fcfbb25fabccb395622a0eb6f66c887dd5ad0a945f92b2795b036c9df"
+  },
+  "permitted_new_paths": [
+    "internal/entity/knowledge_answer*.go",
+    "internal/entity/knowledge_answer_schema.json",
+    "internal/service/dataset/knowledge_answer*.go",
+    "internal/service/knowledge_answer_model.go",
+    "internal/handler/knowledge_answer*.go",
+    "internal/router/knowledge_answer*.go",
+    "web/src/interfaces/database/knowledge-answer.ts",
+    "web/src/interfaces/request/knowledge-answer.ts",
+    "web/src/services/knowledge-answer-service.ts",
+    "web/src/services/__tests__/knowledge-answer*.ts",
+    "web/src/hooks/use-knowledge-answer.ts",
+    "web/src/pages/dataset/knowledge-catalogue/answer*.tsx",
+    "web/src/pages/dataset/knowledge-catalogue/use-answer*.ts",
+    "web/src/pages/dataset/knowledge-catalogue/__tests__/answer*.tsx"
+  ],
+  "permitted_existing_paths": [
+    "internal/dao/database.go",
+    "internal/router/knowledge_content.go",
+    "web/src/pages/dataset/knowledge-catalogue/index.tsx"
+  ],
+  "protected": "Existing47 protected and26 frozen contracts remain byte-identical;no shared UI,root layout,private configuration or generic model guard edits.",
+  "stages": [
+    "Register exact human decision and immutable approved subject;normal commit/push",
+    "Go policy/model/request/citation workflow plus focused unit and real SQL tests;normal commit/push",
+    "Owner webpage opt-in/question/citations plus checks;normal commit/push",
+    "LLD20 build/help and synthetic native/browser acceptance within20-call cap;release existing services,verify restart;normal commit/push"
+  ],
+  "reference_entries": [
+    "answer02-implementation-decision",
+    "answer02-subject",
+    "answer02-copy-map",
+    "answer02-schema",
+    "answer02-openapi",
+    "answer02-protocol",
+    "answer02-acceptance",
+    "answer02-owning-impact",
+    "foundation-lexical-schema",
+    "root-instructions",
+    "web-instructions"
+  ],
+  "source_reseal": "Only after Root reviews exact affected diff against this window;archive previous raw lock,retain all failures. Do not refresh unknown drift."
+}

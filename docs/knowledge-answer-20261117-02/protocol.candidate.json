@@ -1,0 +1,110 @@
+{
+  "id": "KQA-20261117-02",
+  "status": "CandidateReadyForSpecificHumanDecision_NotImplementationContract",
+  "version": "0.1.0-candidate",
+  "scope": {
+    "owner_only": true,
+    "generation_only": true,
+    "first_model": "Current caller-owned configured default deepseek-flash at DeepSeek;no arbitrary request API key/base URL/model name.",
+    "allowed_base_urls": [
+      "https://api.deepseek.com",
+      "https://api.deepseek.com/v1"
+    ],
+    "fixed_scope": "One existing ready C3 index_ref and its exact fixed_representations selection,1..32 unique targets,all in the same owned domain. No implicit latest. Reuse current C3 readiness/staleness and provenance checks without changing their meaning.",
+    "shared_department_MCP_generation": false,
+    "real_material": "Development and acceptance synthetic only. Existing real AICS external-use restriction remains."
+  },
+  "four_operations": [
+    {
+      "suffix": "inspect",
+      "request": "InspectRequest",
+      "response": "InspectResponse"
+    },
+    {
+      "suffix": "policy/get",
+      "request": "PolicyGetRequest",
+      "response": "PolicyGetResponse"
+    },
+    {
+      "suffix": "policy/set",
+      "request": "PolicySetRequest",
+      "response": "PolicySetResponse"
+    },
+    {
+      "suffix": "run",
+      "request": "AnswerRequest",
+      "response": "AnswerResponse"
+    }
+  ],
+  "policy": {
+    "default": "Absent row is version0,disabled;existing domains are never auto-enabled.",
+    "inspect": "No model call. Return current policy version,exact scope digest,non-secret model configuration digest,destination origin and fixed limits.",
+    "enable": "Owner confirms external sending for that exact fixed snapshot and model configuration. Epoch-first transaction,compare expected version and recomputed scope/model digests,then increment version.",
+    "disable": "Increment version and clear the allowed scope/model. Does not recall text already sent to the provider. Returned/cached results still require current authorization.",
+    "model_digest": "Canonical provider/instance/model identities,model name,base URL and region,excluding API keys,usage and verification flags. Changed destination/model requires a new inspect/confirmation;routine key rotation at the same destination is not a new destination."
+  },
+  "execution": [
+    "Existing native identity and owner-source/read checks,policy version and exact fixed-scope checks. Ignore client identity claims in metadata.",
+    "Use existing C3 lexical search only;question is default retrieval query,optional keyword override;top5 whole authorized evidence units,maximum32768UTF8bytes. No embedding,rerank,remote fetch,query-rewrite model or reindex side branch.",
+    "Reread each fixed evidence reference through its owning current service;never copy protected data into an unregistered dataset.",
+    "Resolve existing configured provider credential as an opaque complete value via the native model service. No new private-file parser in application code.",
+    "Persist a dispatch/idempotency marker before network work;release SQL locks before provider HTTP. One deepseek-flash call,thinking disabled,temperature0.1,max_tokens1024,no retries/failover.",
+    "Raw model output must be closed JSON with answer,insufficient_evidence,evidence_ids. Every ID must be in actual supplied context. No silently dropping invalid citations.",
+    "Reread cited references after generation and recheck current owner permission,policy and scope/model bindings before emitting any answer. Disable/revocation/stale data discards the buffered result. No token streaming in the first version."
+  ],
+  "citation_semantics": "Server proves membership,fixed version,current permission and exact bytes. General semantic entailment is not mechanically guaranteed;strict subject-focused prompting and gold/adversarial evaluation remain necessary. UI shows the cited fixed source.",
+  "idempotency": {
+    "key_scope": "Current user+domain+idempotency key;canonical body digest mismatch is409.",
+    "provider_cap": "At most one provider dispatch for a key. Same-key POST polls or returns a revalidated cached result,never resends the model call.",
+    "unknown": "Ambiguous provider timeout/connection outcome remains unknown;same-key request cannot dispatch again. New-key resubmission requires a deliberate user action.",
+    "retention": "Answer body cache24h;minimal idempotency/audit metadata7days. Expired cached result returns a closed conflict,not an automatic regeneration. No source document deletion."
+  },
+  "storage": {
+    "new_tables": 2,
+    "names": [
+      "knowledge_answer_policy",
+      "knowledge_answer_request"
+    ],
+    "constraints": "Additive Go-owned migration only;named indexes by column set,explicit bound ID predicates,zero enabled policies on migration. No changes to frozen existing schemas or existing account credentials."
+  },
+  "limits": {
+    "max_targets": 32,
+    "retrieval_limit": 5,
+    "max_context_utf8_bytes": 32768,
+    "max_question_utf8_bytes": 4096,
+    "max_output_tokens": 1024,
+    "max_answer_utf8_bytes": 8192
+  },
+  "wire": {
+    "errors": [
+      "invalid_request",
+      "unauthenticated",
+      "not_found",
+      "model_use_denied",
+      "version_conflict",
+      "idempotency_conflict",
+      "scope_changed",
+      "index_stale",
+      "unsupported_model",
+      "model_output_invalid",
+      "provider_unavailable",
+      "provider_outcome_unknown",
+      "capacity_exceeded",
+      "rate_limited",
+      "unavailable",
+      "contract_mismatch"
+    ],
+    "no_partial_or_error_source_text": true,
+    "missing_or_mismatched_profile": "412",
+    "same_key_polling": "202",
+    "policy_disabled": "403",
+    "foreign_domain_or_model": "404",
+    "source_scope_or_index_stale": "412",
+    "invalid_provider_output": "502",
+    "DB_uncertain": "503",
+    "closed_errors": "No raw provider/config/SQL error or secret in diagnostics."
+  },
+  "read_access_epoch": "Generation policy version is separate from read-sharing authority;locking follows epoch-first order but changing this owner-only policy does not itself increment the existing shared-read epoch or invalidate unrelated MCP credentials.",
+  "old_paths": "Existing CheckDatasetModelUse and all old registered-domain embedding/rerank/generation restrictions remain unchanged. Only the new explicitly approved owner-bound service may obtain a narrow generation authorization. No old native Chat API or MCP tool silently gains access.",
+  "rollout": "Existing API/Web services and8-service runtime;no new container. Scoped Go tests via build.sh,LLD20 build and all affected help modes;Web tests/lint/build and actual solo synthetic browser+HTTP acceptance before local release. Normal commit/push each completed stage."
+}

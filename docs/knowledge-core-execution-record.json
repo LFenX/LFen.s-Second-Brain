@@ -2611,8 +2611,7 @@
       ],
       "not_verified": "未创建用户或知识域，未调用词法策略/索引/检索接口，未执行bash build.sh --test；零版本修正尚未在真实HTTP与标准MCP客户端上复核"
     }
-  }
-,
+  },
   "coordination_20261105": {
     "status": "Continuing_WithinPriorApprovedScope_FinalFoundationIncomplete",
     "recording_state": "CoordinationAndLayeredProgress_WithinReviewedScope_NotFinalAcceptance",
@@ -10398,6 +10397,17 @@
         "otherChatsPaused": true,
         "realUserDocumentContentRead": false
       }
+    },
+    "owner_web_answer_approved_20261117": {
+      "decision": "docs/knowledge-answer-20261117-02/implementation-decision.json",
+      "subject_sha256": "88c6a4fbcc3ad293c73a015ea28cfebefed2e7332881fa4b4c554dba88d173fb",
+      "approved": true,
+      "implementation_started": false,
+      "model_calls_used": 0,
+      "model_call_cap": 20,
+      "executor": "Root only",
+      "write_window": "docs/knowledge-answer-20261117-02/root-write-window.json",
+      "previous_failures_and_pending_records": "Retained as original time-scoped evidence"
     }
   }
 }

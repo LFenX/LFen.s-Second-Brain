@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "lock_id": "KCRL-20261117-54",
+  "lock_id": "KCRL-20261117-55",
   "recorded_date": "2026-11-17",
   "coordinator_thread_id": "01a1a9a5-c724-7f52-8cbb-16d19d982ba4",
   "source_baseline_git_head": "f804b3737a8f69af14b1ff1c2d042e8ea7c2a9f1",
@@ -32,9 +32,9 @@
       },
       "integrity": {
         "mode": "file",
-        "sha256": "fc15ea4d6c8d448d2d34300babe169b7f37fdb65142ca0eb1e6ad2a1e5ba9596"
+        "sha256": "6cf6e784bc7ff36249503beb5e85a0e9ecf4131f4bfa4fb2ccb3bd9be0c56258"
       },
-      "selection_sha256": "fc15ea4d6c8d448d2d34300babe169b7f37fdb65142ca0eb1e6ad2a1e5ba9596"
+      "selection_sha256": "6cf6e784bc7ff36249503beb5e85a0e9ecf4131f4bfa4fb2ccb3bd9be0c56258"
     },
     {
       "id": "root-instructions",
@@ -1453,9 +1453,9 @@
       },
       "integrity": {
         "mode": "selection",
-        "sha256": "a36495486daed820afe606f4ca580134bef067907764bc894c478cf2f2c97b04"
+        "sha256": "239e8ec3363e1450af4497a542c2ad5bc506e11fbb15052ddfb76687f51c3c94"
       },
-      "selection_sha256": "a36495486daed820afe606f4ca580134bef067907764bc894c478cf2f2c97b04",
+      "selection_sha256": "239e8ec3363e1450af4497a542c2ad5bc506e11fbb15052ddfb76687f51c3c94",
       "limitation": "第三轮独立事实入口；仅在实际28源码及独立B回执核实、独审和总控精确四文件租约后机械生效。各运行/质量门按各自时点与版本保留，不批准新接口、模型、真实内容、最终验收或发布。 Ref27只追加shared_ordinal_followup；旧28和分层运行事实保留原时点，命名源码集合后续仅据实际应用与分层回执登记，未完成门不标Pass。"
     },
     {
@@ -1848,6 +1848,193 @@
         "entry": "access02-implementation-decision",
         "subject_sha256": "a6d98e012a735c3a2dd75d72f6492fa9928c98b5ee14ea8b98c800e79fdad0e3"
       }
+    },
+    {
+      "id": "answer02-implementation-decision",
+      "path": "docs/knowledge-answer-20261117-02/implementation-decision.json",
+      "role": "human_implementation_authority",
+      "allowed_uses": [
+        "implementation_authority"
+      ],
+      "limitation": "Exact specific human OptionA;implementation only,not product acceptance or real AICS approval.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "078a9f0cb481af209eb48c55360f0ff7ef96227243b693d146da7f3948f3fcd0"
+      },
+      "selection_sha256": "078a9f0cb481af209eb48c55360f0ff7ef96227243b693d146da7f3948f3fcd0"
+    },
+    {
+      "id": "answer02-copy-map",
+      "path": "docs/knowledge-answer-20261117-02/public-copy-map.json",
+      "role": "engineering_dependency",
+      "allowed_uses": [
+        "reference_resolution"
+      ],
+      "limitation": "One-to-one original-byte mapping;no expanded authority.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "c4ecbf524f4b08c638001bf182313db885a86b2fddcb86ff8fd7b24ad5dca533"
+      },
+      "selection_sha256": "c4ecbf524f4b08c638001bf182313db885a86b2fddcb86ff8fd7b24ad5dca533"
+    },
+    {
+      "id": "answer02-write-window",
+      "path": "docs/knowledge-answer-20261117-02/root-write-window.json",
+      "role": "execution_plan",
+      "allowed_uses": [
+        "implementation_plan"
+      ],
+      "limitation": "Root-only bounded owning paths;latest human sole-executor scope overrides historical coordinator-only restrictions.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "01fe358bb49f452f4bd077b8cf4e2772d4bebf6729fa76fce2affee205185655"
+      },
+      "selection_sha256": "01fe358bb49f452f4bd077b8cf4e2772d4bebf6729fa76fce2affee205185655"
+    },
+    {
+      "id": "answer02-subject",
+      "path": "docs/knowledge-answer-20261117-02/subject-manifest.safe.json",
+      "role": "approved_design",
+      "allowed_uses": [
+        "implementation_design"
+      ],
+      "limitation": "Exact human-approved subject member. Original candidate-status fields are preparation-time evidence;later specific decision supplies implementation authority. Not existing_contract or observed runtime.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "88c6a4fbcc3ad293c73a015ea28cfebefed2e7332881fa4b4c554dba88d173fb"
+      },
+      "selection_sha256": "88c6a4fbcc3ad293c73a015ea28cfebefed2e7332881fa4b4c554dba88d173fb"
+    },
+    {
+      "id": "answer02-summary",
+      "path": "docs/knowledge-answer-20261117-02/decision-summary.zh-CN.txt",
+      "role": "approved_design",
+      "allowed_uses": [
+        "implementation_design"
+      ],
+      "limitation": "Exact human-approved subject member. Original candidate-status fields are preparation-time evidence;later specific decision supplies implementation authority. Not existing_contract or observed runtime.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "17707d4ded60532743e0fe9049fc3832ebcd2b9d46ac6628d4de10871f06c000"
+      },
+      "selection_sha256": "17707d4ded60532743e0fe9049fc3832ebcd2b9d46ac6628d4de10871f06c000"
+    },
+    {
+      "id": "answer02-schema",
+      "path": "docs/knowledge-answer-20261117-02/answer.schema.candidate.json",
+      "role": "approved_design",
+      "allowed_uses": [
+        "implementation_design"
+      ],
+      "limitation": "Exact human-approved subject member. Original candidate-status fields are preparation-time evidence;later specific decision supplies implementation authority. Not existing_contract or observed runtime.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "43717548f20c4ac0d2c4079d5dc71653bc7a69f27b978e2bf3f2035af74a099b"
+      },
+      "selection_sha256": "43717548f20c4ac0d2c4079d5dc71653bc7a69f27b978e2bf3f2035af74a099b"
+    },
+    {
+      "id": "answer02-openapi",
+      "path": "docs/knowledge-answer-20261117-02/answer.openapi.candidate.json",
+      "role": "approved_design",
+      "allowed_uses": [
+        "implementation_design"
+      ],
+      "limitation": "Exact human-approved subject member. Original candidate-status fields are preparation-time evidence;later specific decision supplies implementation authority. Not existing_contract or observed runtime.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "6fcba52335a47d8ba4b29a1c0fe85bace962400434ff60f47fa6818279ba5487"
+      },
+      "selection_sha256": "6fcba52335a47d8ba4b29a1c0fe85bace962400434ff60f47fa6818279ba5487"
+    },
+    {
+      "id": "answer02-protocol",
+      "path": "docs/knowledge-answer-20261117-02/protocol.candidate.json",
+      "role": "approved_design",
+      "allowed_uses": [
+        "implementation_design"
+      ],
+      "limitation": "Exact human-approved subject member. Original candidate-status fields are preparation-time evidence;later specific decision supplies implementation authority. Not existing_contract or observed runtime.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "18160012c08cbf6da36ebb576ac0a47f4f62d7a37b088c7668f4906d6b6d124f"
+      },
+      "selection_sha256": "18160012c08cbf6da36ebb576ac0a47f4f62d7a37b088c7668f4906d6b6d124f"
+    },
+    {
+      "id": "answer02-acceptance",
+      "path": "docs/knowledge-answer-20261117-02/acceptance.candidate.json",
+      "role": "execution_plan",
+      "allowed_uses": [
+        "acceptance_plan"
+      ],
+      "limitation": "Exact human-approved subject member. Original candidate-status fields are preparation-time evidence;later specific decision supplies implementation authority. Not existing_contract or observed runtime.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "3a4b6d8ff1d2493abf36827fadf048128c834076c7f376b1d65ffe4916aa0b77"
+      },
+      "selection_sha256": "3a4b6d8ff1d2493abf36827fadf048128c834076c7f376b1d65ffe4916aa0b77"
+    },
+    {
+      "id": "answer02-owning-impact",
+      "path": "docs/knowledge-answer-20261117-02/owning-impact.safe.json",
+      "role": "implementation_fact",
+      "allowed_uses": [
+        "implementation_impact"
+      ],
+      "limitation": "Exact human-approved subject member. Original candidate-status fields are preparation-time evidence;later specific decision supplies implementation authority. Not existing_contract or observed runtime.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "fea9b4cd41cd5bd4d292f240e9089bb6e9383e3cef645100be2c57fdfc677671"
+      },
+      "selection_sha256": "fea9b4cd41cd5bd4d292f240e9089bb6e9383e3cef645100be2c57fdfc677671"
+    },
+    {
+      "id": "answer02-root-review",
+      "path": "docs/knowledge-answer-20261117-02/root-review.safe.json",
+      "role": "implementation_fact",
+      "allowed_uses": [
+        "evidence_scope"
+      ],
+      "limitation": "Exact human-approved subject member. Original candidate-status fields are preparation-time evidence;later specific decision supplies implementation authority. Not existing_contract or observed runtime.",
+      "selector": {
+        "type": "whole"
+      },
+      "integrity": {
+        "mode": "file",
+        "sha256": "c845f9af79508617877cc7d40423247db868685c5881d7167449e6ad84015d4b"
+      },
+      "selection_sha256": "c845f9af79508617877cc7d40423247db868685c5881d7167449e6ad84015d4b"
     }
   ],
   "protected_files": {
@@ -1949,6 +2136,11 @@
       "path": "docs/knowledge-core-execution-record.json",
       "pointer": "/coordination_20261105/request_snapshot/original",
       "sha256": "a483d5687e3147f567be4be9f819bd2cd7adaa321b2ec1a53410f944b97dacf9"
+    },
+    {
+      "path": "docs/knowledge-answer-20261117-02/implementation-decision.json",
+      "pointer": "/answer",
+      "sha256": "1e2fd257f79b7330e17581875ad20253bc5f25c665dc3c6c2a5b7da86c7fcae8"
     }
   ],
   "archive": {
@@ -4897,25 +5089,33 @@
     "无自动refresh/approve或网络访问；子任务不得自改摘要以求通过",
     "Specific human KCA-20261108-02 OptionA authorizes only exact S1/S2/S3 synthetic implementation scope;original Draft fields are immutable writing-time status,not absence of that later approval.",
     "New approved-design/schema/OpenAPI/MCP plans are not existing_contract or runtime/product acceptance;old26 formal contracts and47 protected bindings remain unchanged.",
-    "Latest human stage commit+push instruction supersedes old time-scoped Git prohibitions;actual stage Git and production deployment/release remain separately coordinated actions."
+    "Latest human stage commit+push instruction supersedes old time-scoped Git prohibitions;actual stage Git and production deployment/release remain separately coordinated actions.",
+    "Specific human KQA-20261117-02 OptionA authorizes exact owner-only web generation implementation and at most20 synthetic acceptance calls;not real AICS or shared/department model egress. Root sole executor;old guards remain."
   ],
-  "update_rule": "仅主控在同范围内复核事实/差异/摘要并决定变更；最新真人规定总控不做实际工作，机械应用只能由具名执行者在唯一精确写窗中承担。保存旧锁原字节/摘要、原因、受影响条目和新校验；不得为未知漂移刷新摘要。接口/模型/真实内容/发布新范围仍需真人具体决定。",
-  "manifest_payload_sha256": "8f07f642af1732b84971a6a4e105ee904fcffb6b3c8156bb92ec6c7319255a7b",
+  "update_rule": "Only Root coordinates and executes the latest human-approved bounded work. Review exact changes before source reseal;archive prior raw lock and retain failures. No unknown-drift hash refresh or unapproved interface/model expansion.",
+  "manifest_payload_sha256": "0bc59e7ba8d279659b824f05a8b19639178369a4e6ffc9cd2c07428bfc91e693",
   "previous_baseline": {
-    "lock_id": "KCRL-20261117-53",
-    "manifest_sha256": "f93ca6ce8effff681f128ab93e06378a70bbab1edbc83317b1ade76abc51a5f9",
-    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261117-53.json",
-    "archive_sha256": "f93ca6ce8effff681f128ab93e06378a70bbab1edbc83317b1ade76abc51a5f9",
+    "lock_id": "KCRL-20261117-54",
+    "manifest_sha256": "40643482ece20b460d9d011511436d400cb64241ff77d80f19ca74498195aadb",
+    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261117-54.json",
+    "archive_sha256": "40643482ece20b460d9d011511436d400cb64241ff77d80f19ca74498195aadb",
     "changed_files": [
+      "docs/knowledge-answer-20261117-02/decision-summary.zh-CN.txt",
+      "docs/knowledge-answer-20261117-02/answer.schema.candidate.json",
+      "docs/knowledge-answer-20261117-02/answer.openapi.candidate.json",
+      "docs/knowledge-answer-20261117-02/protocol.candidate.json",
+      "docs/knowledge-answer-20261117-02/acceptance.candidate.json",
+      "docs/knowledge-answer-20261117-02/owning-impact.safe.json",
+      "docs/knowledge-answer-20261117-02/root-review.safe.json",
+      "docs/knowledge-answer-20261117-02/subject-manifest.safe.json",
+      "docs/knowledge-answer-20261117-02/implementation-decision.json",
+      "docs/knowledge-answer-20261117-02/public-copy-map.json",
+      "docs/knowledge-answer-20261117-02/root-write-window.json",
       "docs/knowledge-core-execution-record.json",
       "docs/knowledge-core-reference-authority.md",
-      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261117-53.json",
+      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261117-54.json",
       "docs/knowledge-core-reference-lock.json"
     ],
-    "existing_entries_with_updated_selection_digests": [
-      "reference-authority",
-      "coordination-20261106-round3"
-    ],
-    "reason": "Root-only reviewable owner-web-answer candidate preparation after completed bounded model/format/MCP QA. Specific human decision remains pending;this is not implementation authority or a new source/interface/model scope."
+    "reason": "Record exact specific human OptionA and immutable approved KQA02 subject before opening Root-only implementation window;no application source change."
   }
 }

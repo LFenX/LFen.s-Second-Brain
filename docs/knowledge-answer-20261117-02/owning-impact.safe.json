@@ -1,0 +1,28 @@
+{
+  "id": "KQA-20261117-02",
+  "status": "CandidateReadyForSpecificHumanDecision_NotImplementationContract",
+  "source_baseline": {
+    "git": "87d2a34624cd02a947126a0afbf66e0750effe7e",
+    "reference": "KCRL-20261117-53",
+    "manifest_sha256": "f93ca6ce8effff681f128ab93e06378a70bbab1edbc83317b1ade76abc51a5f9",
+    "source": {
+      "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+      "file_count": 5165,
+      "sha256": "32a82f8fcfbb25fabccb395622a0eb6f66c887dd5ad0a945f92b2795b036c9df"
+    }
+  },
+  "owning_layers": [
+    "internal/permission: preserve old generic guard;add narrowly bound current owner/model-use authorization.",
+    "internal/service/dataset: reuse existing C3 lexical/evidence service and stable source identities;own the new answer workflow.",
+    "internal/service/model_service.go and internal/entity/models: reuse configured provider resolution and real Go client,not a second client implementation.",
+    "internal/entity and internal/dao: two additive metadata tables and transactions with epoch-first lock order.",
+    "internal/handler and internal/router: four new separately versioned owner-only operations.",
+    "web/src/pages/dataset/knowledge-catalogue plus existing owner navigation: question/evidence view and explicit fixed-snapshot model-use consent;existing network-layer conventions."
+  ],
+  "protected": "Existing47 protected files and frozen contracts retain original bytes. New contracts require exact human subject approval and formal reference registration before implementation.",
+  "root_layout_changes": false,
+  "bulk_python_or_native_deletion": false,
+  "model_credentials_or_real_data_in_subject": false,
+  "independent_review": false,
+  "reviewer": "Root self-review only,as requested sole executor."
+}

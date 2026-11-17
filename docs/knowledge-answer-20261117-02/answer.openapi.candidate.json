@@ -1,0 +1,301 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "KQA-20261117-02",
+    "version": "0.1.0-candidate",
+    "x-status": "CandidateReadyForSpecificHumanDecision_NotImplementationContract"
+  },
+  "components": {
+    "securitySchemes": {
+      "NativeSession": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization"
+      }
+    }
+  },
+  "paths": {
+    "/api/v1/datasets/{dataset_id}/knowledge/answer/inspect": {
+      "post": {
+        "operationId": "knowledgeAnswer_inspect",
+        "security": [
+          {
+            "NativeSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "dataset_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./answer.schema.candidate.json#/$defs/ID"
+            }
+          },
+          {
+            "name": "X-Knowledge-Answer-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "0.1.0-candidate"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./answer.schema.candidate.json#/$defs/InspectRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Completed/read operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./answer.schema.candidate.json#/$defs/InspectResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Closed error,no answer or source body",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./answer.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/datasets/{dataset_id}/knowledge/answer/policy/get": {
+      "post": {
+        "operationId": "knowledgeAnswer_policy_get",
+        "security": [
+          {
+            "NativeSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "dataset_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./answer.schema.candidate.json#/$defs/ID"
+            }
+          },
+          {
+            "name": "X-Knowledge-Answer-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "0.1.0-candidate"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./answer.schema.candidate.json#/$defs/PolicyGetRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Completed/read operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./answer.schema.candidate.json#/$defs/PolicyGetResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Closed error,no answer or source body",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./answer.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/datasets/{dataset_id}/knowledge/answer/policy/set": {
+      "post": {
+        "operationId": "knowledgeAnswer_policy_set",
+        "security": [
+          {
+            "NativeSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "dataset_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./answer.schema.candidate.json#/$defs/ID"
+            }
+          },
+          {
+            "name": "X-Knowledge-Answer-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "0.1.0-candidate"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./answer.schema.candidate.json#/$defs/PolicySetRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Completed/read operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./answer.schema.candidate.json#/$defs/PolicySetResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Closed error,no answer or source body",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./answer.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/datasets/{dataset_id}/knowledge/answer/run": {
+      "post": {
+        "operationId": "knowledgeAnswer_run",
+        "security": [
+          {
+            "NativeSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Knowledge-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "1.0.0"
+            }
+          },
+          {
+            "name": "dataset_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "./answer.schema.candidate.json#/$defs/ID"
+            }
+          },
+          {
+            "name": "X-Knowledge-Answer-Contract-Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "const": "0.1.0-candidate"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./answer.schema.candidate.json#/$defs/AnswerRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Completed/read operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./answer.schema.candidate.json#/$defs/AnswerResponse"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Same-key request running;no second provider call",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./answer.schema.candidate.json#/$defs/AnswerResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Closed error,no answer or source body",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./answer.schema.candidate.json#/$defs/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "supersedesUnapprovedCandidate": "KQA-20261117-01",
+  "resolvedBeforeDecision": [
+    "Explicit native1.0/profile0.1 headers",
+    "Closed raw model-output and insufficient-evidence citation invariants",
+    "Unique fixed targets and enabled-policy version constraints",
+    "Official first-provider destination and separate generation/read epochs"
+  ],
+  "state": "RootSelfReviewed_CandidateOnly_NotImplemented",
+  "compiledDefinitions": 24,
+  "meaningfulStaticCases": 13,
+  "newModelCalls": 0,
+  "sourceChanged": false,
+  "existingGuardStillDenied": true,
+  "independentReview": false,
+  "reference": {
+    "lock": "KCRL-20261117-53",
+    "manifest": "f93ca6ce8effff681f128ab93e06378a70bbab1edbc83317b1ade76abc51a5f9",
+    "lexicalSchemaSelection": "91772befbd71652977127002148a9a1e0065beb79be4a06f30f5e79f947eefb8"
+  },
+  "decisionRequiredBy": "AGENTS.md: new shared interfaces require a specific candidate decision before business integration."
+}

@@ -1,0 +1,13 @@
+{
+  "id": "KQA-20261117-02",
+  "date": "2026-11-17",
+  "question": "是否按 KQA-20261117-02 实施网页知识库问答？首版仅资料所有者使用，默认关闭；明确确认固定资料版本后发送给已配置的 DeepSeek。新增4个操作、2张表，不增加容器；开发只用合成资料，最多20次新模型调用，不授权真实 AICS 外发。[完整方案摘要](D:/LFen_project/dev_project/LFENsSecondBrain/.local-data/coordination-20261108/design/knowledge-answer-candidate02/decision-summary.zh-CN.txt)。具体 subject SHA-256：88c6a4fbcc3ad293c73a015ea28cfebefed2e7332881fa4b4c554dba88d173fb。",
+  "answer": "A：按此方案实施网页问答（推荐）",
+  "subject_sha256": "88c6a4fbcc3ad293c73a015ea28cfebefed2e7332881fa4b4c554dba88d173fb",
+  "subject_path": "docs/knowledge-answer-20261117-02/subject-manifest.safe.json",
+  "specific_human_implementation_authorized": true,
+  "executor": "Root only;other chats remain paused",
+  "model_scope": "Synthetic acceptance only,at most20 new calls;no real AICS external-use authorization",
+  "not_acceptance": true,
+  "original_subject_status": "Immutable preparation-time fields remain unchanged;this later exact human decision supplies implementation authority."
+}

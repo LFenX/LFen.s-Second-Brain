@@ -1,0 +1,26 @@
+{
+  "id": "KQA-20261117-02",
+  "status": "CandidateReadyForSpecificHumanDecision_NotImplementationContract",
+  "model_call_cap": 20,
+  "automatic_provider_retries": 0,
+  "tiers": {
+    "unit": "No external services;policy leases,idempotency,races and malformed provider output use controlled stubs.",
+    "integration": "Real SQL/ES/MinIO tests carry integration/e2e tags,not hidden default-unit environment dependencies.",
+    "live": "Only original synthetic fixtures and existing configured DeepSeek;up to20 real calls across HTTP/browser acceptance,not unbounded retries."
+  },
+  "groups": [
+    "Disabled/default/foreign-owner policy sends zero model requests.",
+    "Opaque key remains byte-complete;no own application regex extraction.",
+    "Frozen fixed scope and model destination digest are checked before dispatch.",
+    "Concurrent same-key requests and process interruption never dispatch twice.",
+    "No-hit response declines locally without a model call.",
+    "14 fixed-format gold questions,one missing-fact refusal andone untrusted-source instruction case.",
+    "Same-number different-project citation must not be included.",
+    "Policy disabled/source scope stale while provider is in flight emits no answer/source body.",
+    "Unknown or byte-mismatched citation fails the whole response;no partial answer or silent removal.",
+    "Real browser opt-in,question,visible fixed citations,disable and refreshed state,using synthetic content only.",
+    "Existing shared read-search/MCP tools and expired/revoked temporary credentials retain their current behavior.",
+    "No embedding/rerank/OCR/remote-fetch/generalAgent/personality/memory branch or extra container."
+  ],
+  "not_claimed": "Blind semantic retrieval,vector/rerank quality,OCR/images/audio/all-file correctness,shared-party model egress or real AICS approval."
+}

@@ -1,3 +1,13 @@
+# 第55基线：网页所有者问答具体方案已批准并登记（2026-11-17）
+
+真人已对 KQA-20261117-02 的完整 subject SHA256 88c6a4fbcc3ad293c73a015ea28cfebefed2e7332881fa4b4c554dba88d173fb 选择“A：按此方案实施网页问答（推荐）”。批准只限所有者、默认关闭、明确确认固定C3资料及官方DeepSeek的生成路径；4操作／2新增表／最多20次新合成模型验收，不批准真实AICS外发，不增加容器，不变更旧通用模型闸门及只读共享语义。
+
+完整原始7成员与subject按原字节公开映射于 docs/knowledge-answer-20261117-02/，原候选Pending字段保持历史写入事实；后来具体权力只读 answer02-implementation-decision／implementation_authority。通过 answer02-copy-map／reference_resolution 解析原路径；业务实现读对应 answer02-*／implementation_design，验收读 answer02-acceptance／acceptance_plan，唯一Root写窗读 answer02-write-window／implementation_plan。Root单独实施，其他会话保持暂停；此登记不冒充代码完成、运行验收或发布。
+
+现有47保护件、26正式旧合同及旧记录保持。归档Ref54原字节；源码5165件／32a82f不变。后续仅在审核当前确切差异和有界写窗后登记源码事实，不为未知漂移刷新哈希。每完成阶段正常检查、提交并推送。
+
+---
+
 # 第54基线候选：已完成有界验收，网页所有者问答候选待具体决定（2026-11-17）
 
 Root独自完成17次直连模型问答、三模型正式账号配置／原生连接／默认项刷新回读，以及4次实际官方SDK托管MCP模型问答。14格式＋诱导样本的15个授权表示／24单元读取，未授权冲突来源过滤、固定引用回读、父Grant及临时凭据撤销通过。三个阶段已正常11项检查、提交非强推并核实远端65ac9e8／cf08393／87d2a34。最终8个必要服务运行、正式网页合成注册及auth/login、页面／API及未认证MCP401／data:null通过。

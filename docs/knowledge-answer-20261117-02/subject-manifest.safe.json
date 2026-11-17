@@ -1,0 +1,59 @@
+{
+  "id": "KQA-20261117-02",
+  "status": "CandidateReadyForSpecificHumanDecision_NotImplementationContract",
+  "decision_options": [
+    "A_ImplementExactOwnerOnlySubject_ThenFreezeAndRegister",
+    "B_NoNewWebGenerationInterface"
+  ],
+  "members": [
+    {
+      "path": "decision-summary.zh-CN.txt",
+      "bytes": 1736,
+      "sha256": "17707d4ded60532743e0fe9049fc3832ebcd2b9d46ac6628d4de10871f06c000"
+    },
+    {
+      "path": "answer.schema.candidate.json",
+      "bytes": 21572,
+      "sha256": "43717548f20c4ac0d2c4079d5dc71653bc7a69f27b978e2bf3f2035af74a099b"
+    },
+    {
+      "path": "answer.openapi.candidate.json",
+      "bytes": 8036,
+      "sha256": "6fcba52335a47d8ba4b29a1c0fe85bace962400434ff60f47fa6818279ba5487"
+    },
+    {
+      "path": "protocol.candidate.json",
+      "bytes": 6768,
+      "sha256": "18160012c08cbf6da36ebb576ac0a47f4f62d7a37b088c7668f4906d6b6d124f"
+    },
+    {
+      "path": "acceptance.candidate.json",
+      "bytes": 1849,
+      "sha256": "3a4b6d8ff1d2493abf36827fadf048128c834076c7f376b1d65ffe4916aa0b77"
+    },
+    {
+      "path": "owning-impact.safe.json",
+      "bytes": 1776,
+      "sha256": "fea9b4cd41cd5bd4d292f240e9089bb6e9383e3cef645100be2c57fdfc677671"
+    },
+    {
+      "path": "root-review.safe.json",
+      "bytes": 955,
+      "sha256": "c845f9af79508617877cc7d40423247db868685c5881d7167449e6ad84015d4b"
+    }
+  ],
+  "reference": {
+    "lock": "KCRL-20261117-53",
+    "manifest_sha256": "f93ca6ce8effff681f128ab93e06378a70bbab1edbc83317b1ade76abc51a5f9",
+    "lexical_schema_id": "urn:lfen:knowledge-content-lexical:0.2:candidate:03",
+    "lexical_schema_selection_sha256": "91772befbd71652977127002148a9a1e0065beb79be4a06f30f5e79f947eefb8"
+  },
+  "human_scope": {
+    "sole_executor": true,
+    "only_synthetic": true,
+    "implementation_model_call_cap": 20,
+    "existing_credentials_and_volumes_preserved": true,
+    "no_root_layout_change": true
+  },
+  "implementation_authorized": false
+}
