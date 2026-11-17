@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "lock_id": "KCRL-20261117-58",
+  "lock_id": "KCRL-20261117-59",
   "recorded_date": "2026-11-17",
   "coordinator_thread_id": "01a1a9a5-c724-7f52-8cbb-16d19d982ba4",
-  "source_baseline_git_head": "2c9eb92ef1d33b7ba0bd865a44c2ae6c2cfcaaa4",
+  "source_baseline_git_head": "4435945a5ebbe3be0de4e1687fd466f8cc228a73",
   "source_snapshot": {
     "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
     "file_count": 5188,
-    "sha256": "41d43c137b863fd525ce15fedf934998ce023d94ce00ece55e2d0325b061f931"
+    "sha256": "b6f1a15b6f7ac31246670be37f7391cfcc5f1c19e48af8ec72c03baee25d3cf3"
   },
   "unlisted_policy": "DeniedAsCurrentGuidance_UntilCoordinatorReviewsAndAssigns",
   "authority_order": [
@@ -32,9 +32,9 @@
       },
       "integrity": {
         "mode": "file",
-        "sha256": "3116a46af6d9adba07a85f6124b448884638cd6ce92eae2569dbe81b5e1b4924"
+        "sha256": "80f5918253402e0b6b7462416db8a4c6c21eef087c4935c8b8609c8261a2aecc"
       },
-      "selection_sha256": "3116a46af6d9adba07a85f6124b448884638cd6ce92eae2569dbe81b5e1b4924"
+      "selection_sha256": "80f5918253402e0b6b7462416db8a4c6c21eef087c4935c8b8609c8261a2aecc"
     },
     {
       "id": "root-instructions",
@@ -1453,9 +1453,9 @@
       },
       "integrity": {
         "mode": "selection",
-        "sha256": "3ae98b3432531665703ba882761808aecf5752d19ba0de5edb832436ff50e876"
+        "sha256": "540dcdca37e9820f57f1303ad5411d260d7df520879a750c1e89873254d48a44"
       },
-      "selection_sha256": "3ae98b3432531665703ba882761808aecf5752d19ba0de5edb832436ff50e876",
+      "selection_sha256": "540dcdca37e9820f57f1303ad5411d260d7df520879a750c1e89873254d48a44",
       "limitation": "第三轮独立事实入口；仅在实际28源码及独立B回执核实、独审和总控精确四文件租约后机械生效。各运行/质量门按各自时点与版本保留，不批准新接口、模型、真实内容、最终验收或发布。 Ref27只追加shared_ordinal_followup；旧28和分层运行事实保留原时点，命名源码集合后续仅据实际应用与分层回执登记，未完成门不标Pass。"
     },
     {
@@ -5093,25 +5093,19 @@
     "Specific human KQA-20261117-02 OptionA authorizes exact owner-only web generation implementation and at most20 synthetic acceptance calls;not real AICS or shared/department model egress. Root sole executor;old guards remain."
   ],
   "update_rule": "Only Root coordinates and executes the latest human-approved bounded work. Review exact changes before source reseal;archive prior raw lock and retain failures. No unknown-drift hash refresh or unapproved interface/model expansion.",
-  "manifest_payload_sha256": "305cd9046a9d888b3ad1c81c706fdb823ce2331f7ea4521a3874ce10b4596ee9",
+  "manifest_payload_sha256": "ce629ea088ad333cbe933bd5396f002f66f99d3262f0d23b1efb1f4d6cb3f309",
   "previous_baseline": {
-    "lock_id": "KCRL-20261117-57",
-    "manifest_sha256": "46d6e17ce9b0ccd4192f4066ea49e39683f2741d3d6e831fcb1f201fb1a0cda0",
-    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261117-57.json",
-    "archive_sha256": "46d6e17ce9b0ccd4192f4066ea49e39683f2741d3d6e831fcb1f201fb1a0cda0",
+    "lock_id": "KCRL-20261117-58",
+    "manifest_sha256": "fa3233a1cc1adaa89def1fb925a6ec7a253736503d83832e74323ad7d2e1c428",
+    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261117-58.json",
+    "archive_sha256": "fa3233a1cc1adaa89def1fb925a6ec7a253736503d83832e74323ad7d2e1c428",
     "changed_files": [
-      "internal/entity/knowledge_answer.go",
-      "internal/entity/knowledge_answer_test.go",
-      "internal/service/dataset/knowledge_answer.go",
-      "internal/service/dataset/knowledge_answer_test.go",
-      "internal/service/knowledge_answer_model.go",
-      "web/src/interfaces/database/knowledge-answer.ts",
-      "web/src/services/__tests__/knowledge-answer-service.test.ts",
+      "web/src/pages/dataset/knowledge-catalogue/index.tsx",
       "docs/knowledge-core-execution-record.json",
       "docs/knowledge-core-reference-authority.md",
-      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261117-57.json",
+      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261117-58.json",
       "docs/knowledge-core-reference-lock.json"
     ],
-    "reason": "Root-reviewed two-file persisted policy timestamp fix found by actual MySQL. Red/green owning unit test,LLD20 build and five help modes verified. Prior runtime/static/SQL/14format evidence retained;fix release and new model/browser/shared-MCP regression remain pending."
+    "reason": "Root-reviewed one-file answer view status clarification plus bounded actual native/browser/MCP acceptance evidence. New header static artifact built;release and final browser regression pending."
   }
 }

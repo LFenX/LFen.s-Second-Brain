@@ -10725,6 +10725,73 @@
           "bytes": 7680
         }
       ]
+    },
+    "owner_web_answer_live_acceptance_20261117": {
+      "state": "RootSolo_BoundedNativeBrowserAndMCPAcceptancePassed_FinalHeaderBundleBuilt_NotYetReleased",
+      "approval": "KQA-20261117-02 exact human OptionA",
+      "subject_sha256": "88c6a4fbcc3ad293c73a015ea28cfebefed2e7332881fa4b4c554dba88d173fb",
+      "sourceParent": "4435945a5ebbe3be0de4e1687fd466f8cc228a73",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 5188,
+        "sha256": "b6f1a15b6f7ac31246670be37f7391cfcc5f1c19e48af8ec72c03baee25d3cf3"
+      },
+      "files": [
+        {
+          "path": "web/src/pages/dataset/knowledge-catalogue/index.tsx",
+          "sha256": "fbd75c64e4f7987abc92e8222ee69f30a9a76cb3ec5369d071a2ef5cfba2fe13",
+          "bytes": 27815
+        }
+      ],
+      "runtime": {
+        "serverSHA256": "d9ae8334a8ae5d1dd029e9ae519d1ab74246f51575f55f36fd5d6d9da5dc8853",
+        "release": "Actual API/admin executable,start/restart,synthetic login,assets and existing116tables/1305columns/index sets unchanged;no new schema change for this fix.",
+        "webBeforeHeaderFix": "1082-file Web57 already running;actual browser question was performed on that release with the current d9ae backend."
+      },
+      "verification": {
+        "native": "16 fresh actual official DeepSeek questions passed:14formats plus missing-fact refusal and untrusted-source instruction. Every returned citation matched expected gold source and current fixed byte/SHA reread. XLS same number must cite XLS,not another format.",
+        "formats": "PDF,DOCX,PPTX,XLSX,CSV,HTML,MD,JSON,EML,TXT,EPUB,DOC,XLS,PPT.16 original fixtures include injection and excluded conflicting source;15 fixed representations selected. Typed structures,empty cells,cached spreadsheet value and unavailable PDF page classification were checked;noOCR/recalculation claim.",
+        "deduplication": "Actual same-key concurrency used one answerID/dispatch;202or cached peer and completed replay;changed body409;disabled completed replay403. No-hit local refusal used zero provider calls.",
+        "browser": "Separate correctly RSA/Base64-registered synthetic UI owner:defaultoff,one fixedPDF,official DeepSeek preview/explicit consent,one actual visible37unit answer,expanded citation,linked exact fixed node/read,leave clears result,disable and refresh remainoff. Scoped SQL proves exactly1completed answer row/provider call and disabledv2.",
+        "inflight": "Actual MySQL ledger observed running/provider_calls1,then disabled native policy7to8 while provider pending;original403/model_use_denied,data:null,no cached response;disabled same-key replay did not resend.",
+        "MCP": "12 actual pinned officialSDK1.32.2 requests;protocol2025-11-25. Same fixed PDF read/search before/after generation policy toggle,then parentGrant and1h temporary credential revoked.401no result;foreignowner denied;0new model calls.",
+        "Web": "One owning index view change hides unrelated foundation ModelsDisabled/policy badge in answer view;catalogue other views unchanged.17catalogue tests,scopedformat/lint,Viteproduction1082files exit0.213existing TypeScript diagnostics unchanged,new0,touched0;global typecheck stillfails.",
+        "buildTools": "Both own temporary build containers absent;old slow removal completed after client timeout. Public optional cache image retained,0running buildcontainers,0volume deletions."
+      },
+      "budget": {
+        "reserved19of20": true,
+        "failedFirstOldUsageMapping": 1,
+        "successfulNative16": 16,
+        "successfulActualBrowser": 1,
+        "realInflightWithheld": 1,
+        "knownSuccessfulUsage": {
+          "input_tokens": 8711,
+          "output_tokens": 474,
+          "total_tokens": 9185
+        },
+        "unknownUsageQualification": "First failed closed and inflight withheld calls still counted;usage unavailable. No retries/new calls after closure."
+      },
+      "retainedQualifications": [
+        "Original first model503 remained counted;not silently retried.",
+        "Old native plaintext fixture cannot login via Web RSA form;fresh isolated UI fixture used same actual protocol,without changing user credentials or auth code.",
+        "Initial browser SQL proof validator omitted existing referenced lexical schemas;probe rejected,dependencies registered unchanged,corrected probe passed without product mutation/model call.",
+        "First catalogue timeout retained;retry17passed.",
+        "Full blind semantic retrieval,vector/rerank quality,scannedOCR,audio,Agent,shared-consumer model egress and realAICS are outside this approval.",
+        "Live process-kill/expired-credential scenarios were not newly repeated;existing focused unit evidence remains distinct."
+      ],
+      "remaining": {
+        "finalHeaderStaticRelease": "NotRun",
+        "postReleaseBrowserHeaderAndOffRegression": "NotRun",
+        "finalClosureCommitPush": "Pending"
+      },
+      "preserved": {
+        "protected47": true,
+        "oldFormalContracts26": true,
+        "realCredentialsUnchanged": true,
+        "otherChatsPaused": true,
+        "newPermanentContainers": 0,
+        "volumeDeletes": 0
+      }
     }
   }
 }

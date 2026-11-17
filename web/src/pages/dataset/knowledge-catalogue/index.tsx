@@ -557,13 +557,17 @@ function DomainCatalogue({
             {t('knowledgeImport.title')}
           </Link>
         </div>
-        <p className="text-sm text-text-secondary">
-          {t('knowledgeCatalogue.policy')}
-        </p>
-        <p className="text-xs text-text-secondary">
-          {t('knowledgeCatalogue.policyVersion')}: {policy.version} ·{' '}
-          {domain.data.category}
-        </p>
+        {sourceView !== 'answer' && (
+          <>
+            <p className="text-sm text-text-secondary">
+              {t('knowledgeCatalogue.policy')}
+            </p>
+            <p className="text-xs text-text-secondary">
+              {t('knowledgeCatalogue.policyVersion')}: {policy.version} ·{' '}
+              {domain.data.category}
+            </p>
+          </>
+        )}
       </header>
       <div className="flex min-h-0 flex-col gap-3 pt-3">
         <Button
