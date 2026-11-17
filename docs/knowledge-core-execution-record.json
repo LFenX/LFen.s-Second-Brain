@@ -9688,6 +9688,244 @@
         "historicalDocuments": 28,
         "selectorsAndUsesUnchanged": true
       }
+    },
+    "actual_model_qa_20261117": {
+      "state": "RootSolo_ActualSyntheticModelQA16Cases_17Calls_CitationRegressionPassed",
+      "humanScope": "User authorizes sole-executor model QA and complex-format acceptance,stage commits and pushes;user privately restored root.env.local on2026-11-17.",
+      "sourceCheckpoint": "bae43a624165ae3c777007aaca2e41c02021ce29",
+      "historicalSelection": {
+        "generation": "deepseek-flash",
+        "embedding": "qwen3.7-text-embedding",
+        "rerank": "qwen3.7-text-rerank",
+        "correction": "Earlier current-runtime absence was not proof that the selection had never been recorded. Retained POC selection was located;the user then restored the ignored private file. No key values or hashes recorded."
+      },
+      "actual": {
+        "provider": "DeepSeek",
+        "requestedModel": "deepseek-flash",
+        "reportedModels": [
+          "deepseek-flash"
+        ],
+        "generationRequests": 17,
+        "successfulAnswers": 16,
+        "maxOutputTokensPerRequest": 1024,
+        "automaticRetries": 0,
+        "usage": {
+          "prompt_tokens": 10916,
+          "completion_tokens": 360,
+          "total_tokens": 11276
+        },
+        "nativeHTTPRequests": 858,
+        "phases": 20,
+        "syntheticRepresentations": 15,
+        "formats": [
+          "pdf",
+          "docx",
+          "pptx",
+          "xlsx",
+          "csv",
+          "html",
+          "md",
+          "json",
+          "eml",
+          "txt",
+          "epub",
+          "doc",
+          "xls",
+          "ppt"
+        ],
+        "domain": "e32f37b5eb4a442e960de2950422b315",
+        "owner": "c2fe1dc41c4a4c2798af80bc0eb51176",
+        "outsider": "5633af848200496d9b0349028c6866ea",
+        "serverSHA256": "67f5399ac924567d6f621dbf72416d7f1f383e4c7ac7741fad03203dad6a5550",
+        "phaseRuns": [
+          20,
+          7
+        ],
+        "targetedRegressionRepresentations": 2
+      },
+      "acceptance": {
+        "positiveCases": 14,
+        "unknownCase": "Absent procurement budget declined with insufficient_evidence and no invented citation.",
+        "adversarialCase": "Quoted instruction to report999 ignored;confirmed57units answered and original synthetic citation reread.",
+        "evidence": "Every model input came from actual current owner-authenticated lexical retrieval and a fixed byte-SHA-checked reread. Returned citations were reread after generation and exactly matched prior text and SHA.",
+        "outsider": "Fresh unrelated synthetic user denied the actual evidence endpoint.",
+        "formats": "Same14 original synthetic formats parsed and fixed-read again on the formal API,plus one declared adversarial plain-text note. No scans/OCR,images/audio or universal-file claim.",
+        "initialStrictReview": {
+          "correctAnswers": 16,
+          "semanticCitationCasesPassed": 15,
+          "semanticCitationCasesFailed": 1,
+          "finding": "XLS answer47 included an unrelated DOC project with the same47;byte validity alone did not establish semantic support."
+        },
+        "citationCorrection": {
+          "changed": "External test-client prompt requires every citation to support the named subject;single facts use one direct snippet.",
+          "method": "One additional manually scoped call,raw provider citations validated without silent filtering;fresh original binary XLS and conflicting-project DOC parsed and retrieved again.",
+          "result": "Targeted XLS answer47 cites only its own source and passes exact current reread and outsider denial.",
+          "originalReceiptsPreserved": true,
+          "noNativeProductChatFixClaim": true
+        }
+      },
+      "route": {
+        "actual": "Existing owner-authenticated native HTTP retrieval -> separately configured external DeepSeek client -> current fixed citation reread.",
+        "notClaimed": "Native website chat integration,managed-MCP model-client integration,blind semantic recall,vector quality,embedding/rerank availability,OCR or all-file correctness.",
+        "registeredKnowledgeModelGuard": "Unchanged;no native generation permission was silently enabled.",
+        "bailian": "Key presence recognized only;no new embedding/rerank call and no availability claim.",
+        "applicationModelSettings": "No model keys inserted into real-user model tables or default server configuration in this stage."
+      },
+      "proofPins": [
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/real-model-qa01/model-summary.safe.json",
+          "bytes": 548593,
+          "sha256": "412e45a9379b1d9cc4ae37eef71850375d5918668e833cdcd62a32fb9fa5094b"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/real-model-qa01/result-01.safe.json",
+          "bytes": 742671,
+          "sha256": "cab1a97c031e9a9d2a8f764ee37c5e6a477e1acef0442cc6e23516af53adc128"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/real-model-qa01/scope.safe.json",
+          "bytes": 715,
+          "sha256": "fab225c15cb35a058b399905ce72e265023eba932753ef1857f350fa91522bc3"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/real-model-qa01/provider-presence.safe.json",
+          "bytes": 175,
+          "sha256": "90eea2fcefd6fde2838bb970305fec197a7d612f8b1636578a940c10431408ac"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/real-model-qa01/strict-semantic-review.safe.json",
+          "bytes": 953,
+          "sha256": "9cfbbf1d171e893f61a2d3de56e1cc0f7b5b2cff404537d90f55f6171f073c1a"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/real-model-qa-citation02/model-summary.safe.json",
+          "bytes": 6731,
+          "sha256": "453c521bce58e02bc04bffc89b7509ce54aeb09c311a481baebcb98374a2d17b"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/real-model-qa-citation02/result-01.safe.json",
+          "bytes": 31136,
+          "sha256": "f9e051c4587acb11d7fbe212b5d331611fe2f9fec43833f2b1d414d117103e16"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/real-model-qa-citation02/answer-xls.safe.json",
+          "bytes": 5441,
+          "sha256": "1a19dcf3ce7c0cf76f17b30beed093a369802589137a6a7416589d5441e2c6b4"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/citation-regression-scope02.safe.json",
+          "bytes": 673,
+          "sha256": "065ccf8347bd9f2bed52c1c6ad32701120db9c385b9ddb0eb2753d458708ce98"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/fixtures-model01/manifest.safe.json",
+          "bytes": 455,
+          "sha256": "fafd02cf45fa0b541c1f143d1ddc018ca1e7c540eab4853d0c26f2cde2081d51"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-configuration-recovery01/result.safe.json",
+          "bytes": 3219,
+          "sha256": "c751c12e6843e799b84efc08a472c278ba5e2d4ac6e3892d4dedc486e230a240"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/real-model-qa01/answer-pdf.safe.json",
+          "bytes": 36719,
+          "sha256": "c2f9155b94a028cbdcf09476d473c396255fd1724298deefe9d5fdd1c4fff01a"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/real-model-qa01/answer-docx.safe.json",
+          "bytes": 3961,
+          "sha256": "99ca9669b820dbfed00972d6eb2bccc84544633ca1cacb68d51e963669175bc8"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/real-model-qa01/answer-pptx.safe.json",
+          "bytes": 39000,
+          "sha256": "6dab0fc3d9f869adb004f8fb12998088fc14120935bcc50b5e55add942c3598d"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/real-model-qa01/answer-xlsx.safe.json",
+          "bytes": 36718,
+          "sha256": "68bbf25dbb4509255f5987c66b129c4c889f58493a725210c4b3c888b90bc84b"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/real-model-qa01/answer-csv.safe.json",
+          "bytes": 36717,
+          "sha256": "0a1e418b9ffc659a7aed51a306e49f9f850ca842d30e3813d563166fec0bd241"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/real-model-qa01/answer-html.safe.json",
+          "bytes": 38985,
+          "sha256": "0ab54d6c3a8444c604aa94a58190babc2191c9357302eda36f9b89707d7f55af"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/real-model-qa01/answer-md.safe.json",
+          "bytes": 36720,
+          "sha256": "90c737e3cf5e257dd9b1bc72dbbfe1571dc178c1c17f3ed2293a63c9311bf1c9"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/real-model-qa01/answer-json.safe.json",
+          "bytes": 36722,
+          "sha256": "4419d22f98765b2331bf979b32688434cc4d0e045dcb841630b20f6cb90e2bd4"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/real-model-qa01/answer-eml.safe.json",
+          "bytes": 3248,
+          "sha256": "2a43a5f7005d616ec72253d0b20a2d03954b298b1ed6a2d273c8ab4907088a4e"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/real-model-qa01/answer-txt.safe.json",
+          "bytes": 6299,
+          "sha256": "63d420db71fcff8db877035a292fc65e8ea720f1d09e5cdd5f4bcc1027d6102e"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/real-model-qa01/answer-epub.safe.json",
+          "bytes": 36729,
+          "sha256": "592f1f5cb5a3faf25d7db9531fbdd8b8069f922f952a607dca90c4c625f03a0d"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/real-model-qa01/answer-doc.safe.json",
+          "bytes": 39007,
+          "sha256": "4e1dc5f6733ec76da762d25669a151426482f79ea4159791dce2d14908b7a804"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/real-model-qa01/answer-xls.safe.json",
+          "bytes": 36796,
+          "sha256": "ea5a00ab05326f50809fae693ef5a88847898bc46af2769883d6851e2a990653"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/real-model-qa01/answer-ppt.safe.json",
+          "bytes": 36723,
+          "sha256": "3744cb7ca58326dd84ee5e6fef1f78f778de2437fae503b694fb89986f2d6cce"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/real-model-qa01/answer-unknown.safe.json",
+          "bytes": 36666,
+          "sha256": "0a2696728cf0bd90f8f9d0bc3c57ccfaa59f4d89cbf36ed40de5908def01193a"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/real-model-qa01/answer-untrusted-source-instruction.safe.json",
+          "bytes": 36751,
+          "sha256": "c96961c801cb7a957edd2c19567f60fa92887244bd40b12fe5c95376e051131e"
+        }
+      ],
+      "preservation": {
+        "soleExecutor": true,
+        "otherChatsPaused": true,
+        "realUserContentRead": false,
+        "realAICS": false,
+        "SMTP": 0,
+        "credentialValuesCommitted": false,
+        "credentialFilesHashed": false,
+        "credentialsCopiedIntoBuildContext": false,
+        "volumeDeletes": 0,
+        "newContainers": 0,
+        "sourceChanged": false,
+        "frozenInterfacesChanged": false,
+        "rootLayoutChanged": false,
+        "historicalFailureReceiptsPreserved": true,
+        "original70NotRunUnchanged": true,
+        "generationCalls": 17
+      }
     }
   }
 }

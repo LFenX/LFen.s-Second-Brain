@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "lock_id": "KCRL-20261116-50",
-  "recorded_date": "2026-11-16",
+  "lock_id": "KCRL-20261117-51",
+  "recorded_date": "2026-11-17",
   "coordinator_thread_id": "01a1a9a5-c724-7f52-8cbb-16d19d982ba4",
   "source_baseline_git_head": "f804b3737a8f69af14b1ff1c2d042e8ea7c2a9f1",
   "source_snapshot": {
@@ -32,9 +32,9 @@
       },
       "integrity": {
         "mode": "file",
-        "sha256": "cae53d2a0826883127f0f53d1f5538930d02202c31b4862391a6b9551a0dae25"
+        "sha256": "b880a1fa7e4d88f703eca6fb30c2733ef591507736409c9a4036e81eec9dbc2a"
       },
-      "selection_sha256": "cae53d2a0826883127f0f53d1f5538930d02202c31b4862391a6b9551a0dae25"
+      "selection_sha256": "b880a1fa7e4d88f703eca6fb30c2733ef591507736409c9a4036e81eec9dbc2a"
     },
     {
       "id": "root-instructions",
@@ -1453,9 +1453,9 @@
       },
       "integrity": {
         "mode": "selection",
-        "sha256": "9bdb5e4486fb2b4bbc98d1ea3e90b1b5db757cef78984bcac9285f695b18a214"
+        "sha256": "3aac7837cfb8043771ff59c299480ad712dc95db1e3e1505c2587bd2f049a376"
       },
-      "selection_sha256": "9bdb5e4486fb2b4bbc98d1ea3e90b1b5db757cef78984bcac9285f695b18a214",
+      "selection_sha256": "3aac7837cfb8043771ff59c299480ad712dc95db1e3e1505c2587bd2f049a376",
       "limitation": "第三轮独立事实入口；仅在实际28源码及独立B回执核实、独审和总控精确四文件租约后机械生效。各运行/质量门按各自时点与版本保留，不批准新接口、模型、真实内容、最终验收或发布。 Ref27只追加shared_ordinal_followup；旧28和分层运行事实保留原时点，命名源码集合后续仅据实际应用与分层回执登记，未完成门不标Pass。"
     },
     {
@@ -4900,22 +4900,22 @@
     "Latest human stage commit+push instruction supersedes old time-scoped Git prohibitions;actual stage Git and production deployment/release remain separately coordinated actions."
   ],
   "update_rule": "仅主控在同范围内复核事实/差异/摘要并决定变更；最新真人规定总控不做实际工作，机械应用只能由具名执行者在唯一精确写窗中承担。保存旧锁原字节/摘要、原因、受影响条目和新校验；不得为未知漂移刷新摘要。接口/模型/真实内容/发布新范围仍需真人具体决定。",
-  "manifest_payload_sha256": "6b127321e0b4a7d7ec0dea7fc7a478181ff422462f91e264da418813d4d7f77b",
+  "manifest_payload_sha256": "3db997f98477aebf3bb5cc1d435ab7e4e5d5574e5c8d72f21d585f24f1984fd4",
   "previous_baseline": {
-    "lock_id": "KCRL-20261116-49",
-    "manifest_sha256": "d2eb70bbf00d2c8a57abad889a43456409e21a50a4a78cc78e80291c557c981a",
-    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-49.json",
-    "archive_sha256": "d2eb70bbf00d2c8a57abad889a43456409e21a50a4a78cc78e80291c557c981a",
+    "lock_id": "KCRL-20261116-50",
+    "manifest_sha256": "97bd0de54d8fcfe9f6441fc2ca7fc88097420eba29935a8092793644347e8a40",
+    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-50.json",
+    "archive_sha256": "97bd0de54d8fcfe9f6441fc2ca7fc88097420eba29935a8092793644347e8a40",
     "changed_files": [
       "docs/knowledge-core-execution-record.json",
       "docs/knowledge-core-reference-authority.md",
-      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-49.json",
+      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261116-50.json",
       "docs/knowledge-core-reference-lock.json"
     ],
     "existing_entries_with_updated_selection_digests": [
       "reference-authority",
       "coordination-20261106-round3"
     ],
-    "reason": "Root alone;release same tested worker fix to formal API/admin and verify actual restart/login/schema/assets. Retire3 completed containers preserving all volumes and active foreign services. Real model QA remains awaiting private configuration."
+    "reason": "Root-only17 actual synthetic DeepSeek calls:16 questions plus one targeted semantic citation correction. Preserve the initial unrelated-source citation finding and raw receipts. No source,guard or interface change."
   }
 }
