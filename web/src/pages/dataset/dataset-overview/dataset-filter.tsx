@@ -27,13 +27,20 @@ const DatasetFilter = (
     onOpenChange,
     active = LogTabs.FILE_LOGS,
     setActive,
-    ...rest
   } = props;
   const { t } = useTranslation();
   const filterCount = useMemo(() => {
     return typeof value === 'object' && value !== null
-      ? Object.values(value).reduce((pre, cur) => {
-          return pre + cur.length;
+      ? Object.values(value).reduce<number>((pre, cur) => {
+          return (
+            pre +
+            (Array.isArray(cur)
+              ? cur.length
+              : Object.values(cur).reduce(
+                  (count, ids) => count + ids.length,
+                  0,
+                ))
+          );
         }, 0)
       : 0;
   }, [value]);

@@ -11014,6 +11014,260 @@
           "sha256": "40872cccd69e32ba8debc80930faef893d5292b2da408554d965558fe09f7dca"
         }
       ]
+    },
+    "web_typecheck_phase62_20261118": {
+      "state": "RootSolo_TypecheckPhase2_FixturesHooksAndUnused_161To66_NotComplete",
+      "before": 161,
+      "remaining": 66,
+      "resolved": 95,
+      "cumulativeResolved": 147,
+      "changes": [
+        "Current typed graph-node fixtures and active Message/Invoke enum values replace removed Generate/Http names;typed async deletion result retains behavior assertions",
+        "Actual DOM container scrollTo/event/frame tests replace retired anchor scrollIntoView fixture;conversation regeneration uses current messages field with immutable truncation regression",
+        "Parser serialization declares actual optional per-family outputs;grouped dataset filters sum nested ids correctly",
+        "Replace ES2023 toSpliced with equivalent immutable ES2022 slices;remove unused imports,binding,state and helper code",
+        "Proven no-consumer deprecated context menu and its private stylesheet removed;no general Agent feature expansion",
+        "Owning Jest transformer erases TypeScript before Babel module/mock hoisting while preserving JSX and Vite defines;two real VM regressions prove runtime order,type import removal,JSX factory and env behavior"
+      ],
+      "verification": "Configured tsc161to66;all66diagnostic identities already existed,no new.13qualified test suites87cases across successful group and isolated Node transformer runs;format/lint passed with existing warnings. Prior failures retained rather than marked successful.",
+      "remainingQualification": "Two existing missing service members in the already touched memories hook remain for the next API/UI type batch. No claim of zero diagnostics in every touched file or global typecheck.",
+      "production": "Current released Web/API unchanged;single final build/publication after zero types.",
+      "preserved": {
+        "strictConfiguration": true,
+        "dependencyVersions": true,
+        "protected47": true,
+        "contracts26": true,
+        "privateConfiguration": true,
+        "containers": true
+      },
+      "humanScope": "继续把剩下的213项类型检查报错修好",
+      "date": "2026-11-18",
+      "rootAlone": true,
+      "newModelCalls": 0,
+      "previousKQA20CallBudgetStillClosed": true,
+      "owningWriteWindow": "Latest explicit whole213 correction request;Root reviewed exact Web-only owning paths and focused regressions. No old KQA window reopens and no new business interface or root layout is authorized.",
+      "sourceParent": "08b8bca3fa4702f015170c516a934d0c3c77e7a1",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 5193,
+        "sha256": "c5c9931139e1469c91c0de5e9702eaa95e19607e0423397c838217b14c9c07a0"
+      },
+      "files": [
+        {
+          "path": "web/jest-esbuild-transformer.cjs",
+          "bytes": 1966,
+          "sha256": "5957c0124e03946c2fb99a8c9729b523f8c1cdd4b55f376e7b79ea71883743d4"
+        },
+        {
+          "path": "web/src/components/document-preview/pdf-preview.tsx",
+          "bytes": 5130,
+          "sha256": "0020417c5f1e303174a4088315d0c9e387401bbd436f7afdbc3bff70e7552735"
+        },
+        {
+          "path": "web/src/components/markdown-content/__tests__/index.test.tsx",
+          "bytes": 2438,
+          "sha256": "eaddf1348d2220702b20906ba128aeeaf9f11fa95edd59f7fb75841260fc039a"
+        },
+        {
+          "path": "web/src/components/next-message-item/group-button.tsx",
+          "bytes": 7291,
+          "sha256": "b23d77e53f1200df2213f639eaea26ebe566bdf2f16ae1bf0e44479f0777e721"
+        },
+        {
+          "path": "web/src/components/originui/password-input.tsx",
+          "bytes": 596,
+          "sha256": "138fef9edfde26038a2fde993feb28c986015897b102f2d51d85dc5a2dddfe0b"
+        },
+        {
+          "path": "web/src/components/originui/timeline.tsx",
+          "bytes": 12431,
+          "sha256": "ac64d36e927b866d209b0aea132f86a5761f16529e3aff2e17c9da82b8ca2c29"
+        },
+        {
+          "path": "web/src/hooks/__tests__/logic-hooks-use-scroll-to-bottom.test.tsx",
+          "bytes": 3978,
+          "sha256": "bc603c3ba589b645bb948a770183fb29fc3499c807146c34c545297c0eebd3fe"
+        },
+        {
+          "path": "web/src/hooks/__tests__/parser-config-utils.test.ts",
+          "bytes": 3040,
+          "sha256": "539a06898aa38a8aaadfad5f2320c4325cd4f4fc4f16efb61866767be36892e6"
+        },
+        {
+          "path": "web/src/hooks/logic-hooks.ts",
+          "bytes": 26813,
+          "sha256": "f46b5cd136b5d43e1fe6777f3f7bcebec46932c584b3e6d0b754e0aca3543026"
+        },
+        {
+          "path": "web/src/hooks/logic-hooks/use-row-selection.ts",
+          "bytes": 2148,
+          "sha256": "c20814dad6ac3038066075968f8eba349a14ca8bf68c6b8eefc48d61700a999a"
+        },
+        {
+          "path": "web/src/lib/editor/plugins/floating-selection-toolbar.tsx",
+          "bytes": 12614,
+          "sha256": "54768a170a9817dfa226e0789d9763c5094a9de3aaefe19be1899ce6464e354c"
+        },
+        {
+          "path": "web/src/pages/admin/utils.tsx",
+          "bytes": 2176,
+          "sha256": "be97c95dc4776d33b6b989d7c950102cc3a99ac567e5c89a47e15ff8fdbd3731"
+        },
+        {
+          "path": "web/src/pages/agent/canvas/context-menu/index.module.less",
+          "deleted": true,
+          "bytes": 0,
+          "sha256": null,
+          "previousSHA256": "9d8bd96edb612b25618fe48312dea3395a47368587251d7136a0eee814450020"
+        },
+        {
+          "path": "web/src/pages/agent/canvas/context-menu/index.tsx",
+          "deleted": true,
+          "bytes": 0,
+          "sha256": null,
+          "previousSHA256": "77accfc51a75a6f9d6eb57102199f2718d1cd8cd39e6f6e52a31e8cf378e15fd"
+        },
+        {
+          "path": "web/src/pages/agent/form-sheet/single-debug-sheet/utils.test.ts",
+          "bytes": 416,
+          "sha256": "267504d8d16f52e6145fc9aa70103351b5ee7915e5524f0f7b3f27bbfa4104cc"
+        },
+        {
+          "path": "web/src/pages/agent/form/agent-form/tool-popover/tool-command.tsx",
+          "bytes": 4508,
+          "sha256": "8d49116c10389380f28c2874425315fcb2ef170ecae2e2be782ea6328d758910"
+        },
+        {
+          "path": "web/src/pages/agent/form/begin-form/use-edit-query.ts",
+          "bytes": 1919,
+          "sha256": "b85aac5084094fae7deda7c2caac4a816f907511f86100b3c251ae1c1359d29e"
+        },
+        {
+          "path": "web/src/pages/agent/form/invoke-form/use-edit-variable.ts",
+          "bytes": 2080,
+          "sha256": "701f11f87a44dd5101ca5699e810216bd7678a1a6f0159da2cd0242e5462c5c8"
+        },
+        {
+          "path": "web/src/pages/agent/form/searxng-form/index.tsx",
+          "bytes": 2130,
+          "sha256": "790d4eb5507ae9ec89abebabdb446cf91894b47e9627d8d21095167a10a6f09d"
+        },
+        {
+          "path": "web/src/pages/agent/gobal-variable-sheet/index.tsx",
+          "bytes": 6077,
+          "sha256": "9bb8b74e85c8e924d778aab86bdc907df17491b29bd2de70f54aed85eafb4bbf"
+        },
+        {
+          "path": "web/src/pages/agent/hooks/use-before-delete.test.tsx",
+          "bytes": 9181,
+          "sha256": "4aff8607297ac540499fc1417e108a298246b2a2299eb1c1700c0b60eb1cee8e"
+        },
+        {
+          "path": "web/src/pages/agent/options.ts",
+          "bytes": 38537,
+          "sha256": "306a4b196a1f3f3394bd4c58f3d510b360f59d1f54f0914fcb8de2633c37ae50"
+        },
+        {
+          "path": "web/src/pages/agent/store.test.ts",
+          "bytes": 9005,
+          "sha256": "34479cd55d5511d48c2d0ba558fa93bc21bece9e5e9562c07655652a1874677e"
+        },
+        {
+          "path": "web/src/pages/agent/store.ts",
+          "bytes": 26338,
+          "sha256": "52f727d46ea4af1881eebca33af9634e05b5775cd820204d8d91b48b7c41ea2b"
+        },
+        {
+          "path": "web/src/pages/agent/use-agent-history-manager.ts",
+          "bytes": 4447,
+          "sha256": "593c3cd1c1b35ed39ec52308f047f030a9ed2bed9166057ca1bebd28dafe4c26"
+        },
+        {
+          "path": "web/src/pages/agent/utils.ts",
+          "bytes": 36413,
+          "sha256": "fecd0a905a11caeb1c5d6134d2e65b41f071f5616ccf4cacadf7b128430246fe"
+        },
+        {
+          "path": "web/src/pages/dataflow-result/components/parse-editer/json-parser.tsx",
+          "bytes": 5828,
+          "sha256": "19be9ff26060d2bb83ba07b29f3b61f1dd3b83074de65f3adc9a057e753790f2"
+        },
+        {
+          "path": "web/src/pages/dataflow-result/components/time-line/index.tsx",
+          "bytes": 1514,
+          "sha256": "e06bebb927d6de65dacc3d5e017bfe96b27b0418d63eb6426e71ca73769bd0ec"
+        },
+        {
+          "path": "web/src/pages/dataflow-result/hooks.ts",
+          "bytes": 10146,
+          "sha256": "25ead4a16f936de4ed4d638b1bd87bc60951cce2b268b5371193edc5f3fcb72d"
+        },
+        {
+          "path": "web/src/pages/dataset/dataset-overview/dataset-filter.tsx",
+          "bytes": 2511,
+          "sha256": "0ad832a8af8f063e9fa5be70fcb2cf04b7a3e2365112d06f9e7ab169c5b07703"
+        },
+        {
+          "path": "web/src/pages/dataset/knowledge-graph/util.ts",
+          "bytes": 2719,
+          "sha256": "27af6e3748c884bcd866078ab2d47a93557eb88e8cc5e98728de5bcde7e2bb4e"
+        },
+        {
+          "path": "web/src/pages/memories/hooks.ts",
+          "bytes": 11239,
+          "sha256": "730442451facb25237b3e0c107706c8ed1551e8b70231762924b66a4efa855a8"
+        },
+        {
+          "path": "web/src/pages/memory/memory-message/index.tsx",
+          "bytes": 1602,
+          "sha256": "14169ec8f90d920e29bb1255f00bd58d322d450447d2e17edf140d620cfb9acf"
+        },
+        {
+          "path": "web/src/pages/memory/memory-setting/hook.ts",
+          "bytes": 1261,
+          "sha256": "c82a6b8226340b7a1c37e273f02c6aa693bfab78762506d58c4316db3b50491f"
+        },
+        {
+          "path": "web/src/pages/next-chats/chat/chat-box/single-chat-box.test.tsx",
+          "bytes": 3452,
+          "sha256": "fb243b86d37b6449fa6bb1280007f9eb9198af096717f5c29cb58674eb67eb2c"
+        },
+        {
+          "path": "web/src/pages/next-searches/hooks.ts",
+          "bytes": 11168,
+          "sha256": "2909e03a30e874c15aaeb11a80858669ee40c858b44ed1e7e1ec47ea91bbf971"
+        },
+        {
+          "path": "web/src/pages/user-setting/setting-model/instance-card/components/draft-mode-card.tsx",
+          "bytes": 3620,
+          "sha256": "7f8c0b3703f33847b414c6e63b62db7690960e14f8cc486094f183e6c51d7946"
+        },
+        {
+          "path": "web/src/pages/user-setting/setting-model/instance-card/components/saved-mode-card.tsx",
+          "bytes": 7967,
+          "sha256": "6e5c7647a8ce7fadc92bc480a290be830aceca43e07634a916bafb09cf8e1245"
+        },
+        {
+          "path": "web/src/utils/__tests__/pipeline-operator.test.ts",
+          "bytes": 12543,
+          "sha256": "bce5b72b6d0ece1e096b7ef670ca2f2390dae7268dea5863c874c8364b997a0e"
+        },
+        {
+          "path": "web/src/hooks/__tests__/logic-hooks-conversation.test.tsx",
+          "bytes": 2212,
+          "sha256": "c53c9acfe1e06b7f3322faaf8c597764594e23af678605012e5cf13455f1d024"
+        },
+        {
+          "path": "web/src/pages/dataset/dataset-overview/__tests__/dataset-filter.test.tsx",
+          "bytes": 1253,
+          "sha256": "c8b16f36d5d03831ce2233e9949ffaefba3b4650db81999462b7ac2961f6b9d6"
+        },
+        {
+          "path": "web/src/utils/__tests__/jest-transformer.test.ts",
+          "bytes": 2645,
+          "sha256": "40bc4beabca99c979974ccea0c15995a0b0ae3f062af93cf0d4d1f76f334cb88"
+        }
+      ]
     }
   }
 }

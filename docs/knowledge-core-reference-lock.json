@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "lock_id": "KCRL-20261118-61",
+  "lock_id": "KCRL-20261118-62",
   "recorded_date": "2026-11-18",
   "coordinator_thread_id": "01a1a9a5-c724-7f52-8cbb-16d19d982ba4",
-  "source_baseline_git_head": "f95fc9b02257933ae6e03f1252c9700141ff5626",
+  "source_baseline_git_head": "08b8bca3fa4702f015170c516a934d0c3c77e7a1",
   "source_snapshot": {
     "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
-    "file_count": 5191,
-    "sha256": "85fa6fbfd97679e009ab60a9ea883b68fa77d9b067c6a03dd83f31993cecd831"
+    "file_count": 5193,
+    "sha256": "c5c9931139e1469c91c0de5e9702eaa95e19607e0423397c838217b14c9c07a0"
   },
   "unlisted_policy": "DeniedAsCurrentGuidance_UntilCoordinatorReviewsAndAssigns",
   "authority_order": [
@@ -32,9 +32,9 @@
       },
       "integrity": {
         "mode": "file",
-        "sha256": "78ef25f6e21fb6a3f05f3629f2cb1cb1d4d8c955d04eedc7ba2e19dc2c237546"
+        "sha256": "8c372ddd50cfa025bedf56cd7cb1dbe25a8914d7048cec0f10d746a8419fc9ed"
       },
-      "selection_sha256": "78ef25f6e21fb6a3f05f3629f2cb1cb1d4d8c955d04eedc7ba2e19dc2c237546"
+      "selection_sha256": "8c372ddd50cfa025bedf56cd7cb1dbe25a8914d7048cec0f10d746a8419fc9ed"
     },
     {
       "id": "root-instructions",
@@ -1453,9 +1453,9 @@
       },
       "integrity": {
         "mode": "selection",
-        "sha256": "21aac2d06a44bcdc5be413fa0bae7734c6e0de3d7f858d65f076a3ab836ac7ff"
+        "sha256": "32f0b3daa255f6044f23238fb76b96cdfc73e0281390c674deca76df4bee00e6"
       },
-      "selection_sha256": "21aac2d06a44bcdc5be413fa0bae7734c6e0de3d7f858d65f076a3ab836ac7ff",
+      "selection_sha256": "32f0b3daa255f6044f23238fb76b96cdfc73e0281390c674deca76df4bee00e6",
       "limitation": "第三轮独立事实入口；仅在实际28源码及独立B回执核实、独审和总控精确四文件租约后机械生效。各运行/质量门按各自时点与版本保留，不批准新接口、模型、真实内容、最终验收或发布。 Ref27只追加shared_ordinal_followup；旧28和分层运行事实保留原时点，命名源码集合后续仅据实际应用与分层回执登记，未完成门不标Pass。"
     },
     {
@@ -5093,37 +5093,60 @@
     "Specific human KQA-20261117-02 OptionA authorizes exact owner-only web generation implementation and at most20 synthetic acceptance calls;not real AICS or shared/department model egress. Root sole executor;old guards remain."
   ],
   "update_rule": "Only Root coordinates and executes the latest human-approved bounded work. Review exact changes before source reseal;archive prior raw lock and retain failures. No unknown-drift hash refresh or unapproved interface/model expansion.",
-  "manifest_payload_sha256": "ef7797b9a9cb2386a2022f8b9c7302bafe6a64bc66656a88ace1294deb33705a",
+  "manifest_payload_sha256": "85ed3a2386685f39022f2ced599b2d0c2eb2430db84ef2bf738b25e64a3ce33f",
   "previous_baseline": {
-    "lock_id": "KCRL-20261117-60",
-    "manifest_sha256": "8c92a5e1cbcf745c72de2a803b39944e7f99e741492bcc89b6321b3a35e78c7e",
-    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261117-60.json",
-    "archive_sha256": "8c92a5e1cbcf745c72de2a803b39944e7f99e741492bcc89b6321b3a35e78c7e",
+    "lock_id": "KCRL-20261118-61",
+    "manifest_sha256": "b574033d6606f339441da864dede3126d16390f6f04b0600f0a26e9161989c9d",
+    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261118-61.json",
+    "archive_sha256": "b574033d6606f339441da864dede3126d16390f6f04b0600f0a26e9161989c9d",
     "changed_files": [
-      "web/src/components/dynamic-form.tsx",
-      "web/src/components/edit-tag/index.tsx",
-      "web/src/components/file-upload.tsx",
-      "web/src/components/jsonjoy-builder/components/features/json-validator.tsx",
-      "web/src/components/jsonjoy-builder/components/schema-editor/json-schema-editor.tsx",
-      "web/src/components/jsonjoy-builder/components/schema-editor/schema-property-editor.tsx",
-      "web/src/components/jsonjoy-builder/components/schema-editor/types/array-editor.tsx",
-      "web/src/components/jsonjoy-builder/components/schema-editor/types/number-editor.tsx",
-      "web/src/components/jsonjoy-builder/components/schema-editor/types/string-editor.tsx",
-      "web/src/components/jsonjoy-builder/hooks/use-monaco-theme.ts",
-      "web/src/components/jsonjoy-builder/lib/schema-editor.ts",
-      "web/src/components/jsonjoy-builder/lib/schema-inference.ts",
-      "web/src/components/jsonjoy-builder/types/validation.ts",
-      "web/src/components/jsonjoy-builder/utils/json-validator.ts",
-      "web/src/components/ui/audio-button.tsx",
-      "web/src/components/ui/sidebar.tsx",
-      "web/src/components/__tests__/dynamic-form.test.tsx",
-      "web/src/components/__tests__/file-upload.test.tsx",
-      "web/src/components/jsonjoy-builder/__tests__/schema-validation.test.ts",
+      "web/jest-esbuild-transformer.cjs",
+      "web/src/components/document-preview/pdf-preview.tsx",
+      "web/src/components/markdown-content/__tests__/index.test.tsx",
+      "web/src/components/next-message-item/group-button.tsx",
+      "web/src/components/originui/password-input.tsx",
+      "web/src/components/originui/timeline.tsx",
+      "web/src/hooks/__tests__/logic-hooks-use-scroll-to-bottom.test.tsx",
+      "web/src/hooks/__tests__/parser-config-utils.test.ts",
+      "web/src/hooks/logic-hooks.ts",
+      "web/src/hooks/logic-hooks/use-row-selection.ts",
+      "web/src/lib/editor/plugins/floating-selection-toolbar.tsx",
+      "web/src/pages/admin/utils.tsx",
+      "web/src/pages/agent/canvas/context-menu/index.module.less",
+      "web/src/pages/agent/canvas/context-menu/index.tsx",
+      "web/src/pages/agent/form-sheet/single-debug-sheet/utils.test.ts",
+      "web/src/pages/agent/form/agent-form/tool-popover/tool-command.tsx",
+      "web/src/pages/agent/form/begin-form/use-edit-query.ts",
+      "web/src/pages/agent/form/invoke-form/use-edit-variable.ts",
+      "web/src/pages/agent/form/searxng-form/index.tsx",
+      "web/src/pages/agent/gobal-variable-sheet/index.tsx",
+      "web/src/pages/agent/hooks/use-before-delete.test.tsx",
+      "web/src/pages/agent/options.ts",
+      "web/src/pages/agent/store.test.ts",
+      "web/src/pages/agent/store.ts",
+      "web/src/pages/agent/use-agent-history-manager.ts",
+      "web/src/pages/agent/utils.ts",
+      "web/src/pages/dataflow-result/components/parse-editer/json-parser.tsx",
+      "web/src/pages/dataflow-result/components/time-line/index.tsx",
+      "web/src/pages/dataflow-result/hooks.ts",
+      "web/src/pages/dataset/dataset-overview/dataset-filter.tsx",
+      "web/src/pages/dataset/knowledge-graph/util.ts",
+      "web/src/pages/memories/hooks.ts",
+      "web/src/pages/memory/memory-message/index.tsx",
+      "web/src/pages/memory/memory-setting/hook.ts",
+      "web/src/pages/next-chats/chat/chat-box/single-chat-box.test.tsx",
+      "web/src/pages/next-searches/hooks.ts",
+      "web/src/pages/user-setting/setting-model/instance-card/components/draft-mode-card.tsx",
+      "web/src/pages/user-setting/setting-model/instance-card/components/saved-mode-card.tsx",
+      "web/src/utils/__tests__/pipeline-operator.test.ts",
+      "web/src/hooks/__tests__/logic-hooks-conversation.test.tsx",
+      "web/src/pages/dataset/dataset-overview/__tests__/dataset-filter.test.tsx",
+      "web/src/utils/__tests__/jest-transformer.test.ts",
       "docs/knowledge-core-execution-record.json",
       "docs/knowledge-core-reference-authority.md",
-      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261117-60.json",
+      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261118-61.json",
       "docs/knowledge-core-reference-lock.json"
     ],
-    "reason": "New explicit human task fixes all213TypeScript diagnostics. Root reviewed exact19Web owning source/regression paths;first52resolved,161remain. No strictness/configuration reduction,backend/API expansion or runtime deployment."
+    "reason": "Root-reviewed42owningWeb paths fix95more existing strict diagnostics,retain66pending;current API/UI matches and remaining fixtures next. Fix real test transform ordering at its owner rather than add type-import workarounds;no compiler/dependency weakening or runtime deployment."
   }
 }

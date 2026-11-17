@@ -1,3 +1,4 @@
+import type { RAGFlowNodeType } from '@/interfaces/database/agent';
 import { act, renderHook } from '@testing-library/react';
 import { Edge } from '@xyflow/react';
 import { NodeHandleId, Operator } from '../constant';
@@ -7,8 +8,8 @@ import { useBeforeDelete } from './use-before-delete';
 const createNode = (
   id: string,
   label: Operator,
-  options: Record<string, unknown> = {},
-) => ({
+  options: Partial<RAGFlowNodeType> = {},
+): RAGFlowNodeType => ({
   id,
   type: 'ragNode',
   position: { x: 0, y: 0 },
@@ -32,6 +33,17 @@ const createEdge = (
   ...options,
 });
 
+async function deleteFromHook(
+  handle: ReturnType<typeof useBeforeDelete>['handleBeforeDelete'],
+  input: Parameters<typeof handle>[0],
+) {
+  const result = await handle(input);
+  if (typeof result === 'boolean') {
+    throw new Error('Expected explicit nodes and edges from the delete hook');
+  }
+  return result;
+}
+
 describe('useBeforeDelete', () => {
   beforeEach(() => {
     useGraphStore.setState({
@@ -53,23 +65,23 @@ describe('useBeforeDelete', () => {
       }),
       createNode('message:0', Operator.Message, { parentId: 'iteration:0' }),
       createNode('message:1', Operator.Message, { parentId: 'message:0' }),
-      createNode('generate:0', Operator.Generate),
+      createNode('message:out', Operator.Message),
     ];
 
     const edges = [
       createEdge('e1', 'iterationStart:0', 'message:0'),
       createEdge('e2', 'message:0', 'message:1'),
-      createEdge('e3', 'message:0', 'generate:0'),
-      createEdge('e4', 'generate:0', 'message:1'),
+      createEdge('e3', 'message:0', 'message:out'),
+      createEdge('e4', 'message:out', 'message:1'),
     ];
 
     useGraphStore.setState({ nodes, edges });
 
     const { result } = renderHook(() => useBeforeDelete());
-    let deletion;
+    let deletion: Awaited<ReturnType<typeof deleteFromHook>> | undefined;
     await act(async () => {
-      deletion = await result.current.handleBeforeDelete({
-        nodes: [nodes[0] as any],
+      deletion = await deleteFromHook(result.current.handleBeforeDelete, {
+        nodes: [nodes[0]],
         edges: [],
       });
     });
@@ -102,15 +114,15 @@ describe('useBeforeDelete', () => {
     });
 
     const { result } = renderHook(() => useBeforeDelete());
-    let beginDeletion;
-    let startDeletion;
+    let beginDeletion: Awaited<ReturnType<typeof deleteFromHook>> | undefined;
+    let startDeletion: Awaited<ReturnType<typeof deleteFromHook>> | undefined;
     await act(async () => {
-      beginDeletion = await result.current.handleBeforeDelete({
-        nodes: [beginNode as any],
+      beginDeletion = await deleteFromHook(result.current.handleBeforeDelete, {
+        nodes: [beginNode],
         edges: [],
       });
-      startDeletion = await result.current.handleBeforeDelete({
-        nodes: [iterationStartNode as any],
+      startDeletion = await deleteFromHook(result.current.handleBeforeDelete, {
+        nodes: [iterationStartNode],
         edges: [],
       });
     });
@@ -138,9 +150,9 @@ describe('useBeforeDelete', () => {
     useGraphStore.setState({ nodes, edges });
 
     const { result } = renderHook(() => useBeforeDelete());
-    let deletion;
+    let deletion: Awaited<ReturnType<typeof deleteFromHook>> | undefined;
     await act(async () => {
-      deletion = await result.current.handleBeforeDelete({
+      deletion = await deleteFromHook(result.current.handleBeforeDelete, {
         nodes: [],
         edges: [selectedEdge],
       });
@@ -161,10 +173,10 @@ describe('useBeforeDelete', () => {
     });
 
     const { result } = renderHook(() => useBeforeDelete());
-    let deletion;
+    let deletion: Awaited<ReturnType<typeof deleteFromHook>> | undefined;
     await act(async () => {
-      deletion = await result.current.handleBeforeDelete({
-        nodes: [beginNode as any],
+      deletion = await deleteFromHook(result.current.handleBeforeDelete, {
+        nodes: [beginNode],
         edges: [edge],
       });
     });
@@ -184,10 +196,10 @@ describe('useBeforeDelete', () => {
     });
 
     const { result } = renderHook(() => useBeforeDelete());
-    let deletion;
+    let deletion: Awaited<ReturnType<typeof deleteFromHook>> | undefined;
     await act(async () => {
-      deletion = await result.current.handleBeforeDelete({
-        nodes: [beginNode as any, messageNode as any],
+      deletion = await deleteFromHook(result.current.handleBeforeDelete, {
+        nodes: [beginNode, messageNode],
         edges: [edge],
       });
     });
@@ -215,10 +227,10 @@ describe('useBeforeDelete', () => {
     useGraphStore.setState({ nodes, edges });
 
     const { result } = renderHook(() => useBeforeDelete());
-    let deletion;
+    let deletion: Awaited<ReturnType<typeof deleteFromHook>> | undefined;
     await act(async () => {
-      deletion = await result.current.handleBeforeDelete({
-        nodes: [nodes[0] as any],
+      deletion = await deleteFromHook(result.current.handleBeforeDelete, {
+        nodes: [nodes[0]],
         edges,
       });
     });
@@ -241,7 +253,7 @@ describe('useBeforeDelete', () => {
       createNode('agent:0', Operator.Agent, { parentId: 'iteration:0' }),
       createNode('tool:0', Operator.Tool),
       createNode('message:0', Operator.Message),
-      createNode('generate:0', Operator.Generate),
+      createNode('message:out', Operator.Message),
     ];
 
     const edges = [
@@ -252,16 +264,16 @@ describe('useBeforeDelete', () => {
       createEdge('e3', 'tool:0', 'message:0', {
         sourceHandle: NodeHandleId.Tool,
       }),
-      createEdge('e4', 'generate:0', 'message:0'),
+      createEdge('e4', 'message:out', 'message:0'),
     ];
 
     useGraphStore.setState({ nodes, edges });
 
     const { result } = renderHook(() => useBeforeDelete());
-    let deletion;
+    let deletion: Awaited<ReturnType<typeof deleteFromHook>> | undefined;
     await act(async () => {
-      deletion = await result.current.handleBeforeDelete({
-        nodes: [nodes[0] as any],
+      deletion = await deleteFromHook(result.current.handleBeforeDelete, {
+        nodes: [nodes[0]],
         edges: [],
       });
     });

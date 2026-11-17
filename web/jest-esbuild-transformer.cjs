@@ -2,8 +2,8 @@
 // configured with, plus `define: { 'import.meta.env': '{}' }` — esbuild-jest@0.5
 // does not forward esbuild's `define` option, and source files read Vite's
 // import.meta.env at module scope, which crashes under jest's cjs runtime.
-// Files containing jest.mock still go through esbuild-jest for its babel-based
-// mock hoisting.
+// Erase TypeScript before Babel rewrites modules for mock hoisting. Keep JSX
+// intact until hoisting so JSX factories do not become out-of-scope bindings.
 const path = require('node:path');
 const esbuild = require('esbuild');
 const esbuildJest = require('esbuild-jest');
@@ -19,11 +19,30 @@ module.exports = {
   createTransformer() {
     return {
       process(content, filename, config, opts) {
-        if (content.indexOf('ock(') >= 0) {
-          return esbuildJestTransformer.process(content, filename, config, opts);
-        }
         const ext = path.extname(filename).slice(1);
-        const loader = ext === 'ts' ? 'tsx' : supportedLoaders.includes(ext) ? ext : 'text';
+        const loader =
+          ext === 'ts' ? 'tsx' : supportedLoaders.includes(ext) ? ext : 'text';
+        const define = {
+          'import.meta.env': '{}',
+          'import.meta.glob': 'jestImportMetaGlob',
+        };
+        if (content.indexOf('ock(') >= 0) {
+          const prepared = esbuild.transformSync(content, {
+            loader,
+            jsx: 'preserve',
+            target: 'es2018',
+            sourcemap: 'inline',
+            sourcesContent: false,
+            sourcefile: filename,
+            define,
+          });
+          return esbuildJestTransformer.process(
+            prepared.code,
+            filename,
+            config,
+            opts,
+          );
+        }
         const result = esbuild.transformSync(content, {
           loader,
           format: 'cjs',
@@ -31,11 +50,7 @@ module.exports = {
           sourcemap: true,
           sourcesContent: false,
           sourcefile: filename,
-          define: {
-            'import.meta.env': '{}',
-            // Vite's glob import; jestImportMetaGlob is set in jest-setup.ts
-            'import.meta.glob': 'jestImportMetaGlob',
-          },
+          define,
         });
         return { code: result.code, map: JSON.parse(result.map) };
       },

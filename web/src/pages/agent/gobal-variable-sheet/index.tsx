@@ -11,7 +11,6 @@ import { useSetModalState } from '@/hooks/common-hooks';
 import { useFetchAgent } from '@/hooks/use-agent-request';
 import { GlobalVariableType } from '@/interfaces/database/agent';
 import { cn } from '@/lib/utils';
-import { t } from 'i18next';
 import { Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { FieldValues } from 'react-hook-form';

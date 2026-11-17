@@ -40,7 +40,7 @@ export const ArrayContainer = (props: IJsonContainerProps) => {
   }, [content]);
 
   const handleEdit = useCallback(
-    (e?: any, index?: number) => {
+    (_event?: unknown, index?: number) => {
       setActiveEditIndex(index);
     },
     [setActiveEditIndex],

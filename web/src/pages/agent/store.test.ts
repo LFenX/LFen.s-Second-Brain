@@ -1,8 +1,9 @@
+import type { RAGFlowNodeType } from '@/interfaces/database/agent';
 import { Edge } from '@xyflow/react';
 import { NodeHandleId, Operator } from './constant';
 import useGraphStore from './store';
 
-function baseNode(id: string, label: Operator) {
+function baseNode(id: string, label: Operator): RAGFlowNodeType {
   return {
     id,
     type: 'ragNode',
@@ -18,7 +19,7 @@ function baseNode(id: string, label: Operator) {
 const createNode = (
   id: string,
   label: Operator,
-  options: Partial<ReturnType<typeof baseNode>> = {},
+  options: Partial<RAGFlowNodeType> = {},
 ) => ({
   ...baseNode(id, label),
   ...options,
@@ -58,15 +59,15 @@ describe('useGraphStore.deleteIterationNodeById', () => {
       }),
       createNode('message:0', Operator.Message, { parentId: 'iteration:0' }),
       createNode('message:1', Operator.Message, { parentId: 'message:0' }),
-      createNode('generate:0', Operator.Generate),
+      createNode('message:out', Operator.Message),
     ];
 
     const edges = [
       createEdge('e1', 'begin', 'iteration:0'),
       createEdge('e2', 'iterationStart:0', 'message:0'),
       createEdge('e3', 'message:0', 'message:1'),
-      createEdge('e4', 'message:0', 'generate:0'),
-      createEdge('e5', 'generate:0', 'message:1'),
+      createEdge('e4', 'message:0', 'message:out'),
+      createEdge('e5', 'message:out', 'message:1'),
     ];
 
     useGraphStore.setState({
@@ -81,7 +82,10 @@ describe('useGraphStore.deleteIterationNodeById', () => {
 
     const state = useGraphStore.getState();
 
-    expect(state.nodes.map((node) => node.id)).toEqual(['begin', 'generate:0']);
+    expect(state.nodes.map((node) => node.id)).toEqual([
+      'begin',
+      'message:out',
+    ]);
     expect(state.edges.map((edge) => edge.id)).toEqual([]);
     expect(state.selectedNodeIds).toEqual([]);
     expect(state.selectedEdgeIds).toEqual([]);
@@ -97,14 +101,14 @@ describe('useGraphStore.deleteIterationNodeById', () => {
       }),
       createNode('message:0', Operator.Message, { parentId: 'iteration:0' }),
       createNode('begin', Operator.Begin),
-      createNode('generate:0', Operator.Generate),
+      createNode('message:out', Operator.Message),
       createNode('message:2', Operator.Message),
     ];
 
     const edges = [
       createEdge('iteration-edge', 'iterationStart:0', 'message:0'),
-      createEdge('branch-edge-a', 'begin', 'generate:0'),
-      createEdge('branch-edge-b', 'generate:0', 'message:2'),
+      createEdge('branch-edge-a', 'begin', 'message:out'),
+      createEdge('branch-edge-b', 'message:out', 'message:2'),
     ];
 
     useGraphStore.setState({ nodes, edges });
@@ -115,7 +119,7 @@ describe('useGraphStore.deleteIterationNodeById', () => {
 
     expect(state.nodes.map((node) => node.id)).toEqual([
       'begin',
-      'generate:0',
+      'message:out',
       'message:2',
     ]);
     expect(state.edges.map((edge) => edge.id)).toEqual([
@@ -135,7 +139,7 @@ describe('useGraphStore.deleteIterationNodeById', () => {
       createNode('tool:0', Operator.Tool),
       createNode('message:0', Operator.Message),
       createNode('begin', Operator.Begin),
-      createNode('generate:0', Operator.Generate),
+      createNode('message:out', Operator.Message),
     ];
 
     const edges = [
@@ -146,7 +150,7 @@ describe('useGraphStore.deleteIterationNodeById', () => {
       createEdge('tool-output-edge', 'tool:0', 'message:0', {
         sourceHandle: NodeHandleId.Tool,
       }),
-      createEdge('branch-edge', 'begin', 'generate:0'),
+      createEdge('branch-edge', 'begin', 'message:out'),
     ];
 
     useGraphStore.setState({ nodes, edges });
@@ -155,7 +159,10 @@ describe('useGraphStore.deleteIterationNodeById', () => {
 
     const state = useGraphStore.getState();
 
-    expect(state.nodes.map((node) => node.id)).toEqual(['begin', 'generate:0']);
+    expect(state.nodes.map((node) => node.id)).toEqual([
+      'begin',
+      'message:out',
+    ]);
     expect(state.edges.map((edge) => edge.id)).toEqual(['branch-edge']);
   });
 });
@@ -251,9 +258,7 @@ describe('useGraphStore.toggleBottomCollapse', () => {
 
     useGraphStore.setState({ nodes, edges });
 
-    useGraphStore
-      .getState()
-      .toggleBottomCollapse('agent:0', NodeHandleId.Tool);
+    useGraphStore.getState().toggleBottomCollapse('agent:0', NodeHandleId.Tool);
 
     let state = useGraphStore.getState();
     // Only the tool node is hidden; the sub-agent subtree stays visible
@@ -274,9 +279,7 @@ describe('useGraphStore.toggleBottomCollapse', () => {
     ]);
 
     // Expanding one handle keeps the other handle's subtree hidden
-    useGraphStore
-      .getState()
-      .toggleBottomCollapse('agent:0', NodeHandleId.Tool);
+    useGraphStore.getState().toggleBottomCollapse('agent:0', NodeHandleId.Tool);
 
     state = useGraphStore.getState();
     expect(hiddenIds(state.nodes)).toEqual(['agent:1', 'tool:1']);

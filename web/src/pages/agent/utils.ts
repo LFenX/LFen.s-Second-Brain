@@ -204,23 +204,28 @@ function transformObjectArrayToPureArray(
     : [];
 }
 
-export function transformParserParams(params: ParserFormSchemaType) {
+type SerializedParserSetup = Partial<
+  Omit<ParserFormSchemaType['setups'][0], 'pages'> & {
+    suffix: string[];
+    two_column_check: boolean;
+    enable_multi_column: boolean;
+    pages: number[][];
+    order_index: number;
+  }
+>;
+
+export function transformParserParams(
+  params: ParserFormSchemaType,
+): Omit<ReturnType<typeof normalizeParserFormValues>, 'setups'> &
+  Partial<Record<FileType, SerializedParserSetup>> {
   // Save global vision options from the normalized form alongside the
   // per-family setups, including nodes whose form has not been opened.
   const normalizedParams = normalizeParserFormValues(params);
   const setups = normalizedParams.setups.reduce<
-    Record<string, ParserFormSchemaType['setups'][0]>
+    Record<string, SerializedParserSetup>
   >((pre, cur, index) => {
     if (cur.fileFormat) {
-      let filteredSetup: Partial<
-        Omit<ParserFormSchemaType['setups'][0], 'pages'> & {
-          suffix: string[];
-        } & {
-          two_column_check: boolean;
-          enable_multi_column: boolean;
-          pages: number[][];
-        }
-      > = {
+      let filteredSetup: SerializedParserSetup = {
         output_format: cur.output_format,
         suffix: FileTypeSuffixMap[cur.fileFormat as FileType],
       };
@@ -312,7 +317,7 @@ export function transformParserParams(params: ParserFormSchemaType) {
       pre[cur.fileFormat] = {
         ...filteredSetup,
         order_index: index,
-      } as any;
+      };
     }
     return pre;
   }, {});
