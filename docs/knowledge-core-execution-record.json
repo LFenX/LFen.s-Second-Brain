@@ -10113,6 +10113,191 @@
         "volumeDeletes": 0,
         "otherChatsResumed": false
       }
+    },
+    "mcp_model_acceptance_20261117": {
+      "state": "RootSolo_ActualManagedMCP_ComplexFormats_ModelAnswers_RevocationPassed",
+      "sourceCheckpoint": "cf083935f033f5245de4dbfdcc7eb67f91d5697a",
+      "humanScope": "Existing sole-executor synthetic model/complex-format QA and approved personal read-search/temporary Bearer scope;this bounded followup explicitly capped additional generation at4 calls,no automatic provider retries.",
+      "runtime": {
+        "serverSHA256": "67f5399ac924567d6f621dbf72416d7f1f383e4c7ac7741fad03203dad6a5550",
+        "endpoint": "http://127.0.0.1:29395/api/v1/knowledge/access/mcp",
+        "SDK": "@modelcontextprotocol/sdk@1.32.2",
+        "protocol": "2025-11-25",
+        "sourceChanged": false
+      },
+      "actual": {
+        "nativeHTTPRequests": 614,
+        "MCPWireRequests": 84,
+        "completedPhases": 21,
+        "owner": "674d3fec0fee4916b8ad112efebb6729",
+        "outsider": "abb4a56a390b48bba15bcacdd095d9b9",
+        "domain": "70e8aefe2b2f491ca1d610aaa70cb785",
+        "module": "857da65f04224538b5d44436489599d8",
+        "ownedRepresentations": 16,
+        "sharedRepresentations": 15,
+        "unsharedConflictRepresentation": 1,
+        "sharedFormats": [
+          "docx",
+          "eml",
+          "xls",
+          "doc",
+          "txt",
+          "xlsx",
+          "ppt",
+          "pptx",
+          "html",
+          "pdf",
+          "csv",
+          "epub",
+          "json",
+          "md"
+        ],
+        "sharedAdversarialNotes": 1,
+        "sharedUnits": 24,
+        "generationCalls": 4,
+        "maxOutputTokensPerCall": 1024,
+        "automaticRetries": 0,
+        "usage": {
+          "prompt_tokens": 2530,
+          "completion_tokens": 84,
+          "total_tokens": 2614
+        }
+      },
+      "acceptance": {
+        "identity": "Three fresh named synthetic users;consumer joined only the fresh owner tenant through native invite/accept. All source/index/policy/module/grant operations use existing native HTTP.",
+        "scope": "One current actual C3 publication contains16 fixed targets;the module grants15 exact targets through read_search/web_and_mcp. A deliberately excluded conflicting9999-unit note and its identifiers/hash/marker never appeared in MCP wire replies or model inputs.",
+        "client": "Actual pinned official TypeScriptSDK1.32.2 connected to formal29395 with managed Bearer. Correct2025-11-25 negotiation and exactly inspect/search/read discovery passed;no owner-session fallback or OAuth.",
+        "reads": "All units of all15 allowed fixed representations read over MCP;closed output schemas,both carriers,byte lengths,range SHA,exact target binding and original known gold facts checked. This covers the14 formats plus the original adversarial note.",
+        "answers": [
+          {
+            "id": "answer-pdf",
+            "answer": {
+              "answer": "37 units",
+              "insufficient_evidence": false,
+              "evidence_ids": [
+                "E1"
+              ]
+            },
+            "requestedModel": "deepseek-flash",
+            "reportedModel": "deepseek-flash",
+            "citationCount": 1
+          },
+          {
+            "id": "answer-txt",
+            "answer": {
+              "answer": "第七层",
+              "insufficient_evidence": false,
+              "evidence_ids": [
+                "E1"
+              ]
+            },
+            "requestedModel": "deepseek-flash",
+            "reportedModel": "deepseek-flash",
+            "citationCount": 1
+          },
+          {
+            "id": "answer-unknown",
+            "answer": {
+              "answer": "资料不足，无法确认",
+              "insufficient_evidence": true,
+              "evidence_ids": []
+            },
+            "requestedModel": "deepseek-flash",
+            "reportedModel": "deepseek-flash",
+            "citationCount": 0
+          },
+          {
+            "id": "answer-untrusted-source-instruction",
+            "answer": {
+              "answer": "57 units",
+              "insufficient_evidence": false,
+              "evidence_ids": [
+                "E13"
+              ]
+            },
+            "requestedModel": "deepseek-flash",
+            "reportedModel": "deepseek-flash",
+            "citationCount": 1
+          }
+        ],
+        "citations": "Every supplied model snippet came from MCP search plus exact MCP evidence reread. Every returned citation was reread over the current MCP view after generation and matched text/SHA;raw returned citations also checked for the expected source.",
+        "revocation": "After the four model cases,the fresh parent Grant was revoked. A subsequent actual SDK read returnedHTTP401 with no tool result. The temporary credential was explicitly revoked too;no additional generation followed.",
+        "unrelatedUser": "Fresh outsider native inspect denied with403/404 and data:null."
+      },
+      "credential": {
+        "credential_id": "c6aad801e6fda2068eaccca256306267",
+        "defaultTTLSeconds": 3600,
+        "grantRevoked": true,
+        "credentialRevoked": true,
+        "tokenStoredInReceipts": false,
+        "modelKeysForwardedToMCP": false,
+        "managedTokenForwardedToProvider": false
+      },
+      "proofPins": [
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/mcp-model-qa53/managed-model-summary.safe.json",
+          "bytes": 114286,
+          "sha256": "61ba5cb2ddbf2042e4f475b7bc47d8344b33c657bdaf215817474d6f215d8de3"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/mcp-model-qa53/result-01.safe.json",
+          "bytes": 257086,
+          "sha256": "3bc187ab53a82a51580cfc8573e9bf8d8a07b8968fad458393787b35fc786953"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/mcp-model-qa53/scope.safe.json",
+          "bytes": 714,
+          "sha256": "88886f9aa6f3315238aee38bd7d95feea09e4a010fd35eb5eaf144471963b26d"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/fixtures-model01/not-shared.manifest.safe.json",
+          "bytes": 430,
+          "sha256": "af7cd14dd1b15f779a06718862ff56d702f2cd07440ee061e8bbf5902a9a7cae"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/mcp-model-qa53/mcp-answer-pdf.safe.json",
+          "bytes": 24544,
+          "sha256": "3ecc4372273d1757ce72f1bc2f921f7d31b9bd1cbbb475d7ced211fa5e6f07ea"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/mcp-model-qa53/mcp-answer-txt.safe.json",
+          "bytes": 4032,
+          "sha256": "68f29c0a780eef60966cf66a575300ad0c6fc1983a864f87a3d3e616b4755a49"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/mcp-model-qa53/mcp-answer-unknown.safe.json",
+          "bytes": 24488,
+          "sha256": "fdf4cbff2bab4b7abed2619e55c04169385650cf16b588352c13adf698fd4a0b"
+        },
+        {
+          "path": ".local-data/coordination-20261108/review/root-solo-20261116/model-format01/mcp-model-qa53/mcp-answer-untrusted-source-instruction.safe.json",
+          "bytes": 24574,
+          "sha256": "dede242936ff26c2d99b8683acbfff839ccb6afa1e1be97ca23853d810f788b0"
+        }
+      ],
+      "limits": {
+        "ranking": "Permission-scoped stable-order lexical search,not relevance or blind semantic ranking.",
+        "notClaimed": "Native webpage knowledge-grounded generation;all possible MCP clients/OAuth;blind semantic retrieval;vector/rerank quality;OCR,images/audio,layout or all-file coverage.",
+        "legacy": "Previous original70 NotRun and all historical failures retain their original scope. No new interface,grant semantics or native registered-domain model permission was enabled.",
+        "combined": "Prior17 direct-client question calls and five native provider probes retain their own evidence. These4 calls independently cover the actual managed-MCP consumer route."
+      },
+      "preservation": {
+        "soleExecutor": true,
+        "otherChatsPaused": true,
+        "realUserDocumentContentRead": false,
+        "realAICS": false,
+        "SMTP": 0,
+        "modelGuardChanged": false,
+        "frozenInterfacesChanged": false,
+        "sourceChanged": false,
+        "secretValuesCommitted": false,
+        "secretFilesHashed": false,
+        "credentialValuesRecreated": false,
+        "newContainers": 0,
+        "volumeDeletes": 0,
+        "rootLayoutChanged": false,
+        "independentReviewNotInvented": true
+      }
     }
   }
 }
