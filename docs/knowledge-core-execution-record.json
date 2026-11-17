@@ -10408,6 +10408,152 @@
       "executor": "Root only",
       "write_window": "docs/knowledge-answer-20261117-02/root-write-window.json",
       "previous_failures_and_pending_records": "Retained as original time-scoped evidence"
+    },
+    "owner_web_answer_backend_20261117": {
+      "state": "RootSolo_OwnerWebAnswerBackendImplemented_UnitsAndFiveHelpVerified_NotReleased",
+      "approval": "KQA-20261117-02 exact human OptionA",
+      "subject_sha256": "88c6a4fbcc3ad293c73a015ea28cfebefed2e7332881fa4b4c554dba88d173fb",
+      "sourceParent": "b361f28c8836a98109510937add87e7aa5e070a3",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 5181,
+        "sha256": "74e031bfda05bda7ec3ec17e96dd0922942029aca8f1d3bb16b89074ea3ab2c8"
+      },
+      "files": [
+        {
+          "path": "internal/dao/database.go",
+          "sha256": "9b75ddbc404dc255ec55ff5bb9ec0c982b907f030e1d7c5f479a46e000412ad3",
+          "bytes": 13217
+        },
+        {
+          "path": "internal/router/knowledge_content.go",
+          "sha256": "e76ff8e1d5b2aefdde34260c0dca2310a1644f8114f4a41387311d3241fcc884",
+          "bytes": 1216
+        },
+        {
+          "path": "internal/common/knowledge_answer_http.go",
+          "sha256": "a7de6694f8e255c8d1c9587c1cce71511a8b57b64ec891e831eb11229a653b7e",
+          "bytes": 899
+        },
+        {
+          "path": "internal/common/knowledge_answer_http_test.go",
+          "sha256": "78309962907391f94ec2327ece6ca166575bb3477f0eb96c9c05e8933aadf17b",
+          "bytes": 540
+        },
+        {
+          "path": "internal/entity/knowledge_answer.go",
+          "sha256": "8a14390aaee800fd568027b8fdc42c0e8a456723e7d6f052c6a2b4c2d32e25e6",
+          "bytes": 4925
+        },
+        {
+          "path": "internal/entity/knowledge_answer_schema.json",
+          "sha256": "205d2f740401aa35100d83be7732a5a352cd65a3861a22496943a42b73b9bbb9",
+          "bytes": 369770
+        },
+        {
+          "path": "internal/entity/knowledge_answer_store.go",
+          "sha256": "7eb0646c2e0d2248abeb1499ff08fc89ee44d787d964baae2cd22de0def666b4",
+          "bytes": 1812
+        },
+        {
+          "path": "internal/entity/knowledge_answer_test.go",
+          "sha256": "c87aec80e5c70a8fae1566946892314fd5fb7bb0e27a920ac5722b72408dbf6a",
+          "bytes": 2049
+        },
+        {
+          "path": "internal/entity/knowledge_answer_validation.go",
+          "sha256": "9a6c8c0eb7c976bddfc7341c52a6d9c68fc925daf63c87ba10ceb9d6b898fc67",
+          "bytes": 1207
+        },
+        {
+          "path": "internal/entity/models/knowledge_answer.go",
+          "sha256": "5464b7ddb2313d2aba4a532db99e52e7eab96d48cd04ccc15c67239ca1aa0882",
+          "bytes": 623
+        },
+        {
+          "path": "internal/entity/models/knowledge_answer_test.go",
+          "sha256": "7969eb5b773981fd89fd1936ecc8593d629531dfa78bcdcfbf46b4bb517f9a8c",
+          "bytes": 2220
+        },
+        {
+          "path": "internal/handler/knowledge_answer.go",
+          "sha256": "ba79e268350e26d0b76b6661c1a408ae379c29e8c33994cbf4e557e63c835d12",
+          "bytes": 3146
+        },
+        {
+          "path": "internal/handler/knowledge_answer_test.go",
+          "sha256": "ba2088d834eb5c774cfb6ba5a9e0ae3078e6656037a36e96340291ecfaa902be",
+          "bytes": 1108
+        },
+        {
+          "path": "internal/router/knowledge_answer.go",
+          "sha256": "43980ff49d2e987eac7928ce06adee47febee65658cac3011da88679a95f6ff6",
+          "bytes": 540
+        },
+        {
+          "path": "internal/service/dataset/knowledge_answer.go",
+          "sha256": "e83eedb5375a22cced4e17d5fe03948f42227e29afff0adb3c2fa1da410e6366",
+          "bytes": 15589
+        },
+        {
+          "path": "internal/service/dataset/knowledge_answer_run.go",
+          "sha256": "30af28518e576e4983fb4ba6c897b28cb28379ba168bcb756846eb79c92bac9d",
+          "bytes": 9905
+        },
+        {
+          "path": "internal/service/dataset/knowledge_answer_test.go",
+          "sha256": "e6759cc0fdbd0e85cae956a958c5af7d4b05c57567e3a5162ddbe0f12fb22536",
+          "bytes": 12784
+        },
+        {
+          "path": "internal/service/knowledge_answer_model.go",
+          "sha256": "b39faa301ed395ed4ce827f9f8b3f48fb41460d91a26d68e169d77b51048f99f",
+          "bytes": 5575
+        }
+      ],
+      "implemented": {
+        "httpOperations": 4,
+        "additiveTables": 2,
+        "defaultPolicy": "version0/disabled;no existing domain auto-enabled",
+        "scope": "Current owner,explicit fixed C3 snapshot and caller-owned configured official DeepSeek default",
+        "provider": "Existing native factory and DeepSeek driver;opaque credentials remain complete;isolated SSRF client rejects redirects and payload logging",
+        "dispatch": "Durable hashed request key and canonical body digest;at mostone send;buffered answer and current fixed citation/policy/model checks",
+        "retention": "CacheTTL24h,ledger7days;expiry checked and lazy pruning on requests",
+        "oldGenericGuard": "Unchanged;registered-domain old generation/embedding/rerank remains denied"
+      },
+      "verification": {
+        "unitFirst": "test06.exit0;all seven requested packages compiled/new tests passed,plus native package runner",
+        "unitFinal": "test11.exit0;exact current source check and dataset/handler targeted tests passed",
+        "build": "server11.exit0;LLD20",
+        "help": [
+          "api exit1 exact usage",
+          "admin exit1 exact usage",
+          "ingestor exit1 exact usage",
+          "syncer exit1 exact usage",
+          "CLI exit0 exact usage"
+        ],
+        "knownHarnessFailures": "Retained:missing shim dir,ORT symlink discovery,readonly .cache,tmpfs noexec,slow Windows I/O,cancelled redundant JSON rerun,filtered source missing7 embedded XML parts,Docker cp into tmpfs limitation. None promoted as a test pass.",
+        "sameScopeWindowExtension": {
+          "reason": "Root reviewed native client:default redirect following and LLM_DEBUG payload logging conflict with exact-destination/private answer path. Reuse native DeepSeek and strict SSRF transport with a separate private non-redirecting client;no new provider implementation or product scope.",
+          "approved_by": "Root coordinator under exact human KQA02 implementation scope",
+          "date": "2026-11-17"
+        }
+      },
+      "remaining": {
+        "web": "Eight private postimages prepared;not applied or validated",
+        "realSQL": "NotRun for new two-table route",
+        "realModel": "NotRun;0 of20 calls used",
+        "browser": "NotRun",
+        "formalRuntime": "Unchanged old67f539 binary;new backend not deployed"
+      },
+      "preserved": {
+        "protected47": true,
+        "oldFormalContracts26": true,
+        "sourceDirectoriesAndNativeResourcesUnchanged": true,
+        "otherChatsPaused": true,
+        "realAICSExternalUse": false,
+        "privateFilesHashed": false
+      }
     }
   }
 }

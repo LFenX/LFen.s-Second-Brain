@@ -7,6 +7,7 @@ import (
 )
 
 func (r *Router) setupKnowledgeContentRoutes(engine *gin.Engine) {
+	r.setupKnowledgeAnswerRoutes(engine)
 	r.setupKnowledgeContentLexicalRoutes(engine)
 	base := "/api/v1/datasets/:dataset_id/knowledge/content"
 	for _, route := range []struct{ method, path, operation string }{

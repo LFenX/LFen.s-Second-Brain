@@ -206,6 +206,8 @@ func InitDB(ctx context.Context, migrateDB bool) error {
 		&entity.FileCommit{},
 		&entity.FileCommitItem{},
 		&entity.KnowledgeCompileDataset{},
+		&entity.KnowledgeAnswerPolicyRecord{},
+		&entity.KnowledgeAnswerRequestRecord{},
 		&entity.KnowledgeGroup{},
 		&entity.KnowledgeSourceRevision{},
 		&entity.KnowledgeNode{},
@@ -351,6 +353,8 @@ func autoMigrateSafely(ctx context.Context, db *gorm.DB, model interface{}) erro
 // process never runs them itself.
 func autoMigrateRuntimeModels(ctx context.Context, db *gorm.DB) error {
 	goRuntimeModels := []interface{}{
+		&entity.KnowledgeAnswerPolicyRecord{},
+		&entity.KnowledgeAnswerRequestRecord{},
 		&entity.IngestionTask{},
 		&entity.IngestionTaskLog{},
 		&entity.MemoryTask{},

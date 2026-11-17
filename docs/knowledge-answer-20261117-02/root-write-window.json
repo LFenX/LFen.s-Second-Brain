@@ -20,7 +20,11 @@
     "web/src/hooks/use-knowledge-answer.ts",
     "web/src/pages/dataset/knowledge-catalogue/answer*.tsx",
     "web/src/pages/dataset/knowledge-catalogue/use-answer*.ts",
-    "web/src/pages/dataset/knowledge-catalogue/__tests__/answer*.tsx"
+    "web/src/pages/dataset/knowledge-catalogue/__tests__/answer*.tsx",
+    "internal/common/knowledge_answer_http.go",
+    "internal/common/knowledge_answer_http_test.go",
+    "internal/entity/models/knowledge_answer.go",
+    "internal/entity/models/knowledge_answer_test.go"
   ],
   "permitted_existing_paths": [
     "internal/dao/database.go",
@@ -47,5 +51,10 @@
     "root-instructions",
     "web-instructions"
   ],
-  "source_reseal": "Only after Root reviews exact affected diff against this window;archive previous raw lock,retain all failures. Do not refresh unknown drift."
+  "source_reseal": "Only after Root reviews exact affected diff against this window;archive previous raw lock,retain all failures. Do not refresh unknown drift.",
+  "same_scope_extension": {
+    "reason": "Root reviewed native client:default redirect following and LLM_DEBUG payload logging conflict with exact-destination/private answer path. Reuse native DeepSeek and strict SSRF transport with a separate private non-redirecting client;no new provider implementation or product scope.",
+    "approved_by": "Root coordinator under exact human KQA02 implementation scope",
+    "date": "2026-11-17"
+  }
 }
