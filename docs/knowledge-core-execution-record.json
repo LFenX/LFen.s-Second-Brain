@@ -11824,6 +11824,102 @@
           "sha256": "099edf4c6352a6865584b6a695e4555a9727f1e1c9a3f51967de29e932d92bfb"
         }
       ]
+    },
+    "semantic_retrieval_rerank_acceptance_20261118": {
+      "state": "NativeSemanticRetrievalAndRerank_Passed",
+      "serverBinarySHA256": "4c7a9b1f8abf283af06b927607a1994b900d640a3725db711f7e9b00dd2f7615",
+      "path": "Go 原生数据集的向量生成、分块索引、Elasticsearch 检索和独立重排验证。",
+      "models": [
+        "qwen3.7-text-embedding",
+        "qwen3.7-text-rerank"
+      ],
+      "dimensions": 1024,
+      "corpus": 6,
+      "paraphrasedQueries": 3,
+      "vectorTopOne": 3,
+      "vectorTopThree": 3,
+      "rerankTopOne": 2,
+      "rerankTopThree": 3,
+      "candidateOrders": [
+        {
+          "query": "germination",
+          "vectors": [
+            "germination",
+            "poster",
+            "engineer",
+            "exchange",
+            "gardener",
+            "shipping"
+          ],
+          "reranked": [
+            "poster",
+            "germination",
+            "engineer",
+            "gardener"
+          ]
+        },
+        {
+          "query": "exchange",
+          "vectors": [
+            "exchange",
+            "shipping",
+            "germination",
+            "poster",
+            "engineer",
+            "gardener"
+          ],
+          "reranked": [
+            "exchange",
+            "shipping",
+            "gardener"
+          ]
+        },
+        {
+          "query": "engineer",
+          "vectors": [
+            "engineer",
+            "gardener",
+            "germination",
+            "poster",
+            "shipping",
+            "exchange"
+          ],
+          "reranked": [
+            "engineer",
+            "gardener"
+          ]
+        }
+      ],
+      "rerankScoreCrossCheck": {
+        "samples": 3,
+        "maxAbsoluteError": 0
+      },
+      "outsiderDenied": true,
+      "temporaryDataSetAndModelRemoved": true,
+      "modelBoundRequestsInPassingRun": 13,
+      "production": {
+        "web": 29395,
+        "codeCommit": "def69f48425d598091baa33ab05b2c875fe000a2",
+        "verifiedBinarySHA256": "4c7a9b1f8abf283af06b927607a1994b900d640a3725db711f7e9b00dd2f7615",
+        "priorCurrentDocumentHeads": {
+          "current": 1,
+          "synthetic": 1
+        },
+        "databaseVolumesDeleted": 0
+      },
+      "scope": "实际百炼与 Elasticsearch，合成语料和独立合成账号。",
+      "humanScope": "继续推进，把扫描件 OCR、图片和音频理解、向量检索和重排这些剩下的验收也做完。还是你一个人做，每完成一个阶段就提交并推送远端。",
+      "date": "2026-11-18",
+      "rootAlone": true,
+      "previousKQA20CallBudgetStillClosed": true,
+      "owningWriteWindow": "当前用户授权的合成向量检索及重排验收。记录已验证的实际模型和 Elasticsearch 检索结果。",
+      "sourceParent": "def69f48425d598091baa33ab05b2c875fe000a2",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 5198,
+        "sha256": "f4141b7c6da16d6f1367249fed1c3aab21b048586ade8a6922fcb6e2091bcd44"
+      },
+      "files": []
     }
   }
 }
