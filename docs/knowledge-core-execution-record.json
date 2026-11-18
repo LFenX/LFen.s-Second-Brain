@@ -11920,6 +11920,52 @@
         "sha256": "f4141b7c6da16d6f1367249fed1c3aab21b048586ade8a6922fcb6e2091bcd44"
       },
       "files": []
+    },
+    "formal_web_upload_ingestion_20261118": {
+      "state": "FormalBrowserUploadAndIngestion_Passed",
+      "scope": "本机正式网页 29395，经正常密码表单登录独立合成账号，先准备一座空的普通私有库。两份文件均从网页的上传选择器提交并开启创建时解析。",
+      "rootCause": "正式运行环境没有普通知识库使用的 Go 文档解析工作进程。API 可以接收上传，但队列需要工作进程来解析和索引。",
+      "repair": {
+        "container": "second-brain-ingestor",
+        "project": "lfen-ragflow-poc",
+        "consumer": "RAGFLOW_CONSUMER",
+        "workers": 1,
+        "publishedPorts": 0,
+        "restartPolicy": "unless-stopped",
+        "previousQueuedMessages": 0,
+        "servedBinarySHA256": "4c7a9b1f8abf283af06b927607a1994b900d640a3725db711f7e9b00dd2f7615"
+      },
+      "embeddingModel": "qwen3.7-text-embedding",
+      "fixtures": [
+        {
+          "name": "fog-bridge-display-schedule.txt",
+          "bytes": 237,
+          "taskStatus": "COMPLETED",
+          "chunks": 1
+        },
+        {
+          "name": "fog-bridge-sample-notice.txt",
+          "bytes": 291,
+          "taskStatus": "COMPLETED",
+          "chunks": 1
+        }
+      ],
+      "elasticsearchVectors": {
+        "dimension": 1024,
+        "chunks": 2
+      },
+      "humanScope": "现在可以正式使用了吗？你再从正式网页用合成资料跑一遍上传、解析入库、检索和问答，模型用之前记录的配置。有问题就直接修，还是你一个人做，按阶段提交并推送远端。",
+      "date": "2026-11-18",
+      "rootAlone": true,
+      "previousKQA20CallBudgetStillClosed": true,
+      "owningWriteWindow": "当前用户授权的正式网页合成验收及必要修复。恢复普通知识库的文档解析进程。",
+      "sourceParent": "2cc60721218ad2ce48173e8e55f24cfac63f278b",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 5198,
+        "sha256": "f4141b7c6da16d6f1367249fed1c3aab21b048586ade8a6922fcb6e2091bcd44"
+      },
+      "files": []
     }
   }
 }

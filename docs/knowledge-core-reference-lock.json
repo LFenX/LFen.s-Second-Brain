@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "lock_id": "KCRL-20261118-68",
+  "lock_id": "KCRL-20261118-69",
   "recorded_date": "2026-11-18",
   "coordinator_thread_id": "01a1a9a5-c724-7f52-8cbb-16d19d982ba4",
-  "source_baseline_git_head": "def69f48425d598091baa33ab05b2c875fe000a2",
+  "source_baseline_git_head": "2cc60721218ad2ce48173e8e55f24cfac63f278b",
   "source_snapshot": {
     "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
     "file_count": 5198,
@@ -32,9 +32,9 @@
       },
       "integrity": {
         "mode": "file",
-        "sha256": "844d32ef433d8aca8e741eb24d70affd15382aedab33add7ef97907746e7bf03"
+        "sha256": "d79de9ae6b3e6222773c54477b64a7945222cc50546ab458eba6a6dcca605100"
       },
-      "selection_sha256": "844d32ef433d8aca8e741eb24d70affd15382aedab33add7ef97907746e7bf03"
+      "selection_sha256": "d79de9ae6b3e6222773c54477b64a7945222cc50546ab458eba6a6dcca605100"
     },
     {
       "id": "root-instructions",
@@ -1453,9 +1453,9 @@
       },
       "integrity": {
         "mode": "selection",
-        "sha256": "42763d01f48d878e401a6e9ab4296f6122044079fa14ea2df42a436683861021"
+        "sha256": "bfbc604edab7990005b20c484adc7049363047775d7530f8457e795a5f686fac"
       },
-      "selection_sha256": "42763d01f48d878e401a6e9ab4296f6122044079fa14ea2df42a436683861021",
+      "selection_sha256": "bfbc604edab7990005b20c484adc7049363047775d7530f8457e795a5f686fac",
       "limitation": "第三轮独立事实入口；仅在实际28源码及独立B回执核实、独审和总控精确四文件租约后机械生效。各运行/质量门按各自时点与版本保留，不批准新接口、模型、真实内容、最终验收或发布。 Ref27只追加shared_ordinal_followup；旧28和分层运行事实保留原时点，命名源码集合后续仅据实际应用与分层回执登记，未完成门不标Pass。"
     },
     {
@@ -5093,18 +5093,18 @@
     "Specific human KQA-20261117-02 OptionA authorizes exact owner-only web generation implementation and at most20 synthetic acceptance calls;not real AICS or shared/department model egress. Root sole executor;old guards remain."
   ],
   "update_rule": "Only Root coordinates and executes the latest human-approved bounded work. Review exact changes before source reseal;archive prior raw lock and retain failures. No unknown-drift hash refresh or unapproved interface/model expansion.",
-  "manifest_payload_sha256": "dfd6c352b9a08fcc69a7517f86e3ed9ffd9d08eb141901e36c451b63219751a9",
+  "manifest_payload_sha256": "744b3cc673d8b02360af9fb3d36221a638e82dd1b0624a480fecea95fbb35176",
   "previous_baseline": {
-    "lock_id": "KCRL-20261118-67",
-    "manifest_sha256": "51de1b93f3c410c4b2974bc0fa686fb7fd1a344267f2459d2617700b0e5cb678",
-    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261118-67.json",
-    "archive_sha256": "51de1b93f3c410c4b2974bc0fa686fb7fd1a344267f2459d2617700b0e5cb678",
+    "lock_id": "KCRL-20261118-68",
+    "manifest_sha256": "1b3d655028d888e2596bcafa834953e5398197af6b8e7904f8969c2f99eedb1b",
+    "archive": "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261118-68.json",
+    "archive_sha256": "1b3d655028d888e2596bcafa834953e5398197af6b8e7904f8969c2f99eedb1b",
     "changed_files": [
       "docs/knowledge-core-execution-record.json",
       "docs/knowledge-core-reference-authority.md",
-      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261118-67.json",
+      "docs/archive/knowledge-core-20261028/reference-baseline-KCRL-20261118-68.json",
       "docs/knowledge-core-reference-lock.json"
     ],
-    "reason": "记录合成数据上的实际向量检索、重排与租户隔离验证。"
+    "reason": "记录正式浏览器上传、实际任务消费及持久索引验证，以及本机缺失解析进程的修复。"
   }
 }
