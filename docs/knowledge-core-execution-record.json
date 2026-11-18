@@ -11659,6 +11659,68 @@
         "sha256": "da855ee7f5756299e6392f5269348f19ccf9c1629e4e117d92f66afde3546392"
       },
       "files": []
+    },
+    "scan_ocr_acceptance_20261118": {
+      "state": "NativeDataflowLocalOCR_Passed",
+      "deployment": {
+        "service": "second-brain-api",
+        "sourceCommit": "4435945a5ebbe3be0de4e1687fd466f8cc228a73",
+        "binarySHA256": "d9ae8334a8ae5d1dd029e9ae519d1ab74246f51575f55f36fd5d6d9da5dc8853",
+        "rootCause": "部署源目录中的 5 个 DeepDoc 模型和字典文件均为 0 字节。",
+        "repair": "将下载并逐个校验的公开资源只读挂载到 /ragflow/internal/rag/res/deepdoc，由 DEEPDOC_MODEL_DIR 指定。Docker 内重验 5 个 SHA-256，确认本地直连与网页代理 ping 均返回 pong。"
+      },
+      "entry": "正式 Go API 29395，原生 Dataflow 调试的 File、Parser、GeneralChunker、Tokenizer，合成账号",
+      "tests": [
+        {
+          "fixture": "scan-only.pdf",
+          "sha256": "6f2c6ee36cac2e7c3d485cefe710478b24b26e998544d9f1162fd341c400546a",
+          "pages": 2,
+          "textLayerPages": [],
+          "chunkSourcePages": [
+            1,
+            2
+          ],
+          "verifiedFacts": [
+            "LANTERN ROOM",
+            "37 units",
+            "6231",
+            "月光仓库"
+          ]
+        },
+        {
+          "fixture": "scan-mixed.pdf",
+          "sha256": "0257c66bcef09dcdcd8999033dd4b3ee7c1d5f067829d62a783e78325cad3726",
+          "pages": 3,
+          "textLayerPages": [
+            1
+          ],
+          "chunkSourcePages": [
+            1,
+            2
+          ],
+          "blankPage": 3,
+          "verifiedFacts": [
+            "ORBIT EIGHT",
+            "LANTERN ROOM",
+            "12 days"
+          ]
+        }
+      ],
+      "factAssertionsPassed": 7,
+      "remoteModelCalls": 0,
+      "scopeLimit": "本阶段覆盖 Go 原生 Dataflow 解析与分块。C3 固定资料解析依然按 pdf-plain-pages/1 执行。",
+      "humanScope": "继续推进，把扫描件 OCR、图片和音频理解、向量检索和重排这些剩下的验收也做完。还是你一个人做，每完成一个阶段就提交并推送远端。",
+      "date": "2026-11-18",
+      "rootAlone": true,
+      "previousKQA20CallBudgetStillClosed": true,
+      "owningWriteWindow": "当前用户授权的合成验收及必要修复。本阶段补齐本机正式 API 的公开原生 OCR 资源并记录验收。",
+      "sourceParent": "69e5715472b7c774b599edbbfa1fc9a0f2c9af49",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 5198,
+        "sha256": "da855ee7f5756299e6392f5269348f19ccf9c1629e4e117d92f66afde3546392"
+      },
+      "files": []
     }
   }
 }
