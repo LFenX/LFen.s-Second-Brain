@@ -1336,6 +1336,12 @@ func (e *Engine) Search(ctx context.Context, req *types.SearchRequest) (*types.S
 		}
 
 		vectorFieldName := matchDense.VectorColumnName
+		vectorFilter := boolQuery
+		if matchText != nil {
+			// Keep the dataset and document scope while letting semantic matches recall
+			// chunks that have no lexical match.
+			vectorFilter = buildBoolQueryFromCondition(req.Filter, req.KbIDs, isSkillIndex, isMemoryIndex)
+		}
 
 		knnQuery := map[string]interface{}{
 			"field":          vectorFieldName,
@@ -1343,7 +1349,7 @@ func (e *Engine) Search(ctx context.Context, req *types.SearchRequest) (*types.S
 			"k":              k,
 			"num_candidates": numCandidates,
 			"similarity":     similarity,
-			"filter":         boolQuery,
+			"filter":         vectorFilter,
 		}
 
 		queryBody["knn"] = knnQuery

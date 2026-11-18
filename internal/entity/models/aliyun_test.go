@@ -1076,6 +1076,50 @@ func TestAliyunTranscribeAudioSendsDataURLAndParsesText(t *testing.T) {
 	}
 }
 
+func TestAliyunTranscribeAudio3UsesTypedAudioAndOutputText(t *testing.T) {
+	withSSRFBypass(t)
+	requests := make(chan aliyunASRRequest, 1)
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		var request aliyunASRRequest
+		if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+			t.Error(err)
+			http.Error(w, "bad request", http.StatusBadRequest)
+			return
+		}
+		requests <- request
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte(`{"output":{"text":"The silver lantern is in cabinet four."}}`))
+	}))
+	t.Cleanup(server.Close)
+
+	model := NewAliyunModel(map[string]string{"default": server.URL}, URLSuffix{ASR: aliyunASRTestSuffix})
+	apiKey := "test-key"
+	name := "qwen-audio-3.0-asr-flash"
+	audio := []byte("RIFF....WAVE")
+	file := writeAliyunASRTestFile(t, "clip.wav", audio)
+	resp, err := model.TranscribeAudio(t.Context(), &name, &file, &APIConfig{ApiKey: &apiKey}, nil, nil)
+	if err != nil {
+		t.Fatalf("TranscribeAudio: %v", err)
+	}
+	if resp.Text != "The silver lantern is in cabinet four." {
+		t.Errorf("text = %q", resp.Text)
+	}
+
+	body := <-requests
+	if body.Model != name || body.Parameters == nil || body.Parameters.Format != "wav" || body.Parameters.ResultFormat != "" || body.Parameters.ASROptions != nil {
+		t.Fatalf("model = %q, parameters = %+v", body.Model, body.Parameters)
+	}
+	messages := body.Input.Messages
+	if len(messages) != 1 || messages[0].Role != "user" || len(messages[0].Content) != 1 {
+		t.Fatalf("unexpected messages: %+v", messages)
+	}
+	part := messages[0].Content[0]
+	want := "data:audio/wav;base64," + base64.StdEncoding.EncodeToString(audio)
+	if part.Type != "input_audio" || part.Audio != "" || part.InputAudio == nil || part.InputAudio.Data != want {
+		t.Errorf("unexpected audio part: %+v", part)
+	}
+}
+
 func TestAliyunTranscribeAudioHonorsContextAndASROptions(t *testing.T) {
 	withSSRFBypass(t)
 	requestBody := make(chan map[string]interface{}, 1)

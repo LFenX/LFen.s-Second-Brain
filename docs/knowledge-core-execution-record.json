@@ -11759,6 +11759,71 @@
         "sha256": "da855ee7f5756299e6392f5269348f19ccf9c1629e4e117d92f66afde3546392"
       },
       "files": []
+    },
+    "audio_transcription_acceptance_20261118": {
+      "state": "NativeAudioTranscription_Passed",
+      "serverBinarySHA256": "4c7a9b1f8abf283af06b927607a1994b900d640a3725db711f7e9b00dd2f7615",
+      "entry": [
+        "Go 原生 Dataflow 音频解析、分块和 Tokenizer",
+        "Go 网页聊天 multipart 音频上传接口"
+      ],
+      "model": "qwen-audio-3.0-asr-flash",
+      "wireRepair": "根据当前百炼接口发送 input_audio 和音频格式，从 output.text 读取识别文本。",
+      "audio": [
+        {
+          "fixture": "speech-en.wav",
+          "sha256": "f2805eb38cced33d1857a7bc2a8fd5e480266d5711e17d5c9eff2f6c7bc15ea2",
+          "chunks": 1,
+          "text": "The silver lantern is in cabinet four. The inspection starts on Friday. ",
+          "assertions": 4
+        },
+        {
+          "fixture": "speech-zh.wav",
+          "sha256": "2c6fc855eba46f014f492c808ecc5ea98306df8c2433b3fd8d4129b841742ffd",
+          "chunks": 1,
+          "text": "蓝色雨伞放在2号柜,周五下午取走。",
+          "assertions": 4
+        }
+      ],
+      "assertionCount": 8,
+      "multipartUploadResponse": "The silver lantern is in cabinet four. The inspection starts on Friday. ",
+      "modelBoundRequestsInPassingAudioRuns": 3,
+      "goVerification": "build.sh --test 覆盖百炼转写及 Elasticsearch 候选过滤回归，使用 LLD 20 构建，执行 ragflow_server --api --help。",
+      "retrievalRepair": "混合搜索的向量候选保留数据集、文档和可用状态过滤，关键词表达式只用于全文检索。",
+      "scope": "同一 Compose 项目的临时本机 API，合成账号及样本。",
+      "humanScope": "继续推进，把扫描件 OCR、图片和音频理解、向量检索和重排这些剩下的验收也做完。还是你一个人做，每完成一个阶段就提交并推送远端。",
+      "date": "2026-11-18",
+      "rootAlone": true,
+      "previousKQA20CallBudgetStillClosed": true,
+      "owningWriteWindow": "当前用户授权的合成音频、向量检索及重排验收与必要修复。修改百炼驱动和 Elasticsearch 检索器，由合成账号验证。",
+      "sourceParent": "b40cbe589ecb17d6b8372d151c97dd57fae58438",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 5198,
+        "sha256": "f4141b7c6da16d6f1367249fed1c3aab21b048586ade8a6922fcb6e2091bcd44"
+      },
+      "files": [
+        {
+          "path": "internal/entity/models/aliyun.go",
+          "bytes": 37928,
+          "sha256": "ba8522e4279b2384cb070ac9240a309374c7e822bd9f6e90c97fd8451771a66b"
+        },
+        {
+          "path": "internal/entity/models/aliyun_test.go",
+          "bytes": 44973,
+          "sha256": "8c314bf294a80925b0187513363646e49aa6668a7aea18a9fa2545973bc8f12f"
+        },
+        {
+          "path": "internal/engine/elasticsearch/chunk.go",
+          "bytes": 113221,
+          "sha256": "4e971e7b95067c6c333e3562777943fba05dbcfaa58fa7b358102b6496c7c667"
+        },
+        {
+          "path": "internal/engine/elasticsearch/chunk_helpers_test.go",
+          "bytes": 28836,
+          "sha256": "099edf4c6352a6865584b6a695e4555a9727f1e1c9a3f51967de29e932d92bfb"
+        }
+      ]
     }
   }
 }

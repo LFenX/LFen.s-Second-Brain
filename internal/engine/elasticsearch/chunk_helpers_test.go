@@ -78,6 +78,7 @@ func TestSearchUsesConfiguredKNNNumCandidates(t *testing.T) {
 	}
 	var searchQuery map[string]interface{}
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		searchQuery = nil
 		if err := json.NewDecoder(r.Body).Decode(&searchQuery); err != nil {
 			t.Errorf("decode search query: %v", err)
 		}
@@ -92,7 +93,7 @@ func TestSearchUsesConfiguredKNNNumCandidates(t *testing.T) {
 		t.Fatalf("new elasticsearch client: %v", err)
 	}
 	engine := &Engine{client: client}
-	_, err = engine.Search(t.Context(), &types.SearchRequest{
+	request := &types.SearchRequest{
 		IndexNames: []string{"ragflow_tenant"},
 		KbIDs:      []string{"kb-1"},
 		Limit:      30,
@@ -107,7 +108,8 @@ func TestSearchUsesConfiguredKNNNumCandidates(t *testing.T) {
 			TopN:             128,
 			ExtraOptions:     map[string]interface{}{"num_candidates": 4096},
 		}},
-	})
+	}
+	_, err = engine.Search(t.Context(), request)
 	if err != nil {
 		t.Fatalf("Search: %v", err)
 	}
@@ -118,18 +120,39 @@ func TestSearchUsesConfiguredKNNNumCandidates(t *testing.T) {
 	if knn["k"] != float64(128) || knn["num_candidates"] != float64(4096) {
 		t.Fatalf("KNN parameters = (%v, %v), want (128, 4096)", knn["k"], knn["num_candidates"])
 	}
-	filterJSON, err := json.Marshal(knn["filter"])
-	if err != nil {
-		t.Fatal(err)
-	}
-	filter := string(filterJSON)
-	for _, scope := range []string{"kb-1", "doc-1", "available_int", "category_kwd", "allowed"} {
-		if !strings.Contains(filter, scope) {
-			t.Fatalf("KNN filter %s lost scope %q", filter, scope)
+	checkKNNScope := func(rawFilter interface{}) {
+		t.Helper()
+		filterJSON, err := json.Marshal(rawFilter)
+		if err != nil {
+			t.Fatal(err)
+		}
+		filter := string(filterJSON)
+		for _, scope := range []string{"kb-1", "doc-1", "available_int", "category_kwd", "allowed"} {
+			if !strings.Contains(filter, scope) {
+				t.Fatalf("KNN filter %s lost scope %q", filter, scope)
+			}
+		}
+		if strings.Contains(filter, "query_string") {
+			t.Fatalf("KNN filter contains lexical predicate: %s", filter)
 		}
 	}
-	if strings.Contains(filter, "query_string") {
-		t.Fatalf("dense-only KNN filter contains lexical predicate: %s", filter)
+	checkKNNScope(knn["filter"])
+
+	request.MatchExprs = append(request.MatchExprs, &types.MatchTextExpr{
+		MatchingText: "matching words",
+		Fields:       []string{"content_ltks"},
+	})
+	if _, err := engine.Search(t.Context(), request); err != nil {
+		t.Fatalf("hybrid search: %v", err)
+	}
+	hybridKNN, ok := searchQuery["knn"].(map[string]interface{})
+	if !ok {
+		t.Fatalf("hybrid KNN query missing from %#v", searchQuery)
+	}
+	checkKNNScope(hybridKNN["filter"])
+	lexical, err := json.Marshal(searchQuery["query"])
+	if err != nil || !strings.Contains(string(lexical), "matching words") {
+		t.Fatalf("hybrid lexical query = %s, error = %v", lexical, err)
 	}
 }
 

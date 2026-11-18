@@ -573,20 +573,26 @@ type aliyunASRMessage struct {
 }
 
 type aliyunASRContentPart struct {
-	Audio string `json:"audio,omitempty"`
-	Text  string `json:"text,omitempty"`
+	Audio      string          `json:"audio,omitempty"`
+	Text       string          `json:"text,omitempty"`
+	Type       string          `json:"type,omitempty"`
+	InputAudio *aliyunASRAudio `json:"input_audio,omitempty"`
+}
+
+type aliyunASRAudio struct {
+	Data string `json:"data"`
 }
 
 type aliyunASRParameters struct {
 	ResultFormat string                 `json:"result_format,omitempty"`
 	ASROptions   map[string]interface{} `json:"asr_options,omitempty"`
+	Format       string                 `json:"format,omitempty"`
 }
 
-// aliyunASRResponse is the non-streaming DashScope multimodal-generation
-// response. The transcription lives in
-// output.choices[0].message.content[*].text.
+// aliyunASRResponse contains the transcription from DashScope.
 type aliyunASRResponse struct {
 	Output struct {
+		Text    *string `json:"text"`
 		Choices []struct {
 			FinishReason string `json:"finish_reason"`
 			Message      struct {
@@ -601,10 +607,7 @@ type aliyunASRResponse struct {
 	RequestID string `json:"request_id"`
 }
 
-// TranscribeAudio transcribes an audio file with a DashScope ASR model
-// (qwen-asr-flash / qwen-audio-asr). It calls the same synchronized
-// multimodal-generation endpoint used for TTS, passing the audio as a base64
-// data URL, matching the legacy dashscope.MultiModalConversation path.
+// TranscribeAudio calls the synchronous DashScope ASR endpoint with a base64 audio data URL.
 func (a *AliyunModel) TranscribeAudio(ctx context.Context, modelName *string, file *string, apiConfig *APIConfig, asrConfig *ASRConfig, modelUsage *common.ModelUsage) (*ASRResponse, error) {
 	if err := a.baseModel.APIConfigCheck(apiConfig); err != nil {
 		return nil, err
@@ -628,14 +631,34 @@ func (a *AliyunModel) TranscribeAudio(ctx context.Context, modelName *string, fi
 		return nil, fmt.Errorf("audio file is empty")
 	}
 
+	name := strings.TrimSpace(*modelName)
+	const audio3Model = "qwen-audio-3.0-asr-flash"
+	isAudio3 := name == audio3Model || strings.HasPrefix(name, audio3Model+"-")
+	audioURL := aliyunAudioDataURL(*file, audio)
 	contextText, options := aliyunASROptions(asrConfig)
-	reqBody := aliyunASRRequest{
-		Model: strings.TrimSpace(*modelName),
-		Input: aliyunASRInput{Messages: []aliyunASRMessage{
+	reqBody := aliyunASRRequest{Model: name}
+	if isAudio3 {
+		format := strings.TrimPrefix(strings.ToLower(filepath.Ext(*file)), ".")
+		switch format {
+		case "wav", "mp3", "opus":
+		default:
+			return nil, fmt.Errorf("unsupported Qwen Audio ASR format %q: use WAV, MP3 or Opus", format)
+		}
+		if strings.TrimSpace(contextText) != "" {
+			reqBody.Input.Messages = append(reqBody.Input.Messages, aliyunASRMessage{
+				Role: "user", Content: []aliyunASRContentPart{{Type: "input_text", Text: contextText}},
+			})
+		}
+		reqBody.Input.Messages = append(reqBody.Input.Messages, aliyunASRMessage{
+			Role: "user", Content: []aliyunASRContentPart{{Type: "input_audio", InputAudio: &aliyunASRAudio{Data: audioURL}}},
+		})
+		reqBody.Parameters = &aliyunASRParameters{Format: format}
+	} else {
+		reqBody.Input.Messages = []aliyunASRMessage{
 			{Role: "system", Content: []aliyunASRContentPart{{Text: contextText}}},
-			{Role: "user", Content: []aliyunASRContentPart{{Audio: aliyunAudioDataURL(*file, audio)}}},
-		}},
-		Parameters: &aliyunASRParameters{ResultFormat: "message", ASROptions: options},
+			{Role: "user", Content: []aliyunASRContentPart{{Audio: audioURL}}},
+		}
+		reqBody.Parameters = &aliyunASRParameters{ResultFormat: "message", ASROptions: options}
 	}
 
 	jsonData, err := json.Marshal(reqBody)
@@ -684,6 +707,12 @@ func (a *AliyunModel) TranscribeAudio(ctx context.Context, modelName *string, fi
 	}
 	if parsed.Code != "" {
 		return nil, fmt.Errorf("aliyun ASR API error: %s: %s", parsed.Code, parsed.Message)
+	}
+	if isAudio3 {
+		if parsed.Output.Text == nil {
+			return nil, fmt.Errorf("Qwen Audio ASR response is missing output.text")
+		}
+		return &ASRResponse{Text: *parsed.Output.Text}, nil
 	}
 	if len(parsed.Output.Choices) == 0 {
 		return nil, fmt.Errorf("aliyun ASR response has no choices, body: %s", string(body))
