@@ -11997,6 +11997,50 @@
       "owningWriteWindow": "当前用户授权的正式网页合成验收。验证同一私有普通知识库真实查询和重排。",
       "sourceParent": "723e6cae0067cb62d97d89af3ca42e8361203440",
       "files": []
+    },
+    "formal_web_answer_and_source_20261118": {
+      "state": "FormalBrowserChatAndSource_Passed",
+      "entry": "本机正式网页 29395 的普通私有知识库和 Chat 助手。",
+      "syntheticOnly": true,
+      "models": {
+        "chat": "deepseek-flash",
+        "embedding": "qwen3.7-text-embedding",
+        "rerank": "qwen3.7-text-rerank"
+      },
+      "question": "根据知识库，雾桥项目的试验样品存放在哪个仓的几号柜？一批最多可带走几件？请附资料引用。",
+      "answer": {
+        "warehouse": "月杉试验仓",
+        "cabinet": 4,
+        "maxUnitsPerBatch": 37,
+        "citation": "fog-bridge-sample-notice.txt"
+      },
+      "browserSourcePreviewChecked": true,
+      "storedConversationVerified": true,
+      "persistedUserQuestions": 1,
+      "cleanup": {
+        "assistant": true,
+        "dataset": true,
+        "syntheticProviderInstances": 2,
+        "dockerVolumesDeleted": 0
+      },
+      "formalPostCleanup": {
+        "loginHTTP": 200,
+        "apiPing": true,
+        "worker": "second-brain-ingestor",
+        "activeNATSConsumer": "RAGFLOW_CONSUMER"
+      },
+      "humanScope": "现在可以正式使用了吗？你再从正式网页用合成资料跑一遍上传、解析入库、检索和问答，模型用之前记录的配置。有问题就直接修，还是你一个人做，按阶段提交并推送远端。",
+      "date": "2026-11-18",
+      "rootAlone": true,
+      "previousKQA20CallBudgetStillClosed": true,
+      "owningWriteWindow": "当前用户授权的正式网页合成验收。普通私有知识库的真实 DeepSeek 问答、引用和原文预览。",
+      "sourceParent": "262b3001bf8f41a53ebd4b003a1924338ab72a49",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 5198,
+        "sha256": "f4141b7c6da16d6f1367249fed1c3aab21b048586ade8a6922fcb6e2091bcd44"
+      },
+      "files": []
     }
   }
 }
