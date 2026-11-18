@@ -11721,6 +11721,44 @@
         "sha256": "da855ee7f5756299e6392f5269348f19ccf9c1629e4e117d92f66afde3546392"
       },
       "files": []
+    },
+    "image_understanding_acceptance_20261118": {
+      "state": "NativeDataflowImageUnderstanding_Passed",
+      "runtimeBinarySHA256": "d9ae8334a8ae5d1dd029e9ae519d1ab74246f51575f55f36fd5d6d9da5dc8853",
+      "entry": "正式 Go API 29395，原生 Dataflow 调试的 PNG 上传、视觉描述、分块和 Tokenizer 输出。",
+      "provider": "Tongyi-Qianwen",
+      "model": "qwen3.7-plus",
+      "modelSelection": "最初选择的 qwen3-vl-plus 由百炼返回 403 access_denied，改用同服务商可调用的视觉模型。",
+      "syntheticPNG": [
+        {
+          "fixture": "shapes-a.png",
+          "left": "blue circle",
+          "right": "orange square",
+          "chunks": 1
+        },
+        {
+          "fixture": "shapes-b.png",
+          "left": "green triangle",
+          "right": "red circle",
+          "chunks": 1
+        }
+      ],
+      "contentAndOrderAssertionsPassed": 10,
+      "passingModelBoundRequests": 2,
+      "sameTenantFixtureResourcesCleaned": true,
+      "scopeLimit": "覆盖两份无文字的合成图片和实际模型描述。测试使用独立合成账号，未改其他账号的模型选择。",
+      "humanScope": "继续推进，把扫描件 OCR、图片和音频理解、向量检索和重排这些剩下的验收也做完。还是你一个人做，每完成一个阶段就提交并推送远端。",
+      "date": "2026-11-18",
+      "rootAlone": true,
+      "previousKQA20CallBudgetStillClosed": true,
+      "owningWriteWindow": "当前用户授权的合成验收及必要修复。本阶段以专用合成账号实测已有视觉描述和分块路径。",
+      "sourceParent": "d867efa107f4e4b88df5f4385e9f50dce0b5c5a4",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 5198,
+        "sha256": "da855ee7f5756299e6392f5269348f19ccf9c1629e4e117d92f66afde3546392"
+      },
+      "files": []
     }
   }
 }
