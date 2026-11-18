@@ -11966,6 +11966,37 @@
         "sha256": "f4141b7c6da16d6f1367249fed1c3aab21b048586ade8a6922fcb6e2091bcd44"
       },
       "files": []
+    },
+    "formal_web_retrieval_20261118": {
+      "state": "FormalBrowserDatasetRetrieval_Passed",
+      "source": {
+        "algorithm": "sha256-canonical-path-kind-content-sha256-v1",
+        "file_count": 5198,
+        "sha256": "f4141b7c6da16d6f1367249fed1c3aab21b048586ade8a6922fcb6e2091bcd44"
+      },
+      "query": "到哪里领雾桥项目的试验样品？一批可拿多少？",
+      "vectorModel": "qwen3.7-text-embedding",
+      "rerankModel": "qwen3.7-text-rerank",
+      "threshold": 0.2,
+      "keywordWeight": 0.7,
+      "topResult": {
+        "file": "fog-bridge-sample-notice.txt",
+        "cabinet": 4,
+        "limit": 37,
+        "displayedHybridScore": 37.48
+      },
+      "secondResult": {
+        "file": "fog-bridge-display-schedule.txt",
+        "displayedHybridScore": 29.98
+      },
+      "actualBrowser": true,
+      "humanScope": "现在可以正式使用了吗？你再从正式网页用合成资料跑一遍上传、解析入库、检索和问答，模型用之前记录的配置。有问题就直接修，还是你一个人做，按阶段提交并推送远端。",
+      "date": "2026-11-18",
+      "rootAlone": true,
+      "previousKQA20CallBudgetStillClosed": true,
+      "owningWriteWindow": "当前用户授权的正式网页合成验收。验证同一私有普通知识库真实查询和重排。",
+      "sourceParent": "723e6cae0067cb62d97d89af3ca42e8361203440",
+      "files": []
     }
   }
 }
