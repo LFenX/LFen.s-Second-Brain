@@ -266,7 +266,7 @@ func (dao *KnowledgebaseDAO) ListByQuery(ctx context.Context, query *gorm.DB, ow
 	query = query.WithContext(ctx).
 		Select(`knowledgebase.id, knowledgebase.avatar, knowledgebase.name,
 			knowledgebase.language, knowledgebase.description, knowledgebase.tenant_id,
-			knowledgebase.permission, knowledgebase.doc_num, knowledgebase.token_num,
+			knowledgebase.created_by, knowledgebase.permission, knowledgebase.doc_num, knowledgebase.token_num,
 			knowledgebase.chunk_num, knowledgebase.similarity_threshold,
 			knowledgebase.vector_similarity_weight, knowledgebase.parser_id, knowledgebase.parser_config,
 			knowledgebase.pagerank, knowledgebase.embd_id,

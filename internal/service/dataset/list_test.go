@@ -43,6 +43,10 @@ func TestDatasetServiceListDatasetsFiltersByIDs(t *testing.T) {
 	if data[0]["id"] != "kb-1" {
 		t.Fatalf("expected kb-1, got %#v", data[0]["id"])
 	}
+	// The knowledge-domain entry only offers datasets the caller created itself.
+	if data[0]["created_by"] != "tenant-1" {
+		t.Fatalf("created_by = %#v, want tenant-1", data[0]["created_by"])
+	}
 	if got, ok := data[0]["keywords_similarity_weight"].(float64); !ok || math.Abs(got-0.7) > 1e-9 {
 		t.Fatalf("keywords_similarity_weight = %#v, want 0.7", data[0]["keywords_similarity_weight"])
 	}
@@ -54,10 +58,8 @@ func TestDatasetServiceListDatasetsFiltersByIDs(t *testing.T) {
 func TestDatasetServiceListDatasetsIDsAccessibleViaTeamTenant(t *testing.T) {
 	db := setupDatasetUpdateTestDB(t)
 	pushServiceDB(t, db)
+	// insertDatasetUpdateKB also registers the owner-1 tenant and its owner.
 	insertDatasetUpdateKB(t, "kb-team", "owner-1", "Shared")
-	if err := dao.DB.Create(&entity.Tenant{ID: "owner-1", Name: sptr("owner"), Status: sptr("1")}).Error; err != nil {
-		t.Fatalf("insert owner tenant: %v", err)
-	}
 	insertDatasetUpdateTeamMember(t, "user-1", "owner-1")
 	if err := dao.DB.Model(&entity.Knowledgebase{}).
 		Where("id = ?", "kb-team").

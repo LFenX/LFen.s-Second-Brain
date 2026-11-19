@@ -1322,11 +1322,13 @@ func (s *ChatPipelineService) AsyncChat(
 			// to _extract_visible_answer → decorate_answer (dialog_service.py:914-920).
 			visibleAnswer := s.extractVisibleAnswer(thinkState.fullText)
 
+			// decorateAnswer renders the phase timings, so generation must be
+			// closed first; its own citation matching is not generation time.
+			timer.Exit(common.PhaseGenerateAnswer)
 			// Pass nil for ttsModel — audio was already produced per-delta.
 			final := s.decorateAnswer(ctx, visibleAnswer, kbinfos, prompt, questions, usedTokenCount, timer, embModel, chat.VectorSimilarityWeight, quote, nil, langfuseTraceID, llmModelConfig, chat.TenantID, kbTenantIDStrings(kbs), len(knowledges) > 0)
 			final.Final = true
 			final.AudioBinary = nil
-			timer.Exit(common.PhaseGenerateAnswer)
 			send(final)
 		} else {
 			// Non-streaming: get the answer synchronously.
@@ -1361,10 +1363,10 @@ func (s *ChatPipelineService) AsyncChat(
 			}
 			common.Debug("User: " + userContent + "|Assistant: " + answer)
 
+			timer.Exit(common.PhaseGenerateAnswer)
 			// Synthesize TTS for the full answer (non-stream, one-shot).
 			final := s.decorateAnswer(ctx, answer, kbinfos, prompt, questions, usedTokenCount, timer, embModel, chat.VectorSimilarityWeight, quote, ttsModel, langfuseTraceID, llmModelConfig, chat.TenantID, kbTenantIDStrings(kbs), len(knowledges) > 0)
 			final.Final = true
-			timer.Exit(common.PhaseGenerateAnswer)
 			out <- final
 		}
 		common.Info("AsyncChat completed", zap.String("chat_id", chat.ID))
