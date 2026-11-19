@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils';
 import { Routes } from '@/routes';
 import { supportsCssAnchor } from '@/utils/css-support';
 import { HomeIcon } from '@/components/svg-icon';
+import { KnowledgeAccessPaths } from '@/utils/knowledge-access-navigation';
 
 const PathMap = {
   [Routes.Datasets]: [Routes.Datasets, Routes.DatasetBase],
@@ -19,6 +20,7 @@ const PathMap = {
   [Routes.Agents]: [Routes.Agents, Routes.AgentTemplates],
   [Routes.Memories]: [Routes.Memories, Routes.Memory, Routes.MemoryMessage],
   [Routes.Files]: [Routes.Files],
+  [KnowledgeAccessPaths.shared]: [KnowledgeAccessPaths.shared],
 } as const;
 
 // Match on path-segment boundaries, not a loose substring, so e.g.
@@ -77,7 +79,17 @@ const menuItems = [
     icon: MenuItemsIcon,
     icon_name: 'file',
   },
+  {
+    path: KnowledgeAccessPaths.shared,
+    name: 'knowledgeAccess.sharedWithMe',
+    icon: MenuItemsIcon,
+    icon_name: 'datasets',
+    'data-testid': 'nav-shared',
+  },
 ];
+
+const NavLinkClass =
+  'h-8 px-3 inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm text-text-secondary transition-colors hover:text-text-primary focus-visible:text-text-primary focus-visible:outline-none';
 
 function useActivePath() {
   const { pathname } = useLocation();
@@ -107,31 +119,23 @@ const DesktopNavbarWithAnchor = () => {
 
   return (
     <nav>
-      <ul className="relative flex items-center p-1 bg-bg-card rounded-full border border-border-button">
-        {menuItems.map(({ path, name, icon: Icon, ...props }) => {
+      <ul className="relative isolate flex items-center gap-0.5">
+        {menuItems.map(({ path, name, ...item }) => {
           const isActive = path === activePath;
           const anchorName = `--${navbarAnchorNamePrefix}${path === Routes.Root ? '-root' : path.replace('/', '-')}`;
 
           return (
             <li key={path} className="relative" style={{ anchorName }}>
               <Link
-                {...props}
+                data-testid={item['data-testid']}
                 to={path}
                 className={cn(
-                  'h-10 px-4 xl:px-6 text-sm xl:text-base inline-flex items-center justify-center whitespace-nowrap',
-                  'hover:text-current focus-visible:text-current rounded-full transition-all',
-                  isActive && '!text-bg-base',
+                  NavLinkClass,
+                  isActive && 'font-medium text-text-primary',
                 )}
                 aria-current={isActive ? 'page' : undefined}
               >
-                {path === Routes.Root ? (
-                  <>
-                    <Icon className="size-6 stroke-[1.5]" />
-                    <span className="sr-only">{t(name)}</span>
-                  </>
-                ) : (
-                  <span>{t(name)}</span>
-                )}
+                {t(name)}
               </Link>
             </li>
           );
@@ -139,8 +143,8 @@ const DesktopNavbarWithAnchor = () => {
 
         <li
           className={cn(
-            'absolute -z-[1] bg-text-primary border-b-2 border-b-accent-primary rounded-full opacity-0',
-            'transition-all',
+            'absolute -z-[1] rounded-lg bg-bg-card opacity-0',
+            'transition-all duration-200',
             hasAnyActive && 'opacity-100',
           )}
           role="presentation"
@@ -163,29 +167,22 @@ const DesktopNavbarFallback = () => {
 
   return (
     <nav>
-      <ul className="flex items-center p-1 bg-bg-card rounded-full border border-border-button">
-        {menuItems.map(({ path, name, icon: Icon, ...props }) => {
+      <ul className="flex items-center gap-0.5">
+        {menuItems.map(({ path, name, ...item }) => {
           const isActive = path === activePath;
 
           return (
             <li key={path}>
               <Link
-                {...props}
+                data-testid={item['data-testid']}
                 to={path}
                 className={cn(
-                  'h-10 px-4 xl:px-6 text-sm xl:text-base inline-flex items-center justify-center whitespace-nowrap',
-                  'hover:text-current focus-visible:text-current rounded-full transition-all',
-                  isActive &&
-                    '!text-bg-base bg-text-primary border-b-2 border-b-accent-primary',
+                  NavLinkClass,
+                  isActive && 'bg-bg-card font-medium text-text-primary',
                 )}
-                aria-label={t(name)}
                 aria-current={isActive ? 'page' : undefined}
               >
-                {path === Routes.Root ? (
-                  <Icon className="size-6 stroke-[1.5]" />
-                ) : (
-                  <span>{t(name)}</span>
-                )}
+                {t(name)}
               </Link>
             </li>
           );
@@ -224,11 +221,10 @@ function MobileNavItem({
       {...linkProps}
       onClick={onClick}
       className={cn(
-        'flex w-full items-center gap-3.5 px-4 py-3.5 text-base',
+        'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-[15px]',
         'text-text-secondary transition-colors hover:bg-bg-card hover:text-text-primary',
         'focus-visible:bg-bg-card focus-visible:text-text-primary',
-        isActive &&
-          'border-l-2 border-text-primary bg-bg-card font-medium text-text-primary',
+        isActive && 'bg-bg-card font-medium text-text-primary',
       )}
       aria-current={isActive ? 'page' : undefined}
     >
@@ -267,12 +263,13 @@ export function MobileNavbar({ renderFooter }: MobileNavbarProps) {
         closeIcon={false}
         className="flex w-[min(85vw,18rem)] flex-col gap-0 p-0 sm:w-72"
       >
-        <div className="flex shrink-0 justify-center py-5">
-          <img src={appLogo} alt={`${appName} logo`} className="size-9" />
+        <div className="flex shrink-0 items-center gap-2.5 px-5 py-5">
+          <img src={appLogo} alt="" className="size-8" />
+          <span className="truncate text-[15px] font-semibold">{appName}</span>
         </div>
 
         <nav className="min-h-0 flex-1 overflow-y-auto py-3">
-          <ul className="space-y-1">
+          <ul className="space-y-0.5 px-2">
             {menuItems.map(({ path, name, icon_name, icon, ...props }) => (
               <li key={path}>
                 <MobileNavItem

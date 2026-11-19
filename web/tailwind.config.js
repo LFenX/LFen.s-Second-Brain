@@ -27,6 +27,10 @@ module.exports = {
       '4xl': '1980px',
     },
     extend: {
+      boxShadow: {
+        soft: 'var(--shadow-soft)',
+        lift: 'var(--shadow-lift)',
+      },
       borderWidth: {
         0.5: '0.5px',
       },

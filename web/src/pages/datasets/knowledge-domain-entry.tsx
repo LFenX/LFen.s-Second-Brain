@@ -6,6 +6,7 @@ import {
 } from 'react';
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { Field, FieldSelect } from '@/components/form-fields';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -49,7 +50,7 @@ function ExistingDatasetChoice({
   const { t } = useTranslation();
   const handleSelect = () => onSelect(dataset.id);
   return (
-    <li className="space-y-1 rounded-md border border-border-button p-2">
+    <li className="space-y-1 rounded-xl border-0.5 border-border-button p-2">
       <Button
         type="button"
         variant="outline"
@@ -108,6 +109,11 @@ function ExistingDatasets({
       </p>
       {query.isError && <p role="alert">{t('knowledgeDomain.readFailure')}</p>}
       {query.isPending && <p role="status">{t('knowledgeDomain.loading')}</p>}
+      {query.isSuccess && choices.length === 0 && (
+        <p className="text-sm text-text-secondary">
+          {t('knowledgeDomain.noEmptyDatasets')}
+        </p>
+      )}
       <ul className="space-y-2">
         {choices.map((dataset) => (
           <ExistingDatasetChoice
@@ -156,13 +162,11 @@ function RegisteredDomains({ flow }: { flow: DomainFlow }) {
   };
   return (
     <section className="space-y-2">
-      <label className="block space-y-1">
-        <span>{t('knowledgeDomain.select')}</span>
-        <select
+      <Field label={t('knowledgeDomain.select')}>
+        <FieldSelect
           value={flow.receipt?.domain_id || ''}
           onChange={handleChoose}
           disabled={flow.isLocked() || query.isPending}
-          className="block w-full rounded-md border border-border-button bg-bg-base p-2"
         >
           <option value="">{t('knowledgeDomain.select')}</option>
           {query.data?.pages
@@ -172,8 +176,8 @@ function RegisteredDomains({ flow }: { flow: DomainFlow }) {
                 {domain.name} · {domain.domain_id.slice(-8)}
               </option>
             ))}
-        </select>
-      </label>
+        </FieldSelect>
+      </Field>
       {query.isError && <p role="alert">{t('knowledgeDomain.readFailure')}</p>}
       <Button
         type="button"
@@ -260,24 +264,18 @@ function DomainDialog({
               <>
                 <form onSubmit={handleCreate} className="space-y-3">
                   <fieldset disabled={flow.locked} className="space-y-3">
-                    <label className="block space-y-1">
-                      <span>{t('knowledgeDomain.name')}</span>
+                    <Field label={t('knowledgeDomain.name')}>
                       <Input required value={name} onChange={handleName} />
-                    </label>
-                    <label className="block space-y-1">
-                      <span>{t('knowledgeDomain.category')}</span>
-                      <select
-                        value={category}
-                        onChange={handleCategory}
-                        className="block w-full rounded-md border border-border-button bg-bg-base p-2"
-                      >
+                    </Field>
+                    <Field label={t('knowledgeDomain.category')}>
+                      <FieldSelect value={category} onChange={handleCategory}>
                         {Categories.map((value) => (
                           <option key={value} value={value}>
                             {t(`knowledgeDomain.category_${value}`)}
                           </option>
                         ))}
-                      </select>
-                    </label>
+                      </FieldSelect>
+                    </Field>
                     <p className="text-xs text-text-secondary">
                       {t('knowledgeDomain.nameHint')}
                     </p>

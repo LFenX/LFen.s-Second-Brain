@@ -22,6 +22,7 @@ import {
   LucideLanguages,
 } from 'lucide-react';
 import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router';
 import { BellButton } from './bell-button';
 import { DesktopNavbar, MobileNavbar } from './global-navbar';
@@ -35,6 +36,7 @@ export function Header({
   className,
   ...props
 }: React.HTMLAttributes<HTMLElement>) {
+  const { t } = useTranslation();
   const { pathname } = useLocation();
   const changeLanguage = useChangeLanguage();
 
@@ -58,36 +60,45 @@ export function Header({
     isCompact,
   } = useHeaderNavLayout(`${hasNotification}-${language}`);
 
+  const brand = (
+    <Link
+      to={Routes.Root}
+      aria-current={pathname === Routes.Root ? 'page' : undefined}
+      className="flex shrink-0 items-center gap-2.5 rounded-lg pe-1 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-accent-primary/15"
+    >
+      <img src={appLogo} alt="" className="size-8" />
+      <span className="hidden whitespace-nowrap text-[15px] font-semibold tracking-tight text-text-primary sm:inline">
+        {appName}
+      </span>
+    </Link>
+  );
+
+  const languageLabel = currentLanguage?.displayName;
+
   return (
     <>
       <header
         ref={headerRef}
         key="app-navbar"
         className={cn(
-          'w-full min-w-0 flex items-center gap-2 sm:gap-4',
+          'relative z-20 flex h-14 w-full min-w-0 items-center gap-3 border-b-0.5 border-border-button bg-bg-base/90 backdrop-blur-md sm:gap-6',
           className,
         )}
         {...props}
       >
-        <div className="inline-flex shrink-0 items-center gap-2">
+        <div className="inline-flex shrink-0 items-center gap-1">
           {isCompact && (
             <MobileNavbar
               renderFooter={(close) => <MobileMenuFooter onClose={close} />}
             />
           )}
           <div ref={logoRef} className="inline-flex shrink-0 items-center">
-            <Link
-              to={Routes.Root}
-              aria-current={pathname === Routes.Root ? 'page' : undefined}
-              className="flex size-10 shrink-0 items-center justify-center"
-            >
-              <img src={appLogo} alt={`${appName} logo`} className="size-10" />
-            </Link>
+            {brand}
           </div>
         </div>
 
         {!isCompact && (
-          <div className="flex min-w-0 flex-1 justify-center overflow-hidden">
+          <div className="flex min-w-0 flex-1 overflow-hidden">
             <DesktopNavbar />
           </div>
         )}
@@ -95,40 +106,36 @@ export function Header({
         {isCompact && <div className="flex-1" aria-hidden />}
 
         <div
-          className={cn(
-            'flex shrink-0 items-center justify-end text-text-badge',
-            isCompact ? 'gap-0.5' : 'gap-4',
-          )}
+          className="flex shrink-0 items-center justify-end gap-0.5 text-text-secondary"
           data-testid="auth-status"
         >
           {!isCompact && (
-            <>
-              <a
-                className="inline-flex p-2 text-text-secondary hover:text-text-primary focus-visible:text-text-primary"
-                target="_blank"
-                href={projectUrl}
-                rel="noreferrer noopener"
-              >
-                <IconFontFill name="GitHub" />
-              </a>
-            </>
+            <Button
+              asLink
+              variant="ghost"
+              size="icon"
+              to={projectUrl}
+              target="_blank"
+              rel="noreferrer noopener"
+              aria-label={t('header.github')}
+              title={t('header.github')}
+            >
+              <IconFontFill name="GitHub" className="size-4" />
+            </Button>
           )}
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
-                className={cn(
-                  'size-10 shrink-0 px-0',
-                  !isCompact && 'size-auto gap-1 px-4',
-                )}
-                aria-label={currentLanguage?.displayName}
+                className={cn('h-8 gap-1.5 px-2', isCompact && 'w-8 px-0')}
+                aria-label={languageLabel}
               >
-                {isCompact && <LucideLanguages className="size-5" />}
+                <LucideLanguages className="size-4" />
                 {!isCompact && (
                   <>
-                    {currentLanguage?.displayName}
-                    <LucideChevronDown className="size-[1em]" />
+                    <span className="text-sm">{languageLabel}</span>
+                    <LucideChevronDown className="size-3.5 opacity-60" />
                   </>
                 )}
               </Button>
@@ -139,6 +146,9 @@ export function Header({
                 <DropdownMenuItem
                   key={x.code}
                   onClick={() => changeLanguage(x.code)}
+                  className={cn(
+                    x.code === language && 'font-medium text-text-primary',
+                  )}
                 >
                   {x.displayName}
                 </DropdownMenuItem>
@@ -152,27 +162,32 @@ export function Header({
                 asLink
                 variant="ghost"
                 size="icon"
-                className="size-8"
-                to="https://ragflow.io/docs/dev/category/user-guides"
+                to={`${projectUrl}#readme`}
                 target="_blank"
                 rel="noreferrer noopener"
+                aria-label={t('header.help')}
+                title={t('header.help')}
               >
-                <LucideCircleHelp className="size-[1em]" />
+                <LucideCircleHelp className="size-4" />
               </Button>
 
               {hasNotification && <BellButton className="!size-8" />}
             </>
           )}
 
-          <ThemeButton className={cn(!isCompact && '!size-8')} />
+          <ThemeButton className="!size-8" />
+
+          <span
+            className="mx-2 h-5 w-px bg-border-button max-sm:hidden"
+            aria-hidden
+          />
 
           <Link
             to={Routes.UserSetting}
-            className={cn(
-              'relative flex size-10 shrink-0 items-center justify-center',
-              !isCompact && 'ms-3',
-            )}
+            className="relative flex shrink-0 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-accent-primary/15"
             data-testid="settings-entrypoint"
+            aria-label={t('header.setting')}
+            title={nickname || t('header.setting')}
           >
             <RAGFlowAvatar
               name={nickname}
@@ -193,28 +208,19 @@ export function Header({
         </div>
         <div
           ref={expandedRightMeasureRef}
-          className="inline-flex shrink-0 items-center justify-end gap-4 text-text-badge"
+          className="inline-flex shrink-0 items-center justify-end gap-0.5"
         >
-          <a className="inline-flex p-2">
-            <IconFontFill name="GitHub" />
-          </a>
-          <Button variant="ghost" className="size-auto gap-1 px-4">
-            {currentLanguage?.displayName}
-            <LucideChevronDown className="size-[1em]" />
-          </Button>
-          <Button variant="ghost" size="icon" className="size-8">
-            <LucideCircleHelp className="size-[1em]" />
-          </Button>
-          <ThemeButton className="!size-8" />
-          {hasNotification && <BellButton className="!size-8" />}
-          <div className="relative ms-3 flex size-10 shrink-0 items-center justify-center">
-            <RAGFlowAvatar
-              name={nickname}
-              avatar={avatar}
-              isPerson
-              className="size-8"
-            />
-          </div>
+          <span className="size-8" />
+          <span className="inline-flex h-8 items-center gap-1.5 px-2 text-sm">
+            <LucideLanguages className="size-4" />
+            {languageLabel}
+            <LucideChevronDown className="size-3.5" />
+          </span>
+          <span className="size-8" />
+          {hasNotification && <span className="size-8" />}
+          <span className="size-8" />
+          <span className="mx-2 h-5 w-px" />
+          <span className="size-8" />
         </div>
       </div>
     </>

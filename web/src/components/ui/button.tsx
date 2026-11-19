@@ -27,7 +27,7 @@ const buttonVariants = cva(
         `,
 
         highlighted: `
-          bg-text-primary text-bg-base border-b-4 border-b-accent-primary
+          bg-text-primary text-bg-base shadow-soft
           hover:bg-text-primary/90 focus-visible:bg-text-primary/90
         `,
 
@@ -42,12 +42,12 @@ const buttonVariants = cva(
         `,
 
         // Outline variant series
-        // Button has transparent or greyish background, may have borders
+        // Button sits on a surface or transparent background, may have borders
         outline: `
-          text-text-secondary bg-bg-input border-0.5 border-border-button
-          hover:text-text-primary hover:bg-border-button hover:border-border-default
-          focus-visible:text-text-primary focus-visible:bg-border-button focus-visible:border-border-button
-        `, // light: bg=transparent, dark: bg-input
+          text-text-primary bg-bg-component border-0.5 border-border-default
+          hover:bg-bg-card hover:border-border-default
+          focus-visible:bg-bg-card focus-visible:border-border-default
+        `,
 
         dashed: `
           text-text-secondary border-border-button border-dashed
@@ -69,7 +69,7 @@ const buttonVariants = cva(
         `,
 
         'danger-hover': `
-          bg-bg-input border-border-button
+          bg-bg-component border-border-default
           hover:bg-state-error/10 focus-visible:bg-state-error/10
           hover:text-state-error focus-visible:text-state-error
           hover:border-state-error focus-visible:border-state-error

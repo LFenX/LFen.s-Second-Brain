@@ -17,7 +17,6 @@ import DocumentHeader from '@/components/document-preview/document-header';
 import { useGetDocumentUrl } from '@/components/document-preview/hooks';
 import { TimelineNode } from '@/components/originui/timeline';
 import { PageHeader } from '@/components/page-header';
-import Spotlight from '@/components/spotlight';
 import { Button } from '@/components/ui/button';
 import { AgentCategory, AgentQuery } from '@/constants/agent';
 import { Images } from '@/constants/common';
@@ -194,7 +193,6 @@ const DataflowResult = () => {
               />
             )}
             {/* )} */}
-            <Spotlight opcity={0.6} coverage={60} />
           </div>
         </div>
       </div>

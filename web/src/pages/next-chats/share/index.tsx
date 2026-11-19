@@ -51,8 +51,6 @@ const ChatContainer = () => {
     }
   }, [locale, visibleAvatar]);
 
-  const avatarDialogSrc = chatInfo.avatar;
-
   if (!conversationId) {
     return <div>empty</div>;
   }
@@ -78,7 +76,6 @@ const ChatContainer = () => {
                   <MessageItem
                     visibleAvatar={visibleAvatar}
                     key={buildMessageUuidWithRole(message)}
-                    avatarDialog={avatarDialogSrc}
                     item={message}
                     nickname="You"
                     reference={messageReferences.get(message) ?? EmptyReference}
@@ -88,7 +85,6 @@ const ChatContainer = () => {
                       derivedMessages?.length - 1 === i
                     }
                     index={i}
-                    isLast={i === derivedMessages.length - 1}
                     clickDocumentButton={clickDocumentButton}
                     showLikeButton={false}
                     showLoudspeaker={false}

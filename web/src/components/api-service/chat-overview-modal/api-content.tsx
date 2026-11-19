@@ -32,6 +32,7 @@ import {
 import ChatApiKeyModal from '../chat-api-key-modal';
 import BackendServiceApi from './backend-service-api';
 import MarkdownToc from './markdown-toc';
+import { McpAccessPanel } from '@/pages/user-setting/setting-api/mcp-access';
 
 const LazyMarkdownPreview = lazy(() => import('@uiw/react-markdown-preview'));
 
@@ -85,6 +86,7 @@ const ApiContent = ({ id, idKey }: { id?: string; idKey: string }) => {
   return (
     <div className="flex flex-col w-full">
       <BackendServiceApi show={showApiKeyModal} />
+      {!id && <McpAccessPanel onManageKeys={showApiKeyModal} />}
 
       <div className="text-left py-4">
         <Button onClick={tocVisible ? hideToc : showToc}>

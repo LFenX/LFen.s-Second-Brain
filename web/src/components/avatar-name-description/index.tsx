@@ -45,6 +45,8 @@ export interface AvatarNameDescriptionProps {
   nameRequired?: boolean;
   /** Whether to show edit icons */
   showEditIcons?: boolean;
+  /** Offer preset portraits for the avatar */
+  avatarPresets?: boolean;
 }
 
 export function AvatarNameDescription({
@@ -58,6 +60,7 @@ export function AvatarNameDescription({
   className,
   nameRequired = true,
   showEditIcons = true,
+  avatarPresets = false,
 }: AvatarNameDescriptionProps) {
   const { t } = useTranslation();
   useFormContext(); // Ensure component is used within FormProvider
@@ -65,7 +68,7 @@ export function AvatarNameDescription({
   return (
     <div className={cn('flex gap-3', className)}>
       <RAGFlowFormItem name={avatarField}>
-        <AvatarUpload tips={''} />
+        <AvatarUpload tips={''} presets={avatarPresets} />
       </RAGFlowFormItem>
 
       {/* Name & Description Section */}

@@ -35,7 +35,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { CircleStop, Globe, Paperclip, Send, Upload, X } from 'lucide-react';
+import { ArrowUp, Globe, Paperclip, Square, Upload, X } from 'lucide-react';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -43,6 +43,7 @@ import { toast } from 'sonner';
 import storage from '@/utils/authorization-util';
 import { SelectWithSearch } from '../originui/select-with-search';
 import { AudioButton } from '../ui/audio-button';
+import styles from './next.module.less';
 
 export type NextMessageInputOnPressEnterParameter = {
   enableThinking?: string;
@@ -257,21 +258,14 @@ export function NextMessageInput({
           <div className="flex items-center justify-center rounded-full border p-2.5">
             <Upload className="size-6 text-muted-foreground" />
           </div>
-          <p className="font-medium text-sm">Drag & drop files here</p>
+          <p className="font-medium text-sm">{t('chat.dropFiles')}</p>
           <p className="text-muted-foreground text-xs">
-            Upload max 5 files each up to 5MB
+            {t('chat.dropFilesLimit')}
           </p>
         </div>
       </FileUploadDropzone>
 
-      <form
-        onSubmit={onSubmit}
-        className="
-          relative flex w-full flex-col gap-2.5 rounded-md
-          border-0.5 border-border-default bg-bg-card p-2 outline-none
-          has-[textarea:focus]:outline-accent-primary has-[textarea:focus]:outline-1 has-[textarea:focus]:outline-offset-2
-        "
-      >
+      <form onSubmit={onSubmit} className={styles.composer}>
         {resize === 'vertical' && (
           <button
             type="button"
@@ -312,17 +306,17 @@ export function NextMessageInput({
           onChange={onInputChange}
           placeholder={t('chat.messagePlaceholder')}
           className="
-            min-h-10 max-h-[400px] w-full p-0 overflow-auto
+            min-h-9 max-h-[400px] w-full p-0 overflow-auto
             !outline-none !border-transparent !bg-transparent !shadow-none !ring-transparent !ring-offset-transparent
           "
           disabled={isUploading || disabled || sendLoading}
           onKeyDown={handleKeyDown}
           resize={resize === 'vertical' ? 'none' : resize}
-          autoSize={isManualMode ? undefined : { minRows: 2, maxRows: 8 }}
+          autoSize={isManualMode ? undefined : { minRows: 1, maxRows: 8 }}
         />
 
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
+        <div className={styles.toolbar}>
+          <div className={styles.tools}>
             {showUploadIcon && (
               <FileUploadTrigger asChild>
                 <Button
@@ -344,7 +338,7 @@ export function NextMessageInput({
                 value={enableThinking}
                 options={thinkingOptions}
                 onChange={handleThinkingChange}
-                triggerClassName="h-7 border-0 !bg-bg-card text-sm"
+                triggerClassName="h-8 rounded-full border-0 !bg-bg-card px-3 text-[13px] text-text-secondary"
                 testId="chat-detail-thinking-toggle"
               />
             )}
@@ -372,15 +366,17 @@ export function NextMessageInput({
           </div>
 
           {sendLoading ? (
-            <Button
+            <button
+              type="button"
+              className={styles.send}
               data-testid="chat-stream-status"
               onClick={stopOutputMessage}
-              size="icon-xs"
             >
-              <CircleStop />
-            </Button>
+              <Square className="fill-current" />
+              <span className="sr-only">Stop</span>
+            </button>
           ) : (
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <AudioButton
                 onOk={(value) => {
                   setAudioInputValue(value);
@@ -388,16 +384,17 @@ export function NextMessageInput({
                 testId="chat-detail-audio-toggle"
               />
 
-              <Button
-                size="icon-xs"
+              <button
+                type="submit"
+                className={styles.send}
                 disabled={
                   sendDisabled || isUploading || sendLoading || !value.trim()
                 }
                 data-testid="chat-detail-send"
               >
-                <Send />
+                <ArrowUp />
                 <span className="sr-only">Send message</span>
-              </Button>
+              </button>
             </div>
           )}
         </div>

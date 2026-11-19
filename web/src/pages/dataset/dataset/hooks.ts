@@ -121,7 +121,7 @@ export const useShowLog = (documents: IDocumentInfo[]) => {
         fileType: source?.suffix,
         uploadedBy: source?.nickname,
         fileName: source?.name,
-        uploadDate: formatDate(source.create_date),
+        uploadDate: formatDate(source.create_time),
         fileSize: formatBytes(source.size || 0),
         processBeginAt: formatDate(source.process_begin_at),
         chunkNumber: source.chunk_count,

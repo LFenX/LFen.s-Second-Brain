@@ -13,20 +13,26 @@ export function AccessFailure({ error }: { error: unknown }) {
           'version_conflict',
           'scope_changed',
           'view_stale',
-          'index_stale',
-          'index_unindexed',
           'idempotency_conflict',
         ].includes(code)
       ? 'changed'
-      : code === 'scope_not_supported'
-        ? 'unsupportedScope'
-        : code === 'invalid_request'
-          ? 'invalidInput'
-          : 'unavailable';
+      : code === 'index_stale' || code === 'index_unindexed'
+        ? 'indexNotReady'
+        : code === 'scope_not_supported'
+          ? 'unsupportedScope'
+          : code === 'invalid_request'
+            ? 'invalidInput'
+            : 'unavailable';
   return (
-    <p role="alert" className="rounded border border-border-button p-3">
-      {t('knowledgeAccess.' + label)}
-    </p>
+    <div
+      role="alert"
+      className="space-y-1 rounded-xl border-0.5 border-state-warning/40 bg-state-warning/5 px-3 py-2.5 text-sm"
+    >
+      <p className="text-text-primary">{t('knowledgeAccess.' + label)}</p>
+      <p className="font-mono text-xs text-text-secondary">
+        {t('knowledgeAccess.errorCode', { code })}
+      </p>
+    </div>
   );
 }
 

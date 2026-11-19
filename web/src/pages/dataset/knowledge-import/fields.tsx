@@ -244,9 +244,10 @@ export function RegistrationForm({
   onSubmit: (request: KnowledgeRegistrationRequest) => Promise<void>;
 }) {
   const { t } = useTranslation();
-  const [key, setKey] = useState('');
+  // A fresh key per registration; reusing the same key and settings finds the original.
+  const [key, setKey] = useState<string>(() => crypto.randomUUID());
   const [name, setName] = useState('');
-  const [paths, setPaths] = useState('web/synthetic.tsx');
+  const [paths, setPaths] = useState('notes/synthetic.md');
   const [classification, setClassification] = useState<Classification>({
     group_id: null,
     component_side: 'shared',
@@ -288,6 +289,9 @@ export function RegistrationForm({
             onChange={handleKey}
           />
         </label>
+        <p className="-mt-2 text-xs text-text-secondary">
+          {t('knowledgeImport.registrationKeyHint')}
+        </p>
         <label className="block space-y-1">
           <span>{t('knowledgeImport.registrationName')}</span>
           <Input required maxLength={128} value={name} onChange={handleName} />

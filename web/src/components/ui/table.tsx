@@ -8,7 +8,7 @@ const Table = React.forwardRef<
 >(({ className, rootClassName, ...props }, ref) => (
   <div
     className={cn(
-      'relative w-full overflow-auto rounded-2xl bg-bg-card scrollbar-auto',
+      'relative w-full overflow-auto rounded-3xl border-0.5 border-border-button bg-bg-component scrollbar-auto',
       rootClassName,
     )}
   >

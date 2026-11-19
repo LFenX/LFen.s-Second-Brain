@@ -30,14 +30,29 @@ import { useTranslation } from 'react-i18next';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
 import { Modal } from './ui/modal/modal';
+import { AvatarPresetPicker } from './avatar-preset-picker';
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 
 // Maximum size of the image file selected for an avatar, in bytes (4 MB).
 const MaxAvatarFileSize = 4 * 1024 * 1024;
+// Animated avatars are stored as-is (cropping would flatten them), so keep them small.
+const MaxAnimatedAvatarFileSize = 1024 * 1024;
+
+function readFileAsDataUrl(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result));
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+}
 
 type AvatarUploadProps = {
   value?: string;
   onChange?: (value: string) => void;
   tips?: string;
+  /** Offer the preset portraits (people and assistants). */
+  presets?: boolean;
   uploadInputTestId?: string;
   removeButtonTestId?: string;
   cropModalTestId?: string;
@@ -50,6 +65,7 @@ export const AvatarUpload = forwardRef<HTMLInputElement, AvatarUploadProps>(
       value,
       onChange,
       tips,
+      presets = false,
       uploadInputTestId,
       removeButtonTestId,
       cropModalTestId,
@@ -74,6 +90,17 @@ export const AvatarUpload = forwardRef<HTMLInputElement, AvatarUploadProps>(
     const handleChange: ChangeEventHandler<HTMLInputElement> = useCallback(
       async (ev) => {
         const file = ev.target?.files?.[0];
+        if (presets && file && /\.gif$/i.test(file.name)) {
+          if (file.size > MaxAnimatedAvatarFileSize) {
+            message.error(t('setting.animatedAvatarTooLarge'));
+          } else {
+            const str = await readFileAsDataUrl(file);
+            setAvatarBase64Str(str);
+            onChange?.(str);
+          }
+          ev.target.value = '';
+          return;
+        }
         if (/\.(jpg|jpeg|png|webp|bmp)$/i.test(file?.name ?? '')) {
           if (file!.size > MaxAvatarFileSize) {
             message.error(t('knowledgeConfiguration.photoTip'));
@@ -86,7 +113,15 @@ export const AvatarUpload = forwardRef<HTMLInputElement, AvatarUploadProps>(
         }
         ev.target.value = '';
       },
-      [t],
+      [onChange, presets, t],
+    );
+
+    const handlePreset = useCallback(
+      (src: string) => {
+        setAvatarBase64Str(src);
+        onChange?.(src);
+      },
+      [onChange],
     );
 
     const handleRemove = useCallback(() => {
@@ -340,9 +375,27 @@ export const AvatarUpload = forwardRef<HTMLInputElement, AvatarUploadProps>(
           )}
         </div>
 
-        <div className="ms-1 text-xs text-text-secondary">
-          {tips ?? t('knowledgeConfiguration.photoTip')}
-        </div>
+        {presets && (
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button type="button" variant="outline" size="sm">
+                {t('setting.chooseAvatarPreset')}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent align="start" className="w-[340px]">
+              <AvatarPresetPicker
+                value={avatarBase64Str}
+                onSelect={handlePreset}
+              />
+            </PopoverContent>
+          </Popover>
+        )}
+
+        {tips !== '' && (
+          <div className="ms-1 text-xs text-text-secondary">
+            {tips ?? t('knowledgeConfiguration.photoTip')}
+          </div>
+        )}
 
         {/* Crop Modal */}
         <Modal

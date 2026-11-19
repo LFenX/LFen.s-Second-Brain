@@ -130,7 +130,7 @@ const Segmented = React.forwardRef<HTMLDivElement, SegmentedProps>(
             <div
               className={cn(
                 itemClassName,
-                'absolute bg-bg-base rounded-sm transition-all',
+                'absolute bg-bg-component rounded-sm shadow-[0_1px_2px_rgb(16_18_24/10%),0_0_0_0.5px_rgb(16_18_24/6%)] dark:bg-white/10 transition-all',
               )}
               style={{
                 positionAnchor: `--${anchorNamePrefix}-${String(selectedValue).replace('/', '')}`,
@@ -191,7 +191,7 @@ const Segmented = React.forwardRef<HTMLDivElement, SegmentedProps>(
                   variant="static"
                   className={cn(
                     {
-                      'text-text-primary bg-bg-base':
+                      'text-text-primary bg-bg-component shadow-[0_1px_2px_rgb(16_18_24/10%)] dark:bg-white/10':
                         selectedValue === actualValue,
                     },
                     itemClassName,

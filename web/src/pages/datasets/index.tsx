@@ -21,7 +21,6 @@ import { useSaveKnowledge } from './hooks';
 import { useRenameDataset } from './use-rename-dataset';
 import { useSelectOwners } from './use-select-owners';
 import { KnowledgeDomainEntry } from './knowledge-domain-entry';
-import { KnowledgeAccessPaths } from '@/utils/knowledge-access-navigation';
 
 export default function Datasets() {
   const { t } = useTranslation();
@@ -91,19 +90,14 @@ export default function Datasets() {
   return (
     <>
       <div className="flex h-full min-h-0 min-w-0 flex-col">
-        <div className="flex shrink-0 flex-wrap justify-end gap-2 px-5 pt-3">
-          <Button asLink to={KnowledgeAccessPaths.shared} variant="outline">
-            {t('knowledgeAccess.sharedWithMe')}
-          </Button>
-          <KnowledgeDomainEntry refreshNative={handleRefreshDatasets} />
-        </div>
         <div className="min-h-0 flex-1">
           {loading && !kbs?.length ? (
             <article
-              className="size-full flex items-center justify-center"
+              className="size-full flex flex-col items-center justify-center gap-4"
               data-testid="datasets-list"
             >
               <Spin size="large" />
+              <KnowledgeDomainEntry refreshNative={handleRefreshDatasets} />
             </article>
           ) : kbs?.length || searchString ? (
             <article
@@ -120,6 +114,7 @@ export default function Datasets() {
                   onChange={handleFilterSubmit}
                   icon={'datasets'}
                 >
+                  <KnowledgeDomainEntry refreshNative={handleRefreshDatasets} />
                   <Button onClick={showModal}>
                     <Plus className="size-[1em]" />
                     {t('knowledgeList.createKnowledgeBase')}
@@ -162,7 +157,7 @@ export default function Datasets() {
             </article>
           ) : (
             <article
-              className="size-full flex items-center justify-center"
+              className="size-full flex flex-col items-center justify-center gap-4"
               data-testid="datasets-list"
             >
               <EmptyAppCard
@@ -172,6 +167,7 @@ export default function Datasets() {
                 type={EmptyCardType.Dataset}
                 onClick={() => showModal()}
               />
+              <KnowledgeDomainEntry refreshNative={handleRefreshDatasets} />
             </article>
           )}
         </div>

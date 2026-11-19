@@ -1,5 +1,4 @@
 import { AgentBackground } from '@/components/canvas/background';
-import Spotlight from '@/components/spotlight';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import {
@@ -158,7 +157,6 @@ export function VersionDialog({
                         elementsSelectable={false}
                       >
                         <AgentBackground></AgentBackground>
-                        <Spotlight className="z-0" opcity={0.7} coverage={70} />
                       </ReactFlow>
                     </ReactFlowProvider>
                   </section>

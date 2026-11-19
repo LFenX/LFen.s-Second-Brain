@@ -15,14 +15,13 @@
  */
 
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Panel } from '@/components/form-fields';
 import {
   useFetchUserInfo,
   useListTenantUser,
 } from '@/hooks/use-user-setting-request';
 import { useTranslation } from 'react-i18next';
 
-import Spotlight from '@/components/spotlight';
 import { SearchInput } from '@/components/ui/input';
 import { UserPlus } from 'lucide-react';
 import { useState } from 'react';
@@ -56,50 +55,40 @@ const UserSettingTeam = () => {
         </header>
       }
     >
-      <Spotlight />
-
-      <div className="h-full overflow-x-hidden overflow-y-auto">
-        <Card className="bg-transparent border-none">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 p-4">
-            <CardTitle className="text-base">
-              {t('setting.teamMembers')}
-            </CardTitle>
-
-            <section className="flex gap-4 items-center">
+      <div className="h-full space-y-5 overflow-y-auto overflow-x-hidden p-5">
+        <Panel
+          title={t('setting.teamMembers')}
+          actions={
+            <>
               <SearchInput
-                className="bg-bg-input border-border-default w-32"
+                className="w-40"
                 placeholder={t('common.search')}
                 value={searchUser}
                 onChange={(e) => setSearchUser(e.target.value)}
               />
               <Button onClick={showAddingTenantModal}>
-                <UserPlus className=" h-4 w-4" />
+                <UserPlus className="size-4" />
                 {t('setting.invite')}
               </Button>
-            </section>
-          </CardHeader>
+            </>
+          }
+        >
+          <UserTable searchUser={searchUser}></UserTable>
+        </Panel>
 
-          <CardContent className="p-4 pt-0">
-            <UserTable searchUser={searchUser}></UserTable>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-transparent border-none mt-8">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 p-4">
-            <CardTitle className="text-base w-fit">
-              {t('setting.joinedTeams')}
-            </CardTitle>
+        <Panel
+          title={t('setting.joinedTeams')}
+          actions={
             <SearchInput
-              className="bg-bg-input border-border-default w-32"
+              className="w-40"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder={t('common.search')}
             />
-          </CardHeader>
-          <CardContent className="p-4 pt-0">
-            <TenantTable searchTerm={searchTerm}></TenantTable>
-          </CardContent>
-        </Card>
+          }
+        >
+          <TenantTable searchTerm={searchTerm}></TenantTable>
+        </Panel>
         <KnowledgeDepartments />
       </div>
 

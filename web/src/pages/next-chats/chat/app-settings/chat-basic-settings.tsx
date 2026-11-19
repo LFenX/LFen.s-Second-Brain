@@ -44,6 +44,7 @@ export default function ChatBasicSetting({
     <div className="space-y-8">
       {hideName || (
         <AvatarNameDescription
+          avatarPresets
           avatarField={prefixName(prefix, 'icon')}
           nameField={prefixName(prefix, 'name')}
           descriptionField={prefixName(prefix, 'description')}

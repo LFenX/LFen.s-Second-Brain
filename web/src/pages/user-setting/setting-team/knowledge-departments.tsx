@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Field, FieldSelect, CheckRow } from '@/components/form-fields';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -78,8 +79,7 @@ function DepartmentEditor({
       aria-label={t('knowledgeAccess.saveDepartment')}
       onSubmit={save}
     >
-      <label className="block space-y-1">
-        <span>{t('knowledgeAccess.departmentName')}</span>
+      <Field label={t('knowledgeAccess.departmentName')}>
         <Input
           value={name}
           required
@@ -90,25 +90,24 @@ function DepartmentEditor({
             setInvalid(false);
           }}
         />
-      </label>
-      <label className="block space-x-2">
-        <input
-          type="checkbox"
-          checked={enabled}
-          disabled={command.locked}
-          onChange={(event) => {
-            setEnabled(event.target.checked);
-            setConfirmed(false);
-          }}
-        />
-        <span>{t('knowledgeAccess.departmentEnabled')}</span>
-      </label>
+      </Field>
+      <CheckRow
+        checked={enabled}
+        disabled={command.locked}
+        onChange={(event) => {
+          setEnabled(event.target.checked);
+          setConfirmed(false);
+        }}
+      >
+        {t('knowledgeAccess.departmentEnabled')}
+      </CheckRow>
       <fieldset className="space-y-2">
         <legend>{t('knowledgeAccess.departmentMembers')}</legend>
-        <div className="max-h-64 space-y-2 overflow-auto rounded border border-border-button p-3">
+        <div className="max-h-64 space-y-2 overflow-auto rounded-2xl border-0.5 border-border-button p-3">
           {members.map((member) => (
-            <label key={member.id} className="block space-x-2">
+            <label key={member.id} className="flex items-center gap-2 text-sm">
               <input
+                className="size-4 accent-[rgb(var(--accent-primary))]"
                 type="checkbox"
                 checked={selected.includes(member.id)}
                 disabled={
@@ -121,8 +120,9 @@ function DepartmentEditor({
             </label>
           ))}
           {inactive.map((id) => (
-            <label key={id} className="block space-x-2">
+            <label key={id} className="flex items-center gap-2 text-sm">
               <input
+                className="size-4 accent-[rgb(var(--accent-primary))]"
                 type="checkbox"
                 checked
                 disabled={command.locked}
@@ -141,15 +141,13 @@ function DepartmentEditor({
       <p className="text-sm text-text-secondary">
         {t('knowledgeAccess.departmentRosterWarning')}
       </p>
-      <label className="block space-x-2">
-        <input
-          type="checkbox"
-          checked={confirmed}
-          disabled={command.locked || inactive.length > 0}
-          onChange={(event) => setConfirmed(event.target.checked)}
-        />
-        <span>{t('knowledgeAccess.confirmDepartment')}</span>
-      </label>
+      <CheckRow
+        checked={confirmed}
+        disabled={command.locked || inactive.length > 0}
+        onChange={(event) => setConfirmed(event.target.checked)}
+      >
+        {t('knowledgeAccess.confirmDepartment')}
+      </CheckRow>
       {invalid && <p role="alert">{t('knowledgeAccess.invalidInput')}</p>}
       <Button
         type="submit"
@@ -200,10 +198,8 @@ function DepartmentWorkspace({ actor }: { actor: AccessActor }) {
           <p role="alert">{t('knowledgeAccess.departmentOwnerOnly')}</p>
         ) : (
           <>
-            <label className="block space-y-1">
-              <span>{t('knowledgeAccess.department')}</span>
-              <select
-                className="w-full rounded border border-border-button bg-bg-base p-2"
+            <Field label={t('knowledgeAccess.department')}>
+              <FieldSelect
                 value={selected?.department_id ?? ''}
                 disabled={command.locked}
                 onChange={(event) => setSelection(event.target.value)}
@@ -215,8 +211,8 @@ function DepartmentWorkspace({ actor }: { actor: AccessActor }) {
                     {item.enabled ? '' : ' · ' + t('knowledgeAccess.disabled')}
                   </option>
                 ))}
-              </select>
-            </label>
+              </FieldSelect>
+            </Field>
             {members.data && (
               <DepartmentEditor
                 key={
@@ -246,10 +242,10 @@ export default function KnowledgeDepartments() {
   const team = teams.find((item) => item.id === selection) ?? teams[0];
   return (
     <section
-      className="mt-8 space-y-4 rounded border border-border-button p-4"
+      className="space-y-4 rounded-3xl border-0.5 border-border-button bg-bg-component p-5"
       aria-label={t('knowledgeAccess.departments')}
     >
-      <h2 className="text-lg font-medium">
+      <h2 className="text-base font-semibold">
         {t('knowledgeAccess.departments')}
       </h2>
       <p className="text-sm text-text-secondary">
@@ -262,10 +258,8 @@ export default function KnowledgeDepartments() {
       {current && !team && <p>{t('knowledgeAccess.departmentOwnerOnly')}</p>}
       {current && team && (
         <>
-          <label className="block space-y-1">
-            <span>{t('knowledgeAccess.team')}</span>
-            <select
-              className="rounded border border-border-button bg-bg-base p-2"
+          <Field label={t('knowledgeAccess.team')}>
+            <FieldSelect
               value={team.id}
               onChange={(event) => setSelection(event.target.value)}
             >
@@ -274,8 +268,8 @@ export default function KnowledgeDepartments() {
                   {item.name}
                 </option>
               ))}
-            </select>
-          </label>
+            </FieldSelect>
+          </Field>
           <DepartmentWorkspace
             key={[current.user, team.id, identity.session].join(':')}
             actor={{

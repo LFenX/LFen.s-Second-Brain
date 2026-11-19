@@ -1,6 +1,14 @@
-import { useState, type ChangeEvent } from 'react';
+import { useEffect, useRef, useState, type ChangeEvent } from 'react';
 import { useLocation, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import {
+  Field,
+  FieldSelect,
+  CheckRow,
+  Panel,
+  StatusText,
+} from '@/components/form-fields';
+import { KnowledgeDomainEntry } from '@/pages/datasets/knowledge-domain-entry';
 import { Button } from '@/components/ui/button';
 import {
   AccessCommandFeedback,
@@ -62,10 +70,10 @@ function SharingPolicy({
   }
   return (
     <section
-      className="space-y-3 rounded border border-border-button p-4"
+      className="space-y-4 rounded-3xl border-0.5 border-border-button bg-bg-component p-5"
       aria-label={t('knowledgeAccess.policy')}
     >
-      <h2 className="text-lg font-medium">{t('knowledgeAccess.policy')}</h2>
+      <h2 className="text-base font-semibold">{t('knowledgeAccess.policy')}</h2>
       <p>
         {t(
           policy.enabled
@@ -77,15 +85,13 @@ function SharingPolicy({
         {t('knowledgeAccess.policyHint')}
       </p>
       {policy.enabled && <AccessRevocationWarning />}
-      <label className="block space-x-2">
-        <input
-          type="checkbox"
-          checked={confirmed}
-          onChange={handleConfirm}
-          disabled={command.locked}
-        />
-        <span>{t('knowledgeAccess.confirmPolicy')}</span>
-      </label>
+      <CheckRow
+        checked={confirmed}
+        onChange={handleConfirm}
+        disabled={command.locked}
+      >
+        {t('knowledgeAccess.confirmPolicy')}
+      </CheckRow>
       <Button disabled={command.locked || !confirmed} onClick={handleChange}>
         {t(
           policy.enabled
@@ -154,11 +160,29 @@ function OwnerAccessWorkspace({
   const items =
     current?.items.filter((item) => item.administrative_owner) ?? [];
   const module = items.find((item) => item.module_id === selected);
+  // After saving a new module, open it so its grants can be set right away.
+  // The query is refetched before the command reports completion.
+  const idsBeforeSave = useRef<Set<string> | null>(null);
+  const itemIds = items.map((item) => item.module_id).join(',');
+  useEffect(() => {
+    if (selected === '' && command.busy && idsBeforeSave.current === null)
+      idsBeforeSave.current = new Set(itemIds.split(',').filter(Boolean));
+  }, [command.busy, itemIds, selected]);
+  useEffect(() => {
+    const before = idsBeforeSave.current;
+    if (!command.completed || !before) return;
+    idsBeforeSave.current = null;
+    const added = itemIds.split(',').filter((id) => id && !before.has(id));
+    if (selected === '' && added.length === 1) setSelected(added[0]);
+  }, [command.completed, itemIds, selected]);
   function handleSelect(event: ChangeEvent<HTMLSelectElement>) {
     setSelected(event.target.value);
   }
   function handleRefresh() {
     void modules.refetch();
+  }
+  function handleRegistered() {
+    return modules.refetch();
   }
   return (
     <div className="space-y-4">
@@ -175,7 +199,19 @@ function OwnerAccessWorkspace({
         <p role="status">{t('knowledgeAccess.loading')}</p>
       )}
       {current && !policy && (
-        <p role="alert">{t('knowledgeAccess.ownerOnly')}</p>
+        <Panel
+          title={t('knowledgeAccess.setupTitle')}
+          description={t('knowledgeAccess.setupHint')}
+          actions={<KnowledgeDomainEntry refreshNative={handleRegistered} />}
+        >
+          <StatusText role="alert">{t('knowledgeAccess.ownerOnly')}</StatusText>
+          <ol className="list-decimal space-y-1 ps-5 text-sm text-text-secondary">
+            <li>{t('knowledgeAccess.setupStepDomain')}</li>
+            <li>{t('knowledgeAccess.setupStepPolicy')}</li>
+            <li>{t('knowledgeAccess.setupStepModule')}</li>
+            <li>{t('knowledgeAccess.setupStepGrant')}</li>
+          </ol>
+        </Panel>
       )}
       {policy && (
         <>
@@ -187,10 +223,8 @@ function OwnerAccessWorkspace({
             policy={policy}
             command={command}
           />
-          <label className="block space-y-1">
-            <span>{t('knowledgeAccess.module')}</span>
-            <select
-              className="block w-full rounded border border-border-button bg-bg-base p-2"
+          <Field label={t('knowledgeAccess.module')}>
+            <FieldSelect
               value={module ? module.module_id : ''}
               onChange={handleSelect}
               disabled={command.locked}
@@ -202,8 +236,8 @@ function OwnerAccessWorkspace({
                   {item.enabled ? '' : ' · ' + t('knowledgeAccess.disabled')}
                 </option>
               ))}
-            </select>
-          </label>
+            </FieldSelect>
+          </Field>
           {module ? (
             <ExistingModule
               key={module.module_id}

@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-import { appLogo } from '@/conf.json';
+import { AssistantAvatar } from '@/components/anime-avatar';
 import { MessageType } from '@/constants/chat';
 import { IRegenerateMessage, IRemoveMessageById } from '@/hooks/logic-hooks';
 import {
@@ -24,19 +24,22 @@ import {
   UploadResponseDataType,
 } from '@/interfaces/database/chat';
 import { cn } from '@/lib/utils';
-import classNames from 'classnames';
-import { isEmpty } from 'lodash';
 import { memo, useCallback, useMemo } from 'react';
 import { DocumentDownloadButton } from '../document-download-button';
-import { LoadingDots } from '../loading-dots';
 import MarkdownContent from '../markdown-content';
+import { CitationHighlightProvider } from '../markdown-content/citation-highlight';
 import { ReferenceImageList } from '../next-message-item/reference-image-list';
 import { UploadedMessageFiles } from '../next-message-item/uploaded-message-files';
 import { RAGFlowAvatar } from '../ragflow-avatar';
-import SvgIcon from '../svg-icon';
-import { useTheme } from '../theme-provider';
 import { AssistantGroupButton, UserGroupButton } from './group-button';
 import styles from './index.module.less';
+import {
+  parseAnswerMetrics,
+  splitAssistantContent,
+  summarizeCitations,
+} from './reasoning-chain';
+import { ReasoningTrace } from './reasoning-trace';
+import { ReferenceSourceList } from './reference-source-list';
 
 interface IProps extends Partial<IRemoveMessageById>, IRegenerateMessage {
   item: IMessage;
@@ -47,12 +50,14 @@ interface IProps extends Partial<IRemoveMessageById>, IRegenerateMessage {
   visibleAvatar?: boolean;
   nickname?: string;
   avatar?: string;
-  avatarDialog?: string | null;
+  /** The chat app's own icon, shown beside its answers. */
+  assistantAvatar?: string;
+  /** The chat searches a knowledge base, so the chain plans retrieval. */
+  hasKnowledge?: boolean;
   clickDocumentButton?: (documentId: string, chunk: IReferenceChunk) => void;
   index: number;
   showLikeButton?: boolean;
   showLoudspeaker?: boolean;
-  isLast?: boolean;
 }
 
 const MessageItem = ({
@@ -60,9 +65,10 @@ const MessageItem = ({
   reference,
   loading = false,
   avatar,
-  avatarDialog,
+  assistantAvatar,
   sendLoading = false,
   deleteDisabled = false,
+  hasKnowledge = false,
   clickDocumentButton,
   index,
   removeMessageById,
@@ -71,140 +77,157 @@ const MessageItem = ({
   showLoudspeaker = true,
   visibleAvatar = true,
   nickname,
-  isLast = false,
 }: IProps) => {
-  const { theme } = useTheme();
   const isAssistant = item.role === MessageType.Assistant;
-  const isUser = item.role === MessageType.User;
+  const messageContent = item.content;
 
-  const uploadedFiles = useMemo(() => {
-    return item?.files ?? [];
-  }, [item?.files]);
-
+  const uploadedFiles = useMemo(() => item?.files ?? [], [item?.files]);
   const documentDownloadInfos = useMemo(
     () => item.downloads ?? [],
     [item.downloads],
   );
-  const messageContent = item.content;
+
+  // An assistant message carries its research and reasoning inline; they are
+  // shown in the thought process, and only the answer is set as text.
+  const parts = useMemo(
+    () => (isAssistant ? splitAssistantContent(messageContent) : undefined),
+    [isAssistant, messageContent],
+  );
+  const answerContent = parts ? parts.answer : messageContent;
+  const citationText = parts
+    ? [parts.thinking, parts.answer].filter(Boolean).join('\n')
+    : '';
+  const citations = useMemo(
+    () => summarizeCitations(citationText, reference),
+    [citationText, reference],
+  );
+  const metrics = useMemo(
+    () => (isAssistant ? parseAnswerMetrics(item.prompt) : undefined),
+    [isAssistant, item.prompt],
+  );
+  const showTrace =
+    !!parts &&
+    (loading ||
+      !!parts.thinking ||
+      !!parts.research ||
+      citations.retrievedChunkCount > 0 ||
+      !!metrics);
 
   const handleRegenerateMessage = useCallback(() => {
     regenerateMessage?.(item);
   }, [regenerateMessage, item]);
 
-  return (
-    <div
-      className={classNames(styles.messageItem, {
-        [styles.messageItemLeft]: item.role === MessageType.Assistant,
-        [styles.messageItemRight]: item.role === MessageType.User,
-      })}
-    >
-      <section
-        className={classNames(styles.messageItemSection, {
-          [styles.messageItemSectionLeft]: item.role === MessageType.Assistant,
-          [styles.messageItemSectionRight]: item.role === MessageType.User,
-        })}
-      >
-        <div
-          className={classNames(styles.messageItemContent, 'group', {
-            [styles.messageItemContentReverse]: item.role === MessageType.User,
-          })}
-        >
-          {visibleAvatar &&
-            (item.role === MessageType.User ? (
-              <RAGFlowAvatar
-                className="size-10"
-                avatar={avatar ?? appLogo}
-                isPerson
-                name={nickname}
-              />
-            ) : avatarDialog ? (
-              <RAGFlowAvatar
-                className="size-10"
-                avatar={avatarDialog}
-                isPerson
-              />
-            ) : (
-              <SvgIcon
-                name={'assistant'}
-                width={'100%'}
-                className={cn('size-10 fill-current')}
-              ></SvgIcon>
-            ))}
-
-          <section className="flex min-w-0 gap-2 flex-1 flex-col">
-            {isAssistant ? (
-              index !== 0 && (
-                <AssistantGroupButton
-                  messageId={item.id}
-                  content={messageContent}
-                  prompt={item.prompt}
-                  showLikeButton={showLikeButton}
-                  audioBinary={item.audio_binary}
-                  showLoudspeaker={showLoudspeaker}
-                ></AssistantGroupButton>
-              )
-            ) : (
-              <UserGroupButton
-                content={messageContent}
-                messageId={item.id}
-                removeMessageById={removeMessageById}
-                regenerateMessage={regenerateMessage && handleRegenerateMessage}
-                sendLoading={sendLoading}
-                deleteDisabled={deleteDisabled}
-              ></UserGroupButton>
-            )}
-            {/* Show message content if there's any text besides the download */}
-            {(messageContent || sendLoading) && (
-              <div
-                className={cn(
-                  isAssistant
-                    ? theme === 'dark'
-                      ? styles.messageTextDark
-                      : styles.messageText
-                    : styles.messageUserText,
-                  { '!bg-bg-card': !isAssistant },
-                )}
-              >
-                {sendLoading && isLast && isEmpty(messageContent) ? (
-                  <LoadingDots className="text-text-secondary" />
-                ) : (
-                  <MarkdownContent
-                    loading={loading}
-                    content={messageContent}
-                    reference={reference}
-                    clickDocumentButton={clickDocumentButton}
-                    disableMath={isUser}
-                  ></MarkdownContent>
-                )}
-              </div>
-            )}
-            {isAssistant && (
-              <ReferenceImageList
-                referenceChunks={reference.chunks}
-                messageContent={messageContent}
-              ></ReferenceImageList>
-            )}
-            {isUser &&
-              Array.isArray(uploadedFiles) &&
-              uploadedFiles.length > 0 && (
-                <UploadedMessageFiles
-                  files={uploadedFiles as UploadResponseDataType[]}
-                ></UploadedMessageFiles>
-              )}
-            {documentDownloadInfos.length > 0 && (
-              <div className="mt-3 space-y-3">
-                {documentDownloadInfos.map((downloadInfo, index) => (
-                  <div key={`${downloadInfo.filename}-${index}`}>
-                    {index > 0 && <div className="my-6 h-px bg-border" />}
-                    <DocumentDownloadButton downloadInfo={downloadInfo} />
-                  </div>
-                ))}
-              </div>
-            )}
-          </section>
-        </div>
-      </section>
+  const downloads = documentDownloadInfos.length > 0 && (
+    <div className="flex flex-col gap-3">
+      {documentDownloadInfos.map((downloadInfo, at) => (
+        <DocumentDownloadButton
+          key={`${downloadInfo.filename}-${at}`}
+          downloadInfo={downloadInfo}
+        />
+      ))}
     </div>
+  );
+
+  if (!isAssistant) {
+    return (
+      <div className={cn(styles.userTurn, 'group')}>
+        <div className={styles.userColumn}>
+          {messageContent && (
+            <div className={styles.question}>
+              <MarkdownContent
+                loading={false}
+                content={messageContent}
+                reference={reference}
+                disableMath
+              />
+            </div>
+          )}
+          {Array.isArray(uploadedFiles) && uploadedFiles.length > 0 && (
+            <UploadedMessageFiles
+              files={uploadedFiles as UploadResponseDataType[]}
+            />
+          )}
+          {downloads}
+          <UserGroupButton
+            content={messageContent}
+            messageId={item.id}
+            removeMessageById={removeMessageById}
+            regenerateMessage={regenerateMessage && handleRegenerateMessage}
+            sendLoading={sendLoading}
+            deleteDisabled={deleteDisabled}
+          />
+        </div>
+        {visibleAvatar && (
+          <RAGFlowAvatar
+            className={styles.userAvatar}
+            avatar={avatar || undefined}
+            name={nickname}
+            isPerson
+          />
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <CitationHighlightProvider>
+      <div className={cn(styles.assistantTurn, 'group')}>
+        {visibleAvatar && (
+          <span className={styles.assistantMark}>
+            <AssistantAvatar
+              src={assistantAvatar}
+              thinking={loading}
+              className="size-[30px]"
+            />
+          </span>
+        )}
+        <div className={styles.assistantColumn}>
+          {showTrace && (
+            <ReasoningTrace
+              live={loading}
+              parts={parts}
+              metrics={metrics}
+              citations={citations}
+              reference={reference}
+              hasKnowledge={hasKnowledge}
+              clickDocumentButton={clickDocumentButton}
+            />
+          )}
+          {answerContent && (
+            <div className={styles.answer}>
+              <MarkdownContent
+                loading={loading}
+                content={answerContent}
+                reference={reference}
+                clickDocumentButton={clickDocumentButton}
+              />
+            </div>
+          )}
+          <ReferenceImageList
+            referenceChunks={reference.chunks}
+            messageContent={citationText}
+          />
+          {!loading && (
+            <ReferenceSourceList
+              sources={citations.sources}
+              reference={reference}
+              clickDocumentButton={clickDocumentButton}
+            />
+          )}
+          {downloads}
+          {index !== 0 && !loading && (
+            <AssistantGroupButton
+              messageId={item.id}
+              content={answerContent}
+              prompt={item.prompt}
+              showLikeButton={showLikeButton}
+              audioBinary={item.audio_binary}
+              showLoudspeaker={showLoudspeaker}
+            />
+          )}
+        </div>
+      </div>
+    </CitationHighlightProvider>
   );
 };
 

@@ -176,17 +176,14 @@ const ChatCard = forwardRef(function ChatCard(
     });
   }, [currentDialog, dialogId, form, patchChat, findLlmByUuid]);
 
-  useImperativeHandle(
-    ref,
-    (): HandlePressEnterType => (params) => {
-      return handlePressEnter({
-        ...params,
-        ...form.getValues(),
-        storeHistoryMessages: false,
-        omitSessionId: true,
-      });
-    },
-  );
+  useImperativeHandle(ref, (): HandlePressEnterType => (params) => {
+    return handlePressEnter({
+      ...params,
+      ...form.getValues(),
+      storeHistoryMessages: false,
+      omitSessionId: true,
+    });
+  });
 
   useEffect(() => {
     setLoading(id, sendLoading);
@@ -270,11 +267,11 @@ const ChatCard = forwardRef(function ChatCard(
                   item={message}
                   nickname={userInfo.nickname}
                   avatar={userInfo.avatar}
-                  avatarDialog={currentDialog.icon}
+                  hasKnowledge={!!currentDialog.dataset_ids?.length}
+                  assistantAvatar={currentDialog.icon}
                   reference={messageReferences.get(message) ?? EmptyReference}
                   // clickDocumentButton={clickDocumentButton}
                   index={i}
-                  isLast={i === derivedMessages.length - 1}
                   sendLoading={sendLoading}
                   clickDocumentButton={clickDocumentButton}
                   showLikeButton={false}

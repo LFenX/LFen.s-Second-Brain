@@ -44,7 +44,6 @@ import { usePlaceholderManager } from '../hooks/use-placeholder-manager';
 import { useDropdownManager } from './context';
 
 import { AgentBackground } from '@/components/canvas/background';
-import Spotlight from '@/components/spotlight';
 import { useNodeFocusRequest } from '../hooks/use-node-focus-request';
 import { useNodeLoading } from '../hooks/use-node-loading';
 import {
@@ -401,7 +400,6 @@ function AgentCanvas({
             panActivationKeyCode={null}
           >
             <AgentBackground></AgentBackground>
-            <Spotlight className="z-0" opcity={0.7} coverage={70} />
             <Controls
               position={'bottom-center'}
               orientation="horizontal"

@@ -17,7 +17,6 @@ import {
 import { Routes } from '@/routes';
 
 import { RAGFlowAvatar } from '@/components/ragflow-avatar';
-import Spotlight from '@/components/spotlight';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -336,8 +335,6 @@ function AdminUserDetail() {
       </nav>
 
       <Card className="!shadow-none relative h-0 basis-0 grow flex flex-col bg-transparent border-0.5 border-border-button overflow-hidden">
-        <Spotlight />
-
         <CardHeader className="pb-10 border-b-0.5 dark:border-border-button space-y-8">
           <section className="flex items-center gap-4 text-base">
             <RAGFlowAvatar

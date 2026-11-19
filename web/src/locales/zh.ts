@@ -35,8 +35,8 @@ export default {
       tokenCopied: '已复制本次令牌',
       ownCredentials: '管理我的临时凭据',
       ownCredentialsHint:
-        '输入已知知识域 ID，仅查看本人的最多 20 条有效或近期凭据元数据并撤销。原内容授权失效后仍可管理本人凭据；这里不会显示令牌或恢复正文权限。',
-      credentialDomain: '要管理的知识域 ID',
+        '选择知识域，查看本人最多 20 条有效或近期的凭据并撤销。原内容授权失效后仍可管理本人凭据；这里不会显示令牌，也不会恢复正文权限。',
+      credentialDomain: '知识域',
       listCredentials: '查询本人凭据',
       credentialLastUse: '最近使用',
       credentialRevoked: '已撤销',
@@ -80,6 +80,24 @@ export default {
       tenantRenewalWarning:
         '此团队的共享权限修改会使现有阅读视图失效，需要重新打开内容。',
       sharedWithMe: '共享给我',
+      sharedWithMeHint:
+        '这里列出其他人授权给你的知识模块。你可以在网页中阅读，也可以为它生成临时 MCP 令牌，接入 Claude Code、Cursor 等客户端。',
+      mcpTools: '可用工具',
+      mcpEndpointHint:
+        '服务端只接受管理员配置的这一个地址（KNOWLEDGE_ACCESS_MCP_AUDIENCE）。如果你是通过其他域名、IP 或端口打开本页面，请改用管理员提供的正式地址，否则客户端会被拒绝（403）。',
+      mcpStepScope: '选择权限与资料范围',
+      mcpStepCredential: '命名客户端并设置有效期',
+      mcpStepConnect: '连接到客户端',
+      mcpConnectPending: '创建令牌后，这里会给出可直接复制的客户端配置。',
+      mcpConfig: {
+        json: 'JSON 配置（Claude Code / Cursor / VS Code）',
+        claudeCode: 'Claude Code 命令',
+      },
+      copyConfig: '复制配置',
+      configCopied: '已复制',
+      mcpConfigHint:
+        '页面上只显示 <token> 占位符；点击“复制配置”时会自动填入真实令牌。令牌到期或撤销后需要重新生成。',
+      chooseCredentialDomain: '选择知识域',
       ownerTitle: '共享管理',
       policy: '知识域共享开关',
       policyOn: '已开启共享',
@@ -141,6 +159,14 @@ export default {
       loading: '正在读取…',
       noSharedModules: '当前团队暂无可用的共享模块。',
       ownerOnly: '当前账号没有此知识域的共享管理权限。',
+      setupTitle: '先把这个知识库设为可共享',
+      setupHint:
+        '共享以“知识域”为单位。知识库登记为知识域后，才能开启共享、发布模块并授权给同事；被授权的人可以在“共享给我”里阅读或生成 MCP 令牌。',
+      setupStepDomain:
+        '点击右上角按钮，把当前知识库登记为知识域（或选择已有知识域）。',
+      setupStepPolicy: '回到本页，打开“知识域共享开关”。',
+      setupStepModule: '在知识目录中选择要发布的内容，创建共享模块。',
+      setupStepGrant: '把模块授权给个人账号或部门，并设置是否允许 MCP。',
       fixedContent: '读取已授权的固定修订内容。',
       openCatalogue: '打开授权目录',
       closeContent: '关闭内容',
@@ -164,6 +190,9 @@ export default {
       notVisible: '当前内容不可访问。请核对账号、授权和共享状态。',
       changed:
         '共享范围或版本已变化。请刷新状态并重新打开内容；修改前需要重新核对。',
+      indexNotReady:
+        '所选内容的本地索引尚未建好或已过期。请到“知识目录 → 本地词法检索”重新建立索引，就绪后再保存或授权。',
+      errorCode: '错误代码：{{code}}',
       unsupportedScope:
         '当前内容不能组成完整的共享范围。请回到已发布内容重新选择。',
       invalidInput: '请检查必填项、固定内容范围和到期时间。',
@@ -184,6 +213,8 @@ export default {
       },
     },
     knowledgeDomain: {
+      noEmptyDatasets:
+        '当前没有可登记的空私有知识库。已上传文件的知识库不能直接登记，请在上方新建知识域后导入内容。',
       entry: '建立或选择知识域',
       select: '选择已有知识域',
       name: '知识域名称',
@@ -1521,6 +1552,8 @@ export default {
       registrationHint:
         '登记一个精确路径范围，最多16条，一行一个。登记只保存范围和默认分类，不保存文件正文。登记键相同、配置相同可找回原登记。',
       registrationKey: '登记键',
+      registrationKeyHint:
+        '已自动生成，一般保持默认即可；用同一个键和相同配置再次提交可以找回原登记。',
       registrationName: '来源名称',
       includePaths: '允许的相对路径',
       register: '保存来源登记',
@@ -1741,10 +1774,13 @@ export default {
       nicknamePlaceholder: '请输入名称',
       register: '创建账户',
       continue: '继续',
-      title: 'A leading RAG engine for LLM context',
+      title: '你的本地第二大脑',
+      featureCite: '回答附带来源，可逐条核对引用',
+      featureShare: '按模块授权给同事，也能通过 MCP 接入客户端',
+      featureLocal: '数据与模型配置留在你自己的环境里',
       start: '立即开始',
       description:
-        '免费注册以探索顶级 RAG 技术。 创建知识库和人工智能来增强业务',
+        '把文档、会议纪要和笔记整理成可检索、可引用、可共享的知识库。',
       review: '来自 500 多条评论',
     },
     header: {
@@ -2201,7 +2237,7 @@ export default {
       changeSpecificCategory: '更改特定类别',
       uploadTitle: '点击或拖拽文件至此区域即可上传',
       uploadDescription:
-        '支持单次或批量上传。本地部署的单次上传文件总大小上限为 1GB，单次批量上传文件数不超过 32，单个账户不限文件数量。对于 cloud.ragflow.io：每次上传的总文件大小限制为 10MB，每个文件不得超过 10MB，每个账户最多可上传 128 个文件。严禁上传违禁文件。',
+        '支持单次或批量上传。本地部署的单次上传文件总大小上限为 1GB，单次批量上传文件数不超过 32，单个账户不限文件数量。',
       chunk: '解析块',
       bulk: '批量',
       cancel: '取消',
@@ -2602,6 +2638,8 @@ NER：使用 spaCy NER 和基于规则的关键词提取来抽取 Entities 和 R
       delete: '删除',
     },
     chat: {
+      dropFiles: '把文件拖到这里',
+      dropFilesLimit: '最多 5 个文件，每个不超过 5MB',
       chatSupport: '聊天支持',
       replyInstantly: '我们通常会即时回复',
       typeYourMessage: '输入消息...',
@@ -2649,10 +2687,19 @@ NER：使用 spaCy NER 和基于规则的关键词提取来抽取 Entities 和 R
   - **当信息可用时**: 总结内容以给出详细答案。
   - **当信息不可用时**: 你的回答必须包含这句确切的话："在知识库中未找到您要的答案！"
   - **始终考虑**整个对话历史。`,
-      systemInitialValue: `你是一个智能助手，请总结知识库的内容来回答问题，请列举知识库中的数据详细回答。当所有知识库内容都与问题无关时，你的回答必须包括"知识库中未找到您要的答案！"这句话。回答需要考虑聊天历史。
-        以下是知识库：
-        {knowledge}
-        以上是知识库。`,
+      systemInitialValue: `你是知识库助手，只依据下面的知识库回答问题。
+
+**回答的写法**
+1. 结论先行：开头用一两句话直接回答问题。
+2. 论据在后：用简短的要点列出支撑结论的事实、数字和日期，每一条都要来自知识库。
+3. 对比版本、方案或时间段时用小表格；只有回答包含多个部分时才使用小标题。
+4. 只有在必要时，最后补充注意事项或待确认的点；不写客套话。
+
+**规则**
+- 用户用什么语言提问，就用什么语言回答。
+- 只使用以下知识库：{knowledge}，不要编造事实。
+- 知识库中没有答案时，直接说明（中文写作“知识库中未找到您要的答案！”）。
+- 回答需要考虑完整的对话历史。`,
       systemMessage: '请输入',
       knowledgePlaceholderMessage:
         '已选择知识库但系统提示词中缺少 {knowledge} 占位符，检索到的内容将无法注入。请在系统提示词中添加 {knowledge}，或移除已选择的知识库。',
@@ -2759,6 +2806,70 @@ NER：使用 spaCy NER 和基于规则的关键词提取来抽取 Entities 和 R
       tokenError: '请先创建 API Token!',
       betaError: '请先在系统设置中申请API密钥。',
       searching: '搜索中',
+      reasoningTrace: {
+        title: '思考链路',
+        stage: {
+          refine: '理解问题',
+          retrieve: '检索知识库',
+          reason: '推理分析',
+          compose: '组织回答',
+          verify: '核对引用',
+        },
+        describe: {
+          refine: { done: '结合对话上下文改写了问题' },
+          retrieve: {
+            active: '正在召回相关片段…',
+            deepActive: '正在分轮检索，并评估资料是否充分…',
+            done: '检索完成',
+            deepDone: '分轮检索完成，共命中 {{count}} 条',
+            found: '找到 {{chunks}} 段相关内容，来自 {{documents}} 篇文档',
+            empty: '知识库中没有找到相关内容',
+          },
+          reason: { active: '正在思考…', done: '思考完成' },
+          compose: {
+            todo: '等待检索结果',
+            active: '正在撰写回答…',
+            done: '回答已生成',
+            tokens: '生成 {{tokens}} tokens，{{speed}}/s',
+          },
+          verify: {
+            todo: '回答完成后核对出处',
+            done: '引用了 {{cited}} 段，来自 {{documents}} 篇文档',
+            warn: '回答没有引用知识库内容，请谨慎采信',
+          },
+        },
+        reasonChars: '约 {{count}} 字',
+        summaryRetrieved: '检索 {{count}} 段',
+        summaryNoHit: '未命中',
+        summaryReason: '思考 {{value}}',
+        summaryCited: '引用 {{count}} 处',
+        phase: {
+          prepare: '准备',
+          refine: '理解',
+          retrieval: '检索',
+          generate: '生成',
+          other: '其他',
+        },
+        research: {
+          retrieved: '命中 {{count}} 条',
+          check: '评估资料是否充分',
+          sufficient: '资料已充分',
+          expand: '资料不足，拆分子问题',
+        },
+      },
+      citation: {
+        sources: '出处',
+        showAll: '全部',
+        collapse: '收起',
+        more: '还有 {{count}} 个出处',
+        chunkCount: '{{count}} 段',
+        relevance: '相关度',
+        semantic: '语义',
+        keyword: '关键词',
+        locate: '定位原文',
+        open: '打开文档',
+        label: '引用 {{number}}',
+      },
       parsing: '解析中',
       uploading: '上传中',
       uploadFailed: '上传失败',
@@ -2860,6 +2971,25 @@ NER：使用 spaCy NER 和基于规则的关键词提取来抽取 Entities 和 R
       edit: '编辑',
       cropTip: '拖动选区可以选择要图片的裁剪位置，滚动可以放大/缩小选区',
       cropImage: '剪裁图片',
+      mcpAccess: {
+        title: 'MCP 接入',
+        description:
+          '用 API 密钥把你能访问的知识库接入 Claude Code、Cursor、VS Code 等 MCP 客户端，在客户端里直接检索并引用知识库内容。',
+        endpoint: '接入地址',
+        tools: '可用工具',
+        manageKeys: '管理 API 密钥',
+        keyHint:
+          '把配置里的 <API_KEY> 换成你在“管理 API 密钥”中创建的密钥。密钥等同于你的账号权限，请勿外传。',
+        teamHint:
+          '给同事使用：把知识库的权限设为“团队”并邀请对方加入团队，对方用自己的 API 密钥接入即可看到这些知识库。',
+        grantHint:
+          '给团队外的人按模块、限期授权：在知识库的“共享管理”中发布模块，对方在',
+        grantHintSuffix: '里生成临时 MCP 令牌。',
+      },
+      chooseAvatarPreset: '选择预置头像',
+      avatarPresetsStill: '静态头像',
+      avatarPresetsAnimated: '动图头像',
+      animatedAvatarTooLarge: '动图头像不能超过 1MB。',
       selectModelPlaceholder: '请选择模型',
       configureModelTitle: '配置模型',
       confluenceIsCloudTip:
@@ -3328,7 +3458,7 @@ NER：使用 spaCy NER 和基于规则的关键词提取来抽取 Entities 和 R
       recommended: '推荐',
       profile: '概要',
       avatar: '头像',
-      avatarTip: '这会在你的个人主页展示',
+      avatarTip: '可上传图片或 1MB 以内的 GIF 动图，也可以选择预置头像。',
       profileDescription: '在此更新您的照片和个人详细信息。',
       maxTokens: '最大上下文长度',
       maxTokensMessage: '最大上下文长度是必填项',
@@ -3857,7 +3987,7 @@ NER：使用 spaCy NER 和基于规则的关键词提取来抽取 Entities 和 R
       parseOnCreation: '创建时解析',
       uploadTitle: '点击或拖拽文件至此区域即可上传',
       uploadDescription:
-        '支持单次或批量上传。 本地部署的单次上传文件总大小上限为 1GB，单次批量上传文件数不超过 32，单个账户不限文件数量。对于 cloud.ragflow.io：每次上传的总文件大小限制为 10MB，每个文件不得超过 10MB，每个账户最多可上传 128 个文件。严禁上传违禁文件。',
+        '支持单次或批量上传。 本地部署的单次上传文件总大小上限为 1GB，单次批量上传文件数不超过 32，单个账户不限文件数量。',
       file: '文件',
       directory: '文件夹',
       local: '本地上传',

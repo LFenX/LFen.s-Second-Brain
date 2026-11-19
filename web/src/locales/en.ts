@@ -37,8 +37,8 @@ export default {
       tokenCopied: 'Token copied',
       ownCredentials: 'Manage my temporary credentials',
       ownCredentialsHint:
-        'Enter a known domain ID to list up to 20 own live or recent credential metadata records and revoke them. Self management remains available after content access is lost; it reveals no token and grants no content access.',
-      credentialDomain: 'Credential domain ID',
+        'Pick a domain to list up to 20 of your live or recent credentials and revoke them. You can still manage them after content access ends; tokens are never shown here and no content access is restored.',
+      credentialDomain: 'Domain',
       listCredentials: 'List own credentials',
       credentialLastUse: 'Last used',
       credentialRevoked: 'Revoked',
@@ -84,6 +84,25 @@ export default {
       tenantRenewalWarning:
         'Sharing permission changes in this team invalidate current reading views. Reopen the content afterwards.',
       sharedWithMe: 'Shared with me',
+      sharedWithMeHint:
+        'Knowledge modules other people shared with you. Read them here, or mint a temporary MCP token to use them from Claude Code, Cursor and other clients.',
+      mcpTools: 'Tools',
+      mcpEndpointHint:
+        'The server accepts only the one address its administrator configured (KNOWLEDGE_ACCESS_MCP_AUDIENCE). If you opened this page through another host, IP or port, use the official address instead, or clients will be refused (403).',
+      mcpStepScope: 'Choose access and sources',
+      mcpStepCredential: 'Name the client and set a lifetime',
+      mcpStepConnect: 'Connect a client',
+      mcpConnectPending:
+        'Once the token is created, ready-to-copy client settings appear here.',
+      mcpConfig: {
+        json: 'JSON settings (Claude Code / Cursor / VS Code)',
+        claudeCode: 'Claude Code command',
+      },
+      copyConfig: 'Copy settings',
+      configCopied: 'Copied',
+      mcpConfigHint:
+        'The page only shows a <token> placeholder; copying fills in the real token. Mint a new one after it expires or is revoked.',
+      chooseCredentialDomain: 'Choose a domain',
       ownerTitle: 'Sharing management',
       policy: 'Knowledge domain sharing',
       policyOn: 'Sharing is enabled',
@@ -153,6 +172,16 @@ export default {
       noSharedModules: 'No shared modules are available in this team.',
       ownerOnly:
         'This account cannot manage sharing for this knowledge domain.',
+      setupTitle: 'Make this dataset shareable first',
+      setupHint:
+        'Sharing works per knowledge domain. Register this dataset as a domain, then turn sharing on, publish modules and grant them to teammates. People you grant can read them under Shared with me or mint an MCP token.',
+      setupStepDomain:
+        'Use the button on the right to register this dataset as a knowledge domain (or pick an existing one).',
+      setupStepPolicy: 'Come back here and turn on domain sharing.',
+      setupStepModule:
+        'Pick the content to publish in the knowledge catalogue and create a module.',
+      setupStepGrant:
+        'Grant the module to people or departments, and choose whether MCP is allowed.',
       fixedContent: 'Read authorized content at its fixed revision.',
       openCatalogue: 'Open authorized catalogue',
       closeContent: 'Close content',
@@ -177,6 +206,9 @@ export default {
         'This content is unavailable. Check your account, grant and sharing status.',
       changed:
         'The sharing scope or version changed. Refresh and reopen the content; review current state before editing.',
+      indexNotReady:
+        'The local index for this content is not built yet or is out of date. Rebuild it under Knowledge catalogue → Local lexical search, then save or grant again.',
+      errorCode: 'Error code: {{code}}',
       unsupportedScope:
         'This selection cannot form a complete sharing scope. Choose published content again.',
       invalidInput:
@@ -200,6 +232,8 @@ export default {
       },
     },
     knowledgeDomain: {
+      noEmptyDatasets:
+        'No empty private dataset to register. Datasets that already hold files cannot be registered; create a new domain above and import content into it.',
       entry: 'Create or choose a knowledge domain',
       select: 'Choose an existing domain',
       name: 'Domain name',
@@ -1683,6 +1717,8 @@ export default {
       registrationHint:
         'Register 1–16 exact relative paths, one per line. This saves the scope and defaults, not the original text. The same key and configuration recover the existing registration.',
       registrationKey: 'Registration key',
+      registrationKeyHint:
+        'Generated for you; keep it unless you need to. Submitting the same key and settings again finds the original registration.',
       registrationName: 'Source name',
       includePaths: 'Allowed relative paths',
       register: 'Save source registration',
@@ -1931,10 +1967,13 @@ export default {
       nicknamePlaceholder: 'Please input nickname',
       register: 'Create an account',
       continue: 'Continue',
-      title: 'A leading RAG engine for LLM context',
+      title: 'Your local second brain',
+      featureCite: 'Answers come with sources you can check',
+      featureShare: 'Share modules with teammates, or connect clients over MCP',
+      featureLocal: 'Your data and model settings stay in your own environment',
       start: "Let's get started",
       description:
-        'Sign up for free to explore top RAG technology. Create datasets and AIs to empower your business.',
+        'Turn documents, meeting notes and wikis into a knowledge base you can search, cite and share.',
       review: 'from 500+ reviews',
       seeAll: 'See all',
     },
@@ -2435,7 +2474,7 @@ Example: A 1 KB message with 1024-dim embedding uses ~9 KB. The 5 MB default lim
       changeSpecificCategory: 'Change specific category',
       uploadTitle: 'Drag and drop your file here to upload',
       uploadDescription:
-        'Supports single or batch file upload. For a locally deployed {{appName}}: the total file size limit per upload is 1GB, with a batch upload limit of 32 files. There is no cap on the total number of files per account. For cloud.ragflow.io, the total file size limit per upload is 10MB, with each file not exceeding 10MB and a maximum of 128 files per account.',
+        'Supports single or batch file upload. For a locally deployed {{appName}}: the total file size limit per upload is 1GB, with a batch upload limit of 32 files. There is no cap on the total number of files per account.',
       chunk: 'Chunk',
       bulk: 'Bulk',
       cancel: 'Cancel',
@@ -2876,6 +2915,8 @@ This auto-tagging feature enhances retrieval by adding another layer of domain-s
       delete: 'Delete',
     },
     chat: {
+      dropFiles: 'Drop files here',
+      dropFilesLimit: 'Up to 5 files, 5 MB each',
       chatSupport: 'Chat Support',
       replyInstantly: 'We typically reply instantly',
       typeYourMessage: 'Type your message...',
@@ -2925,13 +2966,19 @@ This auto-tagging feature enhances retrieval by adding another layer of domain-s
   - **When information is available**: Summarize the content to give a detailed answer.
   - **When information is unavailable**: Your response must contain this exact sentence: "The answer you are looking for is not found in the dataset!"
   - **Always consider** the entire conversation history.`,
-      systemInitialValue: `You are an intelligent assistant. Your primary function is to answer questions based strictly on the provided dataset.
+      systemInitialValue: `You are a knowledge assistant. Answer strictly from the dataset below.
 
-      **Essential Rules:**
-        - Your answer must be derived **solely** from this dataset: \`{knowledge}\`.
-        - **When information is available**: Summarize the content to give a detailed answer.
-        - **When information is unavailable**: Your response must contain this exact sentence: "The answer you are looking for is not found in the dataset!"
-        - **Always consider** the entire conversation history.`,
+**How to write the answer**
+1. Conclusion first: open with one or two sentences that answer the question directly.
+2. Evidence after: back the conclusion with short bullet points carrying the facts, figures and dates, each grounded in the dataset.
+3. Use a small table to compare versions, options or periods, and short headings only when the answer has several parts.
+4. End with caveats or open points only when they matter. No filler.
+
+**Rules**
+- Reply in the same language as the user's question.
+- Use only this dataset: {knowledge}. Never invent facts.
+- If the dataset does not answer the question, say so plainly in the user's language (in English: "The answer you are looking for is not found in the dataset!").
+- Take the whole conversation into account.`,
       systemMessage: 'Please input!',
       knowledgePlaceholderMessage:
         'Datasets are selected but the {knowledge} placeholder is missing from the system prompt, so retrieved content cannot be injected. Add {knowledge} to the system prompt or remove the datasets.',
@@ -3040,6 +3087,72 @@ This auto-tagging feature enhances retrieval by adding another layer of domain-s
       betaError:
         'Please acquire a {{appName}} API Key from the System Settings page first.',
       searching: 'Searching...',
+      reasoningTrace: {
+        title: 'Thought process',
+        stage: {
+          refine: 'Understand',
+          retrieve: 'Search the knowledge base',
+          reason: 'Reason',
+          compose: 'Write the answer',
+          verify: 'Check citations',
+        },
+        describe: {
+          refine: { done: 'Rewrote the question with the conversation' },
+          retrieve: {
+            active: 'Recalling relevant chunks…',
+            deepActive: 'Searching in rounds and checking the evidence…',
+            done: 'Search finished',
+            deepDone: 'Searched in rounds, {{count}} hits in total',
+            found:
+              'Found {{chunks}} relevant chunks in {{documents}} documents',
+            empty: 'Nothing relevant in the knowledge base',
+          },
+          reason: { active: 'Thinking…', done: 'Finished thinking' },
+          compose: {
+            todo: 'Waiting for the search',
+            active: 'Writing…',
+            done: 'Answer written',
+            tokens: '{{tokens}} tokens at {{speed}}/s',
+          },
+          verify: {
+            todo: 'Sources are checked once the answer is done',
+            done: 'Cites {{cited}} chunks from {{documents}} documents',
+            warn: 'The answer cites nothing from the knowledge base',
+          },
+        },
+        reasonChars: '{{count}} chars',
+        summaryRetrieved: 'Searched {{count}}',
+        summaryNoHit: 'No hits',
+        summaryReason: 'Thought {{value}}',
+        summaryCited: 'Cited {{count}}',
+        phase: {
+          prepare: 'Prepare',
+          refine: 'Understand',
+          retrieval: 'Retrieve',
+          generate: 'Generate',
+          other: 'Other',
+        },
+        research: {
+          retrieved: '{{count}} hits',
+          check: 'Check whether the evidence is sufficient',
+          sufficient: 'Evidence is sufficient',
+          expand: 'Evidence is missing, split into sub-questions',
+        },
+      },
+      citation: {
+        sources: 'Sources',
+        showAll: 'All',
+        collapse: 'Collapse',
+        more: '{{count}} more sources',
+        chunkCount_one: '{{count}} chunk',
+        chunkCount: '{{count}} chunks',
+        relevance: 'Relevance',
+        semantic: 'Semantic',
+        keyword: 'Keyword',
+        locate: 'Locate in source',
+        open: 'Open document',
+        label: 'Citation {{number}}',
+      },
       parsing: 'Parsing',
       uploading: 'Uploading',
       uploadFailed: 'Upload failed',
@@ -3163,6 +3276,25 @@ This auto-tagging feature enhances retrieval by adding another layer of domain-s
       cropTip:
         'Drag the selection area to choose the cropping position of the image, and scroll to zoom in/out',
       cropImage: 'Crop image',
+      mcpAccess: {
+        title: 'MCP access',
+        description:
+          'Connect the datasets you can read to MCP clients such as Claude Code, Cursor or VS Code with an API key, and search and cite them right in the client.',
+        endpoint: 'Endpoint',
+        tools: 'Tools',
+        manageKeys: 'Manage API keys',
+        keyHint:
+          'Replace <API_KEY> with a key created under Manage API keys. A key carries your account access, so keep it private.',
+        teamHint:
+          'For teammates: set the dataset permission to Team and invite them to your team; they connect with their own API key and see those datasets.',
+        grantHint:
+          'For people outside your team, with per-module, time-limited grants: publish a module under the dataset sharing page, then they mint a token under',
+        grantHintSuffix: '.',
+      },
+      chooseAvatarPreset: 'Choose a preset',
+      avatarPresetsStill: 'Still',
+      avatarPresetsAnimated: 'Animated',
+      animatedAvatarTooLarge: 'Animated avatars must be 1 MB or smaller.',
       selectModelPlaceholder: 'Select model',
       configureModelTitle: 'Configure model',
       connectorNameTip: 'A descriptive name for the connector',
@@ -3871,7 +4003,7 @@ Example: Virtual Hosted Style`,
       recommended: 'Recommended',
       profile: 'Profile',
       avatar: 'Avatar',
-      avatarTip: 'This will be displayed on your profile.',
+      avatarTip: 'Upload an image or a GIF up to 1 MB, or pick a preset.',
       profileDescription: 'Update your photo and personal details here.',
       maxTokens: 'Max context length',
       maxTokensMessage: 'Max context length is required',
@@ -4455,7 +4587,7 @@ Example: Virtual Hosted Style`,
       directory: 'Directory',
       uploadTitle: 'Drag and drop your file here to upload',
       uploadDescription:
-        'Supports single or batch file upload. For a locally deployed {{appName}}: the total file size limit per upload is 1GB, with a batch upload limit of 32 files. There is no cap on the total number of files per account. For cloud.ragflow.io, the total file size limit per upload is 10MB, with each file not exceeding 10MB and a maximum of 128 files per account.',
+        'Supports single or batch file upload. For a locally deployed {{appName}}: the total file size limit per upload is 1GB, with a batch upload limit of 32 files. There is no cap on the total number of files per account.',
       local: 'Local uploads',
       s3: 'S3 uploads',
       preview: 'Preview',

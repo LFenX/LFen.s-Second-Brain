@@ -44,15 +44,13 @@ export function NextBanner() {
   const { t, i18n } = useTranslation();
   return (
     <h1
-      className="text-5xl leading-normal text-left"
+      className="text-[40px] leading-tight tracking-tight text-left"
       dir={i18n.language?.startsWith('ar') ? 'rtl' : 'ltr'}
     >
-      <span className="font-semibold text-text-primary">
+      <span className="font-normal text-text-secondary">
         {t('header.welcome')}{' '}
       </span>
-      <span className="font-bold text-transparent bg-clip-text bg-gradient-to-l from-[#40EBE3] to-[#4A51FF]">
-        {appName}
-      </span>
+      <span className="font-semibold text-text-primary">{appName}</span>
     </h1>
   );
 }

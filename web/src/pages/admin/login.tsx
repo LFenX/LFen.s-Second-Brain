@@ -9,7 +9,6 @@ import { useMutation } from '@tanstack/react-query';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
-import Spotlight from '@/components/spotlight';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -117,22 +116,6 @@ function AdminLogin() {
   return (
     <ScrollArea className="w-screen h-screen">
       <div className="relative h-max min-h-[100vh]">
-        <Spotlight opcity={0.4} coverage={60} color="rgb(128, 255, 248)" />
-        <Spotlight
-          opcity={0.3}
-          coverage={12}
-          X="10%"
-          Y="-10%"
-          color="rgb(128, 255, 248)"
-        />
-        <Spotlight
-          opcity={0.3}
-          coverage={12}
-          X="90%"
-          Y="-10%"
-          color="rgb(128, 255, 248)"
-        />
-
         <BgSvg isPaused={true} />
 
         <div className="absolute top-3 left-0 w-full">

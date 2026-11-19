@@ -12,8 +12,8 @@ import { rsaPsw } from '@/utils';
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
+import { BookOpenCheck, Share2, ShieldCheck } from 'lucide-react';
 
-import Spotlight from '@/components/spotlight';
 import { Button, ButtonLoading } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -30,7 +30,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, UseFormReturn } from 'react-hook-form';
 import { z } from 'zod';
 import { NICKNAME_PATTERN } from '../user-setting/profile/constants';
-import { BgSvg } from './bg';
 import FlipCard3D, { FlipFaceContext } from './card';
 import './index.less';
 
@@ -65,17 +64,22 @@ function LoginFormContent({
   const isActiveFace = isLoginPage ? face === 'front' : face === 'back';
 
   return (
-    <div className="flex flex-col items-center justify-center w-full">
-      <div className="text-center mb-8">
-        <h2 className="text-xl font-semibold text-text-primary">
-          {title === 'login' ? t('loginTitle') : t('signUpTitle')}
-        </h2>
-      </div>
-      <div className=" w-full max-w-[540px] bg-bg-component backdrop-blur-sm rounded-2xl shadow-xl pt-14 pl-10 pr-10 pb-2 border border-border-button ">
+    <div className="flex w-full flex-col items-center justify-center">
+      <div className="w-full max-w-[420px] rounded-3xl border-0.5 border-border-button bg-bg-component px-8 pb-6 pt-8 shadow-soft">
+        <div className="mb-7 space-y-1.5">
+          <h2 className="text-[22px] font-semibold tracking-tight text-text-primary">
+            {title === 'login' ? t('loginTitle') : t('signUpTitle')}
+          </h2>
+          <p className="text-sm text-text-secondary">
+            {title === 'login'
+              ? t('loginDescription')
+              : t('registerDescription')}
+          </p>
+        </div>
         {!disablePasswordLogin && (
           <Form {...form}>
             <form
-              className="flex flex-col gap-8 text-text-primary "
+              className="flex flex-col gap-5 text-text-primary"
               data-testid="auth-form"
               data-active={isActiveFace ? 'true' : undefined}
               onSubmit={form.handleSubmit(onCheck)}
@@ -179,7 +183,8 @@ function LoginFormContent({
                 data-testid="auth-submit"
                 type="submit"
                 loading={loading}
-                className="bg-metallic-gradient border-b-[#00BEB4] border-b-2 hover:bg-metallic-gradient hover:border-b-[#02bcdd] w-full my-8"
+                size="lg"
+                className="mt-2 w-full"
               >
                 {title === 'login' ? t('login') : t('continue')}
               </ButtonLoading>
@@ -212,8 +217,8 @@ function LoginFormContent({
         )}
 
         {!disablePasswordLogin && title === 'login' && registerEnabled && (
-          <div className="mt-10 text-right">
-            <p className="text-text-disabled text-sm">
+          <div className="mt-6 text-center">
+            <p className="text-sm text-text-secondary">
               {t('signInTip')}
               <Button
                 data-testid="auth-toggle-register"
@@ -227,8 +232,8 @@ function LoginFormContent({
           </div>
         )}
         {!disablePasswordLogin && title === 'register' && (
-          <div className="mt-10 text-right">
-            <p className="text-text-disabled text-sm">
+          <div className="mt-6 text-center">
+            <p className="text-sm text-text-secondary">
               {t('signUpTip')}
               <Button
                 data-testid="auth-toggle-login"
@@ -357,41 +362,52 @@ const Login = () => {
     }
   };
 
-  return (
-    <>
-      <Spotlight opcity={0.4} coverage={60} color={'rgb(128, 255, 248)'} />
-      <Spotlight
-        opcity={0.3}
-        coverage={12}
-        X={'10%'}
-        Y={'-10%'}
-        color={'rgb(128, 255, 248)'}
-      />
-      <Spotlight
-        opcity={0.3}
-        coverage={12}
-        X={'90%'}
-        Y={'-10%'}
-        color={'rgb(128, 255, 248)'}
-      />
-      <div className=" h-[inherit] relative overflow-auto">
-        <BgSvg isPaused />
+  const features = [
+    { icon: BookOpenCheck, text: t('featureCite') },
+    { icon: Share2, text: t('featureShare') },
+    { icon: ShieldCheck, text: t('featureLocal') },
+  ];
 
-        <div className="z-20 absolute top-3 flex flex-col items-center mb-12 w-full text-text-primary">
-          <div className="flex items-center gap-3 mb-4 w-full px-4 pt-6 sm:px-10 sm:pt-10">
-            <div className="w-12 h-12 shrink-0 p-2 rounded-lg flex items-center justify-center">
-              <img src={appLogo} alt={`${appName} logo`} className="size-8" />
-            </div>
-            <div className="min-w-0 text-base sm:text-xl font-bold self-center">
-              {appName}
-            </div>
-          </div>
-          <h1 className="text-[36px] font-medium  text-center mb-2">
+  const brand = (
+    <div className="flex items-center gap-2.5">
+      <img src={appLogo} alt="" className="size-9" />
+      <span className="text-[17px] font-semibold tracking-tight">
+        {appName}
+      </span>
+    </div>
+  );
+
+  return (
+    <div className="flex min-h-full w-full overflow-auto bg-bg-base text-text-primary">
+      <aside className="hidden w-[42%] max-w-[560px] shrink-0 flex-col justify-between border-e-0.5 border-border-button bg-bg-card px-12 py-10 lg:flex">
+        {brand}
+        <div className="space-y-6">
+          <h1 className="text-[34px] font-semibold leading-tight tracking-tight">
             {t('title')}
           </h1>
+          <p className="max-w-md text-[15px] leading-relaxed text-text-secondary">
+            {t('description')}
+          </p>
+          <ul className="space-y-3">
+            {features.map(({ icon: Icon, text }) => (
+              <li
+                key={text}
+                className="flex items-center gap-3 text-sm text-text-primary"
+              >
+                <span className="flex size-8 shrink-0 items-center justify-center rounded-xl bg-bg-component shadow-[0_0_0_0.5px_var(--border-button)]">
+                  <Icon className="size-4 text-accent-primary" />
+                </span>
+                {text}
+              </li>
+            ))}
+          </ul>
         </div>
-        <div className="relative z-10 flex flex-col items-center justify-center min-h-[1050px] px-4 sm:px-6 lg:px-8">
-          {/* Login Form */}
+        <p className="text-xs text-text-disabled">© {appName}</p>
+      </aside>
+
+      <main className="flex min-w-0 flex-1 flex-col items-center justify-center gap-8 px-5 py-10">
+        <div className="lg:hidden">{brand}</div>
+        <div className="relative h-[620px] w-full max-w-[420px]">
           <FlipCard3D isLoginPage={isLoginPage}>
             <LoginFormContent
               isLoginPage={isLoginPage}
@@ -408,8 +424,8 @@ const Login = () => {
             />
           </FlipCard3D>
         </div>
-      </div>
-    </>
+      </main>
+    </div>
   );
 };
 

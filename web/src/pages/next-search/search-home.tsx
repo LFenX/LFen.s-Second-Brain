@@ -14,7 +14,6 @@
  *  limitations under the License.
  */
 
-import Spotlight from '@/components/spotlight';
 import message from '@/components/ui/message';
 import { useAutoResizeTextarea } from '@/hooks/use-auto-resize-textarea';
 import { IUserInfo } from '@/interfaces/database/user-setting';
@@ -67,7 +66,6 @@ export default function SearchHome({
       <div className="relative z-10 px-8 pt-8 flex  text-transparent flex-col justify-center items-center w-full max-w-[780px]">
         <RAGFlowLogo showEmbedIcon={showEmbedLogo}></RAGFlowLogo>
         <div className="rounded-lg  text-primary text-xl sticky flex justify-center w-full transform scale-100 mt-8 p-6 min-h-[240px] border">
-          {!isSearching && <Spotlight className="z-0" />}
           <div className="flex flex-col justify-center items-center  w-2/3">
             {!isSearching && (
               <>

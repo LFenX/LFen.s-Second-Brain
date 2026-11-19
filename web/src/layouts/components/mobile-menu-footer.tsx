@@ -51,7 +51,7 @@ export function MobileMenuFooter({ onClose }: MobileMenuFooterProps) {
         </FooterLink>
         <FooterDivider />
         <FooterLink
-          href="https://ragflow.io/docs/dev/category/user-guides"
+          href={`${projectUrl}#readme`}
           target="_blank"
           rel="noreferrer noopener"
           onClick={onClose}

@@ -51,7 +51,6 @@ import {
   testSandboxConnection,
 } from '@/services/admin-service';
 
-import Spotlight from '@/components/spotlight';
 import message from '@/components/ui/message';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -454,8 +453,6 @@ function AdminSandboxSettings() {
   return (
     <>
       <Card className="!shadow-none relative h-full bg-transparent overflow-hidden">
-        <Spotlight />
-
         <ScrollArea className="size-full">
           <CardHeader className="space-y-0">
             <CardTitle className="leading-10">

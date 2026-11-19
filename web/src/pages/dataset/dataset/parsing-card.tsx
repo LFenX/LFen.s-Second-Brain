@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import { IDocumentInfo } from '@/interfaces/database/document';
 import { useTranslation } from 'react-i18next';
 import reactStringReplace from 'react-string-replace';
@@ -14,7 +15,7 @@ function Dot({ run }: { run: RunningStatus }) {
   const runningStatus = RunningStatusMap[run];
   return (
     <span
-      className={'size-1 inline-block rounded'}
+      className="inline-block size-1.5 shrink-0 rounded-full"
       style={{ backgroundColor: runningStatus.color }}
     ></span>
   );
@@ -24,7 +25,7 @@ export const PopoverContent = ({ record }: IProps) => {
   const { t } = useTranslation();
   // Go derives state from ingestion_status; Python reads the legacy run.
   const run = getDocumentRunningStatus(record);
-  const label = t(`knowledgeDetails.runningStatus${run}`);
+  const label = t(RunningStatusMap[run].labelKey);
 
   const replaceText = (text: string) => {
     // Remove duplicate \n
@@ -85,14 +86,22 @@ export const PopoverContent = ({ record }: IProps) => {
 };
 
 export function ParsingCard({ record, handleShowLog }: IProps) {
+  const { t } = useTranslation();
   const run = getDocumentRunningStatus(record);
+  const failed = run === RunningStatus.FAIL;
   return (
     <Button
       variant="ghost"
-      size="icon-xs"
+      size="xs"
+      className={cn(
+        'gap-1.5 px-1.5 text-xs',
+        failed && 'text-state-error hover:text-state-error',
+      )}
       onClick={() => handleShowLog?.(record)}
+      title={t('knowledgeDetails.progressMsg')}
     >
       <Dot run={run}></Dot>
+      {t(RunningStatusMap[run].labelKey)}
     </Button>
   );
 }

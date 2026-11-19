@@ -6,6 +6,7 @@ import {
   type MouseEvent,
 } from 'react';
 import { useTranslation } from 'react-i18next';
+import { FieldSelect } from '@/components/form-fields';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { AccessFailure } from '@/components/knowledge-access-feedback';
@@ -140,21 +141,21 @@ export function SharedKnowledgeReader({
   }
   return (
     <section
-      className="space-y-4 rounded-lg border border-border-button p-4"
+      className="space-y-4 rounded-3xl border-0.5 border-border-button bg-bg-component p-5"
       aria-label={module.name}
     >
-      <h2 className="text-lg font-medium">{module.name}</h2>
+      <h2 className="text-base font-semibold">{module.name}</h2>
       <p className="text-sm text-text-secondary">
         {t('knowledgeAccess.fixedContent')}
       </p>
       <div className="flex flex-wrap items-center gap-2">
-        <label className="space-x-2">
+        <label className="flex items-center gap-2 text-sm">
           <span>{t('knowledgeAccess.mode')}</span>
-          <select
+          <FieldSelect
             value={mode}
             onChange={handleMode}
             disabled={reader.busy}
-            className="rounded border border-border-button bg-bg-base p-2"
+            className="w-auto min-w-40"
           >
             <option value="read">{t('knowledgeAccess.readOnly')}</option>
             {module.modes.includes('read_search') && (
@@ -162,7 +163,7 @@ export function SharedKnowledgeReader({
                 {t('knowledgeAccess.readSearch')}
               </option>
             )}
-          </select>
+          </FieldSelect>
         </label>
         <Button onClick={handleOpen} disabled={reader.busy}>
           {t('knowledgeAccess.openCatalogue')}
@@ -189,8 +190,9 @@ export function SharedKnowledgeReader({
                 key={entry.target.source.source_id}
                 className="flex flex-wrap items-center gap-3"
               >
-                <label className="space-x-2">
+                <label className="flex items-center gap-2 text-sm">
                   <input
+                    className="size-4 accent-[rgb(var(--accent-primary))]"
                     type="checkbox"
                     value={entry.target.source.source_id}
                     checked={
@@ -260,7 +262,7 @@ export function SharedKnowledgeReader({
               {reader.results.hits.map((hit, index) => (
                 <article
                   key={hit.evidence_ref.evidence_id}
-                  className="space-y-2 rounded border border-border-button p-3"
+                  className="space-y-2 rounded-2xl border-0.5 border-border-button p-3"
                 >
                   <p>
                     {hit.citation.display_name} · {hit.citation.position_label}
@@ -283,7 +285,7 @@ export function SharedKnowledgeReader({
           {reader.evidence && (
             <article
               aria-label={t('knowledgeAccess.evidence')}
-              className="space-y-3 rounded border border-border-button p-4"
+              className="space-y-4 rounded-3xl border-0.5 border-border-button bg-bg-component p-5"
             >
               <h3>{reader.evidence.citation.display_name}</h3>
               <p className="text-sm text-text-secondary">

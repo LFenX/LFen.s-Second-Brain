@@ -91,7 +91,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     return (
       <textarea
         className={cn(
-          'flex min-h-[80px] w-full bg-bg-input rounded-md border border-border-button px-3 py-2 text-base ring-offset-background placeholder:text-text-disabled focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+          'flex min-h-[80px] w-full bg-bg-input rounded-lg border-0.5 border-border-button px-3 py-2 text-base placeholder:text-text-disabled transition-[background-color,border-color,box-shadow] focus-visible:outline-none focus-visible:bg-bg-component focus-visible:border-accent-primary/60 focus-visible:ring-[3px] focus-visible:ring-accent-primary/15 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
           resizable ? 'overflow-auto' : 'overflow-hidden',
           className,
         )}

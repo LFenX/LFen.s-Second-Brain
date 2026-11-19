@@ -18,7 +18,6 @@
 import { AvatarUpload } from '@/components/avatar-upload';
 import PasswordInput from '@/components/originui/password-input';
 import { SelectWithSearch } from '@/components/originui/select-with-search';
-import Spotlight from '@/components/spotlight';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -164,8 +163,6 @@ const ProfilePage: FC = () => {
         </header>
       }
     >
-      <Spotlight />
-
       {/* Main Content */}
       <div className="max-w-3xl space-y-11 w-3/4 p-7">
         {/* Name */}
@@ -193,6 +190,7 @@ const ProfilePage: FC = () => {
           <label className="w-[190px] text-sm font-medium">{t('avatar')}</label>
           <div className="flex items-center gap-4">
             <AvatarUpload
+              presets
               value={profile.avatar}
               onChange={handleAvatarUpload}
               tips={t('avatarTip')}

@@ -1,5 +1,6 @@
 import { useState, type ChangeEvent, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Field, CheckRow } from '@/components/form-fields';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { AccessRevocationWarning } from './revocation-warning';
@@ -86,16 +87,15 @@ export function AccessModuleEditor({
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-3 rounded border border-border-button p-4"
+      className="space-y-4 rounded-3xl border-0.5 border-border-button bg-bg-component p-5"
       aria-label={t(
         module ? 'knowledgeAccess.editModule' : 'knowledgeAccess.newModule',
       )}
     >
-      <h2 className="text-lg font-medium">
+      <h2 className="text-base font-semibold">
         {t(module ? 'knowledgeAccess.editModule' : 'knowledgeAccess.newModule')}
       </h2>
-      <label className="block space-y-1">
-        <span>{t('knowledgeAccess.moduleName')}</span>
+      <Field label={t('knowledgeAccess.moduleName')}>
         <Input
           required
           maxLength={128}
@@ -103,36 +103,30 @@ export function AccessModuleEditor({
           onChange={handleName}
           disabled={command.locked}
         />
-      </label>
+      </Field>
       {module && choice && (
-        <label className="block space-x-2">
-          <input
-            type="checkbox"
-            checked={useChoice}
-            onChange={handleReplacement}
-            disabled={command.locked}
-          />
-          <span>{t('knowledgeAccess.replaceSelection')}</span>
-        </label>
+        <CheckRow
+          checked={useChoice}
+          onChange={handleReplacement}
+          disabled={command.locked}
+        >
+          {t('knowledgeAccess.replaceSelection')}
+        </CheckRow>
       )}
       <p className="text-sm text-text-secondary">
         {t('knowledgeAccess.fixedSelectionHint')}
       </p>
       {scope?.targets.map((target, index) => (
         <div key={target.source.source_id} className="space-y-1">
-          <label className="block space-x-2">
-            <input
-              type="checkbox"
-              value={target.source.source_id}
-              checked={selected.includes(target.source.source_id)}
-              onChange={handleTarget}
-              disabled={command.locked}
-            />
-            <span>
-              {choice?.names[target.source.source_id] ??
-                t('knowledgeAccess.selectionNumber', { index: index + 1 })}
-            </span>
-          </label>
+          <CheckRow
+            value={target.source.source_id}
+            checked={selected.includes(target.source.source_id)}
+            onChange={handleTarget}
+            disabled={command.locked}
+          >
+            {choice?.names[target.source.source_id] ??
+              t('knowledgeAccess.selectionNumber', { index: index + 1 })}
+          </CheckRow>
           <details className="text-sm text-text-secondary">
             <summary>{t('knowledgeAccess.fixedRevision')}</summary>
             <dl className="space-y-1 break-all">
@@ -155,28 +149,24 @@ export function AccessModuleEditor({
         </div>
       ))}
       {!scope && <p>{t('knowledgeAccess.choosePublicationFirst')}</p>}
-      <label className="block space-x-2">
-        <input
-          type="checkbox"
-          checked={enabled}
-          onChange={handleEnabled}
-          disabled={command.locked}
-        />
-        <span>{t('knowledgeAccess.moduleEnabled')}</span>
-      </label>
+      <CheckRow
+        checked={enabled}
+        onChange={handleEnabled}
+        disabled={command.locked}
+      >
+        {t('knowledgeAccess.moduleEnabled')}
+      </CheckRow>
       <p className="text-sm text-text-secondary">
         {t('knowledgeAccess.moduleChangeWarning')}
       </p>
       {module?.enabled && !enabled && <AccessRevocationWarning />}
-      <label className="block space-x-2">
-        <input
-          type="checkbox"
-          checked={confirmed}
-          onChange={handleConfirmed}
-          disabled={command.locked}
-        />
-        <span>{t('knowledgeAccess.confirmModule')}</span>
-      </label>
+      <CheckRow
+        checked={confirmed}
+        onChange={handleConfirmed}
+        disabled={command.locked}
+      >
+        {t('knowledgeAccess.confirmModule')}
+      </CheckRow>
       <Button
         type="submit"
         disabled={

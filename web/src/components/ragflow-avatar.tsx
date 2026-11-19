@@ -17,6 +17,7 @@
 import { cn } from '@/lib/utils';
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
 import { forwardRef, memo, useMemo } from 'react';
+import { defaultPersonAvatar } from './anime-avatar/presets';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 
 const PREDEFINED_COLORS = [
@@ -84,29 +85,44 @@ export const RAGFlowAvatar = memo(
         className={cn(className, { 'rounded-md': !isPerson })}
       >
         <AvatarImage src={avatar} />
-        <AvatarFallback
-          className="flex items-center justify-center bg-gradient-to-b text-white"
-          style={{
-            backgroundImage: `linear-gradient(to bottom, ${from}, ${to})`,
-          }}
-          role="presentation"
-          aria-hidden="true"
-        >
-          <svg
-            className="size-full block text-current select-none"
-            viewBox={`${-(50 + 22.5 * (initials.length - 1))} -50 ${100 + 45 * (initials.length - 1)} 100`}
-            preserveAspectRatio="xMinYMid meet"
+        {isPerson ? (
+          <AvatarFallback
+            className="bg-bg-card"
+            role="presentation"
+            aria-hidden="true"
           >
-            <text
-              fontSize={55}
-              fill="currentColor"
-              textAnchor="middle"
-              dominantBaseline="central"
+            <img
+              src={defaultPersonAvatar(name)}
+              alt=""
+              draggable={false}
+              className="size-full object-cover"
+            />
+          </AvatarFallback>
+        ) : (
+          <AvatarFallback
+            className="flex items-center justify-center bg-gradient-to-b text-white"
+            style={{
+              backgroundImage: `linear-gradient(to bottom, ${from}, ${to})`,
+            }}
+            role="presentation"
+            aria-hidden="true"
+          >
+            <svg
+              className="size-full block text-current select-none"
+              viewBox={`${-(50 + 22.5 * (initials.length - 1))} -50 ${100 + 45 * (initials.length - 1)} 100`}
+              preserveAspectRatio="xMinYMid meet"
             >
-              {initials}
-            </text>
-          </svg>
-        </AvatarFallback>
+              <text
+                fontSize={55}
+                fill="currentColor"
+                textAnchor="middle"
+                dominantBaseline="central"
+              >
+                {initials}
+              </text>
+            </svg>
+          </AvatarFallback>
+        )}
       </Avatar>
     );
   }),

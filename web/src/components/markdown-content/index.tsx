@@ -14,8 +14,6 @@
  *  limitations under the License.
  */
 
-import Image, { AuthenticatedImg } from '@/components/image';
-import SvgIcon from '@/components/svg-icon';
 import {
   MarkdownRemarkPlugins,
   MarkdownRemarkPluginsLite,
@@ -23,7 +21,6 @@ import {
 import { IReference, IReferenceChunk } from '@/interfaces/database/chat';
 import { citationMarkerReg } from '@/utils/citation-utils';
 import { getExtension } from '@/utils/document-util';
-import { supportsSourceLocate } from '@/utils/source-locate';
 import { getDirAttribute } from '@/utils/text-direction';
 import DOMPurify from 'dompurify';
 import { memo, useCallback, useEffect, useMemo } from 'react';
@@ -34,8 +31,6 @@ import rehypeRaw from 'rehype-raw';
 import { RehypeSanitizeAssistantMarkdown } from '@/constants/markdown-rehype-plugins';
 import { visitParents } from 'unist-util-visit-parents';
 
-import { useTranslation } from 'react-i18next';
-
 import 'katex/dist/katex.min.css'; // `rehype-katex` does not import the CSS for you
 
 import { useFetchDocumentThumbnailsByIds } from '@/hooks/use-document-request';
@@ -45,28 +40,21 @@ import {
   escapeUnmatchedAngleBrackets,
   parseCitationIndex,
   preprocessLaTeX,
-  replaceRetrievingToSection,
   replaceTextByOldReg,
-  replaceThinkToSection,
   unescapeAngleBrackets,
 } from '@/utils/chat';
 import classNames from 'classnames';
 import { omit } from 'lodash';
-import pipe from 'lodash/fp/pipe';
 import reactStringReplace from 'react-string-replace';
 import { LoadingDots } from '../loading-dots';
-import { Button } from '../ui/button';
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from '../ui/hover-card';
+import { citationOpenMode, openCitationSource } from './citation-actions';
+import { CitationChip, CitationPreview } from './citation-chip';
 import styles from './index.module.less';
 import { sanitizeHtmlWithImagesAsText } from '@/utils/dom-util';
 import { SafeImg } from '@/components/safe-img';
 
 const getChunkIndex = (match: string) => parseCitationIndex(match);
-const ReferenceMarkerReg = /(\[(?:ID:)?[0-9\u0660-\u0669\u06F0-\u06F9]+\])/g;
+const ReferenceMarkerReg = /(\[(?:ID:)?[0-9٠-٩۰-۹]+\])/g;
 
 // Wraps every text node so citation markers can be replaced by React elements.
 // Defined at module scope: react-markdown rebuilds its whole processor whenever
@@ -97,7 +85,7 @@ const MarkdownRehypePlugins = [
 ];
 
 const MarkdownParagraph = ({ children, ...props }: any) => (
-  <p {...props}>{children}</p>
+  <p {...omit(props, 'node')}>{children}</p>
 );
 
 const MarkdownCode = (props: any) => {
@@ -141,7 +129,6 @@ const MarkdownContent = ({
    */
   disableMath?: boolean;
 }) => {
-  const { t } = useTranslation();
   const { setDocumentIds, data: fileThumbnails } =
     useFetchDocumentThumbnailsByIds();
   const contentWithCursor = useMemo(() => {
@@ -149,27 +136,13 @@ const MarkdownContent = ({
     // so DOMPurify doesn't strip them as HTML.
     const safeContent = escapeUnmatchedAngleBrackets(content);
 
-    let text = DOMPurify.sanitize(safeContent, {
-      ADD_TAGS: ['think', 'section', 'details', 'summary', 'retrieving'],
+    const text = DOMPurify.sanitize(safeContent, {
+      ADD_TAGS: ['section', 'details', 'summary'],
       ADD_ATTR: ['class'],
     });
 
-    // let text = content;
-    if (text === '' && loading) {
-      text = t('chat.searching');
-    }
-    const nextText = replaceTextByOldReg(text);
-    const thinkSummary = loading
-      ? `${t('chat.thinking')}...`
-      : t('chat.thought');
-    return unescapeAngleBrackets(
-      pipe(
-        (value: string) => replaceThinkToSection(value, thinkSummary),
-        replaceRetrievingToSection,
-        preprocessLaTeX,
-      )(nextText),
-    );
-  }, [content, loading, t]);
+    return unescapeAngleBrackets(preprocessLaTeX(replaceTextByOldReg(text)));
+  }, [content]);
 
   const documentIds = useMemo(() => {
     const docAggs = reference?.doc_aggs;
@@ -184,33 +157,6 @@ const MarkdownContent = ({
     setDocumentIds(documentIds);
   }, [documentIds, setDocumentIds]);
 
-  const handleDocumentButtonClick = useCallback(
-    (
-      documentId: string,
-      chunk: IReferenceChunk,
-      fileExtension: string,
-      documentUrl?: string,
-    ) =>
-      () => {
-        if (supportsSourceLocate(fileExtension) && clickDocumentButton) {
-          clickDocumentButton(documentId, chunk);
-          return;
-        }
-        if (!documentUrl) return;
-        // Web page documents carry their own url; opening the internal
-        // /document route for them lands on an empty page.
-        if (/^https?:\/\//i.test(documentUrl)) {
-          window.open(documentUrl, '_blank', 'noopener,noreferrer');
-          return;
-        }
-        window.open(
-          `/document/${documentId}?ext=${fileExtension}&resource=${'document'}`,
-          '_blank',
-        );
-      },
-    [clickDocumentButton],
-  );
-
   const getReferenceInfo = useCallback(
     (chunkIndex: number) => {
       const chunks = reference?.chunks ?? [];
@@ -222,94 +168,17 @@ const MarkdownContent = ({
       const documentUrl = document?.url;
       const fileThumbnail = documentId ? fileThumbnails[documentId] : '';
       const fileExtension = documentId ? getExtension(document?.doc_name) : '';
-      const imageId = chunkItem?.image_id;
 
       return {
         documentUrl,
         fileThumbnail,
         fileExtension,
-        imageId,
         chunkItem,
         documentId,
         document,
       };
     },
     [fileThumbnails, reference],
-  );
-
-  const getPopoverContent = useCallback(
-    (chunkIndex: number) => {
-      const {
-        documentUrl,
-        fileThumbnail,
-        fileExtension,
-        imageId,
-        chunkItem,
-        documentId,
-        document,
-      } = getReferenceInfo(chunkIndex);
-
-      return (
-        <div key={chunkItem?.id} className="flex gap-2">
-          {imageId && (
-            <HoverCard>
-              <HoverCardTrigger>
-                <Image
-                  id={imageId}
-                  documentId={documentId}
-                  className={styles.referenceChunkImage}
-                ></Image>
-              </HoverCardTrigger>
-              <HoverCardContent>
-                <Image
-                  id={imageId}
-                  documentId={documentId}
-                  className={styles.referenceImagePreview}
-                ></Image>
-              </HoverCardContent>
-            </HoverCard>
-          )}
-          <div className={'space-y-2 max-w-[40vw]'}>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: sanitizeHtmlWithImagesAsText(chunkItem?.content ?? ''),
-              }}
-              className={classNames(styles.chunkContentText)}
-              dir="auto"
-            ></div>
-            {documentId && (
-              <section className="flex gap-1">
-                {fileThumbnail ? (
-                  <AuthenticatedImg
-                    src={fileThumbnail}
-                    alt=""
-                    className={styles.fileThumbnail}
-                  />
-                ) : (
-                  <SvgIcon
-                    name={`file-icon/${fileExtension}`}
-                    width={24}
-                  ></SvgIcon>
-                )}
-                <Button
-                  variant="link"
-                  className={'text-wrap p-0 flex-1 h-auto'}
-                  onClick={handleDocumentButtonClick(
-                    documentId,
-                    chunkItem,
-                    fileExtension,
-                    documentUrl,
-                  )}
-                >
-                  {document?.doc_name}
-                </Button>
-              </section>
-            )}
-          </div>
-        </div>
-      );
-    },
-    [getReferenceInfo, handleDocumentButtonClick],
   );
 
   const renderReference = useCallback(
@@ -327,27 +196,65 @@ const MarkdownContent = ({
           if (!hasReference && !(loading && match.startsWith('[ID:'))) {
             return match;
           }
+          if (!hasReference) {
+            return <CitationChip key={i} number={chunkIndex + 1} pending />;
+          }
+
+          const {
+            documentUrl,
+            fileThumbnail,
+            fileExtension,
+            chunkItem,
+            documentId,
+            document,
+          } = getReferenceInfo(chunkIndex);
+          const source = documentId
+            ? {
+                documentId,
+                chunk: chunkItem,
+                fileExtension,
+                documentUrl,
+              }
+            : undefined;
+          const openMode = source
+            ? citationOpenMode(source, clickDocumentButton)
+            : undefined;
+          const handleOpen = openMode
+            ? () => openCitationSource(source!, clickDocumentButton)
+            : undefined;
 
           return (
-            <HoverCard key={i}>
-              <HoverCardTrigger>
-                <bdi className="text-text-secondary bg-bg-card rounded-2xl px-1 mx-1 text-nowrap inline-block">
-                  [{chunkIndex + 1}]
-                </bdi>
-              </HoverCardTrigger>
-              {hasReference && (
-                <HoverCardContent className="max-w-3xl">
-                  {getPopoverContent(chunkIndex)}
-                </HoverCardContent>
-              )}
-            </HoverCard>
+            <CitationChip
+              key={i}
+              number={chunkIndex + 1}
+              documentId={chunkItem.document_id}
+              onOpen={handleOpen}
+              preview={
+                <CitationPreview
+                  number={chunkIndex + 1}
+                  documentId={documentId}
+                  documentName={document?.doc_name ?? chunkItem.document_name}
+                  fileThumbnail={fileThumbnail}
+                  fileExtension={fileExtension}
+                  imageId={chunkItem.image_id}
+                  contentHtml={sanitizeHtmlWithImagesAsText(
+                    chunkItem.content ?? '',
+                  )}
+                  similarity={chunkItem.similarity}
+                  vectorSimilarity={chunkItem.vector_similarity}
+                  termSimilarity={chunkItem.term_similarity}
+                  openMode={openMode}
+                  onOpen={handleOpen}
+                />
+              }
+            />
           );
         },
       );
 
       return replacedText;
     },
-    [getPopoverContent, loading, reference?.chunks],
+    [clickDocumentButton, getReferenceInfo, loading, reference?.chunks],
   );
 
   const dir = getDirAttribute(content.replace(citationMarkerReg, ''));

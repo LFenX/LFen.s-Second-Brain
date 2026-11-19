@@ -35,6 +35,10 @@ import {
 jest.mock('react-i18next', () => ({
   useTranslation: jest.fn(() => ({ t: (key: string) => key })),
 }));
+// The setup panel embeds the dataset-list domain dialog, which is covered by its own tests.
+jest.mock('@/pages/datasets/knowledge-domain-entry', () => ({
+  KnowledgeDomainEntry: () => null,
+}));
 jest.mock('@/utils/register-server', () => ({
   registerNextServer: () => ({ post: jest.fn() }),
 }));

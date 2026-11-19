@@ -1,5 +1,4 @@
 import { TimelineNode } from '@/components/originui/timeline';
-import Spotlight from '@/components/spotlight';
 import { cn } from '@/lib/utils';
 import classNames from 'classnames';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -117,7 +116,6 @@ const ParserContainer = (props: IProps) => {
               newChunkIndex={newChunkIndex}
             />
           )}
-          <Spotlight opcity={0.6} coverage={60} />
         </div>
         {/* </Spin> */}
       </div>

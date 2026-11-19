@@ -80,12 +80,12 @@ export function SingleChatBox({ conversation }: IProps) {
   ]);
 
   return (
-    <section className="flex flex-col h-full gap-4">
+    <section className="flex flex-col h-full gap-2">
       <div
         ref={messageContainerRef}
-        className="p-5 flex-1 overflow-auto min-h-0 scrollbar-auto"
+        className="flex-1 overflow-auto min-h-0 scrollbar-auto px-6 pt-4"
       >
-        <div className="w-full pr-5">
+        <div className="mx-auto w-full max-w-[860px]">
           {messages?.map((message, i) => (
             <MessageItem
               loading={
@@ -97,11 +97,11 @@ export function SingleChatBox({ conversation }: IProps) {
               item={message}
               nickname={userInfo.nickname}
               avatar={userInfo.avatar}
-              avatarDialog={currentDialog.icon}
+              hasKnowledge={!!currentDialog.dataset_ids?.length}
+              assistantAvatar={currentDialog.icon}
               reference={messageReferences.get(message) ?? EmptyReference}
               clickDocumentButton={clickDocumentButton}
               index={i}
-              isLast={i === messages.length - 1}
               removeMessageById={removeMessageById}
               deleteDisabled={message.awaitingServerId}
               regenerateMessage={regenerateMessage}
@@ -112,7 +112,7 @@ export function SingleChatBox({ conversation }: IProps) {
         <div ref={scrollRef} />
       </div>
 
-      <div className="p-5 pt-0">
+      <div className="mx-auto w-full max-w-[908px] px-6 pb-5">
         <NextMessageInput
           disabled={disabled}
           sendDisabled={sendDisabled}

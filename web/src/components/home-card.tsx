@@ -64,8 +64,10 @@ export function HomeCard({
         onClick?.();
       }}
       tabIndex={onClick ? 0 : undefined}
-      className={`px-2.5 py-4 flex gap-2 items-start group h-full w-full${
-        onClick ? ' hover:shadow-md cursor-pointer' : ''
+      className={`px-3 py-4 flex gap-2.5 items-start group h-full w-full${
+        onClick
+          ? ' cursor-pointer hover:border-border-default hover:shadow-soft focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-accent-primary/15'
+          : ''
       }`}
     >
       <div>
@@ -84,7 +86,7 @@ export function HomeCard({
           <CardTitle className="flex-1 inline-flex w-0 me-auto">
             <TruncatedText
               as="h3"
-              className="flex-1 truncate text-base font-bold leading-snug"
+              className="flex-1 truncate text-[15px] font-semibold leading-snug"
               testId="agent-name"
               tooltip={data.name}
             >

@@ -14,7 +14,6 @@
  *  limitations under the License.
  */
 
-import Spotlight from '@/components/spotlight';
 import message from '@/components/ui/message';
 import { useTranslate } from '@/hooks/common-hooks';
 import {
@@ -290,7 +289,6 @@ const SettingModelV2: FC = () => {
 
   return (
     <div className="flex w-full h-full border-[0.5px] border-border-button rounded-lg relative overflow-hidden">
-      <Spotlight />
       <section className="flex flex-col gap-4 w-[320px] shrink-0 px-5 border-r-[0.5px] border-border-button overflow-auto scrollbar-auto">
         <Sidebar selection={selection} onSelect={setSelection} />
       </section>

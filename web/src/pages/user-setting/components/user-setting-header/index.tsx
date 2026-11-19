@@ -14,7 +14,6 @@
  *  limitations under the License.
  */
 
-import Spotlight from '@/components/spotlight';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { PropsWithChildren } from 'react';
 
@@ -40,8 +39,6 @@ export function ProfileSettingWrapperCard({
       </CardHeader>
 
       <CardContent className="flex-1 h-0 p-0">{children}</CardContent>
-
-      <Spotlight />
     </Card>
   );
 }

@@ -22,7 +22,6 @@ import {
   LucideUserPen,
 } from 'lucide-react';
 
-import Spotlight from '@/components/spotlight';
 import { TableEmpty } from '@/components/table-skeleton';
 import { Button } from '@/components/ui/button';
 import {
@@ -230,8 +229,6 @@ function AdminWhitelist() {
   return (
     <>
       <Card className="!shadow-none relative h-full border-0.5 border-border-button bg-transparent rounded-xl overflow-x-hidden overflow-y-auto">
-        <Spotlight />
-
         <ScrollArea className="size-full">
           <CardHeader className="space-y-0 flex flex-row justify-between items-center">
             <CardTitle>{t('admin.whitelistManagement')}</CardTitle>

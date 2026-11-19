@@ -20,7 +20,6 @@ import {
 
 import { useQuery } from '@tanstack/react-query';
 
-import Spotlight from '@/components/spotlight';
 import { TableEmpty } from '@/components/table-skeleton';
 import { Badge, BadgeProps } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -222,8 +221,6 @@ function AdminServiceStatus() {
   return (
     <>
       <Card className="!shadow-none relative h-full bg-transparent rounded-xl overflow-hidden">
-        <Spotlight />
-
         <ScrollArea className="size-full">
           <CardHeader className="space-y-0 flex flex-row justify-between items-center">
             <CardTitle>{t('admin.serviceStatus')}</CardTitle>

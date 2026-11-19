@@ -206,10 +206,8 @@ function ContentSelection({
           {t('knowledgeCatalogue.refresh')}
         </Button>
       </div>
-      {mode === 'text' && (
-        <p>
-          {source?.relative_path ?? t('knowledgeConsumption.chooseSourceHint')}
-        </p>
+      {mode === 'text' && source?.relative_path && (
+        <p>{source.relative_path}</p>
       )}
       {mode === 'parsed' && (
         <ParsedChoice

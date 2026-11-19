@@ -21,7 +21,18 @@ export function formatDate(date: any, format?: string) {
   if (!date) {
     return '';
   }
-  return dayjs(date).format(thisFormat);
+  return dayjs(fromServerUtc(date)).format(thisFormat);
+}
+
+/**
+ * The API writes timestamps such as "2026-11-18 18:49:04" in UTC without a
+ * zone marker; mark them as UTC so they display in the viewer's time zone.
+ */
+export function fromServerUtc<T>(value: T): T | string {
+  return typeof value === 'string' &&
+    /^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}(\.\d+)?$/.test(value)
+    ? value.replace(' ', 'T') + 'Z'
+    : value;
 }
 
 export function formatTime(date: any) {

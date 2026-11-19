@@ -1,0 +1,175 @@
+// Every moving part turns about the core at (120, 120) of the 240-unit box.
+.mark {
+  --brand-mark-size: 20px;
+  position: relative;
+  isolation: isolate;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: var(--brand-mark-size);
+  height: var(--brand-mark-size);
+  line-height: 0;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .page {
+    fill: #fff;
+  }
+
+  .turn,
+  .cloud,
+  .bubble,
+  .core,
+  .glow {
+    transform-box: view-box;
+    transform-origin: 120px 120px;
+  }
+
+  .spark {
+    transform-box: fill-box;
+    transform-origin: center;
+    opacity: 0;
+    transform: scale(0.2);
+    animation: brand-twinkle 4.2s ease-in-out infinite;
+  }
+
+  // At rest: a prismatic band crosses the lobes now and then and the core breathes.
+  .sheen {
+    mix-blend-mode: screen;
+    opacity: 0.78;
+    transform: translateX(-180px);
+    animation: brand-sheen 6.4s cubic-bezier(0.45, 0, 0.25, 1) infinite;
+  }
+
+  .core {
+    animation: brand-core 3.2s ease-in-out infinite;
+  }
+
+  .glow {
+    opacity: 0.28;
+    animation: brand-glow 3.2s ease-in-out infinite;
+  }
+}
+
+.small .sparks {
+  display: none;
+}
+
+// Thinking: the lobes turn about the core and breathe apart, the core glows hot.
+.thinking {
+  .turn {
+    animation: brand-turn 1.9s cubic-bezier(0.55, 0.05, 0.35, 0.95) infinite;
+  }
+  .cloud {
+    animation: brand-cloud 0.95s ease-in-out infinite alternate;
+  }
+  .bubble {
+    animation: brand-bubble 0.95s ease-in-out infinite alternate;
+  }
+  .core {
+    animation-duration: 0.95s;
+  }
+  .glow {
+    animation: brand-glow-hot 0.95s ease-in-out infinite;
+  }
+  .sheen {
+    animation-duration: 1.9s;
+  }
+  .spark {
+    animation-duration: 1.6s;
+  }
+}
+
+@keyframes brand-sheen {
+  0%,
+  64% {
+    transform: translateX(-180px);
+  }
+  94%,
+  100% {
+    transform: translateX(330px);
+  }
+}
+
+@keyframes brand-core {
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+@keyframes brand-glow {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes brand-glow-hot {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.45);
+  }
+}
+
+@keyframes brand-twinkle {
+  0%,
+  68%,
+  100% {
+    opacity: 0;
+    transform: scale(0.2) rotate(0deg);
+  }
+  80% {
+    opacity: 1;
+    transform: scale(1) rotate(45deg);
+  }
+  92% {
+    opacity: 0.15;
+    transform: scale(0.45) rotate(90deg);
+  }
+}
+
+@keyframes brand-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes brand-cloud {
+  to {
+    transform: translate(-6px, -6px);
+  }
+}
+
+@keyframes brand-bubble {
+  to {
+    transform: translate(6px, 6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mark *,
+  .mark svg {
+    animation: none !important;
+  }
+  .mark .sheen,
+  .mark .spark {
+    opacity: 0;
+  }
+  .thinking .glow {
+    opacity: 0.7;
+  }
+}

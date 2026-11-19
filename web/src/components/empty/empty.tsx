@@ -67,7 +67,7 @@ export const EmptyCard = (props: EmptyCardProps) => {
   return (
     <article
       className={cn(
-        'flex flex-col gap-3 rounded-md border border-dashed border-border-button p-5',
+        'flex flex-col gap-3 rounded-3xl border border-dashed border-border-default p-5 transition-colors',
         'w-full items-center justify-center text-center',
         'md:w-fit md:items-start md:justify-start md:text-left',
         className,
@@ -127,7 +127,8 @@ export const EmptyAppCard = (props: {
         icon={showIcon ? cardData.icon : undefined}
         title={isSearch ? notFound : title}
         className={cn(
-          !isSearch && 'cursor-pointer',
+          !isSearch &&
+            'cursor-pointer hover:border-text-secondary/40 hover:bg-bg-card focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-accent-primary/15',
           props.size === 'large' && 'p-14',
           className,
           'w-full max-w-[480px] md:max-w-none',
@@ -143,7 +144,9 @@ export const EmptyAppCard = (props: {
               'flex w-full items-center justify-center md:justify-start',
             )}
           >
-            <Plus size={24} />
+            <span className="inline-flex size-9 items-center justify-center rounded-full bg-bg-card text-text-primary">
+              <Plus size={18} />
+            </span>
           </div>
         )}
         {children}

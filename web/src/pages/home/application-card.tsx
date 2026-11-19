@@ -53,11 +53,11 @@ export type SeeAllAppCardProps = {
 export function SeeAllAppCard({ click }: SeeAllAppCardProps) {
   return (
     <Card
-      className="w-full min-h-[76px] cursor-pointer"
+      className="w-full min-h-[76px] cursor-pointer border border-dashed border-border-default bg-transparent text-text-secondary hover:bg-bg-card hover:text-text-primary"
       onClick={click}
       tabIndex={0}
     >
-      <CardContent className="p-2.5 pt-1 w-full h-full flex items-center justify-center gap-1.5 text-text-secondary">
+      <CardContent className="p-2.5 pt-1 w-full h-full flex items-center justify-center gap-1.5 text-sm">
         {t('common.seeAll')} <ChevronRight className="size-4" />
       </CardContent>
     </Card>

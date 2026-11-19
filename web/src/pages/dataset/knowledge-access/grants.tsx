@@ -1,6 +1,7 @@
 import { useState, type ChangeEvent, type FormEvent } from 'react';
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
+import { Field, FieldSelect, CheckRow } from '@/components/form-fields';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { AccessRevocationWarning } from './revocation-warning';
@@ -47,7 +48,7 @@ function RevokeGrant({
     setConfirmed(false);
   }
   return (
-    <li className="space-y-2 rounded border border-border-button p-3">
+    <li className="space-y-2 rounded-2xl border-0.5 border-border-button p-3">
       <p>
         {t(
           grant.subject.kind === 'department'
@@ -76,15 +77,13 @@ function RevokeGrant({
         )}
       </p>
       <AccessRevocationWarning />
-      <label className="block space-x-2">
-        <input
-          type="checkbox"
-          checked={confirmed}
-          onChange={handleConfirm}
-          disabled={disabled || command.locked}
-        />
-        <span>{t('knowledgeAccess.confirmRevoke')}</span>
-      </label>
+      <CheckRow
+        checked={confirmed}
+        onChange={handleConfirm}
+        disabled={disabled || command.locked}
+      >
+        {t('knowledgeAccess.confirmRevoke')}
+      </CheckRow>
       <Button
         variant="danger"
         disabled={disabled || command.locked || !confirmed}
@@ -178,14 +177,14 @@ function GrantForm({
   );
   return (
     <section
-      className="space-y-4 rounded border border-border-button p-4"
+      className="space-y-4 rounded-3xl border-0.5 border-border-button bg-bg-component p-5"
       aria-label={t(
         kind === 'department'
           ? 'knowledgeAccess.departmentGrants'
           : 'knowledgeAccess.personalGrants',
       )}
     >
-      <h2 className="text-lg font-medium">
+      <h2 className="text-base font-semibold">
         {t(
           kind === 'department'
             ? 'knowledgeAccess.departmentGrants'
@@ -238,8 +237,7 @@ function GrantForm({
               aria-invalid={invalidUser}
             />
           ) : (
-            <select
-              className="w-full rounded border border-border-button bg-bg-base p-2"
+            <FieldSelect
               value={user}
               onChange={(event) => {
                 setUser(event.target.value);
@@ -255,16 +253,14 @@ function GrantForm({
                   {item.name}
                 </option>
               ))}
-            </select>
+            </FieldSelect>
           )}
         </label>
         {invalidUser && (
           <p role="alert">{t('knowledgeAccess.invalidRecipientID')}</p>
         )}
-        <label className="block space-y-1">
-          <span>{t('knowledgeAccess.mode')}</span>
-          <select
-            className="rounded border border-border-button bg-bg-base p-2"
+        <Field label={t('knowledgeAccess.mode')}>
+          <FieldSelect
             value={mode}
             onChange={handleMode}
             disabled={!available || command.locked}
@@ -273,12 +269,10 @@ function GrantForm({
             <option value="read_search">
               {t('knowledgeAccess.readSearch')}
             </option>
-          </select>
-        </label>
-        <label className="block space-y-1">
-          <span>{t('knowledgeAccess.delivery')}</span>
-          <select
-            className="rounded border border-border-button bg-bg-base p-2"
+          </FieldSelect>
+        </Field>
+        <Field label={t('knowledgeAccess.delivery')}>
+          <FieldSelect
             value={delivery}
             disabled={!available || command.locked}
             onChange={(event) => {
@@ -290,10 +284,9 @@ function GrantForm({
             <option value="web_and_mcp">
               {t('knowledgeAccess.webAndMCP')}
             </option>
-          </select>
-        </label>
-        <label className="block space-y-1">
-          <span>{t('knowledgeAccess.expiry')}</span>
+          </FieldSelect>
+        </Field>
+        <Field label={t('knowledgeAccess.expiry')}>
           <Input
             type="datetime-local"
             required
@@ -301,10 +294,10 @@ function GrantForm({
             onChange={handleExpires}
             disabled={!available || command.locked}
           />
-        </label>
+        </Field>
         {invalid && <p role="alert">{t('knowledgeAccess.invalidExpiry')}</p>}
         <div
-          className="space-y-1 rounded border border-border-button p-3"
+          className="space-y-1 rounded-2xl border-0.5 border-border-button p-3"
           role="group"
           aria-label={t('knowledgeAccess.grantReview')}
         >
@@ -342,21 +335,17 @@ function GrantForm({
             {t('knowledgeAccess.expiry')}: {expires}
           </p>
         </div>
-        <label className="block space-x-2">
-          <input
-            type="checkbox"
-            checked={confirmed}
-            onChange={handleConfirm}
-            disabled={!available || command.locked || !validUser}
-          />
-          <span>
-            {t(
-              kind === 'department'
-                ? 'knowledgeAccess.confirmDepartmentGrant'
-                : 'knowledgeAccess.confirmGrant',
-            )}
-          </span>
-        </label>
+        <CheckRow
+          checked={confirmed}
+          onChange={handleConfirm}
+          disabled={!available || command.locked || !validUser}
+        >
+          {t(
+            kind === 'department'
+              ? 'knowledgeAccess.confirmDepartmentGrant'
+              : 'knowledgeAccess.confirmGrant',
+          )}
+        </CheckRow>
         <Button
           type="submit"
           disabled={!available || command.locked || !confirmed || !validUser}
@@ -416,10 +405,8 @@ export function AccessGrants({
   ].join(':');
   return (
     <div className="space-y-4">
-      <label className="block space-y-1">
-        <span>{t('knowledgeAccess.recipientKind')}</span>
-        <select
-          className="rounded border border-border-button bg-bg-base p-2"
+      <Field label={t('knowledgeAccess.recipientKind')}>
+        <FieldSelect
           value={kind}
           disabled={command.locked}
           onChange={(event) =>
@@ -428,8 +415,8 @@ export function AccessGrants({
         >
           <option value="user">{t('knowledgeAccess.individual')}</option>
           <option value="department">{t('knowledgeAccess.department')}</option>
-        </select>
-      </label>
+        </FieldSelect>
+      </Field>
       {kind === 'user' ? (
         <GrantForm
           key={boundary + ':user'}

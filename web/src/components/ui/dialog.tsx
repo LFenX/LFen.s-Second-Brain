@@ -21,7 +21,7 @@ const DialogOverlay = React.forwardRef<
   <DialogPrimitive.Overlay
     ref={ref}
     className={cn(
-      'fixed inset-0 z-50 bg-black/50 backdrop-blur-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
+      'fixed inset-0 z-50 bg-black/30 backdrop-blur-[2px] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
       className,
     )}
     {...props}
@@ -52,11 +52,11 @@ const DialogContent = React.forwardRef<
           onPointerDownOutside?.(e);
         }}
         className={cn(
-          'outline-none outline-0 fixed left-[50%] top-[50%] rounded-lg z-50 grid w-full max-w-xl translate-x-[-50%] translate-y-[-50%]',
+          'outline-none outline-0 fixed left-[50%] top-[50%] rounded-4xl z-50 grid w-full max-w-xl translate-x-[-50%] translate-y-[-50%]',
           // TODO: to keep scrollbar perfectly aligned to header bottom and/or footer top,
           //       'gap-4' should be removed, then bring your own body container with padding-y instead.
           'gap-4',
-          'border-0.5 border-border-button bg-bg-base p-6 shadow-lg duration-200 sm:rounded-lg',
+          'border-0.5 border-border-button bg-bg-component p-6 shadow-lift duration-200',
           'data-[state=open]:animate-in data-[state=closed]:animate-out',
           'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
           'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',

@@ -16,13 +16,19 @@
 
 @import url(./inter.less);
 
+// Latin in Inter; Chinese in the platform's own UI face, as 留白 does.
 :root {
-  --font-sans: 'Inter';
+  --font-sans:
+    'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Noto Sans SC',
+    'Hiragino Sans GB', 'Microsoft YaHei UI', 'Microsoft YaHei';
 }
 
 @supports (font-variation-settings: normal) {
   :root {
-    --font-sans: 'InterVariable';
+    --font-sans:
+      'InterVariable', -apple-system, BlinkMacSystemFont, 'PingFang SC',
+      'Noto Sans SC', 'Hiragino Sans GB', 'Microsoft YaHei UI',
+      'Microsoft YaHei';
   }
 }
 
