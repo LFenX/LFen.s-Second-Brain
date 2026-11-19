@@ -260,6 +260,52 @@ func TestInsertCitationsWithVectors_Happy(t *testing.T) {
 	}
 }
 
+// TestInsertCitationsWithVectors_MarkerFollowsSentencePunctuation pins where
+// auto-inserted markers land: right after the punctuation that closes the cited
+// sentence, never after the first character of the next sentence, and never
+// inside a paragraph break.
+func TestInsertCitationsWithVectors_MarkerFollowsSentencePunctuation(t *testing.T) {
+	cases := []struct {
+		name, answer, want string
+	}{
+		{
+			name:   "chinese sentences",
+			answer: "在设置页可以切换模型；默认 LLM 由管理员配置。点击下面的卡片即可查看来源。",
+			want:   "在设置页可以切换模型； [ID:0]默认 LLM 由管理员配置。 [ID:1]点击下面的卡片即可查看来源。 [ID:2]",
+		},
+		{
+			name:   "chinese paragraphs",
+			answer: "第一段介绍合成知识库。\n\n第二段说明引用位置。",
+			want:   "第一段介绍合成知识库。 [ID:0]\n\n第二段说明引用位置。 [ID:1]",
+		},
+		{
+			name:   "english sentences",
+			answer: "The index refreshes nightly. Admins can trigger it manually. Results appear in the panel.",
+			want:   "The index refreshes nightly. [ID:0] Admins can trigger it manually. [ID:1] Results appear in the panel. [ID:2]",
+		},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			sentences, sentenceIdx := splitAnswer(tc.answer)
+			// One-hot vectors: sentence i matches only chunk i.
+			vecs := make([][]float64, len(sentences))
+			chunks := make([]SourcedChunk, len(sentences))
+			for i := range sentences {
+				vecs[i] = make([]float64, len(sentences))
+				vecs[i][i] = 1
+				chunks[i] = SourcedChunk{ID: fmt.Sprintf("chunk-%d", i)}
+			}
+			got, cited := InsertCitationsWithVectors(tc.answer, chunks, vecs, vecs, sentences, sentenceIdx)
+			if got != tc.want {
+				t.Errorf("decorated answer:\n got %q\nwant %q\nsentences %q", got, tc.want, sentences)
+			}
+			if len(cited) != len(sentences) {
+				t.Errorf("cited %v, want one citation per sentence %q", cited, sentences)
+			}
+		})
+	}
+}
+
 func TestInsertCitationsWithVectors_Empty(t *testing.T) {
 	answer, cited := InsertCitationsWithVectors("", nil, nil, nil, nil, nil)
 	if answer != "" || len(cited) != 0 {
