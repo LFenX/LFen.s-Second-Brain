@@ -102,31 +102,29 @@ func InsertCitationsWithVectors(
 	return applyCitations(answer, sentences, sentenceIdx, cites, chunks)
 }
 
-// splitAnswer splits answer text into sentences, preserving ``` code blocks.
-func splitAnswer(answer string) ([]string, []int) {
+// answerPieces splits answer into the pieces citation markers attach to: each
+// ``` code block stays whole, and other text is cut after every sentence
+// separator, which sentenceSplit keeps at the end of the sentence it closes.
+// splitAnswer and applyCitations both index these pieces, so they must share it.
+func answerPieces(answer string) []string {
 	blocks := strings.Split(answer, "```")
-	var rawPieces []string
+	var pieces []string
 	for i, block := range blocks {
 		if i%2 == 1 {
 			// Code block — keep intact, won't receive citations.
-			rawPieces = append(rawPieces, "```"+block+"```\n")
+			pieces = append(pieces, "```"+block+"```\n")
 		} else {
-			// Regular text — split on sentence boundaries.
-			rawPieces = append(rawPieces, sentenceSplit(block)...)
+			pieces = append(pieces, sentenceSplit(block)...)
 		}
 	}
-	// Rejoin the trailing punctuation that the regex captured as a separate piece.
-	for i := 1; i < len(rawPieces); i++ {
-		if sentenceSplitRE.MatchString(rawPieces[i]) {
-			r := []rune(rawPieces[i])
-			rawPieces[i-1] += string(r[0])
-			rawPieces[i] = string(r[1:])
-		}
-	}
-	// Filter out short pieces.
+	return pieces
+}
+
+// splitAnswer splits answer text into sentences, preserving ``` code blocks.
+func splitAnswer(answer string) ([]string, []int) {
 	var sentences []string
 	var sentenceIdx []int
-	for i, t := range rawPieces {
+	for i, t := range answerPieces(answer) {
 		if len(strings.TrimSpace(t)) >= minSentenceLen {
 			sentences = append(sentences, t)
 			sentenceIdx = append(sentenceIdx, i)
@@ -160,22 +158,7 @@ func sentenceSplit(text string) []string {
 // with the number the marker carries. A chunk id (opaque text, only digits parse)
 // would come back as a dead marker on both consumers.
 func applyCitations(answer string, sentences []string, sentenceIdx []int, cites map[int][]int, chunks []SourcedChunk) (string, []int) {
-	blocks := strings.Split(answer, "```")
-	var rawPieces []string
-	for i, block := range blocks {
-		if i%2 == 1 {
-			rawPieces = append(rawPieces, "```"+block+"```\n")
-		} else {
-			rawPieces = append(rawPieces, sentenceSplit(block)...)
-		}
-	}
-	for i := 1; i < len(rawPieces); i++ {
-		if sentenceSplitRE.MatchString(rawPieces[i]) {
-			r := []rune(rawPieces[i])
-			rawPieces[i-1] += string(r[0])
-			rawPieces[i] = string(r[1:])
-		}
-	}
+	rawPieces := answerPieces(answer)
 
 	// Map sentence position → chunk IDs to insert.
 	citedChunks := make(map[int]string)
