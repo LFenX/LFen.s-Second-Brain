@@ -1,3 +1,8 @@
+import {
+  BohemiaAssistantButton,
+  BohemiaAssistantHost,
+} from '@/components/bohemia-assistant';
+import { BohemiaName } from '@/components/bohemia-assistant/constants';
 import { IconFontFill } from '@/components/icon-font';
 import { RAGFlowAvatar } from '@/components/ragflow-avatar';
 import { Button } from '@/components/ui/button';
@@ -109,6 +114,8 @@ export function Header({
           className="flex shrink-0 items-center justify-end gap-0.5 text-text-secondary"
           data-testid="auth-status"
         >
+          <BohemiaAssistantButton compact={isCompact} />
+
           {!isCompact && (
             <Button
               asLink
@@ -210,6 +217,10 @@ export function Header({
           ref={expandedRightMeasureRef}
           className="inline-flex shrink-0 items-center justify-end gap-0.5"
         >
+          <span className="inline-flex h-8 items-center gap-[7px] pe-2.5 ps-[7px] text-[13px] me-1">
+            <span className="size-5" />
+            {BohemiaName}
+          </span>
           <span className="size-8" />
           <span className="inline-flex h-8 items-center gap-1.5 px-2 text-sm">
             <LucideLanguages className="size-4" />
@@ -223,6 +234,8 @@ export function Header({
           <span className="size-8" />
         </div>
       </div>
+
+      <BohemiaAssistantHost />
     </>
   );
 }
