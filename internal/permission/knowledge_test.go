@@ -80,7 +80,7 @@ func TestKnowledgeFolderRestrictionsFollowRawDescendants(t *testing.T) {
 				t.Fatalf("ordinary transfer changed: %v", err)
 			}
 			for _, entry := range []struct{ doc, kb, file string }{{"copy", "target", "raw"}, {"plain", "ordinary", "outside"}} {
-				doc := entity.Document{ID: entry.doc, KbID: entry.kb, ParserConfig: entity.JSONMap{}, Status: &valid}
+				doc := entity.Document{ID: entry.doc, KbID: entry.kb, CreatedBy: "owner", ParserConfig: entity.JSONMap{}, Status: &valid}
 				if err := db.Create(&doc).Error; err != nil {
 					t.Fatal(err)
 				}
@@ -93,10 +93,15 @@ func TestKnowledgeFolderRestrictionsFollowRawDescendants(t *testing.T) {
 			}
 			checker := NewDatabaseChecker(db)
 			for _, user := range []string{"owner", "reader"} {
-				for _, ref := range []ResourceRef{{Kind: ResourceKindFile, ID: "raw"}, {Kind: ResourceKindFolder, ID: "nested"}, {Kind: ResourceKindDataset, ID: "target"}} {
+				for _, ref := range []ResourceRef{{Kind: ResourceKindFile, ID: "raw"}, {Kind: ResourceKindFolder, ID: "nested"}, {Kind: ResourceKindDataset, ID: "target"}, {Kind: ResourceKindDocument, ID: "copy"}} {
 					err := checker.CheckResource(WithIdentity(t.Context(), user, ""), ref, OperationRead)
 					if (err == nil) != (user == "owner") {
 						t.Fatalf("user=%s ref=%+v err=%v", user, ref, err)
+					}
+				}
+				for _, op := range []Operation{OperationRun, OperationUse} {
+					if err := checker.CheckResource(WithIdentity(t.Context(), user, "owner"), ResourceRef{Kind: ResourceKindDocument, ID: "copy"}, op); !errors.Is(err, ErrPermissionDenied) {
+						t.Fatalf("protected document user=%s op=%s err=%v", user, op, err)
 					}
 				}
 				var count int64

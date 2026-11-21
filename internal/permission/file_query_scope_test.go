@@ -46,6 +46,7 @@ func TestFileQueryScopeFiltersInSQLAndReturnsBatchAccessMasks(t *testing.T) {
 	for _, file := range []entity.File{
 		{ID: "root", ParentID: "root", TenantID: "file-tenant", CreatedBy: "file-owner", Name: "/", Type: "folder"},
 		{ID: "reader-owned", ParentID: "root", TenantID: "file-tenant", CreatedBy: "reader", Name: "reader.pdf", Type: "pdf"},
+		{ID: "protected-copy", ParentID: "root", TenantID: "file-tenant", CreatedBy: "reader", KnowledgePrivateOwnerID: stringPointer("file-owner"), Name: "copy.pdf", Type: "pdf"},
 		{ID: "owner-private", ParentID: "root", TenantID: "file-tenant", CreatedBy: "file-owner", Name: "private.pdf", Type: "pdf"},
 		{ID: "empty-owner", ParentID: "root", TenantID: "file-tenant", CreatedBy: "", Name: "legacy.pdf", Type: "pdf"},
 		{ID: "team-linked", ParentID: "root", TenantID: "file-tenant", CreatedBy: "file-owner", Name: "team.pdf", Type: "pdf"},
@@ -92,6 +93,28 @@ func TestFileQueryScopeFiltersInSQLAndReturnsBatchAccessMasks(t *testing.T) {
 	}
 	if len(visible) != 2 || visible[0].ID != "reader-owned" || visible[1].ID != "team-linked" {
 		t.Fatalf("visible file IDs = %v, want [reader-owned team-linked]", fileIDs(visible))
+	}
+
+	// A member who owns a private knowledge domain keeps access to a linked
+	// file created by another user. Both the query and the individual check
+	// must use the registered domain owner for this grant.
+	if err := db.Model(&entity.Knowledgebase{}).Where("id = ?", "private-dataset").
+		Updates(map[string]any{"knowledge_enabled": true, "created_by": "reader"}).Error; err != nil {
+		t.Fatal(err)
+	}
+	// Keep the source in its own managed folder so its siblings are ordinary.
+	if err := db.Model(&entity.File{}).Where("id = ?", "private-linked").Update("parent_id", "source-folder").Error; err != nil {
+		t.Fatal(err)
+	}
+	if err := db.Create(&entity.File{ID: "source-folder", ParentID: "root", TenantID: "file-tenant", CreatedBy: "reader", Name: "sources", Type: "folder"}).Error; err != nil {
+		t.Fatal(err)
+	}
+	var count int64
+	if err := scope.Apply(db.Model(&entity.File{})).Where("file.id = ?", "private-linked").Count(&count).Error; err != nil || count != 1 {
+		t.Fatalf("domain owner's linked file count = %d, err = %v", count, err)
+	}
+	if err := checker.CheckResource(WithIdentity(ctx, "reader", "file-tenant"), ResourceRef{Kind: ResourceKindFile, ID: "private-linked"}, OperationRead); err != nil {
+		t.Fatal(err)
 	}
 
 	refs := []ResourceRef{

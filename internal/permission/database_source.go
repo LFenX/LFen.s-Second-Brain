@@ -354,7 +354,9 @@ func (s *databaseSource) GetResources(ctx context.Context, refs []ResourceRef) (
 		case ResourceKindDocument:
 			if document, documentExists := documentsByID[ref.ID]; documentExists {
 				if dataset, datasetExists := datasetsByID[document.KbID]; datasetExists {
-					resources = append(resources, documentResource(document, dataset, ownerIDsByTenant))
+					resource := documentResource(document, dataset, ownerIDsByTenant)
+					resource.KnowledgeOwnerIDs = datasetOriginOwners[document.KbID]
+					resources = append(resources, resource)
 				}
 			}
 		case ResourceKindCanvas:

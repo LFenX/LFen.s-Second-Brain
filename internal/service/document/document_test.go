@@ -5069,6 +5069,19 @@ func TestGetDocumentThumbnailAuthorizesBeforeStorage(t *testing.T) {
 	if store.getCalls != 0 {
 		t.Fatalf("storage Get called %d times after authorization denial", store.getCalls)
 	}
+	// The old uploader's document grant must not override registration of
+	// the parent dataset as a private knowledge domain.
+	if err := db.Model(&entity.Knowledgebase{}).Where("id = ?", "kb-thumb").
+		Updates(map[string]any{"knowledge_enabled": true, "permission": "me"}).Error; err != nil {
+		t.Fatal(err)
+	}
+	if err := db.Model(&entity.Document{}).Where("id = ?", "doc-thumb").
+		Updates(map[string]any{"created_by": "other-user", "status": string(entity.StatusValid)}).Error; err != nil {
+		t.Fatal(err)
+	}
+	if _, err := svc.GetDocumentThumbnail(strangerCtx, "doc-thumb"); !errors.Is(err, ErrDocumentImageNotFound) || store.getCalls != 0 {
+		t.Fatalf("protected thumbnail reached storage: calls=%d err=%v", store.getCalls, err)
+	}
 	got, err := svc.GetDocumentThumbnail(ctx, "doc-thumb")
 	if err != nil || !bytes.Equal(got, image) {
 		t.Fatalf("authorized GetDocumentThumbnail() = %q, %v", got, err)

@@ -380,10 +380,12 @@ func (p *communityPolicy) fileReadQueryScope(ctx context.Context, query ScopeQue
 			Joins("JOIN document ON document.id = f2d.document_id").
 			Joins("JOIN knowledgebase ON knowledgebase.id = document.kb_id").
 			Where("f2d.file_id = file.id AND knowledgebase.status = ?", string(entity.StatusValid)).
-			Where("(EXISTS (?) OR (knowledgebase.permission = ? AND EXISTS (?)))", datasetOwner, string(entity.TenantPermissionTeam), datasetMember)
+			Where("((knowledgebase.knowledge_enabled = ? AND knowledgebase.created_by = ?) OR (knowledgebase.knowledge_enabled = ? AND (EXISTS (?) OR (knowledgebase.permission = ? AND EXISTS (?)))))",
+				true, userID, false, datasetOwner, string(entity.TenantPermissionTeam), datasetMember)
 
 		return query.
 			Where("file.tenant_id = (?)", parent).
+			Where("file.id NOT IN (?)", KnowledgeHiddenFileIDs(ctx, db, userID)).
 			Where("(file.parent_id = file.id AND ((TRIM(file.created_by) = ?) OR (NULLIF(TRIM(file.created_by), '') IS NULL AND (EXISTS (?) OR (file.tenant_id = ? AND NOT EXISTS (?)))) OR EXISTS (?))) OR (file.parent_id <> file.id AND ((TRIM(file.created_by) = ?) OR (NULLIF(TRIM(file.created_by), '') IS NULL AND (EXISTS (?) OR (file.tenant_id = ? AND NOT EXISTS (?)))) OR EXISTS (?)))",
 				userID, fileOwner, userID, anyFileOwner, rootMember,
 				userID, fileOwner, userID, anyFileOwner, sharedDataset)
@@ -583,11 +585,11 @@ func (e *evaluation) resolveResourceForUser(ctx context.Context, userID string, 
 	return withoutKnowledgeModelUse(resource, access), nil
 }
 
-// withoutKnowledgeModelUse keeps a registered knowledge domain out of native
-// model-backed workflows: retrieval (use) and parsing or ingestion (run).
+// withoutKnowledgeModelUse keeps protected datasets and their documents out
+// of native retrieval (use) and parsing or ingestion (run).
 // Every check, dependency and filter path reads access through this point.
 func withoutKnowledgeModelUse(resource Resource, access Access) Access {
-	if resource.Ref.Kind != ResourceKindDataset || len(resource.KnowledgeOwnerIDs) == 0 {
+	if !hasKnowledgeModelRestriction(resource) {
 		return access
 	}
 	operations := make([]Operation, 0, len(access.Operations))
@@ -603,10 +605,14 @@ func withoutKnowledgeModelUse(resource Resource, access Access) Access {
 // knowledgeModelUseError names the knowledge model gate when it is the
 // reason an otherwise permitted dataset operation is refused.
 func knowledgeModelUseError(resource Resource, operation Operation) error {
-	if resource.Ref.Kind == ResourceKindDataset && len(resource.KnowledgeOwnerIDs) > 0 && (operation == OperationUse || operation == OperationRun) {
+	if hasKnowledgeModelRestriction(resource) && (operation == OperationUse || operation == OperationRun) {
 		return ErrKnowledgeModelUseDenied
 	}
 	return ErrPermissionDenied
+}
+
+func hasKnowledgeModelRestriction(resource Resource) bool {
+	return len(resource.KnowledgeOwnerIDs) > 0 && (resource.Ref.Kind == ResourceKindDataset || resource.Ref.Kind == ResourceKindDocument)
 }
 
 func (e *evaluation) resolveNativeResourceForUser(ctx context.Context, userID string, resource Resource) (Access, error) {
