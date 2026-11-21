@@ -143,6 +143,9 @@ func parserContentText(value string) entity.KnowledgeContentText {
 
 func parserProjectText(node *entity.KnowledgeContentNode, item TextItem) error {
 	layout, _ := item.Extra["layout"].(string)
+	if layout == "" {
+		layout = DocTypeText
+	}
 	if len(layout) > 128 {
 		return fmt.Errorf("content metadata capacity exceeded")
 	}
@@ -189,7 +192,7 @@ func parserProjectTable(node *entity.KnowledgeContentNode, item TableItem) error
 	}
 	node.Kind = "table"
 	attrs := node.Attributes.Parser
-	attrs.ItemType, attrs.Sheet = "table", item.Sheet
+	attrs.ItemType, attrs.CKType, attrs.Sheet = DocTypeTable, DocTypeTable, item.Sheet
 	positions, err := parserContentPositions(item.Positions)
 	if err != nil {
 		return err
@@ -247,7 +250,7 @@ func parserProjectImage(node *entity.KnowledgeContentNode, item ImageItem) error
 	node.Kind = "media"
 	attrs := node.Attributes.Parser
 	alt := item.Text
-	attrs.ItemType, attrs.Sheet = "image", item.Sheet
+	attrs.ItemType, attrs.CKType, attrs.Sheet = DocTypeImage, DocTypeImage, item.Sheet
 	attrs.AltText, attrs.PayloadPresent = &alt, item.Image != "" || item.Media != nil
 	positions, err := parserContentPositions(item.Positions)
 	if err != nil {

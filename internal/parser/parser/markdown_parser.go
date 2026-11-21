@@ -57,6 +57,9 @@ type MarkdownParser struct {
 	// instead of inline payloads. newParser enables it for ingestion; callers
 	// normalizing backend Markdown keep inline payloads.
 	mediaRefs bool
+	// splitEmbeddedImages keeps prose and each inline image in separate
+	// projection nodes for the local knowledge parser.
+	splitEmbeddedImages bool
 }
 
 func NewMarkdownParser(libType string) (*MarkdownParser, error) {
@@ -96,7 +99,7 @@ func (p *MarkdownParser) ConfigureFromSetup(setup map[string]any) {
 // base64-encoded payload on `image`. The legacy debug-print path has
 // been removed; callers consume ParseResult directly.
 func (p *MarkdownParser) ParseWithResult(ctx context.Context, filename string, data []byte) ParseResult {
-	state := &htmlWalkState{budget: media.NewBudget()}
+	state := &htmlWalkState{budget: media.NewBudget(), splitEmbeddedImages: p.splitEmbeddedImages}
 	switch {
 	case p.textOnly:
 		// Text-only callers have no run media cache and must not reach the
@@ -509,6 +512,16 @@ func walkMarkdownBlocksWithImages(ctx context.Context, doc ast.Node, out *[]map[
 		var docTypeKwd string
 		var txt string
 
+		if htmlState.splitEmbeddedImages && containsEmbeddedMarkdownImage(child) {
+			markup := markdownlib.Render(child, mdhtml.NewRenderer(mdhtml.RendererOptions{}))
+			root, err := html.Parse(bytes.NewReader(markup))
+			if err != nil {
+				htmlState.err = err
+				break
+			}
+			walkHTMLBlocksWithState(root, out, htmlState)
+			continue
+		}
 		switch n := child.(type) {
 		case *ast.Table:
 			markup := markdownlib.Render(n, mdhtml.NewRenderer(mdhtml.RendererOptions{}))
@@ -626,6 +639,18 @@ func walkMarkdownBlocksWithImages(ctx context.Context, doc ast.Node, out *[]map[
 		*out = append(*out, item)
 	}
 	return unresolvedImages
+}
+
+func containsEmbeddedMarkdownImage(n ast.Node) bool {
+	found := false
+	ast.WalkFunc(n, func(node ast.Node, entering bool) ast.WalkStatus {
+		if img, ok := node.(*ast.Image); ok && entering && media.IsDataImageSource(string(img.Destination)) {
+			found = true
+			return ast.Terminate
+		}
+		return ast.GoToNext
+	})
+	return found
 }
 
 // markdownMediaResolver resolves one Markdown image source against the run

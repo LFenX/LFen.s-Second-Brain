@@ -14,6 +14,8 @@ import (
 	"sync/atomic"
 	"testing"
 
+	"github.com/xuri/excelize/v2"
+
 	"ragflow/internal/entity"
 	"ragflow/internal/parser/chunk"
 )
@@ -88,6 +90,65 @@ func TestKnowledgeParsedChildRemoteImagesAndAttachmentsDisabled(t *testing.T) {
 	second := parsedChildText(parsedChildTestRun(t, "message.eml", "email", []byte(email)))
 	if first != second || !strings.Contains(first, "local body") || strings.Contains(first, "ATTACHMENT_SENTINEL") || calls.Load() != 0 {
 		t.Fatal("Email ordering or attachment boundary changed")
+	}
+}
+
+func TestKnowledgeParsedChildHTMLMailBody(t *testing.T) {
+	input := "Subject: Synthetic mail\r\nContent-Type: text/html; charset=utf-8\r\n\r\n" +
+		"<head><title>HIDDEN</title></head><body><p>First &amp; second</p><table><tr><td>Third</td><td>Fourth</td></tr></table><script>HIDDEN</script></body>"
+	p := parsedChildTestRun(t, "message.eml", "email", []byte(input))
+	text := parsedChildText(p)
+	if p.State != "ready" || !strings.Contains(text, "First & second\nThird\nFourth") || !strings.Contains(text, "Synthetic mail") || strings.Contains(text, "HIDDEN") || strings.Contains(text, "<td>") {
+		t.Fatalf("HTML mail state=%s text=%q", p.State, text)
+	}
+}
+
+func TestKnowledgeParsedChildRetainsEmbeddedMedia(t *testing.T) {
+	var calls atomic.Int64
+	server := httptest.NewServer(http.HandlerFunc(func(http.ResponseWriter, *http.Request) { calls.Add(1) }))
+	defer server.Close()
+	png := officeTestPNG(t, 4)
+	dataURI := "data:image/png;base64," + base64.StdEncoding.EncodeToString(png)
+	book := newTestXLSX(t, func(f *excelize.File) {
+		mustSetCell(t, f, "Sheet1", "A1", "Header")
+		mustSetCell(t, f, "Sheet1", "A2", "Local body")
+		if err := f.AddPictureFromBytes("Sheet1", "C3", &excelize.Picture{
+			Extension: ".png", File: png, Format: &excelize.GraphicOptions{AltText: "figure"},
+		}); err != nil {
+			t.Fatal(err)
+		}
+	})
+	for _, tc := range []struct {
+		format string
+		body   []byte
+	}{
+		{"html", []byte("<p>Local body<img alt='figure' src='" + dataURI + "'><img src='" + server.URL + "/remote'></p>")},
+		{"md", []byte("Local body ![figure](" + dataURI + ") trailing words\n\n![remote](" + server.URL + "/remote)\n")},
+		{"xlsx", book},
+	} {
+		t.Run(tc.format, func(t *testing.T) {
+			p := parsedChildTestRun(t, "source."+tc.format, tc.format, tc.body)
+			body := parsedChildText(p)
+			if p.State != "partial" || !strings.Contains(body, "Local body") || strings.Contains(body, "figure") {
+				t.Fatalf("state=%s extracted=%q", p.State, body)
+			}
+			if tc.format == "md" && !strings.Contains(body, "trailing words") {
+				t.Fatal("lost Markdown text after inline image")
+			}
+			images := 0
+			for _, node := range p.Nodes {
+				if node.Kind == "media" {
+					images++
+					a := node.Attributes.Parser
+					if !a.PayloadPresent || a.CKType != "image" || a.AltText == nil || *a.AltText != "figure" || node.Text.Status != "unsupported" || node.Text.Value != nil {
+						t.Fatalf("unexpected image metadata: %+v", a)
+					}
+				}
+			}
+			if images != 1 || calls.Load() != 0 {
+				t.Fatalf("images=%d remote requests=%d", images, calls.Load())
+			}
+		})
 	}
 }
 

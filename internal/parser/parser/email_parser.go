@@ -32,6 +32,7 @@ import (
 
 	"github.com/AkmalOt/gomsg"
 	"go.uber.org/zap"
+	"golang.org/x/net/html"
 	"golang.org/x/text/transform"
 
 	"ragflow/internal/common"
@@ -43,7 +44,8 @@ import (
 // into structured JSON output. Mirrors Python's _email() method in
 // rag/flow/parser/parser.py, whose .msg branch uses extract_msg.
 type EmailParser struct {
-	fields []string
+	fields              []string
+	includeHTMLBodyText bool
 }
 
 var defaultEmailFields = []string{"from", "to", "cc", "bcc", "date", "subject", "body", "attachments", "metadata"}
@@ -130,6 +132,13 @@ func (p *EmailParser) parseEmail(ctx context.Context, filename string, data []by
 
 	content["doc_type_kwd"] = "text"
 	items := []map[string]any{content}
+	if p.includeHTMLBodyText {
+		body, _ := content["text_html"].(string)
+		plain, _ := content["text"].(string)
+		if visible := visibleEmailBody(body); visible != "" && visible != strings.TrimSpace(plain) {
+			items = append(items, NewTextJSONItem(visible).ToMap())
+		}
+	}
 	if headerText := searchableEmailHeaders(content); headerText != "" {
 		items = append(items, NewTextJSONItem(headerText).ToMap())
 	}
@@ -138,6 +147,46 @@ func (p *EmailParser) parseEmail(ctx context.Context, filename string, data []by
 		File: map[string]any{"name": filename},
 		JSON: MapsToItems(items),
 	}
+}
+
+// visibleEmailBody extracts the displayed words in an HTML alternative.
+// Layout tables are common in mail, so their cell boundaries separate words.
+func visibleEmailBody(body string) string {
+	if strings.TrimSpace(body) == "" {
+		return ""
+	}
+	doc, err := html.Parse(strings.NewReader(body))
+	if err != nil {
+		return ""
+	}
+	var buf bytes.Buffer
+	w := &leafWriter{b: &buf, lineStart: true}
+	var walk func(*html.Node)
+	walk = func(n *html.Node) {
+		if n.Type == html.TextNode {
+			w.writeText(n.Data)
+			return
+		}
+		switch n.Data {
+		case "head", "script", "style", "noscript", "template":
+			return
+		case "br":
+			w.hardBreak()
+			return
+		}
+		block := isBlockTag(n.Data) || n.Data == "table" || n.Data == "td" || n.Data == "th"
+		if block && buf.Len() > 0 && !w.endsNL {
+			w.hardBreak()
+		}
+		for child := n.FirstChild; child != nil; child = child.NextSibling {
+			walk(child)
+		}
+		if block && buf.Len() > 0 && !w.endsNL {
+			w.hardBreak()
+		}
+	}
+	walk(doc)
+	return strings.TrimSpace(buf.String())
 }
 
 // searchableEmailHeaders returns the user-facing headers as a separate JSON

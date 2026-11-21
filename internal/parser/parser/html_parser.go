@@ -39,6 +39,7 @@ type HTMLParser struct {
 	RemoveHeaderFooter bool
 	RemoveTOC          bool
 	textOnly           bool
+	localImagesOnly    bool
 }
 
 func NewHTMLParser() *HTMLParser {
@@ -94,7 +95,7 @@ func (p *HTMLParser) ParseWithResult(ctx context.Context, filename string, data 
 	var items []map[string]any
 	state := &htmlWalkState{
 		refOnly:           true,
-		fetchRemoteImages: true,
+		fetchRemoteImages: !p.localImagesOnly,
 		ctx:               ctx,
 		mediaCache:        media.CacheFromContext(ctx),
 		budget:            media.NewBudget(),
@@ -103,7 +104,7 @@ func (p *HTMLParser) ParseWithResult(ctx context.Context, filename string, data 
 		// Text-only callers have no run media cache and must not reach the
 		// network: every image source is dropped before resolution.
 		state.skipImages = true
-	} else {
+	} else if state.fetchRemoteImages {
 		// Remote downloads are bounded per document. The fetch deadline lives
 		// in its own context because state.ctx also scopes the media cache:
 		// expiring it would fail every later image write in the document.
@@ -173,10 +174,11 @@ type htmlWalkState struct {
 	mediaFormat string
 	// skipImages drops every image source before resolution. Text-only
 	// callers use it when no run media cache is available.
-	skipImages   bool
-	resolveMedia func(string) (*entity.MediaRef, bool)
-	resolveImage func(string) (string, bool)
-	err          error
+	skipImages          bool
+	splitEmbeddedImages bool
+	resolveMedia        func(string) (*entity.MediaRef, bool)
+	resolveImage        func(string) (string, bool)
+	err                 error
 }
 
 func (s *htmlWalkState) warnings() []string {
