@@ -48,7 +48,7 @@ func TestKnowledgeNativeDatasetCleanupAncestor(t *testing.T) {
 					t.Fatalf("ancestor fixture not protected: %v", guard)
 				}
 			}
-			got, code, err := svc.DeleteDatasets(t.Context(), []string{kb.ID}, false, permission.Subject{UserID: knowledgeTestOwner})
+			got, code, err := svc.DeleteDatasets(permission.WithIdentity(t.Context(), knowledgeTestOwner, knowledgeTestOwner), []string{kb.ID}, false)
 			var n int64
 			if e := dao.DB.Model(&entity.File{}).Where("id = ?", ancestor).Count(&n).Error; e != nil {
 				t.Fatal(e)
@@ -133,20 +133,20 @@ func TestKnowledgeOrdinaryDatasetReservedNameDeletesCommonAncestor(t *testing.T)
 		t.Fatalf("common container not protected: %v", err)
 	}
 	name := ".knowledgebase"
-	_, code, err := svc.UpdateDataset(t.Context(), knowledgeTestOther, knowledgeTestOwner, service.UpdateDatasetRequest{Name: &name})
+	_, code, err := svc.UpdateDataset(permission.WithIdentity(t.Context(), knowledgeTestOwner, knowledgeTestOwner), knowledgeTestOther, service.UpdateDatasetRequest{Name: &name})
 	if err != nil || code != 0 {
 		t.Fatalf("ordinary rename: code=%d err=%v", code, err)
 	}
-	before, err := file.NewFileService(nil).ListFiles(t.Context(), knowledgeTestOwner, bound.ID, 1, 20, nil, "")
+	before, err := file.NewFileService(nil).ListFilesForTenant(permission.WithIdentity(t.Context(), knowledgeTestOwner, knowledgeTestOwner), knowledgeTestOwner, bound.ID, 1, 20, nil, "")
 	if err != nil || before == nil {
 		t.Fatalf("before native list: %v", err)
 	}
-	got, code, err := svc.DeleteDatasets(t.Context(), []string{knowledgeTestOther}, false, permission.Subject{UserID: knowledgeTestOwner})
+	got, code, err := svc.DeleteDatasets(permission.WithIdentity(t.Context(), knowledgeTestOwner, knowledgeTestOwner), []string{knowledgeTestOther}, false)
 	var n int64
 	if e := dao.DB.Model(&entity.File{}).Where("id = ?", commonID).Count(&n).Error; e != nil {
 		t.Fatal(e)
 	}
-	_, browseErr := file.NewFileService(nil).ListFiles(t.Context(), knowledgeTestOwner, bound.ID, 1, 20, nil, "")
+	_, browseErr := file.NewFileService(nil).ListFilesForTenant(permission.WithIdentity(t.Context(), knowledgeTestOwner, knowledgeTestOwner), knowledgeTestOwner, bound.ID, 1, 20, nil, "")
 	after, readErr := svc.ReadKnowledgeNode(t.Context(), knowledgeTestOwner, knowledgeTestDomain, snapshot.Root.ID, nil, nil)
 	t.Logf("ordinary reserved-name delete result=%v code=%d err=%v common_ancestor_rows=%d native_source_browse_error=%v C1_fixed_revision_read_ok=%t", got, code, err, n, browseErr, readErr == nil && after.Text == "protected source\n")
 	if n != 1 || browseErr != nil || err == nil || code != common.CodeForbidden || readErr != nil || after.Text != "protected source\n" {

@@ -40,6 +40,7 @@ import {
 } from './reasoning-chain';
 import { ReasoningTrace } from './reasoning-trace';
 import { ReferenceSourceList } from './reference-source-list';
+import { TurnUsage } from './turn-usage';
 
 interface IProps extends Partial<IRemoveMessageById>, IRegenerateMessage {
   item: IMessage;
@@ -203,6 +204,7 @@ const MessageItem = ({
               />
             </div>
           )}
+          <TurnUsage usage={item.usage} elapsedMs={item.elapsed_ms} />
           <ReferenceImageList
             referenceChunks={reference.chunks}
             messageContent={citationText}

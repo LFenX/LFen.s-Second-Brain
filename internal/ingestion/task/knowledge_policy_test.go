@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"ragflow/internal/entity"
+	"ragflow/internal/ingestion"
 	"ragflow/internal/ingestion/component"
 	"ragflow/internal/ingestion/knowledge_compile"
 	"ragflow/internal/ingestion/testutil"
@@ -44,10 +45,17 @@ func setupKnowledgeTaskPolicyDB(t *testing.T) *gorm.DB {
 }
 
 func TestKnowledgeRecoveredTaskAndDirtyWikiStopBeforeModels(t *testing.T) {
-	setupKnowledgeTaskPolicyDB(t)
+	db := setupKnowledgeTaskPolicyDB(t)
+	oldDB, oldCompiler := embedderResolverDB, kcWiringDeps
+	InitEmbedderResolver(db)
+	InitKnowledgeCompilerDeps(db, nil)
+	t.Cleanup(func() {
+		InitEmbedderResolver(oldDB)
+		InitKnowledgeCompilerDeps(oldCompiler.DB, oldCompiler.Engine)
+	})
 	for _, id := range []string{"private", "copy"} {
 		task := &entity.IngestionTask{ID: "task-" + id, DatasetID: id, DocumentID: "doc-" + id}
-		if _, err := LoadFromIngestionTask(t.Context(), task); !errors.Is(err, permission.ErrKnowledgeIngestionDenied) {
+		if _, err := LoadFromIngestionTask(t.Context(), db, task); !errors.Is(err, permission.ErrKnowledgeIngestionDenied) {
 			t.Fatalf("load %s: %v", id, err)
 		}
 		// Invoke production wiring. No model table or provider is installed;
@@ -59,18 +67,18 @@ func TestKnowledgeRecoveredTaskAndDirtyWikiStopBeforeModels(t *testing.T) {
 			t.Fatalf("dirty Wiki %s: %v", id, err)
 		}
 	}
-	if _, err := LoadFromIngestionTask(t.Context(), &entity.IngestionTask{ID: "ordinary-task", DatasetID: "ordinary", DocumentID: "doc-ordinary"}); err != nil {
+	if _, err := LoadFromIngestionTask(t.Context(), db, &entity.IngestionTask{ID: "ordinary-task", DatasetID: "ordinary", DocumentID: "doc-ordinary"}); err != nil {
 		t.Fatalf("ordinary task changed: %v", err)
 	}
 }
 
 func TestKnowledgePipelineRechecksPreviouslyLoadedContext(t *testing.T) {
 	db := setupKnowledgeTaskPolicyDB(t)
-	ctx, err := LoadFromIngestionTask(t.Context(), &entity.IngestionTask{ID: "ordinary-task", DatasetID: "ordinary", DocumentID: "doc-ordinary"})
+	ctx, err := LoadFromIngestionTask(t.Context(), db, &entity.IngestionTask{ID: "ordinary-task", DatasetID: "ordinary", DocumentID: "doc-ordinary"})
 	if err != nil {
 		t.Fatal(err)
 	}
-	executor, err := NewPipelineExecutor(ctx, "synthetic-flow", 32)
+	executor, err := NewPipelineExecutor(ctx, "synthetic-flow", 32, &ingestion.Deps{DB: db})
 	if err != nil {
 		t.Fatal(err)
 	}

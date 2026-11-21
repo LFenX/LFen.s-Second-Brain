@@ -19,8 +19,11 @@ func CheckKnowledgeVersionAccess(ctx context.Context, db *gorm.DB, userID, folde
 	if db == nil {
 		return errors.New("knowledge version policy database unavailable")
 	}
-	if userID == "" || folderID == "" {
-		return ErrInvalidSubject
+	if userID == "" {
+		return ErrUnauthenticated
+	}
+	if folderID == "" {
+		return ErrInvalidPermission
 	}
 	hidden := func() *gorm.DB {
 		return KnowledgeHiddenFileIDs(ctx, db, userID)

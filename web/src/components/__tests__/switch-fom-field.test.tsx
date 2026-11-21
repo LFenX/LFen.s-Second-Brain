@@ -35,12 +35,14 @@ function ErrorHarness() {
 }
 
 describe('SwitchFormField', () => {
-  it('toggles the switch when the label text is clicked', () => {
+  it('toggles only when the switch itself is clicked', () => {
     render(<Harness />);
     const switchEl = screen.getByRole('switch');
     expect(switchEl).toHaveAttribute('data-state', 'unchecked');
 
     fireEvent.click(screen.getByText('Enable feature'));
+    expect(switchEl).toHaveAttribute('data-state', 'unchecked');
+    fireEvent.click(switchEl);
 
     expect(switchEl).toHaveAttribute('data-state', 'checked');
   });

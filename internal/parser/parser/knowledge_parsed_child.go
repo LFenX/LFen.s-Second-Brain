@@ -4,12 +4,15 @@ import (
 	"archive/zip"
 	"bytes"
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"path"
 	"strings"
 	"unicode/utf8"
 
 	"ragflow/internal/entity"
+	"ragflow/internal/parser/media"
 	"ragflow/internal/utility"
 )
 
@@ -52,18 +55,29 @@ func ParseKnowledgeParsedChild(ctx context.Context, control DocumentChildControl
 			return nil, err
 		}
 	}
-	producer, err := GetParser(utility.FileType(control.Format))
-	if err != nil {
+	// The revision fixes the format. Embedded image evidence lives only in
+	// this child and only its descriptive attributes enter the projection.
+	requested := utility.FileType(control.Format)
+	producer, effective, err := GetParser(requested, input)
+	if err != nil || effective != requested {
 		return nil, documentChildError("source_structure_unavailable", nil)
 	}
-	if markdown, ok := producer.(*MarkdownParser); ok {
-		markdown.FetchRemoteImages = false
+	ctx = media.WithCache(ctx, make(knowledgeChildMedia))
+	switch p := producer.(type) {
+	case *MarkdownParser:
+		p.FetchRemoteImages = false
+		p.splitEmbeddedImages = true
+	case *HTMLParser:
+		p.localImagesOnly = true
+	case *EPUBParser:
+		// The fixed EPUB profile extracts chapter text.
+		p.textOnly = true
+	case *EmailParser:
+		p.ConfigureFromSetup(map[string]any{"fields": []string{"from", "to", "cc", "bcc", "date", "subject", "body"}})
+		p.includeHTMLBodyText = true
 	}
-	if email, ok := producer.(*EmailParser); ok {
-		email.ConfigureFromSetup(map[string]any{"output_format": "text", "fields": []string{"from", "to", "cc", "bcc", "date", "subject", "body"}})
-	}
-	normalized := NormalizeParseResult(ctx, control.Filename, producer.ParseWithResult(ctx, control.Filename, input))
-	if normalized.Diagnostic != nil || normalized.Result.Err != nil || normalized.Status != "json" && normalized.Status != "text" && normalized.Status != "markdown" {
+	normalized := NormalizeParseResult(producer.ParseWithResult(ctx, control.Filename, input))
+	if normalized.Diagnostic != nil || normalized.Result.Err != nil || normalized.Status != "json" {
 		return nil, documentChildError("source_structure_unavailable", nil)
 	}
 	projection, err := ProjectKnowledgeParseResult(normalized.Result)
@@ -78,9 +92,36 @@ func ParseKnowledgeParsedChild(ctx context.Context, control DocumentChildControl
 	return raw, nil
 }
 
+// knowledgeChildMedia holds budget-admitted images for one serial parse.
+// The process exits after projecting the items, releasing all payloads.
+type knowledgeChildMedia map[string][]byte
+
+func (m knowledgeChildMedia) Put(ctx context.Context, format, mime string, data []byte) (entity.MediaRef, error) {
+	if err := ctx.Err(); err != nil {
+		return entity.MediaRef{}, err
+	}
+	sum := sha256.Sum256(data)
+	digest := hex.EncodeToString(sum[:])
+	if _, exists := m[digest]; !exists {
+		m[digest] = bytes.Clone(data)
+	}
+	return entity.MediaRef{Kind: "child-memory", Format: format, MIME: mime, SHA256: digest, Size: int64(len(data))}, nil
+}
+
+func (m knowledgeChildMedia) Get(ctx context.Context, ref entity.MediaRef) ([]byte, error) {
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+	data, ok := m[ref.SHA256]
+	if !ok || ref.Kind != "child-memory" {
+		return nil, media.ErrMediaNotFound
+	}
+	return media.ValidatePayload(data, ref)
+}
+
 func DecodeKnowledgeParsedChild(raw []byte) (*entity.KnowledgeContentProjection, error) {
 	var pack KnowledgeParsedChildResult
-	if len(raw) > documentChildOutputLimit || entity.KnowledgeParsedDecode(raw, &pack) != nil || pack.NormalizationStatus != "json" && pack.NormalizationStatus != "text" && pack.NormalizationStatus != "markdown" || pack.Projection.Binding != "unbound" {
+	if len(raw) > documentChildOutputLimit || entity.KnowledgeParsedDecode(raw, &pack) != nil || pack.NormalizationStatus != "json" || pack.Projection.Binding != "unbound" {
 		return nil, documentChildError("invalid_source_structure", nil)
 	}
 	if pack.Projection.Validate() != nil {

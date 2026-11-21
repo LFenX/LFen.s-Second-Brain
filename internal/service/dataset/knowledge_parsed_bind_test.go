@@ -51,7 +51,7 @@ func parsedAssertCoverage(t *testing.T, bound *parsedBound, maxUnit int64) {
 
 func TestBindKnowledgeParsedRealCSVAndStableFixedIDs(t *testing.T) {
 	original := []byte("A,B\n甲,乙\n1,2\n")
-	normalized := parser.NormalizeParseResult(t.Context(), "synthetic.csv", parser.NewCSVParser().ParseWithResult(t.Context(), "synthetic.csv", original))
+	normalized := parser.NormalizeParseResult(parser.NewCSVParser().ParseWithResult(t.Context(), "synthetic.csv", original))
 	source := parsedTestSource(original)
 	producer := directorySHA([]byte("synthetic local producer"))
 	first, err := bindKnowledgeParsed(source, original, producer, normalized, 16)
@@ -78,13 +78,13 @@ func TestBindKnowledgeParsedRealCSVAndStableFixedIDs(t *testing.T) {
 
 func TestBindKnowledgeParsedAssemblyUnsupportedAndDecimalPositions(t *testing.T) {
 	original := []byte("synthetic typed carrier")
-	result := parser.ParseResult{OutputFormat: "json", JSON: []parser.DocItem{
+	result := parser.ParseResult{JSON: []parser.DocItem{
 		parser.TextItem{Text: "合成\r\n"},
-		parser.ImageItem{Text: "alt is not OCR", Image: "SECRET_PAYLOAD", Positions: [][]float64{{1.25, 2.5}}},
+		parser.ImageItem{Text: "alt is not OCR", Image: "SECRET_PAYLOAD", Positions: parser.Positions{parser.AbsoluteBox{PageNumber: 1, Left: 1.25, Right: 2.5}}},
 		parser.RawItem{M: map[string]any{"text": "FORGED_TEXT", "owner_id": "FORGED_OWNER"}},
 		parser.TextItem{Text: "第二段"},
 	}}
-	normalized := parser.NormalizeParseResult(t.Context(), "synthetic", result)
+	normalized := parser.NormalizeParseResult(result)
 	bound, err := bindKnowledgeParsed(parsedTestSource(original), original, strings.Repeat("a", 64), normalized, 16)
 	if err != nil {
 		t.Fatal(err)
@@ -92,7 +92,7 @@ func TestBindKnowledgeParsedAssemblyUnsupportedAndDecimalPositions(t *testing.T)
 	if bound.ReadingText != "合成\r\n\n第二段" || bound.Representation.State != "partial" || bound.Representation.UnsupportedNodeCount != 1 || bound.Representation.UnavailableNodeCount != 1 {
 		t.Fatal(bound.Representation, bound.ReadingText)
 	}
-	if bound.Nodes[2].Payload.Text.Status != "unsupported" || bound.Nodes[3].Payload.Text.Status != "unavailable" || bound.Nodes[2].Payload.Attributes.Parser.Positions[0][0] != 1.25 {
+	if bound.Nodes[2].Payload.Text.Status != "unsupported" || bound.Nodes[3].Payload.Text.Status != "unavailable" || bound.Nodes[2].Payload.Attributes.Parser.Positions[0][1] != 1.25 {
 		t.Fatal("unsupported facts changed")
 	}
 	parsedAssertCoverage(t, bound, 16)
@@ -118,7 +118,7 @@ func TestBindKnowledgeParsedAssemblyUnsupportedAndDecimalPositions(t *testing.T)
 func TestBindKnowledgeParsedRejectsUnsafeAndDoesNotFabricateEmpty(t *testing.T) {
 	original := []byte("synthetic")
 	source := parsedTestSource(original)
-	normalized := parser.NormalizeParseResult(t.Context(), "synthetic.txt", parser.ParseResult{OutputFormat: "text", Text: "safe"})
+	normalized := parser.NormalizeParseResult(parser.ParseResult{JSON: []parser.DocItem{parser.NewTextJSONItem("safe")}})
 	wrong := source
 	wrong.SHA256 = strings.Repeat("f", 64)
 	if bound, err := bindKnowledgeParsed(wrong, original, strings.Repeat("a", 64), normalized, 16); err == nil || bound != nil {
@@ -131,11 +131,11 @@ func TestBindKnowledgeParsedRejectsUnsafeAndDoesNotFabricateEmpty(t *testing.T) 
 			t.Fatal(status, bound, err)
 		}
 	}
-	audio := parser.NormalizeParseResult(t.Context(), "synthetic.wav", parser.NewAudioParser().ParseWithResult(t.Context(), "synthetic.wav", original))
+	audio := parser.NormalizeParseResult(parser.NewAudioParser().ParseWithResult(t.Context(), "synthetic.wav", original))
 	if bound, err := bindKnowledgeParsed(source, original, strings.Repeat("a", 64), audio, 16); err == nil || bound != nil {
 		t.Fatal("audio config published", bound, err)
 	}
-	empty := parser.NormalizeParseResult(t.Context(), "synthetic.json", parser.NewJSONParser().ParseWithResult(t.Context(), "synthetic.json", nil))
+	empty := parser.NormalizeParseResult(parser.NewJSONParser().ParseWithResult(t.Context(), "synthetic.json", nil))
 	bound, err := bindKnowledgeParsed(parsedTestSource(nil), nil, strings.Repeat("a", 64), empty, 16)
 	if err != nil || bound.Representation.State != "empty" || bound.ReadingText != "" || len(bound.Nodes) != 2 {
 		t.Fatal(bound, err)

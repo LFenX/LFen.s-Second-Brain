@@ -38,7 +38,7 @@ func TestKnowledgeConsumerRejectsProtectedBacklogBeforeDependencies(t *testing.T
 		}
 	}
 	called := 0
-	consumer := NewConsumer(NewFakeScheduler(), WithDeduperFactory(func(context.Context, string) (Deduper, error) {
+	consumer := NewConsumer(NewFakeScheduler(), WithStorage(nil, db), WithDeduperFactory(func(context.Context, string) (Deduper, error) {
 		called++
 		return nil, errors.New("must not resolve model dependencies")
 	}))

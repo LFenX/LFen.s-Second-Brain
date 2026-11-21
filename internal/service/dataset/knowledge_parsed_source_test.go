@@ -231,14 +231,14 @@ func TestParsedExecutionActualMergedHTMLAndEmptyJSON(t *testing.T) {
 					if entity.KnowledgeParsedDecode([]byte(row.Payload), &node) != nil {
 						t.Fatal("stored typed node failed decode")
 					}
-					if strings.Contains(row.Payload, "table_origins") || strings.Contains(row.Payload, "origin_row") {
+					if strings.Contains(row.Payload, "table_origins") {
 						t.Fatal("diagnostic-only geometry became a storage contract")
 					}
 					if node.Payload.Attributes.Parser == nil || node.Payload.Attributes.Parser.Table == nil {
 						continue
 					}
 					table := node.Payload.Attributes.Parser.Table
-					if len(table.Grid) > 2 && len(table.Grid[2]) > 1 && table.Grid[2][1].Covered {
+					if len(table.Grid) > 2 && len(table.Grid[2]) > 1 && table.Grid[2][1].Covered && table.Grid[2][1].OriginRow == 1 && table.Grid[2][1].OriginCol == 1 {
 						found = true
 					}
 				}

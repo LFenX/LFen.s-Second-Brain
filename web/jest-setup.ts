@@ -13,6 +13,17 @@ if (typeof globalThis.TextEncoder === 'undefined') {
   Object.assign(globalThis, { TextDecoder, TextEncoder });
 }
 
+if (!Blob.prototype.arrayBuffer) {
+  Blob.prototype.arrayBuffer = function () {
+    return new Promise<ArrayBuffer>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as ArrayBuffer);
+      reader.onerror = () => reject(reader.error);
+      reader.readAsArrayBuffer(this);
+    });
+  };
+}
+
 // jsdom does not expose web streams; eventsource-parser reads TransformStream
 // at module scope (via hooks/logic-hooks.ts)
 if (typeof globalThis.TransformStream === 'undefined') {

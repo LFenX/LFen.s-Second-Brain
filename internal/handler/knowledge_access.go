@@ -52,8 +52,8 @@ func (h *AuthHandler) KnowledgeAccessAuth(operation string) gin.HandlerFunc {
 			return
 		}
 		authorization := authorizations[0]
-		user, code, err := h.userService.GetUserByToken(ctx, authorization)
-		if err != nil || code != common.CodeSuccess || user == nil || user.IsSuperuser != nil && *user.IsSuperuser {
+		identity, code, err := h.userService.ResolveAccessToken(ctx, authorization)
+		if err != nil || code != common.CodeSuccess || identity == nil || identity.User == nil || identity.User.IsSuperuser != nil && *identity.User.IsSuperuser {
 			accessHandlerError(c, operation, 401, "unauthenticated")
 			return
 		}
@@ -61,9 +61,8 @@ func (h *AuthHandler) KnowledgeAccessAuth(operation string) gin.HandlerFunc {
 			accessHandlerError(c, operation, 503, "unavailable")
 			return
 		}
-		c.Set("user", user)
-		c.Set("user_id", user.ID)
-		c.Set("email", user.Email)
+		setAuthIdentity(c, identity)
+		c.Set("email", identity.User.Email)
 		c.Set("auth_via_api_token", false)
 		c.Next()
 	}

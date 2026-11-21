@@ -78,7 +78,7 @@ func seedKnowledgeRestrictedSkillSpace(t *testing.T) {
 	if err := store.Put(t.Context(), "private-version", loc, []byte("---\nname: Synthetic private source sentinel\ndescription: Synthetic private source sentinel\n---\nSynthetic private source body\n")); err != nil {
 		t.Fatal(err)
 	}
-	if err := permission.NewDatabaseChecker(db).CheckResource(t.Context(), permission.Subject{UserID: "copy-owner"}, permission.ResourceRef{Kind: permission.ResourceKindFolder, ID: "private-space"}, permission.OperationRead); !errors.Is(err, permission.ErrPermissionDenied) {
+	if err := permission.NewDatabaseChecker(db).CheckResource(permission.WithIdentity(t.Context(), "copy-owner", ""), permission.ResourceRef{Kind: permission.ResourceKindFolder, ID: "private-space"}, permission.OperationRead); !errors.Is(err, permission.ErrPermissionDenied) {
 		t.Fatalf("fixture exact folder guard=%v", err)
 	}
 }
@@ -111,7 +111,7 @@ func TestKnowledgeSkillSpaceUpdateHonorsKnownSourceOwner(t *testing.T) {
 	common.Logger = zap.NewNop()
 	t.Cleanup(func() { common.Logger = previous })
 	seedKnowledgeRestrictedSkillSpace(t)
-	_, code, err := NewSkillSpaceService(nil).UpdateSpace(t.Context(), "copy-owner", "old-space", &UpdateSpaceRequest{Name: "Changed private folder"})
+	_, code, err := NewSkillSpaceService(nil).UpdateSpace(permission.WithIdentity(t.Context(), "copy-owner", "copy-owner"), "old-space", &UpdateSpaceRequest{Name: sptr("Changed private folder")})
 	var f entity.File
 	if e := dao.DB.Where("id = ?", "private-space").Take(&f).Error; e != nil {
 		t.Fatal(e)
@@ -136,7 +136,7 @@ func TestKnowledgeSkillReindexStopsBeforeReadingOrModelUse(t *testing.T) {
 	provider.ModelDriver = capture
 	t.Cleanup(func() { provider.ModelDriver = original })
 	for _, row := range []any{
-		&entity.TenantModelProvider{ID: "probe-provider", TenantID: "copy-owner", ProviderName: "OpenAI"},
+		&entity.TenantModelProvider{ID: "probe-provider", TenantID: "copy-owner", UserID: "copy-owner", ProviderName: "OpenAI"},
 		&entity.TenantModelInstance{ID: "probe-instance", ProviderID: "probe-provider", InstanceName: "default", APIKey: "", Status: "active", Extra: "{}"},
 		&entity.TenantModel{ID: "probe-model", ProviderID: "probe-provider", InstanceID: "probe-instance", ModelName: "synthetic-embedding", ModelType: int(entity.ModelTypeEmbedding), Status: "active", Extra: `{"max_tokens":8192}`},
 	} {
@@ -145,7 +145,7 @@ func TestKnowledgeSkillReindexStopsBeforeReadingOrModelUse(t *testing.T) {
 		}
 	}
 	engine := &knowledgeSkillIndexCapture{}
-	got, err := NewSkillIndexerService().ReindexAll(t.Context(), "copy-owner", "old-space", engine, "probe-model")
+	got, err := NewSkillIndexerService().ReindexAll(permission.WithIdentity(t.Context(), "copy-owner", "copy-owner"), "old-space", engine, "probe-model")
 	privatePayload := false
 	for _, value := range capture.texts {
 		if strings.Contains(value, "Synthetic private source sentinel") {
@@ -181,13 +181,13 @@ func TestKnowledgeOrdinarySkillReindexControl(t *testing.T) {
 	capture := &knowledgeSkillEmbedCapture{DummyModel: models.NewDummyModel(nil, models.URLSuffix{})}
 	provider.ModelDriver = capture
 	t.Cleanup(func() { provider.ModelDriver = original })
-	for _, row := range []any{&entity.TenantModelProvider{ID: "probe-provider", TenantID: "copy-owner", ProviderName: "OpenAI"}, &entity.TenantModelInstance{ID: "probe-instance", ProviderID: "probe-provider", InstanceName: "default", APIKey: "", Status: "active", Extra: "{}"}, &entity.TenantModel{ID: "probe-model", ProviderID: "probe-provider", InstanceID: "probe-instance", ModelName: "synthetic-embedding", ModelType: int(entity.ModelTypeEmbedding), Status: "active", Extra: `{"max_tokens":8192}`}} {
+	for _, row := range []any{&entity.TenantModelProvider{ID: "probe-provider", TenantID: "copy-owner", UserID: "copy-owner", ProviderName: "OpenAI"}, &entity.TenantModelInstance{ID: "probe-instance", ProviderID: "probe-provider", InstanceName: "default", APIKey: "", Status: "active", Extra: "{}"}, &entity.TenantModel{ID: "probe-model", ProviderID: "probe-provider", InstanceID: "probe-instance", ModelName: "synthetic-embedding", ModelType: int(entity.ModelTypeEmbedding), Status: "active", Extra: `{"max_tokens":8192}`}} {
 		if err := dao.DB.Create(row).Error; err != nil {
 			t.Fatal(err)
 		}
 	}
 	engine := &knowledgeSkillIndexCapture{}
-	got, err := NewSkillIndexerService().ReindexAll(t.Context(), "copy-owner", "old-space", engine, "probe-model")
+	got, err := NewSkillIndexerService().ReindexAll(permission.WithIdentity(t.Context(), "copy-owner", "copy-owner"), "old-space", engine, "probe-model")
 	if err != nil || len(capture.texts) == 0 || len(engine.documents) != 1 {
 		t.Fatalf("ordinary control result=%v err=%v stub_calls=%d indexed=%d", got, err, len(capture.texts), len(engine.documents))
 	}
@@ -224,32 +224,32 @@ func TestKnowledgeSkillSpaceScopeAndConsumersRejectManagedSources(t *testing.T) 
 	common.Logger = zap.NewNop()
 	t.Cleanup(func() { common.Logger = previous })
 	seedKnowledgeRestrictedSkillSpace(t)
-	ctx := t.Context()
+	ctx := permission.WithIdentity(t.Context(), "copy-owner", "copy-owner")
 	spaces := NewSkillSpaceService(nil)
-	listed, code, err := spaces.ListSpaces(ctx, "copy-owner")
+	listed, code, err := spaces.ListSpaces(ctx)
 	if err != nil || code != common.CodeSuccess || len(listed["spaces"].([]map[string]interface{})) != 0 {
 		t.Fatalf("restricted skills scope leaked: code=%d err=%v", code, err)
 	}
-	if _, _, err := spaces.GetSpace(ctx, "copy-owner", "old-space"); err == nil {
+	if _, _, err := spaces.GetSpace(ctx, "old-space"); err == nil {
 		t.Fatal("restricted skill space was readable")
 	}
-	if _, _, err := spaces.GetSpaceByFolderID(ctx, "copy-owner", "private-space"); err == nil {
+	if _, _, err := spaces.GetSpaceByFolderID(ctx, "private-space"); err == nil {
 		t.Fatal("folder lookup bypassed skill scope")
 	}
-	if _, err := spaces.DeleteSpace(ctx, "copy-owner", "old-space", nil); err == nil {
+	if _, err := spaces.DeleteSpace(ctx, "old-space", nil); err == nil {
 		t.Fatal("restricted space deletion reached background cleanup")
 	}
-	if _, _, err := NewSkillSearchService().Search(ctx, "copy-owner", &SearchRequest{SpaceID: "old-space", Query: "synthetic"}, nil); err == nil {
+	if _, _, err := NewSkillSearchService().Search(ctx, &SearchRequest{SpaceID: "old-space", Query: "synthetic"}, nil); err == nil {
 		t.Fatal("restricted skill search reached its engine")
 	}
 	indexer := NewSkillIndexerService()
 	skill := SkillInfo{Name: "Synthetic", FolderID: "private-skill"}
 	for name, run := range map[string]func() error{
-		"default index": func() error { return indexer.IndexSkill(ctx, "copy-owner", "default", skill, nil, "") },
+		"default index": func() error { return indexer.IndexSkill(ctx, "default", skill, nil, "") },
 		"default batch": func() error {
-			return indexer.BatchIndexSkills(ctx, "copy-owner", "default", []SkillInfo{skill}, nil, "")
+			return indexer.BatchIndexSkills(ctx, "default", []SkillInfo{skill}, nil, "")
 		},
-		"default update": func() error { return indexer.UpdateSkillVersion(ctx, "copy-owner", "default", skill, nil, "") },
+		"default update": func() error { return indexer.UpdateSkillVersion(ctx, "default", skill, nil, "") },
 		"internal index": func() error { return indexer.indexSkill(ctx, "copy-owner", "default", skill, nil, "") },
 		"internal batch": func() error {
 			return indexer.batchIndexSkills(ctx, "copy-owner", "default", []SkillInfo{skill}, nil, "")
@@ -283,7 +283,7 @@ func TestKnowledgeSkillSearchFiltersKnownOldIndexOriginsBeforeCounts(t *testing.
 	common.Logger = zap.NewNop()
 	t.Cleanup(func() { common.Logger = previous })
 	seedKnowledgeRestrictedSkillSpace(t)
-	result, code, err := NewSkillSearchService().Search(t.Context(), "copy-owner", &SearchRequest{SpaceID: "default", Page: 1, PageSize: 1}, knowledgeSkillSearchCapture{})
+	result, code, err := NewSkillSearchService().Search(permission.WithIdentity(t.Context(), "copy-owner", "copy-owner"), &SearchRequest{SpaceID: "default", Page: 1, PageSize: 1}, knowledgeSkillSearchCapture{})
 	if err != nil || code != common.CodeSuccess || result.Total != 1 || len(result.Skills) != 1 || result.Skills[0].SkillID != "ordinary-index-entry" {
 		t.Fatalf("old index origin filtering: result=%+v code=%d err=%v", result, code, err)
 	}
@@ -314,7 +314,7 @@ func TestKnowledgeSkillSpaceCreationPreservesManagedTrees(t *testing.T) {
 			rows := []any{
 				&entity.UserTenant{ID: "owner-membership", UserID: "owner", TenantID: "owner", Role: "owner", Status: &valid},
 				&entity.UserTenant{ID: "reader-membership", UserID: "reader", TenantID: "owner", Role: "normal", Status: &valid},
-				&entity.Tenant{ID: "owner", EmbdID: ""},
+				&entity.Tenant{ID: "owner"},
 				&entity.Knowledgebase{ID: "target", TenantID: "owner", CreatedBy: "owner", Name: "Shared", Permission: "team", Status: &valid},
 				&entity.File{ID: "root", ParentID: "root", TenantID: "owner", CreatedBy: "owner", Name: "/", Type: "folder"},
 				&entity.File{ID: "skills-root", ParentID: "root", TenantID: "owner", CreatedBy: "owner", Name: "skills", Type: "folder", SourceType: rootSource},
@@ -334,7 +334,7 @@ func TestKnowledgeSkillSpaceCreationPreservesManagedTrees(t *testing.T) {
 			if err := permission.CheckDatasetModelUse(t.Context(), db, []string{"target"}, "generation"); (mode != "ordinary_control") != errors.Is(err, permission.ErrKnowledgeModelUseDenied) {
 				t.Fatalf("precondition guard=%v", err)
 			}
-			got, code, err := NewSkillSpaceService(nil).CreateSpace(t.Context(), "owner", &CreateSpaceRequest{Name: "Collision"})
+			got, code, err := NewSkillSpaceService(nil).CreateSpace(permission.WithIdentity(t.Context(), "owner", "owner"), &CreateSpaceRequest{Name: "Collision"})
 			if err != nil || code != common.CodeSuccess {
 				t.Fatalf("CreateSpace result=%v code=%v err=%v", got, code, err)
 			}

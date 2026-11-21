@@ -22,7 +22,7 @@ func TestKnowledgeOrdinaryUploadDoesNotAdoptManagedName(t *testing.T) {
 	if err := db.Create(&entity.File{ID: id, ParentID: "parent", TenantID: "owner", CreatedBy: "owner", Name: "Collision", Type: "folder", SourceType: "knowledgebase"}).Error; err != nil {
 		t.Fatal(err)
 	}
-	folder, err := testDocumentService(t).newAFileFromKB(t.Context(), "owner", "Collision", "parent")
+	folder, err := testDocumentService(t).newAFileFromKB(t.Context(), db, "owner", "Collision", "parent")
 	if err != nil || folder.ID == id {
 		t.Fatalf("ordinary folder adopted private binding: %+v err=%v", folder, err)
 	}
@@ -34,7 +34,7 @@ func TestKnowledgeOrdinaryUploadDoesNotAdoptUnclaimedFolder(t *testing.T) {
 	if err := db.Create(&entity.File{ID: "orphan", ParentID: "parent", TenantID: "owner", CreatedBy: "owner", Name: "Former", Type: "folder", SourceType: "knowledgebase"}).Error; err != nil {
 		t.Fatal(err)
 	}
-	folder, err := testDocumentService(t).newAFileFromKB(t.Context(), "owner", "Former", "parent")
+	folder, err := testDocumentService(t).newAFileFromKB(t.Context(), db, "owner", "Former", "parent")
 	if err != nil || folder.ID == "orphan" {
 		t.Fatalf("ordinary upload adopted unclaimed private folder: %+v err=%v", folder, err)
 	}
@@ -57,7 +57,7 @@ func TestKnowledgeUploadKeepsCodeNameAndBytesWithoutParsing(t *testing.T) {
 	}
 	body := []byte("标题\r\nexport const value = 1;\n")
 	files := []*multipart.FileHeader{makeTestFileHeader(t, "file", "demo.tsx", body), makeTestFileHeader(t, "file", "demo.jsx", body), makeTestFileHeader(t, "file", "slides.pptx", []byte("synthetic unsupported")), makeTestFileHeader(t, "file", "bad.tsx", []byte{0xff}), makeTestFileHeader(t, "file", "large.txt", bytes.Repeat([]byte{'x'}, int(entity.KnowledgeMaxSourceBytes)+1))}
-	got, errs := testDocumentService(t).UploadLocalDocuments(t.Context(), kb, "owner", files, "", nil)
+	got, errs := testDocumentService(t).UploadLocalDocuments(permission.WithIdentity(t.Context(), "owner", kb.TenantID), kb, files, "", nil)
 	if len(got) != 2 || len(errs) != 3 {
 		t.Fatalf("results=%d errors=%v", len(got), errs)
 	}
@@ -79,7 +79,7 @@ func TestKnowledgeUploadKeepsCodeNameAndBytesWithoutParsing(t *testing.T) {
 	if err := db.Create(kb).Error; err != nil {
 		t.Fatal(err)
 	}
-	got, errs = testDocumentService(t).UploadLocalDocuments(t.Context(), kb, "owner", []*multipart.FileHeader{makeTestFileHeader(t, "file", "native-reject.tsx", body)}, "", nil)
+	got, errs = testDocumentService(t).UploadLocalDocuments(permission.WithIdentity(t.Context(), "owner", kb.TenantID), kb, []*multipart.FileHeader{makeTestFileHeader(t, "file", "native-reject.tsx", body)}, "", nil)
 	if len(got) != 0 || len(errs) != 1 {
 		t.Fatal("unregistered native upload behavior changed")
 	}
@@ -105,10 +105,10 @@ func TestKnowledgeNativeFileTransferCannotRepublishProtectedSources(t *testing.T
 	// No dependencies are configured: both the queued conversion and the direct
 	// target-domain path must stop before changing any document or mapping.
 	svc := &File2DocumentService{}
-	if err := svc.convertFiles(t.Context(), []string{fileID}, []string{"unregistered"}, "owner", "add"); !errors.Is(err, permission.ErrKnowledgeIngestionDenied) {
+	if err := svc.convertFiles(permission.WithIdentity(t.Context(), "owner", "owner"), []string{fileID}, []string{"unregistered"}, "add"); !errors.Is(err, permission.ErrKnowledgeIngestionDenied) {
 		t.Fatalf("protected source transfer=%v", err)
 	}
-	if err := svc.convertFiles(t.Context(), []string{"ordinary"}, []string{"private"}, "owner", "add"); !errors.Is(err, permission.ErrKnowledgeIngestionDenied) {
+	if err := svc.convertFiles(permission.WithIdentity(t.Context(), "owner", "owner"), []string{"ordinary"}, []string{"private"}, "add"); !errors.Is(err, permission.ErrKnowledgeIngestionDenied) {
 		t.Fatalf("unsupported protected target import=%v", err)
 	}
 	var mappings int64

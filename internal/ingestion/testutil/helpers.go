@@ -70,6 +70,7 @@ func SetupTestDB(t *testing.T, tables ...any) *gorm.DB {
 			&entity.Knowledgebase{},
 			&entity.KnowledgeSourceRevision{},
 			&entity.Tenant{},
+			&entity.UserTenant{},
 			&entity.File{},
 			&entity.File2Document{},
 		}
@@ -77,6 +78,9 @@ func SetupTestDB(t *testing.T, tables ...any) *gorm.DB {
 
 	if err = db.AutoMigrate(tables...); err != nil {
 		t.Fatalf("auto-migrate: %v", err)
+	}
+	if err = db.AutoMigrate(&entity.UserTenant{}); err != nil {
+		t.Fatalf("auto-migrate user_tenant: %v", err)
 	}
 	return db
 }
@@ -162,12 +166,14 @@ func SeedTestData(t *testing.T, db *gorm.DB, opts ...TestDataOption) (string, st
 	}
 
 	// Create Tenant
-	if err := db.Create(&entity.Tenant{
-		ID:     cfg.tenantID,
-		LLMID:  "gpt-4",
-		Status: StrPtr("1"),
-	}).Error; err != nil {
+	if err := db.Create(&entity.Tenant{ID: cfg.tenantID, Status: StrPtr("1")}).Error; err != nil {
 		t.Fatalf("create tenant: %v", err)
+	}
+	if err := db.Create(&entity.UserTenant{
+		ID: "owner-" + cfg.tenantID, UserID: cfg.tenantID, TenantID: cfg.tenantID, Role: "owner",
+		Status: StrPtr("1"), LLMID: "gpt-4",
+	}).Error; err != nil {
+		t.Fatalf("create tenant owner membership: %v", err)
 	}
 
 	// Create Knowledgebase

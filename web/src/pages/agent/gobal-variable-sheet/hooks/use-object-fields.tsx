@@ -16,16 +16,15 @@ export const useObjectFields = () => {
       const fieldValue = field.value ? true : false;
       return (
         <BoolSegmented
-          sizeType="sm"
           value={fieldValue}
           onChange={field.onChange}
           className={className}
-          itemClassName="justify-center flex-1"
         ></BoolSegmented>
       );
     },
     [],
   );
+
   const validateKeys = (
     obj: any,
     path: (string | number)[] = [],

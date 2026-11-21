@@ -15,59 +15,71 @@
  */
 
 import {
+  AdminAuthorization,
+  AdminToken,
+  AdminUserInfo,
   Authorization,
   ThinkingLevel,
   Token,
   UserInfo,
 } from '@/constants/authorization';
 import { getSearchValue } from './common-util';
-import { notifyNativeSessionChanged } from './native-session-scope';
-const KeySet = [Authorization, Token, UserInfo];
 
-const storage = {
-  getAuthorization: () => {
-    return localStorage.getItem(Authorization);
-  },
-  getToken: () => {
-    return localStorage.getItem(Token);
-  },
-  getUserInfo: () => {
-    return localStorage.getItem(UserInfo);
-  },
+import { notifyNativeSessionChanged } from './native-session-scope';
+
+type CredentialKeys = {
+  authorization: string;
+  token: string;
+  userInfo: string;
+};
+
+const UserCredentialKeys: CredentialKeys = {
+  authorization: Authorization,
+  token: Token,
+  userInfo: UserInfo,
+};
+
+const AdminCredentialKeys: CredentialKeys = {
+  authorization: AdminAuthorization,
+  token: AdminToken,
+  userInfo: AdminUserInfo,
+};
+
+type LoginCredentials = {
+  authorization: string;
+  token: string;
+  userInfo: string;
+};
+
+const createCredentialStorage = (keys: CredentialKeys) => ({
+  getAuthorization: (): string =>
+    localStorage.getItem(keys.authorization) ?? '',
   getUserInfoObject: () => {
-    const userInfoStr = localStorage.getItem(UserInfo);
+    const userInfoStr = localStorage.getItem(keys.userInfo);
     return userInfoStr ? JSON.parse(userInfoStr) : null;
   },
   setAuthorization: (value: string) => {
-    localStorage.setItem(Authorization, value);
-    notifyNativeSessionChanged();
+    localStorage.setItem(keys.authorization, value);
+    if (keys === UserCredentialKeys) notifyNativeSessionChanged();
   },
-  setToken: (value: string) => {
-    localStorage.setItem(Token, value);
-    notifyNativeSessionChanged();
-  },
-  setUserInfo: (value: string | Record<string, unknown>) => {
-    const valueStr = typeof value !== 'string' ? JSON.stringify(value) : value;
-    localStorage.setItem(UserInfo, valueStr);
-    notifyNativeSessionChanged();
-  },
-  setItems: (pairs: Record<string, string>) => {
-    Object.entries(pairs).forEach(([key, value]) => {
-      localStorage.setItem(key, value);
-    });
-    if (Object.keys(pairs).some((key) => KeySet.includes(key)))
-      notifyNativeSessionChanged();
-  },
-  removeAuthorization: () => {
-    localStorage.removeItem(Authorization);
-    notifyNativeSessionChanged();
+  saveLoginCredentials: (credentials: LoginCredentials) => {
+    localStorage.setItem(keys.authorization, credentials.authorization);
+    localStorage.setItem(keys.token, credentials.token);
+    localStorage.setItem(keys.userInfo, credentials.userInfo);
+    if (keys === UserCredentialKeys) notifyNativeSessionChanged();
   },
   removeAll: () => {
-    KeySet.forEach((x) => {
-      localStorage.removeItem(x);
+    Object.values(keys).forEach((key) => {
+      localStorage.removeItem(key);
     });
-    notifyNativeSessionChanged();
+    if (keys === UserCredentialKeys) notifyNativeSessionChanged();
   },
+});
+
+export type CredentialStorage = ReturnType<typeof createCredentialStorage>;
+
+const storage = {
+  ...createCredentialStorage(UserCredentialKeys),
   setLanguage: (lng: string) => {
     localStorage.setItem('lng', lng);
   },
@@ -86,11 +98,11 @@ const storage = {
   },
 };
 
+export const adminStorage = createCredentialStorage(AdminCredentialKeys);
+
 export const getAuthorization = () => {
   const auth = getSearchValue('auth');
-  const authorization = auth
-    ? 'Bearer ' + auth
-    : storage.getAuthorization() || '';
+  const authorization = auth ? 'Bearer ' + auth : storage.getAuthorization();
 
   return authorization;
 };

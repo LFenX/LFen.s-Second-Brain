@@ -73,9 +73,6 @@ func (s *Service) deleteUserData(ctx context.Context, user *entity.User) (*Delet
 	if store == nil {
 		store = storage.GetStorageFactory().GetStorage()
 	}
-	if err := data.deleteExternalData(ctx, docEngine, store); err != nil {
-		return nil, err
-	}
 
 	result := &DeleteUserResult{
 		Username:       user.Email,
@@ -88,6 +85,9 @@ func (s *Service) deleteUserData(ctx context.Context, user *entity.User) (*Delet
 		}
 		if current.IsActive == "1" || current.IsSuperuser != nil && *current.IsSuperuser {
 			return fmt.Errorf("user authorization changed before deletion")
+		}
+		if err := data.deleteExternalData(ctx, docEngine, store); err != nil {
+			return err
 		}
 		return data.deleteDatabaseRows(ctx, tx, user.ID, result)
 	}); err != nil {

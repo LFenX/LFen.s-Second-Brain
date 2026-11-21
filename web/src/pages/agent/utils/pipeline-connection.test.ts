@@ -98,21 +98,12 @@ describe('isSingleInstanceOperator', () => {
   });
 
   it('leaves multi-instance operators unchecked', () => {
-    expect(isSingleInstanceOperator(Operator.Extractor)).toBe(false);
     expect(isSingleInstanceOperator(Operator.Agent)).toBe(false);
   });
 });
 
 describe('buildPipelineNextOperators', () => {
   const noOperator = () => false;
-
-  it('always offers Extractor, which is multi-instance', () => {
-    const hasExtractor = (operator: Operator) =>
-      operator === Operator.Extractor;
-    expect(
-      buildPipelineNextOperators(undefined, hasExtractor).operators,
-    ).toContain(Operator.Extractor);
-  });
 
   it('offers Compiler only when none is on the canvas', () => {
     const offered = buildPipelineNextOperators(undefined, noOperator).operators;

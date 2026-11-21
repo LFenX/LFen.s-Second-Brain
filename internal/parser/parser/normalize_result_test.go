@@ -12,12 +12,12 @@ import (
 
 func TestNormalizeParseResultKeepsFailureAndActualOutputStates(t *testing.T) {
 	failed := errors.New("synthetic producer failure")
-	result := NormalizeParseResult(t.Context(), "synthetic.txt", ParseResult{Err: failed})
+	result := NormalizeParseResult(ParseResult{Err: failed})
 	if result.Status != "failed" || !errors.Is(result.Result.Err, failed) {
 		t.Fatal(result)
 	}
 	audio := NewAudioParser().ParseWithResult(t.Context(), "synthetic.wav", []byte("no transcription"))
-	result = NormalizeParseResult(t.Context(), "synthetic.wav", audio)
+	result = NormalizeParseResult(audio)
 	if result.Status != "no_output" || len(result.Result.JSON) != 0 {
 		t.Fatal(result)
 	}
@@ -25,11 +25,11 @@ func TestNormalizeParseResultKeepsFailureAndActualOutputStates(t *testing.T) {
 	if err != nil || projection.State != "unavailable" {
 		t.Fatal(projection, err)
 	}
-	result = NormalizeParseResult(t.Context(), "synthetic.txt", ParseResult{OutputFormat: "text", Text: "合成\r\n正文"})
-	if result.Status != "text" || len(result.Result.JSON) != 1 || result.Result.JSON[0].(TextItem).Text != "合成\r\n正文" {
+	result = NormalizeParseResult(ParseResult{JSON: []DocItem{NewTextJSONItem("合成\r\n正文")}})
+	if result.Status != "json" || len(result.Result.JSON) != 1 || result.Result.JSON[0].(TextItem).Text != "合成\r\n正文" {
 		t.Fatal(result)
 	}
-	result = NormalizeParseResult(t.Context(), "synthetic.json", ParseResult{OutputFormat: "json", JSON: []DocItem{TextItem{Text: ""}}})
+	result = NormalizeParseResult(ParseResult{JSON: []DocItem{TextItem{Text: ""}}})
 	projection, err = ProjectKnowledgeParseResult(result.Result)
 	if result.Status != "json" || err != nil || projection.State != "empty" {
 		t.Fatal(result, projection, err)
@@ -44,8 +44,13 @@ func TestNormalizeParseResultMarkdownIsTypedAndDoesNotFetch(t *testing.T) {
 	}))
 	defer server.Close()
 	text := "# 合成标题\n\n| A | B |\n| --- | --- |\n| 甲 | 乙 |\n\n![合成替代文本](" + server.URL + "/image.png)"
-	result := NormalizeParseResult(t.Context(), "synthetic.md", ParseResult{OutputFormat: "markdown", Markdown: text})
-	if result.Status != "markdown" || result.Result.Err != nil || result.Diagnostic != nil || result.Result.OutputFormat != "json" || requests.Load() != 0 {
+	markdown, err := NewMarkdownParser(GoMarkdown)
+	if err != nil {
+		t.Fatal(err)
+	}
+	markdown.FetchRemoteImages = false
+	result := NormalizeParseResult(markdown.ParseWithResult(t.Context(), "synthetic.md", []byte(text)))
+	if result.Status != "json" || result.Result.Err != nil || result.Diagnostic != nil || requests.Load() != 0 {
 		t.Fatal(result.Status, result.Diagnostic, requests.Load())
 	}
 	tableFound := false

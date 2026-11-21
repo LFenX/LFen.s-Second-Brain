@@ -9,6 +9,7 @@ import (
 
 	"ragflow/internal/dao"
 	"ragflow/internal/entity"
+	"ragflow/internal/service"
 
 	"github.com/gin-gonic/gin"
 	"github.com/glebarez/sqlite"
@@ -38,7 +39,10 @@ func TestKnowledgeSkillIndexHandlerChecksSourcesBeforeIndexInitialization(t *tes
 	}
 	gin.SetMode(gin.TestMode)
 	r := gin.New()
-	r.Use(func(c *gin.Context) { c.Set("user", &entity.User{ID: "owner"}); c.Next() })
+	r.Use(func(c *gin.Context) {
+		setAuthIdentity(c, &service.AuthIdentity{User: &entity.User{ID: "owner"}, TenantID: "owner"})
+		c.Next()
+	})
 	r.POST("/index", NewSkillSearchHandler(nil, nil).IndexSkills)
 	w := httptest.NewRecorder()
 	req := httptest.NewRequest(http.MethodPost, "/index", strings.NewReader(`{"space_id":"default","embd_id":"not-configured-synthetic","skills":[{"id":"synthetic","name":"Synthetic","folder_id":"protected-folder","content":"synthetic source"}]}`))

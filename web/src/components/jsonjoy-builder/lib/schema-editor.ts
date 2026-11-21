@@ -109,7 +109,17 @@ export function updateArrayItems(
  */
 export function createFieldSchema(field: NewField): JSONSchema {
   const { type, description, validation } = field;
-  return { type, description, ...validation };
+  if (validation === undefined) {
+    return { type, description };
+  }
+  if (isObjectSchema(validation)) {
+    return {
+      type,
+      description,
+      ...validation,
+    };
+  }
+  return validation;
 }
 
 /**

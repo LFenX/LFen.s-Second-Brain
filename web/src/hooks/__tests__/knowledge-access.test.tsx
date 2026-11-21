@@ -309,8 +309,9 @@ it.each(['logout', 'token replacement'])(
     act(() => {
       if (change === 'logout') authorization.removeAll();
       else
-        authorization.setItems({
-          Authorization: 'Bearer synthetic-session-only',
+        authorization.saveLoginCredentials({
+          userInfo: JSON.stringify(authorization.getUserInfoObject()),
+          authorization: 'Bearer synthetic-session-only',
           token: 'synthetic-session-only',
         });
     });

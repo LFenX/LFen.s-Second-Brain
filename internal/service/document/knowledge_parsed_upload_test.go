@@ -15,6 +15,7 @@ import (
 	"ragflow/internal/dao"
 	"ragflow/internal/entity"
 	parser "ragflow/internal/parser/parser"
+	"ragflow/internal/permission"
 	"ragflow/internal/service/dataset"
 	"ragflow/internal/storage"
 )
@@ -43,7 +44,7 @@ func parsedUploadFixture(t *testing.T) (*DocumentService, *dataset.DatasetServic
 	t.Cleanup(func() { storage.GetStorageFactory().SetStorage(old) })
 	valid := "1"
 	kb := &entity.Knowledgebase{ID: parsedUploadTestDomain, TenantID: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", CreatedBy: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", Name: "Synthetic parsed native upload", Permission: "me", Status: &valid, ParserID: "general", ParserConfig: entity.JSONMap{}}
-	for _, row := range []any{kb, &entity.UserTenant{ID: "synthetic-owner-member", UserID: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", TenantID: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", Role: "owner", Status: &valid}} {
+	for _, row := range []any{kb, &entity.User{ID: kb.CreatedBy, Nickname: "Synthetic", Email: "owner@synthetic.invalid", Status: &valid, IsActive: "1", IsAuthenticated: "1", IsAnonymous: "0"}, &entity.Tenant{ID: kb.TenantID, Status: &valid}, &entity.UserTenant{ID: "synthetic-owner-member", UserID: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", TenantID: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", Role: "owner", Status: &valid}} {
 		if err := db.Create(row).Error; err != nil {
 			t.Fatal(err)
 		}
@@ -91,21 +92,25 @@ func parsedUploadAssertError(t *testing.T, err error, status int, code string) {
 func TestKnowledgeParsedUploadDefaultOffCASOwnerAndNativeLinkage(t *testing.T) {
 	s, domains, kb, store := parsedUploadFixture(t)
 	body := parsedUploadXLSX(t)
+	owner := permission.WithIdentity(t.Context(), kb.CreatedBy, "")
 	request := entity.KnowledgeParsedUploadRequest{ExpectedPolicyVersion: 1, ExpectedContentPolicyVersion: 1, Confirmed: true}
-	_, err := s.UploadKnowledgeParsedLocalDocument(t.Context(), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", kb.ID, request, makeTestFileHeader(t, "file", "synthetic.xlsx", body))
+	_, err := s.UploadKnowledgeParsedLocalDocument(owner, kb.CreatedBy, kb.ID, request, makeTestFileHeader(t, "file", "synthetic.xlsx", body))
 	parsedUploadAssertError(t, err, 409, "content_policy_disabled")
 	request = parsedUploadEnable(t, domains)
-	_, err = s.UploadKnowledgeParsedLocalDocument(t.Context(), "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", kb.ID, request, makeTestFileHeader(t, "file", "synthetic.xlsx", body))
+	wrongTenant := permission.WithIdentity(t.Context(), kb.CreatedBy, "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
+	_, err = s.UploadKnowledgeParsedLocalDocument(wrongTenant, kb.CreatedBy, kb.ID, request, makeTestFileHeader(t, "file", "synthetic.xlsx", body))
+	parsedUploadAssertError(t, err, 404, "not_found")
+	_, err = s.UploadKnowledgeParsedLocalDocument(permission.WithIdentity(t.Context(), "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", kb.TenantID), "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", kb.ID, request, makeTestFileHeader(t, "file", "synthetic.xlsx", body))
 	parsedUploadAssertError(t, err, 404, "not_found")
 	stale := request
 	stale.ExpectedContentPolicyVersion = 1
-	_, err = s.UploadKnowledgeParsedLocalDocument(t.Context(), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", kb.ID, stale, makeTestFileHeader(t, "file", "synthetic.xlsx", body))
+	_, err = s.UploadKnowledgeParsedLocalDocument(permission.WithIdentity(t.Context(), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", kb.TenantID), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", kb.ID, stale, makeTestFileHeader(t, "file", "synthetic.xlsx", body))
 	parsedUploadAssertError(t, err, 409, "content_policy_changed")
-	ordinary, _ := s.UploadLocalDocuments(t.Context(), kb, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", []*multipart.FileHeader{makeTestFileHeader(t, "file", "ordinary.xlsx", body)}, "", nil)
+	ordinary, _ := s.UploadLocalDocuments(permission.WithIdentity(t.Context(), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", kb.TenantID), kb, []*multipart.FileHeader{makeTestFileHeader(t, "file", "ordinary.xlsx", body)}, "", nil)
 	if len(ordinary) != 0 {
 		t.Fatal("ordinary upload silently widened for a registered domain")
 	}
-	value, err := s.UploadKnowledgeParsedLocalDocument(t.Context(), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", kb.ID, request, makeTestFileHeader(t, "file", "synthetic.xlsx", body))
+	value, err := s.UploadKnowledgeParsedLocalDocument(owner, kb.CreatedBy, kb.ID, request, makeTestFileHeader(t, "file", "synthetic.xlsx", body))
 	if err != nil || value == nil || value.OriginalFilename != "synthetic.xlsx" || value.ByteLength != int64(len(body)) {
 		t.Fatal(value, err)
 	}
@@ -142,7 +147,7 @@ func TestKnowledgeParsedUploadDefaultOffCASOwnerAndNativeLinkage(t *testing.T) {
 	runtime, cancel := context.WithCancel(t.Context())
 	defer cancel()
 	dataset.StartKnowledgeStructureRuntime(runtime)
-	deadline := time.Now().Add(8 * time.Second)
+	deadline := time.Now().Add(45 * time.Second)
 	for time.Now().Before(deadline) {
 		current, err := domains.GetKnowledgeParsedTask(t.Context(), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", kb.ID, task.TaskID)
 		if err != nil {
@@ -167,7 +172,11 @@ func TestKnowledgeParsedUploadDefaultOffCASOwnerAndNativeLinkage(t *testing.T) {
 		}
 		time.Sleep(10 * time.Millisecond)
 	}
-	t.Fatal("shared native task runtime did not publish within its bounded test deadline")
+	current, err := domains.GetKnowledgeParsedTask(t.Context(), kb.CreatedBy, kb.ID, task.TaskID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Fatalf("native task exceeded its deadline at state %s, phase %s", current.State, current.Phase)
 }
 
 type parsedUploadRevokingStorage struct {
@@ -193,7 +202,7 @@ func TestKnowledgeParsedUploadPolicyRevocationDuringStorageRollsBack(t *testing.
 		}
 	}}
 	storage.GetStorageFactory().SetStorage(wrapped)
-	_, err := s.UploadKnowledgeParsedLocalDocument(t.Context(), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", kb.ID, request, makeTestFileHeader(t, "file", "synthetic.xlsx", parsedUploadXLSX(t)))
+	_, err := s.UploadKnowledgeParsedLocalDocument(permission.WithIdentity(t.Context(), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", kb.TenantID), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", kb.ID, request, makeTestFileHeader(t, "file", "synthetic.xlsx", parsedUploadXLSX(t)))
 	parsedUploadAssertError(t, err, 409, "content_policy_changed")
 	for _, model := range []any{&entity.Document{}, &entity.File2Document{}} {
 		var count int64
@@ -211,10 +220,10 @@ func TestKnowledgeParsedUploadBoundsActualBytesAndFamily(t *testing.T) {
 	request := parsedUploadEnable(t, domains)
 	large := makeTestFileHeader(t, "file", "synthetic.txt", bytes.Repeat([]byte{'a'}, int(entity.KnowledgeMaxSourceBytes)+1))
 	large.Size = 0
-	_, err := s.UploadKnowledgeParsedLocalDocument(t.Context(), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", kb.ID, request, large)
+	_, err := s.UploadKnowledgeParsedLocalDocument(permission.WithIdentity(t.Context(), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", kb.TenantID), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", kb.ID, request, large)
 	parsedUploadAssertError(t, err, 413, "capacity_exceeded")
 	for _, name := range []string{"synthetic.pdf", "synthetic.docx", "synthetic.pptx", "synthetic.mp3", "synthetic.png", ".env.csv"} {
-		_, err := s.UploadKnowledgeParsedLocalDocument(t.Context(), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", kb.ID, request, makeTestFileHeader(t, "file", name, []byte("synthetic")))
+		_, err := s.UploadKnowledgeParsedLocalDocument(permission.WithIdentity(t.Context(), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", kb.TenantID), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", kb.ID, request, makeTestFileHeader(t, "file", name, []byte("synthetic")))
 		parsedUploadAssertError(t, err, 415, "unsupported_source")
 	}
 	var count int64

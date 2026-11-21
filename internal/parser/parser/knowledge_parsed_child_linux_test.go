@@ -14,6 +14,8 @@ import (
 	"sync/atomic"
 	"testing"
 
+	"github.com/xuri/excelize/v2"
+
 	"ragflow/internal/entity"
 	"ragflow/internal/parser/chunk"
 )
@@ -91,6 +93,65 @@ func TestKnowledgeParsedChildRemoteImagesAndAttachmentsDisabled(t *testing.T) {
 	}
 }
 
+func TestKnowledgeParsedChildHTMLMailBody(t *testing.T) {
+	input := "Subject: Synthetic mail\r\nContent-Type: text/html; charset=utf-8\r\n\r\n" +
+		"<head><title>HIDDEN</title></head><body><p>First &amp; second</p><table><tr><td>Third</td><td>Fourth</td></tr></table><script>HIDDEN</script></body>"
+	p := parsedChildTestRun(t, "message.eml", "email", []byte(input))
+	text := parsedChildText(p)
+	if p.State != "ready" || !strings.Contains(text, "First & second\nThird\nFourth") || !strings.Contains(text, "Synthetic mail") || strings.Contains(text, "HIDDEN") || strings.Contains(text, "<td>") {
+		t.Fatalf("HTML mail state=%s text=%q", p.State, text)
+	}
+}
+
+func TestKnowledgeParsedChildRetainsEmbeddedMedia(t *testing.T) {
+	var calls atomic.Int64
+	server := httptest.NewServer(http.HandlerFunc(func(http.ResponseWriter, *http.Request) { calls.Add(1) }))
+	defer server.Close()
+	png := officeTestPNG(t, 4)
+	dataURI := "data:image/png;base64," + base64.StdEncoding.EncodeToString(png)
+	book := newTestXLSX(t, func(f *excelize.File) {
+		mustSetCell(t, f, "Sheet1", "A1", "Header")
+		mustSetCell(t, f, "Sheet1", "A2", "Local body")
+		if err := f.AddPictureFromBytes("Sheet1", "C3", &excelize.Picture{
+			Extension: ".png", File: png, Format: &excelize.GraphicOptions{AltText: "figure"},
+		}); err != nil {
+			t.Fatal(err)
+		}
+	})
+	for _, tc := range []struct {
+		format string
+		body   []byte
+	}{
+		{"html", []byte("<p>Local body<img alt='figure' src='" + dataURI + "'><img src='" + server.URL + "/remote'></p>")},
+		{"md", []byte("Local body ![figure](" + dataURI + ") trailing words\n\n![remote](" + server.URL + "/remote)\n")},
+		{"xlsx", book},
+	} {
+		t.Run(tc.format, func(t *testing.T) {
+			p := parsedChildTestRun(t, "source."+tc.format, tc.format, tc.body)
+			body := parsedChildText(p)
+			if p.State != "partial" || !strings.Contains(body, "Local body") || strings.Contains(body, "figure") {
+				t.Fatalf("state=%s extracted=%q", p.State, body)
+			}
+			if tc.format == "md" && !strings.Contains(body, "trailing words") {
+				t.Fatal("lost Markdown text after inline image")
+			}
+			images := 0
+			for _, node := range p.Nodes {
+				if node.Kind == "media" {
+					images++
+					a := node.Attributes.Parser
+					if !a.PayloadPresent || a.CKType != "image" || a.AltText == nil || *a.AltText != "figure" || node.Text.Status != "unsupported" || node.Text.Value != nil {
+						t.Fatalf("unexpected image metadata: %+v", a)
+					}
+				}
+			}
+			if images != 1 || calls.Load() != 0 {
+				t.Fatalf("images=%d remote requests=%d", images, calls.Load())
+			}
+		})
+	}
+}
+
 func TestKnowledgeParsedChildMergedGeometrySurvivesJSON(t *testing.T) {
 	body := `<table><tr><td>A</td><td>B</td><td>C</td></tr><tr><td>D</td><td rowspan="2">MERGED</td><td>E</td></tr><tr><td>F</td><td>G</td></tr></table>`
 	p := parsedChildTestRun(t, "table.html", "html", []byte(body))
@@ -104,8 +165,8 @@ func TestKnowledgeParsedChildMergedGeometrySurvivesJSON(t *testing.T) {
 			continue
 		}
 		found = true
-		if table.Grid[2][1].OriginRow != 0 || table.Grid[2][1].OriginCol != 0 {
-			t.Fatal("diagnostic origins were invented across JSON")
+		if table.Grid[2][1].OriginRow != 1 || table.Grid[2][1].OriginCol != 1 {
+			t.Fatal("covered cell lost its origin across JSON")
 		}
 		ranges, err := chunk.PlanContentRanges(chunk.ContentRangeInput{Kind: "table", CoordinateSpace: "item_utf8", Text: *node.Text.Value, Table: table, MaxBytes: 128})
 		if err != nil || len(ranges) == 0 {
@@ -138,11 +199,12 @@ func TestKnowledgeParsedChildNativeDOCAndSpreadsheet(t *testing.T) {
 	if !strings.Contains(parsedChildText(xls), "Apples") {
 		t.Fatal(xls.State, parsedChildText(xls))
 	}
-	// This exercises the registered PPT path with actual OOXML container bytes.
-	// It is not evidence for an unprovided binary PowerPoint fixture.
-	ppt := parsedChildTestRun(t, "slides.ppt", "ppt", buildPPTX(t, "Synthetic local presentation"))
-	if !strings.Contains(parsedChildText(ppt), "Synthetic local presentation") {
-		t.Fatal(ppt.State, parsedChildText(ppt))
+	input := buildPPTX(t, "Synthetic local presentation")
+	_, control := documentChildOwnedTestInput(t, string(input))
+	control.Format, control.Filename, control.ProfileID = "ppt", "slides.ppt", KnowledgeParsedLocalProfile
+	raw, err := RunDocumentStructureChild(t.Context(), input, control, func(DocumentChildOwnership) error { return nil })
+	if len(raw) != 0 || documentChildFailure(err) != "source_structure_unavailable" {
+		t.Fatalf("OOXML container mislabeled as binary PPT: %v", err)
 	}
 }
 

@@ -35,24 +35,26 @@ import {
 import { useTranslation } from 'react-i18next';
 import { DRAFT_INSTANCE_SENTINEL, SavedModeCardProps } from '../interface';
 import { ModelsSection } from '../models-section';
+import { InstanceSaveButton } from './instance-save-button';
 import { cn } from '@/lib/utils';
 
 /**
  * The saved (non-draft) variant of the provider instance card.
  *
  * Renders a Collapsible whose trigger shows a chevron toggle + the
- * instance name (double-click to rename) + delete button, and whose
- * content holds the form fields, the verify button, and (when
+ * instance name (double-click to rename) + delete and Save buttons, and
+ * whose content holds the form fields, the verify button, and (when
  * expanded) the per-instance models section.
  *
- * Auto-save has been removed; the parent's top Save button drives all
- * persistence through the imperative ref API.
+ * The header Save button persists only this instance.
  */
 export function SavedModeCard({
   formFields,
   formDefaultValues,
   formRef,
   handleDelete,
+  handleSave,
+  saving,
   handleInstanceModelsEdited,
   providerName,
   instanceName,
@@ -129,10 +131,10 @@ export function SavedModeCard({
     >
       <CollapsibleTrigger asChild>
         <div
-          className={cn('flex items-center gap-1 w-full ', open ? 'mb-5' : '')}
+          className={cn('flex items-center gap-2 w-full ', open ? 'mb-5' : '')}
         >
           <div
-            className="group w-[calc(100%-40px)] flex items-center flex-1 gap-2 cursor-pointer rounded-md"
+            className="group flex items-center flex-1 min-w-0 gap-2 cursor-pointer rounded-md"
             data-testid="instance-name-row"
           >
             <Button
@@ -178,17 +180,20 @@ export function SavedModeCard({
               </div>
             )}
           </div>
-          <ConfirmDeleteDialog onOk={handleDelete}>
-            <Button
-              variant="delete"
-              size="icon-sm"
-              aria-label={tSetting('deleteInstance')}
-              data-testid="instance-delete"
-              onClick={(e: React.MouseEvent) => e.stopPropagation()}
-            >
-              <Trash2 className="size-4" />
-            </Button>
-          </ConfirmDeleteDialog>
+          <div className="flex items-center gap-2 shrink-0">
+            <ConfirmDeleteDialog onOk={handleDelete}>
+              <Button
+                variant="delete"
+                size="icon-sm"
+                aria-label={tSetting('deleteInstance')}
+                data-testid="instance-delete"
+                onClick={(e: React.MouseEvent) => e.stopPropagation()}
+              >
+                <Trash2 className="size-4" />
+              </Button>
+            </ConfirmDeleteDialog>
+            <InstanceSaveButton onSave={handleSave} saving={saving} />
+          </div>
         </div>
       </CollapsibleTrigger>
       <CollapsibleContent forceMount className="data-[state=closed]:hidden">
@@ -202,16 +207,6 @@ export function SavedModeCard({
             labelClassName="font-normal"
             resetOptions={{ keepDirtyValues: true }}
           />
-
-          {/* {providerName !== LLMFactory.OpenAiAPICompatible && (
-            <div className="pt-3">
-              <VerifyButton
-                onVerify={handleVerify}
-                isAbsolute={false}
-                formRef={formRef}
-              />
-            </div>
-          )} */}
 
           {open && (
             <div className="pt-3">

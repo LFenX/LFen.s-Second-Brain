@@ -52,10 +52,10 @@ func TestKnowledgeArchivePreservesExistingCopyRestrictions(t *testing.T) {
 			refs := []permission.ResourceRef{{Kind: permission.ResourceKindFile, ID: fid}, {Kind: permission.ResourceKindDataset, ID: knowledgeTestOther}}
 			assertRestrictions := func() {
 				for _, ref := range refs {
-					if err := permission.NewDatabaseChecker(dao.DB).CheckResource(t.Context(), permission.Subject{UserID: reader}, ref, permission.OperationRead); err == nil {
+					if err := permission.NewDatabaseChecker(dao.DB).CheckResource(permission.WithIdentity(t.Context(), reader, ""), ref, permission.OperationRead); err == nil {
 						t.Fatalf("member read allowed: %+v", ref)
 					}
-					if err := permission.NewDatabaseChecker(dao.DB).CheckResource(t.Context(), permission.Subject{UserID: knowledgeTestOwner}, ref, permission.OperationRead); err != nil {
+					if err := permission.NewDatabaseChecker(dao.DB).CheckResource(permission.WithIdentity(t.Context(), knowledgeTestOwner, ""), ref, permission.OperationRead); err != nil {
 						t.Fatalf("owner read lost: %+v err=%v", ref, err)
 					}
 				}
@@ -66,7 +66,7 @@ func TestKnowledgeArchivePreservesExistingCopyRestrictions(t *testing.T) {
 				}
 			}
 			assertRestrictions()
-			if _, _, err := s.DeleteDatasets(t.Context(), []string{knowledgeTestDomain}, false, permission.Subject{UserID: knowledgeTestOwner}); err != nil {
+			if _, _, err := s.DeleteDatasets(permission.WithIdentity(t.Context(), knowledgeTestOwner, knowledgeTestOwner), []string{knowledgeTestDomain}, false); err != nil {
 				t.Fatal(err)
 			}
 			assertRestrictions()
@@ -114,8 +114,8 @@ func TestKnowledgeRetirementReloadsCurrentRegistrationBeforeStorage(t *testing.T
 func TestKnowledgeRetirementRechecksActorUnderLock(t *testing.T) {
 	s, _ := setupKnowledgeTest(t)
 	registerKnowledgeTest(t, s, knowledgeTestDomain)
-	other := permission.Subject{UserID: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}
-	if err := s.deleteDatasetAuthorized(t.Context(), &entity.Knowledgebase{ID: knowledgeTestDomain}, &other); err == nil {
+	other := permission.WithIdentity(t.Context(), "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", knowledgeTestOwner)
+	if err := s.deleteDatasetAuthorized(other, &entity.Knowledgebase{ID: knowledgeTestDomain}, permission.UserIDFromContext(other)); err == nil {
 		t.Fatal("unauthorized retirement allowed")
 	}
 	if _, err := s.GetKnowledgeDomain(t.Context(), knowledgeTestOwner, knowledgeTestDomain); err != nil {

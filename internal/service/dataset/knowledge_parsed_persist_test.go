@@ -30,7 +30,7 @@ func parsedPersistenceFixture(t *testing.T) (*DatasetService, *parsedBound, enti
 	if err != nil {
 		t.Fatal(err)
 	}
-	normalized := parser.NormalizeParseResult(t.Context(), "rows.csv", parser.NewCSVParser().ParseWithResult(t.Context(), "rows.csv", original))
+	normalized := parser.NormalizeParseResult(parser.NewCSVParser().ParseWithResult(t.Context(), "rows.csv", original))
 	bound, err := bindKnowledgeParsed(contentSource(&snapshot.Source), original, strings.Repeat("a", 64), normalized, 32)
 	if err != nil {
 		t.Fatal(err)
@@ -154,7 +154,7 @@ func TestParsedPersistenceDiscoveryBindsSourceAndOpaqueCursor(t *testing.T) {
 	s, bound, _ := parsedPersistenceFixture(t)
 	parsedStore(t, bound, strings.Repeat("b", 32))
 	original := []byte("A,B\n甲,乙\n1,2\n")
-	normalized := parser.NormalizeParseResult(t.Context(), "rows.csv", parser.NewCSVParser().ParseWithResult(t.Context(), "rows.csv", original))
+	normalized := parser.NormalizeParseResult(parser.NewCSVParser().ParseWithResult(t.Context(), "rows.csv", original))
 	second, err := bindKnowledgeParsed(bound.Representation.Source, original, strings.Repeat("b", 64), normalized, 32)
 	if err != nil {
 		t.Fatal(err)

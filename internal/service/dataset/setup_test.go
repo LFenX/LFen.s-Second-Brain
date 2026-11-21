@@ -1,11 +1,14 @@
 package dataset
 
 import (
+	"context"
 	"net/url"
 	"testing"
 
 	"ragflow/internal/dao"
 	"ragflow/internal/entity"
+	"ragflow/internal/permission"
+	"ragflow/internal/permission/testsupport"
 
 	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
@@ -27,7 +30,7 @@ func setupServiceTestDB(t *testing.T) *gorm.DB {
 	t.Cleanup(func() {
 		_ = sqlDB.Close()
 	})
-	if err = db.AutoMigrate(
+	models := []interface{}{
 		&entity.Document{},
 		&entity.Knowledgebase{},
 		&entity.KnowledgeSourceRevision{},
@@ -48,7 +51,9 @@ func setupServiceTestDB(t *testing.T) *gorm.DB {
 		&entity.TenantModel{},
 		&entity.UserCanvas{},
 		&entity.KnowledgeAccessTenantStateRecord{}, &entity.KnowledgeAccessDepartmentRecord{}, &entity.KnowledgeAccessDepartmentMemberRecord{}, &entity.KnowledgeAccessDomainPolicyRecord{}, &entity.KnowledgeAccessModuleRecord{}, &entity.KnowledgeAccessAuditRecord{}, &entity.KnowledgeAccessGrantRecord{}, &entity.KnowledgeAccessCredentialRecord{}, &entity.KnowledgeAccessViewRecord{},
-	); err != nil {
+	}
+	models = append(models, datasetTestExtraModels()...)
+	if err = db.AutoMigrate(models...); err != nil {
 		t.Fatalf("failed to migrate: %v", err)
 	}
 	for _, query := range []string{"CREATE UNIQUE INDEX IF NOT EXISTS idx_ka_department_1 ON knowledge_access_department(tenant_id,id)", "CREATE UNIQUE INDEX IF NOT EXISTS idx_ka_department_member_1 ON knowledge_access_department_member(department_id,user_id)", "CREATE UNIQUE INDEX IF NOT EXISTS idx_ka_module_1 ON knowledge_access_module(domain_id,id)", "CREATE UNIQUE INDEX IF NOT EXISTS idx_ka_audit_command_key ON knowledge_access_audit(actor_user_id,command_operation,command_key)"} {
@@ -86,25 +91,32 @@ func ensureDatasetTestMembership(t *testing.T, userID, tenantID, role string) {
 			t.Fatal(err)
 		}
 	}
+	role = datasetTestMembershipRole(t, tenantID, role)
 	var count int64
 	if err := dao.DB.Model(&entity.UserTenant{}).
 		Where("user_id = ? AND tenant_id = ? AND status = ?", userID, tenantID, string(entity.StatusValid)).
 		Count(&count).Error; err != nil {
 		t.Fatalf("count test tenant memberships: %v", err)
 	}
-	if count > 0 {
-		return
+	if count == 0 {
+		if err := dao.DB.Create(&entity.UserTenant{
+			ID:        userID + "-" + tenantID,
+			UserID:    userID,
+			TenantID:  tenantID,
+			Role:      role,
+			InvitedBy: tenantID,
+			Status:    sptr(string(entity.StatusValid)),
+		}).Error; err != nil {
+			t.Fatalf("insert test tenant membership: %v", err)
+		}
 	}
-	if err := dao.DB.Create(&entity.UserTenant{
-		ID:        userID + "-" + tenantID,
-		UserID:    userID,
-		TenantID:  tenantID,
-		Role:      role,
-		InvitedBy: tenantID,
-		Status:    sptr(string(entity.StatusValid)),
-	}).Error; err != nil {
-		t.Fatalf("insert test tenant membership: %v", err)
+	if err := testsupport.PrepareEnterprisePermissionFixture(dao.DB, tenantID, userID); err != nil {
+		t.Fatalf("prepare test tenant permission fixture: %v", err)
 	}
+}
+
+func withDatasetTestContext(ctx context.Context, userID, tenantID string) context.Context {
+	return permission.WithIdentity(ctx, userID, tenantID)
 }
 
 func sptr(s string) *string { return &s }

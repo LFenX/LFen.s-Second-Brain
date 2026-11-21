@@ -217,7 +217,7 @@ func TestKnowledgeAccessCredentialViewExpiryIsBusinessFailureAndFinalRevokeWins(
 	f, view := credentialTestFixture(t)
 	minted := credentialTestMint(t, f, view.ViewID, "Synthetic_Credential_Final01")
 	scoped := credentialTestConsume[entity.KnowledgeAccessInspectData](t, f, *minted.Token, "inspect", credentialTestInspect(f, "read"), 200)
-	if dao.DB.Model(&entity.KnowledgeAccessViewRecord{}).Where("id = ?", scoped.ViewID).Update("expires_at", time.Now().Add(-time.Second)).Error != nil {
+	if dao.DB.Model(&entity.KnowledgeAccessViewRecord{}).Where("id = ?", scoped.ViewID).Update("expires_at", time.Now().UTC().Add(-time.Second)).Error != nil {
 		t.Fatal("synthetic view expiry failed")
 	}
 	credentialTestConsume[any](t, f, *minted.Token, "read", accessTestReadRequest(scoped.ViewID, 0, 0), 409)

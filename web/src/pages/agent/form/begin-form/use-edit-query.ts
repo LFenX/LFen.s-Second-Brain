@@ -25,7 +25,7 @@ export const useEditQueryRecord = ({
 
       const nextQuery: BeginQuery[] =
         index > -1
-          ? [...inputs.slice(0, index), record, ...inputs.slice(index + 1)]
+          ? inputs.map((item, idx) => (idx === index ? record : item))
           : [...inputs, record];
 
       form.setValue('inputs', nextQuery);

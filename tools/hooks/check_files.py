@@ -23,13 +23,9 @@ def _read_bytes(path: Path) -> bytes:
     return path.read_bytes()
 
 
-# Binary fixtures (OLE2/.msg, PDF, images, …) contain NUL bytes. The
-# text-fixing hooks below must never rewrite them: line-ending or
-# trailing-newline normalization corrupts binary files byte-for-byte
-# (e.g. a .msg fixture was previously mangled by the mixed-line-ending
-# and end-of-file fixers). Skip any file that contains a NUL byte.
 def _is_binary(data: bytes) -> bool:
-    return b"\x00" in data
+    # Even an all-ASCII PDF can have fixed-width cross-reference entries.
+    return data.startswith(b"%PDF-") or b"\x00" in data
 
 
 def _git_paths(*args: str) -> list[Path]:

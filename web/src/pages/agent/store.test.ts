@@ -19,7 +19,7 @@ function baseNode(id: string, label: Operator): RAGFlowNodeType {
 const createNode = (
   id: string,
   label: Operator,
-  options: Partial<RAGFlowNodeType> = {},
+  options: Partial<ReturnType<typeof baseNode>> & { parentId?: string } = {},
 ) => ({
   ...baseNode(id, label),
   ...options,
@@ -35,6 +35,45 @@ const createEdge = (
   source,
   target,
   ...options,
+});
+
+describe('useGraphStore.deleteAgentDownstreamNodesById', () => {
+  beforeEach(() => {
+    useGraphStore.setState({ nodes: [], edges: [] });
+  });
+
+  it('removes every edge connected to deleted downstream nodes', () => {
+    const nodes = [
+      createNode('agent:root', Operator.Agent),
+      createNode('agent:child', Operator.Agent),
+      createNode('tool:child', Operator.Tool),
+      createNode('message:child', Operator.Message),
+      createNode('begin', Operator.Begin),
+      createNode('message:keep', Operator.Message),
+    ];
+    const edges = [
+      createEdge('root-agent', 'agent:root', 'agent:child', {
+        sourceHandle: NodeHandleId.AgentBottom,
+      }),
+      createEdge('agent-tool', 'agent:child', 'tool:child', {
+        sourceHandle: NodeHandleId.Tool,
+      }),
+      createEdge('tool-message', 'tool:child', 'message:child', {
+        sourceHandle: NodeHandleId.Tool,
+      }),
+      createEdge('unrelated', 'begin', 'message:keep'),
+    ];
+
+    useGraphStore.setState({ nodes, edges });
+    useGraphStore.getState().deleteAgentDownstreamNodesById('agent:root');
+
+    const state = useGraphStore.getState();
+    expect(state.nodes.map((node) => node.id)).toEqual([
+      'begin',
+      'message:keep',
+    ]);
+    expect(state.edges.map((edge) => edge.id)).toEqual(['unrelated']);
+  });
 });
 
 describe('useGraphStore.deleteIterationNodeById', () => {

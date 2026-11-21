@@ -15,9 +15,9 @@ func TestKnowledgeContentParseResultTypedItems(t *testing.T) {
 		{{Text: "跨列", ColSpan: 2}, {Covered: true, OriginRow: 0, OriginCol: 0}},
 		{{Text: "甲"}, {Text: ""}},
 	}}
-	p, err := ProjectKnowledgeParseResult(ParseResult{OutputFormat: "json", File: map[string]any{"owner_id": "FORGED_OWNER"}, JSON: []DocItem{
-		&TextItem{Text: "合成\r\n正文", CKType: "heading", Extra: map[string]any{"text": "FORGED_TEXT", "source_revision_id": "FORGED_REVISION", "page_number": 99}},
-		&TableItem{Table: table, Sheet: "合成页", Positions: [][]float64{{0, 1, 2, 3, 4}}},
+	p, err := ProjectKnowledgeParseResult(ParseResult{File: map[string]any{"owner_id": "FORGED_OWNER"}, JSON: []DocItem{
+		&TextItem{Text: "合成\r\n正文", Extra: map[string]any{"layout": "heading", "text": "FORGED_TEXT", "source_revision_id": "FORGED_REVISION", "page_number": 99}},
+		&TableItem{Table: table, Sheet: "合成页", Positions: Positions{RowColumnBox{Sheet: 1, R0: 1, R1: 2, C0: 3, C1: 4}}},
 		&ImageItem{Text: "仅替代文本", Image: "SECRET_IMAGE_PAYLOAD", Extra: map[string]any{"ocr_text": "FORGED_OCR"}},
 		RawItem{M: map[string]any{"text": "FORGED_RAW", "source_ref": "FORGED_SOURCE"}},
 	}})
@@ -60,12 +60,12 @@ func TestKnowledgeContentParseResultTypedItems(t *testing.T) {
 }
 
 func TestKnowledgeContentParseResultOwnsCopies(t *testing.T) {
-	item := TableItem{Table: &entity.TableData{Grid: [][]entity.TableCell{{{Text: "原文", RowSpan: 2}}}}, Positions: [][]float64{{1, 2, 3}}}
-	p, err := ProjectKnowledgeParseResult(ParseResult{OutputFormat: "json", JSON: []DocItem{item}})
+	item := TableItem{Table: &entity.TableData{Grid: [][]entity.TableCell{{{Text: "原文", RowSpan: 2}}}}, Positions: Positions{AbsoluteBox{PageNumber: 1, Left: 2, Right: 3}}}
+	p, err := ProjectKnowledgeParseResult(ParseResult{JSON: []DocItem{item}})
 	if err != nil {
 		t.Fatal(err)
 	}
-	item.Table.Grid[0][0].Text, item.Positions[0][0] = "改写", 99
+	item.Table.Grid[0][0].Text, item.Positions[0] = "改写", AbsoluteBox{PageNumber: 99}
 	if p.Nodes[0].Attributes.Parser.Table.Grid[0][0].Text != "原文" || p.Nodes[0].Attributes.Parser.Positions[0][0] != 1 {
 		t.Fatal("projection aliases producer memory")
 	}
@@ -82,15 +82,14 @@ func TestKnowledgeContentParseResultActualSupportStates(t *testing.T) {
 		state  string
 		count  int
 	}{
-		{"parser_failed", ParseResult{OutputFormat: "json", JSON: []DocItem{NewTextJSONItem("must not escape")}, Err: errors.New("private backend detail")}, "unavailable", 0},
+		{"parser_failed", ParseResult{JSON: []DocItem{NewTextJSONItem("must not escape")}, Err: errors.New("private backend detail")}, "unavailable", 0},
 		{"configuration_only", ParseResult{}, "unavailable", 0},
-		{"empty_json", ParseResult{OutputFormat: "json"}, "unavailable", 0},
-		{"pending_markdown", ParseResult{OutputFormat: "markdown", Markdown: "# 尚未归一化"}, "normalization_required", 0},
-		{"text_response", ParseResult{OutputFormat: "text", Text: "逐字保留\r\n"}, "ready", 1},
-		{"empty_text_item", ParseResult{OutputFormat: "json", JSON: []DocItem{NewTextJSONItem("")}}, "empty", 1},
-		{"raw_only", ParseResult{OutputFormat: "json", JSON: []DocItem{RawItem{M: map[string]any{"text": "未解释"}}}}, "unavailable", 1},
-		{"image_only", ParseResult{OutputFormat: "json", JSON: []DocItem{ImageItem{Text: "alt", Image: "payload"}}}, "unavailable", 1},
-		{"missing_table", ParseResult{OutputFormat: "json", JSON: []DocItem{TableItem{}}}, "unavailable", 1},
+		{"empty_json", ParseResult{JSON: []DocItem{}}, "unavailable", 0},
+		{"text_response", ParseResult{JSON: []DocItem{NewTextJSONItem("逐字保留\r\n")}}, "ready", 1},
+		{"empty_text_item", ParseResult{JSON: []DocItem{NewTextJSONItem("")}}, "empty", 1},
+		{"raw_only", ParseResult{JSON: []DocItem{RawItem{M: map[string]any{"text": "未解释"}}}}, "unavailable", 1},
+		{"image_only", ParseResult{JSON: []DocItem{ImageItem{Text: "alt", Image: "payload"}}}, "unavailable", 1},
+		{"missing_table", ParseResult{JSON: []DocItem{TableItem{}}}, "unavailable", 1},
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
@@ -104,14 +103,14 @@ func TestKnowledgeContentParseResultActualSupportStates(t *testing.T) {
 
 func TestKnowledgeContentAudioMetadataDoesNotProveEmptyDocument(t *testing.T) {
 	result := NewAudioParser().ParseWithResult(t.Context(), "synthetic.wav", []byte("synthetic audio bytes; no transcription"))
-	if result.Err != nil || result.OutputFormat != "text" || result.File == nil || len(result.JSON) != 0 || result.Text != "" || result.Markdown != "" {
+	if result.Err != nil || result.File == nil || len(result.JSON) != 0 {
 		t.Fatal("audio configuration boundary changed", result.Err)
 	}
 	projected, err := ProjectKnowledgeParseResult(result)
 	if err != nil || projected.State != "unavailable" || projected.Reason == nil || *projected.Reason != "no_explicit_content_items" || len(projected.Nodes) != 0 {
 		t.Fatal(projected, err)
 	}
-	confirmed, err := ProjectKnowledgeParseResult(ParseResult{OutputFormat: "json", JSON: []DocItem{TextItem{Text: ""}}})
+	confirmed, err := ProjectKnowledgeParseResult(ParseResult{JSON: []DocItem{TextItem{Text: ""}}})
 	if err != nil || confirmed.State != "empty" || len(confirmed.Nodes) != 1 || confirmed.Nodes[0].Text.Value == nil || *confirmed.Nodes[0].Text.Value != "" {
 		t.Fatal(confirmed, err)
 	}
@@ -119,7 +118,7 @@ func TestKnowledgeContentAudioMetadataDoesNotProveEmptyDocument(t *testing.T) {
 
 func TestKnowledgeContentEmptyCSVAndJSONUseActualProducerItems(t *testing.T) {
 	csv := NewCSVParser().ParseWithResult(t.Context(), "synthetic.csv", nil)
-	if csv.Err != nil || csv.OutputFormat == "" || len(csv.JSON) != 0 {
+	if csv.Err != nil || len(csv.JSON) != 0 {
 		t.Fatal("CSV empty producer changed", csv.Err)
 	}
 	csvProjection, err := ProjectKnowledgeParseResult(csv)
@@ -138,8 +137,8 @@ func TestKnowledgeContentEmptyCSVAndJSONUseActualProducerItems(t *testing.T) {
 
 func TestKnowledgeContentParseResultRejectsInvalidItems(t *testing.T) {
 	var nilText *TextItem
-	for _, item := range []DocItem{nil, nilText, TextItem{Text: string([]byte{0xff})}, TableItem{Table: &entity.TableData{Grid: [][]entity.TableCell{{{Text: string([]byte{0xff})}}}}}, ImageItem{Positions: [][]float64{{math.Inf(1)}}}} {
-		if p, err := ProjectKnowledgeParseResult(ParseResult{OutputFormat: "json", JSON: []DocItem{item}}); err == nil || p != nil {
+	for _, item := range []DocItem{nil, nilText, TextItem{Text: string([]byte{0xff})}, TableItem{Table: &entity.TableData{Grid: [][]entity.TableCell{{{Text: string([]byte{0xff})}}}}}, ImageItem{Positions: Positions{AbsoluteBox{Left: math.Inf(1)}}}} {
+		if p, err := ProjectKnowledgeParseResult(ParseResult{JSON: []DocItem{item}}); err == nil || p != nil {
 			t.Fatalf("accepted invalid item: %#v err=%v", p, err)
 		}
 	}

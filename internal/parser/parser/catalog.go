@@ -12,26 +12,67 @@ type ParserCapability struct {
 
 type parserRegistration struct {
 	capability ParserCapability
-	create     func() (ParseResultProducer, error)
+	// create builds the producer. textOnly asks for readable text without
+	// embedded media (previews, attachments, agent uploads, CLI parsing).
+	create func(textOnly bool) (ParseResultProducer, error)
 }
 
 var parserRegistrations = []parserRegistration{
-	{ParserCapability{utility.FileTypePPTX, "structured"}, func() (ParseResultProducer, error) { return NewPPTXParser(), nil }},
-	{ParserCapability{utility.FileTypePPT, "structured"}, func() (ParseResultProducer, error) { return NewPPTParser(), nil }},
-	{ParserCapability{utility.FileTypeXLSX, "structured"}, func() (ParseResultProducer, error) { return NewXLSXParser("") }},
-	{ParserCapability{utility.FileTypeXLS, "structured"}, func() (ParseResultProducer, error) { return NewXLSParser("") }},
-	{ParserCapability{utility.FileTypeCSV, "structured"}, func() (ParseResultProducer, error) { return NewCSVParser(), nil }},
-	{ParserCapability{utility.FileTypeDOCX, "structured"}, func() (ParseResultProducer, error) { return NewDOCXParser(), nil }},
-	{ParserCapability{utility.FileTypeDOC, "structured"}, func() (ParseResultProducer, error) { return NewDOCParser(), nil }},
-	{ParserCapability{utility.FileTypePDF, "structured"}, func() (ParseResultProducer, error) { return NewPDFParser(), nil }},
-	{ParserCapability{utility.FileTypeHTML, "structured"}, func() (ParseResultProducer, error) { return NewHTMLParser(), nil }},
-	{ParserCapability{utility.FileTypeMarkdown, "structured"}, func() (ParseResultProducer, error) { return NewMarkdownParser(GoMarkdown) }},
-	{ParserCapability{utility.FileTypeTXT, "structured"}, func() (ParseResultProducer, error) { return NewTextParser(), nil }},
-	{ParserCapability{utility.FileTypeEPUB, "structured"}, func() (ParseResultProducer, error) { return NewEPUBParser(), nil }},
-	{ParserCapability{utility.FileTypeJSON, "structured"}, func() (ParseResultProducer, error) { return NewJSONParser(), nil }},
-	{ParserCapability{utility.FileTypeEMAIL, "structured"}, func() (ParseResultProducer, error) { return NewEmailParser(), nil }},
-	{ParserCapability{utility.FileTypeVISUAL, "image_payload"}, func() (ParseResultProducer, error) { return NewPictureParser(), nil }},
-	{ParserCapability{utility.FileTypeAURAL, "configuration_only"}, func() (ParseResultProducer, error) { return NewAudioParser(), nil }},
+	{ParserCapability{utility.FileTypePPTX, "structured"}, func(textOnly bool) (ParseResultProducer, error) {
+		p := NewPPTXParser()
+		p.textOnly = textOnly
+		return p, nil
+	}},
+	{ParserCapability{utility.FileTypePPT, "structured"}, func(textOnly bool) (ParseResultProducer, error) {
+		p := NewPPTParser()
+		p.pptx.textOnly = textOnly
+		return p, nil
+	}},
+	{ParserCapability{utility.FileTypeXLSX, "structured"}, func(textOnly bool) (ParseResultProducer, error) {
+		p, err := NewXLSXParser("")
+		if err != nil {
+			return nil, err
+		}
+		p.textOnly = textOnly
+		return p, nil
+	}},
+	{ParserCapability{utility.FileTypeXLS, "structured"}, func(bool) (ParseResultProducer, error) { return NewXLSParser("") }},
+	{ParserCapability{utility.FileTypeCSV, "structured"}, func(bool) (ParseResultProducer, error) { return NewCSVParser(), nil }},
+	{ParserCapability{utility.FileTypeDOCX, "structured"}, func(textOnly bool) (ParseResultProducer, error) {
+		p := NewDOCXParser()
+		p.textOnly = textOnly
+		return p, nil
+	}},
+	{ParserCapability{utility.FileTypeDOC, "structured"}, func(textOnly bool) (ParseResultProducer, error) {
+		p := NewDOCParser()
+		p.textOnly = textOnly
+		return p, nil
+	}},
+	{ParserCapability{utility.FileTypePDF, "structured"}, func(bool) (ParseResultProducer, error) { return NewPDFParser(), nil }},
+	{ParserCapability{utility.FileTypeHTML, "structured"}, func(textOnly bool) (ParseResultProducer, error) {
+		p := NewHTMLParser()
+		p.textOnly = textOnly
+		return p, nil
+	}},
+	{ParserCapability{utility.FileTypeMarkdown, "structured"}, func(textOnly bool) (ParseResultProducer, error) {
+		p, err := NewMarkdownParser(GoMarkdown)
+		if err != nil {
+			return nil, err
+		}
+		p.textOnly = textOnly
+		p.mediaRefs = !textOnly
+		return p, nil
+	}},
+	{ParserCapability{utility.FileTypeTXT, "structured"}, func(bool) (ParseResultProducer, error) { return NewTextParser(), nil }},
+	{ParserCapability{utility.FileTypeEPUB, "structured"}, func(textOnly bool) (ParseResultProducer, error) {
+		p := NewEPUBParser()
+		p.textOnly = textOnly
+		return p, nil
+	}},
+	{ParserCapability{utility.FileTypeJSON, "structured"}, func(bool) (ParseResultProducer, error) { return NewJSONParser(), nil }},
+	{ParserCapability{utility.FileTypeEMAIL, "structured"}, func(bool) (ParseResultProducer, error) { return NewEmailParser(), nil }},
+	{ParserCapability{utility.FileTypeVISUAL, "image_payload"}, func(bool) (ParseResultProducer, error) { return NewPictureParser(), nil }},
+	{ParserCapability{utility.FileTypeAURAL, "configuration_only"}, func(bool) (ParseResultProducer, error) { return NewAudioParser(), nil }},
 }
 
 // RegisteredParserCapabilities returns an independent ordered copy of the same

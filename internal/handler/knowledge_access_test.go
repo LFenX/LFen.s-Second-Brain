@@ -20,6 +20,7 @@ import (
 	"ragflow/internal/dao"
 	"ragflow/internal/entity"
 	"ragflow/internal/server/local"
+	"ragflow/internal/service"
 )
 
 type accessAuthTrace struct{ bytes.Buffer }
@@ -33,29 +34,25 @@ type accessAuthResolver struct {
 	native, api, beta int
 }
 
-func (r *accessAuthResolver) GetUserByToken(ctx context.Context, token string) (*entity.User, common.ErrorCode, error) {
+func (r *accessAuthResolver) ResolveAccessToken(ctx context.Context, token string) (*service.AuthIdentity, common.ErrorCode, error) {
 	r.native++
 	u, err := dao.NewUserDAO().GetByAccessToken(ctx, r.db, token)
 	if err != nil {
 		return nil, common.CodeUnauthorized, err
 	}
-	return u, common.CodeSuccess, nil
+	return &service.AuthIdentity{User: u, TenantID: u.ID}, common.CodeSuccess, nil
 }
-func (r *accessAuthResolver) GetUserByAPIToken(ctx context.Context, token string) (*entity.User, common.ErrorCode, error) {
+func (r *accessAuthResolver) ResolveAPIToken(ctx context.Context, token string) (*service.AuthIdentity, common.ErrorCode, error) {
 	r.api++
 	row, err := dao.NewAPITokenDAO().GetByAPIToken(ctx, r.db, token)
 	if err != nil || row == nil {
 		return nil, common.CodeUnauthorized, errors.New("synthetic API unavailable")
 	}
-	return &entity.User{ID: row.TenantID}, common.CodeSuccess, nil
+	return &service.AuthIdentity{User: &entity.User{ID: row.TenantID}, TenantID: row.TenantID}, common.CodeSuccess, nil
 }
-func (r *accessAuthResolver) GetUserByBetaAPIToken(context.Context, string) (*entity.User, common.ErrorCode, error) {
+func (r *accessAuthResolver) ResolveBetaAPIToken(context.Context, string) (*service.AuthIdentity, common.ErrorCode, error) {
 	r.beta++
 	return nil, common.CodeUnauthorized, errors.New("synthetic beta unavailable")
-}
-func (r *accessAuthResolver) GetAPITokenByBeta(context.Context, string) (*entity.APIToken, error) {
-	r.beta++
-	return nil, errors.New("synthetic beta unavailable")
 }
 
 func TestKnowledgeAccessNativeOnlyHTTPAuthKeepsAuthorizationPrivate(t *testing.T) {
@@ -87,7 +84,8 @@ func TestKnowledgeAccessNativeOnlyHTTPAuthKeepsAuthorizationPrivate(t *testing.T
 	oldLogger, oldSugar, oldStatus := common.Logger, common.Sugar, local.GetAdminStatus()
 	common.Logger = zap.New(core)
 	common.Sugar = common.Logger.Sugar()
-	local.SetAdminStatus(0, "")
+	local.InitAdminStatus()
+	local.SetAdminStatus(local.Available, "")
 	t.Cleanup(func() {
 		local.SetAdminStatus(oldStatus.Status, oldStatus.Reason)
 		common.Logger, common.Sugar = oldLogger, oldSugar

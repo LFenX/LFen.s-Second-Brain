@@ -14,7 +14,7 @@ import (
 func TestKnowledgeAccessNativeDomainOwnersPersistAuthorizationDelta(t *testing.T) {
 	s, _ := setupKnowledgeTest(t)
 	registerKnowledgeTest(t, s, knowledgeTestDomain)
-	_, code, err := s.DeleteDatasets(t.Context(), []string{knowledgeTestDomain}, false, permission.Subject{UserID: knowledgeTestOwner, TenantID: knowledgeTestOwner})
+	_, code, err := s.DeleteDatasets(permission.WithIdentity(t.Context(), knowledgeTestOwner, knowledgeTestOwner), []string{knowledgeTestDomain}, false)
 	if err != nil || code != common.CodeSuccess {
 		t.Fatal("actual domain archive failed", code, err)
 	}

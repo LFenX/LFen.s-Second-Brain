@@ -13,6 +13,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useDebounce } from 'ahooks';
 import { omit } from 'lodash';
 import { useCallback, useMemo, useState } from 'react';
+import { useParams, useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { MemoryApiAction } from '../memory/constant';
 import {
@@ -23,11 +24,14 @@ import {
   IMemory,
   IMemoryAppDetailProps,
   MemoryListResponse,
+  MemoryDetailResponse,
   MemoryFiltersResponse,
 } from './interface';
 
 export const MemoryKeys = {
   list: () => ['memoryList'] as const,
+  detail: (id: string | null | undefined, tenantId?: string) =>
+    ['memoryDetail', id, tenantId] as const,
   filters: () => ['memoryFilters'] as const,
 };
 
@@ -47,6 +51,7 @@ export const useCreateMemory = () => {
       if (response.code !== 0) {
         throw new Error(response.message || 'Failed to create memory');
       }
+      queryClient.invalidateQueries({ queryKey: MemoryKeys.list() });
       queryClient.invalidateQueries({ queryKey: MemoryKeys.filters() });
       return response.data;
     },
@@ -93,7 +98,7 @@ export const useFetchMemoryList = () => {
   };
 
   if (Array.isArray(owner) && owner.length > 0) {
-    requestParams.owner_ids = owner.join(',');
+    requestParams.tenant_id = owner.join(',');
   }
   const { data, isLoading, isError, refetch } = useQuery<
     MemoryListResponse,
@@ -171,6 +176,32 @@ export const useFetchMemoryFilters = () => {
   return { data, isLoading, isError };
 };
 
+/** Loads the memory configuration for a route or shared memory link. */
+export const useFetchMemoryDetail = (tenantId?: string) => {
+  const { id } = useParams();
+
+  const [memoryParams] = useSearchParams();
+  const shared_id = memoryParams.get('shared_id');
+  const memoryId = id || shared_id;
+
+  const { data, isLoading, isError } = useQuery<MemoryDetailResponse, Error>({
+    queryKey: MemoryKeys.detail(memoryId, shared_id ? tenantId : undefined),
+    enabled: !!memoryId && (!shared_id || !!tenantId),
+    queryFn: async () => {
+      if (!memoryId) {
+        throw new Error('Memory id is required');
+      }
+      const { data: response } = await memoryService.getMemoryConfig(memoryId);
+      if (response.code !== 0) {
+        throw new Error(response.message || 'Failed to fetch memory detail');
+      }
+      return response;
+    },
+  });
+
+  return { data: data?.data, isLoading, isError };
+};
+
 export const useDeleteMemory = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
@@ -195,9 +226,6 @@ export const useDeleteMemory = () => {
     },
     onSuccess: () => {
       message.success(t('message.deleted'));
-    },
-    onError: (error) => {
-      message.error(t('message.error', { error: error.message }));
     },
   });
 
@@ -238,6 +266,7 @@ export const useUpdateMemory = () => {
       queryClient.invalidateQueries({
         queryKey: [MemoryApiAction.FetchMemoryDetail],
       });
+      queryClient.invalidateQueries({ queryKey: MemoryKeys.list() });
       queryClient.invalidateQueries({ queryKey: MemoryKeys.filters() });
     },
   });
@@ -287,24 +316,22 @@ export const useRenameMemory = () => {
 
   const onMemoryRenameOk = useCallback(
     async (data: ICreateMemoryProps, callBack?: () => void) => {
-      let res;
-      if (memory?.id) {
-        try {
+      let saved = false;
+      try {
+        if (memory?.id) {
           await updateMemory({
-            // ...memoryDataTemp,
             name: data.name,
-            id: memory?.id,
+            id: memory.id,
           } as unknown as IMemoryAppDetailProps);
-        } catch (e) {
-          console.error('error', e);
+        } else {
+          await createMemory(data);
         }
-      } else {
-        res = await createMemory(data);
+        saved = true;
+      } catch {
+        // Request failures are already reported by the request layer; keep
+        // the dialog open so the user can retry.
       }
-      // if (res && !memory?.id) {
-      //   navigateToMemory(res?.id)();
-      // }
-      if (res) {
+      if (saved) {
         callBack?.();
         handleHideModal();
       }

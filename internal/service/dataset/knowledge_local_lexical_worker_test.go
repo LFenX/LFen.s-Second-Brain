@@ -125,10 +125,10 @@ func TestKnowledgeLocalLexicalClaimStatesAndRetry(t *testing.T) {
 		check(t, "queued", 0, time.Unix(1, 0).UTC(), true)
 	})
 	t.Run("expired_building", func(t *testing.T) {
-		check(t, "building", 1, time.Now().Add(-time.Hour), true)
+		check(t, "building", 1, time.Now().UTC().Add(-time.Hour), true)
 	})
 	t.Run("live_building", func(t *testing.T) {
-		check(t, "building", 1, time.Now().Add(time.Hour), false)
+		check(t, "building", 1, time.Now().UTC().Add(time.Hour), false)
 	})
 	t.Run("published", func(t *testing.T) {
 		check(t, "published", 1, time.Unix(1, 0).UTC(), false)

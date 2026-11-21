@@ -273,7 +273,7 @@ func TestKnowledgeAnswerInflightDisableSameKeyAndRetention(t *testing.T) {
 		t.Fatal("generation toggle revoked read-sharing epoch")
 	}
 	row.ResponseJSON = "synthetic-expired-answer"
-	row.CreatedAt = time.Now().Add(-25 * time.Hour)
+	row.CreatedAt = time.Now().UTC().Add(-25 * time.Hour)
 	if err := dao.DB.Save(&row).Error; err != nil {
 		t.Fatal(err)
 	}
@@ -284,7 +284,7 @@ func TestKnowledgeAnswerInflightDisableSameKeyAndRetention(t *testing.T) {
 	if row.ResponseJSON != "" {
 		t.Fatal("expired answer body retained")
 	}
-	row.CreatedAt = time.Now().Add(-8 * 24 * time.Hour)
+	row.CreatedAt = time.Now().UTC().Add(-8 * 24 * time.Hour)
 	dao.DB.Save(&row)
 	if err := answerPrune(ctx); err != nil {
 		t.Fatal(err)

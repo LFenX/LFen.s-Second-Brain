@@ -18,15 +18,20 @@ import {
   ChatVariableEnabledField,
   EmptyConversationId,
 } from '@/constants/chat';
-import { IMessage, Message } from '@/interfaces/database/chat';
+import {
+  IMessage,
+  IReference,
+  IReferenceObject,
+  Message,
+} from '@/interfaces/database/chat';
 import type { CompletionChunk } from '@/services/chat-completion-stream';
-import { omit } from 'lodash';
 import { v4 as uuid } from 'uuid';
 import {
   buildCitationDisplayMap,
   citationMarkerReg,
   normalizeCitationDigits,
   parseCitationIndex,
+  resolveCitationChunk,
 } from './citation-utils';
 
 export const isConversationIdExist = (conversationId: string) => {
@@ -43,11 +48,28 @@ export const buildMessageUuid = (message: Partial<Message | IMessage>) => {
 export const buildMessageListWithUuid = (messages?: Message[]) => {
   return (
     messages?.map((x: Message | IMessage) => ({
-      ...omit(x, 'reference'),
+      ...x,
       id: buildMessageUuid(x),
     })) ?? []
   );
 };
+
+export const buildReferenceObject = (
+  reference?: IReference,
+): IReferenceObject => ({
+  chunks: Object.fromEntries(
+    (reference?.chunks ?? []).map((chunk, index) => [
+      chunk.citation_id ?? String(index),
+      chunk,
+    ]),
+  ),
+  doc_aggs: Object.fromEntries(
+    Object.values(reference?.doc_aggs ?? {}).map((document) => [
+      document.doc_id,
+      document,
+    ]),
+  ),
+});
 
 export const generateConversationId = () => {
   return uuid().replace(/-/g, '');
@@ -100,37 +122,30 @@ export function mergeAnswerChunk(
 // Preprocess LaTeX equations to be rendered by KaTeX
 // ref: https://github.com/remarkjs/react-markdown/issues/785
 //
-// Delimiter matching: we only treat \] and \) as block/inline endings when they
-// are not part of a LaTeX command (e.g. \right], \big), \left)). Use a negative
-// lookbehind (?<![a-zA-Z]) so that \] or \) preceded by a letter (command name)
-// is not considered the closing delimiter. Use greedy matching so we match up to
-// the last valid delimiter and avoid cutting at the first \] or \) inside the
-// equation (e.g. \frac{1}{|y|} or \right]).
-
-const BLOCK_MATH_RE = /\\\[([\s\S]*?)(?<![a-zA-Z])\\\]/g;
-const INLINE_MATH_RE = /\\\(([\s\S]*?)(?<![a-zA-Z])\\\)/g;
+// A doubled delimiter pair means the message escaped its LaTeX once more.
+const BLOCK_MATH_RE = /(\\{1,2})\[([\s\S]*?)\1\]/g;
+const INLINE_MATH_RE = /(\\{1,2})\(([\s\S]*?)\1\)/g;
 
 export const preprocessLaTeX = (content: string) => {
-  const normalizedContent = content
-    .replace(/\\\\\[/g, '\\[')
-    .replace(/\\\\\(/g, '\\(')
-    .replace(/\\\\\]/g, '\\]')
-    .replace(/\\\\\)/g, '\\)')
+  const equationText = (delimiter: string, equation: string) =>
+    (delimiter.length === 2
+      ? equation.replace(/\\\\/g, '\\')
+      : equation
+    ).trim();
+
+  return content
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
-    .replace(/&amp;/g, '&');
-
-  const blockProcessedContent = normalizedContent.replace(
-    BLOCK_MATH_RE,
-    (_, equation) => `$$${equation}$$`,
-  );
-
-  const inlineProcessedContent = blockProcessedContent.replace(
-    INLINE_MATH_RE,
-    (_, equation) => `$${equation}$`,
-  );
-
-  return inlineProcessedContent;
+    .replace(/&amp;/g, '&')
+    .replace(
+      BLOCK_MATH_RE,
+      (_, delimiter, equation) =>
+        '$$' + equationText(delimiter, equation) + '$$',
+    )
+    .replace(
+      INLINE_MATH_RE,
+      (_, delimiter, equation) => '$' + equationText(delimiter, equation) + '$',
+    );
 };
 
 export function replaceThinkToSection(
@@ -256,7 +271,13 @@ export function setChatVariableEnabledFieldValuePage() {
 
 const oldReg = /(#{2}[0-9\u0660-\u0669\u06F0-\u06F9]+\${2})/g;
 export const currentReg = citationMarkerReg;
-export { buildCitationDisplayMap, normalizeCitationDigits, parseCitationIndex };
+export {
+  buildCitationDisplayMap,
+  normalizeCitationDigits,
+  parseCitationIndex,
+  resolveCitationChunk,
+};
+export type { CitationKey } from './citation-utils';
 
 // To be compatible with the old index matching mode
 export const replaceTextByOldReg = (text: string) => {

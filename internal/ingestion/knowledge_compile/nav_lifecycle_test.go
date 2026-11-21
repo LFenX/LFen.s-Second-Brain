@@ -46,6 +46,10 @@ func (f *recordingNavService) Search(context.Context, string, string, string, []
 	return nil, nil
 }
 
+func (f *recordingNavService) EncodeQueryVector(context.Context, string, string) []float64 {
+	return nil
+}
+
 func (f *recordingNavService) ListClusters(context.Context, string, string, string, int, int) ([]nav.NavNode, int64, error) {
 	return nil, 0, nil
 }
@@ -59,7 +63,7 @@ func (f *recordingNavService) SummariesByDocIDs(context.Context, string, string,
 }
 
 func TestProcessBatchRemovesRetractedDocumentsFromNavigation(t *testing.T) {
-	setupKnowledgeCompilePolicyDB(t)
+	db := setupKnowledgeCompilePolicyDB(t)
 	previous := nav.GetNavService()
 	recorder := &recordingNavService{}
 	nav.SetNavService(recorder)
@@ -67,6 +71,7 @@ func TestProcessBatchRemovesRetractedDocumentsFromNavigation(t *testing.T) {
 
 	consumer := NewConsumer(
 		NewFakeScheduler(),
+		WithStorage(nil, db),
 		WithReader(&fakeReader{}),
 		WithWriter(&fakeWriter{}),
 		withWikiContributionStore(&memoryWikiContributionStore{items: map[string]wikiDocumentContribution{}}),
@@ -88,7 +93,7 @@ func TestProcessBatchRemovesRetractedDocumentsFromNavigation(t *testing.T) {
 }
 
 func TestProcessBatchRetriesWhenNavigationRemovalFails(t *testing.T) {
-	setupKnowledgeCompilePolicyDB(t)
+	db := setupKnowledgeCompilePolicyDB(t)
 	previous := nav.GetNavService()
 	recorder := &recordingNavService{removeErr: context.Canceled}
 	nav.SetNavService(recorder)
@@ -96,6 +101,7 @@ func TestProcessBatchRetriesWhenNavigationRemovalFails(t *testing.T) {
 
 	consumer := NewConsumer(
 		NewFakeScheduler(),
+		WithStorage(nil, db),
 		WithReader(&fakeReader{}),
 		WithWriter(&fakeWriter{}),
 		withWikiContributionStore(&memoryWikiContributionStore{items: map[string]wikiDocumentContribution{}}),
@@ -110,7 +116,7 @@ func TestProcessBatchRetriesWhenNavigationRemovalFails(t *testing.T) {
 }
 
 func TestProcessBatchReaddsEnabledDocumentToNavigation(t *testing.T) {
-	setupKnowledgeCompilePolicyDB(t)
+	db := setupKnowledgeCompilePolicyDB(t)
 	previous := nav.GetNavService()
 	recorder := &recordingNavService{}
 	nav.SetNavService(recorder)
@@ -118,6 +124,7 @@ func TestProcessBatchReaddsEnabledDocumentToNavigation(t *testing.T) {
 
 	consumer := NewConsumer(
 		NewFakeScheduler(),
+		WithStorage(nil, db),
 		WithReader(&fakeReader{products: []kccommon.Product{{
 			DocID:    "doc-enabled",
 			TenantID: "tenant-1",
@@ -145,7 +152,7 @@ func TestProcessBatchReaddsEnabledDocumentToNavigation(t *testing.T) {
 }
 
 func TestProcessBatchRemovesNavigationForGraphOnlyDocument(t *testing.T) {
-	setupKnowledgeCompilePolicyDB(t)
+	db := setupKnowledgeCompilePolicyDB(t)
 	previous := nav.GetNavService()
 	recorder := &recordingNavService{}
 	nav.SetNavService(recorder)
@@ -153,6 +160,7 @@ func TestProcessBatchRemovesNavigationForGraphOnlyDocument(t *testing.T) {
 
 	consumer := NewConsumer(
 		NewFakeScheduler(),
+		WithStorage(nil, db),
 		WithReader(&fakeReader{products: []kccommon.Product{{
 			DocID:    "doc-graph",
 			TenantID: "tenant-1",

@@ -3,7 +3,6 @@ import AgentForm from '../form/agent-form';
 import ArXivForm from '../form/arxiv-form';
 import BeginForm from '../form/begin-form';
 import BingForm from '../form/bing-form';
-import BrowserForm from '../form/browser-use-form';
 import CompilationForm from '../form/compilation-form';
 import CategorizeForm from '../form/categorize-form';
 import CodeForm from '../form/code-form';
@@ -34,7 +33,6 @@ import QueritContentsForm from '../form/querit-contents-form';
 import QueritForm from '../form/querit-form';
 import BGPTForm from '../form/bgpt-form';
 import RetrievalForm from '../form/retrieval-form/next';
-import RewriteQuestionForm from '../form/rewrite-question-form';
 import SearXNGForm from '../form/searxng-form';
 import StringTransformForm from '../form/string-transform-form';
 import SwitchForm from '../form/switch-form';
@@ -53,9 +51,13 @@ import YahooFinanceForm from '../form/yahoo-finance-form';
 import type { INextOperatorForm } from '../interface';
 import type { ComponentType } from 'react';
 
-export const FormConfigMap: Partial<
-  Record<Operator, { component: ComponentType<INextOperatorForm> }>
-> = {
+type OperatorFormConfig = {
+  component: ComponentType<INextOperatorForm>;
+};
+
+// Not every operator has a config form (e.g. TableChunker/QAChunker/
+// OneChunker/PageChunker); consumers fall back to empty content.
+export const FormConfigMap: Partial<Record<Operator, OperatorFormConfig>> = {
   [Operator.Begin]: {
     component: BeginForm,
   },
@@ -67,9 +69,6 @@ export const FormConfigMap: Partial<
   },
   [Operator.Message]: {
     component: MessageForm,
-  },
-  [Operator.RewriteQuestion]: {
-    component: RewriteQuestionForm,
   },
   [Operator.Code]: {
     component: CodeForm,
@@ -145,9 +144,6 @@ export const FormConfigMap: Partial<
   },
   [Operator.DocGenerator]: {
     component: DocGeneratorForm,
-  },
-  [Operator.Browser]: {
-    component: BrowserForm,
   },
   [Operator.Note]: {
     component: () => <></>,

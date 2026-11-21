@@ -141,7 +141,9 @@ const MarkdownContent = ({
       ADD_ATTR: ['class'],
     });
 
-    return unescapeAngleBrackets(preprocessLaTeX(replaceTextByOldReg(text)));
+    return unescapeAngleBrackets(
+      escapeUnmatchedAngleBrackets(preprocessLaTeX(replaceTextByOldReg(text))),
+    );
   }, [content]);
 
   const documentIds = useMemo(() => {

@@ -115,10 +115,12 @@ func (s *deletionStorage) BucketExistsWithError(_ context.Context, bucket string
 	return !s.missing, nil
 }
 
-func setupUserDeletionDB(t *testing.T) *gorm.DB {
+func setupUserDeletionDB(t *testing.T) (*gorm.DB, *entity.User) {
 	t.Helper()
 	db := testutil.SetupTestDB(t,
 		&entity.User{}, &entity.Tenant{}, &entity.UserTenant{},
+		&entity.KnowledgeAccessTenantStateRecord{}, &entity.KnowledgeAccessDomainPolicyRecord{}, &entity.KnowledgeAccessModuleRecord{},
+		&entity.KnowledgeAccessAuditRecord{}, &entity.KnowledgeAccessGrantRecord{}, &entity.KnowledgeAccessViewRecord{},
 		&entity.Knowledgebase{}, &entity.Document{}, &entity.Task{}, &entity.File{}, &entity.File2Document{},
 		&entity.Chat{}, &entity.ChatSession{}, &entity.ConversationMessage{}, &entity.ConversationReference{},
 		&entity.API4Conversation{}, &entity.API4ConversationMessage{}, &entity.API4ConversationReference{},
@@ -134,11 +136,16 @@ func setupUserDeletionDB(t *testing.T) *gorm.DB {
 		&entity.TenantLangfuse{}, &entity.APIToken{}, &entity.InvitationCode{},
 	)
 	t.Cleanup(testutil.ReplaceDBForTest(t, db))
-	return db
+	valid, token, super := "1", "synthetic-admin-delete-session", true
+	actor := &entity.User{ID: "audit-admin", Email: "audit-admin@invalid", Nickname: "Synthetic", Status: &valid, IsActive: "1", IsAuthenticated: "1", IsAnonymous: "0", IsSuperuser: &super, AccessToken: &token}
+	if err := db.Create(actor).Error; err != nil {
+		t.Fatal(err)
+	}
+	return db, actor
 }
 
 func TestDeleteUserRemovesOwnedDataAndJoinedDocuments(t *testing.T) {
-	db := setupUserDeletionDB(t)
+	db, actor := setupUserDeletionDB(t)
 	insert := func(query string, args ...interface{}) {
 		t.Helper()
 		if err := db.Exec(query, args...).Error; err != nil {
@@ -147,8 +154,8 @@ func TestDeleteUserRemovesOwnedDataAndJoinedDocuments(t *testing.T) {
 	}
 	insert("INSERT INTO user (id, email, nickname, is_active, is_authenticated, is_anonymous) VALUES (?, ?, ?, ?, ?, ?)", "user-1", "user@example.com", "User", "0", "1", "0")
 	insert("INSERT INTO user (id, email, nickname, is_active, is_authenticated, is_anonymous) VALUES (?, ?, ?, ?, ?, ?)", "user-2", "other@example.com", "Other", "1", "1", "0")
-	insert("INSERT INTO tenant (id, llm_id, embd_id, asr_id, img2txt_id, rerank_id, parser_ids) VALUES (?, ?, ?, ?, ?, ?, ?)", "user-1", "llm", "embd", "asr", "img", "rerank", "general")
-	insert("INSERT INTO user_tenant (id, user_id, tenant_id, role, invited_by) VALUES (?, ?, ?, ?, ?)", "owner", "user-1", "user-1", "owner", "user-1")
+	insert("INSERT INTO tenant (id, parser_ids) VALUES (?, ?)", "user-1", "general")
+	insert("INSERT INTO user_tenant (id, user_id, tenant_id, role, invited_by, llm_id, embd_id, asr_id, img2txt_id, rerank_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", "owner", "user-1", "user-1", "owner", "user-1", "llm", "embd", "asr", "img", "rerank")
 	insert("INSERT INTO user_tenant (id, user_id, tenant_id, role, invited_by) VALUES (?, ?, ?, ?, ?)", "joined", "user-1", "team", "normal", "user-2")
 	insert("INSERT INTO knowledgebase (id, tenant_id, name, embd_id, permission, created_by, parser_id, doc_num, token_num, chunk_num) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", "own-kb", "user-1", "Own", "embd", "me", "user-1", "general", 1, 2, 3)
 	insert("INSERT INTO knowledgebase (id, tenant_id, name, embd_id, permission, created_by, parser_id, doc_num, token_num, chunk_num) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", "team-kb", "team", "Team", "embd", "team", "user-2", "general", 2, 5, 7)
@@ -199,7 +206,10 @@ func TestDeleteUserRemovesOwnedDataAndJoinedDocuments(t *testing.T) {
 	service := NewService()
 	service.deleteEngine = docEngine
 	service.deleteStorage = store
-	result, err := service.DeleteUser(t.Context(), "user@example.com")
+	if _, err := service.DeleteUser(t.Context(), "user@example.com"); err == nil || len(store.files)+len(store.buckets)+len(docEngine.deleted)+len(docEngine.dropped) != 0 {
+		t.Fatal("external cleanup ran without a current administrator")
+	}
+	result, err := service.DeleteUser(nativeAdminContext(t.Context(), actor), "user@example.com")
 	if err != nil {
 		t.Fatalf("DeleteUser: %v", err)
 	}
@@ -273,7 +283,7 @@ func TestDeleteUserRemovesOwnedDataAndJoinedDocuments(t *testing.T) {
 }
 
 func TestDeleteUserKeepsUserWhenExternalCleanupFails(t *testing.T) {
-	db := setupUserDeletionDB(t)
+	db, actor := setupUserDeletionDB(t)
 	if err := db.Exec("INSERT INTO user (id, email, nickname, is_active, is_authenticated, is_anonymous) VALUES (?, ?, ?, ?, ?, ?)", "user-1", "user@example.com", "User", "0", "1", "0").Error; err != nil {
 		t.Fatal(err)
 	}
@@ -286,7 +296,7 @@ func TestDeleteUserKeepsUserWhenExternalCleanupFails(t *testing.T) {
 	service := NewService()
 	service.deleteEngine = &deletionEngine{}
 	service.deleteStorage = &deletionStorage{err: errors.New("storage unavailable")}
-	if _, err := service.DeleteUser(t.Context(), "user@example.com"); err == nil || !strings.Contains(err.Error(), "storage unavailable") {
+	if _, err := service.DeleteUser(nativeAdminContext(t.Context(), actor), "user@example.com"); err == nil || !strings.Contains(err.Error(), "storage unavailable") {
 		t.Fatalf("DeleteUser error = %v", err)
 	}
 	var count int64
@@ -296,7 +306,7 @@ func TestDeleteUserKeepsUserWhenExternalCleanupFails(t *testing.T) {
 }
 
 func TestDeleteUserKeepsUserWhenDatasetBucketRemovalFails(t *testing.T) {
-	db := setupUserDeletionDB(t)
+	db, actor := setupUserDeletionDB(t)
 	if err := db.Exec("INSERT INTO user (id, email, nickname, is_active, is_authenticated, is_anonymous) VALUES (?, ?, ?, ?, ?, ?)", "user-1", "user@example.com", "User", "0", "1", "0").Error; err != nil {
 		t.Fatal(err)
 	}
@@ -306,7 +316,7 @@ func TestDeleteUserKeepsUserWhenDatasetBucketRemovalFails(t *testing.T) {
 	service := NewService()
 	service.deleteEngine = &deletionEngine{}
 	service.deleteStorage = &deletionStorage{bucketErr: errors.New("storage unavailable")}
-	if _, err := service.DeleteUser(t.Context(), "user@example.com"); err == nil || !strings.Contains(err.Error(), "remove dataset bucket Dataset (dataset): storage unavailable") {
+	if _, err := service.DeleteUser(nativeAdminContext(t.Context(), actor), "user@example.com"); err == nil || !strings.Contains(err.Error(), "remove dataset bucket Dataset (dataset): storage unavailable") {
 		t.Fatalf("DeleteUser error = %v", err)
 	}
 	var count int64
@@ -316,7 +326,7 @@ func TestDeleteUserKeepsUserWhenDatasetBucketRemovalFails(t *testing.T) {
 }
 
 func TestDeleteUserContinuesWhenStorageItemsAreMissing(t *testing.T) {
-	db := setupUserDeletionDB(t)
+	db, actor := setupUserDeletionDB(t)
 	if err := db.Exec("INSERT INTO user (id, email, nickname, is_active, is_authenticated, is_anonymous) VALUES (?, ?, ?, ?, ?, ?)", "user-1", "user@example.com", "User", "0", "1", "0").Error; err != nil {
 		t.Fatal(err)
 	}
@@ -330,7 +340,7 @@ func TestDeleteUserContinuesWhenStorageItemsAreMissing(t *testing.T) {
 	service := NewService()
 	service.deleteEngine = &deletionEngine{}
 	service.deleteStorage = store
-	if _, err := service.DeleteUser(t.Context(), "user@example.com"); err != nil {
+	if _, err := service.DeleteUser(nativeAdminContext(t.Context(), actor), "user@example.com"); err != nil {
 		t.Fatalf("DeleteUser with missing storage items: %v", err)
 	}
 	if len(store.files) != 0 || len(store.buckets) != 0 {
@@ -339,7 +349,7 @@ func TestDeleteUserContinuesWhenStorageItemsAreMissing(t *testing.T) {
 }
 
 func TestDeleteUserStopsOnStorageCheckError(t *testing.T) {
-	db := setupUserDeletionDB(t)
+	db, actor := setupUserDeletionDB(t)
 	if err := db.Exec("INSERT INTO user (id, email, nickname, is_active, is_authenticated, is_anonymous) VALUES (?, ?, ?, ?, ?, ?)", "user-1", "user@example.com", "User", "0", "1", "0").Error; err != nil {
 		t.Fatal(err)
 	}
@@ -352,7 +362,7 @@ func TestDeleteUserStopsOnStorageCheckError(t *testing.T) {
 	service := NewService()
 	service.deleteEngine = &deletionEngine{}
 	service.deleteStorage = &deletionStorage{checkErr: errors.New("storage unavailable")}
-	if _, err := service.DeleteUser(t.Context(), "user@example.com"); err == nil || !strings.Contains(err.Error(), "storage unavailable") {
+	if _, err := service.DeleteUser(nativeAdminContext(t.Context(), actor), "user@example.com"); err == nil || !strings.Contains(err.Error(), "storage unavailable") {
 		t.Fatalf("DeleteUser error = %v", err)
 	}
 	var count int64
@@ -362,7 +372,7 @@ func TestDeleteUserStopsOnStorageCheckError(t *testing.T) {
 }
 
 func TestDeleteUserRollsBackDatabaseCleanup(t *testing.T) {
-	db := setupUserDeletionDB(t)
+	db, actor := setupUserDeletionDB(t)
 	if err := db.Exec("INSERT INTO user (id, email, nickname, is_active, is_authenticated, is_anonymous) VALUES (?, ?, ?, ?, ?, ?)", "user-1", "user@example.com", "User", "0", "1", "0").Error; err != nil {
 		t.Fatal(err)
 	}
@@ -375,7 +385,7 @@ func TestDeleteUserRollsBackDatabaseCleanup(t *testing.T) {
 	if err := db.Migrator().DropTable(&entity.Search{}); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := NewService().DeleteUser(t.Context(), "user@example.com"); err == nil {
+	if _, err := NewService().DeleteUser(nativeAdminContext(t.Context(), actor), "user@example.com"); err == nil {
 		t.Fatal("expected SQL cleanup failure")
 	}
 	for _, item := range [][2]string{{"user", "user-1"}, {"user_canvas", "agent"}, {"user_canvas_version", "version"}} {

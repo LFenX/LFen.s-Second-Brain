@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"mime/multipart"
+	"ragflow/internal/permission"
 	"testing"
 
 	"ragflow/internal/common"
@@ -41,7 +42,7 @@ func TestKnowledgeUploadRegistrationDuringStorage(t *testing.T) {
 			}
 			valid := "1"
 			kb := entity.Knowledgebase{ID: "11111111111111111111111111111111", TenantID: "owner", CreatedBy: "owner", Name: "Synthetic upload", Permission: "me", Status: &valid, ParserID: "general", ParserConfig: entity.JSONMap{}}
-			for _, row := range []any{&kb, &entity.UserTenant{ID: "owner-member", UserID: "owner", TenantID: "owner", Role: "owner", Status: &valid}} {
+			for _, row := range []any{&kb, &entity.User{ID: kb.CreatedBy, Nickname: "Synthetic", Email: "owner@synthetic.invalid", Status: &valid, IsActive: "1", IsAuthenticated: "1", IsAnonymous: "0"}, &entity.Tenant{ID: kb.TenantID, Status: &valid}, &entity.UserTenant{ID: "owner-member", UserID: "owner", TenantID: "owner", Role: "owner", Status: &valid}} {
 				if err := db.Create(row).Error; err != nil {
 					t.Fatal(err)
 				}
@@ -67,7 +68,7 @@ func TestKnowledgeUploadRegistrationDuringStorage(t *testing.T) {
 			case "large":
 				blob = bytes.Repeat([]byte{'x'}, int(entity.KnowledgeMaxSourceBytes)+1)
 			}
-			got, messages := testDocumentService(t).UploadLocalDocuments(t.Context(), &kb, "owner", []*multipart.FileHeader{makeTestFileHeader(t, "file", name, blob)}, "", nil)
+			got, messages := testDocumentService(t).UploadLocalDocuments(permission.WithIdentity(t.Context(), "owner", kb.TenantID), &kb, []*multipart.FileHeader{makeTestFileHeader(t, "file", name, blob)}, "", nil)
 			var docs, mappings, tasks int64
 			for model, count := range map[any]*int64{&entity.Document{}: &docs, &entity.File2Document{}: &mappings, &entity.IngestionTask{}: &tasks} {
 				if err := db.Model(model).Count(count).Error; err != nil {
