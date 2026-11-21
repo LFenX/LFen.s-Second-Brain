@@ -92,10 +92,14 @@ func parsedUploadAssertError(t *testing.T, err error, status int, code string) {
 func TestKnowledgeParsedUploadDefaultOffCASOwnerAndNativeLinkage(t *testing.T) {
 	s, domains, kb, store := parsedUploadFixture(t)
 	body := parsedUploadXLSX(t)
+	owner := permission.WithIdentity(t.Context(), kb.CreatedBy, "")
 	request := entity.KnowledgeParsedUploadRequest{ExpectedPolicyVersion: 1, ExpectedContentPolicyVersion: 1, Confirmed: true}
-	_, err := s.UploadKnowledgeParsedLocalDocument(permission.WithIdentity(t.Context(), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", kb.TenantID), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", kb.ID, request, makeTestFileHeader(t, "file", "synthetic.xlsx", body))
+	_, err := s.UploadKnowledgeParsedLocalDocument(owner, kb.CreatedBy, kb.ID, request, makeTestFileHeader(t, "file", "synthetic.xlsx", body))
 	parsedUploadAssertError(t, err, 409, "content_policy_disabled")
 	request = parsedUploadEnable(t, domains)
+	wrongTenant := permission.WithIdentity(t.Context(), kb.CreatedBy, "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
+	_, err = s.UploadKnowledgeParsedLocalDocument(wrongTenant, kb.CreatedBy, kb.ID, request, makeTestFileHeader(t, "file", "synthetic.xlsx", body))
+	parsedUploadAssertError(t, err, 404, "not_found")
 	_, err = s.UploadKnowledgeParsedLocalDocument(permission.WithIdentity(t.Context(), "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", kb.TenantID), "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", kb.ID, request, makeTestFileHeader(t, "file", "synthetic.xlsx", body))
 	parsedUploadAssertError(t, err, 404, "not_found")
 	stale := request
@@ -106,7 +110,7 @@ func TestKnowledgeParsedUploadDefaultOffCASOwnerAndNativeLinkage(t *testing.T) {
 	if len(ordinary) != 0 {
 		t.Fatal("ordinary upload silently widened for a registered domain")
 	}
-	value, err := s.UploadKnowledgeParsedLocalDocument(permission.WithIdentity(t.Context(), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", kb.TenantID), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", kb.ID, request, makeTestFileHeader(t, "file", "synthetic.xlsx", body))
+	value, err := s.UploadKnowledgeParsedLocalDocument(owner, kb.CreatedBy, kb.ID, request, makeTestFileHeader(t, "file", "synthetic.xlsx", body))
 	if err != nil || value == nil || value.OriginalFilename != "synthetic.xlsx" || value.ByteLength != int64(len(body)) {
 		t.Fatal(value, err)
 	}

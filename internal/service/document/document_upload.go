@@ -51,6 +51,9 @@ func (s *DocumentService) uploadLocalDocuments(ctx context.Context, kb *entity.K
 	}
 	kb = current
 	if parsed != nil {
+		// Bind user-only sessions to the stored tenant for both upload checks.
+		// WithTenantID preserves an explicit tenant from authentication.
+		ctx = permission.WithTenantID(ctx, current.TenantID)
 		if err := parsed.verify(ctx, dao.DB, current); err != nil {
 			return nil, []string{err.Error()}
 		}
