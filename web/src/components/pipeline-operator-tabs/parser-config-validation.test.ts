@@ -5,6 +5,7 @@ import { addParserConfigIssues } from './parser-config-validation';
 // The operator form schemas reach @/routes via navigate-hooks, which builds a
 // browser router at import time and crashes outside a browser.
 jest.mock('@/routes', () => ({ Routes: {} }));
+jest.mock('@/components/compilation-template-form-field', () => ({}));
 
 type CollectedIssue = {
   path: (string | number)[];

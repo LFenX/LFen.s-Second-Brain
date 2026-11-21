@@ -44,7 +44,7 @@ it('uploads plain files and folder entries with base filenames and separate rela
         parentId: 'root',
         fileList: [plain, { file: nested, path: 'folder/nested.txt' }],
       }),
-    ).resolves.toBe(0);
+    ).resolves.toEqual({ code: 0 });
   });
   const payload: FormData = service.mock.calls[0][0];
   expect(payload.get('parent_id')).toBe('root');

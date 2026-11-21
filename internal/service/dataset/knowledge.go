@@ -43,6 +43,16 @@ func knowledgeConflict(message string) error {
 	return knowledgeError(409, "knowledge_conflict", message)
 }
 
+// checkKnowledgeDataset authorizes the verified service actor for a fixed dataset.
+func checkKnowledgeDataset(ctx context.Context, checker *permission.Checker, actor string, kb *entity.Knowledgebase, operation permission.Operation) error {
+	if current := permission.UserIDFromContext(ctx); current != "" && current != actor {
+		return permission.ErrPermissionDenied
+	}
+	ctx = permission.WithTenantID(ctx, kb.TenantID)
+	ctx = permission.WithIdentity(ctx, actor, permission.TenantIDFromContext(ctx))
+	return checker.CheckResource(ctx, permission.ResourceRef{Kind: permission.ResourceKindDataset, ID: kb.ID}, operation)
+}
+
 func (d *DatasetService) knowledgeBase(ctx context.Context, userID, domainID string, registered bool) (*entity.Knowledgebase, error) {
 	id, err := normalizeDatasetID(strings.TrimSpace(domainID))
 	if err != nil || id == "" || userID == "" {
@@ -68,7 +78,7 @@ func (d *DatasetService) knowledgeBase(ctx context.Context, userID, domainID str
 	if membershipCount == 0 {
 		return nil, knowledgeNotFound()
 	}
-	if err := d.CheckAccess(ctx, permission.Subject{UserID: userID}, kb.ID, permission.OperationRead); err != nil {
+	if err := checkKnowledgeDataset(ctx, permission.NewDatabaseChecker(dao.DB), userID, &kb, permission.OperationRead); err != nil {
 		if errors.Is(err, permission.ErrPermissionDenied) || errors.Is(err, permission.ErrResourceNotFound) || errors.Is(err, permission.ErrMembershipNotFound) {
 			return nil, knowledgeNotFound()
 		}
@@ -90,7 +100,7 @@ func (d *DatasetService) RegisterKnowledgeDomain(ctx context.Context, userID, do
 	if err != nil {
 		return nil, err
 	}
-	if err := d.CheckAccess(ctx, permission.Subject{UserID: userID}, kb.ID, permission.OperationUpdate); err != nil {
+	if err := checkKnowledgeDataset(ctx, permission.NewDatabaseChecker(dao.DB), userID, kb, permission.OperationUpdate); err != nil {
 		return nil, knowledgeNotFound()
 	}
 	category := strings.TrimSpace(req.Category)
@@ -109,7 +119,7 @@ func (d *DatasetService) RegisterKnowledgeDomain(ctx context.Context, userID, do
 		if err := dao.CheckKnowledgeAccessNativeTenant(tx, kb.TenantID); err != nil {
 			return err
 		}
-		if err := permission.NewLockingDatabaseChecker(tx).CheckResource(ctx, permission.Subject{UserID: userID}, permission.ResourceRef{Kind: permission.ResourceKindDataset, ID: kb.ID}, permission.OperationUpdate); err != nil {
+		if err := checkKnowledgeDataset(ctx, permission.NewLockingDatabaseChecker(tx), userID, kb, permission.OperationUpdate); err != nil {
 			return err
 		}
 		if kb.KnowledgeEnabled {

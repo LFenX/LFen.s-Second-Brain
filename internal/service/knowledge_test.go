@@ -13,18 +13,21 @@ import (
 func TestKnowledgeNativeChatAndIngestionStopBeforeProviderOrQueue(t *testing.T) {
 	db := setupServiceTestDB(t)
 	pushServiceDB(t, db)
-	ctx := context.Background()
+	ctx := permission.WithIdentity(context.Background(), "owner", "owner")
+	if err := db.Create(&entity.UserTenant{ID: "owner-membership", UserID: "owner", TenantID: "owner", Role: "owner", Status: sptr("1")}).Error; err != nil {
+		t.Fatal(err)
+	}
 	if err := db.Create(&entity.Knowledgebase{ID: "private", TenantID: "owner", CreatedBy: "owner", KnowledgeEnabled: true}).Error; err != nil {
 		t.Fatal(err)
 	}
 	// The services deliberately have no provider/engine: a missed guard would
 	// enter the real pipeline instead of returning the policy denial.
 	chat := &entity.Chat{ID: "synthetic", KBIDs: entity.JSONSlice{"private"}}
-	_, err := (&ChatPipelineService{}).AsyncChat(ctx, "owner", chat, []map[string]interface{}{{"role": "user", "content": "synthetic"}}, false, nil)
+	_, err := (&ChatPipelineService{}).AsyncChat(ctx, chat, []map[string]interface{}{{"role": "user", "content": "synthetic"}}, false, nil)
 	if !errors.Is(err, permission.ErrKnowledgeModelUseDenied) {
-		t.Fatalf("chat did not stop at policy: %v", err)
+		t.Fatalf("chat did not stop at policy: %v (cause %v)", err, errors.Unwrap(err))
 	}
-	if _, err := NewIngestionTaskService().CreateForDocuments(ctx, "private", "owner", []string{"synthetic-doc"}); !errors.Is(err, permission.ErrKnowledgeIngestionDenied) {
+	if _, err := NewIngestionTaskService().CreateForDocuments(ctx, "private", []string{"synthetic-doc"}); !errors.Is(err, permission.ErrKnowledgeIngestionDenied) {
 		t.Fatalf("ingestion did not stop at policy: %v", err)
 	}
 	if _, err := NewIngestionTaskService().CreateAndEnqueue(ctx, &entity.IngestionTask{DatasetID: "private", DocumentID: "synthetic-doc"}); !errors.Is(err, permission.ErrKnowledgeIngestionDenied) {
@@ -52,11 +55,11 @@ func TestKnowledgeNativeChatAndIngestionStopBeforeProviderOrQueue(t *testing.T) 
 		}
 	}
 	chat.KBIDs = entity.JSONSlice{"old-copy-target"}
-	_, err = (&ChatPipelineService{}).AsyncChat(ctx, "owner", chat, []map[string]interface{}{{"role": "user", "content": "synthetic"}}, false, nil)
+	_, err = (&ChatPipelineService{}).AsyncChat(ctx, chat, []map[string]interface{}{{"role": "user", "content": "synthetic"}}, false, nil)
 	if !errors.Is(err, permission.ErrKnowledgeModelUseDenied) {
 		t.Fatalf("old copy chat reached provider: %v", err)
 	}
-	if _, err := NewIngestionTaskService().CreateForDocuments(ctx, "old-copy-target", "owner", []string{"old-copy-target"}); !errors.Is(err, permission.ErrKnowledgeIngestionDenied) {
+	if _, err := NewIngestionTaskService().CreateForDocuments(ctx, "old-copy-target", []string{"old-copy-target"}); !errors.Is(err, permission.ErrKnowledgeIngestionDenied) {
 		t.Fatalf("old copy reached task queue: %v", err)
 	}
 	if _, err := NewIngestionTaskService().CreateAndEnqueue(ctx, &entity.IngestionTask{DatasetID: "old-copy-target", DocumentID: "old-copy-target"}); !errors.Is(err, permission.ErrKnowledgeIngestionDenied) {

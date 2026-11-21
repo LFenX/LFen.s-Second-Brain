@@ -13,6 +13,21 @@ import (
 	"ragflow/internal/common"
 )
 
+func privateReadTestStorage(t *testing.T, backend string, transport func(*http.Request) (*http.Response, error)) Storage {
+	t.Helper()
+	switch backend {
+	case "minio":
+		return newMinioStreamStorage(t, transport)
+	case "oss":
+		return newOSSTestStorage(transport, "", "")
+	case "s3":
+		return newS3TestStorage("us-east-1", transport)
+	default:
+		t.Fatalf("unknown test backend %q", backend)
+		return nil
+	}
+}
+
 func TestKnowledgeAccessPrivateStorageFailuresDoNotLogDetails(t *testing.T) {
 	if err := common.InitLogger("debug", common.FileOutput{}, "access-storage-test"); err != nil {
 		t.Fatal(err)
@@ -26,17 +41,7 @@ func TestKnowledgeAccessPrivateStorageFailuresDoNotLogDetails(t *testing.T) {
 		t.Run(backend, func(t *testing.T) {
 			calls := 0
 			failure := errors.New("synthetic-private-backend-error")
-			var store Storage
-			if backend == "minio" {
-				store = newMinioStreamStorage(t, func(*http.Request) (*http.Response, error) { calls++; return nil, failure })
-			} else {
-				base := newS3TestStorage("us-east-1", func(*http.Request) (*http.Response, error) { calls++; return nil, failure })
-				if backend == "s3" {
-					store = base
-				} else {
-					store = &OSSStorage{client: base.client}
-				}
-			}
+			store := privateReadTestStorage(t, backend, func(*http.Request) (*http.Response, error) { calls++; return nil, failure })
 			logs.TakeAll()
 			started := time.Now()
 			_, err := store.Get(WithPrivateRead(t.Context()), "synthetic-private-bucket", "synthetic-private-key")
@@ -67,25 +72,11 @@ func TestKnowledgeAccessPrivateStorageCancellationAndSuccess(t *testing.T) {
 		t.Run(backend, func(t *testing.T) {
 			calls := 0
 			ctx, cancel := context.WithCancel(t.Context())
-			var store Storage
-			if backend == "minio" {
-				store = newMinioStreamStorage(t, func(*http.Request) (*http.Response, error) {
-					calls++
-					cancel()
-					return nil, errors.New("synthetic-cancel-error")
-				})
-			} else {
-				base := newS3TestStorage("us-east-1", func(*http.Request) (*http.Response, error) {
-					calls++
-					cancel()
-					return nil, errors.New("synthetic-cancel-error")
-				})
-				if backend == "s3" {
-					store = base
-				} else {
-					store = &OSSStorage{client: base.client}
-				}
-			}
+			store := privateReadTestStorage(t, backend, func(*http.Request) (*http.Response, error) {
+				calls++
+				cancel()
+				return nil, errors.New("synthetic-cancel-error")
+			})
 			started := time.Now()
 			_, err := store.Get(WithPrivateRead(ctx), "synthetic-cancel-bucket", "synthetic-cancel-key")
 			cancel()

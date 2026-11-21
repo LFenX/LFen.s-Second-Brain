@@ -132,12 +132,12 @@ func TestKnowledgeDomainRegistrationAndIsolation(t *testing.T) {
 	_, err = s.RegisterKnowledgeDomain(ctx, knowledgeTestOwner, knowledgeTestOther, entity.RegisterKnowledgeDomainRequest{})
 	assertKnowledgeStatus(t, err, 409)
 	permissionValue := "team"
-	if _, _, err := s.UpdateDataset(ctx, knowledgeTestDomain, knowledgeTestOwner, service.UpdateDatasetRequest{Permission: &permissionValue}); err == nil {
+	if _, _, err := s.UpdateDataset(permission.WithIdentity(ctx, knowledgeTestOwner, knowledgeTestOwner), knowledgeTestDomain, service.UpdateDatasetRequest{Permission: &permissionValue}); err == nil {
 		t.Fatal("native update broadened a private domain")
 	}
 	modelName := "synthetic-model"
 	for _, change := range []service.UpdateDatasetRequest{{EmbeddingModel: &modelName}, {EmbdID: &modelName}} {
-		if _, _, err := s.UpdateDataset(ctx, knowledgeTestDomain, knowledgeTestOwner, change); !errors.Is(err, permission.ErrKnowledgeModelUseDenied) {
+		if _, _, err := s.UpdateDataset(permission.WithIdentity(ctx, knowledgeTestOwner, knowledgeTestOwner), knowledgeTestDomain, change); !errors.Is(err, permission.ErrKnowledgeModelUseDenied) {
 			t.Fatalf("native model change did not stop before its availability probe: %v", err)
 		}
 	}
@@ -377,8 +377,8 @@ func TestKnowledgeNativeUpdateHidesPolicyFromOtherUsers(t *testing.T) {
 	registerKnowledgeTest(t, s, knowledgeTestDomain)
 	team, model := "team", "synthetic-model"
 	for _, req := range []service.UpdateDatasetRequest{{Permission: &team}, {EmbeddingModel: &model}} {
-		_, missingCode, missingErr := s.UpdateDataset(t.Context(), "33333333333333333333333333333333", "intruder", req)
-		_, privateCode, privateErr := s.UpdateDataset(t.Context(), knowledgeTestDomain, "intruder", req)
+		_, missingCode, missingErr := s.UpdateDataset(permission.WithIdentity(t.Context(), "intruder", knowledgeTestOwner), "33333333333333333333333333333333", req)
+		_, privateCode, privateErr := s.UpdateDataset(permission.WithIdentity(t.Context(), "intruder", knowledgeTestOwner), knowledgeTestDomain, req)
 		if privateCode != missingCode || privateErr == nil || missingErr == nil || privateErr.Error() != missingErr.Error() {
 			t.Fatalf("private=%d/%v missing=%d/%v", privateCode, privateErr, missingCode, missingErr)
 		}
@@ -393,14 +393,14 @@ func TestKnowledgeNativeFolderIdentitySurvivesRename(t *testing.T) {
 		t.Fatalf("missing native binding: %+v err=%v", before, err)
 	}
 	name := "Renamed synthetic domain"
-	if _, _, err := s.UpdateDataset(t.Context(), knowledgeTestDomain, knowledgeTestOwner, service.UpdateDatasetRequest{Name: &name}); err != nil {
+	if _, _, err := s.UpdateDataset(permission.WithIdentity(t.Context(), knowledgeTestOwner, knowledgeTestOwner), knowledgeTestDomain, service.UpdateDatasetRequest{Name: &name}); err != nil {
 		t.Fatal(err)
 	}
 	folder, err := dao.NewFileDAO().EnsureKnowledgeFolder(t.Context(), dao.DB, knowledgeTestDomain)
 	if err != nil || folder.ID != *before.KnowledgeFolderID || folder.Name != name {
 		t.Fatalf("folder=%+v err=%v", folder, err)
 	}
-	if _, _, err := s.DeleteDatasets(t.Context(), []string{knowledgeTestDomain}, false, permission.Subject{UserID: knowledgeTestOwner}); err != nil {
+	if _, _, err := s.DeleteDatasets(permission.WithIdentity(t.Context(), knowledgeTestOwner, knowledgeTestOwner), []string{knowledgeTestDomain}, false); err != nil {
 		t.Fatal(err)
 	}
 	var remaining int64
@@ -428,7 +428,7 @@ func TestKnowledgeUnregisteredDeletionCannotDeleteBoundFolderByName(t *testing.T
 	if err := dao.DB.Model(&entity.Knowledgebase{}).Where("id = ?", knowledgeTestOther).Update("name", "Collision").Error; err != nil {
 		t.Fatal(err)
 	}
-	if _, _, err := s.DeleteDatasets(t.Context(), []string{knowledgeTestOther}, false, permission.Subject{UserID: knowledgeTestOwner}); err != nil {
+	if _, _, err := s.DeleteDatasets(permission.WithIdentity(t.Context(), knowledgeTestOwner, knowledgeTestOwner), []string{knowledgeTestOther}, false); err != nil {
 		t.Fatal(err)
 	}
 	current, err := dao.NewFileDAO().EnsureKnowledgeFolder(t.Context(), dao.DB, knowledgeTestDomain)
@@ -455,11 +455,11 @@ func TestKnowledgeExistingCopyRejectsNativeModelProbe(t *testing.T) {
 		t.Fatal(err)
 	}
 	model := "must-not-probe-provider"
-	_, code, err := s.UpdateDataset(t.Context(), knowledgeTestOther, knowledgeTestOwner, service.UpdateDatasetRequest{EmbeddingModel: &model})
+	_, code, err := s.UpdateDataset(permission.WithIdentity(t.Context(), knowledgeTestOwner, knowledgeTestOwner), knowledgeTestOther, service.UpdateDatasetRequest{EmbeddingModel: &model})
 	if code != common.CodeForbidden || !errors.Is(err, permission.ErrKnowledgeModelUseDenied) {
 		t.Fatalf("native model probe reached: code=%d err=%v", code, err)
 	}
-	if _, _, err := s.DeleteDatasets(t.Context(), []string{knowledgeTestOther}, false, permission.Subject{UserID: knowledgeTestOwner}); err != nil {
+	if _, _, err := s.DeleteDatasets(permission.WithIdentity(t.Context(), knowledgeTestOwner, knowledgeTestOwner), []string{knowledgeTestOther}, false); err != nil {
 		t.Fatal(err)
 	}
 	var original entity.File
@@ -485,7 +485,7 @@ func TestKnowledgeOrdinaryDeletionStillRemovesItsOwnMappedFolder(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
-	if _, _, err := s.DeleteDatasets(t.Context(), []string{kb.ID}, false, permission.Subject{UserID: knowledgeTestOwner}); err != nil {
+	if _, _, err := s.DeleteDatasets(permission.WithIdentity(t.Context(), knowledgeTestOwner, knowledgeTestOwner), []string{kb.ID}, false); err != nil {
 		t.Fatal(err)
 	}
 	var count int64

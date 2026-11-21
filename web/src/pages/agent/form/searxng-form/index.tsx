@@ -1,13 +1,7 @@
 import { FormContainer } from '@/components/form-container';
+import { RAGFlowFormItem } from '@/components/ragflow-form';
 import { TopNFormField } from '@/components/top-n-item';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { memo } from 'react';
@@ -46,19 +40,9 @@ function SearXNGForm({ node }: INextOperatorForm) {
         <FormContainer>
           <QueryVariable></QueryVariable>
           <TopNFormField></TopNFormField>
-          <FormField
-            control={form.control}
-            name="searxng_url"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>SearXNG URL</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder="http://localhost:4000" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <RAGFlowFormItem name="searxng_url" label="SearXNG URL">
+            <Input placeholder="http://localhost:4000" />
+          </RAGFlowFormItem>
         </FormContainer>
       </FormWrapper>
       <div className="p-5">

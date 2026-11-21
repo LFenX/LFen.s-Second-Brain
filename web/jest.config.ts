@@ -2,11 +2,16 @@ import type { Config } from 'jest';
 
 const config: Config = {
   testEnvironment: 'jsdom',
+  testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)'],
   transform: {
     // Local wrapper around esbuild-jest that also defines import.meta.env;
     // see jest-esbuild-transformer.cjs
     '^.+\\.(ts|tsx|js|jsx)$': '<rootDir>/jest-esbuild-transformer.cjs',
   },
+  // Transform the ESM packages used by the real Markdown parsing and sanitizing chain.
+  transformIgnorePatterns: [
+    'node_modules/(?!(?:react-markdown|rehype-|remark-|unified|unist-|hast|mdast-|micromark|vfile|estree-|bail|comma-separated-tokens|decode-named-character-reference|devlop|html-|is-plain-obj|parse5|property-information|space-separated-tokens|trim-lines|trough|web-namespaces|zwitch))',
+  ],
   moduleNameMapper: {
     // Asset/style stubs must precede the `@/` alias — the alias rewrites
     // `@/assets/x.png` to a real path and only the first matching mapper runs.
@@ -15,6 +20,9 @@ const config: Config = {
     // Drags the app shell (routes/react-router) into jsdom; see __mocks__
     '^@/components/layout-recognize-form-field$':
       '<rootDir>/__mocks__/layout-recognize-form-field.js',
+    // The app shell itself: createBrowserRouter runs at module scope and
+    // needs the fetch Request global, which jsdom does not provide.
+    '^@/routes$': '<rootDir>/__mocks__/routes.js',
     '^@/(.*)$': '<rootDir>/src/$1',
     '^human-id$': '<rootDir>/__mocks__/human-id.js',
   },

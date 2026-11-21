@@ -2,11 +2,11 @@ import { NextMessageInput } from '@/components/message-input/next';
 import MessageItem from '@/components/message-item';
 import PdfSheet from '@/components/pdf-drawer';
 import { useClickDrawer } from '@/components/pdf-drawer/hooks';
+import { VirtualMessageList } from '@/components/virtual-message-list';
 import { MessageType } from '@/constants/chat';
 import { useFetchChat, useGetChatSearchParams } from '@/hooks/use-chat-request';
 import { useFetchUserInfo } from '@/hooks/use-user-setting-request';
 import { IClientConversation } from '@/interfaces/database/chat';
-import { buildMessageUuidWithRole } from '@/utils/chat';
 import { useEffect } from 'react';
 import {
   useGetSendButtonDisabled,
@@ -25,7 +25,7 @@ interface IProps {
 export function SingleChatBox({ conversation }: IProps) {
   const {
     value,
-    scrollRef,
+    virtualizer,
     messageContainerRef,
     sendLoading,
     messages,
@@ -51,10 +51,7 @@ export function SingleChatBox({ conversation }: IProps) {
 
   const showInternet = useShowInternet();
 
-  const messageReferences = useMessageReferences(
-    messages,
-    conversation.reference,
-  );
+  const messageReferences = useMessageReferences(messages);
 
   useEffect(() => {
     // Skip when the conversation prop is stale — its id doesn't match the
@@ -85,20 +82,22 @@ export function SingleChatBox({ conversation }: IProps) {
         ref={messageContainerRef}
         className="flex-1 overflow-auto min-h-0 scrollbar-auto px-6 pt-4"
       >
-        <div className="mx-auto w-full max-w-[860px]">
-          {messages?.map((message, i) => (
+        <VirtualMessageList
+          className="mx-auto w-full max-w-[860px]"
+          items={messages ?? []}
+          virtualizer={virtualizer}
+          renderItem={(message, i) => (
             <MessageItem
               loading={
                 message.role === MessageType.Assistant &&
                 sendLoading &&
-                messages.length - 1 === i
+                (messages?.length ?? 0) - 1 === i
               }
-              key={buildMessageUuidWithRole(message)}
-              item={message}
               nickname={userInfo.nickname}
               avatar={userInfo.avatar}
               hasKnowledge={!!currentDialog.dataset_ids?.length}
               assistantAvatar={currentDialog.icon}
+              item={message}
               reference={messageReferences.get(message) ?? EmptyReference}
               clickDocumentButton={clickDocumentButton}
               index={i}
@@ -107,9 +106,8 @@ export function SingleChatBox({ conversation }: IProps) {
               regenerateMessage={regenerateMessage}
               sendLoading={sendLoading}
             />
-          ))}
-        </div>
-        <div ref={scrollRef} />
+          )}
+        />
       </div>
 
       <div className="mx-auto w-full max-w-[908px] px-6 pb-5">

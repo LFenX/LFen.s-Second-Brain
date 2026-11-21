@@ -11,6 +11,8 @@ import (
 	"sync"
 
 	sdk "github.com/modelcontextprotocol/go-sdk/mcp"
+
+	"ragflow/internal/permission"
 )
 
 // Options selects the Python-equivalent transport and response modes.
@@ -49,12 +51,12 @@ func Credential(headers http.Header) string {
 
 // NewHandler authenticates every request and binds legacy SSE sessions to their
 // owner. Wire framing, initialization and dispatch remain SDK responsibilities.
-func NewHandler(resolve func(context.Context, string) (string, error), connector func(string) Connector, opts Options) *Handler {
+func NewHandler(resolve func(context.Context, string) (string, error), connector func() Connector, opts Options) *Handler {
 	return newHTTPHandler(func(ctx context.Context, headers http.Header) (context.Context, string, error) {
 		userID, err := resolve(ctx, Credential(headers))
 		return ctx, userID, err
-	}, func(ctx context.Context, userID string) *sdk.Server {
-		return newServer(ctx, connector(userID))
+	}, func(ctx context.Context, _ string) *sdk.Server {
+		return newServer(ctx, connector())
 	}, opts)
 }
 
@@ -64,9 +66,8 @@ func newHTTPHandler(authenticate func(context.Context, http.Header) (context.Con
 	lifetime, cancel := context.WithCancel(context.Background())
 	var mu sync.Mutex
 	sessions := make(map[string]sseSession)
-	type identityKey struct{}
 	streamable := sdk.NewStreamableHTTPHandler(func(r *http.Request) *sdk.Server {
-		return serverForUser(r.Context(), r.Context().Value(identityKey{}).(string))
+		return serverForUser(r.Context(), permission.UserIDFromContext(r.Context()))
 	}, &sdk.StreamableHTTPOptions{Stateless: true, JSONResponse: opts.JSONResponse, MaxRequestBodyBytes: 1 << 20, PropagateRequestCancellation: true})
 	mux := http.NewServeMux()
 	if opts.StreamableHTTP {
@@ -77,7 +78,7 @@ func newHTTPHandler(authenticate func(context.Context, http.Header) (context.Con
 		mux.HandleFunc("GET /sse", func(w http.ResponseWriter, r *http.Request) {
 			id := rand.Text()
 			transport := &sdk.SSEServerTransport{Endpoint: "/messages/?session_id=" + url.QueryEscape(id), Response: w, MaxRequestBodyBytes: 1 << 20}
-			owner := r.Context().Value(identityKey{}).(string)
+			owner := permission.UserIDFromContext(r.Context())
 			w.Header().Set("Content-Type", "text/event-stream")
 			w.Header().Set("Cache-Control", "no-cache")
 			// Hold the registry lock through Connect: it publishes the endpoint before
@@ -109,7 +110,7 @@ func newHTTPHandler(authenticate func(context.Context, http.Header) (context.Con
 			mu.Lock()
 			session, ok := sessions[id]
 			mu.Unlock()
-			if !ok || session.owner != r.Context().Value(identityKey{}).(string) {
+			if !ok || session.owner != permission.UserIDFromContext(r.Context()) {
 				http.Error(w, "session not found", http.StatusNotFound)
 				return
 			}
@@ -143,7 +144,8 @@ func newHTTPHandler(authenticate func(context.Context, http.Header) (context.Con
 			http.Error(w, "invalid authorization", http.StatusUnauthorized)
 			return
 		}
-		mux.ServeHTTP(w, r.WithContext(context.WithValue(authenticated, identityKey{}, userID)))
+		authenticated = permission.WithIdentity(authenticated, userID, permission.TenantIDFromContext(authenticated))
+		mux.ServeHTTP(w, r.WithContext(authenticated))
 	})
 	return &Handler{handler: protected, cancel: cancel}
 }

@@ -12,6 +12,7 @@ import (
 	"ragflow/internal/dao"
 	"ragflow/internal/entity"
 	"ragflow/internal/entity/models"
+	"ragflow/internal/permission"
 )
 
 // KnowledgeAnswerModel keeps credentials inside the existing provider boundary.
@@ -27,8 +28,12 @@ var ErrKnowledgeAnswerModelUnavailable = errors.New("answer model unavailable")
 var ErrKnowledgeAnswerModelUnsupported = errors.New("unsupported answer model")
 
 func ResolveKnowledgeAnswerModel(ctx context.Context, owner string) (*KnowledgeAnswerModel, error) {
+	if owner == "" || (permission.UserIDFromContext(ctx) != "" && permission.UserIDFromContext(ctx) != owner) || (permission.TenantIDFromContext(ctx) != "" && permission.TenantIDFromContext(ctx) != owner) {
+		return nil, ErrKnowledgeAnswerModelUnavailable
+	}
+	ctx = permission.WithIdentity(ctx, owner, owner)
 	factory := NewModelFactory()
-	target, err := factory.resolveDefaultConfig(ctx, ModelAccess{UserID: owner, TenantID: owner}, entity.ModelTypeChat)
+	target, err := factory.resolveDefaultConfig(ctx, entity.ModelTypeChat)
 	if err != nil {
 		return nil, ErrKnowledgeAnswerModelUnavailable
 	}

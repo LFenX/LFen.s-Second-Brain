@@ -13,6 +13,7 @@ import (
 	"ragflow/internal/dao"
 	"ragflow/internal/entity"
 	parser "ragflow/internal/parser/parser"
+	"ragflow/internal/permission"
 	"ragflow/internal/utility"
 )
 
@@ -35,7 +36,7 @@ func (a *parsedUploadAuthority) reject(status int, code string) error {
 }
 
 func (a *parsedUploadAuthority) verify(ctx context.Context, tx *gorm.DB, kb *entity.Knowledgebase) error {
-	if kb == nil || kb.ID != a.domain || kb.CreatedBy != a.actor || !kb.KnowledgeEnabled || kb.Permission != "me" || kb.Status == nil || *kb.Status != "1" || kb.KnowledgeFolderID == nil {
+	if kb == nil || kb.TenantID != permission.TenantIDFromContext(ctx) || kb.ID != a.domain || kb.CreatedBy != a.actor || !kb.KnowledgeEnabled || kb.Permission != "me" || kb.Status == nil || *kb.Status != "1" || kb.KnowledgeFolderID == nil {
 		return a.reject(404, "not_found")
 	}
 	var members int64
@@ -108,8 +109,11 @@ func (s *DocumentService) UploadKnowledgeParsedLocalDocument(ctx context.Context
 	if !entity.ValidKnowledgeLexicalID(actor) || !entity.ValidKnowledgeLexicalID(domain) || !req.Confirmed || req.ExpectedPolicyVersion < 1 || req.ExpectedPolicyVersion > entity.KnowledgeMaxLifecycleVersion || req.ExpectedContentPolicyVersion < 1 || req.ExpectedContentPolicyVersion > entity.KnowledgeMaxLifecycleVersion || header == nil {
 		return nil, &KnowledgeParsedUploadError{Status: 400, Code: "invalid_request"}
 	}
+	if permission.UserIDFromContext(ctx) != actor {
+		return nil, &KnowledgeParsedUploadError{Status: 404, Code: "not_found"}
+	}
 	authority := &parsedUploadAuthority{actor: actor, domain: domain, request: req}
-	rows, messages := s.uploadLocalDocuments(ctx, &entity.Knowledgebase{ID: domain}, actor, []*multipart.FileHeader{header}, "", nil, authority)
+	rows, messages := s.uploadLocalDocuments(ctx, &entity.Knowledgebase{ID: domain}, []*multipart.FileHeader{header}, "", nil, authority)
 	if authority.failure != nil {
 		return nil, authority.failure
 	}

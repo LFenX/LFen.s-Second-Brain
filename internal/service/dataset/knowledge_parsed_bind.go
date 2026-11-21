@@ -24,7 +24,7 @@ type parsedPlan struct {
 // bindKnowledgeParsed is pure. Admission, execution provenance, current authority
 // and publication fences belong to the DatasetService task/transaction boundary.
 func bindKnowledgeParsed(source entity.KnowledgeContentSourceRef, original []byte, producer string, normalized parser.NormalizedParseResult, maxUnit int64) (*parsedBound, error) {
-	if normalized.Diagnostic != nil || normalized.Result.Err != nil || (normalized.Status != "json" && normalized.Status != "text" && normalized.Status != "markdown") {
+	if normalized.Diagnostic != nil || normalized.Result.Err != nil || normalized.Status != "json" {
 		return nil, fmt.Errorf("normalization_not_publishable")
 	}
 	projection, err := parser.ProjectKnowledgeParseResult(normalized.Result)

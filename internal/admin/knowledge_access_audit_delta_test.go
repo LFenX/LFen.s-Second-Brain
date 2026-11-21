@@ -27,17 +27,11 @@ func assertNativeAuditDelta(t *testing.T, row entity.KnowledgeAccessAuditRecord,
 }
 
 func TestKnowledgeAccessNativeAdminDeleteRecordsExplicitAbsence(t *testing.T) {
-	db := setupUserDeletionDB(t)
-	if err := db.AutoMigrate(&entity.KnowledgeAccessTenantStateRecord{}, &entity.KnowledgeAccessDomainPolicyRecord{}, &entity.KnowledgeAccessModuleRecord{}, &entity.KnowledgeAccessAuditRecord{}, &entity.KnowledgeAccessGrantRecord{}, &entity.KnowledgeAccessViewRecord{}); err != nil {
-		t.Fatal(err)
-	}
-	valid, token, super := "1", "synthetic-admin-delete-session", true
-	actor := entity.User{ID: "audit-admin", Email: "audit-admin@invalid", Nickname: "Synthetic", Status: &valid, IsActive: "1", IsAuthenticated: "1", IsAnonymous: "0", IsSuperuser: &super, AccessToken: &token}
+	db, actor := setupUserDeletionDB(t)
+	valid := "1"
 	target := entity.User{ID: "audit-target", Email: "audit-target@invalid", Nickname: "Synthetic", Status: &valid, IsActive: "0", IsAuthenticated: "1", IsAnonymous: "0"}
-	for _, user := range []entity.User{actor, target} {
-		if err := db.Create(&user).Error; err != nil {
-			t.Fatal(err)
-		}
+	if err := db.Create(&target).Error; err != nil {
+		t.Fatal(err)
 	}
 	if err := db.Create(&entity.Tenant{ID: "audit-tenant", Status: &valid}).Error; err != nil {
 		t.Fatal(err)
@@ -51,7 +45,7 @@ func TestKnowledgeAccessNativeAdminDeleteRecordsExplicitAbsence(t *testing.T) {
 		t.Fatal(err)
 	}
 	s := &Service{userDAO: dao.NewUserDAO(), deleteEngine: &deletionEngine{}, deleteStorage: &deletionStorage{}}
-	if _, err := s.DeleteUser(nativeAdminContext(t.Context(), &actor), target.Email); err != nil {
+	if _, err := s.DeleteUser(nativeAdminContext(t.Context(), actor), target.Email); err != nil {
 		t.Fatal(err)
 	}
 	var row entity.KnowledgeAccessAuditRecord

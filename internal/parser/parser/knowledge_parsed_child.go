@@ -52,8 +52,11 @@ func ParseKnowledgeParsedChild(ctx context.Context, control DocumentChildControl
 			return nil, err
 		}
 	}
-	producer, err := GetParser(utility.FileType(control.Format))
-	if err != nil {
+	// The child has no run media cache and its format is fixed by the owning
+	// revision, so it reads text only and refuses a content-detected format.
+	requested := utility.FileType(control.Format)
+	producer, effective, err := GetTextOnlyParser(requested, input)
+	if err != nil || effective != requested {
 		return nil, documentChildError("source_structure_unavailable", nil)
 	}
 	if markdown, ok := producer.(*MarkdownParser); ok {
@@ -62,8 +65,8 @@ func ParseKnowledgeParsedChild(ctx context.Context, control DocumentChildControl
 	if email, ok := producer.(*EmailParser); ok {
 		email.ConfigureFromSetup(map[string]any{"output_format": "text", "fields": []string{"from", "to", "cc", "bcc", "date", "subject", "body"}})
 	}
-	normalized := NormalizeParseResult(ctx, control.Filename, producer.ParseWithResult(ctx, control.Filename, input))
-	if normalized.Diagnostic != nil || normalized.Result.Err != nil || normalized.Status != "json" && normalized.Status != "text" && normalized.Status != "markdown" {
+	normalized := NormalizeParseResult(producer.ParseWithResult(ctx, control.Filename, input))
+	if normalized.Diagnostic != nil || normalized.Result.Err != nil || normalized.Status != "json" {
 		return nil, documentChildError("source_structure_unavailable", nil)
 	}
 	projection, err := ProjectKnowledgeParseResult(normalized.Result)
@@ -80,7 +83,7 @@ func ParseKnowledgeParsedChild(ctx context.Context, control DocumentChildControl
 
 func DecodeKnowledgeParsedChild(raw []byte) (*entity.KnowledgeContentProjection, error) {
 	var pack KnowledgeParsedChildResult
-	if len(raw) > documentChildOutputLimit || entity.KnowledgeParsedDecode(raw, &pack) != nil || pack.NormalizationStatus != "json" && pack.NormalizationStatus != "text" && pack.NormalizationStatus != "markdown" || pack.Projection.Binding != "unbound" {
+	if len(raw) > documentChildOutputLimit || entity.KnowledgeParsedDecode(raw, &pack) != nil || pack.NormalizationStatus != "json" || pack.Projection.Binding != "unbound" {
 		return nil, documentChildError("invalid_source_structure", nil)
 	}
 	if pack.Projection.Validate() != nil {

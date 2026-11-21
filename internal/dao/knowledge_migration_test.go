@@ -60,6 +60,9 @@ func TestKnowledgeMigrationIsAdditiveAndRepeatable(t *testing.T) {
 
 func TestKnowledgeMigrationKeepsMultipleHistoricalFolderIdentities(t *testing.T) {
 	db := setupFileTestDB(t)
+	if err := db.AutoMigrate(&entity.Tenant{}, &entity.UserTenant{}); err != nil {
+		t.Fatal(err)
+	}
 	ctx := t.Context()
 	if err := db.Create(&entity.Knowledgebase{ID: "domain", Name: "Current", TenantID: "owner", CreatedBy: "owner", KnowledgeEnabled: true}).Error; err != nil {
 		t.Fatal(err)

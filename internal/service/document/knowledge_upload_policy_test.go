@@ -6,6 +6,7 @@ import (
 	"mime/multipart"
 	"ragflow/internal/common"
 	"ragflow/internal/entity"
+	"ragflow/internal/permission"
 	"ragflow/internal/service/dataset"
 	"ragflow/internal/storage"
 	"testing"
@@ -29,7 +30,7 @@ func TestKnowledgeUploadRechecksConcurrentRegistration(t *testing.T) {
 			valid := "1"
 			id := "11111111111111111111111111111111"
 			kb := entity.Knowledgebase{ID: id, TenantID: "owner", CreatedBy: "owner", Name: "Concurrent source", Permission: "me", Status: &valid, ParserID: "general", ParserConfig: entity.JSONMap{}}
-			for _, row := range []any{&kb, &entity.UserTenant{ID: "owner-member", UserID: "owner", TenantID: "owner", Role: "owner", Status: &valid}} {
+			for _, row := range []any{&kb, &entity.User{ID: kb.CreatedBy, Nickname: "Synthetic", Email: "owner@synthetic.invalid", Status: &valid, IsActive: "1", IsAuthenticated: "1", IsAnonymous: "0"}, &entity.Tenant{ID: kb.TenantID, Status: &valid}, &entity.UserTenant{ID: "owner-member", UserID: "owner", TenantID: "owner", Role: "owner", Status: &valid}} {
 				if err := db.Create(row).Error; err != nil {
 					t.Fatal(err)
 				}
@@ -58,7 +59,7 @@ func TestKnowledgeUploadRechecksConcurrentRegistration(t *testing.T) {
 			if mode == "fresh_text" || mode == "stale_text" {
 				name, body = "payload.tsx", []byte("export const synthetic = 1;\r\n")
 			}
-			got, messages := testDocumentService(t).UploadLocalDocuments(t.Context(), &captured, "owner", []*multipart.FileHeader{makeTestFileHeader(t, "file", name, body)}, "", nil)
+			got, messages := testDocumentService(t).UploadLocalDocuments(permission.WithIdentity(t.Context(), "owner", captured.TenantID), &captured, []*multipart.FileHeader{makeTestFileHeader(t, "file", name, body)}, "", nil)
 			var docs, tasks int64
 			db.Model(&entity.Document{}).Where("kb_id = ?", id).Count(&docs)
 			db.Model(&entity.IngestionTask{}).Count(&tasks)

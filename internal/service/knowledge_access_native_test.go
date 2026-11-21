@@ -15,6 +15,7 @@ import (
 	"ragflow/internal/common"
 	"ragflow/internal/dao"
 	"ragflow/internal/entity"
+	"ragflow/internal/permission"
 )
 
 func accessNativeServiceDB(t *testing.T) *gorm.DB {
@@ -30,14 +31,7 @@ func accessNativeServiceDB(t *testing.T) *gorm.DB {
 	old := dao.DB
 	dao.DB = db
 	t.Cleanup(func() { dao.DB = old; sqlDB.Close() })
-	if err = db.AutoMigrate(&entity.User{}, &entity.UserTenant{}, &entity.Tenant{}, &entity.Knowledgebase{}, &entity.KnowledgeAccessTenantStateRecord{}, &entity.KnowledgeAccessDomainPolicyRecord{}, &entity.KnowledgeAccessModuleRecord{}, &entity.KnowledgeAccessAuditRecord{}, &entity.KnowledgeAccessGrantRecord{}, &entity.KnowledgeAccessViewRecord{}); err != nil {
-		t.Fatal(err)
-	}
-	for _, query := range []string{"CREATE UNIQUE INDEX IF NOT EXISTS idx_ka_module_1 ON knowledge_access_module(domain_id,id)", "CREATE UNIQUE INDEX IF NOT EXISTS idx_ka_audit_command_key ON knowledge_access_audit(actor_user_id,command_operation,command_key)"} {
-		if err := db.Exec(query).Error; err != nil {
-			t.Fatal(err)
-		}
-	}
+	migrateNativeAccessTestDB(t, db)
 	valid := "1"
 	for _, id := range []string{"owner-a", "owner-b", "member-a", "invitee"} {
 		if err = db.Create(&entity.User{ID: id, Nickname: "Synthetic", Email: id + "@invalid", Status: &valid, IsActive: "1", IsAuthenticated: "1", IsAnonymous: "0"}).Error; err != nil {
@@ -45,73 +39,61 @@ func accessNativeServiceDB(t *testing.T) *gorm.DB {
 		}
 	}
 	for _, id := range []string{"tenant-a", "tenant-b"} {
-		if err = db.Create(&entity.Tenant{ID: id, Status: &valid, LLMID: "original-chat"}).Error; err != nil {
+		if err = db.Create(&entity.Tenant{ID: id, Status: &valid}).Error; err != nil {
 			t.Fatal(err)
 		}
 	}
 	for _, row := range []entity.UserTenant{{ID: "owner-a-membership", UserID: "owner-a", TenantID: "tenant-a", Role: "owner", Status: &valid}, {ID: "owner-b-membership", UserID: "owner-b", TenantID: "tenant-b", Role: "owner", Status: &valid}, {ID: "member-a-membership", UserID: "member-a", TenantID: "tenant-a", Role: "normal", Status: &valid}} {
+		row.LLMID = "original-chat"
 		if err = db.Create(&row).Error; err != nil {
 			t.Fatal(err)
 		}
 	}
 	return db
 }
-func accessNativeSettings(tenant string) *SetTenantInfoRequest {
-	return &SetTenantInfoRequest{TenantID: &tenant, Raw: map[string]any{"tenant_id": tenant, "asr_id": "synthetic-asr", "embd_id": "synthetic-embedding", "img2txt_id": "synthetic-vision", "llm_id": "synthetic-chat", "rerank_id": "synthetic-rerank", "tts_id": nil}}
-}
-func TestKnowledgeAccessNativeTenantSettingsExactOwnerAndAllowlist(t *testing.T) {
+func TestKnowledgeAccessNativeModelSettingsAreMembershipScoped(t *testing.T) {
 	db := accessNativeServiceDB(t)
-	service := NewUserService()
-	for _, test := range []struct {
-		name, actor, tenant string
-		patch               map[string]any
-	}{{"cross tenant", "owner-a", "tenant-b", nil}, {"same tenant nonowner", "member-a", "tenant-a", nil}, {"status", "owner-a", "tenant-a", map[string]any{"status": "0"}}, {"identity", "owner-a", "tenant-a", map[string]any{"id": "tenant-b"}}, {"unknown", "owner-a", "tenant-a", map[string]any{"arbitrary_column": "x"}}, {"type invalid", "owner-a", "tenant-a", map[string]any{"llm_id": false}}, {"required null", "owner-a", "tenant-a", map[string]any{"asr_id": nil}}} {
-		t.Run(test.name, func(t *testing.T) {
-			req := accessNativeSettings(test.tenant)
-			for k, v := range test.patch {
-				req.Raw[k] = v
-			}
-			code, err := service.SetTenantInfo(t.Context(), test.actor, req)
-			if err == nil || code == common.CodeSuccess {
-				t.Fatal("unauthorized tenant setting accepted")
-			}
-			var tenant entity.Tenant
-			db.Where("id = ?", test.tenant).Take(&tenant)
-			if tenant.LLMID != "original-chat" || tenant.Status == nil || *tenant.Status != "1" {
-				t.Fatal("denial mutated tenant", tenant.ID)
-			}
-		})
+	svc := NewUserTenantService()
+	owner := permission.WithIdentity(t.Context(), "owner-a", "tenant-a")
+	for _, raw := range []map[string]any{
+		{"tenant_id": "tenant-b", "llm_id": ""}, {"status": "0"}, {"id": "tenant-b"},
+		{"arbitrary_column": "x"}, {"llm_id": false}, {"asr_id": nil},
+	} {
+		if code, err := svc.SetModelSettings(owner, &SetModelSettingsRequest{Raw: raw}); err == nil || code == common.CodeSuccess {
+			t.Fatal("invalid model settings accepted", raw)
+		}
 	}
-	code, err := service.SetTenantInfo(t.Context(), "owner-a", accessNativeSettings("tenant-a"))
-	if err != nil || code != common.CodeSuccess {
+	check := func(user, tenant, model string) {
+		t.Helper()
+		var member entity.UserTenant
+		if err := db.Where("user_id = ? AND tenant_id = ?", user, tenant).Take(&member).Error; err != nil || member.LLMID != model || member.Status == nil || *member.Status != entity.TenantMembershipStatusJoined {
+			t.Fatal("unexpected membership settings", user, tenant, member.LLMID, err)
+		}
+	}
+	req := &SetModelSettingsRequest{Raw: map[string]any{"llm_id": ""}}
+	member := permission.WithIdentity(t.Context(), "member-a", "tenant-a")
+	if code, err := svc.SetModelSettings(member, req); err != nil || code != common.CodeSuccess {
 		t.Fatal(code, err)
 	}
-	var tenant entity.Tenant
-	db.Where("id = ?", "tenant-a").Take(&tenant)
-	if tenant.LLMID != "synthetic-chat" || tenant.TTSID != nil {
-		t.Fatal("valid declared fields lost")
-	}
-	callback := "access:test:tenant_update_failure"
+	check("member-a", "tenant-a", "")
+	check("owner-a", "tenant-a", "original-chat")
+	check("owner-b", "tenant-b", "original-chat")
+	callback := "access:test:model_update_failure"
+	failure := errors.New("synthetic SQL failure")
 	db.Callback().Update().Before("gorm:update").Register(callback, func(tx *gorm.DB) {
-		if tx.Statement.Table == "tenant" {
-			tx.AddError(errors.New("synthetic SQL failure"))
+		if tx.Statement.Table == "user_tenant" {
+			tx.AddError(failure)
 		}
 	})
-	req := accessNativeSettings("tenant-a")
-	req.Raw["llm_id"] = "must-not-commit"
-	code, err = service.SetTenantInfo(t.Context(), "owner-a", req)
+	code, err := svc.SetModelSettings(owner, req)
 	db.Callback().Update().Remove(callback)
-	if err == nil || code == common.CodeSuccess {
-		t.Fatal("SQL failure accepted")
+	if !errors.Is(err, failure) || code == common.CodeSuccess {
+		t.Fatal("failed update accepted", code, err)
 	}
-	db.Where("id = ?", "tenant-a").Take(&tenant)
-	if tenant.LLMID != "synthetic-chat" {
-		t.Fatal("SQL failure changed settings")
-	}
-	var epoch entity.KnowledgeAccessTenantStateRecord
-	db.Where("tenant_id = ?", "tenant-a").Take(&epoch)
-	if epoch.Epoch != 0 {
-		t.Fatal("model display settings changed authorization epoch")
+	check("owner-a", "tenant-a", "original-chat")
+	var state entity.KnowledgeAccessTenantStateRecord
+	if err := db.Where("tenant_id = ?", "tenant-a").Take(&state).Error; err != nil || state.Epoch != 0 {
+		t.Fatal("model settings changed authorization epoch", state.Epoch, err)
 	}
 }
 
@@ -119,15 +101,15 @@ func TestKnowledgeAccessNativeMemberInviteAcceptRemoveAtomic(t *testing.T) {
 	db := accessNativeServiceDB(t)
 	seedNativeAuditMembers(t, db, "tenant-a")
 	service := NewTenantService()
-	_, code, err := service.AddMember(t.Context(), "owner-a", "tenant-a", &AddMemberRequest{Email: "invitee@invalid"})
+	_, code, err := service.AddMember(permission.WithIdentity(t.Context(), "owner-a", "tenant-a"), "tenant-a", &AddMemberRequest{Email: "invitee@invalid"})
 	if err != nil || code != common.CodeSuccess {
 		t.Fatal(code, err)
 	}
-	check := func(role string, epoch int64) {
+	check := func(role, status string, epoch int64) {
 		t.Helper()
 		var member entity.UserTenant
 		db.Where("user_id = ? AND tenant_id = ?", "invitee", "tenant-a").Take(&member)
-		if member.Role != role {
+		if member.Role != role || member.Status == nil || *member.Status != status {
 			t.Fatal(member.Role, role)
 		}
 		var state entity.KnowledgeAccessTenantStateRecord
@@ -136,22 +118,18 @@ func TestKnowledgeAccessNativeMemberInviteAcceptRemoveAtomic(t *testing.T) {
 			t.Fatal(state.Epoch, epoch)
 		}
 	}
-	check(TenantRoleInvite, 1)
-	code, err = service.AcceptInvite(t.Context(), "invitee", "tenant-a")
+	check("", entity.TenantMembershipStatusInvited, 1)
+	code, err = service.AcceptInvite(permission.WithIdentity(t.Context(), "invitee", "invitee"), "tenant-a")
 	if err != nil || code != common.CodeSuccess {
 		t.Fatal(code, err)
 	}
-	check(TenantRoleNormal, 2)
-	code, err = service.RemoveMember(t.Context(), "invitee", "tenant-a", "invitee")
+	check(TenantRoleNormal, entity.TenantMembershipStatusJoined, 2)
+	code, err = service.RemoveMember(permission.WithIdentity(t.Context(), "invitee", "tenant-a"), "tenant-a", "invitee")
 	if err != nil || code != common.CodeSuccess {
 		t.Fatal(code, err)
 	}
-	var count int64
-	db.Model(&entity.UserTenant{}).Where("user_id = ? AND tenant_id = ?", "invitee", "tenant-a").Count(&count)
-	if count != 0 {
-		t.Fatal("member not removed")
-	}
-	code, err = service.RemoveMember(t.Context(), "owner-a", "tenant-a", "owner-a")
+	check("", entity.TenantMembershipStatusLeft, 3)
+	code, err = service.RemoveMember(permission.WithIdentity(t.Context(), "owner-a", "tenant-a"), "tenant-a", "owner-a")
 	if err == nil || code == common.CodeSuccess {
 		t.Fatal("removed tenant owner")
 	}
@@ -161,15 +139,12 @@ func TestKnowledgeAccessNativeMemberInviteAcceptRemoveAtomic(t *testing.T) {
 			tx.AddError(errors.New("synthetic audit failure"))
 		}
 	})
-	_, code, err = service.AddMember(t.Context(), "owner-a", "tenant-a", &AddMemberRequest{Email: "invitee@invalid"})
+	_, code, err = service.AddMember(permission.WithIdentity(t.Context(), "owner-a", "tenant-a"), "tenant-a", &AddMemberRequest{Email: "invitee@invalid"})
 	db.Callback().Create().Remove(callback)
 	if err == nil || code == common.CodeSuccess {
 		t.Fatal("audit failure accepted")
 	}
-	db.Model(&entity.UserTenant{}).Where("user_id = ? AND tenant_id = ?", "invitee", "tenant-a").Count(&count)
-	if count != 0 {
-		t.Fatal("orphan invitation after rollback")
-	}
+	check("", entity.TenantMembershipStatusLeft, 3)
 	var state entity.KnowledgeAccessTenantStateRecord
 	db.Where("tenant_id = ?", "tenant-a").Take(&state)
 	if state.Epoch != 3 {
@@ -315,6 +290,18 @@ func TestKnowledgeAccessNativeRegistrationFourRowsAndAuditRollback(t *testing.T)
 		var count int64
 		if err := query.Count(&count).Error; err != nil || count != 0 {
 			t.Fatal("registration rollback left rows", count, err)
+		}
+	}
+}
+
+func migrateNativeAccessTestDB(t *testing.T, db *gorm.DB) {
+	t.Helper()
+	if err := db.AutoMigrate(&entity.User{}, &entity.UserTenant{}, &entity.Tenant{}, &entity.Knowledgebase{}, &entity.KnowledgeAccessTenantStateRecord{}, &entity.KnowledgeAccessDomainPolicyRecord{}, &entity.KnowledgeAccessModuleRecord{}, &entity.KnowledgeAccessAuditRecord{}, &entity.KnowledgeAccessGrantRecord{}, &entity.KnowledgeAccessViewRecord{}); err != nil {
+		t.Fatal(err)
+	}
+	for _, query := range []string{"CREATE UNIQUE INDEX IF NOT EXISTS idx_ka_module_1 ON knowledge_access_module(domain_id,id)", "CREATE UNIQUE INDEX IF NOT EXISTS idx_ka_audit_command_key ON knowledge_access_audit(actor_user_id,command_operation,command_key)"} {
+		if err := db.Exec(query).Error; err != nil {
+			t.Fatal(err)
 		}
 	}
 }

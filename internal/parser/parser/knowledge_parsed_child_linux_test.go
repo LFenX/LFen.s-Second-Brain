@@ -104,8 +104,8 @@ func TestKnowledgeParsedChildMergedGeometrySurvivesJSON(t *testing.T) {
 			continue
 		}
 		found = true
-		if table.Grid[2][1].OriginRow != 0 || table.Grid[2][1].OriginCol != 0 {
-			t.Fatal("diagnostic origins were invented across JSON")
+		if table.Grid[2][1].OriginRow != 1 || table.Grid[2][1].OriginCol != 1 {
+			t.Fatal("covered cell lost its origin across JSON")
 		}
 		ranges, err := chunk.PlanContentRanges(chunk.ContentRangeInput{Kind: "table", CoordinateSpace: "item_utf8", Text: *node.Text.Value, Table: table, MaxBytes: 128})
 		if err != nil || len(ranges) == 0 {
@@ -138,11 +138,12 @@ func TestKnowledgeParsedChildNativeDOCAndSpreadsheet(t *testing.T) {
 	if !strings.Contains(parsedChildText(xls), "Apples") {
 		t.Fatal(xls.State, parsedChildText(xls))
 	}
-	// This exercises the registered PPT path with actual OOXML container bytes.
-	// It is not evidence for an unprovided binary PowerPoint fixture.
-	ppt := parsedChildTestRun(t, "slides.ppt", "ppt", buildPPTX(t, "Synthetic local presentation"))
-	if !strings.Contains(parsedChildText(ppt), "Synthetic local presentation") {
-		t.Fatal(ppt.State, parsedChildText(ppt))
+	input := buildPPTX(t, "Synthetic local presentation")
+	_, control := documentChildOwnedTestInput(t, string(input))
+	control.Format, control.Filename, control.ProfileID = "ppt", "slides.ppt", KnowledgeParsedLocalProfile
+	raw, err := RunDocumentStructureChild(t.Context(), input, control, func(DocumentChildOwnership) error { return nil })
+	if len(raw) != 0 || documentChildFailure(err) != "source_structure_unavailable" {
+		t.Fatalf("OOXML container mislabeled as binary PPT: %v", err)
 	}
 }
 

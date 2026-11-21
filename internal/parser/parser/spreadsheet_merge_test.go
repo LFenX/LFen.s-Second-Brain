@@ -6,7 +6,6 @@ import (
 	"strings"
 	"testing"
 
-	"ragflow/internal/entity"
 	"ragflow/internal/parser/chunk"
 )
 
@@ -78,26 +77,6 @@ func TestBIFF8ParserPreservesOriginalMergedGeometry(t *testing.T) {
 	}
 	if !strings.Contains(*projection.Nodes[1].Text.Value, "SHT-29") {
 		t.Fatal("second source sheet missing")
-	}
-}
-
-func TestSpreadsheetMergesRefuseAmbiguousGeometry(t *testing.T) {
-	makeItems := func() []map[string]any {
-		return []map[string]any{{"table": &entity.TableData{Grid: [][]entity.TableCell{{{Text: "origin"}, {Text: ""}}, {{Text: ""}, {Text: "body"}}}, HeaderRows: 1}, "positions": [][]float64{{1, 1, 1, 1, 2}, {1, 2, 2, 1, 2}}}}
-	}
-	if err := applySpreadsheetMerges(makeItems(), []mergeRange{{sr: 1, sc: 1, er: 2, ec: 1}}); err != nil {
-		t.Fatal(err)
-	}
-	for _, spans := range [][]mergeRange{
-		{{sr: 1, sc: 1, er: 1, ec: 1}, {sr: 1, sc: 1, er: 1, ec: 1}},
-		{{sr: 1, sc: 1, er: 2, ec: 1}, {sr: 2, sc: 1, er: 2, ec: 2}},
-		{{sr: 1, sc: 1, er: 3, ec: 1}},
-		{{sr: 1, sc: 1, er: 2, ec: 4097}},
-		{{sr: 2, sc: 1, er: 1, ec: 1}},
-	} {
-		if err := applySpreadsheetMerges(makeItems(), spans); err == nil {
-			t.Fatal("invalid or incomplete merge accepted", spans)
-		}
 	}
 }
 

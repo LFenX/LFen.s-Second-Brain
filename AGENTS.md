@@ -60,7 +60,7 @@ Use this file as the local operating guide for the current codebase. Prefer the 
 - `web/`: frontend application.
 - `docker/`: local and production compose files.
 - `sdk/python/`: legacy Python client SDK pending deletion.
-- `tools/scripts/download_dev_deps.py` and `ragflow_deps/download_deps.py`: Python downloaders for the Go build's dependencies. `download_dev_deps.py` pulls the native static libraries (pdfium, pdf_oxide, office_oxide, onnxruntime) that `build.sh` links; `download_deps.py` pulls the runtime resources (cl100k BPE table, DeepDoc models, embedding tokenizer assets) and installs the stagehand server into the SDK cache. Versions and URLs are defined inline in each downloader (`tools/scripts/download_dev_deps.py` for native static libraries, `ragflow_deps/download_deps.py` for runtime resources); the tokenizer assets are inlined as `TOKENIZER_ASSETS` in each downloader. Replace these with non-Python preparation before removing Python dependencies.
+- `tools/scripts/download_dev_deps.py` and `deps/download_deps.py`: Python downloaders for the Go build's dependencies. `download_dev_deps.py` pulls the native static libraries (pdfium, pdf_oxide, office_oxide, onnxruntime) that `build.sh` links; `download_deps.py` pulls the runtime resources (cl100k BPE table, DeepDoc models, embedding tokenizer assets). Versions and URLs are defined inline in each downloader (`tools/scripts/download_dev_deps.py` for native static libraries, `deps/download_deps.py` for runtime resources); the tokenizer assets are inlined as `TOKENIZER_ASSETS` in each downloader. Replace these with non-Python preparation before removing Python dependencies.
 - `test/`: includes Python HTTP tests against the server and SDK-dependent tests. Some parity tools elsewhere still refer to absent Python application modules. Check each consumer before retiring coverage; do not classify all Python tests as direct imports of the removed backend.
 
 ## Go-Specific Rules
@@ -68,6 +68,17 @@ Use this file as the local operating guide for the current codebase. Prefer the 
 - Do not add or preserve deprecated Go APIs just to ease migration inside the repo.
 - Remove commented-out Go code instead of leaving recovery notes in place.
 - Keep package comments and doc comments aligned with the current runtime path, not with migration history.
+
+## Enterprise stubs
+Enterprise-only code lives in the downstream enterprise repository, never here: it is written as `*_ee.go` / `*_ee_test.go` files carrying `//go:build ee`. This tree keeps only what the open-source build needs:
+
+- A capability the shared code cannot implement open-source gets a `stub.go` in the same package with `//go:build !ee`, exposing exactly the surface the shared call sites use.
+- A capability that is absent from this tree altogether needs no stub: the downstream repository carries that file and its build tag on its own.
+- Keep stubs minimal: when shared code calls several enterprise functions in a row, collapse them into one entry point instead of stubbing each one.
+- Review every stub from the caller's side: it returns a zero value or an error, and the open-source build still has to behave correctly — the call site needs the fallback that keeps normal operation intact.
+- Never inline enterprise content into a shared file (a config section, an environment variable, a frontend module). The edition is selected by build tags or by an environment variable, and the enterprise repository ships the counterpart file.
+- Both trees must build: this one with `bash build.sh --go`, the enterprise one with `RAGFLOW_GO_TAGS=ee bash build.sh --go`.
+- New tests are Go tests run through `bash build.sh --test`, never pytest. Integration and system tests must exercise the real implementation — no mocks or stubs of the code under test.
 
 ## GORM query traps
 - **Never pass a bare string ID as the second argument to `Take`/`First`** (e.g. `Take(&x, id)`). Under GORM v1.25.7 a non-numeric string is treated as a raw SQL condition and concatenated into the `WHERE` clause: `Take(&x, "88b17c7a...")` emits `WHERE 88b17c7a... LIMIT 1`, which MySQL rejects with `Error 1054 (42S22): Unknown column '...' in 'where clause'`. Only strings that parse via `strconv.Atoi` are treated as primary-key values, so this bug is invisible for integer IDs and catastrophic for UUID primary keys. Always bind explicitly: `Take(&x, "id = ?", id)` or `Where("id = ?", id).Take(&x)`.
@@ -136,7 +147,7 @@ bash build.sh --test-manual                 # local opt-in only
 bash build.sh --test-all                    # integration + e2e; excludes manual
 ```
 
-Native libraries, Go DeepDoc models, tokenizer assets, and `ragflow_deps/cl100k_base.tiktoken` come from `tools/scripts/download_dev_deps.py` (native static libs) and `ragflow_deps/download_deps.py` (models, cl100k, tokenizer assets); run them with `uv run`. Build the Go resource image with `cd ragflow_deps && docker build -f Dockerfile -t infiniflow/ragflow_deps:latest .` after downloading the resources.
+Native libraries, Go DeepDoc models, tokenizer assets, and `deps/cl100k_base.tiktoken` come from `tools/scripts/download_dev_deps.py` (native static libs) and `deps/download_deps.py` (models, cl100k, tokenizer assets); run them with `uv run`. Build the Go resource image with `cd deps && docker build -f Dockerfile -t infiniflow/ragflow_deps:latest .` after downloading the resources.
 
 ### Frontend
 ```bash
@@ -167,7 +178,7 @@ npm run type-check
 ## LFen Second Brain project rules (take precedence over upstream migration advice)
 - 默认中文，表达简短、清晰；每轮开头标注使用的 skills。
 - Primary repository: https://github.com/LFenX/LFen.s-Second-Brain. Develop in this repository root. The sibling ragflow checkout is a rollback reference, not the active development location.
-- Upstream baseline: infiniflow/ragflow v1.0.0-rc2, commit ac29b4b29928ca65d3efca19b6cfae3f86069b81. Preserve LICENSE and upstream attribution. The existing repository history remains intact; this is a source snapshot import, not a rewritten upstream history.
+- Upstream baseline: infiniflow/ragflow v1.0.0, commit db1cd5929a7885a3074547791f5ecc4d2f891739. The original source import used v1.0.0-rc2 at ac29b4b29928ca65d3efca19b6cfae3f86069b81. Preserve LICENSE and upstream attribution. The existing repository history remains intact; this is a source snapshot import, not a rewritten upstream history.
 - Keep the upstream cmd/internal/web/docker layout and existing Chinese planning files in place. Do not rename or restructure existing directories without the user's explicit request and confirmation.
 - Read current material through the reference lock: README/会话接续说明 approved prefixes, 本地第二大脑知识库技术方案 chapter 41, and `docs/knowledge-core-realignment-plan.md`. Earlier chapters and old handoffs are historical evidence, not default current instructions. Preserve earlier acceptance scopes and original evidence.
 - Prioritize a unified knowledge model and the native ingestion/retrieval chain before more format expansion or a general Agent runtime. Continue with synthetic material only. Do not send real AICS content to remote models or start new model calls without the relevant user scope. Department/module permissions, temporary MCP keys and code reuse packages remain planned, not completed; new shared interfaces require a specific candidate decision before business integration.

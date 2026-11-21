@@ -20,12 +20,12 @@ func TestRegisteredParserCapabilitiesPreserveExtractionBoundary(t *testing.T) {
 		if capability.BaseResult != "configuration_only" {
 			t.Fatal("audio configuration must not advertise extracted text")
 		}
-		p, err := GetParser(capability.FileType)
+		p, _, err := GetParser(capability.FileType, nil)
 		if err != nil {
 			t.Fatal(err)
 		}
 		result := p.ParseWithResult(t.Context(), "synthetic.mp3", []byte{1, 2, 3})
-		if result.Err != nil || result.Text != "" || len(result.JSON) != 0 || result.Markdown != "" {
+		if result.Err != nil || result.File == nil || len(result.JSON) != 0 {
 			t.Fatal("audio base parser extraction boundary changed")
 		}
 	}
@@ -36,7 +36,7 @@ func TestRegisteredParserCapabilitiesPreserveExtractionBoundary(t *testing.T) {
 	if RegisteredParserCapabilities()[0].FileType == utility.FileTypeOTHER {
 		t.Fatal("a consumer changed the shared parser registry")
 	}
-	if p, err := GetParser(utility.FileTypeVIDEO); err == nil || p != nil {
+	if p, _, err := GetParser(utility.FileTypeVIDEO, nil); err == nil || p != nil {
 		t.Fatal("video must remain in its explicit component path")
 	}
 }

@@ -10,7 +10,6 @@ const esbuildJest = require('esbuild-jest');
 
 const esbuildJestTransformer = esbuildJest.createTransformer({
   sourcemap: true,
-  loaders: { '.ts': 'tsx' },
 });
 
 const supportedLoaders = ['js', 'jsx', 'ts', 'tsx', 'json'];
@@ -20,8 +19,7 @@ module.exports = {
     return {
       process(content, filename, config, opts) {
         const ext = path.extname(filename).slice(1);
-        const loader =
-          ext === 'ts' ? 'tsx' : supportedLoaders.includes(ext) ? ext : 'text';
+        const loader = supportedLoaders.includes(ext) ? ext : 'text';
         const define = {
           'import.meta.env': '{}',
           'import.meta.glob': 'jestImportMetaGlob',

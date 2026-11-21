@@ -107,7 +107,6 @@ export const enum KnowledgeApiAction {
   FetchWikiCommits = 'fetchWikiCommits',
   FetchWikiCommit = 'fetchWikiCommit',
   FetchMetadata = 'fetchMetadata',
-  FetchMetadataKeys = 'fetchMetadataKeys',
   FetchKnowledgeList = 'fetchKnowledgeList',
   RemoveKnowledgeGraph = 'removeKnowledgeGraph',
   ClearWiki = 'clearWiki',
@@ -345,6 +344,14 @@ export const useDeleteKnowledge = () => {
   return { data, loading, deleteKnowledge: mutateAsync };
 };
 
+export const DatasetPipelineConfigurationKeys = {
+  detail: (knowledgeBaseId: string | null | undefined) =>
+    [
+      KnowledgeApiAction.FetchDatasetPipelineConfiguration,
+      knowledgeBaseId,
+    ] as const,
+};
+
 export const useUpdateKnowledge = (shouldFetchList = false) => {
   const knowledgeBaseId = useKnowledgeBaseId();
   const queryClient = useQueryClient();
@@ -398,6 +405,9 @@ export const useUpdateKnowledge = (shouldFetchList = false) => {
       const { data = {} } = await updateKb(kbId, requestBody);
       if (data.code === 0) {
         message.success(i18n.t(`message.updated`));
+        queryClient.invalidateQueries({
+          queryKey: DatasetPipelineConfigurationKeys.detail(kbId),
+        });
         if (shouldFetchList) {
           queryClient.invalidateQueries({
             queryKey: [KnowledgeApiAction.FetchKnowledgeListByPage],
@@ -435,14 +445,6 @@ export const useFetchKnowledgeBaseConfiguration = (props?: {
   });
 
   return { data, loading };
-};
-
-export const DatasetPipelineConfigurationKeys = {
-  detail: (knowledgeBaseId: string | null | undefined) =>
-    [
-      KnowledgeApiAction.FetchDatasetPipelineConfiguration,
-      knowledgeBaseId,
-    ] as const,
 };
 
 export const useFetchDatasetPipelineConfiguration = (props?: {
@@ -875,6 +877,14 @@ export function useFetchKnowledgeMetadata(kbIds: string[] = []) {
       return data?.data ?? {};
     },
   });
+
+  return { data, loading };
+}
+
+export function useFetchKnowledgeMetadataKeys(kbIds: string[] = []) {
+  const sortedKbIds = useMemo(() => [...kbIds].sort(), [kbIds]);
+  const { data: metadata, loading } = useFetchKnowledgeMetadata(sortedKbIds);
+  const data = useMemo(() => Object.keys(metadata), [metadata]);
 
   return { data, loading };
 }

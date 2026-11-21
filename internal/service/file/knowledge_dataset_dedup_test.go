@@ -45,11 +45,11 @@ func TestKnowledgeDatasetContainerDedupAncestor(t *testing.T) {
 				t.Fatalf("fixture ancestor not protected: %v", guard)
 			}
 			if mode != "ordinary_control" {
-				if err := permission.NewDatabaseChecker(db).CheckResource(t.Context(), permission.Subject{UserID: "reader"}, permission.ResourceRef{Kind: permission.ResourceKindFolder, ID: protected}, permission.OperationRead); err == nil {
+				if err := permission.NewDatabaseChecker(db).CheckResource(permission.WithIdentity(t.Context(), "reader", ""), permission.ResourceRef{Kind: permission.ResourceKindFolder, ID: protected}, permission.OperationRead); err == nil {
 					t.Fatal("fixture reader already authorized")
 				}
 			}
-			result, err := testFileService().ListFilesForTenant(t.Context(), "reader", "owner", "", 1, 20, nil, "")
+			result, err := testFileService().ListFilesForTenant(permission.WithIdentity(t.Context(), "reader", "owner"), "owner", "", 1, 20, nil, "")
 			if err != nil {
 				t.Fatalf("listing failed: %v", err)
 			}
@@ -57,7 +57,7 @@ func TestKnowledgeDatasetContainerDedupAncestor(t *testing.T) {
 			if err := db.Where("id = ?", protected).Take(&before).Error; err != nil || before.ParentID != "common-second" {
 				t.Fatalf("member listing mutated ancestry: %+v %v", before, err)
 			}
-			result, err = testFileService().ListFiles(t.Context(), "owner", "", 1, 20, nil, "")
+			result, err = testFileService().ListFilesForTenant(permission.WithIdentity(t.Context(), "owner", "owner"), "owner", "", 1, 20, nil, "")
 			if err != nil {
 				t.Fatalf("owner listing failed: %v", err)
 			}

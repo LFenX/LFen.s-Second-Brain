@@ -314,7 +314,7 @@ func TestKnowledgeContentLexicalEmptyAndPartialCoverageRemainExplicit(t *testing
 	t.Run("partial_parser_content", func(t *testing.T) {
 		s, prior, _ := parsedPersistenceFixture(t)
 		original := []byte("A,B\n甲,乙\n1,2\n")
-		result := parser.NormalizeParseResult(t.Context(), "typed synthetic carrier", parser.ParseResult{OutputFormat: "json", JSON: []parser.DocItem{parser.TextItem{Text: "可检索内容\r\n"}, parser.ImageItem{Text: "alt is not OCR", Image: "excluded-image-payload"}, parser.RawItem{M: map[string]any{"text": "excluded-unknown-content"}}, parser.TextItem{Text: "第二段"}}})
+		result := parser.NormalizeParseResult(parser.ParseResult{JSON: []parser.DocItem{parser.TextItem{Text: "可检索内容\r\n"}, parser.ImageItem{Text: "alt is not OCR", Image: "excluded-image-payload"}, parser.RawItem{M: map[string]any{"text": "excluded-unknown-content"}}, parser.TextItem{Text: "第二段"}}})
 		bound, err := bindKnowledgeParsed(prior.Representation.Source, original, strings.Repeat("a", 64), result, 32)
 		if err != nil {
 			t.Fatal(err)

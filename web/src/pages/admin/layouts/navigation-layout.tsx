@@ -15,11 +15,12 @@ import {
 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import { useEnterpriseAdminNav } from '@/ee/pages/admin/layouts/navigation-private';
 import { cn } from '@/lib/utils';
 import { Routes } from '@/routes';
 import { getSystemVersion, logout } from '@/services/admin-service';
 
-import authorizationUtil from '@/utils/authorization-util';
+import { adminStorage } from '@/utils/authorization-util';
 
 import ThemeSwitch from '../../../components/theme-switch';
 import { IS_ENTERPRISE } from '../utils';
@@ -34,6 +35,8 @@ const AdminNavigationLayout = () => {
     queryKey: ['admin/version'],
     queryFn: async () => (await getSystemVersion())?.data?.data?.version,
   });
+
+  const enterpriseNav = useEnterpriseAdminNav();
 
   const navItems = useMemo(
     () => [
@@ -75,11 +78,21 @@ const AdminNavigationLayout = () => {
     [t],
   );
 
+  const visibleNavItems = useMemo(
+    () => [
+      ...navItems.filter(
+        ({ path }) => !enterpriseNav.hiddenPaths.includes(path),
+      ),
+      ...enterpriseNav.items,
+    ],
+    [navItems, enterpriseNav.items, enterpriseNav.hiddenPaths],
+  );
+
   const logoutMutation = useMutation({
     mutationKey: ['adminLogout'],
     mutationFn: async () => {
       await logout();
-      authorizationUtil.removeAll();
+      adminStorage.removeAll();
       navigate(Routes.Admin);
       setCurrentUserInfo({
         userInfo: null,
@@ -99,7 +112,7 @@ const AdminNavigationLayout = () => {
 
         <nav>
           <ul className="space-y-4">
-            {navItems.map((it) => (
+            {visibleNavItems.map((it) => (
               <li key={it.path}>
                 <NavLink
                   to={it.path}

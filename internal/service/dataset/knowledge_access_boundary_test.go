@@ -84,7 +84,7 @@ func TestKnowledgeAccessExpiryCapacityAndStaleViews(t *testing.T) {
 	f := accessTestSetup(t, false)
 	f.enable(t, f.Scope.Targets[:1], "read")
 	view := f.inspect(t, "read", nil)
-	if err := dao.DB.Model(&entity.KnowledgeAccessViewRecord{}).Where("id = ?", view.ViewID).Update("expires_at", time.Now().Add(-time.Second)).Error; err != nil {
+	if err := dao.DB.Model(&entity.KnowledgeAccessViewRecord{}).Where("id = ?", view.ViewID).Update("expires_at", time.Now().UTC().Add(-time.Second)).Error; err != nil {
 		t.Fatal(err)
 	}
 	accessTestCall(t, f.Service, f.Recipient, accessTestRecipient, "read", accessTestReadRequest(view.ViewID, 0, 0), 409)

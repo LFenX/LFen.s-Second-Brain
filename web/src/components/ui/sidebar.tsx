@@ -271,6 +271,11 @@ const SidebarTrigger = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, onClick, ...props }, ref) => {
     const { toggleSidebar } = useSidebar();
 
+    const handleClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+      onClick?.(event);
+      toggleSidebar();
+    };
+
     return (
       <Button
         ref={ref}
@@ -278,10 +283,7 @@ const SidebarTrigger = React.forwardRef<HTMLButtonElement, ButtonProps>(
         variant="ghost"
         size="icon"
         className={cn('h-7 w-7', className)}
-        onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-          onClick?.(event);
-          toggleSidebar();
-        }}
+        onClick={handleClick}
         {...props}
       >
         <PanelLeft />

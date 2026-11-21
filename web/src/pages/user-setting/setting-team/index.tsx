@@ -14,92 +14,15 @@
  *  limitations under the License.
  */
 
-import { Button } from '@/components/ui/button';
-import { Panel } from '@/components/form-fields';
-import {
-  useFetchUserInfo,
-  useListTenantUser,
-} from '@/hooks/use-user-setting-request';
-import { useTranslation } from 'react-i18next';
+import { TeamManagement } from '@/ee/pages/user-setting/setting-team/team-management';
 
-import { SearchInput } from '@/components/ui/input';
-import { UserPlus } from 'lucide-react';
-import { useState } from 'react';
-import { ProfileSettingWrapperCard } from '../components/user-setting-header';
-import AddingUserModal from './add-user-modal';
-import { useAddUser } from './hooks';
-import TenantTable from './tenant-table';
-import KnowledgeDepartments from './knowledge-departments';
-import UserTable from './user-table';
+import styles from '@/ee/pages/user-setting/setting-team/index.module.less';
 
 const UserSettingTeam = () => {
-  const { data: userInfo } = useFetchUserInfo();
-  const { t } = useTranslation();
-  const [searchTerm, setSearchTerm] = useState('');
-  const [searchUser, setSearchUser] = useState('');
-  useListTenantUser();
-  const {
-    addingTenantModalVisible,
-    hideAddingTenantModal,
-    showAddingTenantModal,
-    handleAddUserOk,
-  } = useAddUser();
-
   return (
-    <ProfileSettingWrapperCard
-      header={
-        <header>
-          <h2 className="text-2xl font-medium text-text-primary">
-            {userInfo?.nickname + ' ' + t('setting.workspace')}
-          </h2>
-        </header>
-      }
-    >
-      <div className="h-full space-y-5 overflow-y-auto overflow-x-hidden p-5">
-        <Panel
-          title={t('setting.teamMembers')}
-          actions={
-            <>
-              <SearchInput
-                className="w-40"
-                placeholder={t('common.search')}
-                value={searchUser}
-                onChange={(e) => setSearchUser(e.target.value)}
-              />
-              <Button onClick={showAddingTenantModal}>
-                <UserPlus className="size-4" />
-                {t('setting.invite')}
-              </Button>
-            </>
-          }
-        >
-          <UserTable searchUser={searchUser}></UserTable>
-        </Panel>
-
-        <Panel
-          title={t('setting.joinedTeams')}
-          actions={
-            <SearchInput
-              className="w-40"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder={t('common.search')}
-            />
-          }
-        >
-          <TenantTable searchTerm={searchTerm}></TenantTable>
-        </Panel>
-        <KnowledgeDepartments />
-      </div>
-
-      {addingTenantModalVisible && (
-        <AddingUserModal
-          visible
-          hideModal={hideAddingTenantModal}
-          onOk={handleAddUserOk}
-        ></AddingUserModal>
-      )}
-    </ProfileSettingWrapperCard>
+    <div className={styles.teamWrapper}>
+      <TeamManagement />
+    </div>
   );
 };
 

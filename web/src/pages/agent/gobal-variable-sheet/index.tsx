@@ -12,7 +12,7 @@ import { useFetchAgent } from '@/hooks/use-agent-request';
 import { GlobalVariableType } from '@/interfaces/database/agent';
 import { cn } from '@/lib/utils';
 import { Trash2 } from 'lucide-react';
-import { useState } from 'react';
+import { MouseEventHandler, useState } from 'react';
 import { FieldValues } from 'react-hook-form';
 import { useSaveGraph } from '../hooks/use-save-graph';
 import { AddVariableModal } from './component/add-variable-modal';
@@ -24,6 +24,10 @@ import {
 } from './constant';
 import { useObjectFields } from './hooks/use-object-fields';
 import { useTranslation } from 'react-i18next';
+
+const stopPropagation: MouseEventHandler<HTMLButtonElement> = (e) => {
+  e.stopPropagation();
+};
 
 export type IGlobalParamModalProps = {
   data: any;
@@ -141,9 +145,7 @@ export const GlobalParamSheet = (props: IGlobalParamModalProps) => {
                         <Button
                           variant={'secondary'}
                           className="bg-transparent hidden text-text-secondary border-none group-hover:bg-bg-card group-hover:text-text-primary group-hover:border group-hover:block"
-                          onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                            e.stopPropagation();
-                          }}
+                          onClick={stopPropagation}
                         >
                           <Trash2 className="w-4 h-4" />
                         </Button>

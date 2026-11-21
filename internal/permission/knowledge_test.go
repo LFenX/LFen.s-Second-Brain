@@ -94,7 +94,7 @@ func TestKnowledgeFolderRestrictionsFollowRawDescendants(t *testing.T) {
 			checker := NewDatabaseChecker(db)
 			for _, user := range []string{"owner", "reader"} {
 				for _, ref := range []ResourceRef{{Kind: ResourceKindFile, ID: "raw"}, {Kind: ResourceKindFolder, ID: "nested"}, {Kind: ResourceKindDataset, ID: "target"}} {
-					err := checker.CheckResource(t.Context(), Subject{UserID: user}, ref, OperationRead)
+					err := checker.CheckResource(WithIdentity(t.Context(), user, ""), ref, OperationRead)
 					if (err == nil) != (user == "owner") {
 						t.Fatalf("user=%s ref=%+v err=%v", user, ref, err)
 					}
@@ -112,7 +112,7 @@ func TestKnowledgeFolderRestrictionsFollowRawDescendants(t *testing.T) {
 			if err := CheckDatasetModelUse(t.Context(), db, []string{"ordinary"}, "embedding"); err != nil {
 				t.Fatal(err)
 			}
-			if err := checker.CheckResource(t.Context(), Subject{UserID: "reader"}, ResourceRef{Kind: ResourceKindFile, ID: "outside"}, OperationRead); err != nil {
+			if err := checker.CheckResource(WithIdentity(t.Context(), "reader", ""), ResourceRef{Kind: ResourceKindFile, ID: "outside"}, OperationRead); err != nil {
 				t.Fatalf("ordinary team link changed: %v", err)
 			}
 		})
@@ -174,12 +174,12 @@ func TestKnowledgeExistingCopiesKeepSourceRestrictions(t *testing.T) {
 		checker := NewDatabaseChecker(db)
 		for _, user := range []string{"owner", "reader", "team-owner"} {
 			for _, ref := range []ResourceRef{{Kind: ResourceKindFile, ID: fid}, {Kind: ResourceKindDataset, ID: "target"}} {
-				err := checker.CheckResource(t.Context(), Subject{UserID: user}, ref, OperationRead)
+				err := checker.CheckResource(WithIdentity(t.Context(), user, ""), ref, OperationRead)
 				if (user == "owner") != (err == nil) {
 					t.Fatalf("phase=%d user=%s ref=%+v err=%v", phase, user, ref, err)
 				}
 			}
-			scope, err := checker.QueryScope(t.Context(), Subject{UserID: user}, ScopeQuery{Kind: ResourceKindDataset, Operation: OperationRead})
+			scope, err := checker.QueryScope(WithIdentity(t.Context(), user, ""), ScopeQuery{Kind: ResourceKindDataset, Operation: OperationRead})
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -205,7 +205,7 @@ func TestKnowledgeExistingCopiesKeepSourceRestrictions(t *testing.T) {
 		if err := CheckDatasetModelUse(t.Context(), db, []string{"ordinary"}, "embedding"); err != nil {
 			t.Fatalf("ordinary source changed: %v", err)
 		}
-		if err := checker.CheckResource(t.Context(), Subject{UserID: "reader"}, ResourceRef{Kind: ResourceKindDataset, ID: "ordinary"}, OperationRead); err != nil {
+		if err := checker.CheckResource(WithIdentity(t.Context(), "reader", ""), ResourceRef{Kind: ResourceKindDataset, ID: "ordinary"}, OperationRead); err != nil {
 			t.Fatalf("ordinary team read changed: %v", err)
 		}
 	}
@@ -257,13 +257,13 @@ func TestKnowledgePrivateDomainResourceAndListAgree(t *testing.T) {
 	}
 	checker := NewDatabaseChecker(db)
 	for _, user := range []string{"member", "tenant-owner", "outsider"} {
-		subject := Subject{UserID: user}
+		actorCtx := WithIdentity(ctx, user, TenantIDFromContext(ctx))
 		ref := ResourceRef{Kind: ResourceKindDataset, ID: "private"}
-		err := checker.CheckResource(ctx, subject, ref, OperationRead)
+		err := checker.CheckResource(actorCtx, ref, OperationRead)
 		if (user == "member") != (err == nil) {
 			t.Fatalf("read user=%s err=%v", user, err)
 		}
-		scope, err := checker.QueryScope(ctx, subject, ScopeQuery{Kind: ResourceKindDataset, Operation: OperationRead})
+		scope, err := checker.QueryScope(actorCtx, ScopeQuery{Kind: ResourceKindDataset, Operation: OperationRead})
 		if err != nil {
 			t.Fatal(err)
 		}

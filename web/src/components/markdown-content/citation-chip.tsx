@@ -1,3 +1,4 @@
+import { Portal } from '@radix-ui/react-hover-card';
 import Image, { AuthenticatedImg } from '@/components/image';
 import SvgIcon, { hasSvgIcon } from '@/components/svg-icon';
 import {
@@ -75,12 +76,14 @@ export function CitationChip({
   return (
     <HoverCard openDelay={120} closeDelay={100}>
       <HoverCardTrigger asChild>{chip}</HoverCardTrigger>
-      <HoverCardContent
-        side="top"
-        className="w-[360px] max-w-[calc(100vw-32px)] overflow-hidden whitespace-normal rounded-xl border-border-button p-0 shadow-lg"
-      >
-        {preview}
-      </HoverCardContent>
+      <Portal>
+        <HoverCardContent
+          side="top"
+          className="w-[360px] max-w-[calc(100vw-32px)] overflow-hidden whitespace-normal rounded-xl border-border-button p-0 shadow-lg"
+        >
+          {preview}
+        </HoverCardContent>
+      </Portal>
     </HoverCard>
   );
 }

@@ -10,6 +10,7 @@ import (
 	"ragflow/internal/common"
 	"ragflow/internal/dao"
 	"ragflow/internal/entity"
+	"ragflow/internal/utility"
 )
 
 type nativeAdminActorKey struct{}
@@ -68,10 +69,13 @@ func (s *Service) addTenantForAdminTx(tx *gorm.DB, userID, nickname string) erro
 	var tenant entity.Tenant
 	err := tx.Where("id = ?", userID).Take(&tenant).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		name := nickname + "'s Kingdom"
+		name := utility.TruncateRunes(nickname+"'s Kingdom", common.TenantNameLimit)
 		status := "1"
 		tenant = entity.Tenant{ID: userID, Name: &name, Status: &status}
-		if err = tx.Create(&tenant).Error; err != nil {
+		if err = dao.ApplyDefaultTenantInviteEnabled(context.Background(), tx, &tenant); err != nil {
+			return fmt.Errorf("failed to initialize tenant invitation setting: %w", err)
+		}
+		if err = dao.NewTenantDAO().Create(context.Background(), tx, &tenant); err != nil {
 			return err
 		}
 	} else if err != nil {

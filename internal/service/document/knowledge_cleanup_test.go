@@ -53,7 +53,7 @@ func TestKnowledgeDocumentCleanupPreservesExplicitOrigins(t *testing.T) {
 			}
 			refs := []permission.ResourceRef{{Kind: permission.ResourceKindFile, ID: fid}, {Kind: permission.ResourceKindDataset, ID: "target"}}
 			for _, ref := range refs {
-				if err := permission.NewDatabaseChecker(db).CheckResource(t.Context(), permission.Subject{UserID: "reader"}, ref, permission.OperationRead); err == nil {
+				if err := permission.NewDatabaseChecker(db).CheckResource(permission.WithIdentity(t.Context(), "reader", ""), ref, permission.OperationRead); err == nil {
 					t.Fatalf("fixture was public before deletion: %+v", ref)
 				}
 			}
@@ -61,7 +61,7 @@ func TestKnowledgeDocumentCleanupPreservesExplicitOrigins(t *testing.T) {
 				t.Fatalf("fixture model use before deletion=%v", err)
 			}
 			insertTestIngestionTask(t, "protected-task", "user-1", "source-doc", "registered")
-			n, err := testDocumentService(t).DeleteDocuments(t.Context(), []string{"source-doc"}, false, "registered", "user-1")
+			n, err := testDocumentService(t).DeleteDocuments(permission.WithIdentity(t.Context(), "user-1", "tenant-1"), []string{"source-doc"}, false, "registered")
 			if !errors.Is(err, permission.ErrKnowledgeIngestionDenied) || n != 0 {
 				t.Fatalf("registered cleanup was not rejected: n=%d err=%v", n, err)
 			}
@@ -72,7 +72,7 @@ func TestKnowledgeDocumentCleanupPreservesExplicitOrigins(t *testing.T) {
 			if err := svc.RemoveDocumentKeepFile(t.Context(), "source-doc"); !errors.Is(err, permission.ErrKnowledgeIngestionDenied) {
 				t.Fatalf("keep-file cleanup guard=%v", err)
 			}
-			if n, err := svc.DeleteDocuments(t.Context(), nil, true, "registered", "user-1"); !errors.Is(err, permission.ErrKnowledgeIngestionDenied) || n != 0 {
+			if n, err := svc.DeleteDocuments(permission.WithIdentity(t.Context(), "user-1", "tenant-1"), nil, true, "registered"); !errors.Is(err, permission.ErrKnowledgeIngestionDenied) || n != 0 {
 				t.Fatalf("delete-all cleanup guard n=%d err=%v", n, err)
 			}
 			var sourceRows, mappingRows, fileRows int64
@@ -87,7 +87,7 @@ func TestKnowledgeDocumentCleanupPreservesExplicitOrigins(t *testing.T) {
 				t.Fatalf("denied cleanup touched task: count=%d err=%v", taskRows, err)
 			}
 			for _, ref := range refs {
-				if err := permission.NewDatabaseChecker(db).CheckResource(t.Context(), permission.Subject{UserID: "reader"}, ref, permission.OperationRead); err == nil {
+				if err := permission.NewDatabaseChecker(db).CheckResource(permission.WithIdentity(t.Context(), "reader", ""), ref, permission.OperationRead); err == nil {
 					t.Errorf("deleting origin removed known private-source restriction: reader can read %+v", ref)
 				}
 			}
@@ -97,7 +97,7 @@ func TestKnowledgeDocumentCleanupPreservesExplicitOrigins(t *testing.T) {
 				}
 			}
 			// Removing an ordinary copy is permitted without deleting its private origin.
-			if n, err := svc.DeleteDocuments(t.Context(), []string{"copy-doc"}, false, "target", "user-1"); err != nil || n != 1 {
+			if n, err := svc.DeleteDocuments(permission.WithIdentity(t.Context(), "user-1", "tenant-1"), []string{"copy-doc"}, false, "target"); err != nil || n != 1 {
 				t.Fatalf("ordinary copy cleanup n=%d err=%v", n, err)
 			}
 			if err := permission.CheckKnowledgeFileTransfer(t.Context(), db, []string{fid}); !errors.Is(err, permission.ErrKnowledgeIngestionDenied) {

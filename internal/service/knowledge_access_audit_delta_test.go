@@ -51,7 +51,11 @@ func assertNativeMembershipAuditDelta(t *testing.T, db *gorm.DB) {
 			}
 			role := "absent"
 			if definition.Members[0].Definition != nil {
-				role = definition.Members[0].Definition.Role
+				member := definition.Members[0].Definition
+				if member.Status == nil {
+					t.Fatal("missing membership status")
+				}
+				role = member.Role + "/" + *member.Status
 				if definition.Members[0].Definition.UserID != "invitee" {
 					t.Fatal("wrong changed membership user")
 				}
@@ -60,7 +64,7 @@ func assertNativeMembershipAuditDelta(t *testing.T, db *gorm.DB) {
 		}
 		transitions[strings.Join(sides, "->")] = true
 	}
-	for _, want := range []string{"absent->invite", "invite->normal", "normal->absent"} {
+	for _, want := range []string{"absent->/" + entity.TenantMembershipStatusInvited, "/" + entity.TenantMembershipStatusInvited + "->normal/" + entity.TenantMembershipStatusJoined, "normal/" + entity.TenantMembershipStatusJoined + "->/" + entity.TenantMembershipStatusLeft} {
 		if !transitions[want] {
 			t.Fatal("missing durable membership transition", want)
 		}

@@ -29,7 +29,7 @@ import (
 )
 
 // Exercise the production Router.Setup -> DatasetService -> protected official
-// stateless transport chain with a synthetic signed session and user-only DB.
+// stateless transport chain with a synthetic signed session and identity-only DB.
 func TestRouterContentMCPTransport(t *testing.T) {
 	// The auth path uses package-global configuration. Isolate its synthetic
 	// initialization in this test binary rather than adding a production seam.
@@ -69,7 +69,7 @@ func TestRouterContentMCPTransport(t *testing.T) {
 		t.Fatal(err)
 	}
 	t.Cleanup(func() { _ = sqlDB.Close() })
-	if err := db.AutoMigrate(&entity.User{}); err != nil {
+	if err := db.AutoMigrate(&entity.User{}, &entity.Tenant{}, &entity.UserTenant{}); err != nil {
 		t.Fatal(err)
 	}
 	accessToken, status := strings.Repeat("a", 32), "1"
@@ -79,18 +79,27 @@ func TestRouterContentMCPTransport(t *testing.T) {
 	}).Error; err != nil {
 		t.Fatal(err)
 	}
+	const tenantID = "content-mcp-unit-tenant"
+	if err := db.Create(&entity.Tenant{ID: tenantID, Status: &status}).Error; err != nil {
+		t.Fatal(err)
+	}
+	if err := db.Create(&entity.UserTenant{ID: "content-mcp-owner-member", UserID: "content-mcp-unit-owner", TenantID: tenantID, Role: "owner", Status: &status}).Error; err != nil {
+		t.Fatal(err)
+	}
 	previousDB := dao.DB
 	dao.DB = db
 	t.Cleanup(func() { dao.DB = previousDB })
 
-	// Discovery and GET may authenticate users; any business SQL or write fails.
+	// Discovery and GET may authenticate users and their tenant memberships; any business SQL or write fails.
 	var businessSQL atomic.Int64
 	refuseBusiness := func(tx *gorm.DB) {
 		businessSQL.Add(1)
 		tx.AddError(errors.New("content MCP transport must not dispatch business operations"))
 	}
 	if err := db.Callback().Query().Before("gorm:query").Register("content_mcp_user_only", func(tx *gorm.DB) {
-		if tx.Statement.Table != (entity.User{}).TableName() {
+		switch tx.Statement.Table {
+		case (entity.User{}).TableName(), (entity.Tenant{}).TableName(), (entity.UserTenant{}).TableName():
+		default:
 			refuseBusiness(tx)
 		}
 	}); err != nil {
@@ -113,7 +122,7 @@ func TestRouterContentMCPTransport(t *testing.T) {
 		}
 	})
 
-	signed, err := common.DumpAccessToken(accessToken, secret)
+	signed, err := common.DumpAccessToken(accessToken, tenantID, secret)
 	if err != nil {
 		t.Fatal(err)
 	}

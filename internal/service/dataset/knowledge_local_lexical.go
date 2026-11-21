@@ -40,10 +40,12 @@ func (d *DatasetService) AuthenticateKnowledgeLocalSession(ctx context.Context, 
 	if authorization == "" {
 		return ctx, "", lexicalError(401, "unauthenticated")
 	}
-	u, code, err := service.NewUserService().GetUserByToken(ctx, authorization)
-	if err != nil || code != common.CodeSuccess || u == nil || u.AccessToken == nil {
+	identity, code, err := service.NewUserService().ResolveAccessToken(ctx, authorization)
+	if err != nil || code != common.CodeSuccess || identity == nil || identity.User == nil || identity.User.AccessToken == nil {
 		return ctx, "", lexicalError(401, "unauthenticated")
 	}
+	u := identity.User
+	ctx = permission.WithIdentity(ctx, u.ID, identity.TenantID)
 	session := lexicalSession{UserID: u.ID, SHA256: lexicalSHA([]byte(*u.AccessToken))}
 	ctx = context.WithValue(ctx, lexicalSessionKey{}, session)
 	if err := lexicalVerifySession(ctx, dao.DB, u.ID, false); err != nil {
@@ -151,7 +153,7 @@ func lexicalLock(ctx context.Context, tx *gorm.DB, user, domain string) (*entity
 	if err := tx.WithContext(ctx).Clauses(clause.Locking{Strength: "UPDATE"}).Where("user_id = ? AND tenant_id = ? AND status = ?", user, kb.TenantID, string(entity.StatusValid)).Take(&member).Error; err != nil {
 		return nil, entity.KnowledgeLexicalPolicyRecord{}, lexicalNormalize(err)
 	}
-	if err := permission.NewDatabaseChecker(tx).CheckResource(ctx, permission.Subject{UserID: user}, permission.ResourceRef{Kind: permission.ResourceKindDataset, ID: domain}, permission.OperationRead); err != nil {
+	if err := checkKnowledgeDataset(ctx, permission.NewDatabaseChecker(tx), user, &kb, permission.OperationRead); err != nil {
 		return nil, entity.KnowledgeLexicalPolicyRecord{}, lexicalError(404, "not_found")
 	}
 	p, err := lexicalPolicyRow(ctx, tx.Clauses(clause.Locking{Strength: "UPDATE"}), domain)

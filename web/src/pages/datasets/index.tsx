@@ -1,7 +1,9 @@
 import { CardContainer } from '@/components/card-container';
+import DuplicateDialog from '@/ee/components/duplicate-dialog';
 import { EmptyCardType } from '@/components/empty/constant';
 import { EmptyAppCard } from '@/components/empty/empty';
 import ListFilterBar from '@/components/list-filter-bar';
+import { PrivilegeManagementDialog } from '@/ee/components/privilege-management/privilege-management-dialog';
 import { RenameDialog } from '@/components/rename-dialog';
 import { Button } from '@/components/ui/button';
 import { RAGFlowPagination } from '@/components/ui/ragflow-pagination';
@@ -18,9 +20,11 @@ import { useSearchParams } from 'react-router';
 import { DatasetCard } from './dataset-card';
 import { DatasetCreatingDialog } from './dataset-creating-dialog';
 import { useSaveKnowledge } from './hooks';
+import useDuplicateDataset from '@/ee/pages/datasets/use-duplicate-dataset';
 import { useRenameDataset } from './use-rename-dataset';
 import { useSelectOwners } from './use-select-owners';
 import { KnowledgeDomainEntry } from './knowledge-domain-entry';
+import { useShowPrivilegeDialog } from '@/ee/pages/datasets/use-show-privilege-dialog';
 
 export default function Datasets() {
   const { t } = useTranslation();
@@ -62,6 +66,15 @@ export default function Datasets() {
     showDatasetRenameModal,
   } = useRenameDataset();
 
+  const {
+    isModalVisible: datasetDuplicateModalVisible,
+    showModal: showDatasetDuplicateModal,
+    hideModal: hideDatasetDuplicateModal,
+    initialName: initialDatasetDuplicateName,
+    onOk: onDatasetDuplicateOk,
+    loading: datasetDuplicateLoading,
+  } = useDuplicateDataset();
+
   const handlePageChange = useCallback(
     (page: number, pageSize?: number) => {
       setPagination({ page, pageSize });
@@ -86,6 +99,13 @@ export default function Datasets() {
       setSearchUrl(searchUrl);
     }
   }, [isCreate, showModal, searchUrl, setSearchUrl, queryClient]);
+
+  const {
+    privilegeModal,
+    hidePrivilegeModal,
+    handShowPrivilegeModal,
+    recordWithSourceType,
+  } = useShowPrivilegeDialog();
 
   return (
     <>
@@ -130,6 +150,8 @@ export default function Datasets() {
                         dataset={dataset}
                         key={dataset.id}
                         showDatasetRenameModal={showDatasetRenameModal}
+                        showDatasetDuplicateModal={showDatasetDuplicateModal}
+                        showPrivilegeModal={handShowPrivilegeModal(dataset)}
                       />
                     ))}
                   </CardContainer>
@@ -179,6 +201,14 @@ export default function Datasets() {
           loading={creatingLoading}
         ></DatasetCreatingDialog>
       )}
+      {datasetDuplicateModalVisible && (
+        <DuplicateDialog
+          hideModal={hideDatasetDuplicateModal}
+          onOk={onDatasetDuplicateOk}
+          initialName={initialDatasetDuplicateName}
+          loading={datasetDuplicateLoading}
+        />
+      )}
       {datasetRenameVisible && (
         <RenameDialog
           hideModal={hideDatasetRenameModal}
@@ -186,6 +216,12 @@ export default function Datasets() {
           initialName={initialDatasetName}
           loading={datasetRenameLoading}
         ></RenameDialog>
+      )}
+      {privilegeModal && (
+        <PrivilegeManagementDialog
+          hideModal={hidePrivilegeModal}
+          initialValues={recordWithSourceType}
+        ></PrivilegeManagementDialog>
       )}
     </>
   );

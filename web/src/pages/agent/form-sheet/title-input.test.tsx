@@ -1,3 +1,4 @@
+import { TooltipProvider } from '@/components/ui/tooltip';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { TitleInput } from './title-input';
 
@@ -27,7 +28,7 @@ const baseNode: any = {
 
 describe('TitleInput', () => {
   it('renders an edit button that switches to editing mode when editable', () => {
-    render(<TitleInput node={baseNode} />);
+    render(<TitleInput node={baseNode} />, { wrapper: TooltipProvider });
 
     expect(screen.getByText('My Parser')).toBeInTheDocument();
     const editButton = screen.getByRole('button');

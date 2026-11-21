@@ -11,8 +11,7 @@ import (
 	"ragflow/internal/entity"
 )
 
-// ProjectKnowledgeParseResult only projects supplied typed results. Markdown
-// normalization remains at the existing component boundary; this function has no I/O.
+// ProjectKnowledgeParseResult projects typed parser items without performing I/O.
 func ProjectKnowledgeParseResult(result ParseResult) (*entity.KnowledgeContentProjection, error) {
 	p := &entity.KnowledgeContentProjection{
 		KnowledgeContentRepresentation: entity.KnowledgeContentRepresentation{
@@ -44,18 +43,10 @@ func ProjectKnowledgeParseResult(result ParseResult) (*entity.KnowledgeContentPr
 	if result.Err != nil {
 		return finish("unavailable", "parser_failed")
 	}
-	if result.OutputFormat == "" {
+	if !result.Produced() {
 		return finish("unavailable", "no_parser_result")
 	}
 	items := result.JSON
-	if len(items) == 0 {
-		if result.Markdown != "" {
-			return finish("normalization_required", "use_existing_component_normalizer")
-		}
-		if result.Text != "" {
-			items = []DocItem{NewTextJSONItem(result.Text)}
-		}
-	}
 	if len(items) > 32768 {
 		return nil, fmt.Errorf("content projection capacity exceeded")
 	}
@@ -151,23 +142,24 @@ func parserContentText(value string) entity.KnowledgeContentText {
 }
 
 func parserProjectText(node *entity.KnowledgeContentNode, item TextItem) error {
-	if len(item.CKType) > 128 {
+	layout, _ := item.Extra["layout"].(string)
+	if len(layout) > 128 {
 		return fmt.Errorf("content metadata capacity exceeded")
 	}
-	if !utf8.ValidString(item.Text) || !utf8.ValidString(item.CKType) {
+	if !utf8.ValidString(item.Text) || !utf8.ValidString(layout) {
 		return fmt.Errorf("invalid parser text UTF-8")
 	}
 	node.Kind = "text_block"
-	switch item.CKType {
+	switch layout {
 	case "heading", "list", "code":
-		node.Kind = item.CKType
+		node.Kind = layout
 	}
 	node.Text = parserContentText(item.Text)
-	node.Attributes.Parser.ItemType, node.Attributes.Parser.CKType = "text", item.CKType
+	node.Attributes.Parser.ItemType, node.Attributes.Parser.CKType = "text", layout
 	return nil
 }
 
-func parserContentPositions(input [][]float64) ([][]float64, error) {
+func parserContentPositions(input Positions) ([][]float64, error) {
 	if input == nil {
 		return nil, nil
 	}
@@ -175,25 +167,29 @@ func parserContentPositions(input [][]float64) ([][]float64, error) {
 		return nil, fmt.Errorf("content positions capacity exceeded")
 	}
 	out := make([][]float64, len(input))
-	for i, row := range input {
-		if len(row) > 16 {
-			return nil, fmt.Errorf("content positions capacity exceeded")
+	for i, position := range input {
+		switch box := position.(type) {
+		case AbsoluteBox:
+			out[i] = []float64{float64(box.PageNumber), box.Left, box.Right, box.Top, box.Bottom}
+		case RowColumnBox:
+			out[i] = []float64{float64(box.Sheet), float64(box.R0), float64(box.R1), float64(box.C0), float64(box.C1)}
+		default:
+			return nil, fmt.Errorf("unsupported parser position")
 		}
-		out[i] = append([]float64(nil), row...)
 	}
 	return out, nil
 }
 
 func parserProjectTable(node *entity.KnowledgeContentNode, item TableItem) error {
-	if len(item.CKType) > 128 || len(item.Sheet) > 4096 {
+	if len(item.Sheet) > 4096 {
 		return fmt.Errorf("content metadata capacity exceeded")
 	}
-	if !utf8.ValidString(item.Sheet) || !utf8.ValidString(item.CKType) {
+	if !utf8.ValidString(item.Sheet) {
 		return fmt.Errorf("invalid parser table UTF-8")
 	}
 	node.Kind = "table"
 	attrs := node.Attributes.Parser
-	attrs.ItemType, attrs.CKType, attrs.Sheet = "table", item.CKType, item.Sheet
+	attrs.ItemType, attrs.Sheet = "table", item.Sheet
 	positions, err := parserContentPositions(item.Positions)
 	if err != nil {
 		return err
@@ -242,17 +238,17 @@ func parserProjectTable(node *entity.KnowledgeContentNode, item TableItem) error
 }
 
 func parserProjectImage(node *entity.KnowledgeContentNode, item ImageItem) error {
-	if len(item.Text) > 65536 || len(item.Sheet) > 4096 || len(item.CKType) > 128 {
+	if len(item.Text) > 65536 || len(item.Sheet) > 4096 {
 		return fmt.Errorf("content metadata capacity exceeded")
 	}
-	if !utf8.ValidString(item.Text) || !utf8.ValidString(item.Sheet) || !utf8.ValidString(item.CKType) {
+	if !utf8.ValidString(item.Text) || !utf8.ValidString(item.Sheet) {
 		return fmt.Errorf("invalid parser image metadata UTF-8")
 	}
 	node.Kind = "media"
 	attrs := node.Attributes.Parser
 	alt := item.Text
-	attrs.ItemType, attrs.CKType, attrs.Sheet = "image", item.CKType, item.Sheet
-	attrs.AltText, attrs.PayloadPresent = &alt, item.Image != ""
+	attrs.ItemType, attrs.Sheet = "image", item.Sheet
+	attrs.AltText, attrs.PayloadPresent = &alt, item.Image != "" || item.Media != nil
 	positions, err := parserContentPositions(item.Positions)
 	if err != nil {
 		return err

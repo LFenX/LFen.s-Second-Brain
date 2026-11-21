@@ -66,11 +66,11 @@ func TestKnowledgeAncestorHistoryRequiresSourceIntersection(t *testing.T) {
 	}
 	checker := permission.NewDatabaseChecker(dao.DB)
 	for _, ref := range []permission.ResourceRef{{Kind: permission.ResourceKindFile, ID: fid}, {Kind: permission.ResourceKindFolder, ID: "nested"}} {
-		if err := checker.CheckResource(t.Context(), permission.Subject{UserID: "copy-owner"}, ref, permission.OperationRead); !errors.Is(err, permission.ErrPermissionDenied) {
+		if err := checker.CheckResource(permission.WithIdentity(t.Context(), "copy-owner", ""), ref, permission.OperationRead); !errors.Is(err, permission.ErrPermissionDenied) {
 			t.Fatalf("exact source guard: %v", err)
 		}
 	}
-	if err := checker.CheckResource(t.Context(), permission.Subject{UserID: "copy-owner"}, permission.ResourceRef{Kind: permission.ResourceKindFolder, ID: "folder-1"}, permission.OperationRead); err != nil {
+	if err := checker.CheckResource(permission.WithIdentity(t.Context(), "copy-owner", ""), permission.ResourceRef{Kind: permission.ResourceKindFolder, ID: "folder-1"}, permission.OperationRead); err != nil {
 		t.Fatal(err)
 	}
 	r := fileCommitRouter(NewFileCommitHandler(commitService), "copy-owner")

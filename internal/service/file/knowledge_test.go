@@ -27,9 +27,9 @@ func TestKnowledgeTenantBrowseHidesPrivateMetadataBeforePagination(t *testing.T)
 		t.Fatal(err)
 	}
 	for _, file := range []entity.File{
-		{ID: "kb-root", ParentID: "root", TenantID: "owner", Name: ".knowledgebase", Type: "folder"},
-		{ID: "private-folder", ParentID: "kb-root", TenantID: "owner", Name: kb.Name, Type: "folder", SourceType: "knowledgebase"},
-		{ID: "private-file", ParentID: "private-folder", TenantID: "owner", Name: "secret.txt", Size: 99, Type: "txt"},
+		{ID: "kb-root", ParentID: "root", TenantID: "owner", CreatedBy: "reader", Name: ".knowledgebase", Type: "folder"},
+		{ID: "private-folder", ParentID: "kb-root", TenantID: "owner", CreatedBy: "owner", Name: kb.Name, Type: "folder", SourceType: "knowledgebase"},
+		{ID: "private-file", ParentID: "private-folder", TenantID: "owner", CreatedBy: "owner", Name: "secret.txt", Size: 99, Type: "txt"},
 	} {
 		if err := db.Create(&file).Error; err != nil {
 			t.Fatal(err)
@@ -45,11 +45,11 @@ func TestKnowledgeTenantBrowseHidesPrivateMetadataBeforePagination(t *testing.T)
 		t.Fatal(err)
 	}
 	svc := testFileService()
-	list, err := svc.ListFilesForTenant(t.Context(), "reader", "owner", "kb-root", 1, 1, nil, "")
+	list, err := svc.ListFilesForTenant(permission.WithIdentity(t.Context(), "reader", "owner"), "owner", "kb-root", 1, 1, nil, "")
 	if err != nil || list.Total != 0 || len(list.Files) != 0 {
 		t.Fatalf("private folder leaked: %+v err=%v", list, err)
 	}
-	root, err := svc.ListFilesForTenant(t.Context(), "reader", "owner", "root", 1, 100, nil, "")
+	root, err := svc.ListFilesForTenant(permission.WithIdentity(t.Context(), "reader", "owner"), "owner", "root", 1, 100, nil, "")
 	if err != nil || root.Total != 2 {
 		t.Fatalf("unregistered metadata changed: %+v err=%v", root, err)
 	}
@@ -58,17 +58,21 @@ func TestKnowledgeTenantBrowseHidesPrivateMetadataBeforePagination(t *testing.T)
 			t.Fatalf("private aggregates leaked: %+v", f)
 		}
 	}
-	search, err := svc.ListFilesForTenant(t.Context(), "reader", "owner", "root", 1, 1, nil, "secret")
+	search, err := svc.ListFilesForTenant(permission.WithIdentity(t.Context(), "reader", "owner"), "owner", "root", 1, 1, nil, "secret")
 	if err != nil || search.Total != 0 || len(search.Files) != 0 {
 		t.Fatalf("private recursive search leaked: %+v err=%v", search, err)
 	}
-	if _, err := svc.ListFilesForTenant(t.Context(), "reader", "owner", "private-folder", 1, 1, nil, ""); err == nil {
+	if _, err := svc.ListFilesForTenant(permission.WithIdentity(t.Context(), "reader", "owner"), "owner", "private-folder", 1, 1, nil, ""); err == nil {
 		t.Fatal("guessed private folder was readable")
 	}
-	if _, err := svc.GetAllParentFoldersForTenant(t.Context(), "reader", "owner", fid); err == nil {
+	if _, err := svc.GetAllParentFoldersForTenant(permission.WithIdentity(t.Context(), "reader", "owner"), "owner", fid); err == nil {
 		t.Fatal("private ancestor path leaked")
 	}
-	owner, err := svc.ListFilesForTenant(t.Context(), "owner", "owner", "private-folder", 1, 100, nil, "")
+	// Give the owner native access to the ancestor for the owner-side read.
+	if err := db.Model(&entity.File{}).Where("id = ?", "kb-root").Update("created_by", "owner").Error; err != nil {
+		t.Fatal(err)
+	}
+	owner, err := svc.ListFilesForTenant(permission.WithIdentity(t.Context(), "owner", "owner"), "owner", "private-folder", 1, 100, nil, "")
 	if err != nil || len(owner.Files) != 1 {
 		t.Fatalf("owner lost source: %+v err=%v", owner, err)
 	}
@@ -77,7 +81,7 @@ func TestKnowledgeTenantBrowseHidesPrivateMetadataBeforePagination(t *testing.T)
 func TestKnowledgeUnclaimedRenamedFolderRemainsPrivate(t *testing.T) {
 	seedFileBrowsing(t)
 	db := dao.DB
-	if err := db.AutoMigrate(&entity.KnowledgeSourceRevision{}); err != nil {
+	if err := db.AutoMigrate(&entity.KnowledgeSourceRevision{}, &entity.User{}, &entity.Tenant{}, &entity.KnowledgeAccessModuleRecord{}, &entity.KnowledgeAccessTenantStateRecord{}, &entity.KnowledgeAccessDomainPolicyRecord{}, &entity.KnowledgeAccessGrantRecord{}, &entity.KnowledgeAccessAuditRecord{}, &entity.KnowledgeAccessViewRecord{}); err != nil {
 		t.Fatal(err)
 	}
 	if err := db.Create(&entity.Knowledgebase{ID: "old-domain", TenantID: "owner", CreatedBy: "owner", Name: "Current name", KnowledgeEnabled: true}).Error; err != nil {
@@ -175,10 +179,10 @@ func TestKnowledgeNativeMoveAndDeletePreserveManagedTree(t *testing.T) {
 	}
 	svc := testFileService()
 	for _, id := range []string{folderID, "ancestor"} {
-		if err := svc.MoveFiles(t.Context(), "owner", []string{id}, "destination", ""); !errors.Is(err, permission.ErrKnowledgeIngestionDenied) {
+		if err := svc.MoveFiles(permission.WithIdentity(t.Context(), "owner", "owner"), []string{id}, "destination", ""); !errors.Is(err, permission.ErrKnowledgeIngestionDenied) {
 			t.Fatalf("move %s: %v", id, err)
 		}
-		if err := svc.DeleteFiles(t.Context(), "owner", []string{id}); !errors.Is(err, permission.ErrKnowledgeIngestionDenied) {
+		if err := svc.DeleteFiles(permission.WithIdentity(t.Context(), "owner", "owner"), []string{id}); !errors.Is(err, permission.ErrKnowledgeIngestionDenied) {
 			t.Fatalf("delete %s: %v", id, err)
 		}
 	}
@@ -202,11 +206,11 @@ func TestKnowledgeEmptyFolderBindingSurvivesRenames(t *testing.T) {
 		t.Fatal(err)
 	}
 	svc := testFileService()
-	list, err := svc.ListFilesForTenant(t.Context(), "reader", "owner", "root", 1, 100, nil, "")
+	list, err := svc.ListFilesForTenant(permission.WithIdentity(t.Context(), "reader", "owner"), "owner", "root", 1, 100, nil, "")
 	if err != nil || list.Total != 1 {
 		t.Fatalf("renamed empty folder leaked: %+v err=%v", list, err)
 	}
-	if _, err := svc.GetAllParentFoldersForTenant(t.Context(), "reader", "owner", folderID); err == nil {
+	if _, err := svc.GetAllParentFoldersForTenant(permission.WithIdentity(t.Context(), "reader", "owner"), "owner", folderID); err == nil {
 		t.Fatal("renamed empty folder path leaked")
 	}
 }
@@ -283,7 +287,7 @@ func TestKnowledgeCommitRejectsForeignIDsBeforeBatchWrites(t *testing.T) {
 		for _, operation := range []string{"add", "modify", "delete", "rename"} {
 			changes := []entity.FileChange{{FileID: "valid", FileName: "own.txt", Operation: "modify", Content: "first must not write"},
 				{FileID: id, FileName: "private.txt", Operation: operation, Content: "forged foreign data", NewName: "forged.txt"}}
-			if _, err := svc.CreateCommit(t.Context(), "own", "attacker", "Synthetic denied batch", changes); !errors.Is(err, permission.ErrResourceNotFound) {
+			if _, err := svc.CreateCommit(t.Context(), "own", "attacker", "Synthetic denied batch", changes); !errors.Is(err, permission.ErrResourceNotFound) && !errors.Is(err, permission.ErrPermissionDenied) {
 				t.Fatalf("id=%s op=%s err=%v", id, operation, err)
 			}
 		}

@@ -280,11 +280,14 @@ func validateMySQLBaseSeedState(identity mysqlBaseIdentity, state mysqlBaseSeedS
 		}
 	}
 	tenant := state.Tenant
-	if tenant.ID != identity.TargetTenant || !mysqlBaseValidStatus(tenant.Status) || tenant.LLMID != "" || tenant.EmbdID != "" || tenant.ASRID != "" || tenant.Img2TxtID != "" || tenant.RerankID != "" || tenant.TTSID != nil && *tenant.TTSID != "" || tenant.OCRID != nil && *tenant.OCRID != "" || tenant.TenantLLMID != nil || tenant.TenantEmbdID != nil || tenant.TenantASRID != nil || tenant.TenantImg2TxtID != nil || tenant.TenantRerankID != nil || tenant.TenantTTSID != nil || tenant.TenantOCRID != nil {
+	if tenant.ID != identity.TargetTenant || !mysqlBaseValidStatus(tenant.Status) {
 		return errMySQLBaseScope
 	}
 	roles := map[string]string{}
 	for _, member := range state.Members {
+		if member.LLMID != "" || member.EmbdID != "" || member.ASRID != "" || member.Img2TxtID != "" || member.RerankID != "" || member.TTSID != nil && *member.TTSID != "" || member.OCRID != nil && *member.OCRID != "" || member.TenantLLMID != nil || member.TenantEmbdID != nil || member.TenantASRID != nil || member.TenantImg2TxtID != nil || member.TenantRerankID != nil || member.TenantTTSID != nil || member.TenantOCRID != nil || member.DecisionID != nil && *member.DecisionID != "" || member.TenantDecisionID != nil {
+			return errMySQLBaseScope
+		}
 		if !isKnowledgeID(member.ID, 32) || member.TenantID != identity.TargetTenant || member.InvitedBy != identity.Owner.ID || !mysqlBaseValidStatus(member.Status) {
 			return errMySQLBaseScope
 		}
@@ -390,7 +393,7 @@ func TestKnowledgeAccessMySQLCreateBase(t *testing.T) {
 		if err := dao.CheckKnowledgeAccessNativeTenant(tx, identity.TargetTenant); err != nil {
 			return err
 		}
-		if err := permission.NewLockingDatabaseChecker(tx).CheckResource(ownerCtx, permission.Subject{UserID: identity.Owner.ID}, permission.ResourceRef{Kind: permission.ResourceKindDataset, ID: identity.DomainID}, permission.OperationUpdate); err != nil {
+		if err := permission.NewLockingDatabaseChecker(tx).CheckResource(permission.WithIdentity(ownerCtx, identity.Owner.ID, permission.TenantIDFromContext(ownerCtx)), permission.ResourceRef{Kind: permission.ResourceKindDataset, ID: identity.DomainID}, permission.OperationUpdate); err != nil {
 			return err
 		}
 		var err error
